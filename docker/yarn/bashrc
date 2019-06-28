@@ -1,0 +1,8 @@
+alias ll="ls -l"
+
+export PATH=/opt/flink/bin/:$PATH
+export HADOOP_CLASSPATH=`/usr/local/hadoop/bin/hadoop classpath`
+export HADOOP_HOME=/usr/local/hadoop/
+export HADOOP_CONF_DIR=/usr/local/hadoop/etc/hadoop/
+export HADOOP_HDFS_HOME=/usr/local/hadoop/
+export HADOOP_CLASSPATH=`hadoop classpath`
