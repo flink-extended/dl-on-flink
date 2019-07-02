@@ -38,15 +38,11 @@ import java.util.List;
  */
 public class MnistDataUtil {
 
-	public static final String dataAddress = "http://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/FlinkML/TensorFlowOnFlink/";
+	public static final String dataAddress = "https://raw.githubusercontent.com/wuchaochen/testdata/master/mnist/";
 	public static final String train_images = "train-images-idx3-ubyte.gz";
-	public static final String train_images_code = "7473b3862f9571c1ac0082c33202df18/";
-	public static final String train_lables = "train-labels-idx1-ubyte.gz";
-	public static final String train_lables_code = "a8aa300aa0381cb92ccb632d83f21ea6/";
+	public static final String train_labels = "train-labels-idx1-ubyte.gz";
 	public static final String t10k_images = "t10k-images-idx3-ubyte.gz";
-	public static final String t10k_images_code = "0ffe604df2da0e5afa8bdc0545b04b01/";
 	public static final String t10k_labels = "t10k-labels-idx1-ubyte.gz";
-	public static final String t10k_labels_code = "f3aa426fe103f4bb14febf76907467cc/";
 	public static final String dataDir = "/flink-ml-examples/target/data/";
 	private static final Logger LOG = LoggerFactory.getLogger(MnistDataUtil.class);
 
@@ -67,22 +63,22 @@ public class MnistDataUtil {
 		File train_images_file = new File(dataPath + train_images);
 		if (!train_images_file.exists()) {
 			System.out.println("download:" + train_images);
-			HttpUtil.httpDownload(dataAddress + train_images_code + train_images, dataPath + train_images);
+			HttpUtil.httpDownload(dataAddress  + train_images, dataPath + train_images);
 		}
-		File train_lables_file = new File(dataPath + train_lables);
+		File train_lables_file = new File(dataPath + train_labels);
 		if (!train_lables_file.exists()) {
-			System.out.println("download:" + train_lables);
-			HttpUtil.httpDownload(dataAddress + train_lables_code + train_lables, dataPath + train_lables);
+			System.out.println("download:" + train_labels);
+			HttpUtil.httpDownload(dataAddress + train_labels, dataPath + train_labels);
 		}
 		File t10k_images_file = new File(dataPath + t10k_images);
 		if (!t10k_images_file.exists()) {
 			System.out.println("download:" + t10k_images);
-			HttpUtil.httpDownload(dataAddress + t10k_images_code + t10k_images, dataPath + t10k_images);
+			HttpUtil.httpDownload(dataAddress + t10k_images, dataPath + t10k_images);
 		}
 		File t10k_labels_file = new File(dataPath + t10k_labels);
 		if (!t10k_labels_file.exists()) {
 			System.out.println("download:" + t10k_labels);
-			HttpUtil.httpDownload(dataAddress + t10k_labels_code + t10k_labels, dataPath + t10k_labels);
+			HttpUtil.httpDownload(dataAddress  + t10k_labels, dataPath + t10k_labels);
 		}
 		return dataPath;
 	}
