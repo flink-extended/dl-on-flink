@@ -1,0 +1,10 @@
+language: java
+jdk:
+- openjdk8
+before_install:
+- pip install -U --user pip six numpy wheel mock grpcio grpcio-tools
+script:
+- mvn -DskipITs=true clean package
+branches:
+  except:
+  - appveyor

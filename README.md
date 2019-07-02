@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/alibaba/flink-ai-extended.svg?branch=master)](https://travis-ci.org/alibaba/flink-ai-extended)
+
 # flink-ai-extended
 This project is to extend deep learning framework on the Flink project. Currently supports tensorflow running on flink.
 
