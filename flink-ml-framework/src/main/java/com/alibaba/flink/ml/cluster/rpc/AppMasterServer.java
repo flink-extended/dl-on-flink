@@ -441,7 +441,7 @@ public class AppMasterServer implements Runnable {
 			for (Map.Entry<String, NodeClient> client : nodeClientCache.entrySet()) {
 				ListenableFuture<NodeRestartResponse> future = client.getValue().restartNode();
 				listenableFutures.add(future);
-				LOG.info("send restart to tf node:" + client.getKey());
+				LOG.info("send restart to node:" + client.getKey());
 				toRemove.add(client.getKey());
 			}
 			for (ListenableFuture<NodeRestartResponse> future : listenableFutures) {

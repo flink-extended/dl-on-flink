@@ -22,6 +22,7 @@ import com.alibaba.flink.ml.examples.tensorflow.mnist.MnistDataUtil;
 import com.alibaba.flink.ml.examples.tensorflow.mnist.MnistJavaInference;
 import com.alibaba.flink.ml.examples.tensorflow.ut.TFMnistInferenceTest;
 import com.alibaba.flink.ml.util.MiniCluster;
+import com.alibaba.flink.ml.util.SysUtil;
 import com.google.common.io.Files;
 import org.apache.hadoop.fs.Path;
 import org.junit.*;
@@ -48,7 +49,7 @@ public class JavaInferenceFailoverIT {
 	@Before
 	public void setUp() throws Exception {
 		miniCluster = MiniCluster.start(NUM_TM);
-		miniCluster.setExecJar("/flink-ml-examples/target/flink-ml-examples-1.0-SNAPSHOT.jar");
+		miniCluster.setExecJar("/flink-ml-examples/target/flink-ml-examples-" + SysUtil.getProjectVersion() + ".jar");
 		miniCluster.copyFromHostToHDFS(TFMnistInferenceTest.exportPath, HDFS_EXPORT_DIR);
 		miniCluster.copyFromHostToHDFS(TFMnistInferenceTest.testDataPath, HDFS_TEST_DATA_DIR);
 	}

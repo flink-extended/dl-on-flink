@@ -35,6 +35,7 @@ import java.lang.reflect.Field;
 public class SysUtil {
 	public static final Unsafe UNSAFE;
 	private static String rootPath = null;
+	private static String projectVersion = null;
 	private static String PARENT_NAME = "flink_ai_extended";
 	private static Logger LOG = LoggerFactory.getLogger(SysUtil.class);
 
@@ -110,5 +111,34 @@ public class SysUtil {
 		}
 		Preconditions.checkState(rootPath != null, "Cannot determine the project's root path");
 		return rootPath;
+	}
+
+	 /**
+	  *  @return maven project current version.
+	  */
+	public static String getProjectVersion() {
+		if (projectVersion == null) {
+			// assume the working dir is under root
+			File file = new File(System.getProperty("user.dir"));
+			while (file != null) {
+				File pom = new File(file, "pom.xml");
+				if (pom.exists()) {
+					try (FileReader fileReader = new FileReader(pom)) {
+						MavenXpp3Reader reader = new MavenXpp3Reader();
+						Model model = reader.read(fileReader);
+						if (model.getArtifactId().equals(PARENT_NAME)) {
+							projectVersion = model.getVersion();
+							break;
+						}
+					} catch (XmlPullParserException | IOException e) {
+						LOG.error("Error reading pom files", e);
+						break;
+					}
+				}
+				file = file.getParentFile();
+			}
+		}
+		Preconditions.checkState(projectVersion != null, "Cannot determine the project's root path");
+		return projectVersion;
 	}
 }

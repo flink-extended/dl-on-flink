@@ -20,6 +20,7 @@ package com.alibaba.flink.ml.examples.wordcount.it;
 
 import com.alibaba.flink.ml.examples.wordcount.WordCount;
 import com.alibaba.flink.ml.util.MiniCluster;
+import com.alibaba.flink.ml.util.SysUtil;
 import com.google.common.io.Files;
 import org.junit.After;
 import org.junit.Assert;
@@ -36,7 +37,7 @@ public class WordCountIT {
 	@Before
 	public void setUp() throws Exception {
 		miniCluster = MiniCluster.start(numTMs, false);
-		miniCluster.setExecJar("/flink-ml-examples/target/flink-ml-examples-1.0-SNAPSHOT.jar");
+		miniCluster.setExecJar("/flink-ml-examples/target/flink-ml-examples-" + SysUtil.getProjectVersion() + ".jar");
 	}
 
 	@After

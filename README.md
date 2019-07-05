@@ -227,13 +227,13 @@ def map_func(context):
 
     <groupId>com.alibaba</groupId>
     <artifactId>flink-ai-extended-examples</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
             <groupId>com.alibaba.flink.ml</groupId>
             <artifactId>flink-ml-tensorflow</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>0.1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.apache.curator</groupId>
@@ -439,7 +439,7 @@ docker exec flink-jm /opt/hadoop-2.7.0/bin/hadoop fs -put -f /opt/work_home/flin
 
 ### Submit train job
 ```shell 
-docker exec flink-jm flink run  -c com.alibaba.flink.ml.examples.tensorflow.mnist.MnistDist /opt/work_home/flink-ml-examples/target/flink-ml-examples-1.0-SNAPSHOT.jar --zk-conn-str minizk --mode StreamEnv --setup /opt/work_home/flink-ml-examples/src/test/python/mnist_data_setup.py --train mnist_dist.py --envpath hdfs://minidfs:9000/user/root/tfenv.zip --mnist-files /tmp/mnist_input --with-restart false --code-path hdfs://minidfs:9000/user/root/code.zip 
+docker exec flink-jm flink run  -c com.alibaba.flink.ml.examples.tensorflow.mnist.MnistDist /opt/work_home/flink-ml-examples/target/flink-ml-examples-0.1.0-SNAPSHOT.jar --zk-conn-str minizk --mode StreamEnv --setup /opt/work_home/flink-ml-examples/src/test/python/mnist_data_setup.py --train mnist_dist.py --envpath hdfs://minidfs:9000/user/root/tfenv.zip --mnist-files /tmp/mnist_input --with-restart false --code-path hdfs://minidfs:9000/user/root/code.zip 
 ```
 ### Visit Flink Cluster
 [Flink Cluster Address](http://localhost:8081)
