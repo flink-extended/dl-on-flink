@@ -6,6 +6,7 @@
         <artifactId>flink_ai_extended</artifactId>
         <groupId>com.alibaba.flink.ml</groupId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>flink-ml-operator</artifactId>
@@ -14,25 +15,23 @@
         <dependency>
             <groupId>com.alibaba.flink.ml</groupId>
             <artifactId>flink-ml-framework</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba.flink.ml</groupId>
             <artifactId>flink-ml-framework</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-test</artifactId>
-            <version>${curator.version}</version>
             <scope>test</scope>
             <exclusions>
                 <exclusion>
@@ -44,54 +43,40 @@
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-clients_${scala.major.version}</artifactId>
-            <version>${flink.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-streaming-java -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-streaming-java_${scala.major.version}</artifactId>
-            <version>${flink.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-streaming-scala_${scala.major.version}</artifactId>
-            <version>${flink.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-table-api-java</artifactId>
-            <version>${flink.version}</version>
             <scope>provided</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-table-api-java-bridge -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-table-api-java-bridge_${scala.major.version}</artifactId>
-            <version>${flink.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-table-planner_${scala.major.version}</artifactId>
-            <version>${flink.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-scala -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-scala_${scala.major.version}</artifactId>
-            <version>${flink.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-core</artifactId>
-            <version>${flink.version}</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.scalatest/scalatest -->
         <dependency>
             <groupId>org.scalatest</groupId>
             <artifactId>scalatest_${scala.major.version}</artifactId>
-            <version>${scala.test.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
