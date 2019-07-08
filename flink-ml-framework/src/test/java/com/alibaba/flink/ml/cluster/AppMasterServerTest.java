@@ -175,6 +175,7 @@ public class AppMasterServerTest {
 
 	@Test
 	public void testAMFailOver() throws Exception {
+		System.out.println(SysUtil._FUNC_());
 		final int numWorker = 3;
 		final Duration timeout = Duration.ofSeconds(100);
 		ExecutorService executor = new ThreadPoolExecutor(numWorker, numWorker, 60, TimeUnit.SECONDS,
@@ -237,6 +238,7 @@ public class AppMasterServerTest {
 
 	@Test
 	public void testHeartbeatTimeout() throws Exception {
+		System.out.println(SysUtil._FUNC_());
 		final int numWorker = 2;
 		final Duration timeout = Duration.ofSeconds(3);
 		ExecutorService executor = new ThreadPoolExecutor(numWorker, numWorker, 60, TimeUnit.SECONDS,
@@ -329,6 +331,7 @@ public class AppMasterServerTest {
 
 	@Test
 	public void multiRegisterNode() throws Exception {
+		System.out.println(SysUtil._FUNC_());
 		final int numWorker = 3;
 		ExecutorService executor = new ThreadPoolExecutor(numWorker, numWorker, 60, TimeUnit.SECONDS,
 				new LinkedBlockingQueue<>(numWorker));
@@ -342,11 +345,16 @@ public class AppMasterServerTest {
 			MLContext tfContext = new MLContext(ExecutionMode.TRAIN, tfConfig, new WorkerRole().name(), i, null, null);
 			NodeServiceGrpc.NodeServiceImplBase service = mockNodeService();
 			DummyNodeServer server = new DummyNodeServer(tfContext, service);
+			final int index = i;
 			FutureTask<Void> serverFuture = new FutureTask<>(() -> {
 				Assert.assertEquals(server.mlContext.getIdentity() + " register node failed",
 						RpcCode.OK.ordinal(), server.registerNode().getCode());
-				Assert.assertEquals(server.mlContext.getIdentity() + " re-register node failed",
-						RpcCode.OK.ordinal(), server.twiceRegisterNode().getCode());
+				if(0 == index) {
+					Assert.assertEquals(server.mlContext.getIdentity() + " re-register node failed",
+							RpcCode.OK.ordinal(), server.twiceRegisterNode().getCode());
+				}else {
+					server.waitForAMStatus(AMStatus.AM_RUNNING);
+				}
 				Assert.assertEquals(server.mlContext.getIdentity() + " register node failed",
 						RpcCode.OK.ordinal(), server.registerNode().getCode());
 				Assert.assertEquals(server.mlContext.getIdentity() + " finish node failed",
@@ -370,6 +378,7 @@ public class AppMasterServerTest {
 
 	@Test
 	public void testMergeFinishedNodes() throws Exception {
+		System.out.println(SysUtil._FUNC_());
 		MLConfig mlConfig = DummyContext.createDummyMLConfig();
 		mlConfig.setRoleNum(new WorkerRole().name(), 3);
 		mlConfig.setRoleNum(new PsRole().name(), 1);
