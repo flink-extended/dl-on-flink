@@ -21,6 +21,7 @@ package com.alibaba.flink.ml.examples.tensorflow.it;
 import com.alibaba.flink.ml.examples.tensorflow.mnist.MnistDataUtil;
 import com.alibaba.flink.ml.examples.tensorflow.mnist.MnistDist;
 import com.alibaba.flink.ml.util.MiniCluster;
+import com.alibaba.flink.ml.util.SysUtil;
 import com.google.common.base.Preconditions;
 import com.google.common.io.Files;
 import org.junit.*;
@@ -39,7 +40,7 @@ public class MnistIT {
 	@BeforeClass
 	public static void setUp() throws Exception {
 		miniCluster = MiniCluster.start(3);
-		miniCluster.setExecJar("/flink-ml-examples/target/flink-ml-examples-1.0-SNAPSHOT.jar");
+		miniCluster.setExecJar("/flink-ml-examples/target/flink-ml-examples-" + SysUtil.getProjectVersion() + ".jar");
 		Preconditions.checkState(miniCluster.copyToJM(MnistDataUtil.downloadData(), MNIST_CONTAINER_PATH));
 	}
 
