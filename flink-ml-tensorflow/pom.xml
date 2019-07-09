@@ -144,7 +144,7 @@
                             <arguments>
                                 <argument>install</argument>
                                 <argument>${pip.install.option}</argument>
-                                <argument>tensorflow==${tensorflow.version}</argument>
+                                <argument>${tensorflow.package.name}==${tensorflow.version}</argument>
                             </arguments>
                         </configuration>
                     </execution>

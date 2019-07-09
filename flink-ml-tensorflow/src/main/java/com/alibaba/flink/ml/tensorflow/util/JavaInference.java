@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import org.tensorflow.SavedModelBundle;
 import org.tensorflow.Session;
 import org.tensorflow.Tensor;
+import org.tensorflow.framework.ConfigProto;
 import org.tensorflow.framework.MetaGraphDef;
 import org.tensorflow.framework.SignatureDef;
 import org.tensorflow.framework.TensorInfo;
@@ -72,9 +73,16 @@ public class JavaInference implements Closeable {
 		String exportDir = requireConfig(props, TFConstants.TF_INFERENCE_EXPORT_PATH);
 		Path modelPath = new Path(exportDir);
 		String scheme = modelPath.toUri().getScheme();
+		ConfigProto configProto = ConfigProto.newBuilder()
+				.setAllowSoftPlacement(true) // allow less GPUs than configured
+				.build();
 		// local fs is assumed when no scheme provided
 		if (StringUtils.isEmpty(scheme) || scheme.equals("file")) {
-			model = SavedModelBundle.load(exportDir, TAG);
+			//model = SavedModelBundle.load(exportDir, TAG);
+			model = SavedModelBundle.loader(exportDir)
+					.withConfigProto(configProto.toByteArray())
+					.withTags(TAG)
+					.load();
 		} else if (scheme.equals("hdfs")) {
 			// download the model from hdfs
 			FileSystem fs = modelPath.getFileSystem(new Configuration());
@@ -82,7 +90,11 @@ public class JavaInference implements Closeable {
 			Path localPath = new Path(downloadModelPath.getPath(), modelPath.getName());
 			LOG.info("Downloading model from {} to {}", modelPath, localPath);
 			fs.copyToLocalFile(modelPath, localPath);
-			model = SavedModelBundle.load(localPath.toString(), TAG);
+			//model = SavedModelBundle.load(localPath.toString(), TAG);
+			model = SavedModelBundle.loader(localPath.toString())
+					.withConfigProto(configProto.toByteArray())
+					.withTags(TAG)
+					.load();
 		} else {
 			throw new IllegalArgumentException("Model URI not supported: " + exportDir);
 		}
