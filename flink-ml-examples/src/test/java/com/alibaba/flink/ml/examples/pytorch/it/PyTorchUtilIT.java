@@ -20,6 +20,7 @@ package com.alibaba.flink.ml.examples.pytorch.it;
 
 import com.alibaba.flink.ml.examples.pytorch.PyTorchRunDist;
 import com.alibaba.flink.ml.util.MiniCluster;
+import com.alibaba.flink.ml.util.SysUtil;
 import com.google.common.io.Files;
 import org.junit.*;
 import com.alibaba.flink.ml.examples.util.CodeUtil;
@@ -34,7 +35,7 @@ public class PyTorchUtilIT {
 	@Before
 	public void setUp() throws Exception {
 		miniCluster = MiniCluster.start(numTMs);
-		miniCluster.setExecJar("/flink-ml-examples/target/flink-ml-examples-1.0-SNAPSHOT.jar");
+		miniCluster.setExecJar("/flink-ml-examples/target/flink-ml-examples-" + SysUtil.getProjectVersion() + ".jar");
 	}
 
 	@After
