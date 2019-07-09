@@ -178,7 +178,9 @@ public class JavaInferenceRunner implements Closeable {
 		String[] ipPort = args[0].split(":");
 		Preconditions.checkArgument(ipPort.length == 2,
 				String.format("Invalid tf node address %s, please specify in form <IP>:<PORT>", args[0]));
-		new JavaInferenceRunner(ipPort[0], Integer.valueOf(ipPort[1]), args[1], args[2]).run();
+		JavaInferenceRunner runner = new JavaInferenceRunner(ipPort[0], Integer.valueOf(ipPort[1]), args[1], args[2]);
+		runner.run();
+		runner.close();
 	}
 
 	private class InputRowConsumer implements Runnable {
