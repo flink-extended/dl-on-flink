@@ -245,7 +245,7 @@ public class NodeServer implements Runnable {
 		} catch (InterruptedException e) {
 			LOG.error(mlContext.getIdentity() + " node server interrupted");
 		} catch (Exception e) {
-			LOG.error("Error to run node service.", e);
+			LOG.error("Error to run node service {}.", e.getMessage());
 			throw new RuntimeException(e);
 		} finally {
 			cleanup(runnerFuture);
@@ -253,7 +253,7 @@ public class NodeServer implements Runnable {
 	}
 
 	public String getDisplayName() {
-		return jobName.toString() + ":" + mlContext.getIndex();
+		return jobName + ":" + mlContext.getIndex();
 	}
 
 
@@ -283,6 +283,7 @@ public class NodeServer implements Runnable {
 
 	/** Stop serving requests and shutdown resources. */
 	private synchronized void cleanup(Future runnerFuture) {
+		LOG.info("{} run cleanup!", mlContext.getIdentity());
 		stopMLRunner(runnerFuture);
 		runnerService.shutdownNow();
 		try {

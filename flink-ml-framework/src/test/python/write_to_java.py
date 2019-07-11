@@ -6,8 +6,7 @@ import struct
 
 
 def map_func(context):
-    print context
-    sys.stdout.flush()
+
     java_file = JavaFile(context.from_java(), context.to_java())
     try:
         json_object = {'aa': 'aa'}
