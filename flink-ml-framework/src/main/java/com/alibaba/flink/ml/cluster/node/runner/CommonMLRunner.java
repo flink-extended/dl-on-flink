@@ -355,9 +355,9 @@ public class CommonMLRunner implements MLRunner {
 		try {
 			// for PS node, being killed can mean success
 			if (success) {
+				LOG.info("report node finish:" + mlContext.getIdentity());
 				response = amClient.nodeFinish(version,
 						nodeSpec);
-				LOG.info("report node finish:" + mlContext.getIdentity());
 				if (RpcCode.OK.ordinal() != response.getCode() && RpcCode.VERSION_ERROR.ordinal() != response
 						.getCode()) {
 					LOG.error("Fail to report node finish status to AM.");
@@ -375,6 +375,7 @@ public class CommonMLRunner implements MLRunner {
 			}
 		} catch (Exception e) {
 			LOG.error(mlContext.getIdentity() + " failed to notify AM of finished node", e);
+			throw new RuntimeException(e);
 		}finally {
 			amClient.close();
 		}
