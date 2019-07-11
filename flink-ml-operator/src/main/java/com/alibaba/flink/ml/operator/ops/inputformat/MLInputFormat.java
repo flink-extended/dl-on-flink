@@ -165,10 +165,10 @@ public class MLInputFormat<OUT> extends RichInputFormat<OUT, MLInputSplit> {
 					serverFuture.get();
 				}
 			} catch (ExecutionException e) {
-				LOG.error(mlContext.getIdentity() + " tf node server failed", e);
+				LOG.error(mlContext.getIdentity() + " node server failed {}", e.getMessage());
 				throw new IOException(e);
 			} catch (InterruptedException e) {
-				LOG.warn("{} interrupted during waiting server join.", mlContext.getIdentity());
+				LOG.warn("{} interrupted during waiting server join {}.", mlContext.getIdentity(), e.getMessage());
 				serverFuture.cancel(true);
 			} finally {
 				serverFuture = null;
