@@ -109,7 +109,7 @@ public class MLMapFunction<IN, OUT> implements Closeable, Serializable {
 			//as in batch mode, we can't user timer to drain queue, so drain it here
 			drainRead(collector, true);
 		} catch (InterruptedException e) {
-			LOG.error("Interrupted waiting for server join.", e);
+			LOG.error("Interrupted waiting for server join {}.", e.getMessage());
 			serverFuture.cancel(true);
 		} catch (ExecutionException e) {
 			LOG.error(mlContext.getIdentity() + " node server failed");

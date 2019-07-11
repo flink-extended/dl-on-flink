@@ -5,8 +5,6 @@ from flink_ml_framework.java_file import JavaFile
 
 
 def map_func(context):
-    print context
-    sys.stdout.flush()
     java_file = JavaFile(context.from_java(), context.to_java())
     try:
         res = java_file.read(4)

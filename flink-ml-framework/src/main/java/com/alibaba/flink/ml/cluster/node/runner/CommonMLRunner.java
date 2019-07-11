@@ -56,6 +56,7 @@ public class CommonMLRunner implements MLRunner {
 	protected ScriptRunner scriptRunner;
 	//the execution result of this thread
 	protected ExecutionStatus resultStatus;
+	protected ExecutionStatus currentResultStatus;
 	protected ExecutorService heartbeatService;
 
 	protected MLClusterDef mlClusterDef;
@@ -192,6 +193,7 @@ public class CommonMLRunner implements MLRunner {
 	@Override
 	public void run() {
 		resultStatus = ExecutionStatus.RUNNING;
+		currentResultStatus = ExecutionStatus.RUNNING;
 		try {
 			//1. init amClient
 			initAMClient();
@@ -228,19 +230,21 @@ public class CommonMLRunner implements MLRunner {
 			runScript();
 			checkEnd();
 			LOG.info("run script.");
-			resultStatus = ExecutionStatus.SUCCEED;
+			currentResultStatus = ExecutionStatus.SUCCEED;
 		} catch (Exception e) {
 			if (e instanceof FlinkKillException || e instanceof InterruptedException) {
 				LOG.info("{} killed by flink.", mlContext.getIdentity());
-				resultStatus = ExecutionStatus.KILLED_BY_FLINK;
+				currentResultStatus = ExecutionStatus.KILLED_BY_FLINK;
 			} else {
 				//no one ask for this thread to stop, thus there must be some error occurs
 				LOG.error("Got exception during python running", e);
 				mlContext.addFailNum();
-				resultStatus = ExecutionStatus.FAILED;
+				currentResultStatus = ExecutionStatus.FAILED;
 			}
 		} finally {
-			stopExecution(resultStatus == ExecutionStatus.SUCCEED);
+			stopExecution(currentResultStatus == ExecutionStatus.SUCCEED);
+			// set resultStatus value after node notified to am.
+			resultStatus = currentResultStatus;
 		}
 	}
 
@@ -355,26 +359,27 @@ public class CommonMLRunner implements MLRunner {
 		try {
 			// for PS node, being killed can mean success
 			if (success) {
+				LOG.info("report node finish:" + mlContext.getIdentity());
 				response = amClient.nodeFinish(version,
 						nodeSpec);
-				LOG.info("report node finish:" + mlContext.getIdentity());
 				if (RpcCode.OK.ordinal() != response.getCode() && RpcCode.VERSION_ERROR.ordinal() != response
 						.getCode()) {
 					LOG.error("Fail to report node finish status to AM.");
 				}
 			} else {
-				if (resultStatus == ExecutionStatus.FAILED) {
+				if (currentResultStatus == ExecutionStatus.FAILED) {
 					response = amClient.reportFailedNode(version, nodeSpec);
 					LOG.info("report failed node:" + mlContext.getIdentity());
 					if (RpcCode.OK.ordinal() != response.getCode()) {
 						LOG.error("Fail to report node failed status to AM.");
 					}
-				} else if (resultStatus == ExecutionStatus.KILLED_BY_FLINK) {
+				} else if (currentResultStatus == ExecutionStatus.KILLED_BY_FLINK) {
 					// do nothing
 				}
 			}
 		} catch (Exception e) {
 			LOG.error(mlContext.getIdentity() + " failed to notify AM of finished node", e);
+			throw new RuntimeException(e);
 		}finally {
 			amClient.close();
 		}
