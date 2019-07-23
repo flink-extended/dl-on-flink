@@ -139,7 +139,8 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>pip</executable>
+<!--                            <executable>pip</executable>-->
+                            <executable>pip3</executable>
                             <workingDirectory>${project.basedir}/python</workingDirectory>
                             <arguments>
                                 <argument>install</argument>
@@ -155,7 +156,8 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>pip</executable>
+<!--                            <executable>pip</executable>-->
+                            <executable>pip3</executable>
                             <workingDirectory>${project.basedir}/python</workingDirectory>
                             <arguments>
                                 <argument>install</argument>

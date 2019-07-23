@@ -151,6 +151,14 @@
             <artifactId>mockito-all</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-test</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-streaming-java_2.11</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <resources>
@@ -242,7 +250,7 @@
                         </goals>
                         <configuration>
                             <target>
-                                <exec executable="python" dir="${basedir}" failonerror="true">
+                                <exec executable="python3" dir="${basedir}" failonerror="true">
                                     <arg line="-m grpc_tools.protoc -I=src/proto --python_out=python/flink_ml_framework/ src/proto/node.proto"/>
                                 </exec>
                             </target>
@@ -256,12 +264,26 @@
                         </goals>
                         <configuration>
                             <target>
-                                <exec executable="python" dir="${basedir}" failonerror="true">
+                                <exec executable="python3" dir="${basedir}" failonerror="true">
                                     <arg line="-m grpc_tools.protoc -I=src/proto --python_out=python/flink_ml_framework/ --grpc_python_out=python/flink_ml_framework/ src/proto/node_service.proto"/>
                                 </exec>
                             </target>
                         </configuration>
                     </execution>
+<!--                    <execution>-->
+<!--                        <id>sed-python-import</id>-->
+<!--                        <phase>generate-sources</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>run</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <target>-->
+<!--                                <exec executable="sed" dir="${basedir}/python/flink_ml_framework" failonerror="true">-->
+<!--                                    <arg line="-i -E 's/^\(import.*_pb2\)/from . \1/' *pb2*.py"/>-->
+<!--                                </exec>-->
+<!--                            </target>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
                 </executions>
             </plugin>
 
@@ -277,12 +299,43 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>pip</executable>
+<!--                            <executable>pip</executable>-->
+                            <executable>pip3</executable>
                             <workingDirectory>${project.basedir}/python</workingDirectory>
                             <arguments>
                                 <argument>install</argument>
                                 <argument>${pip.install.option}</argument>
                                 <argument>.</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>install-pip</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>bash</executable>
+                            <workingDirectory>${project.basedir}</workingDirectory>
+                            <arguments>
+                                <argument>pip_install_packages.sh</argument>
+                                <!--                                <argument>${pip.install.option}</argument>-->
+                                <!--                                <argument>${pip.package.name}</argument>-->
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>sed-python-import</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>bash</executable>
+                            <workingDirectory>${project.basedir}</workingDirectory>
+                            <arguments>
+                                <argument>sed_pb2_import.sh</argument>
                             </arguments>
                         </configuration>
                     </execution>

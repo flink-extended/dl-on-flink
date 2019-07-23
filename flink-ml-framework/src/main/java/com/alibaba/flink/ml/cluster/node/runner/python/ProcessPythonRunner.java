@@ -59,11 +59,50 @@ public class ProcessPythonRunner extends AbstractScriptRunner {
 		super(MLContext);
 	}
 
+	public static int checkPythonEnvironment(String cmd){
+		try {
+			Process process = Runtime.getRuntime().exec(cmd);
+			Thread readInput = new Thread(
+					new ShellExec.ProcessLogger(process.getInputStream(), new ShellExec.StdOutConsumer()));
+			Thread readError = new Thread(
+					new ShellExec.ProcessLogger(process.getErrorStream(), new ShellExec.StdOutConsumer()));
+			readInput.start();
+			readError.start();
+			int cmdResult = 1;
+			if (process.waitFor(5,TimeUnit.SECONDS)){
+				 cmdResult =  process.exitValue();
+			}
+			return cmdResult;
+		}
+		catch (Exception e){
+			e.printStackTrace();
+			return 1;
+		}
+	}
+
 	@Override
-	public void runScript() throws IOException {
+	public void runScript() throws IOException{
 		String startupScript = mlContext.getProperties().get(MLConstants.STARTUP_SCRIPT_FILE);
 		List<String> args = new ArrayList<>();
-		String pythonExec = "python";
+		String pythonVersion = mlContext.getProperties().get(MLConstants.PYTHON_VERSION);
+		String pythonExec = "";
+		//check if has python2 or python3 environment
+		if (pythonVersion.equals("2")){
+			pythonExec = "python";
+			if (checkPythonEnvironment("which " + pythonExec) != 0){
+				throw new RuntimeException("No python2 environment");
+			}
+		}
+		else if (pythonVersion.equals("3")){
+			pythonExec = "python3";
+			if (checkPythonEnvironment("which " + pythonExec) != 0){
+				throw new RuntimeException("No python3 environment");
+			}
+		}
+		else {
+			throw new RuntimeException();
+		}
+//		String pythonExec = "python";
 		String virtualEnv = mlContext.getProperties()
 				.getOrDefault(MLConstants.VIRTUAL_ENV_DIR, "");
 		if (!virtualEnv.isEmpty()) {
@@ -77,6 +116,7 @@ public class ProcessPythonRunner extends AbstractScriptRunner {
 			args.add(mlContext.getScript().getAbsolutePath());
 		}
 		args.add(String.format("%s:%d", mlContext.getNodeServerIP(), mlContext.getNodeServerPort()));
+		System.out.println(args);
 		ProcessBuilder builder = new ProcessBuilder(args);
 		String classPath = getClassPath();
 		if (classPath == null) {
@@ -139,6 +179,7 @@ public class ProcessPythonRunner extends AbstractScriptRunner {
 		String finalPythonPath = mlContext.getProperties().getOrDefault(MLConstants.PYTHONPATH_ENV, "")
 				+ ":" + codePath;
 		mlContext.putEnvProperty(MLConstants.PYTHONPATH_ENV, finalPythonPath);
+		System.out.println(finalPythonPath);
 
 		ldPath.append(workerDir + "/tfenv/lib/:");
 		for (Map.Entry<String, String> entry : mlContext.getProperties().entrySet()) {

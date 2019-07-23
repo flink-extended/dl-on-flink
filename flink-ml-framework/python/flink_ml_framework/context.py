@@ -13,11 +13,14 @@
 # limitations under the License.
 # =============================================================================
 
+
 from time import sleep
 import json
 import os
-import node_pb2
-import node_service_pb2_grpc
+from flink_ml_framework import node_pb2
+from flink_ml_framework import node_service_pb2_grpc
+# import flink_ml_framework.node_pb2
+# import flink_ml_framework.node_service_pb2_grpc
 
 
 class Context(object):
