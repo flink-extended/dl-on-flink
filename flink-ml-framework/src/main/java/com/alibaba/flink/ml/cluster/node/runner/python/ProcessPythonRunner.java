@@ -102,7 +102,6 @@ public class ProcessPythonRunner extends AbstractScriptRunner {
 		else {
 			throw new RuntimeException();
 		}
-//		String pythonExec = "python";
 		String virtualEnv = mlContext.getProperties()
 				.getOrDefault(MLConstants.VIRTUAL_ENV_DIR, "");
 		if (!virtualEnv.isEmpty()) {
@@ -116,7 +115,6 @@ public class ProcessPythonRunner extends AbstractScriptRunner {
 			args.add(mlContext.getScript().getAbsolutePath());
 		}
 		args.add(String.format("%s:%d", mlContext.getNodeServerIP(), mlContext.getNodeServerPort()));
-		System.out.println(args);
 		ProcessBuilder builder = new ProcessBuilder(args);
 		String classPath = getClassPath();
 		if (classPath == null) {
@@ -179,7 +177,6 @@ public class ProcessPythonRunner extends AbstractScriptRunner {
 		String finalPythonPath = mlContext.getProperties().getOrDefault(MLConstants.PYTHONPATH_ENV, "")
 				+ ":" + codePath;
 		mlContext.putEnvProperty(MLConstants.PYTHONPATH_ENV, finalPythonPath);
-		System.out.println(finalPythonPath);
 
 		ldPath.append(workerDir + "/tfenv/lib/:");
 		for (Map.Entry<String, String> entry : mlContext.getProperties().entrySet()) {

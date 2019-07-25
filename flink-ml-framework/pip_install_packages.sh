@@ -1,7 +1,26 @@
 #!/usr/bin/env bash
-pip3 install --user -r pip_package.txt
-#pip install --user pip==19.1.1 six==1.12.0 numpy==1.16.4 wheel==0.33.4 mock==3.0.5 grpcio==1.22.0 grpcio-tools==1.22.0
-#pip install -u pip six numpy wheel mock grpcio grpcio-tools
-#pip install -u --user pip six numpy wheel mock grpcio grpcio-tools
-echo "package installed"
 
+
+#mapfile array <user.properties
+
+array=()
+for line in `cat ../user.properties`
+do
+    array+=("$line")
+done
+
+len=${#array[*]}
+PACKAGES=""
+for i in $(seq 2 1 ${len})
+do
+    PACKAGES="$PACKAGES ${array[i]}"
+done
+
+pip_version=${array[1]}
+OLD_IFS="$IFS"
+IFS="="
+pip_array=($pip_version)
+IFS="$OLD_IFS"
+pipV=${pip_array[1]}
+
+${pipV} install --user ${PACKAGES}

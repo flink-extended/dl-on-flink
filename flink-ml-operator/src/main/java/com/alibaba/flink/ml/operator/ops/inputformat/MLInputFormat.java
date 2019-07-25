@@ -119,7 +119,7 @@ public class MLInputFormat<OUT> extends RichInputFormat<OUT, MLInputSplit> {
 			serverFuture = new FutureTask<>(new AppMasterServer(mlContext), null);
 		} else {
 			PythonFileUtil.preparePythonFilesForExec(getRuntimeContext(), mlContext);
-				serverFuture = new FutureTask<>(new NodeServer(mlContext, role.name()), null);
+			serverFuture = new FutureTask<>(new NodeServer(mlContext, role.name()), null);
 		}
 		try {
 			Thread t = new Thread(serverFuture);
