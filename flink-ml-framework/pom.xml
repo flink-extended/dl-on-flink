@@ -326,7 +326,7 @@
                         </goals>
                         <configuration>
                             <executable>bash</executable>
-                            <workingDirectory>${project.basedir}/bin</workingDirectory>
+                            <workingDirectory>sbin</workingDirectory>
                             <arguments>
                                 <argument>pip_install_packages.sh</argument>
                             </arguments>
@@ -340,7 +340,7 @@
                         </goals>
                         <configuration>
                             <executable>bash</executable>
-                            <workingDirectory>${project.basedir}/bin</workingDirectory>
+                            <workingDirectory>sbin</workingDirectory>
                             <arguments>
                                 <argument>sed_pb2_import.sh</argument>
                             </arguments>
