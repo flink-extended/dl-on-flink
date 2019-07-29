@@ -84,7 +84,7 @@ public class ProcessPythonRunner extends AbstractScriptRunner {
 	public void runScript() throws IOException{
 		String startupScript = mlContext.getProperties().get(MLConstants.STARTUP_SCRIPT_FILE);
 		List<String> args = new ArrayList<>();
-		String pythonVersion = mlContext.getProperties().get(MLConstants.PYTHON_VERSION);
+		String pythonVersion = mlContext.getProperties().getOrDefault(MLConstants.PYTHON_VERSION,"2");
 		String pythonExec = "";
 		//check if has python2 or python3 environment
 		if (pythonVersion.equals("2")){
