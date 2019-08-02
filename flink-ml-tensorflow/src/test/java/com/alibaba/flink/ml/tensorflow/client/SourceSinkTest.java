@@ -1,9 +1,9 @@
 package com.alibaba.flink.ml.tensorflow.client;
 
-import com.alibaba.flink.ml.tensorflow.client.TFConfig;
-import com.alibaba.flink.ml.tensorflow.client.TFUtils;
-import com.alibaba.flink.ml.tensorflow.coding.CodingUtils;
+import com.alibaba.flink.ml.operator.util.DataTypes;
+import com.alibaba.flink.ml.tensorflow.coding.ExampleCoding;
 import com.alibaba.flink.ml.tensorflow.coding.ExampleCodingConfig;
+import com.alibaba.flink.ml.tensorflow.util.TFConstants;
 import com.alibaba.flink.ml.util.MLConstants;
 import com.alibaba.flink.ml.util.TestUtil;
 import org.apache.curator.test.TestingServer;
@@ -36,7 +36,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class SourceSinkTest {
     private static final String projectDir = System.getProperty("user.dir");
     private static final String ZookeeperConn = "127.0.0.1:2181";
-    private static final String[] Scripts = {TestUtil.getProjectRootPath() + "/flink-ml-tensorflow/src/test/python/example_coding.py"};
+    private static final String[] Scripts = {TestUtil.getProjectRootPath() + "/flink-ml-tensorflow/src/test/python/source_sink.py"};
     private static final int WorkerNum = 1;
     private static final int PsNum = 0;
     private static AtomicBoolean canProduce = new AtomicBoolean(true);
@@ -54,7 +54,16 @@ public class SourceSinkTest {
         TFConfig config = createTFConfig("test_source_sink");
         TableSchema inputSchema = new TableSchema(new String[]{"input"}, new TypeInformation[]{BasicTypeInfo.STRING_TYPE_INFO});
         TableSchema outputSchema = new TableSchema(new String[]{"output"}, new TypeInformation[]{BasicTypeInfo.STRING_TYPE_INFO});
-        CodingUtils.configureExampleCoding(config, inputSchema, outputSchema, ExampleCodingConfig.ObjectType.ROW, Row.class);
+
+        String strInput = ExampleCodingConfig.createExampleConfigStr(new String[]{"input"}, new DataTypes[]{DataTypes.STRING},
+                ExampleCodingConfig.ObjectType.ROW, Row.class);
+        config.getProperties().put(TFConstants.INPUT_TF_EXAMPLE_CONFIG, strInput);
+        config.getProperties().put(MLConstants.ENCODING_CLASS, ExampleCoding.class.getCanonicalName());
+        String strOutput = ExampleCodingConfig.createExampleConfigStr(new String[]{"output"}, new DataTypes[]{DataTypes.STRING},
+                ExampleCodingConfig.ObjectType.ROW, Row.class);
+        config.getProperties().put(TFConstants.OUTPUT_TF_EXAMPLE_CONFIG, strOutput);
+        config.getProperties().put(MLConstants.DECODING_CLASS, ExampleCoding.class.getCanonicalName());
+
         Table output = TFUtils.inference(streamEnv, tableEnv, input, config, outputSchema);
         tableEnv.toAppendStream(output, Row.class)
                 .map(r -> {
