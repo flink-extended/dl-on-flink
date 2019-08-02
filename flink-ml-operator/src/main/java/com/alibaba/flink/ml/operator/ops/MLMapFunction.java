@@ -133,18 +133,18 @@ public class MLMapFunction<IN, OUT> implements Closeable, Serializable {
 
 		// wait for tf thread finish
 		try {
+            if (collectorFuture != null && !collectorFuture.isCancelled()) {
+                collectorFuture.get();
+            }
 			if (serverFuture != null && !serverFuture.isCancelled()) {
 				serverFuture.get();
 			}
 			//as in batch mode, we can't user timer to drain queue, so drain it here
-			if (collectorFuture != null && !collectorFuture.isCancelled()) {
-				collectorFuture.get();
-			}
 //			drainRead(collector, true);
 		} catch (InterruptedException e) {
 			LOG.error("Interrupted waiting for server join.", e);
+            collectorFuture.cancel(true);
 			serverFuture.cancel(true);
-			collectorFuture.cancel(true);
 		} catch (ExecutionException e) {
 			LOG.error(mlContext.getIdentity() + " node server failed");
 			throw new RuntimeException(e);
@@ -201,6 +201,7 @@ public class MLMapFunction<IN, OUT> implements Closeable, Serializable {
 				}
 			} catch (InterruptedIOException iioe) {
 				LOG.info("{} Reading from is interrupted, canceling the server", mlContext.getIdentity());
+				collectorFuture.cancel(true);
 				serverFuture.cancel(true);
 			} catch (IOException e) {
 				LOG.error("Fail to read data from python.", e);
