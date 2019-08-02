@@ -37,6 +37,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.io.Serializable;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
@@ -52,6 +53,7 @@ public class MLMapFunction<IN, OUT> implements Closeable, Serializable {
 	private TypeInformation<OUT> outTI;
 	private MLContext mlContext;
 	private FutureTask<Void> serverFuture;
+    private FutureTask<Void> collectorFuture;
 	private ExecutionMode mode;
 	private transient DataExchange<IN, OUT> dataExchange;
 	private volatile Collector<OUT> collector = null;
@@ -89,6 +91,34 @@ public class MLMapFunction<IN, OUT> implements Closeable, Serializable {
 			LOG.error("Fail to start node service.", e);
 			throw new IOException(e.getMessage());
 		}
+        try {
+            collectorFuture = new FutureTask<>(new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    while (true) {
+                        if (collector == null) {
+                            try {
+                                LOG.info("collector is still null, sleep 1 second...");
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            break;
+                        }
+                    }
+                    drainRead(collector, true);
+                    return null;
+                }
+            });
+            Thread t = new Thread(collectorFuture);
+            t.setDaemon(true);
+            t.setName("ResultCollector_" + mlContext.getIdentity());
+            t.start();
+        } catch (Exception e) {
+            LOG.error("Fail to start result collector.", e);
+            throw new IOException(e.getMessage());
+        }
 		System.out.println("start:" + mlContext.getRoleName() + " index:" + mlContext.getIndex());
 	}
 
@@ -106,16 +136,21 @@ public class MLMapFunction<IN, OUT> implements Closeable, Serializable {
 			if (serverFuture != null && !serverFuture.isCancelled()) {
 				serverFuture.get();
 			}
+            if (collectorFuture != null && !collectorFuture.isCancelled()) {
+                collectorFuture.get();
+            }
 			//as in batch mode, we can't user timer to drain queue, so drain it here
-			drainRead(collector, true);
+//			drainRead(collector, true);
 		} catch (InterruptedException e) {
 			LOG.error("Interrupted waiting for server join {}.", e.getMessage());
 			serverFuture.cancel(true);
+			collectorFuture.cancel(true);
 		} catch (ExecutionException e) {
 			LOG.error(mlContext.getIdentity() + " node server failed");
 			throw new RuntimeException(e);
 		} finally {
 			serverFuture = null;
+			collectorFuture = null;
 
 			LOG.info("Records output: " + dataExchange.getReadRecords());
 
@@ -142,7 +177,7 @@ public class MLMapFunction<IN, OUT> implements Closeable, Serializable {
 		//put the read & write in a loop to avoid dead lock between write queue and read queue.
 		boolean writeSuccess = false;
 		do {
-			drainRead(out, false);
+//			drainRead(out, false);
 
 			writeSuccess = dataExchange.write(value);
 			if (!writeSuccess) {
@@ -167,6 +202,7 @@ public class MLMapFunction<IN, OUT> implements Closeable, Serializable {
 			} catch (InterruptedIOException iioe) {
 				LOG.info("{} Reading from is interrupted, canceling the server", mlContext.getIdentity());
 				serverFuture.cancel(true);
+				collectorFuture.cancel(true);
 			} catch (IOException e) {
 				LOG.error("Fail to read data from python.", e);
 			}
