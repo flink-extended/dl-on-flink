@@ -25,11 +25,15 @@ import com.alibaba.flink.ml.cluster.MLConfig;
 import com.alibaba.flink.ml.cluster.node.MLContext;
 import com.alibaba.flink.ml.operator.util.DataTypes;
 import com.alibaba.flink.ml.cluster.role.WorkerRole;
+import com.alibaba.flink.ml.tensorflow.client.TFConfig;
 import com.alibaba.flink.ml.tensorflow.util.TFConstants;
 import com.alibaba.flink.ml.util.MLException;
 
+import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
+import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.tuple.Tuple;
 import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.table.api.TableSchema;
 import org.apache.flink.types.Row;
 
 import org.junit.Test;
@@ -128,6 +132,30 @@ public class ExampleCodingTest {
 		config.put("objectType", ExampleCodingConfig.ObjectType.POJO.name());
 		config.put("objectClass", PojoAB.class.getCanonicalName());
 		return config;
+	}
+
+	@Test
+	public void testExampleCoding() {
+		TFConfig config = new TFConfig(1, 0, null, new String[]{}, null, null);
+		TableSchema inputSchema = new TableSchema(new String[]{"input"}, new TypeInformation[]{BasicTypeInfo.STRING_TYPE_INFO});
+		TableSchema outputSchema = new TableSchema(new String[]{"output"}, new TypeInformation[]{BasicTypeInfo.STRING_TYPE_INFO});
+		CodingUtils.configureExampleCoding(config, inputSchema, outputSchema, ExampleCodingConfig.ObjectType.ROW, Row.class);
+	}
+
+	@Test
+	public void testExampleCodingWithoutEncode() throws Exception {
+		TFConfig config = new TFConfig(1, 0, null, new String[]{}, null, null);
+		TableSchema inputSchema = null;
+		TableSchema outputSchema = new TableSchema(new String[]{"output"}, new TypeInformation[]{BasicTypeInfo.STRING_TYPE_INFO});
+		CodingUtils.configureExampleCoding(config, inputSchema, outputSchema, ExampleCodingConfig.ObjectType.ROW, Row.class);
+	}
+
+	@Test
+	public void testExampleCodingWithoutDecode() throws Exception {
+		TFConfig config = new TFConfig(1, 0, null, new String[]{}, null, null);
+		TableSchema inputSchema = new TableSchema(new String[]{"input"}, new TypeInformation[]{BasicTypeInfo.STRING_TYPE_INFO});
+		TableSchema outputSchema = null;
+		CodingUtils.configureExampleCoding(config, inputSchema, outputSchema, ExampleCodingConfig.ObjectType.ROW, Row.class);
 	}
 
 }
