@@ -38,8 +38,9 @@ import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.io.Serializable;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * machine learning node has input and output,MLMapFunction is a util function to help create MLFlatMapOp class object.
@@ -52,8 +53,8 @@ public class MLMapFunction<IN, OUT> implements Closeable, Serializable {
 	private TypeInformation<IN> inTI;
 	private TypeInformation<OUT> outTI;
 	private MLContext mlContext;
-	private FutureTask<Void> serverFuture;
-    private FutureTask<Void> collectorFuture;
+	private ExecutorService serverService;
+    private ExecutorService collectorService;
 	private ExecutionMode mode;
 	private transient DataExchange<IN, OUT> dataExchange;
 	private volatile Collector<OUT> collector = null;
@@ -81,44 +82,40 @@ public class MLMapFunction<IN, OUT> implements Closeable, Serializable {
 
 		dataExchange = new DataExchange<>(mlContext);
 
-		try {
-			serverFuture = new FutureTask<>(new NodeServer(mlContext, role.name()), null);
-			Thread t = new Thread(serverFuture);
+		serverService = Executors.newFixedThreadPool(1, r -> {
+			Thread t = new Thread(r);
 			t.setDaemon(true);
 			t.setName("NodeServer_" + mlContext.getIdentity());
-			t.start();
-		} catch (Exception e) {
-			LOG.error("Fail to start node service.", e);
-			throw new IOException(e.getMessage());
-		}
-        try {
-            collectorFuture = new FutureTask<>(new Callable<Void>() {
-                @Override
-                public Void call() throws Exception {
-                    while (true) {
-                        if (collector == null) {
-                            try {
-                                LOG.info("collector is still null, sleep 1 second...");
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            break;
-                        }
-                    }
-                    drainRead(collector, true);
-                    return null;
-                }
-            });
-            Thread t = new Thread(collectorFuture);
-            t.setDaemon(true);
-            t.setName("ResultCollector_" + mlContext.getIdentity());
-            t.start();
-        } catch (Exception e) {
-            LOG.error("Fail to start result collector.", e);
-            throw new IOException(e.getMessage());
-        }
+			return t;
+		});
+		serverService.submit(new NodeServer(mlContext, role.name()), null);
+
+		collectorService = Executors.newFixedThreadPool(1, r -> {
+			Thread t = new Thread(r);
+			t.setDaemon(true);
+			t.setName("ResultCollector_" + mlContext.getIdentity());
+			return t;
+		});
+		collectorService.submit(new Callable<Void>() {
+			@Override
+			public Void call() throws Exception {
+				while (true) {
+					if (collector == null) {
+						try {
+							LOG.info("collector is still null, sleep 1 second...");
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					} else {
+						break;
+					}
+				}
+				drainRead(collector, true);
+				return null;
+			}
+		});
+
 		System.out.println("start:" + mlContext.getRoleName() + " index:" + mlContext.getIndex());
 	}
 
@@ -132,36 +129,60 @@ public class MLMapFunction<IN, OUT> implements Closeable, Serializable {
 		}
 
 		// wait for tf thread finish
+		closeNodeServer();
+		closeCollector();
+
+		LOG.info("Records output: " + dataExchange.getReadRecords());
+
+		if (mlContext != null) {
+			try {
+				mlContext.close();
+			} catch (IOException e) {
+				LOG.error("Fail to close mlContext.", e);
+			}
+			mlContext = null;
+		}
+	}
+
+	private void closeNodeServer() {
+		if (serverService != null && !serverService.isShutdown()) {
+			serverService.shutdown();
+		}
+
 		try {
-			if (serverFuture != null && !serverFuture.isCancelled()) {
-				serverFuture.get();
-			}
-            if (collectorFuture != null && !collectorFuture.isCancelled()) {
-                collectorFuture.get();
-            }
-			//as in batch mode, we can't user timer to drain queue, so drain it here
-//			drainRead(collector, true);
-		} catch (InterruptedException e) {
-			LOG.error("Interrupted waiting for server join {}.", e.getMessage());
-			serverFuture.cancel(true);
-			collectorFuture.cancel(true);
-		} catch (ExecutionException e) {
-			LOG.error(mlContext.getIdentity() + " node server failed");
-			throw new RuntimeException(e);
-		} finally {
-			serverFuture = null;
-			collectorFuture = null;
-
-			LOG.info("Records output: " + dataExchange.getReadRecords());
-
-			if (mlContext != null) {
-				try {
-					mlContext.close();
-				} catch (IOException e) {
-					LOG.error("Fail to close mlContext.", e);
+			if (serverService != null) {
+				if (!serverService.awaitTermination(10, TimeUnit.SECONDS)) {
+					LOG.warn("failed to shutdown result collector" + " index:" + mlContext.getIndex());
+				} else if (!serverService.isShutdown()) {
+					serverService.shutdownNow();
 				}
-				mlContext = null;
 			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			LOG.warn("failed to shutdown result collector" + " index:" + mlContext.getIndex());
+		} finally {
+			serverService = null;
+		}
+	}
+
+	private void closeCollector() {
+		if (collectorService != null && !collectorService.isShutdown()) {
+			collectorService.shutdown();
+		}
+
+		try {
+			if (collectorService != null) {
+				if (!collectorService.awaitTermination(10, TimeUnit.SECONDS)) {
+					LOG.warn("failed to shutdown result collector" + " index:" + mlContext.getIndex());
+				} else if (!collectorService.isShutdown()) {
+					collectorService.shutdownNow();
+				}
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			LOG.warn("failed to shutdown result collector" + " index:" + mlContext.getIndex());
+		} finally {
+			collectorService = null;
 		}
 	}
 
@@ -201,8 +222,8 @@ public class MLMapFunction<IN, OUT> implements Closeable, Serializable {
 				}
 			} catch (InterruptedIOException iioe) {
 				LOG.info("{} Reading from is interrupted, canceling the server", mlContext.getIdentity());
-				serverFuture.cancel(true);
-				collectorFuture.cancel(true);
+				closeNodeServer();
+				closeCollector();
 			} catch (IOException e) {
 				LOG.error("Fail to read data from python.", e);
 			}

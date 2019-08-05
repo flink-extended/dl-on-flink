@@ -33,10 +33,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SourceSinkTest {
-    private static final String projectDir = System.getProperty("user.dir");
     private static final String ZookeeperConn = "127.0.0.1:2181";
     private static final String[] Scripts = {TestUtil.getProjectRootPath() + "/flink-ml-tensorflow/src/test/python/source_sink.py"};
-    private static final int WorkerNum = 1;
+    private static final int WorkerNum = 2;
     private static final int PsNum = 0;
 
     @Test
@@ -46,7 +45,7 @@ public class SourceSinkTest {
         streamEnv.setRestartStrategy(RestartStrategies.noRestart());
 
         DataStream<Row> sourceStream = streamEnv.addSource(
-                new DummyTimedSource(20, 5), new RowTypeInfo(Types.STRING)).setParallelism(1);
+                new DummyTimedSource(16, 5), new RowTypeInfo(Types.STRING)).setParallelism(1);
         StreamTableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
         Table input = tableEnv.fromDataStream(sourceStream, "input");
         TFConfig config = createTFConfig("test_source_sink");
