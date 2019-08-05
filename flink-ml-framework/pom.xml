@@ -151,14 +151,6 @@
             <artifactId>mockito-all</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.apache.curator</groupId>
-            <artifactId>curator-test</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.flink</groupId>
-            <artifactId>flink-streaming-java_2.11</artifactId>
-        </dependency>
 <!--         https://mvnrepository.com/artifact/org.codehaus.mojo/properties-maven-plugin-->
 <!--        <dependency>-->
 <!--            <groupId>org.codehaus.mojo</groupId>-->
