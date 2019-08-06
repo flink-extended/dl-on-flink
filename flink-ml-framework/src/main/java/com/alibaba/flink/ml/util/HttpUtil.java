@@ -55,7 +55,7 @@ public class HttpUtil {
 			InputStream inStream = conn.getInputStream();
 			FileOutputStream fs = new FileOutputStream(saveFile);
 
-			byte[] buffer = new byte[1204];
+			byte[] buffer = new byte[1024];
 			while ((byteread = inStream.read(buffer)) != -1) {
 				bytesum += byteread;
 				fs.write(buffer, 0, byteread);
