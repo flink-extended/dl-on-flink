@@ -136,7 +136,8 @@ public class ProcessPythonRunner extends AbstractScriptRunner {
 		StringBuilder pldPath = new StringBuilder();
 		String workerDir = mlContext.getProperties().get(MLConstants.WORK_DIR);
 		String codePath = mlContext.getProperties().getOrDefault(MLConstants.CODE_DIR, workerDir);
-		String finalPythonPath = mlContext.getProperties().getOrDefault(MLConstants.PYTHONPATH_ENV, "")
+		String finalPythonPath = mlContext.getProperties()
+				.getOrDefault(MLConstants.ENV_PROPERTY_PREFIX + MLConstants.PYTHONPATH_ENV, "")
 				+ ":" + codePath;
 		mlContext.putEnvProperty(MLConstants.PYTHONPATH_ENV, finalPythonPath);
 
