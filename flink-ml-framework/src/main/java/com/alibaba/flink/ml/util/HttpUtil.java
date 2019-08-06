@@ -45,9 +45,7 @@ public class HttpUtil {
 		try {
 			url = new URL(httpUrl);
 		} catch (MalformedURLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-			return false;
+			throw new RuntimeException(e1);
 		}
 
 		try {
@@ -62,11 +60,9 @@ public class HttpUtil {
 			}
 			return true;
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return false;
+			throw new RuntimeException(e);
 		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
+			throw new RuntimeException(e);
 		}
 	}
 
