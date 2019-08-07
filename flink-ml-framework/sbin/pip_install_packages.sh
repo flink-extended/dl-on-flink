@@ -8,7 +8,7 @@ done<../../user.properties
 
 len=${#array[*]}
 PACKAGES=""
-for i in $(seq 3 1 ${len})
+for i in $(seq 3 1 9)
 do
     PACKAGES="$PACKAGES ${array[i]}"
 done

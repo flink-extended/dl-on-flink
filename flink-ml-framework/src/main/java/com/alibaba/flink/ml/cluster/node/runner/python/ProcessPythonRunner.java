@@ -100,7 +100,7 @@ public class ProcessPythonRunner extends AbstractScriptRunner {
 			}
 		}
 		else {
-			throw new RuntimeException();
+			throw new RuntimeException("No python environment");
 		}
 		String virtualEnv = mlContext.getProperties()
 				.getOrDefault(MLConstants.VIRTUAL_ENV_DIR, "");
