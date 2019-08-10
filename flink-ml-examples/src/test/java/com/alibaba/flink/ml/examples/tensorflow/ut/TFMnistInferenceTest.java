@@ -51,6 +51,7 @@ import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.TableSchema;
 import org.apache.flink.table.api.Types;
+import org.apache.flink.table.api.java.StreamTableEnvironment;
 import org.apache.flink.table.functions.TableFunction;
 import org.apache.flink.table.sources.StreamTableSource;
 import org.apache.flink.types.Row;
@@ -62,6 +63,7 @@ import org.junit.Test;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class TFMnistInferenceTest {
@@ -178,7 +180,7 @@ public class TFMnistInferenceTest {
 	private void inferenceWithTable() throws Exception {
 		StreamExecutionEnvironment flinkEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 		flinkEnv.setParallelism(2);
-		TableEnvironment tableEnv = TableEnvironment.getTableEnvironment(flinkEnv);
+		TableEnvironment tableEnv = StreamTableEnvironment.create(flinkEnv);
 		TFConfig config = buildTFConfig(mnist_inference_with_input);
 		config.setPsNum(0);
 		config.setWorkerNum(3);
@@ -197,7 +199,10 @@ public class TFMnistInferenceTest {
 				.build();
 		Table predictTbl = TFUtils.inference(flinkEnv, tableEnv, inputTable, config, outSchema);
 		tableEnv.registerTable("predict_tbl", predictTbl);
-		predictTbl.writeToSink(new LogTableStreamSink());
+		String sinkName = "tableSink" + UUID.randomUUID();
+		tableEnv.registerTableSink(sinkName, new LogTableStreamSink());
+		predictTbl.insertInto(sinkName);
+//		predictTbl.writeToSink(new LogTableStreamSink());
 		flinkEnv.execute();
 	}
 
@@ -244,7 +249,7 @@ public class TFMnistInferenceTest {
 	private void inferenceWithJava(int batchSize, boolean toStream) throws Exception {
 		StreamExecutionEnvironment flinkEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 		flinkEnv.setParallelism(2);
-		TableEnvironment tableEnv = TableEnvironment.getTableEnvironment(flinkEnv);
+		TableEnvironment tableEnv = StreamTableEnvironment.create(flinkEnv);
 		TFConfig tfConfig = new TFConfig(2, 0, null, (String) null, null, null);
 		tfConfig.setPsNum(0);
 		tfConfig.setWorkerNum(2);
@@ -274,13 +279,18 @@ public class TFMnistInferenceTest {
 		tfConfig.addProperty(TFConstants.TF_INFERENCE_OUTPUT_ROW_FIELDS,
 				Joiner.on(",").join(new String[] { "org_label", "prediction" }));
 		setExampleCodingTypeRow(tfConfig);
+		String sinkName = "tableSink" + UUID.randomUUID();
 		if (toStream) {
 			Table predicted = TFUtils.inference(flinkEnv, tableEnv, extracted, tfConfig, outSchema);
-			predicted.writeToSink(new LogTableStreamSink(new LogInferAccSink()));
+			tableEnv.registerTableSink(sinkName, new LogTableStreamSink(new LogInferAccSink()));
+			predicted.insertInto(sinkName);
+//			predicted.writeToSink(new LogTableStreamSink(new LogInferAccSink()));
 			flinkEnv.execute();
 		} else {
 			Table predicted = TFUtils.inference(flinkEnv, tableEnv, extracted, tfConfig, outSchema);
-			predicted.writeToSink(new LogTableStreamSink(new LogInferAccSink()));
+			tableEnv.registerTableSink(sinkName, new LogTableStreamSink(new LogInferAccSink()));
+			predicted.insertInto(sinkName);
+//			predicted.writeToSink(new LogTableStreamSink(new LogInferAccSink()));
 			FlinkJobHelper helper = new FlinkJobHelper();
 			helper.like(new WorkerRole().name(), tfConfig.getWorkerNum());
 			helper.like(new PsRole().name(), tfConfig.getPsNum());

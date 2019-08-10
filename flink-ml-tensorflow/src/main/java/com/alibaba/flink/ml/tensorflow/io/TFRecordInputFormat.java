@@ -21,6 +21,7 @@ package com.alibaba.flink.ml.tensorflow.io;
 import org.apache.flink.api.common.io.RichInputFormat;
 import org.apache.flink.api.common.io.statistics.BaseStatistics;
 import org.apache.flink.configuration.Configuration;
+import org.apache.flink.core.io.InputSplit;
 import org.apache.flink.core.io.InputSplitAssigner;
 
 import org.apache.hadoop.fs.FSDataInputStream;
@@ -31,6 +32,7 @@ import org.slf4j.LoggerFactory;
 import org.tensorflow.hadoop.util.TFRecordReader;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * flink read tensorflow TFRecord file input format.
@@ -77,16 +79,33 @@ public class TFRecordInputFormat extends RichInputFormat<byte[], TFRecordInputSp
 	@Override
 	public InputSplitAssigner getInputSplitAssigner(TFRecordInputSplit[] inputSplits) {
 		int[] assigned = new int[inputSplits.length];
-		return (host, taskId) -> {
-			for (int i = 0; i < assigned.length; i++) {
-				if (assigned[i] < epochs) {
-					assigned[i]++;
-					inputSplits[i].setEpochs(assigned[i]);
-					return inputSplits[i];
+		return new InputSplitAssigner() {
+			@Override
+			public InputSplit getNextInputSplit(String host, int taskId) {
+				for (int i = 0; i < assigned.length; i++) {
+					if (assigned[i] < epochs) {
+						assigned[i]++;
+						inputSplits[i].setEpochs(assigned[i]);
+						return inputSplits[i];
+					}
 				}
+				return null;
 			}
-			return null;
+
+			@Override
+			public void returnInputSplit(List<InputSplit> list, int taskId) {
+			}
 		};
+//		return (host, taskId) -> {
+//			for (int i = 0; i < assigned.length; i++) {
+//				if (assigned[i] < epochs) {
+//					assigned[i]++;
+//					inputSplits[i].setEpochs(assigned[i]);
+//					return inputSplits[i];
+//				}
+//			}
+//			return null;
+//		};
 	}
 
 	@Override

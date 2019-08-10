@@ -41,6 +41,8 @@ import org.apache.flink.table.api.Types;
 import org.apache.flink.table.api.java.StreamTableEnvironment;
 import org.apache.flink.types.Row;
 
+import java.util.UUID;
+
 
 /**
  * a helper function to create machine learning cluster.
@@ -142,7 +144,10 @@ public class RoleUtils {
 		}
 		if (outputSchema == null) {
 			if (worker != null) {
-				tableEnv.writeToSink(worker, new TableStreamDummySink(), tableEnv.queryConfig());
+				String sinkName = "dummySink" + UUID.randomUUID();
+				tableEnv.registerTableSink(sinkName, new TableStreamDummySink());
+				worker.insertInto(sinkName);
+//				tableEnv.writeToSink(worker, new TableStreamDummySink(), tableEnv.queryConfig());
 			}
 		}
 		return worker;
@@ -160,7 +165,10 @@ public class RoleUtils {
 		tableEnv.registerTableSource(new AMRole().name(), new MLTableSource(ExecutionMode.OTHER, new AMRole(),
 				mlConfig, DUMMY_SCHEMA, 1));
 		Table am = tableEnv.scan(new AMRole().name());
-		tableEnv.writeToSink(am, new TableStreamDummySink(), tableEnv.queryConfig());
+		String sinkName = "sink" + UUID.randomUUID();
+		tableEnv.registerTableSink(sinkName, new TableStreamDummySink());
+		am.insertInto(sinkName);
+//		tableEnv.writeToSink(am, new TableStreamDummySink(), tableEnv.queryConfig());
 
 	}
 

@@ -42,9 +42,12 @@ import org.apache.flink.streaming.api.graph.StreamGraph;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
 
+import org.apache.flink.table.api.java.StreamTableEnvironment;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.UUID;
 
 public class TFUtilsTest {
 	private static TestingServer server;
@@ -82,7 +85,7 @@ public class TFUtilsTest {
 	public void addTrainTable() throws Exception {
 		System.out.println(SysUtil._FUNC_());
 		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
-		TableEnvironment tableEnv = TableEnvironment.getTableEnvironment(streamEnv);
+		TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
 
 		TFConfig config = new TFConfig(2, 1, null, add, "map_func", null);
 		TFUtils.train(streamEnv, tableEnv, null, config, null);
@@ -108,7 +111,7 @@ public class TFUtilsTest {
 	public void addTrainChiefAloneTable() throws Exception {
 		System.out.println(SysUtil._FUNC_());
 		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
-		TableEnvironment tableEnv = TableEnvironment.getTableEnvironment(streamEnv);
+		TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
 
 		TFConfig config = new TFConfig(2, 1, null, add, "map_func", null);
 		config.addProperty(TFConstants.TF_IS_CHIEF_ALONE, "true");
@@ -135,12 +138,15 @@ public class TFUtilsTest {
 
 		config.getProperties().put(RowCSVCoding.ENCODE_TYPES, inputSb.toString());
 		config.getProperties().put(RowCSVCoding.DECODE_TYPES, inputSb.toString());
-		TableEnvironment tableEnv = TableEnvironment.getTableEnvironment(streamEnv);
+		TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
 		tableEnv.registerTableSource("debug_source", new TableDebugRowSource());
 		Table input = tableEnv.scan("debug_source");
+		String sinkName = "sink" + UUID.randomUUID();
+		tableEnv.registerTableSink(sinkName, new TableDebugRowSink(DebugRowSource.typeInfo));
 		TFUtils.train(streamEnv, tableEnv, input, config,
 				TypeUtil.rowTypeInfoToSchema(DebugRowSource.typeInfo))
-				.writeToSink(new TableDebugRowSink(DebugRowSource.typeInfo));
+				.insertInto(sinkName);
+//				.writeToSink(new TableDebugRowSink(DebugRowSource.typeInfo));
 		execTableJobCustom(config.getMlConfig(), streamEnv, tableEnv);
 	}
 
@@ -166,7 +172,7 @@ public class TFUtilsTest {
 	public void testWorkerZeroFinish() throws Exception {
 		System.out.println(SysUtil._FUNC_());
 		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
-		TableEnvironment tableEnv = TableEnvironment.getTableEnvironment(streamEnv);
+		TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
 		TFConfig config = new TFConfig(3, 2, null, workerZeroFinishScript, "map_func", null);
 		TFUtils.train(streamEnv, tableEnv, null, config, null);
 		execTableJobCustom(config.getMlConfig(), streamEnv, tableEnv);
