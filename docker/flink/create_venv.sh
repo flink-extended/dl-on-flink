@@ -19,7 +19,6 @@ for i in $(seq ${begin} 1 ${end})
 do
     PACKAGES="$PACKAGES ${array[i]}"
 done
-echo ${PACKAGES}
 TENSORFLOW=${array[12]}
 TORCH=${array[13]}
 pip install ${PACKAGES}
