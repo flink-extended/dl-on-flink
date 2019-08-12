@@ -57,7 +57,6 @@ def inference(num_worker, num_ps=0, python_file=None, func=None, properties=None
                                                                                            input_table,
                                                                                            tf_config.java_config(),
                                                                                            output_schema)
-
     table_env.execute(job_name="table inference")
     return Table(output_table)
 
