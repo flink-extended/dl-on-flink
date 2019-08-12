@@ -106,20 +106,13 @@ public class MLInputFormat<OUT> extends RichInputFormat<OUT, MLInputSplit> {
 				}
 				return null;
 			}
+			/*
+			TODO: need to override this method when flink verison is up to 1.9
 
 			@Override
 			public void returnInputSplit(List<InputSplit> list, int taskId){
-			}
+			}*/
 		};
-//		return (host, taskId) -> {
-//			for (int i = 0; i < assigned.length; i++) {
-//				if (!assigned[i]) {
-//					assigned[i] = true;
-//					return inputSplits[i];
-//				}
-//			}
-//			return null;
-//		};
 	}
 
 	/**
