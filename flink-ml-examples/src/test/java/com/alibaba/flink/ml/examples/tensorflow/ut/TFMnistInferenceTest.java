@@ -44,6 +44,8 @@ import com.alibaba.flink.ml.util.*;
 import com.google.common.base.Joiner;
 import org.apache.curator.test.TestingServer;
 
+import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
+import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.graph.StreamGraph;
@@ -61,6 +63,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -200,7 +203,11 @@ public class TFMnistInferenceTest {
 		Table predictTbl = TFUtils.inference(flinkEnv, tableEnv, inputTable, config, outSchema);
 		tableEnv.registerTable("predict_tbl", predictTbl);
 		String sinkName = "tableSink" + UUID.randomUUID();
-		tableEnv.registerTableSink(sinkName, new LogTableStreamSink());
+		String[] fieldNames = {"real_label","predicted_predict"};
+		TypeInformation[] fieldTypes = new TypeInformation[2];
+		fieldTypes[0] = BasicTypeInfo.INT_TYPE_INFO;
+		fieldTypes[1] = BasicTypeInfo.INT_TYPE_INFO;
+ 		tableEnv.registerTableSink(sinkName, fieldNames, fieldTypes, new LogTableStreamSink());
 		predictTbl.insertInto(sinkName);
 //		predictTbl.writeToSink(new LogTableStreamSink());
 		flinkEnv.execute();
@@ -280,15 +287,20 @@ public class TFMnistInferenceTest {
 				Joiner.on(",").join(new String[] { "org_label", "prediction" }));
 		setExampleCodingTypeRow(tfConfig);
 		String sinkName = "tableSink" + UUID.randomUUID();
+		String[] fieldNames = {"real_label", "predicted_label"};
+		TypeInformation[] fieldTypes = new TypeInformation[2];
+		fieldTypes[0] = BasicTypeInfo.LONG_TYPE_INFO;
+		fieldTypes[1] = BasicTypeInfo.LONG_TYPE_INFO;
 		if (toStream) {
 			Table predicted = TFUtils.inference(flinkEnv, tableEnv, extracted, tfConfig, outSchema);
-			tableEnv.registerTableSink(sinkName, new LogTableStreamSink(new LogInferAccSink()));
+			tableEnv.registerTableSink(sinkName, fieldNames, fieldTypes, new LogTableStreamSink(new LogInferAccSink()));
+//			tableEnv.registerTableSink(sinkName, new LogTableStreamSink(new LogInferAccSink()));
 			predicted.insertInto(sinkName);
 //			predicted.writeToSink(new LogTableStreamSink(new LogInferAccSink()));
 			flinkEnv.execute();
 		} else {
 			Table predicted = TFUtils.inference(flinkEnv, tableEnv, extracted, tfConfig, outSchema);
-			tableEnv.registerTableSink(sinkName, new LogTableStreamSink(new LogInferAccSink()));
+			tableEnv.registerTableSink(sinkName, fieldNames, fieldTypes, new LogTableStreamSink(new LogInferAccSink()));
 			predicted.insertInto(sinkName);
 //			predicted.writeToSink(new LogTableStreamSink(new LogInferAccSink()));
 			FlinkJobHelper helper = new FlinkJobHelper();

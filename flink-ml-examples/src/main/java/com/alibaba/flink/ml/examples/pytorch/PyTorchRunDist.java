@@ -126,9 +126,8 @@ public class PyTorchRunDist {
 				script, "map_func", envPath);
 		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 		TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv, TableConfig.DEFAULT());
-		/* TableConfig.DEFAULT() changes to TableConfig.getDefault() in Flink 1.9 version
-		TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv, TableConfig.getDefault());
-		 */
+//		TableConfig.DEFAULT() needs to change to TableConfig.getDefault() in Flink 1.9 version
+//		TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv, TableConfig.getDefault());
 		PyTorchUtil.train(streamEnv, tableEnv, null, pytorchConfig, null);
 		streamEnv.execute("pytorch table");
 	}

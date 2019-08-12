@@ -91,13 +91,13 @@ public class TFRecordInputFormat extends RichInputFormat<byte[], TFRecordInputSp
 				}
 				return null;
 			}
-			/*
-			TODO: need to override this method when flink verison is up to 1.9
 
-			@Override
-			public void returnInputSplit(List<InputSplit> list, int taskId) {
-			}
-			*/
+//			//TODO: need to override this method when flink verison is up to 1.9
+//
+//			@Override
+//			public void returnInputSplit(List<InputSplit> list, int taskId) {
+//			}
+
 		};
 	}
 
