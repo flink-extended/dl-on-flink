@@ -43,7 +43,6 @@ import org.apache.flink.types.Row;
 
 import java.util.UUID;
 
-
 /**
  * a helper function to create machine learning cluster.
  * 1. create application master.
