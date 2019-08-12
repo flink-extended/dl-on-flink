@@ -90,11 +90,10 @@ def train(num_worker, num_ps, python_file, func, properties=None, env_path=None,
         input_table = input_table._java_table
     if output_schema is not None:
         output_schema = output_schema._j_table_schema
-    tf_c = tf_config.java_config()
     output_table = get_gateway().jvm.com.alibaba.flink.ml.tensorflow.client.TFUtils.train(
                                                                                        stream_env._j_stream_execution_environment,
                                                                                        table_env._j_tenv, input_table,
-                                                                                       tf_c,
+                                                                                       tf_config.java_config(),
                                                                                        output_schema)
     table_env.execute(job_name="table train")
     return Table(output_table)
