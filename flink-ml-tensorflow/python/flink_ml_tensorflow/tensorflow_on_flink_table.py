@@ -48,7 +48,7 @@ def inference(num_worker, num_ps=0, python_file=None, func=None, properties=None
     if table_env is None:
         table_env = StreamTableEnvironment.create(stream_env)
     if input_table is not None:
-        input_table = input_table._java_table
+        input_table = input_table._j_table
     if output_schema is not None:
         output_schema = output_schema._j_table_schema
     output_table = get_gateway().jvm.com.alibaba.flink.ml.tensorflow.client.TFUtils.inference(
@@ -86,7 +86,7 @@ def train(num_worker, num_ps, python_file, func, properties=None, env_path=None,
     if table_env is None:
         table_env = StreamTableEnvironment.create(stream_env)
     if input_table is not None:
-        input_table = input_table._java_table
+        input_table = input_table._j_table
     if output_schema is not None:
         output_schema = output_schema._j_table_schema
     output_table = get_gateway().jvm.com.alibaba.flink.ml.tensorflow.client.TFUtils.train(
