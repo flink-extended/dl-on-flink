@@ -43,6 +43,8 @@ import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.TableSchema;
 
+import org.apache.flink.table.api.java.StreamTableEnvironment;
+import org.apache.flink.table.sinks.TableSink;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -124,7 +126,7 @@ public class RoleUtilsTest {
         mlConfig.setPythonFiles(files);
         mlConfig.setFuncName("map_func");
         StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
-        TableEnvironment tableEnv = TableEnvironment.getTableEnvironment(streamEnv);
+        TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
         PythonFileUtil.registerPythonFiles(streamEnv, mlConfig);
         RoleUtils.addAMRole(tableEnv,mlConfig);
         RoleUtils.addRole(tableEnv, ExecutionMode.TRAIN, null, mlConfig, null, new WorkerRole());
@@ -149,14 +151,16 @@ public class RoleUtilsTest {
         mlConfig.getProperties().put(RowCSVCoding.DECODE_TYPES, sb.toString());
 
         StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
-        TableEnvironment tableEnv = TableEnvironment.getTableEnvironment(streamEnv);
+        TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
         PythonFileUtil.registerPythonFiles(streamEnv, mlConfig);
         RoleUtils.addAMRole(tableEnv,mlConfig);
         String[] names = {"a", "b", "c", "d"};
         TypeInformation[] types = {Types.STRING, Types.STRING,Types.STRING,Types.STRING,};
         TableSchema outputSchema = new TableSchema(names, types);
+        TableSink tableSink = new TableDebugRowSink(TypeUtil.schemaToRowTypeInfo(outputSchema));
+        tableEnv.registerTableSink("RoleUtils_sink",tableSink);
         RoleUtils.addRole(tableEnv, ExecutionMode.TRAIN, null, mlConfig, outputSchema, new WorkerRole())
-        .writeToSink(new TableDebugRowSink(TypeUtil.schemaToRowTypeInfo(outputSchema)));
+                .insertInto("RoleUtils_sink");
         execTableJobCustom(mlConfig, streamEnv, tableEnv);
     }
 
@@ -182,15 +186,17 @@ public class RoleUtilsTest {
         mlConfig.getProperties().put(RowCSVCoding.DECODE_TYPES, sb.toString());
 
         StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
-        TableEnvironment tableEnv = TableEnvironment.getTableEnvironment(streamEnv);
+        TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
         PythonFileUtil.registerPythonFiles(streamEnv, mlConfig);
 
         tableEnv.registerTableSource("debug_source", new TableDebugRowSource());
         Table input = tableEnv.scan("debug_source");
+        TableSink tableSink = new TableDebugRowSink(DebugRowSource.typeInfo);
+        tableEnv.registerTableSink("debug_out_sink",tableSink);
         RoleUtils.addAMRole(tableEnv,mlConfig);
         RoleUtils.addRole(tableEnv, ExecutionMode.TRAIN, input, mlConfig,
                 TypeUtil.rowTypeInfoToSchema(DebugRowSource.typeInfo), new WorkerRole())
-                .writeToSink(new TableDebugRowSink(DebugRowSource.typeInfo));
+                .insertInto("debug_out_sink");
 
         execTableJobCustom(mlConfig, streamEnv, tableEnv);
     }

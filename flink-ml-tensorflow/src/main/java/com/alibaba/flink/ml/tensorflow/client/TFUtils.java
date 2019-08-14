@@ -381,10 +381,10 @@ public class TFUtils {
 		}
 		if (outSchema == null) {
 			if (worker != null) {
-				writeToDummySink(worker);
+				writeToDummySink(worker,tableEnv);
 			}
 			if (chief != null) {
-				writeToDummySink(chief);
+				writeToDummySink(chief,tableEnv);
 			}
 		}
 		return worker;
@@ -426,8 +426,9 @@ public class TFUtils {
 	}
 
 
-	private static void writeToDummySink(Table tbl) {
-		tbl.writeToSink(new TableStreamDummySink());
+	private static void writeToDummySink(Table tbl,TableEnvironment streamTableEnvironment) {
+		streamTableEnvironment.registerTableSink("tableStreamTableSink", new TableStreamDummySink());
+		tbl.insertInto("tableStreamTableSink");
 	}
 
 

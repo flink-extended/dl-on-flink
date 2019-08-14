@@ -151,7 +151,7 @@ public class MnistJavaInference {
 		}
 
 		StreamExecutionEnvironment flinkEnv = StreamExecutionEnvironment.getExecutionEnvironment();
-		StreamTableEnvironment tableEnv = TableEnvironment.getTableEnvironment(flinkEnv);
+		StreamTableEnvironment tableEnv = StreamTableEnvironment.create(flinkEnv);
 		String tfrTblName = "tfr_input_table";
 		StreamTableSource<Row> tableSource = new DelayedTFRTableSourceStream(paths, 1, OUT_ROW_TYPE, CONVERTERS);
 		tableEnv.registerTableSource(tfrTblName, tableSource);
@@ -180,7 +180,8 @@ public class MnistJavaInference {
 		fs = new Path(checkPointURI).getFileSystem(hadoopConf);
 		URI fsURI = fs.getUri();
 		Path outDir = new Path(fsURI.getScheme(), fsURI.getAuthority(), SINK_OUTPUT_PATH);
-		predicted.writeToSink(new LogTableStreamSink(new LogInferAccSink(outDir.toString())));
+		tableEnv.registerTableSink("soutSink",new LogTableStreamSink(new LogInferAccSink(outDir.toString())));
+		predicted.insertInto("soutSink");
 		// work around table env issue
 		flinkEnv.execute();
 		verifyNumRecords(fs, outDir, numRecords);

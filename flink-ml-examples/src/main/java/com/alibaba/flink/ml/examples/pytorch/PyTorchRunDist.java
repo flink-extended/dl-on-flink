@@ -125,7 +125,7 @@ public class PyTorchRunDist {
 		PyTorchConfig pytorchConfig = new PyTorchConfig(3, prop,
 				script, "map_func", envPath);
 		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
-		TableEnvironment tableEnv = StreamTableEnvironment.getTableEnvironment(streamEnv, TableConfig.DEFAULT());
+		TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv, TableConfig.DEFAULT());
 		PyTorchUtil.train(streamEnv, tableEnv, null, pytorchConfig, null);
 		streamEnv.execute("pytorch table");
 	}
