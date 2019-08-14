@@ -202,7 +202,6 @@ public class TFMnistInferenceTest {
 		TableSink tableSink = new LogTableStreamSink();
 		tableEnv.registerTableSink("logSink",outSchema.getFieldNames(),outSchema.getFieldTypes(),tableSink);
 		predictTbl.insertInto("logSink");
-//		predictTbl.writeToSink(new LogTableStreamSink());
 		flinkEnv.execute();
 	}
 
