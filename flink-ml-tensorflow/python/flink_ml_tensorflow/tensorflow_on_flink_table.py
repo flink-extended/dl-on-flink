@@ -70,8 +70,8 @@ def train(num_worker, num_ps, python_file, func, properties=None, env_path=None,
     :param func: The user-defined function that runs TF training
     :param properties: User-defined properties
     :param env_path: Path to the virtual env
-    :param zk_conn: The Zookeeper connection string  //zk location
-    :param zk_base_path:    //pei zhi wen jian dizhi
+    :param zk_conn: The Zookeeper connection string
+    :param zk_base_path: The Zookeeper base path
     :param stream_env: The StreamExecutionEnvironment. If it's None, this method will create one and execute the job
                        at the end. Otherwise, caller is responsible to trigger the job execution
     :param table_env: The TableEnvironment
