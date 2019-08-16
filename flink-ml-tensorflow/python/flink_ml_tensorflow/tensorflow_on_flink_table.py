@@ -67,6 +67,7 @@ def train(num_worker, num_ps, python_file, func, properties=None, env_path=None,
     Tensorflow training for Table
     :param num_worker: Number of workers
     :param num_ps: Number of PS
+    :param python_file: The python file which is going to be run
     :param func: The user-defined function that runs TF training
     :param properties: User-defined properties
     :param env_path: Path to the virtual env

@@ -96,8 +96,3 @@ class MLCONSTANTS(object):
     FAILOVER_RESTART_ALL_STRATEGY = str(ml_constants.FAILOVER_RESTART_ALL_STRATEGY)
     FAILOVER_RESTART_INDIVIDUAL_STRATEGY = str(ml_constants.FAILOVER_RESTART_INDIVIDUAL_STRATEGY)
     FAILOVER_STRATEGY_DEFAULT = str(ml_constants.FAILOVER_STRATEGY_DEFAULT)
-
-if __name__ == '__main__':
-    a = MLCONSTANTS.ml_constants
-    print (type(MLCONSTANTS.ml_constants))
-    print (type(MLCONSTANTS.ENCODING_CLASS))
