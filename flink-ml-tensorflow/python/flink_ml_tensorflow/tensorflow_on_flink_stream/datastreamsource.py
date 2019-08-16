@@ -13,6 +13,8 @@
 # limitations under the License.
 # =============================================================================
 
+# pyflink doesn't contain the DataStreamSource class right now, So here is the simplest python class of DataStreamSource
+
 class DataStreamSource(object):
     def __init__(self, j_datastream_source):
         self._j_datastream_source = j_datastream_source

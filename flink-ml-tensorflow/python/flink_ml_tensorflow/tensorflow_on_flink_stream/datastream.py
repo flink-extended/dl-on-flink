@@ -13,6 +13,8 @@
 # limitations under the License.
 # =============================================================================
 
+# pyflink doesn't contain the DataStream class right now, So here is the simplest python class of DataStream
+
 class DataStream(object):
     def __init__(self, j_datastream):
         self._j_datastream = j_datastream
