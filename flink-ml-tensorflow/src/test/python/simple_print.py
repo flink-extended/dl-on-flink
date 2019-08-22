@@ -1,9 +1,10 @@
+from __future__ import print_function
 import sys
 
 
 def map_func(context):
     for i in range(2):
-        print "hello world!"
+        print("hello world!")
         sys.stdout.flush()
 
 

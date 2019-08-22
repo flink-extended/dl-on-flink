@@ -13,6 +13,7 @@
 # limitations under the License.
 # =============================================================================
 
+from __future__ import print_function
 import sys
 import importlib
 import threading
@@ -80,7 +81,7 @@ def createContext(node_address):
 if __name__ == "__main__":
     assert len(sys.argv) == 2, 'Invalid cmd line argument ' + str(sys.argv)
 
-    print 'Running user func in process mode'
+    print ('Running user func in process mode')
     sys.stdout.flush()
 
     address = sys.argv[1]
@@ -93,7 +94,7 @@ if __name__ == "__main__":
                         datefmt='%Y-%m-%d %H:%M:%S',
                         )
 
-    print "########## " + context.userScript
+    print ("########## " + context.userScript)
     script_str = context.userScript
     key = context.identity
     func_name = context.funcName
