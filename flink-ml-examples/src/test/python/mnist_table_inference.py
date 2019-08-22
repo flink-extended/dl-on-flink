@@ -1,5 +1,6 @@
 # Distributed MNIST on grid based on TensorFlow MNIST example
 
+from __future__ import print_function
 from datetime import datetime
 import tensorflow as tf
 from tensorflow.python.summary.writer.writer_cache import FileWriterCache as SummaryWriterCache
@@ -12,7 +13,7 @@ from flink_ml_tensorflow.tensorflow_context import *
 
 
 def test_log(message):
-    print message
+    print(message)
     sys.stdout.flush()
 
 

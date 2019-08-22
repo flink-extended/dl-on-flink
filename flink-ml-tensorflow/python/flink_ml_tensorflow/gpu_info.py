@@ -70,7 +70,7 @@ def get_gpus(num_gpu=1, worker_index=-1):
 
         # parse index and guid
         gpus = [x for x in list_gpus.split('\n') if len(x) > 0]
-    except Exception, e:
+    except Exception as e:
         gpus = []
         return gpus
 
