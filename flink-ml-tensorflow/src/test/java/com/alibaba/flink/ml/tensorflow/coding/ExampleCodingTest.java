@@ -25,13 +25,18 @@ import com.alibaba.flink.ml.cluster.MLConfig;
 import com.alibaba.flink.ml.cluster.node.MLContext;
 import com.alibaba.flink.ml.operator.util.DataTypes;
 import com.alibaba.flink.ml.cluster.role.WorkerRole;
+import com.alibaba.flink.ml.tensorflow.client.TFConfig;
 import com.alibaba.flink.ml.tensorflow.util.TFConstants;
 import com.alibaba.flink.ml.util.MLException;
 
+import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
+import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.tuple.Tuple;
 import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.table.api.TableSchema;
 import org.apache.flink.types.Row;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -52,6 +57,15 @@ public class ExampleCodingTest {
 		jobNum.put(new WorkerRole().name(), 1);
 		MLConfig mlConfig = new MLConfig(jobNum, new HashMap<String, String>(), "", "", null);
 		return new MLContext(ExecutionMode.OTHER, mlConfig, null, 0, null, null);
+	}
+
+	@Test
+	public void table() {
+		TFConfig config = new TFConfig(1, 0, null, new String[]{}, null, null);
+		TableSchema inputSchema = new TableSchema(new String[]{"fieldName"}, new TypeInformation[]{BasicTypeInfo.STRING_TYPE_INFO});
+		TableSchema outputSchema = new TableSchema(new String[]{"fieldName"}, new TypeInformation[]{BasicTypeInfo.STRING_TYPE_INFO});
+		CodingUtils.configureExampleCoding(config, inputSchema, outputSchema, ExampleCodingConfig.ObjectType.ROW, Row.class);
+		Assert.assertEquals(config.getProperty(TFConstants.INPUT_TF_EXAMPLE_CONFIG), config.getProperty(TFConstants.OUTPUT_TF_EXAMPLE_CONFIG));
 	}
 
 	@Test
