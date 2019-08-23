@@ -54,7 +54,7 @@ public class DebugRowSource implements ParallelSourceFunction<Row>, ResultTypeQu
             row.setField(3, Double.valueOf(str));
             row.setField(4, str);
             ctx.collect(row);
-            Thread.sleep(500);
+            //Thread.sleep(500);
         }
     }
 

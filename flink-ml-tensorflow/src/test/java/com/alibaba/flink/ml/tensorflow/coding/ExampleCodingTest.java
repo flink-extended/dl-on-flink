@@ -26,6 +26,7 @@ import com.alibaba.flink.ml.cluster.node.MLContext;
 import com.alibaba.flink.ml.operator.util.DataTypes;
 import com.alibaba.flink.ml.cluster.role.WorkerRole;
 import com.alibaba.flink.ml.tensorflow.client.TFConfig;
+import com.alibaba.flink.ml.tensorflow.util.ExampleCodingConfigUtil;
 import com.alibaba.flink.ml.tensorflow.util.TFConstants;
 import com.alibaba.flink.ml.util.MLException;
 
@@ -64,7 +65,8 @@ public class ExampleCodingTest {
 		TFConfig config = new TFConfig(1, 0, null, new String[]{}, null, null);
 		TableSchema inputSchema = new TableSchema(new String[]{"fieldName"}, new TypeInformation[]{BasicTypeInfo.STRING_TYPE_INFO});
 		TableSchema outputSchema = new TableSchema(new String[]{"fieldName"}, new TypeInformation[]{BasicTypeInfo.STRING_TYPE_INFO});
-		CodingUtils.configureExampleCoding(config, inputSchema, outputSchema, ExampleCodingConfig.ObjectType.ROW, Row.class);
+		ExampleCodingConfigUtil
+				.configureExampleCoding(config, inputSchema, outputSchema, ExampleCodingConfig.ObjectType.ROW, Row.class);
 		Assert.assertEquals(config.getProperty(TFConstants.INPUT_TF_EXAMPLE_CONFIG), config.getProperty(TFConstants.OUTPUT_TF_EXAMPLE_CONFIG));
 	}
 
