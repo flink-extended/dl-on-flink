@@ -57,14 +57,14 @@
 
     <properties>
         <protobuf.version>3.6.0</protobuf.version>
-        <flink.version>1.8.0</flink.version>
+        <flink.version>1.9.0</flink.version>
         <scala.major.version>2.11</scala.major.version>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
         <grpc.version>1.13.2</grpc.version>
         <log4j.version>2.11.1</log4j.version>
         <hadoop.version>2.7.0</hadoop.version>
-        <tensorflow.version>1.11.0</tensorflow.version>
+        <tensorflow.version>1.13.1</tensorflow.version>
         <tensorflow.package.name>tensorflow</tensorflow.package.name>
         <netty.version>4.1.30.Final</netty.version>
         <curator.version>2.7.1</curator.version>
