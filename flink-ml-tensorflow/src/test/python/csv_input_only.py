@@ -1,3 +1,4 @@
+from __future__ import print_function
 import tensorflow as tf
 import sys
 import time
@@ -50,8 +51,8 @@ def map_fun(context):
                         print (index, mon_sess.run([global_step_inc, out]))
                         sys.stdout.flush()
                         # time.sleep(1)
-            except Exception, e:
-                print 'traceback.print_exc():'
+            except Exception as e:
+                print('traceback.print_exc():')
                 traceback.print_exc()
                 sys.stdout.flush()
             finally:

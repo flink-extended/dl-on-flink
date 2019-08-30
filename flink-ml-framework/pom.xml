@@ -170,6 +170,24 @@
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>${project.basedir}/../user.properties</file>
+                            </files>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <version>3.0.0</version>
                 <executions>
@@ -242,7 +260,7 @@
                         </goals>
                         <configuration>
                             <target>
-                                <exec executable="python" dir="${basedir}" failonerror="true">
+                                <exec executable="${python.interpreter}" dir="${basedir}" failonerror="true">
                                     <arg line="-m grpc_tools.protoc -I=src/proto --python_out=python/flink_ml_framework/ src/proto/node.proto"/>
                                 </exec>
                             </target>
@@ -256,7 +274,7 @@
                         </goals>
                         <configuration>
                             <target>
-                                <exec executable="python" dir="${basedir}" failonerror="true">
+                                <exec executable="${python.interpreter}" dir="${basedir}" failonerror="true">
                                     <arg line="-m grpc_tools.protoc -I=src/proto --python_out=python/flink_ml_framework/ --grpc_python_out=python/flink_ml_framework/ src/proto/node_service.proto"/>
                                 </exec>
                             </target>
@@ -277,12 +295,40 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>pip</executable>
+                            <executable>${pip.version}</executable>
                             <workingDirectory>${project.basedir}/python</workingDirectory>
                             <arguments>
                                 <argument>install</argument>
-                                <argument>${pip.install.option}</argument>
+                                <argument>${virtualenv.option}</argument>
                                 <argument>.</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>install-pip</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>bash</executable>
+                            <workingDirectory>sbin</workingDirectory>
+                            <arguments>
+                                <argument>pip_install_packages.sh</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>sed-python-import</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>bash</executable>
+                            <workingDirectory>sbin</workingDirectory>
+                            <arguments>
+                                <argument>sed_pb2_import.sh</argument>
                             </arguments>
                         </configuration>
                     </execution>

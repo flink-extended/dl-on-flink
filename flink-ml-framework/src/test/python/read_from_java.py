@@ -1,3 +1,4 @@
+from __future__ import print_function
 import sys
 import traceback
 import struct
@@ -10,9 +11,9 @@ def map_func(context):
         res = java_file.read(4)
         # len = int(''.join(reversed(res)).encode('hex'), 16)
         data_len, = struct.unpack("<i", res)
-        print "res", type(data_len), data_len
+        print("res", type(data_len), data_len)
         data = java_file.read(data_len)
-        print "data", str(data)
+        print("data", str(data))
     except Exception as e:
         msg = traceback.format_exc()
         print (msg)

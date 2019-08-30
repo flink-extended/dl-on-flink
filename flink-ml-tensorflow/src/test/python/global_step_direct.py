@@ -1,3 +1,4 @@
+from __future__ import print_function
 from datetime import datetime
 import tensorflow as tf
 import sys
@@ -51,8 +52,8 @@ def map_fun(context):
                     total_step, _, _ = mon_sess.run([global_step_inc, key, value])
                     if (total_step % 10000 == 0):
                         log_speed(total_step, t)
-        except Exception, e:
-            print 'traceback.print_exc():'
+        except Exception as e:
+            print('traceback.print_exc():')
             traceback.print_exc()
             sys.stdout.flush()
         finally:

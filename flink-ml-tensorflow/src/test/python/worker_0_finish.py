@@ -1,3 +1,4 @@
+from __future__ import print_function
 import sys
 import time
 from flink_ml_tensorflow.tensorflow_context import TFContext
@@ -11,11 +12,11 @@ def map_func(context):
     sys.stdout.flush()
     if "worker" == job_name and 0 == index:
         time.sleep(3)
-        print "worker 0 finish!"
+        print("worker 0 finish!")
         sys.stdout.flush()
     else:
         while True:
-            print "hello world!"
+            print("hello world!")
             sys.stdout.flush()
             time.sleep(3)
 
