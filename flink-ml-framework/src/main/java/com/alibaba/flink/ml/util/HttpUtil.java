@@ -45,9 +45,7 @@ public class HttpUtil {
 		try {
 			url = new URL(httpUrl);
 		} catch (MalformedURLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-			return false;
+			throw new RuntimeException(e1);
 		}
 
 		try {
@@ -55,18 +53,16 @@ public class HttpUtil {
 			InputStream inStream = conn.getInputStream();
 			FileOutputStream fs = new FileOutputStream(saveFile);
 
-			byte[] buffer = new byte[1204];
+			byte[] buffer = new byte[1024];
 			while ((byteread = inStream.read(buffer)) != -1) {
 				bytesum += byteread;
 				fs.write(buffer, 0, byteread);
 			}
 			return true;
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return false;
+			throw new RuntimeException(e);
 		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
+			throw new RuntimeException(e);
 		}
 	}
 
