@@ -107,7 +107,7 @@ namespace tensorflow {
             }
         }
 
-        Status Append(const StringPiece& data) override {
+        Status Append(StringPiece data) override {
 //            VLOG(0) << "write size:" << data.size();
 //            for(int i = 0; i < data.size(); i++) {
 //                VLOG(0) << "write:" << (int)data.data()[i];
