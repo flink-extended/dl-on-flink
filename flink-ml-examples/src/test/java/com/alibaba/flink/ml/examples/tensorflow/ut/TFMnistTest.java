@@ -39,6 +39,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
 
+import org.apache.flink.table.api.java.StreamTableEnvironment;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -102,7 +103,7 @@ public class TFMnistTest {
 		System.out.println("Run Test: " + SysUtil._FUNC_());
 		StreamExecutionEnvironment flinkEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 		flinkEnv.setParallelism(2);
-		TableEnvironment tableEnv = TableEnvironment.getTableEnvironment(flinkEnv);
+		TableEnvironment tableEnv = StreamTableEnvironment.create(flinkEnv);
 		TFConfig config = buildTFConfig(mnist_dist);
 		TFUtils.train(flinkEnv, tableEnv, null, config, null);
 
@@ -161,7 +162,7 @@ public class TFMnistTest {
 		setExampleCodingRowType(config);
 		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 		streamEnv.setParallelism(2);
-		TableEnvironment tableEnv = TableEnvironment.getTableEnvironment(streamEnv);
+		TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
 		String rootPath = new File("").getAbsolutePath();
 		String[] paths = new String[2];
 		paths[0] = rootPath + "/target/data/train/0.tfrecords";
