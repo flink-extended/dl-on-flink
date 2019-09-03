@@ -136,12 +136,13 @@ public class TFUtilsTest {
 
 		config.getProperties().put(RowCSVCoding.ENCODE_TYPES, inputSb.toString());
 		config.getProperties().put(RowCSVCoding.DECODE_TYPES, inputSb.toString());
-		TableEnvironment tableEnv = TableEnvironment.getTableEnvironment(streamEnv);
+		TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
 		tableEnv.registerTableSource("debug_source", new TableDebugRowSource());
 		Table input = tableEnv.scan("debug_source");
+		tableEnv.registerTableSink("table_row_sink",new TableDebugRowSink(DebugRowSource.typeInfo));
 		TFUtils.train(streamEnv, tableEnv, input, config,
 				TypeUtil.rowTypeInfoToSchema(DebugRowSource.typeInfo))
-				.writeToSink(new TableDebugRowSink(DebugRowSource.typeInfo));
+				.insertInto("table_row_sink");
 		execTableJobCustom(config.getMlConfig(), streamEnv, tableEnv);
 	}
 
@@ -167,7 +168,7 @@ public class TFUtilsTest {
 	public void testWorkerZeroFinish() throws Exception {
 		System.out.println(SysUtil._FUNC_());
 		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
-		TableEnvironment tableEnv = TableEnvironment.getTableEnvironment(streamEnv);
+		TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
 		TFConfig config = new TFConfig(3, 2, null, workerZeroFinishScript, "map_func", null);
 		TFUtils.train(streamEnv, tableEnv, null, config, null);
 		execTableJobCustom(config.getMlConfig(), streamEnv, tableEnv);

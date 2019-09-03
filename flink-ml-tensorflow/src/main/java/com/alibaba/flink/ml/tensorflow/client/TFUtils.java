@@ -316,7 +316,7 @@ public class TFUtils {
 	 * @return output Table. Otherwise, caller is responsible to add sink to the output
 	 * Table before executing the graph.
 	 */
-	public static Table çtrain(StreamExecutionEnvironment streamEnv, TableEnvironment tableEnv, Table input,
+	public static Table train(StreamExecutionEnvironment streamEnv, TableEnvironment tableEnv, Table input,
 			TFConfig tfConfig, TableSchema outSchema) throws IOException {
 		return run(streamEnv, tableEnv, ExecutionMode.TRAIN, input, tfConfig, outSchema);
 	}
