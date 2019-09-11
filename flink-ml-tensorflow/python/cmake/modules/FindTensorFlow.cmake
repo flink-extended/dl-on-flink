@@ -64,7 +64,7 @@ endif(WIN32)
     message(STATUS "Detecting TensorFlow using ${PYTHON_EXECUTABLE}"
             " (use -DPYTHON_EXECUTABLE=... otherwise)")
     execute_process(
-            COMMAND ${PYTHON_EXECUTABLE} -c "import tensorflow as tf; print(tf.__version__); print(tf.__cxx11_abi_flag__); print(tf.sysconfig.get_include()); print(tf.sysconfig.get_lib() + '/libtensorflow_framework.so'); print(tf.sysconfig.get_lib() + '/libtensorflow_framework.so.1')"
+            COMMAND ${PYTHON_EXECUTABLE} -c "import tensorflow as tf; print(tf.__version__); print(tf.__cxx11_abi_flag__); print(tf.sysconfig.get_include()); print(tf.sysconfig.get_lib() + '/libtensorflow_framework.so.1')"
             OUTPUT_VARIABLE TF_INFORMATION_STRING
             OUTPUT_STRIP_TRAILING_WHITESPACE
             RESULT_VARIABLE retcode)
