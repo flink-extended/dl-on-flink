@@ -52,6 +52,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.UUID;
 
 public class TFUtils {
 	private static Logger LOG = LoggerFactory.getLogger(TFUtils.class);
@@ -381,10 +382,10 @@ public class TFUtils {
 		}
 		if (outSchema == null) {
 			if (worker != null) {
-				writeToDummySink(worker);
+				writeToDummySink(worker, tableEnv);
 			}
 			if (chief != null) {
-				writeToDummySink(chief);
+				writeToDummySink(chief, tableEnv);
 			}
 		}
 		return worker;
@@ -426,8 +427,10 @@ public class TFUtils {
 	}
 
 
-	private static void writeToDummySink(Table tbl) {
-		tbl.writeToSink(new TableStreamDummySink());
+	private static void writeToDummySink(Table tbl, TableEnvironment tableEnvironment) {
+		String sinkName = "dummy_sink" + UUID.randomUUID();
+		tableEnvironment.registerTableSink(sinkName, new TableStreamDummySink());
+		tbl.insertInto(sinkName);
 	}
 
 

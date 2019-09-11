@@ -62,7 +62,7 @@ public class JavaInference implements Closeable {
 	private File downloadModelPath;
 
 	public JavaInference(MLConfig mlConfig, TableSchema inSchema, TableSchema outSchema) throws Exception {
-		this(mlConfig.getProperties(), inSchema.getColumnNames(), outSchema.getColumnNames());
+		this(mlConfig.getProperties(), inSchema.getFieldNames(), outSchema.getFieldNames());
 	}
 
 	public JavaInference(Map<String, String> props, String[] inRowFieldNames, String[] outRowFieldNames)

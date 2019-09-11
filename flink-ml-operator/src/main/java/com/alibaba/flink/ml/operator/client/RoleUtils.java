@@ -142,7 +142,8 @@ public class RoleUtils {
 		}
 		if (outputSchema == null) {
 			if (worker != null) {
-				tableEnv.writeToSink(worker, new TableStreamDummySink(), tableEnv.queryConfig());
+				tableEnv.registerTableSink("table_sink",new TableStreamDummySink());
+				worker.insertInto("table_sink");
 			}
 		}
 		return worker;
@@ -160,7 +161,8 @@ public class RoleUtils {
 		tableEnv.registerTableSource(new AMRole().name(), new MLTableSource(ExecutionMode.OTHER, new AMRole(),
 				mlConfig, DUMMY_SCHEMA, 1));
 		Table am = tableEnv.scan(new AMRole().name());
-		tableEnv.writeToSink(am, new TableStreamDummySink(), tableEnv.queryConfig());
+		tableEnv.registerTableSink("table_stream_sink", new TableStreamDummySink());
+		am.insertInto("table_stream_sink");
 
 	}
 
