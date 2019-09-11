@@ -313,6 +313,7 @@
                             <forkCount>1</forkCount>
                             <forkedProcessTimeoutInSeconds>2400</forkedProcessTimeoutInSeconds>
                             <skipTests>${skipUTs}</skipTests>
+                            <useSystemClassLoader>false</useSystemClassLoader>
                         </configuration>
                     </plugin>
                     <plugin>
