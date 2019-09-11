@@ -13,11 +13,8 @@
 # limitations under the License.
 # =============================================================================
 
-from pyflink.java_gateway import get_gateway
+# pyflink doesn't contain the DataStream class right now, So here is the simplest python class of DataStream
 
-J_CONSTANTS = get_gateway().jvm.com.alibaba.flink.tensorflow.util.Constants
-
-TF_INFERENCE_EXPORT_PATH = str(J_CONSTANTS.TF_INFERENCE_EXPORT_PATH)
-TF_INFERENCE_INPUT_TENSOR_NAMES = str(J_CONSTANTS.TF_INFERENCE_INPUT_TENSOR_NAMES)
-TF_INFERENCE_OUTPUT_TENSOR_NAMES = str(J_CONSTANTS.TF_INFERENCE_OUTPUT_TENSOR_NAMES)
-TF_INFERENCE_OUTPUT_ROW_FIELDS = str(J_CONSTANTS.TF_INFERENCE_OUTPUT_ROW_FIELDS)
+class DataStream(object):
+    def __init__(self, j_datastream):
+        self._j_datastream = j_datastream

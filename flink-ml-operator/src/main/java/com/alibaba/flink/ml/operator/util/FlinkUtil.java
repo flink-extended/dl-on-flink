@@ -19,6 +19,7 @@
 package com.alibaba.flink.ml.operator.util;
 
 import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.table.api.java.StreamTableEnvironment;
 import org.apache.flink.table.functions.TableFunction;
 import org.apache.flink.types.Row;
 
@@ -34,6 +35,6 @@ public class FlinkUtil {
 	 * @param func table function.
 	 */
 	public static void registerTableFunction(TableEnvironment tableEnv, String funcName, TableFunction<Row> func) {
-		tableEnv.registerTableFunctionInternal(funcName, func, func.getResultType());
+		((StreamTableEnvironment)tableEnv).registerFunction(funcName, func);
 	}
 }
