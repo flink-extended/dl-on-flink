@@ -27,7 +27,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import org.tensorflow.example.Example;
 import org.tensorflow.example.Feature;
 import org.tensorflow.example.Features;
-import org.tensorflow.op.core.TFRecordDataset;
+//import org.tensorflow.op.core.TFRecordDataset;
 
 import java.util.ArrayList;
 import java.util.List;
