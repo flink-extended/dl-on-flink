@@ -53,6 +53,7 @@
         <module>flink-ml-tensorflow</module>
         <module>flink-ml-pytorch</module>
         <module>flink-ml-examples</module>
+        <module>flink-ml-workflow</module>
     </modules>
 
     <properties>

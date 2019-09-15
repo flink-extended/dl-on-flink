@@ -1,0 +1,108 @@
+syntax = "proto3";
+
+option java_outer_classname = "MetaDataProto";
+option java_multiple_files = true;
+option java_package = "com.alibaba.flink.ml.workflow";
+
+enum DataTypeProto{
+    Int32 = 0;
+    Int64 = 1;
+    Float32 = 2;
+    Float64 = 3;
+    String = 4;
+    Int32Array = 5;
+    Int64Array = 6;
+    Float32Array = 7;
+    Float64Array = 8;
+    StringArray = 9;
+    Bytes = 10;
+    BytesArray = 11;
+}
+
+message SchemaProto{
+    repeated string nameList = 1;
+    repeated DataTypeProto typeList = 2;
+}
+
+
+message MetaBaseProto{
+    string name = 1;
+    int64 typeId = 2;
+    int64 instanceId = 3;
+    map<string, string> properties = 4;
+}
+
+enum ExampleSupportTypeProto{
+    EXAMPLE_STREAM = 0;
+    EXAMPLE_BATCH = 1;
+    EXAMPLE_BOTH = 2;
+}
+enum ExampleRunMode{
+    SOURCE = 0;
+    SINK = 1;
+}
+message ExampleProto{
+    MetaBaseProto meta = 1;
+    ExampleSupportTypeProto supportType = 2;
+    SchemaProto schema = 3;
+    string exampleFormat = 4;
+    string batchUri = 5;
+    string streamUri = 6;
+    ExampleRunMode runMod = 7;
+}
+
+enum TransformerTypeProto{
+    JAVA = 0;
+    PYTHON = 1;
+}
+
+message TransformerProto{
+    MetaBaseProto meta = 1;
+    TransformerTypeProto type = 2;
+    repeated ExampleProto inputExampleList = 3;
+    repeated ExampleProto outputExampleList = 4;
+    string jarLocation = 5;
+    string transformerClassName = 6;
+    string pyScript = 7;
+    string pyFunc = 8;
+}
+
+enum ModelTypeProto{
+    CHECKPOINT = 0;
+    SAVED_MODEL = 1;
+    H5 = 2;
+}
+
+message ModelVersionProto{
+    MetaBaseProto meta = 1;
+    int64 modelId = 2;
+    string modelUri = 3;
+    string logUri = 4;
+    string version = 5;
+}
+
+message ModelProto{
+    MetaBaseProto meta = 1;
+    ModelTypeProto modelType= 2;
+    string uri = 3;
+    repeated ModelVersionProto versionList = 4;
+}
+
+enum RunModeProto{
+    STREAM = 0;
+    BATCH = 1;
+}
+
+message TrainerProto{
+    MetaBaseProto meta = 1;
+    RunModeProto runMode = 2;
+    ExampleProto inputExample = 3;
+    ModelProto outputModel = 4;
+    ModelProto fromModel = 5;
+    ModelVersionProto fromModelVersion = 6;
+    string pyPackageUri = 7;
+    string pyScript = 8;
+    string pyFuncName = 9;
+}
+
+
