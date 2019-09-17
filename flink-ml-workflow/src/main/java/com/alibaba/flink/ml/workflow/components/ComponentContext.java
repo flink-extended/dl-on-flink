@@ -1,15 +1,16 @@
 package com.alibaba.flink.ml.workflow.components;
 
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ComponentContext {
 	private StreamExecutionEnvironment streamEnv;
 	private TableEnvironment tableEnv;
-	private Set<String> sourceTables = new HashSet<>();
+	private Map<String, Table> tableMap = new HashMap<>();
 
 	public ComponentContext(StreamExecutionEnvironment streamEnv, TableEnvironment tableEnv) {
 		this.streamEnv = streamEnv;
@@ -30,5 +31,13 @@ public class ComponentContext {
 
 	public void setTableEnv(TableEnvironment tableEnv) {
 		this.tableEnv = tableEnv;
+	}
+
+	public void registerTable(String name, Table table){
+		tableMap.put(name, table);
+	}
+
+	public Table getTable(String name){
+		return tableMap.get(name);
 	}
 }

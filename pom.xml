@@ -54,6 +54,8 @@
         <module>flink-ml-pytorch</module>
         <module>flink-ml-examples</module>
         <module>flink-ml-workflow</module>
+        <module>flink-ml-workflow-shade</module>
+        <module>flink-ml-workflow-plugins</module>
     </modules>
 
     <properties>

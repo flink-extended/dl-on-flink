@@ -105,4 +105,11 @@ message TrainerProto{
     string pyFuncName = 9;
 }
 
+message ExecutionProto{
+    MetaBaseProto meta = 1;
+    RunModeProto runMode = 2;
+    repeated TransformerProto transformers = 3;
+    repeated TrainerProto trainers = 4;
+}
+
 

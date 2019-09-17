@@ -1,5 +1,3 @@
-from flink_ml_workflow.proto.meta_data_pb2 import *
-from flink_ml_workflow.vertex.base_vertex import BaseVertex
 from enum import Enum
 from flink_ml_workflow.vertex.example import *
 
@@ -56,7 +54,7 @@ if __name__ == "__main__":
                                                                      DataTypeProto.String, DataTypeProto.String])
 
     input_example = Example(name="input_example",
-                            example_type=ExampleSupportTypeProto.EXAMPLE_BATCH,
+                            example_type=ExampleType.EXAMPLE_BATCH,
                             data_schema=input_schema,
                             example_format="CSV",
                             batch_uri="aa",
@@ -66,7 +64,7 @@ if __name__ == "__main__":
     output_schema = Schema(name_list=['a', 'b'], type_list=[DataTypeProto.String, DataTypeProto.String])
 
     output_example = Example(name="output_example",
-                             example_type=ExampleSupportTypeProto.EXAMPLE_BATCH,
+                             example_type=ExampleType.EXAMPLE_BATCH,
                              data_schema=output_schema,
                              example_format="CSV",
                              batch_uri="aa",
