@@ -73,7 +73,6 @@ public class TFRecordInputFormat extends RichInputFormat<byte[], TFRecordInputSp
 		int i = 0;
 		for (String path : paths) {
 			inputSplit[i] = new TFRecordInputSplit(i, path);
-			TFRecordInputSplits.set(i, new TFRecordInputSplit(i, path));
 			i++;
 		}
 		return inputSplit;
@@ -84,26 +83,20 @@ public class TFRecordInputFormat extends RichInputFormat<byte[], TFRecordInputSp
 		int[] assigned = new int[inputSplits.length];
 		return new InputSplitAssigner() {
 			@Override
-			public InputSplit getNextInputSplit(String host, int taskId) {
-				TFRecordInputSplit next = null;
-				if (TFRecordInputSplits.size() > 0){
-
-				}
-				for (int i = 0; i < assigned.length; i++) {
-					if (assigned[i] < epochs){
-						assigned[i] ++;
-						inputSplits[i].setEpochs(assigned[i]);
-						TFRecordInputSplits.get(i).setEpochs(assigned[i]);
-						return TFRecordInputSplits.get(i);
-//						return inputSplits[i];
-					}
-				}
-				return null;
-			}
+            public InputSplit getNextInputSplit(String host, int taskId) {
+                for (int i = 0; i < inputSplits.length; i++) {
+                    if (assigned[inputSplits[i].getSplitNumber()] < epochs){
+                        assigned[inputSplits[i].getSplitNumber()] ++;
+                        inputSplits[i].setEpochs(assigned[inputSplits[i].getSplitNumber()]);
+                        return inputSplits[i];
+                    }
+                }
+                return null;
+            }
 			@Override
-			public void returnInputSplit(List<InputSplit> list, int i) {
-				for (InputSplit split:list){
-					TFRecordInputSplits.add((TFRecordInputSplit) split);
+			public void returnInputSplit(List<InputSplit> splits, int taskId) {
+				for (InputSplit split:splits){
+					assigned[split.getSplitNumber()] --;
 				}
 			}
 		};
