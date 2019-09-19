@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
 import org.tensorflow.hadoop.util.TFRecordReader;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,6 +46,7 @@ public class TFRecordInputFormat extends RichInputFormat<byte[], TFRecordInputSp
 	private transient FSDataInputStream fsdis;
 	private boolean end = false;
 	private static Logger LOG = LoggerFactory.getLogger(TFRecordInputFormat.class);
+	private final List<TFRecordInputSplit> TFRecordInputSplits = new ArrayList<>();
 
 	public TFRecordInputFormat(String[] paths, int epochs) {
 		this.paths = paths;
@@ -71,6 +73,7 @@ public class TFRecordInputFormat extends RichInputFormat<byte[], TFRecordInputSp
 		int i = 0;
 		for (String path : paths) {
 			inputSplit[i] = new TFRecordInputSplit(i, path);
+			TFRecordInputSplits.set(i, new TFRecordInputSplit(i, path));
 			i++;
 		}
 		return inputSplit;
@@ -86,14 +89,19 @@ public class TFRecordInputFormat extends RichInputFormat<byte[], TFRecordInputSp
 					if (assigned[i] < epochs){
 						assigned[i] ++;
 						inputSplits[i].setEpochs(assigned[i]);
-						return inputSplits[i];
+						TFRecordInputSplits.get(i).setEpochs(assigned[i]);
+						return TFRecordInputSplits.get(i);
+//						return inputSplits[i];
 					}
 				}
 				return null;
 			}
-//			@Override
-//			public void returnInputSplit(List<InputSplit> list, int i) {
-//			}
+			@Override
+			public void returnInputSplit(List<InputSplit> list, int i) {
+				for (InputSplit split:list){
+					TFRecordInputSplits.add((TFRecordInputSplit) split);
+				}
+			}
 		};
 	}
 

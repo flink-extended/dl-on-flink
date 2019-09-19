@@ -38,6 +38,7 @@ import org.apache.flink.core.io.InputSplitAssigner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -59,6 +60,7 @@ public class MLInputFormat<OUT> extends RichInputFormat<OUT, MLInputSplit> {
 	private AtomicBoolean isClose = new AtomicBoolean(false);
 	private transient FlinkOpHookManager hookManager;
 	private transient DataExchange<OUT, OUT> dataExchange;
+	private final List<MLInputSplit> MLInputSplits = new ArrayList<MLInputSplit>();
 
 	public MLInputFormat(ExecutionMode mode, BaseRole role, MLConfig config, TypeInformation<OUT> outTI) {
 		this.mode = mode;
@@ -88,6 +90,7 @@ public class MLInputFormat<OUT> extends RichInputFormat<OUT, MLInputSplit> {
 		MLInputSplit[] inputSplit = new MLInputSplit[minNumSplits];
 		for (int i = 0; i < minNumSplits; i++) {
 			inputSplit[i] = new MLInputSplit(minNumSplits, i);
+			MLInputSplits.add(new MLInputSplit(minNumSplits, i));
 		}
 		return inputSplit;
 	}
@@ -101,15 +104,18 @@ public class MLInputFormat<OUT> extends RichInputFormat<OUT, MLInputSplit> {
 				for (int i = 0; i < assigned.length; i++) {
 					if (!assigned[i]){
 						assigned[i] = true;
-						return inputSplits[i];
+						return MLInputSplits.remove(i);
+//						return inputSplits[i];
 					}
 				}
 				return null;
 			}
-//			@Override
-//			public void returnInputSplit(List<InputSplit> list, int i) {
-//
-//			}
+			@Override
+			public void returnInputSplit(List<InputSplit> splits, int taskId) {
+				for (InputSplit split : splits){
+					MLInputSplits.add((MLInputSplit) split);
+				}
+			}
 		};
 	}
 
