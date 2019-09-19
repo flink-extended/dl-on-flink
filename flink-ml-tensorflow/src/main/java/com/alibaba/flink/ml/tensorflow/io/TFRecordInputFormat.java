@@ -93,12 +93,12 @@ public class TFRecordInputFormat extends RichInputFormat<byte[], TFRecordInputSp
                 }
                 return null;
             }
-			@Override
-			public void returnInputSplit(List<InputSplit> splits, int taskId) {
-				for (InputSplit split:splits){
-					assigned[split.getSplitNumber()] --;
-				}
-			}
+//			@Override
+//			public void returnInputSplit(List<InputSplit> splits, int taskId) {
+//				for (InputSplit split:splits){
+//					assigned[split.getSplitNumber()] --;
+//				}
+//			}
 		};
 	}
 

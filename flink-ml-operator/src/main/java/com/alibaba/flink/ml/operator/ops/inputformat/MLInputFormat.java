@@ -108,12 +108,12 @@ public class MLInputFormat<OUT> extends RichInputFormat<OUT, MLInputSplit> {
 				}
 				return null;
 			}
-			@Override
-			public void returnInputSplit(List<InputSplit> splits, int taskId) {
-				for (InputSplit split : splits){
-					assigned[split.getSplitNumber()] = false;
-				}
-			}
+//			@Override
+//			public void returnInputSplit(List<InputSplit> splits, int taskId) {
+//				for (InputSplit split : splits){
+//					assigned[split.getSplitNumber()] = false;
+//				}
+//			}
 		};
 	}
 
