@@ -101,14 +101,18 @@ public class MLInputFormat<OUT> extends RichInputFormat<OUT, MLInputSplit> {
 		return new InputSplitAssigner() {
 			@Override
 			public InputSplit getNextInputSplit(String host, int taskId) {
-				for (int i = 0; i < assigned.length; i++) {
-					if (!assigned[i]){
-						assigned[i] = true;
-						return MLInputSplits.remove(i);
-//						return inputSplits[i];
-					}
+				MLInputSplit next = null;
+				if (MLInputSplits.size() > 0){
+					next = MLInputSplits.remove(MLInputSplits.size() - 1);
 				}
-				return null;
+				return next;
+//				for (int i = 0; i < assigned.length; i++) {
+//					if (!assigned[i]){
+//						assigned[i] = true;
+//						return inputSplits[i];
+//					}
+//				}
+//				return null;
 			}
 			@Override
 			public void returnInputSplit(List<InputSplit> splits, int taskId) {
