@@ -73,6 +73,7 @@ public class TFRecordInputFormat extends RichInputFormat<byte[], TFRecordInputSp
 		int i = 0;
 		for (String path : paths) {
 			inputSplit[i] = new TFRecordInputSplit(i, path);
+			TFRecordInputSplits.add(new TFRecordInputSplit(i, path));
 			i++;
 		}
 		return inputSplit;
@@ -93,12 +94,12 @@ public class TFRecordInputFormat extends RichInputFormat<byte[], TFRecordInputSp
                 }
                 return null;
             }
-//			@Override
-//			public void returnInputSplit(List<InputSplit> splits, int taskId) {
-//				for (InputSplit split:splits){
-//					assigned[split.getSplitNumber()] --;
-//				}
-//			}
+			@Override
+			public void returnInputSplit(List<InputSplit> splits, int taskId) {
+				for (InputSplit split:splits){
+					assigned[split.getSplitNumber()] --;
+				}
+			}
 		};
 	}
 

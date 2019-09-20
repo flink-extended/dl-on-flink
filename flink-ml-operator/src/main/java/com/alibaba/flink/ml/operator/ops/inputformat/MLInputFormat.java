@@ -90,6 +90,7 @@ public class MLInputFormat<OUT> extends RichInputFormat<OUT, MLInputSplit> {
 		MLInputSplit[] inputSplit = new MLInputSplit[minNumSplits];
 		for (int i = 0; i < minNumSplits; i++) {
 			inputSplit[i] = new MLInputSplit(minNumSplits, i);
+			this.MLInputSplits.add(new MLInputSplit(minNumSplits, i));
 		}
 		return inputSplit;
 	}
@@ -100,20 +101,28 @@ public class MLInputFormat<OUT> extends RichInputFormat<OUT, MLInputSplit> {
 		return new InputSplitAssigner() {
 			@Override
 			public InputSplit getNextInputSplit(String host, int taskId) {
-				for (int i = 0; i < inputSplits.length; i++) {
-					if (!assigned[inputSplits[i].getSplitNumber()]){
-						assigned[inputSplits[i].getSplitNumber()] = true;
-						return inputSplits[i];
+				MLInputSplit next = null;
+				synchronized (MLInputSplits){
+					if (MLInputSplits.size() > 0){
+						next = MLInputSplits.remove(0);
 					}
 				}
-				return null;
-			}
-//			@Override
-//			public void returnInputSplit(List<InputSplit> splits, int taskId) {
-//				for (InputSplit split : splits){
-//					assigned[split.getSplitNumber()] = false;
+				return next;
+//				for (int i = 0; i < inputSplits.length; i++) {
+//					if (!assigned[inputSplits[i].getSplitNumber()]){
+//						assigned[inputSplits[i].getSplitNumber()] = true;
+//						return inputSplits[i];
+//					}
 //				}
-//			}
+//				return null;
+			}
+			@Override
+			public void returnInputSplit(List<InputSplit> splits, int taskId) {
+				for (InputSplit split : splits){
+					MLInputSplits.add((MLInputSplit) split);
+//					assigned[split.getSplitNumber()] = false;
+				}
+			}
 		};
 	}
 
