@@ -98,8 +98,10 @@ public class TFRecordInputFormat extends RichInputFormat<byte[], TFRecordInputSp
             }
 			@Override
 			public void returnInputSplit(List<InputSplit> splits, int taskId) {
-				for (InputSplit split:splits){
-					assigned[split.getSplitNumber()]--;
+				synchronized (inputSplits){
+					for (InputSplit split:splits){
+						assigned[split.getSplitNumber()]--;
+					}
 				}
 			}
 		};
