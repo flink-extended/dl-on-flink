@@ -46,7 +46,6 @@ public class TFRecordInputFormat extends RichInputFormat<byte[], TFRecordInputSp
 	private transient FSDataInputStream fsdis;
 	private boolean end = false;
 	private static Logger LOG = LoggerFactory.getLogger(TFRecordInputFormat.class);
-	private final List<TFRecordInputSplit> TFRecordInputSplits = new ArrayList<>();
 
 	public TFRecordInputFormat(String[] paths, int epochs) {
 		this.paths = paths;
@@ -73,7 +72,6 @@ public class TFRecordInputFormat extends RichInputFormat<byte[], TFRecordInputSp
 		int i = 0;
 		for (String path : paths) {
 			inputSplit[i] = new TFRecordInputSplit(i, path);
-			TFRecordInputSplits.add(new TFRecordInputSplit(i, path));
 			i++;
 		}
 		return inputSplit;
