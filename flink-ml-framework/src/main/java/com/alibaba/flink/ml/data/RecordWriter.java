@@ -36,7 +36,7 @@ public interface RecordWriter extends Closeable {
 	boolean write(byte[] record, int offset, int length) throws IOException;
 
 	/**
-	 * read a record from python process.
+	 * write a record to python process.
 	 * @param record write record.
 	 * @return true: write success, false: write failed.
 	 * @throws IOException
