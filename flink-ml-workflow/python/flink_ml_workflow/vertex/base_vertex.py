@@ -1,5 +1,11 @@
 from abc import ABCMeta, abstractmethod
 from google.protobuf import json_format
+from enum import Enum
+
+
+class RunMode(str, Enum):
+    STREAM = 'STREAM'
+    BATCH = 'BATCH'
 
 
 class BaseVertex(object):
@@ -17,9 +23,13 @@ class BaseVertex(object):
         json_string = json_format.MessageToJson(proto)
         return json_string
 
-    def from_json(self):
+    def from_json(self, json_str):
         pass
 
     @abstractmethod
     def to_proto(self):
+        pass
+
+    @abstractmethod
+    def set_proto(self, proto):
         pass

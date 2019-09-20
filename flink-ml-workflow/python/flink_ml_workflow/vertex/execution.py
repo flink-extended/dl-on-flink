@@ -22,6 +22,9 @@ class Execution(BaseVertex):
 
     def to_proto(self):
         execution_proto = ExecutionProto()
+        return self.set_proto(execution_proto)
+
+    def set_proto(self, execution_proto):
         execution_proto.meta.name = self.name
         for i in self.properties:
             execution_proto.meta.properties[i] = self.properties[i]
@@ -34,7 +37,7 @@ class Execution(BaseVertex):
         for i in self.transformer_list:
             execution_proto.transformers.append(i.to_proto())
         for i in self.trainer_list:
-            execution_proto.trains.append(i.to_proto())
+            execution_proto.trainers.append(i.to_proto())
         return execution_proto
 
 

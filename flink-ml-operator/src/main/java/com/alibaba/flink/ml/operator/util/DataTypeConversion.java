@@ -54,5 +54,6 @@ public class DataTypeConversion {
 		put(String.class, DataTypes.STRING);
 		put(byte[].class, DataTypes.STRING);
 		put(float[].class, DataTypes.FLOAT_32_ARRAY);
+		put(long[].class, DataTypes.INT_64_ARRAY);
 	}};
 }

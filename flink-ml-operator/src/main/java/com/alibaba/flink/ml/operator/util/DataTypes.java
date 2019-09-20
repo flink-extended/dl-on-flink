@@ -45,4 +45,5 @@ public enum DataTypes {
 	RESOURCE,
 	VARIANT,
 	FLOAT_32_ARRAY,
+	INT_64_ARRAY
 }

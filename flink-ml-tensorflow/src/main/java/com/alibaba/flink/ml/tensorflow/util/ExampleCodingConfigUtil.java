@@ -67,7 +67,9 @@ public class ExampleCodingConfigUtil {
             return BasicTypeInfo.CHAR_TYPE_INFO;
         } else if (dataTypes == DataTypes.FLOAT_32_ARRAY) {
             return BasicArrayTypeInfo.FLOAT_ARRAY_TYPE_INFO;
-        } else {
+        } else if (dataTypes == DataTypes.INT_64_ARRAY) {
+            return BasicArrayTypeInfo.LONG_ARRAY_TYPE_INFO;
+        }else {
             throw new RuntimeException("Unsupported data type of " + dataTypes.toString());
         }
     }
@@ -131,7 +133,9 @@ public class ExampleCodingConfigUtil {
             throw new RuntimeException("Unsupported data type of " + typeInformation.toString());
         } else if (typeInformation == BasicArrayTypeInfo.FLOAT_ARRAY_TYPE_INFO) {
             return DataTypes.FLOAT_32_ARRAY;
-        } else if (typeInformation == BasicArrayTypeInfo.DOUBLE_ARRAY_TYPE_INFO) {
+        } else if (typeInformation == BasicArrayTypeInfo.LONG_ARRAY_TYPE_INFO) {
+            return DataTypes.INT_64_ARRAY;
+        }else if (typeInformation == BasicArrayTypeInfo.DOUBLE_ARRAY_TYPE_INFO) {
             throw new RuntimeException("Unsupported data type of " + typeInformation.toString());
         } else if (typeInformation == BasicArrayTypeInfo.CHAR_ARRAY_TYPE_INFO) {
             throw new RuntimeException("Unsupported data type of " + typeInformation.toString());

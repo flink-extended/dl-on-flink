@@ -28,7 +28,7 @@ public class TransformParserTest {
 
 
 	@Test
-	public void parseJob() throws Exception {
+	public void parseTransformerJob() throws Exception {
 		String currentPath = TransformParserTest.class.getClassLoader().getResource("").getPath();
 		String inputFile = currentPath + "test.csv";
 		String outputDir = currentPath + "../output";
@@ -42,6 +42,31 @@ public class TransformParserTest {
 
 		System.out.println(executionBuilder);
 		StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+		env.setParallelism(1);
+		TableEnvironment tableEnv = StreamTableEnvironment.create(env);
+		ComponentContext componentContext = new ComponentContext(env, tableEnv);
+		TransformParser parser = new TransformParser();
+		parser.parseJob(executionBuilder, componentContext);
+		tableEnv.execute("job");
+
+	}
+
+	@Test
+	public void parseTrainingJob() throws Exception {
+		String currentPath = TransformParserTest.class.getClassLoader().getResource("").getPath();
+		String inputFile = currentPath + "test.csv";
+		String outputDir = currentPath + "../output";
+		File output = new File(outputDir);
+		FileUtils.deleteDir(output);
+		String source = FileUtils.readResourceFile("trainer.json");
+		ExecutionProto.Builder executionBuilder = ExecutionProto.newBuilder();
+		ProtoUtil.jsonToProto(source, executionBuilder);
+		executionBuilder.getTransformersBuilder(0).getInputExampleListBuilder(0).setBatchUri(inputFile);
+		executionBuilder.getTrainersBuilderList().get(0).setPyMainScript(currentPath+"/../../src/test/python/train_stream.py");
+
+		System.out.println(executionBuilder);
+		StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+		env.setParallelism(1);
 		TableEnvironment tableEnv = StreamTableEnvironment.create(env);
 		ComponentContext componentContext = new ComponentContext(env, tableEnv);
 		TransformParser parser = new TransformParser();

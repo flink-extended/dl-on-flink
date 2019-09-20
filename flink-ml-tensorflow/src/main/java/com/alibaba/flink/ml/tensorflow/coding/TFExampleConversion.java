@@ -73,6 +73,14 @@ public class TFExampleConversion {
 				}
 				featureBuilder.setFloatList(floatArrBuilder);
 				break;
+			case INT_64_ARRAY:
+				Int64List.Builder intBuilder = Int64List.newBuilder();
+				Object[] objects = (Object[]) val;
+				for (Object f : objects) {
+					intBuilder.addValue(castAsLong(f));
+				}
+				featureBuilder.setInt64List(intBuilder);
+				break;
 			default:
 				throw new RuntimeException("Unsupported data type for TF");
 		}
@@ -113,6 +121,13 @@ public class TFExampleConversion {
 					floats[i] = list.get(i);
 				}
 				return floats;
+			case INT_64_ARRAY:
+				List<Long> list2 = f.getInt64List().getValueList();
+				long[] longs = new long[list2.size()];
+				for (int i = 0; i < longs.length; i++) {
+					longs[i] = list2.get(i);
+				}
+				return longs;
 		}
 		throw new CodingException("Unsupported data type: " + types.toString());
 	}

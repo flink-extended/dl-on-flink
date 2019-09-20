@@ -42,6 +42,9 @@ class Example(BaseVertex):
 
     def to_proto(self):
         example_proto = ExampleProto()
+        return self.set_proto(example_proto)
+
+    def set_proto(self, example_proto):
         example_proto.meta.name = self.name
         for i in self.properties:
             example_proto.meta.properties[i] = self.properties[i]

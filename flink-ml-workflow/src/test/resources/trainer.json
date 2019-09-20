@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "name": "execution"
+  },
+  "transformers": [
+    {
+      "meta": {
+        "name": "transformer"
+      },
+      "inputExampleList": [
+        {
+          "meta": {
+            "name": "input_example",
+            "properties": {
+              "a": "a"
+            }
+          },
+          "supportType": "EXAMPLE_BATCH",
+          "schema": {
+            "nameList": [
+              "a",
+              "b",
+              "c",
+              "d"
+            ],
+            "typeList": [
+              "String",
+              "String",
+              "String",
+              "String"
+            ]
+          },
+          "exampleFormat": "CSV",
+          "batchUri": "aa",
+          "streamUri": "bb"
+        }
+      ],
+      "outputExampleList": [
+        {
+          "meta": {
+            "name": "output1"
+          },
+          "supportType": "EXAMPLE_BOTH",
+          "schema": {
+            "nameList": [
+              "a",
+              "b",
+              "c"
+            ],
+            "typeList": [
+              "String",
+              "String",
+              "String"
+            ]
+          },
+          "exampleFormat": "ROW"
+        }
+      ],
+      "transformerClassName": "com.alibaba.flink.ml.workflow.runtime.TestTransformer1"
+    }
+  ],
+  "trainers": [
+    {
+      "meta": {
+        "name": "trainer",
+        "properties": {
+          "WORKER_NUM": "1",
+          "PS_NUM": "0"
+        }
+      },
+      "inputExample": {
+        "meta": {
+          "name": "output1"
+        },
+        "supportType": "EXAMPLE_BOTH",
+        "schema": {
+          "nameList": [
+            "a",
+            "b",
+            "c"
+          ],
+          "typeList": [
+            "String",
+            "String",
+            "String"
+          ]
+        },
+        "exampleFormat": "ROW"
+      },
+      "outputModel": {
+        "meta": {
+          "name": "outputModel"
+        }
+      },
+      "outputModelVersion": {
+        "meta": {
+          "name": "version"
+        },
+        "modelUri": "./target/model/v1",
+        "logUri": "./target/model/v1",
+        "version": "version"
+      },
+      "pyMainScript": "train_stream.py",
+      "pyMainFuncName": "map_func"
+    }
+  ]
+}

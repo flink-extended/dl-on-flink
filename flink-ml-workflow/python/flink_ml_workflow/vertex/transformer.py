@@ -29,6 +29,9 @@ class Transformer(BaseVertex):
 
     def to_proto(self):
         transformer_proto = TransformerProto()
+        return self.set_proto(transformer_proto)
+
+    def set_proto(self, transformer_proto):
         transformer_proto.meta.name = self.name
         for i in self.properties:
             transformer_proto.meta.properties[i] = self.properties[i]

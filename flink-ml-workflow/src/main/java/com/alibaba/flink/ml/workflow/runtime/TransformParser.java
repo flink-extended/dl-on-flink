@@ -3,10 +3,12 @@ package com.alibaba.flink.ml.workflow.runtime;
 import com.alibaba.flink.ml.workflow.ExampleProto;
 import com.alibaba.flink.ml.workflow.ExampleRunMode;
 import com.alibaba.flink.ml.workflow.ExecutionProto;
+import com.alibaba.flink.ml.workflow.TrainerProto;
 import com.alibaba.flink.ml.workflow.TransformerProto;
 import com.alibaba.flink.ml.workflow.components.ComponentContext;
 import com.alibaba.flink.ml.workflow.components.examples.ExampleComponent;
 import com.alibaba.flink.ml.workflow.components.examples.ExampleUtils;
+import com.alibaba.flink.ml.workflow.components.trainers.TrainerComponent;
 import com.alibaba.flink.ml.workflow.components.transformers.TransformerComponent;
 
 import java.util.ArrayList;
@@ -57,6 +59,10 @@ public class TransformParser implements JobParser{
 			if(size == transformerProtoList.size()){
 				throw new RuntimeException("can not parse to job");
 			}
+		}
+		for(TrainerProto.Builder trainerBuilder : executionProtoBuilder.getTrainersBuilderList()){
+			TrainerComponent trainerComponent = new TrainerComponent();
+			trainerComponent.translate(trainerBuilder.build(), context);
 		}
 	}
 }

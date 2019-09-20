@@ -98,11 +98,13 @@ message TrainerProto{
     RunModeProto runMode = 2;
     ExampleProto inputExample = 3;
     ModelProto outputModel = 4;
-    ModelProto fromModel = 5;
-    ModelVersionProto fromModelVersion = 6;
-    string pyPackageUri = 7;
-    string pyScript = 8;
-    string pyFuncName = 9;
+    ModelVersionProto outputModelVersion = 5;
+    ModelProto fromModel = 6;
+    ModelVersionProto fromModelVersion = 7;
+    string pyPackageUri = 8;
+    repeated string pyScripts = 9;
+    string pyMainScript = 10;
+    string pyMainFuncName = 11;
 }
 
 message ExecutionProto{
