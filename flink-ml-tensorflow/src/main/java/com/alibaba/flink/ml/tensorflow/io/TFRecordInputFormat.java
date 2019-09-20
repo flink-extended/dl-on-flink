@@ -85,13 +85,15 @@ public class TFRecordInputFormat extends RichInputFormat<byte[], TFRecordInputSp
 		return new InputSplitAssigner() {
 			@Override
             public InputSplit getNextInputSplit(String host, int taskId) {
-                for (int i = 0; i < inputSplits.length; i++) {
-                    if (assigned[inputSplits[i].getSplitNumber()] < epochs){
-                        assigned[inputSplits[i].getSplitNumber()] ++;
-                        inputSplits[i].setEpochs(assigned[inputSplits[i].getSplitNumber()]);
-                        return inputSplits[i];
-                    }
-                }
+				synchronized (TFRecordInputSplits){
+					for (int i = 0; i < inputSplits.length; i++) {
+						if (assigned[inputSplits[i].getSplitNumber()] < epochs){
+							assigned[inputSplits[i].getSplitNumber()] ++;
+							inputSplits[i].setEpochs(assigned[inputSplits[i].getSplitNumber()]);
+							return inputSplits[i];
+						}
+					}
+				}
                 return null;
             }
 			@Override
