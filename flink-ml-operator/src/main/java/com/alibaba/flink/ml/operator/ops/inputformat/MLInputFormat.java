@@ -106,10 +106,10 @@ public class MLInputFormat<OUT> extends RichInputFormat<OUT, MLInputSplit> {
 				}
 				return null;
 			}
-			@Override
-			public void returnInputSplit(List<InputSplit> list, int i) {
-
-			}
+//			@Override
+//			public void returnInputSplit(List<InputSplit> list, int i) {
+//
+//			}
 		};
 	}
 
