@@ -32,7 +32,6 @@ import org.slf4j.LoggerFactory;
 import org.tensorflow.hadoop.util.TFRecordReader;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
