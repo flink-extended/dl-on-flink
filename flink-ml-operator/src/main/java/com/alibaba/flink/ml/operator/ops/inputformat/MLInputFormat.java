@@ -29,6 +29,7 @@ import com.alibaba.flink.ml.operator.util.ColumnInfos;
 import com.alibaba.flink.ml.operator.util.PythonFileUtil;
 import com.alibaba.flink.ml.cluster.role.AMRole;
 import com.alibaba.flink.ml.cluster.role.BaseRole;
+import org.apache.flink.api.common.io.DefaultInputSplitAssigner;
 import org.apache.flink.api.common.io.RichInputFormat;
 import org.apache.flink.api.common.io.statistics.BaseStatistics;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
@@ -94,23 +95,24 @@ public class MLInputFormat<OUT> extends RichInputFormat<OUT, MLInputSplit> {
 
 	@Override
 	public InputSplitAssigner getInputSplitAssigner(MLInputSplit[] inputSplits) {
-		boolean[] assigned = new boolean[inputSplits.length];
-		return new InputSplitAssigner() {
-			@Override
-			public InputSplit getNextInputSplit(String host, int taskId) {
-				for (int i = 0; i < assigned.length; i++) {
-					if (!assigned[i]){
-						assigned[i] = true;
-						return inputSplits[i];
-					}
-				}
-				return null;
-			}
+		return new DefaultInputSplitAssigner(inputSplits);
+//		boolean[] assigned = new boolean[inputSplits.length];
+//		return new InputSplitAssigner() {
 //			@Override
-//			public void returnInputSplit(List<InputSplit> list, int i) {
-//
+//			public InputSplit getNextInputSplit(String host, int taskId) {
+//				for (int i = 0; i < assigned.length; i++) {
+//					if (!assigned[i]){
+//						assigned[i] = true;
+//						return inputSplits[i];
+//					}
+//				}
+//				return null;
 //			}
-		};
+////			@Override
+////			public void returnInputSplit(List<InputSplit> list, int i) {
+////
+////			}
+//		};
 	}
 
 	/**
