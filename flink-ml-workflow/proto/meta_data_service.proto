@@ -1,0 +1,203 @@
+syntax = "proto3";
+
+option java_outer_classname = "MetaDataServiceProto";
+option java_multiple_files = true;
+option java_package = "com.alibaba.flink.ml.workflow";
+import "meta_data.proto";
+
+message IdRequest{
+    int64 id = 1;
+}
+
+message NameRequest{
+    string name = 1;
+}
+
+message ResponseHeader{
+    int32 returnCode = 1;
+    string message = 2;
+}
+
+message ModelResponse{
+    ResponseHeader header = 1;
+    ModelProto model = 2;
+}
+
+message ListRequest{
+    int64 pageSize = 1;
+    int64 offset =2;
+}
+
+message ListModelVersionRequest{
+    int64 modelId = 1;
+    int64 pageSize = 2;
+    int64 offset = 3;
+}
+
+message ListModelResponse{
+    ResponseHeader header = 1;
+    repeated ModelProto model = 2;
+}
+
+message ModelVersionResponse{
+    ResponseHeader header = 1;
+    ModelVersionProto modelVersion = 2;
+}
+
+message ListModelVersionResponse{
+    ResponseHeader header = 1;
+    repeated ModelVersionProto modelVersion = 2;
+}
+
+message SaveModelRequest{
+    ModelProto model = 1;
+}
+
+message SaveModelVersionRequest{
+    ModelVersionProto modelVersion = 1;
+}
+
+message SaveModelVersionListRequest{
+    repeated ModelVersionProto modelVersions = 1;
+}
+
+message ExampleResponse{
+    ResponseHeader header = 1;
+    ExampleProto example = 2;
+}
+
+message ExampleListResponse{
+    ResponseHeader header = 1;
+    repeated ExampleProto examples = 2;
+}
+
+message SaveExampleRequest{
+    ExampleProto example = 1;
+}
+
+
+message TransformerResponse{
+    ResponseHeader header = 1;
+    TransformerProto transformer = 2;
+}
+
+message TransformerListResponse{
+    ResponseHeader header = 1;
+    repeated TransformerProto transformers = 2;
+}
+
+message SaveTransformerRequest{
+    TransformerProto transformer = 1;
+}
+
+message TrainerResponse{
+    ResponseHeader header = 1;
+    TrainerProto trainer = 2;
+}
+
+message TrainerListResponse{
+    ResponseHeader header = 1;
+    repeated TrainerProto trainers = 2;
+}
+
+message SaveTrainerRequest{
+    TrainerProto trainer = 1;
+}
+
+message ExecutionResponse{
+    ResponseHeader header = 1;
+    ExecutionProto execution = 2;
+}
+
+message ExecutionListResponse{
+    ResponseHeader header = 1;
+    repeated ExecutionProto executions = 2;
+}
+
+message SaveExecutionRequest{
+    ExecutionProto execution = 1;
+}
+
+
+message WorkFlowResponse{
+    ResponseHeader header = 1;
+    WorkFlowProto workflow = 2;
+}
+
+message WorkFlowListResponse{
+    ResponseHeader header = 1;
+    repeated WorkFlowProto workflow = 2;
+}
+
+message SaveWorkFlowRequest{
+    WorkFlowProto workflow = 1;
+}
+
+
+message HistoryResponse{
+    ResponseHeader header = 1;
+    ExecutionProto history = 2;
+}
+
+message HistoryListResponse{
+    ResponseHeader header = 1;
+    repeated ExecutionProto histories = 2;
+}
+
+message SaveHistoryRequest{
+    ExecutionProto history = 1;
+}
+
+service ModelService{
+    rpc getModelById(IdRequest)returns (ModelResponse);
+    rpc getModelByName(NameRequest)returns (ModelResponse);
+    rpc listModel(ListRequest)returns (ListModelResponse);
+    rpc listModelVersion(ListModelVersionRequest)returns (ListModelVersionResponse);
+    rpc getModelVersionById(IdRequest)returns (ModelVersionResponse);
+    rpc getModelVersionByName(NameRequest)returns (ModelVersionResponse);
+    rpc saveModel(SaveModelRequest)returns (ResponseHeader);
+    rpc saveModelVersion(SaveModelVersionRequest)returns (ResponseHeader);
+    rpc saveModelVersions(SaveModelVersionListRequest)returns (ResponseHeader);
+}
+
+service ExampleService {
+    rpc getExampleById(IdRequest)returns (ExampleResponse);
+    rpc getExampleByName(NameRequest)returns (ExampleResponse);
+    rpc listExample(ListRequest)returns (ExampleListResponse);
+    rpc saveExample(SaveExampleRequest)returns (ResponseHeader);
+}
+
+service TransformerService{
+    rpc getTransformerById(IdRequest)returns (TransformerResponse);
+    rpc getTransformerByName(NameRequest)returns (TransformerResponse);
+    rpc saveTransformer(SaveTransformerRequest)returns (ResponseHeader);
+    rpc listTransformer(ListRequest)returns (TransformerListResponse);
+}
+
+service TrainerService{
+    rpc getTrainerById(IdRequest)returns (TrainerResponse);
+    rpc getTrainerByName(NameRequest)returns (TrainerResponse);
+    rpc saveTrainer(SaveTrainerRequest)returns (ResponseHeader);
+    rpc listTrainer(ListRequest)returns (TrainerListResponse);
+}
+
+service ExecutionService{
+    rpc getExecutionById(IdRequest)returns (ExecutionResponse);
+    rpc getExecutionByName(NameRequest)returns (ExecutionResponse);
+    rpc saveExecution(SaveExecutionRequest)returns (ResponseHeader);
+    rpc listExecution(ListRequest)returns (ExecutionListResponse);
+}
+
+service WorkFlowService{
+    rpc getWorkFlowById(IdRequest)returns (ExecutionResponse);
+    rpc getWorkFlowByName(NameRequest)returns (ExecutionResponse);
+    rpc saveWorkFlow(SaveWorkFlowRequest)returns (ResponseHeader);
+    rpc listWorkFlow(ListRequest)returns (WorkFlowListResponse);
+}
+
+service HistoryService{
+    rpc getHistoryById(IdRequest)returns (WorkFlowResponse);
+    rpc getHistoryByName(NameRequest)returns (WorkFlowResponse);
+    rpc saveHistory(SaveHistoryRequest)returns (ResponseHeader);
+    rpc listHistory(ListRequest)returns (HistoryListResponse);
+}

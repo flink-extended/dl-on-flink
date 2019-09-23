@@ -179,6 +179,41 @@
                             </target>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>gen-grpc-python</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <exec executable="python" dir="${basedir}" failonerror="true">
+                                    <arg line="-m grpc_tools.protoc -I=proto --python_out=python/flink_ml_workflow/proto/ --grpc_python_out=python/flink_ml_workflow/proto/ proto/meta_data_service.proto"/>
+                                </exec>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <id>sed-python-import</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>bash</executable>
+                            <workingDirectory>sbin</workingDirectory>
+                            <arguments>
+                                <argument>sed_pb2_import.sh</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 

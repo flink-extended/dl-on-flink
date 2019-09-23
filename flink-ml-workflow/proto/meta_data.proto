@@ -114,4 +114,21 @@ message ExecutionProto{
     repeated TrainerProto trainers = 4;
 }
 
+message WorkFlowProto{
+    MetaBaseProto meta = 1;
+    RunModeProto runMode = 2;
+    repeated ExecutionProto executions = 3;
+}
 
+enum HistoryType{
+    EXECUTION = 0;
+    WORKFLOW = 1;
+}
+
+message HistoryProto{
+    MetaBaseProto meta = 1;
+    HistoryType type = 2;
+    int64 startTime = 3;
+    int64 endTime = 4;
+    string uri = 5;
+}
