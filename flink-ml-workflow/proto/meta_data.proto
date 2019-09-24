@@ -118,17 +118,20 @@ message WorkFlowProto{
     MetaBaseProto meta = 1;
     RunModeProto runMode = 2;
     repeated ExecutionProto executions = 3;
+    map<string, string> dependencies = 4;
 }
 
-enum HistoryType{
+enum HistoryTypeProto{
     EXECUTION = 0;
     WORKFLOW = 1;
 }
 
 message HistoryProto{
     MetaBaseProto meta = 1;
-    HistoryType type = 2;
-    int64 startTime = 3;
-    int64 endTime = 4;
-    string uri = 5;
+    HistoryTypeProto type = 2;
+    int64 referId = 3;
+    string referName = 4;
+    int64 startTime = 5;
+    int64 endTime = 6;
+    string uri = 7;
 }

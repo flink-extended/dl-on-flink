@@ -1,39 +1,42 @@
 from enum import Enum
 from flink_ml_workflow.vertex.base_vertex import *
 from flink_ml_workflow.vertex.transformer import *
+from flink_ml_workflow.vertex.execution import *
 
 
-class Execution(BaseVertex):
+class WorkFlow(BaseVertex):
     def __init__(self,
                  name,
                  run_mode: RunMode,
-                 transformer_list: list,
-                 trainer_list: list,
+                 execution_list: list,
+                 dependencies: dict = None,
                  properties: dict = None):
-        super(Execution, self).__init__(name, properties)
+        super(WorkFlow, self).__init__(name, properties)
         self.run_mode = run_mode
-        self.transformer_list = transformer_list
-        self.trainer_list = trainer_list
+        self.execution_list = execution_list
+        self.dependencies = dependencies
 
     def to_proto(self):
-        execution_proto = ExecutionProto()
-        return self.set_proto(execution_proto)
+        workflow_proto = WorkFlowProto()
+        return self.set_proto(workflow_proto)
 
-    def set_proto(self, execution_proto):
-        execution_proto.meta.name = self.name
+    def set_proto(self, workflow_proto):
+        workflow_proto.meta.name = self.name
         for i in self.properties:
-            execution_proto.meta.properties[i] = self.properties[i]
+            workflow_proto.meta.properties[i] = self.properties[i]
 
         if self.run_mode == RunMode.STREAM:
-            execution_proto.runMode = RunModeProto.STREAM
+            workflow_proto.runMode = RunModeProto.STREAM
         else:
-            execution_proto.runMode = RunModeProto.BATCH
+            workflow_proto.runMode = RunModeProto.BATCH
 
-        for i in self.transformer_list:
-            execution_proto.transformers.append(i.to_proto())
-        for i in self.trainer_list:
-            execution_proto.trainers.append(i.to_proto())
-        return execution_proto
+        for i in self.execution_list:
+            workflow_proto.executions.append(i.to_proto())
+        if self.dependencies is not None:
+            for i in self.dependencies:
+                workflow_proto.dependencies[i] = self.dependencies[i]
+
+        return workflow_proto
 
 
 if __name__ == "__main__":
@@ -82,4 +85,8 @@ if __name__ == "__main__":
                           transformer_list=[transformer1, transformer2],
                           trainer_list=[])
 
-    print(execution.to_json())
+    workflow = WorkFlow(name="workflow",
+                        run_mode=RunMode.BATCH,
+                        execution_list=[execution])
+
+    print(workflow.to_json())
