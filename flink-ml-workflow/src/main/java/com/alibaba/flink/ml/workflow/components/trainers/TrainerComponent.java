@@ -38,23 +38,27 @@ public class TrainerComponent implements Component {
 		String entryFunc = trainerProto.getPyMainFuncName();
 		int workerNum = Integer.valueOf(trainerProto.getMeta().getPropertiesOrDefault(WorkflowConstants.WORKER_NUM, "1"));
 		int psNum = Integer.valueOf(trainerProto.getMeta().getPropertiesOrDefault(WorkflowConstants.PS_NUM, "1"));
-
-		Table inputTable = context.getTable(tableName);
-
 		Map<String, String> properties = new HashMap<>(trainerProto.getMeta().getPropertiesMap());
 		String envPath = null;
-		if(properties.containsKey(WorkflowConstants.VIRTUAL_ENV)){
+		if (properties.containsKey(WorkflowConstants.VIRTUAL_ENV)) {
 			envPath = properties.get(WorkflowConstants.VIRTUAL_ENV);
 		}
 		String checkpointPath = trainerProto.getOutputModelVersion().getModelUri();
 		properties.put(WorkflowConstants.CHECKPOINT_DIR, checkpointPath);
-		TFConfig tfConfig =  new TFConfig(workerNum, psNum, properties, pyScripts, entryFunc, envPath);
-		if(properties.containsKey(WorkflowConstants.CODE_TYPE) && "EXAMPLE".equalsIgnoreCase(properties.get(WorkflowConstants.CODE_TYPE))){
-			setExampleCodingRowType(tfConfig, trainerProto);
+		TFConfig tfConfig = new TFConfig(workerNum, psNum, properties, pyScripts, entryFunc, envPath);
+		if(context.isStream()) {
+			Table inputTable = context.getTable(tableName);
+			if (properties.containsKey(WorkflowConstants.CODE_TYPE) && "EXAMPLE"
+					.equalsIgnoreCase(properties.get(WorkflowConstants.CODE_TYPE))) {
+				setExampleCodingRowType(tfConfig, trainerProto);
+			} else {
+				setCSVCodingRowType(tfConfig, trainerProto);
+			}
+			TFUtils.train(context.getStreamEnv(), context.getTableEnv(), inputTable, tfConfig, null);
 		}else {
-			setCSVCodingRowType(tfConfig, trainerProto);
+			tfConfig.addProperty(WorkflowConstants.INPUT_DATA_URI, trainerProto.getInputExample().getBatchUri());
+			TFUtils.train(context.getStreamEnv(), context.getTableEnv(), null, tfConfig, null);
 		}
-		TFUtils.train(context.getStreamEnv(), context.getTableEnv(), inputTable, tfConfig, null);
 	}
 
 	public static void setExampleCodingRowType(TFConfig config, TrainerProto trainerProto) {

@@ -1,9 +1,12 @@
 package com.alibaba.flink.ml.workflow.runtime;
 
+import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.table.api.java.BatchTableEnvironment;
 import org.apache.flink.table.api.java.StreamTableEnvironment;
 import com.alibaba.flink.ml.workflow.ExecutionProto;
+import com.alibaba.flink.ml.workflow.RunModeProto;
 import com.alibaba.flink.ml.workflow.common.FileUtils;
 import com.alibaba.flink.ml.workflow.common.ProtoUtil;
 import com.alibaba.flink.ml.workflow.components.ComponentContext;
@@ -13,7 +16,7 @@ import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
 
 
-public class TransformJob {
+public class StreamJob {
 
 	public static void main(String[] args) throws Exception {
 		ArgumentParser parser = ArgumentParsers.newFor("TransformJob").build();
@@ -35,11 +38,25 @@ public class TransformJob {
 		System.out.println(source);
 		ExecutionProto.Builder executionBuilder = ExecutionProto.newBuilder();
 		ProtoUtil.jsonToProto(source, executionBuilder);
-		StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-		TableEnvironment tableEnv = StreamTableEnvironment.create(env);
-		ComponentContext componentContext = new ComponentContext(env, tableEnv);
-		TransformParser transformParser = new TransformParser();
-		transformParser.parseJob(executionBuilder, componentContext);
+		ComponentContext componentContext;
+		TableEnvironment tableEnv;
+		if(executionBuilder.getRunMode() == RunModeProto.BATCH){
+			if(0 == executionBuilder.getTransformersBuilderList().size()){
+				StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+				tableEnv = StreamTableEnvironment.create(env);
+				componentContext = new ComponentContext(env, tableEnv, RunModeProto.BATCH);
+			}else {
+				ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
+				tableEnv = BatchTableEnvironment.create(env);
+				componentContext = new ComponentContext(env, tableEnv, RunModeProto.BATCH);
+			}
+		}else {
+			StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+			tableEnv = StreamTableEnvironment.create(env);
+			componentContext = new ComponentContext(env, tableEnv, RunModeProto.STREAM);
+		}
+		StreamJobParser streamParser = new StreamJobParser();
+		streamParser.parseJob(executionBuilder, componentContext);
 		tableEnv.execute("job");
 
 	}

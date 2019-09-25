@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class TransformParser implements JobParser{
+public class StreamJobParser implements JobParser{
 	private List<TransformerProto.Builder> transformerProtoList = new ArrayList<>();
 
 	public boolean canTranslate(TransformerProto.Builder transformerBuilder, ComponentContext context){

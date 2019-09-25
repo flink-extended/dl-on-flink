@@ -49,7 +49,7 @@ if __name__ == "__main__":
                             data_schema=input_schema,
                             example_format="CSV",
                             batch_uri="/Users/chenwuchao/code/github/flink-ai-extended/flink-ml-workflow/src/test/resources/test.csv",
-                            stream_uri="bb",
+                            stream_uri="/Users/chenwuchao/code/github/flink-ai-extended/flink-ml-workflow/src/test/resources/test.csv",
                             properties={'a': 'a'})
 
     output_schema1 = Schema(name_list=['a', 'b', 'c'], type_list=[DataTypeProto.String, DataTypeProto.String,
@@ -82,7 +82,7 @@ if __name__ == "__main__":
                                transformer_class_name="com.alibaba.flink.ml.workflow.plugins.TestTransformer")
 
     execution = Execution(name="execution",
-                          run_mode=RunMode.STREAM,
+                          run_mode=RunMode.BATCH,
                           transformer_list=[transformer1, transformer2],
                           trainer_list=[])
 

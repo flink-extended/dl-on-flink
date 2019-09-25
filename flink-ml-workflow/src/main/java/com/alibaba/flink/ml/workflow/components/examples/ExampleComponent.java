@@ -6,6 +6,7 @@ import org.apache.flink.table.sources.TableSource;
 
 import com.alibaba.flink.ml.workflow.ExampleProto;
 import com.alibaba.flink.ml.workflow.ExampleRunMode;
+import com.alibaba.flink.ml.workflow.RunModeProto;
 import com.alibaba.flink.ml.workflow.components.Component;
 import com.alibaba.flink.ml.workflow.components.ComponentContext;
 import com.alibaba.flink.ml.workflow.components.examples.csv.CSVExampleCreator;
@@ -28,12 +29,18 @@ public class ExampleComponent implements Component {
 		if(ExampleUtils.isTempTable(exampleProto)){
 			return;
 		}
+		RunModeProto runMode;
+		if(context.isBatch()){
+			runMode = RunModeProto.BATCH;
+		}else {
+			runMode = RunModeProto.STREAM;
+		}
 		ExampleCreator creator = getExampleCreator(exampleProto.getExampleFormat());
 		if(ExampleRunMode.SOURCE == exampleProto.getRunMod()) {
-			TableSource tableSource = creator.createSource(exampleProto);
+			TableSource tableSource = creator.createSource(exampleProto, runMode);
 			tableEnv.registerTableSource(exampleProto.getMeta().getName(), tableSource);
 		}else {
-			TableSink tableSink = creator.createSink(exampleProto);
+			TableSink tableSink = creator.createSink(exampleProto, runMode);
 			tableEnv.registerTableSink(exampleProto.getMeta().getName(), tableSink);
 		}
 	}

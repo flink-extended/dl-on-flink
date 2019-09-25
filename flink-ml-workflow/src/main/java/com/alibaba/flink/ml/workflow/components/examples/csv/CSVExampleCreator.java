@@ -7,15 +7,20 @@ import org.apache.flink.table.sources.CsvTableSource;
 import org.apache.flink.table.sources.TableSource;
 
 import com.alibaba.flink.ml.workflow.ExampleProto;
+import com.alibaba.flink.ml.workflow.RunModeProto;
 import com.alibaba.flink.ml.workflow.common.DataTypeUtils;
 import com.alibaba.flink.ml.workflow.components.examples.ExampleCreator;
 
 public class CSVExampleCreator implements ExampleCreator {
 	@Override
-	public TableSource createSource(ExampleProto exampleProto) throws Exception {
+	public TableSource createSource(ExampleProto exampleProto, RunModeProto runMode) throws Exception {
 		CsvTableSource.Builder csvTable = CsvTableSource
-				.builder()
-				.path(exampleProto.getBatchUri());
+				.builder();
+		if(RunModeProto.BATCH == runMode) {
+			csvTable.path(exampleProto.getBatchUri());
+		}else {
+			csvTable.path(exampleProto.getStreamUri());
+		}
 		if(exampleProto.getMeta().getPropertiesOrDefault("skipFirstLine", "False")
 				.equalsIgnoreCase("True")){
 			csvTable = csvTable.ignoreFirstLine();
@@ -30,8 +35,13 @@ public class CSVExampleCreator implements ExampleCreator {
 	}
 
 	@Override
-	public TableSink createSink(ExampleProto exampleProto) throws Exception {
-		CsvTableSink csvTableSink = new CsvTableSink(exampleProto.getBatchUri());
+	public TableSink createSink(ExampleProto exampleProto, RunModeProto runMode) throws Exception {
+		CsvTableSink csvTableSink;
+		if(RunModeProto.BATCH == runMode) {
+			csvTableSink = new CsvTableSink(exampleProto.getBatchUri());
+		}else {
+			csvTableSink = new CsvTableSink(exampleProto.getStreamUri());
+		}
 		int count = exampleProto.getSchema().getNameListCount();
 		String[] names = new String[count];
 		TypeInformation[] types = new TypeInformation[count];

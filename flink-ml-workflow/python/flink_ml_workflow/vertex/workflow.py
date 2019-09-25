@@ -15,6 +15,28 @@ class WorkFlow(BaseVertex):
         self.run_mode = run_mode
         self.execution_list = execution_list
         self.dependencies = dependencies
+        if dependencies is None:
+            self.dependencies = {}
+        self.parse_dependencies()
+
+    def parse_dependencies(self):
+        input_map = {}
+        output_map = {}
+        for execution in self.execution_list:
+            for transformer in execution.transformer_list:
+                for example in transformer.input_example_list:
+                    input_map[example.name] = execution.name
+            for trainer in execution.trainer_list:
+                input_map[trainer.input_example.name] = execution.name
+
+        for execution in self.execution_list:
+            for transformer in execution.transformer_list:
+                for example in transformer.output_example_list:
+                    output_map[example.name] = execution.name
+
+        for input_i in input_map:
+            if input_i in output_map:
+                self.dependencies[input_map[input_i]] = output_map[input_i]
 
     def to_proto(self):
         workflow_proto = WorkFlowProto()
@@ -80,13 +102,18 @@ if __name__ == "__main__":
                                jar_location="",
                                transformer_class_name="com.alibaba.flink.ml.workflow.runtime.TestTransformer1")
 
-    execution = Execution(name="execution",
-                          run_mode=RunMode.STREAM,
-                          transformer_list=[transformer1, transformer2],
-                          trainer_list=[])
+    execution1 = Execution(name="execution1",
+                           run_mode=RunMode.STREAM,
+                           transformer_list=[transformer1],
+                           trainer_list=[])
+
+    execution2 = Execution(name="execution2",
+                           run_mode=RunMode.STREAM,
+                           transformer_list=[transformer2],
+                           trainer_list=[])
 
     workflow = WorkFlow(name="workflow",
                         run_mode=RunMode.BATCH,
-                        execution_list=[execution])
+                        execution_list=[execution1, execution2])
 
     print(workflow.to_json())
