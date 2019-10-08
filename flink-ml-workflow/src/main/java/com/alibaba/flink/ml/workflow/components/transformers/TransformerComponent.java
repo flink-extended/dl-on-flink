@@ -18,9 +18,11 @@ public class TransformerComponent implements Component {
 		TransformerProto transformerProto = (TransformerProto)message;
 		TableEnvironment tableEnv = context.getTableEnv();
 		String className = transformerProto.getTransformerClassName();
-		BaseTransformer transformer = ReflectUtil.createInstance(className, new Class[0], new Object[0]);
-		transformer.setContext(context);
-		transformer.setTransformerProto(transformerProto);
+		Class[] classes = new Class[1];
+		Object[] objects = new Object[1];
+		classes[0] = TransformerProto.class;
+		objects[0] = transformerProto;
+		BaseTransformer transformer = ReflectUtil.createInstance(className, classes, objects);
 		Table outputTable = transformer.transform(tableEnv, null);
 		ExampleProto exampleProto = transformerProto.getOutputExampleList(0);
 		if(ExampleUtils.isTempTable(exampleProto)){

@@ -70,7 +70,7 @@ if __name__ == "__main__":
                               example_type=ExampleType.EXAMPLE_BATCH,
                               data_schema=output_schema2,
                               example_format="CSV",
-                              batch_uri="/tmp/output1.csv",
+                              batch_uri="/tmp/output2.csv",
                               stream_uri="bb",
                               properties={'a': 'a'})
 
