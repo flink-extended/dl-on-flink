@@ -41,18 +41,6 @@
             "name": "output1"
           },
           "supportType": "EXAMPLE_BOTH",
-          "schema": {
-            "nameList": [
-              "a",
-              "b",
-              "c"
-            ],
-            "typeList": [
-              "String",
-              "String",
-              "String"
-            ]
-          },
           "exampleFormat": "ROW"
         }
       ],
@@ -73,18 +61,6 @@
           "name": "output1"
         },
         "supportType": "EXAMPLE_BOTH",
-        "schema": {
-          "nameList": [
-            "a",
-            "b",
-            "c"
-          ],
-          "typeList": [
-            "String",
-            "String",
-            "String"
-          ]
-        },
         "exampleFormat": "ROW"
       },
       "outputModel": {

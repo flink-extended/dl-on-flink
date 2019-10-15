@@ -4,8 +4,10 @@ import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.table.api.TableSchema;
 
 import com.alibaba.flink.ml.workflow.RunModeProto;
+import com.alibaba.flink.ml.workflow.SchemaProto;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +17,9 @@ public class ComponentContext {
 	private ExecutionEnvironment batchEnv;
 	private TableEnvironment tableEnv;
 	private Map<String, Table> tableMap = new HashMap<>();
+	private Map<String, Table> sinkTableMap = new HashMap<>();
+	private Map<String, SchemaProto.Builder> schemaMap = new HashMap<>();
+
 	private RunModeProto runMode;
 
 	public ComponentContext(StreamExecutionEnvironment streamEnv, TableEnvironment tableEnv, RunModeProto runModeProto) {
@@ -66,5 +71,22 @@ public class ComponentContext {
 
 	public boolean isStream(){
 		return !isBatch();
+	}
+
+	public void registerSinkTable(String name, Table table){
+		sinkTableMap.put(name, table);
+	}
+
+	public void writeDataToSink(){
+		for(Map.Entry<String, Table>entry: sinkTableMap.entrySet()){
+			entry.getValue().insertInto(entry.getKey());
+		}
+	}
+	public void registerSchema(String name, SchemaProto.Builder tableSchema){
+		schemaMap.put(name, tableSchema);
+	}
+
+	public SchemaProto.Builder getSchema(String name){
+		return schemaMap.get(name);
 	}
 }

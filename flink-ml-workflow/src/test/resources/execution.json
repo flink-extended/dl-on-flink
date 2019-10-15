@@ -41,18 +41,6 @@
             "name": "output1"
           },
           "supportType": "EXAMPLE_BOTH",
-          "schema": {
-            "nameList": [
-              "a",
-              "b",
-              "c"
-            ],
-            "typeList": [
-              "String",
-              "String",
-              "String"
-            ]
-          },
           "exampleFormat": "ROW"
         }
       ],
@@ -68,18 +56,6 @@
             "name": "output1"
           },
           "supportType": "EXAMPLE_BOTH",
-          "schema": {
-            "nameList": [
-              "a",
-              "b",
-              "c"
-            ],
-            "typeList": [
-              "String",
-              "String",
-              "String"
-            ]
-          },
           "exampleFormat": "ROW"
         }
       ],
@@ -92,16 +68,6 @@
             }
           },
           "supportType": "EXAMPLE_BATCH",
-          "schema": {
-            "nameList": [
-              "a",
-              "b"
-            ],
-            "typeList": [
-              "String",
-              "String"
-            ]
-          },
           "exampleFormat": "CSV",
           "batchUri": "aa",
           "streamUri": "bb"

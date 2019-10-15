@@ -13,11 +13,13 @@ import com.alibaba.flink.ml.tensorflow.util.TFConstants;
 import com.alibaba.flink.ml.util.MLConstants;
 import com.alibaba.flink.ml.workflow.SchemaProto;
 import com.alibaba.flink.ml.workflow.TrainerProto;
+import com.alibaba.flink.ml.workflow.TrainerProtoOrBuilder;
 import com.alibaba.flink.ml.workflow.common.DataTypeUtils;
 import com.alibaba.flink.ml.workflow.common.WorkflowConstants;
 import com.alibaba.flink.ml.workflow.components.Component;
 import com.alibaba.flink.ml.workflow.components.ComponentContext;
 import com.google.protobuf.Message;
+import com.google.protobuf.MessageOrBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,8 +27,8 @@ import java.util.Map;
 public class TrainerComponent implements Component {
 
 	@Override
-	public void translate(Message message, ComponentContext context) throws Exception {
-		TrainerProto trainerProto = (TrainerProto)message;
+	public void translate(MessageOrBuilder message, ComponentContext context) throws Exception {
+		TrainerProto.Builder trainerProto = (TrainerProto.Builder)message;
 		String tableName = trainerProto.getInputExample().getMeta().getName();
 		String script = trainerProto.getPyMainScript();
 		int scriptCount = trainerProto.getPyScriptsCount();
@@ -61,7 +63,7 @@ public class TrainerComponent implements Component {
 		}
 	}
 
-	public static void setExampleCodingRowType(TFConfig config, TrainerProto trainerProto) {
+	public static void setExampleCodingRowType(TFConfig config, TrainerProtoOrBuilder trainerProto) {
 		SchemaProto schemaProto = trainerProto.getInputExample().getSchema();
 		int fieldCount = schemaProto.getNameListCount();
 		String[] names = new String[fieldCount];
@@ -78,7 +80,7 @@ public class TrainerComponent implements Component {
 		config.getProperties().put(MLConstants.DECODING_CLASS, ExampleCoding.class.getCanonicalName());
 	}
 
-	public static void setCSVCodingRowType(TFConfig config, TrainerProto trainerProto){
+	public static void setCSVCodingRowType(TFConfig config, TrainerProtoOrBuilder trainerProto){
 		config.getProperties().put(MLConstants.ENCODING_CLASS, RowCSVCoding.class.getCanonicalName());
 		config.getProperties().put(MLConstants.DECODING_CLASS, RowCSVCoding.class.getCanonicalName());
 		StringBuilder inputSb = new StringBuilder();

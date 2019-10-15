@@ -7,6 +7,6 @@ import com.alibaba.flink.ml.workflow.ExampleProto;
 import com.alibaba.flink.ml.workflow.RunModeProto;
 
 public interface ExampleCreator {
-	TableSource createSource(ExampleProto exampleProto, RunModeProto runMode) throws Exception;
-	TableSink createSink(ExampleProto exampleProto, RunModeProto runMode) throws Exception;
+	TableSource createSource(ExampleProto.Builder exampleProto, RunModeProto runMode) throws Exception;
+	TableSink createSink(ExampleProto.Builder exampleProto, RunModeProto runMode) throws Exception;
 }

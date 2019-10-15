@@ -15,9 +15,9 @@ import java.util.Set;
 
 public abstract class BaseTransformer implements Transformer<BaseTransformer>{
 	protected Params params = new Params();
-	protected TransformerProto transformerProto;
+	protected TransformerProto.Builder transformerProto;
 
-	public BaseTransformer(TransformerProto transformerProto) {
+	public BaseTransformer(TransformerProto.Builder transformerProto) {
 		this.transformerProto = transformerProto;
 	}
 

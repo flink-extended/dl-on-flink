@@ -54,11 +54,11 @@ class Example(BaseVertex):
             example_proto.supportType = ExampleSupportTypeProto.EXAMPLE_BATCH
         else:
             example_proto.supportType = ExampleSupportTypeProto.EXAMPLE_BOTH
-
-        for i in self.schema.name_list:
-            example_proto.schema.nameList.append(i)
-        for i in self.schema.type_list:
-            example_proto.schema.typeList.append(i)
+        if self.schema is not None:
+            for i in self.schema.name_list:
+                example_proto.schema.nameList.append(i)
+            for i in self.schema.type_list:
+                example_proto.schema.typeList.append(i)
         example_proto.exampleFormat = self.example_format
         example_proto.batchUri = self.batch_uri
         example_proto.streamUri = self.stream_uri
@@ -67,8 +67,8 @@ class Example(BaseVertex):
 
 class TempExample(Example):
 
-    def __init__(self, name, data_schema: Schema):
-        super().__init__(name, ExampleType.EXAMPLE_BOTH, data_schema, "ROW", "", "", None)
+    def __init__(self, name):
+        super().__init__(name, ExampleType.EXAMPLE_BOTH, None, "ROW", "", "", None)
 
 
 if __name__ == "__main__":
@@ -83,3 +83,13 @@ if __name__ == "__main__":
                       properties={'a': 'a'})
 
     print(example.to_json())
+
+    example2 = Example(name="example2",
+                       example_type=ExampleType.EXAMPLE_BOTH,
+                       data_schema=None,
+                       example_format="CSV",
+                       batch_uri="aa",
+                       stream_uri="bb",
+                       properties={'a': 'a'})
+
+    print(example2.to_json())

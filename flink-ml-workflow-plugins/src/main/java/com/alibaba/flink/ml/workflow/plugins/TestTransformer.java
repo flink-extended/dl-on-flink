@@ -9,26 +9,14 @@ import com.alibaba.flink.ml.workflow.components.examples.ExampleUtils;
 import com.alibaba.flink.ml.workflow.components.transformers.BaseTransformer;
 
 public class TestTransformer extends BaseTransformer {
-	public TestTransformer(TransformerProto transformerProto) {
+	public TestTransformer(TransformerProto.Builder transformerProto) {
 		super(transformerProto);
 	}
 
 	@Override
 	public Table transform(TableEnvironment tableEnvironment, Table table) {
 		Table inputTable = tableEnvironment.scan(transformerProto.getInputExampleList(0).getMeta().getName());
-		SchemaProto schemaProto = transformerProto.getOutputExampleList(0).getSchema();
-		StringBuilder stringBuilder = new StringBuilder();
-		for(int i = 0; i < schemaProto.getNameListCount(); i++){
-			stringBuilder.append(schemaProto.getNameList(i)).append(",");
-		}
-		stringBuilder = stringBuilder.deleteCharAt(stringBuilder.length()-1);
-		Table  outputTable = inputTable.select(stringBuilder.toString());
-		if(ExampleUtils.isTempTable(transformerProto.getOutputExampleList(0))){
-			tableEnvironment.registerTable(transformerProto.getOutputExampleList(0).getMeta().getName(), outputTable);
-		}else {
-			outputTable.insertInto(transformerProto.getOutputExampleList(0).getMeta().getName());
-		}
+		Table  outputTable = inputTable.select("a, b");
 		return outputTable;
-
 	}
 }

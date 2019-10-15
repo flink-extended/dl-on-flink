@@ -29,16 +29,12 @@ public class StreamJobParser implements JobParser{
 
 	@Override
 	public void parseJob(ExecutionProto.Builder executionProtoBuilder, ComponentContext context) throws Exception{
+		//parse source table
 		for(TransformerProto.Builder transformerBuilder: executionProtoBuilder.getTransformersBuilderList()){
 			for(ExampleProto.Builder builder: transformerBuilder.getInputExampleListBuilderList()) {
 				builder.setRunMod(ExampleRunMode.SOURCE);
 				ExampleComponent exampleComponent = new ExampleComponent();
-				exampleComponent.translate(builder.build(), context);
-			}
-			for(ExampleProto.Builder builder: transformerBuilder.getOutputExampleListBuilderList()){
-				builder.setRunMod(ExampleRunMode.SINK);
-				ExampleComponent exampleComponent = new ExampleComponent();
-				exampleComponent.translate(builder.build(), context);
+				exampleComponent.translate(builder, context);
 			}
 		}
 		for(TransformerProto.Builder transformerBuilder: executionProtoBuilder.getTransformersBuilderList()){
@@ -51,7 +47,7 @@ public class StreamJobParser implements JobParser{
 			for(TransformerProto.Builder transformerBuilder: transformerProtoList){
 				if(canTranslate(transformerBuilder, context)) {
 					TransformerComponent transformerComponent = new TransformerComponent();
-					transformerComponent.translate(transformerBuilder.build(), context);
+					transformerComponent.translate(transformerBuilder, context);
 					temp.add(transformerBuilder);
 				}
 			}
@@ -61,8 +57,22 @@ public class StreamJobParser implements JobParser{
 			}
 		}
 		for(TrainerProto.Builder trainerBuilder : executionProtoBuilder.getTrainersBuilderList()){
+			//set trainer input schema
+			if(!trainerBuilder.getInputExampleBuilder().hasSchema()){
+				trainerBuilder.getInputExampleBuilder()
+						.setSchema(context.getSchema(trainerBuilder.getInputExample().getMeta().getName()));
+			}
 			TrainerComponent trainerComponent = new TrainerComponent();
-			trainerComponent.translate(trainerBuilder.build(), context);
+			trainerComponent.translate(trainerBuilder, context);
 		}
+		// parse sink table
+		for(TransformerProto.Builder transformerBuilder: executionProtoBuilder.getTransformersBuilderList()){
+			for(ExampleProto.Builder builder: transformerBuilder.getOutputExampleListBuilderList()){
+				builder.setRunMod(ExampleRunMode.SINK);
+				ExampleComponent exampleComponent = new ExampleComponent();
+				exampleComponent.translate(builder, context);
+			}
+		}
+		context.writeDataToSink();
 	}
 }

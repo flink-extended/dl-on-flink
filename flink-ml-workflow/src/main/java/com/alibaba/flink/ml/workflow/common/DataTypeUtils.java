@@ -2,9 +2,11 @@ package com.alibaba.flink.ml.workflow.common;
 
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.common.typeinfo.Types;
-
+import org.apache.flink.table.api.TableSchema;
+import org.apache.flink.table.types.DataType;
 import com.alibaba.flink.ml.operator.util.DataTypes;
 import com.alibaba.flink.ml.workflow.DataTypeProto;
+import com.alibaba.flink.ml.workflow.SchemaProto;
 
 public class DataTypeUtils {
 
@@ -70,5 +72,46 @@ public class DataTypeUtils {
 				throw new RuntimeException("not support UNRECOGNIZED");
 		}
 		throw new RuntimeException("not support:" + dataTypeProto.toString());
+	}
+
+	public static DataTypeProto toDataTypeProto(DataType dataType){
+		if(dataType.getConversionClass() == byte[].class){
+			return DataTypeProto.Bytes;
+		}else if(dataType.getConversionClass() == int.class || dataType.getConversionClass() == Integer.class){
+			return DataTypeProto.Int32;
+		}else if(dataType.getConversionClass() == long.class || dataType.getConversionClass() == Long.class){
+			return DataTypeProto.Int64;
+		}else if(dataType.getConversionClass() == float.class || dataType.getConversionClass() == Float.class){
+			return DataTypeProto.Float32;
+		}else if(dataType.getConversionClass() == double.class || dataType.getConversionClass() == Double.class){
+			return DataTypeProto.Float64;
+		}else if(dataType.getConversionClass() == int[].class || dataType.getConversionClass() == Integer[].class){
+			return DataTypeProto.Int32Array;
+		}else if(dataType.getConversionClass() == long[].class || dataType.getConversionClass() == Long[].class){
+			return DataTypeProto.Float64;
+		}else if(dataType.getConversionClass() == float[].class || dataType.getConversionClass() == Float[].class){
+			return DataTypeProto.Float64;
+		}else if(dataType.getConversionClass() == double[].class || dataType.getConversionClass() == Double[].class){
+			return DataTypeProto.Float64;
+		}else if(dataType.getConversionClass() == String.class){
+			return DataTypeProto.String;
+		}else if(dataType.getConversionClass() == byte[][].class){
+			return DataTypeProto.BytesArray;
+		}else {
+			throw new RuntimeException("not support:" + dataType.toString());
+		}
+	}
+
+	public static SchemaProto.Builder tableSchemaToSchemaProto(TableSchema tableSchema,
+			SchemaProto.Builder schemaBuilder){
+		int len = tableSchema.getFieldCount();
+		String[] names = tableSchema.getFieldNames();
+		DataType[] types = tableSchema.getFieldDataTypes();
+
+		for(int i = 0; i < len; i++) {
+			schemaBuilder.addNameList(names[i]);
+			schemaBuilder.addTypeList(toDataTypeProto(types[i]));
+		}
+		return schemaBuilder;
 	}
 }

@@ -48,27 +48,24 @@ if __name__ == "__main__":
                             example_type=ExampleType.EXAMPLE_BATCH,
                             data_schema=input_schema,
                             example_format="CSV",
-                            batch_uri="/Users/chenwuchao/code/github/flink-ai-extended/flink-ml-workflow/src/test/resources/test.csv",
-                            stream_uri="/Users/chenwuchao/code/github/flink-ai-extended/flink-ml-workflow/src/test/resources/test.csv",
+                            batch_uri="/Users/chenwuchao/code/github/chenwuchao/flink-ai-extended/flink-ml-workflow/src/test/resources/test.csv",
+                            stream_uri="/Users/chenwuchao/code/github/chenwuchao/flink-ai-extended/flink-ml-workflow/src/test/resources/test.csv",
                             properties={'a': 'a'})
 
-    output_schema1 = Schema(name_list=['a', 'b', 'c'], type_list=[DataTypeProto.String, DataTypeProto.String,
-                                                                  DataTypeProto.String])
 
-    output_example1 = TempExample(name="output1", data_schema=output_schema1)
+    output_example1 = TempExample(name="output1")
 
-    output_schema2 = Schema(name_list=['a', 'b'], type_list=[DataTypeProto.String, DataTypeProto.String])
 
     transformer1 = Transformer(name='transformer1',
                                transformer_type=TransformerType.JAVA,
                                input_example_list=[input_example],
                                output_example_list=[output_example1],
-                               jar_location="file:///Users/chenwuchao/code/github/flink-ai-extended/flink-ml-workflow-plugins/target/flink-ml-workflow-plugins-0.1.0.jar",
+                               jar_location="file:///Users/chenwuchao/code/github/chenwuchao/flink-ai-extended/flink-ml-workflow-plugins/target/flink-ml-workflow-plugins-0.1.0.jar",
                                transformer_class_name="com.alibaba.flink.ml.workflow.plugins.TestTransformer")
 
     output_example2 = Example(name="output_example",
                               example_type=ExampleType.EXAMPLE_BATCH,
-                              data_schema=output_schema2,
+                              data_schema=None,
                               example_format="CSV",
                               batch_uri="/tmp/output2.csv",
                               stream_uri="bb",
@@ -78,7 +75,7 @@ if __name__ == "__main__":
                                transformer_type=TransformerType.JAVA,
                                input_example_list=[output_example1],
                                output_example_list=[output_example2],
-                               jar_location="file:///Users/chenwuchao/code/github/flink-ai-extended/flink-ml-workflow-plugins/target/flink-ml-workflow-plugins-0.1.0.jar",
+                               jar_location="file:///Users/chenwuchao/code/github/chenwuchao/flink-ai-extended/flink-ml-workflow-plugins/target/flink-ml-workflow-plugins-0.1.0.jar",
                                transformer_class_name="com.alibaba.flink.ml.workflow.plugins.TestTransformer")
 
     execution = Execution(name="execution",

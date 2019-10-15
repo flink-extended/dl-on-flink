@@ -28,7 +28,7 @@ def map_func(context):
             sleep(1)
     else:
         with tf.device(tf.train.replica_device_setter(worker_device='/job:worker/task:' + str(index), cluster=cluster)):
-            record_defaults = [["9.0"], ["9.0"], ["9.0"]]
+            record_defaults = [["9.0"], ["9.0"]]
             dataset = tf_context.flink_stream_dataset(buffer_size=0)
             dataset = dataset.map(lambda record: tf.decode_csv(record, record_defaults=record_defaults))
             dataset = dataset.batch(1)

@@ -10,7 +10,7 @@ import com.alibaba.flink.ml.workflow.RunModeProto;
 import com.alibaba.flink.ml.workflow.components.Component;
 import com.alibaba.flink.ml.workflow.components.ComponentContext;
 import com.alibaba.flink.ml.workflow.components.examples.csv.CSVExampleCreator;
-import com.google.protobuf.Message;
+import com.google.protobuf.MessageOrBuilder;
 
 public class ExampleComponent implements Component {
 
@@ -23,9 +23,9 @@ public class ExampleComponent implements Component {
 	}
 
 	@Override
-	public void translate(Message message, ComponentContext context) throws Exception {
+	public void translate(MessageOrBuilder message, ComponentContext context) throws Exception {
 		TableEnvironment tableEnv = context.getTableEnv();
-		ExampleProto exampleProto = (ExampleProto) message;
+		ExampleProto.Builder exampleProto = (ExampleProto.Builder) message;
 		if(ExampleUtils.isTempTable(exampleProto)){
 			return;
 		}

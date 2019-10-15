@@ -4,7 +4,6 @@ from flink_ml_workflow.vertex.model import *
 from flink_ml_workflow.vertex.trainer import *
 
 
-
 def transform_job_test():
     input_schema = Schema(name_list=['a', 'b', 'c', 'd'], type_list=[DataTypeProto.String, DataTypeProto.String,
                                                                      DataTypeProto.String, DataTypeProto.String])
@@ -17,12 +16,8 @@ def transform_job_test():
                             stream_uri="bb",
                             properties={'a': 'a'})
 
-    output_schema1 = Schema(name_list=['a', 'b', 'c'], type_list=[DataTypeProto.String, DataTypeProto.String,
-                                                                  DataTypeProto.String])
+    output_example1 = TempExample(name="output1")
 
-    output_example1 = TempExample(name="output1", data_schema=output_schema1)
-
-    output_schema2 = Schema(name_list=['a', 'b'], type_list=[DataTypeProto.String, DataTypeProto.String])
 
     transformer1 = Transformer(name='transformer',
                                transformer_type=TransformerType.JAVA,
@@ -33,7 +28,7 @@ def transform_job_test():
 
     output_example2 = Example(name="output_example",
                               example_type=ExampleType.EXAMPLE_BATCH,
-                              data_schema=output_schema2,
+                              data_schema=None,
                               example_format="CSV",
                               batch_uri="aa",
                               stream_uri="bb",
@@ -66,10 +61,7 @@ def train_job_test():
                             stream_uri="bb",
                             properties={'a': 'a'})
 
-    output_schema1 = Schema(name_list=['a', 'b', 'c'], type_list=[DataTypeProto.String, DataTypeProto.String,
-                                                                  DataTypeProto.String])
-
-    output_example1 = TempExample(name="output1", data_schema=output_schema1)
+    output_example1 = TempExample(name="output1")
 
     transformer1 = Transformer(name='transformer',
                                transformer_type=TransformerType.JAVA,

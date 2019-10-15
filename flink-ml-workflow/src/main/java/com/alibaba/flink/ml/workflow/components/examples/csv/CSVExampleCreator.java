@@ -13,7 +13,7 @@ import com.alibaba.flink.ml.workflow.components.examples.ExampleCreator;
 
 public class CSVExampleCreator implements ExampleCreator {
 	@Override
-	public TableSource createSource(ExampleProto exampleProto, RunModeProto runMode) throws Exception {
+	public TableSource createSource(ExampleProto.Builder exampleProto, RunModeProto runMode) throws Exception {
 		CsvTableSource.Builder csvTable = CsvTableSource
 				.builder();
 		if(RunModeProto.BATCH == runMode) {
@@ -35,7 +35,7 @@ public class CSVExampleCreator implements ExampleCreator {
 	}
 
 	@Override
-	public TableSink createSink(ExampleProto exampleProto, RunModeProto runMode) throws Exception {
+	public TableSink createSink(ExampleProto.Builder exampleProto, RunModeProto runMode) throws Exception {
 		CsvTableSink csvTableSink;
 		if(RunModeProto.BATCH == runMode) {
 			csvTableSink = new CsvTableSink(exampleProto.getBatchUri());
