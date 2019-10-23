@@ -52,7 +52,7 @@ public class JobParserTest {
 		ComponentContext componentContext = new ComponentContext(env, tableEnv, RunModeProto.STREAM);
 		StreamJobParser parser = new StreamJobParser();
 		parser.parseJob(executionBuilder, componentContext);
-		tableEnv.execute("job");
+		env.execute("job");
 
 	}
 
@@ -76,7 +76,7 @@ public class JobParserTest {
 		ComponentContext componentContext = new ComponentContext(env, tableEnv, RunModeProto.BATCH);
 		StreamJobParser parser = new StreamJobParser();
 		parser.parseJob(executionBuilder, componentContext);
-		tableEnv.execute("job");
+		env.execute("job");
 
 	}
 
@@ -101,7 +101,7 @@ public class JobParserTest {
 		ComponentContext componentContext = new ComponentContext(env, tableEnv, RunModeProto.STREAM);
 		StreamJobParser parser = new StreamJobParser();
 		parser.parseJob(executionBuilder, componentContext);
-		tableEnv.execute("job");
+		env.execute("job");
 
 	}
 }

@@ -45,19 +45,25 @@ public class StreamJob {
 				StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 				tableEnv = StreamTableEnvironment.create(env);
 				componentContext = new ComponentContext(env, tableEnv, RunModeProto.BATCH);
+				StreamJobParser streamParser = new StreamJobParser();
+				streamParser.parseJob(executionBuilder, componentContext);
+				env.execute("job");
 			}else {
 				ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 				tableEnv = BatchTableEnvironment.create(env);
 				componentContext = new ComponentContext(env, tableEnv, RunModeProto.BATCH);
+				StreamJobParser streamParser = new StreamJobParser();
+				streamParser.parseJob(executionBuilder, componentContext);
+				env.execute("job");
 			}
 		}else {
 			StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 			tableEnv = StreamTableEnvironment.create(env);
 			componentContext = new ComponentContext(env, tableEnv, RunModeProto.STREAM);
+			StreamJobParser streamParser = new StreamJobParser();
+			streamParser.parseJob(executionBuilder, componentContext);
+			env.execute("job");
 		}
-		StreamJobParser streamParser = new StreamJobParser();
-		streamParser.parseJob(executionBuilder, componentContext);
-		tableEnv.execute("job");
 
 	}
 }
