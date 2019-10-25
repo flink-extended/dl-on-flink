@@ -1,0 +1,21 @@
+name: "project"
+
+virtual_env: ""
+
+dependencies:
+  python_interpreter: "python3.7"
+  pip: "pip3.7"
+
+pip_dependencies:
+  - tensorflow==1.13.1
+  - numpy==1.16.4
+
+params:
+  - "--a=a"
+  - "--b=b"
+
+entry_point: "main.py"
+
+tags:
+  - a: "a"
+  - b: "b"

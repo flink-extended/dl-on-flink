@@ -135,3 +135,11 @@ message HistoryProto{
     int64 endTime = 6;
     string uri = 7;
 }
+
+message ProjectProto{
+    MetaBaseProto meta = 1;
+    string projectType = 2;
+    string uri = 3;
+    string user = 4;
+    string password = 5;
+}

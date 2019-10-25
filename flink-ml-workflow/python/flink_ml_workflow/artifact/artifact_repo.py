@@ -2,6 +2,8 @@ import os
 import posixpath
 import tempfile
 from abc import abstractmethod, ABCMeta
+from flink_ml_workflow.exception.workflow_exception import WorkflowException
+from flink_ml_workflow.utils.validation import bad_path_message, path_not_unique
 
 
 class ArtifactRepository:
@@ -93,17 +95,13 @@ class ArtifactRepository:
         dst_path = os.path.abspath(dst_path)
 
         if not os.path.exists(dst_path):
-            raise MlflowException(
-                message=(
+            raise WorkflowException(
                     "The destination path for downloaded artifacts does not"
-                    " exist! Destination path: {dst_path}".format(dst_path=dst_path)),
-                error_code=RESOURCE_DOES_NOT_EXIST)
+                    " exist! Destination path: {dst_path}".format(dst_path=dst_path))
         elif not os.path.isdir(dst_path):
-            raise MlflowException(
-                message=(
+            raise WorkflowException(
                     "The destination path for downloaded artifacts must be a directory!"
-                    " Destination path: {dst_path}".format(dst_path=dst_path)),
-                error_code=INVALID_PARAMETER_VALUE)
+                    " Destination path: {dst_path}".format(dst_path=dst_path))
 
         return download_artifacts_into(artifact_path, dst_path)
 
@@ -122,5 +120,5 @@ class ArtifactRepository:
 
 def verify_artifact_path(artifact_path):
     if artifact_path and path_not_unique(artifact_path):
-        raise MlflowException("Invalid artifact path: '%s'. %s" % (artifact_path,
+        raise WorkflowException("Invalid artifact path: '%s'. %s" % (artifact_path,
                                                                    bad_path_message(artifact_path)))

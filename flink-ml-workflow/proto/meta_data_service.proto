@@ -76,76 +76,32 @@ message SaveExampleRequest{
 }
 
 
-message TransformerResponse{
-    ResponseHeader header = 1;
-    TransformerProto transformer = 2;
-}
-
-message TransformerListResponse{
-    ResponseHeader header = 1;
-    repeated TransformerProto transformers = 2;
-}
-
-message SaveTransformerRequest{
-    TransformerProto transformer = 1;
-}
-
-message TrainerResponse{
-    ResponseHeader header = 1;
-    TrainerProto trainer = 2;
-}
-
-message TrainerListResponse{
-    ResponseHeader header = 1;
-    repeated TrainerProto trainers = 2;
-}
-
-message SaveTrainerRequest{
-    TrainerProto trainer = 1;
-}
-
-message ExecutionResponse{
-    ResponseHeader header = 1;
-    ExecutionProto execution = 2;
-}
-
-message ExecutionListResponse{
-    ResponseHeader header = 1;
-    repeated ExecutionProto executions = 2;
-}
-
-message SaveExecutionRequest{
-    ExecutionProto execution = 1;
-}
-
-
-message WorkFlowResponse{
-    ResponseHeader header = 1;
-    WorkFlowProto workflow = 2;
-}
-
-message WorkFlowListResponse{
-    ResponseHeader header = 1;
-    repeated WorkFlowProto workflow = 2;
-}
-
-message SaveWorkFlowRequest{
-    WorkFlowProto workflow = 1;
-}
-
-
 message HistoryResponse{
     ResponseHeader header = 1;
-    ExecutionProto history = 2;
+    HistoryProto history = 2;
 }
 
 message HistoryListResponse{
     ResponseHeader header = 1;
-    repeated ExecutionProto histories = 2;
+    repeated HistoryProto histories = 2;
 }
 
 message SaveHistoryRequest{
-    ExecutionProto history = 1;
+    HistoryProto history = 1;
+}
+
+message ProjectResponse{
+    ResponseHeader header = 1;
+    ProjectProto project = 2;
+}
+
+message ProjectListResponse{
+    ResponseHeader header = 1;
+    repeated ProjectProto Projects = 2;
+}
+
+message SaveProjectRequest{
+    ProjectProto project = 1;
 }
 
 service ModelService{
@@ -167,37 +123,16 @@ service ExampleService {
     rpc saveExample(SaveExampleRequest)returns (ResponseHeader);
 }
 
-service TransformerService{
-    rpc getTransformerById(IdRequest)returns (TransformerResponse);
-    rpc getTransformerByName(NameRequest)returns (TransformerResponse);
-    rpc saveTransformer(SaveTransformerRequest)returns (ResponseHeader);
-    rpc listTransformer(ListRequest)returns (TransformerListResponse);
-}
-
-service TrainerService{
-    rpc getTrainerById(IdRequest)returns (TrainerResponse);
-    rpc getTrainerByName(NameRequest)returns (TrainerResponse);
-    rpc saveTrainer(SaveTrainerRequest)returns (ResponseHeader);
-    rpc listTrainer(ListRequest)returns (TrainerListResponse);
-}
-
-service ExecutionService{
-    rpc getExecutionById(IdRequest)returns (ExecutionResponse);
-    rpc getExecutionByName(NameRequest)returns (ExecutionResponse);
-    rpc saveExecution(SaveExecutionRequest)returns (ResponseHeader);
-    rpc listExecution(ListRequest)returns (ExecutionListResponse);
-}
-
-service WorkFlowService{
-    rpc getWorkFlowById(IdRequest)returns (ExecutionResponse);
-    rpc getWorkFlowByName(NameRequest)returns (ExecutionResponse);
-    rpc saveWorkFlow(SaveWorkFlowRequest)returns (ResponseHeader);
-    rpc listWorkFlow(ListRequest)returns (WorkFlowListResponse);
-}
-
 service HistoryService{
-    rpc getHistoryById(IdRequest)returns (WorkFlowResponse);
-    rpc getHistoryByName(NameRequest)returns (WorkFlowResponse);
+    rpc getHistoryById(IdRequest)returns (HistoryResponse);
+    rpc getHistoryByName(NameRequest)returns (HistoryResponse);
     rpc saveHistory(SaveHistoryRequest)returns (ResponseHeader);
     rpc listHistory(ListRequest)returns (HistoryListResponse);
+}
+
+service ProjectService{
+    rpc getProjectById(IdRequest)returns (ProjectResponse);
+    rpc getProjectByName(NameRequest)returns (ProjectResponse);
+    rpc saveProject(SaveProjectRequest)returns (ResponseHeader);
+    rpc listProject(ListRequest)returns (ProjectListResponse);
 }

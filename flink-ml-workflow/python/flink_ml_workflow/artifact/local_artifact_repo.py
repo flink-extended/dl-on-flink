@@ -1,8 +1,8 @@
 import distutils.dir_util as dir_util
 import os
 import shutil
-
-from mlflow.utils.file_utils import mkdir, list_all, get_file_info, local_file_uri_to_path, \
+from flink_ml_workflow.artifact.artifact_repo import ArtifactRepository, verify_artifact_path
+from flink_ml_workflow.utils.file_utils import mkdir, list_all, local_file_uri_to_path, \
     relative_path_to_artifact_path
 
 
