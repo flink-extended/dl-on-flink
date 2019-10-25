@@ -53,7 +53,8 @@
         "name": "trainer",
         "properties": {
           "WORKER_NUM": "1",
-          "PS_NUM": "0"
+          "PS_NUM": "0",
+          "python.version": "3.7"
         }
       },
       "inputExample": {
