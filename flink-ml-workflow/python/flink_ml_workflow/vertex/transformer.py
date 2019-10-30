@@ -1,5 +1,5 @@
 from enum import Enum
-from flink_ml_workflow.vertex.example import *
+from python.flink_ml_workflow.vertex.example import *
 
 
 class TransformerType(str, Enum):

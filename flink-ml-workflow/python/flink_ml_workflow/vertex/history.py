@@ -1,7 +1,7 @@
 from enum import Enum
-from flink_ml_workflow.vertex.base_vertex import *
-from flink_ml_workflow.vertex.transformer import *
-from flink_ml_workflow.vertex.execution import *
+from python.flink_ml_workflow.vertex.base_vertex import *
+from python.flink_ml_workflow.vertex.transformer import *
+from python.flink_ml_workflow.vertex.execution import *
 
 
 class HistoryType(str, Enum):

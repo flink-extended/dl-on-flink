@@ -1,5 +1,5 @@
-from flink_ml_workflow.proto.meta_data_pb2 import *
-from flink_ml_workflow.vertex.base_vertex import BaseVertex
+from python.flink_ml_workflow.proto.meta_data_pb2 import *
+from python.flink_ml_workflow.vertex.base_vertex import BaseVertex
 from enum import Enum
 
 

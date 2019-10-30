@@ -1,6 +1,6 @@
 from enum import Enum
-from flink_ml_workflow.vertex.base_vertex import *
-from flink_ml_workflow.vertex.transformer import *
+from python.flink_ml_workflow.vertex.base_vertex import *
+from python.flink_ml_workflow.vertex.transformer import *
 
 
 class Execution(BaseVertex):

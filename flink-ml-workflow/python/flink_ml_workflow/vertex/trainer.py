@@ -1,7 +1,7 @@
-from flink_ml_workflow.proto.meta_data_pb2 import *
-from flink_ml_workflow.vertex.base_vertex import BaseVertex, RunMode
-from flink_ml_workflow.vertex.example import *
-from flink_ml_workflow.vertex.model import *
+from python.flink_ml_workflow.proto.meta_data_pb2 import *
+from python.flink_ml_workflow.vertex.base_vertex import BaseVertex, RunMode
+from python.flink_ml_workflow.vertex.example import *
+from python.flink_ml_workflow.vertex.model import *
 
 
 class Trainer(BaseVertex):

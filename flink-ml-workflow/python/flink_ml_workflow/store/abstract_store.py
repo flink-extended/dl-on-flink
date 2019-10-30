@@ -1,8 +1,8 @@
 from abc import abstractmethod, ABCMeta
-from flink_ml_workflow.vertex.model import Model, ModelVersion
-from flink_ml_workflow.vertex.example import Example
-from flink_ml_workflow.vertex.history import History
-from flink_ml_workflow.vertex.project import Project
+from python.flink_ml_workflow.vertex.model import Model, ModelVersion
+from python.flink_ml_workflow.vertex.example import Example
+from python.flink_ml_workflow.vertex.history import History
+from python.flink_ml_workflow.vertex.project import Project
 
 
 class AbstractStore:
