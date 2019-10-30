@@ -42,7 +42,7 @@ properties varchar (100),
 modelId int,
 modelUri varchar (100),
 logUri varchar (100),
-version varchar (100),
+version varchar (100) unique,
 foreign key (modelId)
 references model_proto(instanceId)
 );

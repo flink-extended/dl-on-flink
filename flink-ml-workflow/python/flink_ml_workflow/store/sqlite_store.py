@@ -275,7 +275,14 @@ class LocalStore(AbstractStore):
             conn.close()
             print(e)
             return meta_data_service_pb2.ResponseHeader(returnCode=1, message='insert fail')
-        conn.commit()
+        try:
+            conn.commit()
+        except Exception as e:
+            print(e)
+            conn.rollback()
+            cursor.close()
+            conn.close()
+            return meta_data_service_pb2.ResponseHeader(returnCode=1, message='insert fail')
         cursor.close()
         conn.close()
         return meta_data_service_pb2.ResponseHeader(returnCode=0, message='ok')
@@ -289,12 +296,19 @@ class LocalStore(AbstractStore):
                 cursor.execute('insert into model_version_proto (properties,modelUri,logUri,version) values (?,?,?,?)',
                                (json.dumps(model_version.properties), model_version.model_uri, model_version.log_uri,
                                 model_version.version))
-            except (TypeError, sqlite3.IntegrityError) as e:
+            except Exception as e:
                 cursor.close()
                 conn.close()
                 print(e)
                 return meta_data_service_pb2.ResponseHeader(returnCode=1, message='insert fail')
-        conn.commit()
+        try:
+            conn.commit()
+        except Exception as e:
+            print(e)
+            conn.rollback()
+            cursor.close()
+            conn.close()
+            return meta_data_service_pb2.ResponseHeader(returnCode=1, message='insert fail')
         cursor.close()
         conn.close()
         return meta_data_service_pb2.ResponseHeader(returnCode=0, message='ok')
@@ -388,7 +402,14 @@ class LocalStore(AbstractStore):
             conn.close()
             print(e)
             return meta_data_service_pb2.ResponseHeader(returnCode=1, message='insert failed')
-        conn.commit()
+        try:
+            conn.commit()
+        except Exception as e:
+            print(e)
+            conn.rollback()
+            cursor.close()
+            conn.close()
+            return meta_data_service_pb2.ResponseHeader(returnCode=1, message='insert fail')
         cursor.close()
         conn.close()
         return meta_data_service_pb2.ResponseHeader(returnCode=0, message='ok')
@@ -449,7 +470,14 @@ class LocalStore(AbstractStore):
             conn.close()
             print(e)
             return meta_data_service_pb2.ResponseHeader(returnCode=1, message='insert fail')
-        conn.commit()
+        try:
+            conn.commit()
+        except Exception as e:
+            print(e)
+            conn.rollback()
+            cursor.close()
+            conn.close()
+            return meta_data_service_pb2.ResponseHeader(returnCode=1, message='insert fail')
         cursor.close()
         conn.close()
         return meta_data_service_pb2.ResponseHeader(returnCode=0, message='ok')
@@ -524,8 +552,6 @@ class LocalStore(AbstractStore):
         conn = sqlite3.connect('meta_data.db')
         cursor = conn.cursor()
 
-        if history.properties == None:
-            history.properties = {}
         try:
             cursor.execute(
                 'insert into history_proto(name,properties,type,referId,referName,startTime,endTime,uri) values (?,?,?,?,?,?,?,?)',
@@ -536,7 +562,14 @@ class LocalStore(AbstractStore):
             conn.close()
             print(e)
             return meta_data_service_pb2.ResponseHeader(returnCode=1, message='insert fail')
-        conn.commit()
+        try:
+            conn.commit()
+        except Exception as e:
+            print(e)
+            conn.rollback()
+            cursor.close()
+            conn.close()
+            return meta_data_service_pb2.ResponseHeader(returnCode=1, message='insert fail')
         cursor.close()
         conn.close()
         return meta_data_service_pb2.ResponseHeader(returnCode=0, message='ok')
@@ -577,26 +610,26 @@ if __name__ == '__main__':
     # print(a.list_model_version(1, 2, 2))
     # print(a.get_model_version_by_id(9))
     # print(a.get_model_version_by_version('v100'))
-    # version1 = ModelVersion(version='v1',
-    #                         model_uri='aa/v1',
-    #                         log_uri='aa/l1')
-    # version2 = ModelVersion(version='v2',
-    #                         model_uri='aa/v2',
-    #                         log_uri='aa/l2')
-    # model = Model(name="model0",
-    #               model_type=ModelType.SAVED_MODEL,
-    #               uri="aa")
-    # model.add_version(version1)
-    # model.add_version(version2)
-    # print(a.save_model(model))
-    # version1 = ModelVersion(version='v',
+    version1 = ModelVersion(version='v01',
+                            model_uri='aa/v1',
+                            log_uri='aa/l1')
+    version2 = ModelVersion(version='v02',
+                            model_uri='aa/v2',
+                            log_uri='aa/l2')
+    model = Model(name="model01",
+                  model_type=ModelType.SAVED_MODEL,
+                  uri="aa")
+    model.add_version(version1)
+    model.add_version(version2)
+    print(a.save_model(model))
+    # version1 = ModelVersion(version='vw',
     #                         model_uri='aa/v1',
     #                         log_uri='aa/l1')
     # print(a.save_model_version(version1))
-    # version1 = ModelVersion(version='v10',
+    # version1 = ModelVersion(version='vw10',
     #                         model_uri='aa/v1',
     #                         log_uri='aa/l1')
-    # version2 = ModelVersion(version='v20',
+    # version2 = ModelVersion(version='vw20',
     #                         model_uri='aa/v2',
     #                         log_uri='aa/l2')
     # print(a.save_model_versions([version1, version2]))
@@ -604,7 +637,7 @@ if __name__ == '__main__':
     # print(a.get_example_by_name('example'))
     # print(a.list_example(1, 2))
     # schema = Schema(name_list=['a', 'b'], type_list=[DataTypeProto.String, DataTypeProto.String])
-    # example = Example(name="example",
+    # example = Example(name="example11",
     #                   example_type=ExampleType.EXAMPLE_BOTH,
     #                   data_schema=schema,
     #                   example_format="CSV",
@@ -615,23 +648,23 @@ if __name__ == '__main__':
     # print(a.get_project_by_id(3))
     # print(a.get_project_by_name('pro1'))
     # print(a.list_projects(1, 2))
-    # project = Project(name="project",
+    # project = Project(name="project1",
     #                   project_type=ProjectType.GIT,
     #                   user="user",
     #                   password="password",
     #                   uri="./log",
     #                   properties={})
     # print(a.save_project(project))
-    import time
-
-    millis = int(round(time.time() * 1000))
-    history = History(name="history",
-                      history_type=HistoryType.EXECUTION,
-                      start_time=millis,
-                      end_time=millis + 5 * 1000,
-                      uri="./log",
-                      refer_name="execution")
-    print(a.save_history(history))
-    print(a.get_history_by_id(1))
-    print(a.get_history_by_name('history1'))
-    print(a.list_history(1, 0))
+    # import time
+    #
+    # millis = int(round(time.time() * 1000))
+    # history = History(name="history1",
+    #                   history_type=HistoryType.EXECUTION,
+    #                   start_time=millis,
+    #                   end_time=millis + 5 * 1000,
+    #                   uri="./log",
+    #                   refer_name="execution")
+    # print(a.save_history(history))
+    # print(a.get_history_by_id(1))
+    # print(a.get_history_by_name('history1'))
+    # print(a.list_history(1, 0))

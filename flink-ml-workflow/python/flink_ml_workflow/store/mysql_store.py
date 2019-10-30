@@ -266,7 +266,14 @@ class MysqlStore(AbstractStore):
             conn.close()
             print(e)
             return meta_data_service_pb2.ResponseHeader(returnCode=1, message='insert fail')
-        conn.commit()
+        try:
+            conn.commit()
+        except Exception as e:
+            print(e)
+            conn.rollback()
+            cursor.close()
+            conn.close()
+            return meta_data_service_pb2.ResponseHeader(returnCode=1, message='insert fail')
         cursor.close()
         conn.close()
         return meta_data_service_pb2.ResponseHeader(returnCode=0, message='ok')
@@ -286,7 +293,14 @@ class MysqlStore(AbstractStore):
                 conn.close()
                 print(e)
                 return meta_data_service_pb2.ResponseHeader(returnCode=1, message='insert fail')
-        conn.commit()
+        try:
+            conn.commit()
+        except Exception as e:
+            print(e)
+            conn.rollback()
+            cursor.close()
+            conn.close()
+            return meta_data_service_pb2.ResponseHeader(returnCode=1, message='insert fail')
         cursor.close()
         conn.close()
         return meta_data_service_pb2.ResponseHeader(returnCode=0, message='ok')
@@ -377,7 +391,14 @@ class MysqlStore(AbstractStore):
             conn.close()
             print(e)
             return meta_data_service_pb2.ResponseHeader(returnCode=1, message='insert failed')
-        conn.commit()
+        try:
+            conn.commit()
+        except Exception as e:
+            print(e)
+            conn.rollback()
+            cursor.close()
+            conn.close()
+            return meta_data_service_pb2.ResponseHeader(returnCode=1, message='insert fail')
         cursor.close()
         conn.close()
         return meta_data_service_pb2.ResponseHeader(returnCode=0, message='ok')
@@ -436,7 +457,14 @@ class MysqlStore(AbstractStore):
             conn.close()
             print(e)
             return meta_data_service_pb2.ResponseHeader(returnCode=1, message='insert fail')
-        conn.commit()
+        try:
+            conn.commit()
+        except Exception as e:
+            print(e)
+            conn.rollback()
+            cursor.close()
+            conn.close()
+            return meta_data_service_pb2.ResponseHeader(returnCode=1, message='insert fail')
         cursor.close()
         conn.close()
         return meta_data_service_pb2.ResponseHeader(returnCode=0, message='ok')
@@ -520,7 +548,14 @@ class MysqlStore(AbstractStore):
             conn.close()
             print(e)
             return meta_data_service_pb2.ResponseHeader(returnCode=1, message='insert fail')
-        conn.commit()
+        try:
+            conn.commit()
+        except Exception as e:
+            print(e)
+            conn.rollback()
+            cursor.close()
+            conn.close()
+            return meta_data_service_pb2.ResponseHeader(returnCode=1, message='insert fail')
         cursor.close()
         conn.close()
         return meta_data_service_pb2.ResponseHeader(returnCode=0, message='ok')
@@ -559,7 +594,7 @@ if __name__ == '__main__':
     # version2 = ModelVersion(version='v2',
     #                         model_uri='aa/v2',
     #                         log_uri='aa/l2')
-    # model = Model(name="model2",
+    # model = Model(name="model3",
     #               model_type=ModelType.SAVED_MODEL,
     #               uri="aa")
     # model.add_version(version1)
@@ -583,7 +618,7 @@ if __name__ == '__main__':
     #                         log_uri='aa/l2')
     # print(a.save_model_versions([version1, version2]))
     # schema = Schema(name_list=['a', 'b'], type_list=[DataTypeProto.String, DataTypeProto.String])
-    # example = Example(name="example1",
+    # example = Example(name="example2",
     #                   example_type=ExampleType.EXAMPLE_BOTH,
     #                   data_schema=schema,
     #                   example_format="CSV",
@@ -594,26 +629,26 @@ if __name__ == '__main__':
     # print(a.get_example_by_id(1))
     # print(a.get_example_by_name('example'))
     # print(a.list_example(2, 0))
-    print(a.get_project_by_id(1))
+    # print(a.get_project_by_id(1))
     # print(a.get_project_by_name('project'))
     # print(a.list_projects(2, 0))
-    # project = Project(name="project1",
+    # project = Project(name="project2",
     #                   project_type=ProjectType.GIT,
     #                   user="user",
     #                   password="password",
     #                   uri="./log",
     #                   properties={})
     # print(a.save_project(project))
-    # import time
-    #
-    # millis = int(round(time.time() * 1000))
-    # history = History(name="history1",
-    #                   history_type=HistoryType.EXECUTION,
-    #                   start_time=millis,
-    #                   end_time=millis + 5 * 1000,
-    #                   uri="./log",
-    #                   refer_name="execution")
-    # print(a.save_history(history))
+    import time
+
+    millis = int(round(time.time() * 1000))
+    history = History(name="history3",
+                      history_type=HistoryType.EXECUTION,
+                      start_time=millis,
+                      end_time=millis + 5 * 1000,
+                      uri="./log",
+                      refer_name="execution")
+    print(a.save_history(history))
     # print(a.get_history_by_id(3))
     # print(a.get_history_by_name('history'))
     # print(a.list_history(2, 0))
