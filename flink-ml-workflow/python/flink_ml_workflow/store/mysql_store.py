@@ -13,7 +13,7 @@ class MysqlStore(AbstractStore):
         return pymysql.connect(host='localhost',
                                port=3306,
                                user='root',
-                               password='',
+                               password='12345678',
                                database='meta_data_store')
 
     def get_model_by_id(self, model_id):
@@ -585,71 +585,4 @@ class MysqlStore(AbstractStore):
             header=meta_data_service_pb2.ResponseHeader(returnCode=0, message='ok'),
             histories=history_list)
 
-
-if __name__ == '__main__':
-    a = MysqlStore()
-    # version1 = ModelVersion(version='v1',
-    #                         model_uri='aa/v1',
-    #                         log_uri='aa/l1')
-    # version2 = ModelVersion(version='v2',
-    #                         model_uri='aa/v2',
-    #                         log_uri='aa/l2')
-    # model = Model(name="model3",
-    #               model_type=ModelType.SAVED_MODEL,
-    #               uri="aa")
-    # model.add_version(version1)
-    # model.add_version(version2)
-    # print(a.save_model(model))
-    # print(a.get_model_by_id(6))
-    # print(a.get_model_by_name('model2'))
-    # print(a.list_model(4, 5))
-    # print(a.list_model_version(61,2,0))
-    # print(a.get_model_version_by_id(4))
-    # print(a.get_model_version_by_version('v'))
-    # version1 = ModelVersion(version='v',
-    #                         model_uri='aa/v1',
-    #                         log_uri='aa/l1')
-    # print(a.save_model_version(version1))
-    # version1 = ModelVersion(version='v10',
-    #                         model_uri='aa/v1',
-    #                         log_uri='aa/l1')
-    # version2 = ModelVersion(version='v20',
-    #                         model_uri='aa/v2',
-    #                         log_uri='aa/l2')
-    # print(a.save_model_versions([version1, version2]))
-    # schema = Schema(name_list=['a', 'b'], type_list=[DataTypeProto.String, DataTypeProto.String])
-    # example = Example(name="example2",
-    #                   example_type=ExampleType.EXAMPLE_BOTH,
-    #                   data_schema=schema,
-    #                   example_format="CSV",
-    #                   batch_uri="aa",
-    #                   stream_uri="bb",
-    #                   properties={'a': 'a'})
-    # print(a.save_example(example))
-    # print(a.get_example_by_id(1))
-    # print(a.get_example_by_name('example'))
-    # print(a.list_example(2, 0))
-    # print(a.get_project_by_id(1))
-    # print(a.get_project_by_name('project'))
-    # print(a.list_projects(2, 0))
-    # project = Project(name="project2",
-    #                   project_type=ProjectType.GIT,
-    #                   user="user",
-    #                   password="password",
-    #                   uri="./log",
-    #                   properties={})
-    # print(a.save_project(project))
-    import time
-
-    millis = int(round(time.time() * 1000))
-    history = History(name="history4",
-                      history_type=HistoryType.EXECUTION,
-                      start_time=millis,
-                      end_time=millis + 5 * 1000,
-                      uri="./log",
-                      refer_name="execution")
-    print(a.save_history(history))
-    # print(a.get_history_by_id(3))
-    # print(a.get_history_by_name('history'))
-    # print(a.list_history(2, 0))
 

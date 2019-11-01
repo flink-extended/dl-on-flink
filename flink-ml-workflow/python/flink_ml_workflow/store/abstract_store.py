@@ -44,7 +44,7 @@ class AbstractStore:
         pass
 
     @abstractmethod
-    def get_model_version_by_name(self, version_name):
+    def get_model_version_by_version(self, version_name):
         pass
 
     @abstractmethod
