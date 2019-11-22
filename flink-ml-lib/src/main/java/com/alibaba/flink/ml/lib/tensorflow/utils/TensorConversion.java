@@ -40,11 +40,11 @@ public class TensorConversion {
 	 * @param tensorInfo target tensor type information.
 	 * @return result tensorflow tensor.
 	 */
-	public static Tensor<?> toTensor(Object object, TensorInfo tensorInfo, int dimCount) {
+	public static Tensor<?> toTensor(Object object, TensorInfo tensorInfo, int rank) {
 
 		switch (tensorInfo.getDtype()) {
 			case DT_INT32: {
-				switch (dimCount){
+				switch (rank){
 					case 1:{
 						return Tensors.create((int[])object);
 					}
@@ -65,11 +65,11 @@ public class TensorConversion {
 					}
 					default:
 						throw new UnsupportedOperationException(
-								"dim count can't supported: " + String.valueOf(dimCount));
+								"dim count can't supported: " + String.valueOf(rank));
 				}
 			}
 			case DT_INT64: {
-				switch (dimCount){
+				switch (rank){
 					case 1:{
 						return Tensors.create((long[])object);
 					}
@@ -90,11 +90,11 @@ public class TensorConversion {
 					}
 					default:
 						throw new UnsupportedOperationException(
-								"dim count can't supported: " + String.valueOf(dimCount));
+								"dim count can't supported: " + String.valueOf(rank));
 				}
 			}
 			case DT_FLOAT: {
-				switch (dimCount){
+				switch (rank){
 					case 1:{
 						return Tensors.create((float[])object);
 					}
@@ -115,11 +115,11 @@ public class TensorConversion {
 					}
 					default:
 						throw new UnsupportedOperationException(
-								"dim count can't supported: " + String.valueOf(dimCount));
+								"dim count can't supported: " + String.valueOf(rank));
 				}
 			}
 			case DT_DOUBLE: {
-				switch (dimCount){
+				switch (rank){
 					case 1:{
 						return Tensors.create((double[])object);
 					}
@@ -140,11 +140,11 @@ public class TensorConversion {
 					}
 					default:
 						throw new UnsupportedOperationException(
-								"dim count can't supported: " + String.valueOf(dimCount));
+								"dim count can't supported: " + String.valueOf(rank));
 				}
 			}
 			case DT_STRING: {
-				switch (dimCount){
+				switch (rank){
 					case 1:{
 						String[] stringArray = (String[])object;
 						byte[][] temp = new byte[stringArray.length][];
@@ -222,7 +222,7 @@ public class TensorConversion {
 					}
 					default:
 						throw new UnsupportedOperationException(
-								"dim count can't supported: " + String.valueOf(dimCount));
+								"dim count can't supported: " + String.valueOf(rank));
 				}
 			}
 			default:
@@ -240,11 +240,10 @@ public class TensorConversion {
 	public static Object fromTensor(Tensor<?> tensor) {
 		Preconditions.checkArgument(tensor.numDimensions() <= 5,
 				"Can only convert tensors with shape less than 2 current " + tensor.numDimensions());
-		final int dimCount = tensor.numDimensions();
-		final int num = tensor.numElements();
+		final int rank = tensor.numDimensions();
 		switch (tensor.dataType()) {
 			case INT32: {
-				switch (dimCount){
+				switch (rank){
 					case 1:{
 						final int len1 = (int) tensor.shape()[0];
 						return tensor.copyTo(new int[len1]);
@@ -278,7 +277,7 @@ public class TensorConversion {
 				}
 			}
 			case FLOAT: {
-				switch (dimCount){
+				switch (rank){
 					case 1:{
 						final int len1 = (int) tensor.shape()[0];
 						return tensor.copyTo(new float[len1]);
@@ -312,7 +311,7 @@ public class TensorConversion {
 				}
 			}
 			case INT64: {
-				switch (dimCount){
+				switch (rank){
 					case 1:{
 						final int len1 = (int) tensor.shape()[0];
 						return tensor.copyTo(new long[len1]);
@@ -346,7 +345,7 @@ public class TensorConversion {
 				}
 			}
 			case DOUBLE: {
-				switch (dimCount){
+				switch (rank){
 					case 1:{
 						final int len1 = (int) tensor.shape()[0];
 						return tensor.copyTo(new double[len1]);
@@ -380,7 +379,7 @@ public class TensorConversion {
 				}
 			}
 			case STRING:{
-				switch (dimCount) {
+				switch (rank) {
 					case 1: {
 						final int len1 = (int) tensor.shape()[0];
 						byte[][] resultBytes = tensor.copyTo(new byte[len1][]);

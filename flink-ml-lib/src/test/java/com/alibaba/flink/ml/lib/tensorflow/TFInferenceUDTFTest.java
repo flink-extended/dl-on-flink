@@ -15,11 +15,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.util.HashMap;
+import java.util.Properties;
 
-import static org.junit.Assert.*;
-
-public class TFPredictUDTFTest {
+public class TFInferenceUDTFTest {
 
 	@Before
 	public void setUp() throws Exception {
@@ -46,112 +44,152 @@ public class TFPredictUDTFTest {
 	@Test
 	public void eval() throws Exception{
 		String modelDir = "file://" + this.getClass().getClassLoader().getResource("").getPath()+"export";
-		String[] inputNames = {"a", "b"};
-		String[] inputTypes = {"FLOAT", "FLOAT"};
-		String[] outputNames = {"d"};
-		String[] outputTypes = {"FLOAT"};
-		TFPredictUDTF predictUDTF = new TFPredictUDTF(modelDir, inputNames, inputTypes, outputNames,outputTypes,
-				new HashMap<>(), 5);
+		String inputNames = "a,b";
+		String inputTypes = "DT_FLOAT, DT_FLOAT";
+		String inputRanks = "0, 0";
+		String outputNames = "d";
+		String outputTypes = "DT_FLOAT";
+		String outputRanks = "0";
+		TFInferenceUDTF predictUDTF = new TFInferenceUDTF(modelDir, inputNames, inputTypes, inputRanks,
+				outputNames, outputTypes, outputRanks,
+				new Properties(), 5);
 		TypeInformation[] types = new TypeInformation[1];
 		types[0] = BasicTypeInfo.FLOAT_TYPE_INFO;
-		RowTypeInfo typeInfo = new RowTypeInfo(types, outputNames);
+		RowTypeInfo typeInfo = new RowTypeInfo(types, outputNames.split(","));
 
 		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 		StreamTableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
 		streamEnv.setParallelism(1);
 		TableDebugRowSource tableDebugRowSource = new TableDebugRowSource();
 		tableEnv.registerTableSource("source", tableDebugRowSource);
-		tableEnv.registerFunction("predict", predictUDTF);
+		tableEnv.registerFunction("inference", predictUDTF);
 
 		tableEnv.registerTableSink("sink", new TableDebugRowSink(typeInfo));
 		tableEnv.sqlUpdate(
-				"INSERT INTO sink SELECT d FROM source, LATERAL TABLE(predict(a, b)) as T(d)");
+				"INSERT INTO sink SELECT d FROM source, LATERAL TABLE(inference(a, b)) as T(d)");
 		tableEnv.execute("job");
 	}
 
 	@Test
 	public void eval2() throws Exception{
 		String modelDir = "file://" + this.getClass().getClassLoader().getResource("").getPath()+"export";
-		String[] inputNames = {"a", "b"};
-		String[] inputTypes = {"FLOAT", "FLOAT"};
-		String[] outputNames = {"d", "a"};
-		String[] outputTypes = {"FLOAT", "FLOAT"};
-		TFPredictUDTF predictUDTF = new TFPredictUDTF(modelDir, inputNames,inputTypes, outputNames,outputTypes,
-				new HashMap<>(), 5);
+		String inputNames = "a,b";
+		String inputTypes = "DT_FLOAT, DT_FLOAT";
+		String inputRanks = "0, 0";
+		String outputNames = "d,a";
+		String outputTypes = "DT_FLOAT, DT_FLOAT";
+		String outputRanks = "0, 0";
+
+		TFInferenceUDTF predictUDTF = new TFInferenceUDTF(modelDir, inputNames,inputTypes, inputRanks,
+				outputNames, outputTypes, outputRanks,
+				new Properties(), 5);
 		TypeInformation[] types = new TypeInformation[2];
 		types[0] = BasicTypeInfo.FLOAT_TYPE_INFO;
 		types[1] = BasicTypeInfo.FLOAT_TYPE_INFO;
 
-		RowTypeInfo typeInfo = new RowTypeInfo(types, outputNames);
+		RowTypeInfo typeInfo = new RowTypeInfo(types, outputNames.split(","));
 		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 		StreamTableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
 		streamEnv.setParallelism(1);
 		TableDebugRowSource tableDebugRowSource = new TableDebugRowSource();
 		tableEnv.registerTableSource("source", tableDebugRowSource);
-		tableEnv.registerFunction("predict", predictUDTF);
+		tableEnv.registerFunction("inference", predictUDTF);
 
 		tableEnv.registerTableSink("sink", new TableDebugRowSink(typeInfo));
 		tableEnv.sqlUpdate(
-				"INSERT INTO sink SELECT d, e FROM source, LATERAL TABLE(predict(a, b)) as T(d, e)");
+				"INSERT INTO sink SELECT d, e FROM source, LATERAL TABLE(inference(a, b)) as T(d, e)");
 		tableEnv.execute("job");
 	}
 
 	@Test
 	public void eval3() throws Exception{
 		String modelDir = "file://" + this.getClass().getClassLoader().getResource("").getPath()+"export";
-		String[] inputNames = {"a", "b"};
-		String[] inputTypes = {"FLOAT_2", "FLOAT_2"};
-		String[] outputNames = {"d", "a"};
-		String[] outputTypes = {"FLOAT_2", "FLOAT_2"};
-		TFPredictUDTF predictUDTF = new TFPredictUDTF(modelDir, inputNames,inputTypes, outputNames,outputTypes,
-				new HashMap<>(), 5);
+		String inputNames = "a,b";
+		String inputTypes = "DT_FLOAT, DT_FLOAT";
+		String inputRanks = "1, 1";
+		String outputNames = "d,a";
+		String outputTypes = "DT_FLOAT, DT_FLOAT";
+		String outputRanks = "1, 1";
+		TFInferenceUDTF predictUDTF = new TFInferenceUDTF(modelDir, inputNames,inputTypes, inputRanks,
+				outputNames, outputTypes, outputRanks,
+				new Properties(), 5);
 		TypeInformation[] types = new TypeInformation[2];
 		types[0] = TypeInformation.of(float[].class);
 		types[1] = TypeInformation.of(float[].class);
 
-		RowTypeInfo typeInfo = new RowTypeInfo(types, outputNames);
+		RowTypeInfo typeInfo = new RowTypeInfo(types, outputNames.split(","));
 		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 		StreamTableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
 		streamEnv.setParallelism(1);
-		TableDebugRowSource tableDebugRowSource = new TableDebugRowSource(2);
+		TableDebugRowSource tableDebugRowSource = new TableDebugRowSource(1);
 		tableEnv.registerTableSource("source", tableDebugRowSource);
-		tableEnv.registerFunction("predict", predictUDTF);
+		tableEnv.registerFunction("inference", predictUDTF);
 
 		tableEnv.registerTableSink("sink", new TableDebugRowSink(typeInfo));
 		tableEnv.sqlUpdate(
-				"INSERT INTO sink SELECT d, e FROM source, LATERAL TABLE(predict(a, b)) as T(d, e)");
-//		tableEnv.sqlUpdate(
-//				"INSERT INTO sink SELECT a, b FROM source");
+				"INSERT INTO sink SELECT d, e FROM source, LATERAL TABLE(inference(a, b)) as T(d, e)");
 		tableEnv.execute("job");
 	}
-	@Test
 
+	@Test
 	public void eval4() throws Exception{
 		String modelDir = "file://" + this.getClass().getClassLoader().getResource("").getPath()+"export2";
-		String[] inputNames = {"a", "b", "e"};
-		String[] inputTypes = {"FLOAT_2", "FLOAT_2", "STRING_2"};
-		String[] outputNames = {"d", "a", "e4"};
-		String[] outputTypes = {"FLOAT_2", "FLOAT_2", "STRING_2"};
-		TFPredictUDTF predictUDTF = new TFPredictUDTF(modelDir, inputNames,inputTypes, outputNames,outputTypes,
-				new HashMap<>(), 5);
+		String inputNames = "a,b,e";
+		String inputTypes = "DT_FLOAT, DT_FLOAT, DT_STRING";
+		String inputRanks = "1, 1, 1";
+		String outputNames = "d,a,e4";
+		String outputTypes = "DT_FLOAT, DT_FLOAT, DT_STRING";
+		String outputRanks = "1,1,1";
+		TFInferenceUDTF predictUDTF = new TFInferenceUDTF(modelDir, inputNames,inputTypes, inputRanks,
+				outputNames, outputTypes, outputRanks,
+				new Properties(), 5);
 		TypeInformation[] types = new TypeInformation[3];
 		types[0] = TypeInformation.of(float[].class);
 		types[1] = TypeInformation.of(float[].class);
 		types[2] = TypeInformation.of(String[].class);
 
-		RowTypeInfo typeInfo = new RowTypeInfo(types, outputNames);
+		RowTypeInfo typeInfo = new RowTypeInfo(types, outputNames.split(","));
+		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
+		StreamTableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
+		streamEnv.setParallelism(1);
+		TableDebugRowSource tableDebugRowSource = new TableDebugRowSource(1, true);
+		tableEnv.registerTableSource("source", tableDebugRowSource);
+		tableEnv.registerFunction("inference", predictUDTF);
+
+		tableEnv.registerTableSink("sink", new TableDebugRowSink(typeInfo));
+		tableEnv.sqlUpdate(
+				"INSERT INTO sink SELECT d, f, h FROM source, LATERAL TABLE(inference(a, b, c)) as T(d, f, h)");
+		tableEnv.execute("job");
+	}
+
+	@Test
+	public void eval5() throws Exception{
+		String modelDir = "file://" + this.getClass().getClassLoader().getResource("").getPath()+"export2";
+		String inputNames = "a,b,e";
+		String inputTypes = "DT_FLOAT, DT_FLOAT, DT_STRING";
+		String inputRanks = "2, 2, 2";
+		String outputNames = "d,a,e4";
+		String outputTypes = "DT_FLOAT, DT_FLOAT, DT_STRING";
+		String outputRanks = "2,2,2";
+		TFInferenceUDTF predictUDTF = new TFInferenceUDTF(modelDir, inputNames,inputTypes, inputRanks,
+				outputNames, outputTypes, outputRanks,
+				new Properties(), 5);
+		TypeInformation[] types = new TypeInformation[3];
+		types[0] = TypeInformation.of(float[][].class);
+		types[1] = TypeInformation.of(float[][].class);
+		types[2] = TypeInformation.of(String[][].class);
+
+		RowTypeInfo typeInfo = new RowTypeInfo(types, outputNames.split(","));
 		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 		StreamTableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
 		streamEnv.setParallelism(1);
 		TableDebugRowSource tableDebugRowSource = new TableDebugRowSource(2, true);
 		tableEnv.registerTableSource("source", tableDebugRowSource);
-		tableEnv.registerFunction("predict", predictUDTF);
+		tableEnv.registerFunction("inference", predictUDTF);
 
 		tableEnv.registerTableSink("sink", new TableDebugRowSink(typeInfo));
 		tableEnv.sqlUpdate(
-				"INSERT INTO sink SELECT d, f, h FROM source, LATERAL TABLE(predict(a, b, c)) as T(d, f, h)");
-//		tableEnv.sqlUpdate(
-//				"INSERT INTO sink SELECT a, b, c FROM source");
+				"INSERT INTO sink SELECT d, f, h FROM source, LATERAL TABLE(inference(a, b, c)) as T(d, f, h)");
 		tableEnv.execute("job");
 	}
 

@@ -3,7 +3,6 @@ package com.alibaba.flink.ml.lib.tensorflow;
 import org.apache.flink.types.Row;
 
 import com.alibaba.flink.ml.lib.tensorflow.utils.TensorConversion;
-import com.alibaba.flink.ml.lib.tensorflow.utils.TypeMapping;
 import com.google.common.base.Preconditions;
 import com.google.common.io.Files;
 import org.apache.commons.io.FileUtils;
@@ -30,49 +29,68 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 /**
- * TFPredict load tensoflow saved model do inference.
+ * TFPredict load tensorflow saved model do inference.
  */
-public class TFPredict {
-	private static Logger LOG = LoggerFactory.getLogger(TFPredict.class);
+public class TFInference {
+	private static Logger LOG = LoggerFactory.getLogger(TFInference.class);
 	private static final String TAG = "serve";
 
 	private final String[] inputNames;
-	private final DataType[] inputDataType;
+	private final DataType[] inputDataTypes;
+	private final int[] inputRanks;
 	private final String[] inputTensorNames;
 	private final String[] outputNames;
+	private DataType[] outputDataTypes;
+	private final int[] outputRanks;
 	private final String[] outputTensorNames;
-	private Map<String, String> props;
-
+	private Properties properties;
+	private Map<String, Integer> inputNameToRank = new HashMap<>();
 	private final SavedModelBundle model;
 	private final SignatureDef modelSig;
 	private final Set<String> inputTensorNameSet;
-
 	private File downloadModelPath;
-	private final String modelDir;
-	private DataType[] outputTypes;
 
 	/***
 	 * TFPredict constructor
 	 * @param modelDir saved model dir
-	 * @param props some properties
+	 * @param properties some properties
 	 * @param inputNames input field names
-	 * @param inputDataType input DataType
+	 * @param inputDataTypes input DataType
 	 * @param outputNames output field names
-	 * @param outputTypes output TypeDef
+	 * @param outputDataTypes output TypeDef
 	 * @throws Exception
 	 */
-	public TFPredict(String modelDir, Map<String, String> props, String[] inputNames, DataType[] inputDataType,
-			String[] outputNames, String[] outputTypes)
+	public TFInference(String modelDir,
+			String[] inputNames,
+			DataType[] inputDataTypes,
+			int[] inputRanks,
+			String[] outputNames,
+			DataType[] outputDataTypes,
+			int[] outputRanks,
+			Properties properties)
 			throws Exception {
-		this.modelDir = modelDir;
 		this.inputNames = inputNames;
-		this.inputDataType = inputDataType;
+		this.inputDataTypes = inputDataTypes;
+		this.inputRanks = inputRanks;
 		this.outputNames = outputNames;
-		this.props = props;
-		this.outputTypes = TypeMapping.convertToDataTypes(outputTypes);
+		this.outputDataTypes = outputDataTypes;
+		this.outputRanks = outputRanks;
+		this.properties = properties;
+		for(int i = 0; i < inputRanks.length; i++){
+			this.inputRanks[i]++;
+		}
+		for(int i = 0; i < outputRanks.length; i++){
+			this.outputRanks[i]++;
+		}
+
+		for(int i = 0; i < inputNames.length; i++){
+			inputNameToRank.put(this.inputNames[i], this.inputRanks[i]);
+		}
+
 		// load model
 		Path modelPath = new Path(modelDir);
 		String scheme = modelPath.toUri().getScheme();
@@ -120,10 +138,9 @@ public class TFPredict {
 	/**
 	 * do tensorflow inference
 	 * @param batchRecord input rows
-	 * @param dimCounts input data dimensions
-	 * @return predict rows
+	 * @return inference rows
 	 */
-	public Row[] predict(List<Object[]> batchRecord, int[]dimCounts) {
+	public Row[] inference(List<Object[]> batchRecord) {
 		if(batchRecord.isEmpty()){
 			return null;
 		}else {
@@ -132,14 +149,14 @@ public class TFPredict {
 			Row[] rows = new Row[batchRecord.size()];
 			Map<String, Object> inNameToObjs = new HashMap<>(inputNames.length);
 			for (int i = 0; i < inputNames.length; i++) {
-				inNameToObjs.put(inputNames[i], extractCols(batchRecord, i, size, dimCounts[i], inputDataType[i]));
+				inNameToObjs.put(inputNames[i], extractCols(batchRecord, i, size, inputRanks[i], inputDataTypes[i]));
 			}
 			List<Tensor<?>> toClose = new ArrayList<>(inputTensorNameSet.size() + outputTensorNames.length);
 			try {
 				for (int i = 0; i < inputTensorNames.length; i++) {
 					TensorInfo inputInfo = modelSig.getInputsMap().get(inputTensorNames[i]);
 					Tensor<?> tensor = TensorConversion.toTensor(inNameToObjs.get(inputTensorNames[i]),
-							inputInfo, dimCounts[i]);
+							inputInfo, inputNameToRank.get(inputTensorNames[i]));
 					toClose.add(tensor);
 					runner.feed(inputInfo.getName(), tensor);
 				}
@@ -164,7 +181,7 @@ public class TFPredict {
 						if (rows[j] == null) {
 							rows[j] = new Row(outputNames.length);
 						}
-						setRowField(rows[j], i, cols, j, dimCounts[i], this.outputTypes[i]);
+						setRowField(rows[j], i, cols, j, outputRanks[i], this.outputDataTypes[i]);
 						//rows[j].setField(i, cols[j]);
 					}
 				}
@@ -177,10 +194,10 @@ public class TFPredict {
 			return rows;
 		}
 	}
-	private void setRowField(Row row, int index, Object object, int col, int dimCount, DataType dataType){
+	private void setRowField(Row row, int index, Object object, int col, int rank, DataType dataType){
 		switch (dataType){
 			case DT_INT32: {
-				switch (dimCount){
+				switch (rank){
 					case 1:{
 						int[] value = (int[])object;
 						row.setField(index, value[col]);
@@ -213,11 +230,11 @@ public class TFPredict {
 					}
 					default:
 						throw new UnsupportedOperationException(
-								"dim count can't supported: " + String.valueOf(dimCount));
+								"dim count can't supported: " + String.valueOf(rank));
 				}
 			}
 			case DT_INT64: {
-				switch (dimCount){
+				switch (rank){
 					case 1:{
 						long[] value = (long[])object;
 						row.setField(index, value[col]);
@@ -250,11 +267,11 @@ public class TFPredict {
 					}
 					default:
 						throw new UnsupportedOperationException(
-								"dim count can't supported: " + String.valueOf(dimCount));
+								"dim count can't supported: " + String.valueOf(rank));
 				}
 			}
 			case DT_FLOAT: {
-				switch (dimCount){
+				switch (rank){
 					case 1:{
 						float[] value = (float[])object;
 						row.setField(index, value[col]);
@@ -287,11 +304,11 @@ public class TFPredict {
 					}
 					default:
 						throw new UnsupportedOperationException(
-								"dim count can't supported: " + String.valueOf(dimCount));
+								"dim count can't supported: " + String.valueOf(rank));
 				}
 			}
 			case DT_DOUBLE: {
-				switch (dimCount){
+				switch (rank){
 					case 1:{
 						double[] value = (double[])object;
 						row.setField(index, value[col]);
@@ -324,11 +341,11 @@ public class TFPredict {
 					}
 					default:
 						throw new UnsupportedOperationException(
-								"dim count can't supported: " + String.valueOf(dimCount));
+								"dim count can't supported: " + String.valueOf(rank));
 				}
 			}
 			case DT_STRING: {
-				switch (dimCount){
+				switch (rank){
 					case 1:{
 						String[] value = (String[])object;
 						row.setField(index, value[col]);
@@ -356,7 +373,7 @@ public class TFPredict {
 					}
 					default:
 						throw new UnsupportedOperationException(
-								"dim count can't supported: " + String.valueOf(dimCount));
+								"dim count can't supported: " + String.valueOf(rank));
 				}
 			}
 			default:
@@ -399,10 +416,10 @@ public class TFPredict {
 		System.out.println(builder.toString());
 	}
 
-	private Object extractCols(List<Object[]> cache, int index, int len, int dimCount, DataType dataType) {
+	private Object extractCols(List<Object[]> cache, int index, int len, int rank, DataType dataType) {
 		switch (dataType){
 			case DT_INT32: {
-				switch (dimCount){
+				switch (rank){
 					case 1:{
 						int[] res = new int[len];
 						for (int i = 0; i < res.length; i++) {
@@ -447,11 +464,11 @@ public class TFPredict {
 					}
 					default:
 						throw new UnsupportedOperationException(
-								"dim count can't supported: " + String.valueOf(dimCount));
+								"dim count can't supported: " + String.valueOf(rank));
 				}
 			}
 			case DT_INT64: {
-				switch (dimCount){
+				switch (rank){
 					case 1:{
 						long[] res = new long[len];
 						for (int i = 0; i < res.length; i++) {
@@ -496,11 +513,11 @@ public class TFPredict {
 					}
 					default:
 						throw new UnsupportedOperationException(
-								"dim count can't supported: " + String.valueOf(dimCount));
+								"dim count can't supported: " + String.valueOf(rank));
 				}
 			}
 			case DT_FLOAT: {
-				switch (dimCount){
+				switch (rank){
 					case 1:{
 						float[] res = new float[len];
 						for (int i = 0; i < res.length; i++) {
@@ -545,11 +562,11 @@ public class TFPredict {
 					}
 					default:
 						throw new UnsupportedOperationException(
-								"dim count can't supported: " + String.valueOf(dimCount));
+								"dim count can't supported: " + String.valueOf(rank));
 				}
 			}
 			case DT_DOUBLE: {
-				switch (dimCount){
+				switch (rank){
 					case 1:{
 						double[] res = new double[len];
 						for (int i = 0; i < res.length; i++) {
@@ -594,11 +611,11 @@ public class TFPredict {
 					}
 					default:
 						throw new UnsupportedOperationException(
-								"dim count can't supported: " + String.valueOf(dimCount));
+								"dim count can't supported: " + String.valueOf(rank));
 				}
 			}
 			case DT_STRING: {
-				switch (dimCount){
+				switch (rank){
 					case 1:{
 						String[] res = new String[len];
 						for (int i = 0; i < res.length; i++) {
@@ -636,7 +653,7 @@ public class TFPredict {
 					}
 					default:
 						throw new UnsupportedOperationException(
-								"dim count can't supported: " + String.valueOf(dimCount));
+								"dim count can't supported: " + String.valueOf(rank));
 				}
 			}
 			default:
