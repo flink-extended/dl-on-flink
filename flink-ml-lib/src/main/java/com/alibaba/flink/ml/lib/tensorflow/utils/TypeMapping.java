@@ -15,49 +15,183 @@ public class TypeMapping {
 	 * @param typeNames TypeDef object String value
 	 * @return mapping TypeInformation[]
 	 */
-	public static TypeInformation[] convertToTypeInformation(String[] typeNames){
+	public static TypeInformation[] convertToTypeInformation(String[] typeNames, int[] ranks){
 		TypeInformation[] typeInformations = new TypeInformation[typeNames.length];
 		for(int i = 0; i < typeNames.length; i++){
-			TypeDef typeDef = TypeDef.valueOf(typeNames[i]);
-			switch (typeDef){
-				case INT:{
-					typeInformations[i] = Types.INT();
+			DataType dataType = DataType.valueOf(typeNames[i]);
+			switch (dataType){
+				case DT_INT32:{
+					switch (ranks[i]){
+						case 0: {
+							typeInformations[i] = Types.INT();
+							break;
+						}
+						case 1: {
+							typeInformations[i] = TypeInformation.of(int[].class);
+							break;
+						}
+						case 2: {
+							typeInformations[i] = TypeInformation.of(int[][].class);
+							break;
+						}
+						case 3: {
+							typeInformations[i] = TypeInformation.of(int[][][].class);
+							break;
+						}
+						case 4: {
+							typeInformations[i] = TypeInformation.of(int[][][][].class);
+							break;
+						}
+						case 5: {
+							typeInformations[i] = TypeInformation.of(int[][][][][].class);
+							break;
+						}
+						case 6: {
+							typeInformations[i] = TypeInformation.of(int[][][][][][].class);
+							break;
+						}
+						default:
+							throw new RuntimeException(String.valueOf(ranks[i]) + " not support for rank!");
+
+					}
 					break;
 				}
-				case LONG:{
-					typeInformations[i] = Types.LONG();
+				case DT_INT64:{
+					switch (ranks[i]){
+						case 0: {
+							typeInformations[i] = Types.LONG();
+							break;
+						}
+						case 1: {
+							typeInformations[i] = TypeInformation.of(long[].class);
+							break;
+						}
+						case 2: {
+							typeInformations[i] = TypeInformation.of(long[][].class);
+							break;
+						}
+						case 3: {
+							typeInformations[i] = TypeInformation.of(long[][][].class);
+							break;
+						}
+						case 4: {
+							typeInformations[i] = TypeInformation.of(long[][][][].class);
+							break;
+						}
+						case 5: {
+							typeInformations[i] = TypeInformation.of(long[][][][][].class);
+							break;
+						}
+						case 6: {
+							typeInformations[i] = TypeInformation.of(long[][][][][][].class);
+							break;
+						}
+						default:
+							throw new RuntimeException(String.valueOf(ranks[i]) + " not support for rank!");
+
+					}
 					break;
 				}
-				case FLOAT:{
-					typeInformations[i] = Types.FLOAT();
+				case DT_FLOAT:{
+					switch (ranks[i]){
+						case 0: {
+							typeInformations[i] = Types.FLOAT();
+							break;
+						}
+						case 1: {
+							typeInformations[i] = TypeInformation.of(float[].class);
+							break;
+						}
+						case 2: {
+							typeInformations[i] = TypeInformation.of(float[][].class);
+							break;
+						}
+						case 3: {
+							typeInformations[i] = TypeInformation.of(float[][][].class);
+							break;
+						}
+						case 4: {
+							typeInformations[i] = TypeInformation.of(float[][][][].class);
+							break;
+						}
+						case 5: {
+							typeInformations[i] = TypeInformation.of(float[][][][][].class);
+							break;
+						}
+						case 6: {
+							typeInformations[i] = TypeInformation.of(float[][][][][][].class);
+							break;
+						}
+						default:
+							throw new RuntimeException(String.valueOf(ranks[i]) + " not support for rank!");
+
+					}
 					break;
 				}
-				case DOUBLE:{
-					typeInformations[i] = Types.DOUBLE();
+				case DT_DOUBLE:{
+					switch (ranks[i]){
+						case 0: {
+							typeInformations[i] = Types.DOUBLE();
+							break;
+						}
+						case 1: {
+							typeInformations[i] = TypeInformation.of(double[].class);
+							break;
+						}
+						case 2: {
+							typeInformations[i] = TypeInformation.of(double[][].class);
+							break;
+						}
+						case 3: {
+							typeInformations[i] = TypeInformation.of(double[][][].class);
+							break;
+						}
+						case 4: {
+							typeInformations[i] = TypeInformation.of(double[][][][].class);
+							break;
+						}
+						case 5: {
+							typeInformations[i] = TypeInformation.of(double[][][][][].class);
+							break;
+						}
+						case 6: {
+							typeInformations[i] = TypeInformation.of(double[][][][][][].class);
+							break;
+						}
+						default:
+							throw new RuntimeException(String.valueOf(ranks[i]) + " not support for rank!");
+					}
 					break;
 				}
-				case STRING:{
-					typeInformations[i] = Types.STRING();
-					break;
-				}
-				case INT_2:{
-					typeInformations[i] = TypeInformation.of(int[].class);
-					break;
-				}
-				case LONG_2:{
-					typeInformations[i] = TypeInformation.of(long[].class);
-					break;
-				}
-				case FLOAT_2:{
-					typeInformations[i] = TypeInformation.of(float[].class);
-					break;
-				}
-				case DOUBLE_2:{
-					typeInformations[i] = TypeInformation.of(double[].class);
-					break;
-				}
-				case STRING_2:{
-					typeInformations[i] = TypeInformation.of(String[].class);
+				case DT_STRING:{
+					switch (ranks[i]){
+						case 0: {
+							typeInformations[i] = Types.STRING();
+							break;
+						}
+						case 1: {
+							typeInformations[i] = TypeInformation.of(String[].class);
+							break;
+						}
+						case 2: {
+							typeInformations[i] = TypeInformation.of(String[][].class);
+							break;
+						}
+						case 3: {
+							typeInformations[i] = TypeInformation.of(String[][][].class);
+							break;
+						}
+						case 4: {
+							typeInformations[i] = TypeInformation.of(String[][][][].class);
+							break;
+						}
+						case 5: {
+							typeInformations[i] = TypeInformation.of(String[][][][][].class);
+							break;
+						}
+						default:
+							throw new RuntimeException(String.valueOf(ranks[i]) + " not support for rank!");
+					}
 					break;
 				}
 				default:
@@ -75,37 +209,19 @@ public class TypeMapping {
 	public static DataType[] convertToDataTypes(String[] typeNames){
 		DataType[] dataTypes = new DataType[typeNames.length];
 		for(int i = 0; i < typeNames.length; i++){
-			if(typeNames[i].startsWith("INT")) {
-				dataTypes[i] = DataType.DT_INT32;
-			}else if(typeNames[i].startsWith("LONG")){
-				dataTypes[i] = DataType.DT_INT64;
-			}else if(typeNames[i].startsWith("FLOAT")){
-				dataTypes[i] = DataType.DT_FLOAT;
-			}else if(typeNames[i].startsWith("DOUBLE")){
-				dataTypes[i] = DataType.DT_DOUBLE;
-			}else if(typeNames[i].startsWith("STRING")){
-				dataTypes[i] = DataType.DT_STRING;
-			}else{
-				throw new RuntimeException(typeNames[i] + " not support for output type!");
+			DataType type = DataType.valueOf(typeNames[i]);
+			switch (type){
+				case DT_INT32:
+				case DT_INT64:
+				case DT_FLOAT:
+				case DT_DOUBLE:
+				case DT_STRING:
+					dataTypes[i] = type;
+					break;
+				default:
+					throw new RuntimeException(typeNames[i] + " not support for output type!");
 			}
 		}
 		return dataTypes;
-	}
-
-	/**
-	 * calculate TypeDef object mapping Tensor dimension
-	 * @param typeNames TypeDef object String value
-	 * @return dimensions
-	 */
-	public static int[] getDimsByDataTypes(String[] typeNames){
-		int[] dims = new int[typeNames.length];
-		for(int i = 0; i < typeNames.length; i++){
-			if(typeNames[i].endsWith("_2")) {
-				dims[i] = 2;
-			} else{
-				dims[i] = 1;
-			}
-		}
-		return dims;
 	}
 }

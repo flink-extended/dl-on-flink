@@ -39,14 +39,14 @@ public class TableDebugRowSource implements StreamTableSource<Row>, Serializable
     private static Logger LOG = LoggerFactory.getLogger(TableDebugRowSource.class);
 
     public TableDebugRowSource() {
-        this(1);
+        this(0);
     }
 
-    public TableDebugRowSource(int dim) {
-        this(dim, false);
+    public TableDebugRowSource(int rank) {
+        this(rank, false);
     }
-    public TableDebugRowSource(int dim, boolean hasString) {
-        this.debugRowSource = new DebugRowSource(dim, hasString);
+    public TableDebugRowSource(int rank, boolean hasString) {
+        this.debugRowSource = new DebugRowSource(rank, hasString);
         this.typeInfo = debugRowSource.getTypeInfo();
     }
 
