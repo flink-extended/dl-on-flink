@@ -20,7 +20,6 @@ package com.alibaba.flink.ml.lib.tensorflow.table;
 
 import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
-import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.api.java.typeutils.ResultTypeQueryable;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.streaming.api.functions.source.ParallelSourceFunction;
@@ -33,33 +32,52 @@ public class DebugRowSource implements ParallelSourceFunction<Row>, ResultTypeQu
     }
 
     public RowTypeInfo typeInfo;
-    private int dim;
+    private int rank;
     private boolean hasString;
 
-    public DebugRowSource(int dim, boolean hasString) {
-        this.dim = dim;
+    public DebugRowSource(int rank, boolean hasString) {
+        this.rank = rank;
         this.hasString = hasString;
         if(hasString){
             TypeInformation[] types = new TypeInformation[3];
-            if (2 == dim) {
-                types[0] = TypeInformation.of(float[].class);
-                types[1] = TypeInformation.of(float[].class);
-                types[2] = TypeInformation.of(String[].class);
-            } else {
-                types[0] = BasicTypeInfo.FLOAT_TYPE_INFO;
-                types[1] = BasicTypeInfo.FLOAT_TYPE_INFO;
-                types[2] = BasicTypeInfo.STRING_TYPE_INFO;
+            switch (rank){
+                case 1:{
+                    types[0] = TypeInformation.of(float[].class);
+                    types[1] = TypeInformation.of(float[].class);
+                    types[2] = TypeInformation.of(String[].class);
+                    break;
+                }
+                case 2:{
+                    types[0] = TypeInformation.of(float[][].class);
+                    types[1] = TypeInformation.of(float[][].class);
+                    types[2] = TypeInformation.of(String[][].class);
+                    break;
+                }
+                default:{
+                    types[0] = BasicTypeInfo.FLOAT_TYPE_INFO;
+                    types[1] = BasicTypeInfo.FLOAT_TYPE_INFO;
+                    types[2] = BasicTypeInfo.STRING_TYPE_INFO;
+                }
             }
             String[] names = { "a", "b", "c" };
             typeInfo = new RowTypeInfo(types, names);
         }else {
             TypeInformation[] types = new TypeInformation[2];
-            if (2 == dim) {
-                types[0] = TypeInformation.of(float[].class);
-                types[1] = TypeInformation.of(float[].class);
-            } else {
-                types[0] = BasicTypeInfo.FLOAT_TYPE_INFO;
-                types[1] = BasicTypeInfo.FLOAT_TYPE_INFO;
+            switch (rank) {
+                case 1: {
+                    types[0] = TypeInformation.of(float[].class);
+                    types[1] = TypeInformation.of(float[].class);
+                    break;
+                }
+                case 2: {
+                    types[0] = TypeInformation.of(float[][].class);
+                    types[1] = TypeInformation.of(float[][].class);
+                    break;
+                }
+                default: {
+                    types[0] = BasicTypeInfo.FLOAT_TYPE_INFO;
+                    types[1] = BasicTypeInfo.FLOAT_TYPE_INFO;
+                }
             }
             String[] names = { "a", "b" };
             typeInfo = new RowTypeInfo(types, names);
@@ -71,34 +89,66 @@ public class DebugRowSource implements ParallelSourceFunction<Row>, ResultTypeQu
         for(int i = 0; i < 20; i++){
             if(hasString){
                 Row row = new Row(3);
-                if (2 == dim) {
-                    float[] c1 = { 1.0f * i, 1.0f * i };
-                    float[] c2 = { 2.0f * i, 2.0f * i };
-                    String[] c3 = { String.valueOf(1.0f * i), String.valueOf(1.0f * i) };
-                    row.setField(0, c1);
-                    row.setField(1, c2);
-                    row.setField(2, c3);
-                } else {
-                    row.setField(0, 1.0f * i);
-                    row.setField(1, 2.0f * i);
-                    row.setField(2, String.valueOf(1.0f * i));
+                switch (rank){
+                    case 2:{
+                        float[] c1 = { 1.0f * i, 1.0f * i };
+                        float[][] cc1 = {c1, c1};
+
+                        float[] c2 = { 2.0f * i, 2.0f * i };
+                        float[][] cc2 = {c2, c2};
+
+                        String[] c3 = { String.valueOf(1.0f * i), String.valueOf(1.0f * i) };
+                        String[][] cc3 = {c3, c3};
+
+                        row.setField(0, cc1);
+                        row.setField(1, cc2);
+                        row.setField(2, cc3);
+                        break;
+                    }
+                    case 1:{
+                        float[] c1 = { 1.0f * i, 1.0f * i };
+                        float[] c2 = { 2.0f * i, 2.0f * i };
+                        String[] c3 = { String.valueOf(1.0f * i), String.valueOf(1.0f * i) };
+                        row.setField(0, c1);
+                        row.setField(1, c2);
+                        row.setField(2, c3);
+                        break;
+                    }
+                    default:{
+                        row.setField(0, 1.0f * i);
+                        row.setField(1, 2.0f * i);
+                        row.setField(2, String.valueOf(1.0f * i));
+                    }
                 }
                 ctx.collect(row);
             }else {
                 Row row = new Row(2);
-                if (2 == dim) {
-                    float[] c1 = { 1.0f * i, 1.0f * i };
-                    float[] c2 = { 2.0f * i, 2.0f * i };
-                    row.setField(0, c1);
-                    row.setField(1, c2);
-                } else {
-                    row.setField(0, 1.0f * i);
-                    row.setField(1, 2.0f * i);
+                switch (rank){
+                    case 2:{
+                        float[] c1 = { 1.0f * i, 1.0f * i };
+                        float[][] cc1 = {c1, c1};
+
+                        float[] c2 = { 2.0f * i, 2.0f * i };
+                        float[][] cc2 = {c2, c2};
+
+                        row.setField(0, cc1);
+                        row.setField(1, cc2);
+                        break;
+                    }
+                    case 1:{
+                        float[] c1 = { 1.0f * i, 1.0f * i };
+                        float[] c2 = { 2.0f * i, 2.0f * i };
+                        row.setField(0, c1);
+                        row.setField(1, c2);
+                        break;
+                    }
+                    default:{
+                        row.setField(0, 1.0f * i);
+                        row.setField(1, 2.0f * i);
+                    }
                 }
                 ctx.collect(row);
             }
-
-            //Thread.sleep(500);
         }
     }
 

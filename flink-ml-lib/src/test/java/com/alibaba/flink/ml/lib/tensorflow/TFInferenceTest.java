@@ -11,10 +11,10 @@ import org.tensorflow.framework.DataType;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 
-public class TFPredictTest {
+public class TFInferenceTest {
 
 	@Before
 	public void setUp() throws Exception {
@@ -33,14 +33,17 @@ public class TFPredictTest {
 	}
 
 	@Test
-	public void predict() throws Exception{
+	public void inferenceTest() throws Exception{
 		String modelDir = "file://" + this.getClass().getClassLoader().getResource("").getPath()+"export";
 		String[] inputNames = {"a", "b"};
 		DataType[] inputTypes = {DataType.DT_FLOAT, DataType.DT_FLOAT};
+		int[] inputRanks = {0, 0};
 		String[] outputNames = {"d"};
-		String[] outputTypes = {"FLOAT"};
-		int[] dimCounts = {1, 1};
-		TFPredict tfPredict = new TFPredict(modelDir, new HashMap<>(),inputNames, inputTypes, outputNames, outputTypes);
+		DataType[] outputTypes = {DataType.DT_FLOAT};
+		int[] outputRanks = {0};
+
+		TFInference tfInference = new TFInference(modelDir,inputNames, inputTypes, inputRanks,
+				outputNames, outputTypes, outputRanks, new Properties());
 		List<Object[]> input = new ArrayList<>();
 		for(int i = 1; i < 4; i++){
 			Object[] r = new Object[2];
@@ -48,10 +51,10 @@ public class TFPredictTest {
 			r[1] = 2.0f * i;
 			input.add(r);
 		}
-		Row[] results = tfPredict.predict(input, dimCounts);
+		Row[] results = tfInference.inference(input);
 		for (Row r: results){
 			System.out.println(r);
 		}
-		tfPredict.close();
+		tfInference.close();
 	}
 }
