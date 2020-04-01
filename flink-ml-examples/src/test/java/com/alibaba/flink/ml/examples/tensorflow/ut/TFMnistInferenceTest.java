@@ -288,7 +288,8 @@ public class TFMnistInferenceTest {
 			helper.like(new WorkerRole().name(), tfConfig.getWorkerNum());
 			helper.like(new PsRole().name(), tfConfig.getPsNum());
 			helper.like(new AMRole().name(), 1);
-			StreamGraph streamGraph = helper.matchStreamGraph(flinkEnv.getStreamGraph());
+			StreamGraph streamGraph = helper.matchStreamGraph(
+					flinkEnv.getStreamGraph(StreamExecutionEnvironment.DEFAULT_JOB_NAME,false));
 			flinkEnv.execute();
 		}
 	}

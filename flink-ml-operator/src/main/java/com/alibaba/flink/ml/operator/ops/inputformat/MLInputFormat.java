@@ -57,7 +57,7 @@ public class MLInputFormat<OUT> extends RichInputFormat<OUT, MLInputSplit> {
 	private TypeInformation<OUT> outTI;
 	private transient FutureTask<Void> serverFuture;
 	private transient MLContext mlContext;
-	private AtomicBoolean isClose = new AtomicBoolean(false);
+	private final AtomicBoolean isClose = new AtomicBoolean(false);
 	private transient FlinkOpHookManager hookManager;
 	private transient DataExchange<OUT, OUT> dataExchange;
 
@@ -169,25 +169,27 @@ public class MLInputFormat<OUT> extends RichInputFormat<OUT, MLInputSplit> {
 
 	@Override
 	public void close() throws IOException {
-		if (!isClose.get()) {
-			try {
-				if (serverFuture != null && !serverFuture.isCancelled()) {
-					serverFuture.get();
+		synchronized (isClose) {
+			if (!isClose.get()) {
+				try {
+					if (serverFuture != null && !serverFuture.isCancelled()) {
+						serverFuture.get();
+					}
+				} catch (ExecutionException e) {
+					LOG.error(mlContext.getIdentity() + " node server failed {}", e.getMessage());
+					throw new IOException(e);
+				} catch (InterruptedException e) {
+					LOG.warn("{} interrupted during waiting server join {}.", mlContext.getIdentity(), e.getMessage());
+					serverFuture.cancel(true);
+				} finally {
+					serverFuture = null;
+					if (mlContext != null) {
+						mlContext.close();
+						mlContext = null;
+					}
 				}
-			} catch (ExecutionException e) {
-				LOG.error(mlContext.getIdentity() + " node server failed {}", e.getMessage());
-				throw new IOException(e);
-			} catch (InterruptedException e) {
-				LOG.warn("{} interrupted during waiting server join {}.", mlContext.getIdentity(), e.getMessage());
-				serverFuture.cancel(true);
-			} finally {
-				serverFuture = null;
-				if (mlContext != null) {
-					mlContext.close();
-					mlContext = null;
-				}
+				isClose.set(true);
 			}
-			isClose.set(true);
 		}
 		if (null != hookManager) {
 			try {
