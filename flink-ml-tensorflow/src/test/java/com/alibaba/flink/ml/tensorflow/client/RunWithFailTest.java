@@ -112,9 +112,11 @@ public class RunWithFailTest {
 		TFUtils.train(streamEnv, null, tfConfig);
 		try {
 			streamEnv.execute();
-		} catch (JobExecutionException e) {
-			if (e.getCause().getMessage().matches(".*worker:0 has been idle for \\d+ seconds.*")) {
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			if (e.getCause().getMessage().matches(".*Job failed.*")) {
 				// expected
+				Thread.sleep(5000);
 				return;
 			}
 			throw e;

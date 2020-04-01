@@ -39,9 +39,9 @@ This project combines TensorFlow with Flink and provides users with more conveni
 **Currently, Flink job code uses java language and the algorithm code uses python language.**
 
 ## Support Version
-TensorFlow: 1.11.0
+TensorFlow: 1.13.1
 
-Flink: 1.8.0
+Flink: 1.10.0
  
 ## Quick Start
 
@@ -112,7 +112,7 @@ export PATH=${PATH}:${MAVEN_HOME}/bin
 ```
 
 ### Build From Source
-**Compiling source code depends on tensorflow 1.11.0. Compiling commands will automatically install tensorflow 1.11.0**
+**Compiling source code depends on tensorflow 1.13.1. Compiling commands will automatically install tensorflow 1.13.1**
 
 ```shell 
 mvn -DskipTests=true clean install
@@ -412,7 +412,7 @@ sh start_cluster.sh
 * **Copy virtual environment package to hdfs**
 
 ```shell 
-docker exec flink-jm /opt/hadoop-2.7.0/bin/hadoop fs -put -f /opt/work_home/temp/test/tfenv.zip /user/root/tfenv.zip
+docker exec flink-jm /opt/hadoop-2.8.0/bin/hadoop fs -put -f /opt/work_home/temp/test/tfenv.zip /user/root/tfenv.zip
 ```
 
 * **Download mnist data**
@@ -434,7 +434,7 @@ zip -r ${projectRoot}/flink-ml-examples/target/code.zip code
 
 * **Put code package to hdfs**
 ```shell 
-docker exec flink-jm /opt/hadoop-2.7.0/bin/hadoop fs -put -f /opt/work_home/flink-ml-examples/target/code.zip hdfs://minidfs:9000/user/root/
+docker exec flink-jm /opt/hadoop-2.8.0/bin/hadoop fs -put -f /opt/work_home/flink-ml-examples/target/code.zip hdfs://minidfs:9000/user/root/
 ```
 
 ### Submit train job
