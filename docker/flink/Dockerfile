@@ -8,25 +8,24 @@ WORKDIR /opt
 # RUN cp opt/flink-table_2.11-1.6.0.jar lib/
 
 # set up hadoop
-# RUN cd /opt; wget https://archive.apache.org/dist/hadoop/common/hadoop-2.7.0/hadoop-2.7.0.tar.gz; tar xf hadoop-2.7.0.tar.gz; rm -f hadoop-2.7.0.tar.gz
-RUN wget http://etaose.oss-cn-hangzhou-zmf.aliyuncs.com/test/flink/package/hadoop-2.7.0.tar.gz; tar xf hadoop-2.7.0.tar.gz; rm -f hadoop-2.7.0.tar.gz
-ENV HADOOP_HDFS_HOME /opt/hadoop-2.7.0
-ENV HADOOP_HOME /opt/hadoop-2.7.0
-COPY core-site.xml /opt/hadoop-2.7.0/etc/hadoop/
+RUN wget https://flink-ai-extended.oss-cn-beijing.aliyuncs.com/hadoop-2.8.0.tar.gz; tar xf hadoop-2.8.0.tar.gz; rm -f hadoop-2.8.0.tar.gz
+ENV HADOOP_HDFS_HOME /opt/hadoop-2.8.0
+ENV HADOOP_HOME /opt/hadoop-2.8.0
+COPY core-site.xml /opt/hadoop-2.8.0/etc/hadoop/
 
-# install flink 1.8
-RUN rm -rf /opt/flink; wget http://etaose.oss-cn-hangzhou-zmf.aliyuncs.com/test/flink/package/flink-1.8.0-bin-scala_2.11.tgz
-RUN tar xf flink-1.8.0-bin-scala_2.11.tgz
-RUN mv flink-1.8.0 flink
-RUN rm -f flink-1.8.0-bin-scala_2.11.tgz
+# install flink 1.10
+RUN rm -rf /opt/flink; wget https://flink-ai-extended.oss-cn-beijing.aliyuncs.com/flink-1.10.0-bin-scala_2.11.tgz
+RUN tar xf flink-1.10.0-bin-scala_2.11.tgz
+RUN mv flink-1.10.0 flink
+RUN rm -f flink-1.10.0-bin-scala_2.11.tgz
 
 #RUN rm -rf /opt/flink; wget http://etaose.oss-cn-hangzhou-zmf.aliyuncs.com/test/flink/package/flink-1.8-SNAPSHOT.tgz
 #RUN tar xf flink-1.8-SNAPSHOT.tgz
 #RUN mv flink-1.8-SNAPSHOT flink
 #RUN rm -f flink-1.8-SNAPSHOT.tgz
-RUN cp flink/opt/* flink/lib/
+RUN cp -r flink/opt/* flink/lib/
 
-ENV HADOOP_CLASSPATH=/opt/hadoop-2.7.0/etc/hadoop:/opt/hadoop-2.7.0/share/hadoop/common/lib/*:/opt/hadoop-2.7.0/share/hadoop/common/*:/opt/hadoop-2.7.0/share/hadoop/hdfs:/opt/hadoop-2.7.0/share/hadoop/hdfs/lib/*:/opt/hadoop-2.7.0/share/hadoop/hdfs/*:/opt/hadoop-2.7.0/share/hadoop/yarn/lib/*:/opt/hadoop-2.7.0/share/hadoop/yarn/*:/opt/hadoop-2.7.0/share/hadoop/mapreduce/lib/*:/opt/hadoop-2.7.0/share/hadoop/mapreduce/*:/opt/hadoop-2.7.0/share/hadoop/common/:/opt/hadoop-2.7.0/share/hadoop/common/lib/:/opt/hadoop-2.7.0/share/hadoop/common/lib/:/opt/hadoop-2.7.0/share/hadoop/hdfs/:/opt/hadoop-2.7.0/share/hadoop/hdfs/lib/:/opt/hadoop-2.7.0/share/hadoop/yarn/:/opt/hadoop-2.7.0/share/hadoop/yarn/lib/:/opt/hadoop-2.7.0/contrib/capacity-scheduler/*.jar
+ENV HADOOP_CLASSPATH=/opt/hadoop-2.8.0/etc/hadoop:/opt/hadoop-2.8.0/share/hadoop/common/lib/*:/opt/hadoop-2.8.0/share/hadoop/common/*:/opt/hadoop-2.8.0/share/hadoop/hdfs:/opt/hadoop-2.8.0/share/hadoop/hdfs/lib/*:/opt/hadoop-2.8.0/share/hadoop/hdfs/*:/opt/hadoop-2.8.0/share/hadoop/yarn/lib/*:/opt/hadoop-2.8.0/share/hadoop/yarn/*:/opt/hadoop-2.8.0/share/hadoop/mapreduce/lib/*:/opt/hadoop-2.8.0/share/hadoop/mapreduce/*:/opt/hadoop-2.8.0/share/hadoop/common/:/opt/hadoop-2.8.0/share/hadoop/common/lib/:/opt/hadoop-2.8.0/share/hadoop/common/lib/:/opt/hadoop-2.8.0/share/hadoop/hdfs/:/opt/hadoop-2.8.0/share/hadoop/hdfs/lib/:/opt/hadoop-2.8.0/share/hadoop/yarn/:/opt/hadoop-2.8.0/share/hadoop/yarn/lib/:/opt/hadoop-2.8.0/contrib/capacity-scheduler/*.jar
 
 # set up apt
 COPY sources.list /etc/apt/
