@@ -82,11 +82,11 @@ class CMakeBuild(build_ext):
 
 setup(
     name='flink_ml_tensorflow',
-    version='0.1.0',
+    version='0.2.0',
     include_package_data=True,
     packages=find_packages(),
     ext_modules=[CMakeExtension('flink_ml_tensorflow/flink_ml_tensorflow')],
     cmdclass=dict(build_ext=CMakeBuild),
     zip_safe=False,
-    install_requires = ['tensorflow==1.13.1', 'tensorboard==1.13.1', 'flink_ml_framework==0.1.0'],
+    install_requires = ['tensorflow==1.13.1', 'tensorboard==1.13.1', 'flink_ml_framework==0.2.0'],
 )
