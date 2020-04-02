@@ -184,7 +184,9 @@ public class TFUtilsTest {
 		helper.like(MLTestConstants.SINK_CONVERSION, 1);
 		helper.like("debug_source", 1);
 		helper.like(MLTestConstants.SINK, 1);
-		StreamGraph streamGraph = helper.matchStreamGraph(streamEnv.getStreamGraph());
+		StreamGraph streamGraph = helper.matchStreamGraph(streamEnv.getStreamGraph(
+				StreamExecutionEnvironment.DEFAULT_JOB_NAME,
+				false));
 		String plan = FlinkJobHelper.streamPlan(streamGraph);
 		System.out.println(plan);
 		streamEnv.execute();
