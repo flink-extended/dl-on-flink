@@ -52,12 +52,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class TFUtils {
 	private static Logger LOG = LoggerFactory.getLogger(TFUtils.class);
 	static final TableSchema DUMMY_SCHEMA = new TableSchema(
 			new String[] { "a" }, new TypeInformation[] { Types.STRING });
+	private static AtomicInteger count = new AtomicInteger(0);
 
 	/* ***********************************************
 	 ******  API for Streaming Environment   **********
@@ -428,7 +429,7 @@ public class TFUtils {
 
 
 	private static void writeToDummySink(Table tbl, TableEnvironment tableEnvironment) {
-		String sinkName = "dummy_sink" + UUID.randomUUID();
+		String sinkName = String.format("dummy_sink_%s", count.getAndIncrement());
 		tableEnvironment.registerTableSink(sinkName, new TableStreamDummySink());
 		tbl.insertInto(sinkName);
 	}
