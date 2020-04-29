@@ -259,7 +259,7 @@ public class MiniCluster {
 		if (tfenv.exists()) {
 			return true;
 		} else {
-			String cmd = String.format("sh %s", CONTAINER_WORK_HOME + "docker/flink/create_venv.sh");
+			String cmd = String.format("bash %s", CONTAINER_WORK_HOME + "docker/flink/create_venv.sh");
 			return Docker.exec(getJMContainer(), cmd);
 		}
 	}
