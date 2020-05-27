@@ -23,8 +23,7 @@ import com.alibaba.flink.ml.cluster.MLConfig;
 import com.alibaba.flink.ml.operator.ops.MLFlatMapOp;
 import com.alibaba.flink.ml.operator.ops.sink.DummySink;
 import com.alibaba.flink.ml.operator.ops.source.NodeSource;
-import com.alibaba.flink.ml.operator.ops.table.MLTableSource;
-import com.alibaba.flink.ml.operator.ops.table.TableStreamDummySink;
+import com.alibaba.flink.ml.operator.ops.table.descriptor.MLTable;
 import com.alibaba.flink.ml.operator.util.TypeUtil;
 import com.alibaba.flink.ml.cluster.role.AMRole;
 import com.alibaba.flink.ml.cluster.role.BaseRole;
@@ -38,7 +37,8 @@ import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.TableSchema;
 import org.apache.flink.table.api.Types;
-import org.apache.flink.table.api.java.StreamTableEnvironment;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+import org.apache.flink.table.descriptors.Schema;
 import org.apache.flink.types.Row;
 
 
@@ -128,9 +128,18 @@ public class RoleUtils {
 		TableSchema workerSchema = outputSchema != null ? outputSchema : DUMMY_SCHEMA;
 		int workerParallelism = mlConfig.getRoleParallelismMap().get(role.name());
 		if (input == null) {
-			tableEnv.registerTableSource(role.name(),
-					new MLTableSource(mode, role, mlConfig, workerSchema, workerParallelism));
-			worker = tableEnv.scan(role.name());
+//			tableEnv.registerTableSource(role.name(),
+//					new MLTableSource(mode, role, mlConfig, workerSchema, workerParallelism));
+//			worker = tableEnv.scan(role.name());
+
+			tableEnv.connect((new MLTable()
+						.mlConfig(mlConfig)
+						.executionMode(mode)
+						.role(role)
+						.parallelism(workerParallelism)))
+					.withSchema(new Schema().schema(workerSchema))
+					.createTemporaryTable(role.name());
+			worker = tableEnv.from(role.name());
 		} else {
 			DataStream<Row> toDataStream = tableToDS(input, tableEnv);
 			FlatMapFunction<Row, Row> flatMapper = new MLFlatMapOp<>(mode, role, mlConfig, toDataStream.getType(),
@@ -142,7 +151,7 @@ public class RoleUtils {
 		}
 		if (outputSchema == null) {
 			if (worker != null) {
-				tableEnv.registerTableSink("table_sink",new TableStreamDummySink());
+//				tableEnv.registerTableSink("table_sink",new TableStreamDummySink());
 				worker.insertInto("table_sink");
 			}
 		}
@@ -158,11 +167,11 @@ public class RoleUtils {
 	 *  machine learning configuration
 	 */
 	public static void addAMRole(TableEnvironment tableEnv, MLConfig mlConfig) {
-		tableEnv.registerTableSource(new AMRole().name(), new MLTableSource(ExecutionMode.OTHER, new AMRole(),
-				mlConfig, DUMMY_SCHEMA, 1));
-		Table am = tableEnv.scan(new AMRole().name());
-		tableEnv.registerTableSink("table_stream_sink", new TableStreamDummySink());
-		am.insertInto("table_stream_sink");
+//		tableEnv.registerTableSource(new AMRole().name(), new MLTableSource(ExecutionMode.OTHER, new AMRole(),
+//				mlConfig, DUMMY_SCHEMA, 1));
+//		Table am = tableEnv.scan(new AMRole().name());
+//		tableEnv.registerTableSink("table_stream_sink", new TableStreamDummySink());
+//		am.insertInto("table_stream_sink");
 
 	}
 

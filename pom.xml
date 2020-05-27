@@ -58,7 +58,7 @@
 
     <properties>
         <protobuf.version>3.6.0</protobuf.version>
-        <flink.version>1.10.0</flink.version>
+        <flink.version>1.11-SNAPSHOT</flink.version>
         <scala.major.version>2.11</scala.major.version>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -253,6 +253,11 @@
             <dependency>
                 <groupId>org.apache.flink</groupId>
                 <artifactId>flink-table-planner_${scala.major.version}</artifactId>
+                <version>${flink.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-table-planner-blink_${scala.major.version}</artifactId>
                 <version>${flink.version}</version>
             </dependency>
             <dependency>

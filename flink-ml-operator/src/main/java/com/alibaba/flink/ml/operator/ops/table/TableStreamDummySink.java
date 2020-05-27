@@ -22,6 +22,7 @@ import com.alibaba.flink.ml.operator.ops.sink.DummySink;
 
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.datastream.DataStreamSink;
 import org.apache.flink.table.api.TableSchema;
 import org.apache.flink.table.sinks.AppendStreamTableSink;
 import org.apache.flink.table.sinks.TableSink;
@@ -44,7 +45,7 @@ public class TableStreamDummySink extends TableDummySinkBase implements AppendSt
 	}
 
 	@Override
-	public void emitDataStream(DataStream<Row> dataStream) {
-		dataStream.addSink(new DummySink<>()).setParallelism(1);
+	public DataStreamSink<?> consumeDataStream(DataStream<Row> dataStream) {
+		return dataStream.addSink(new DummySink<>()).setParallelism(1);
 	}
 }
