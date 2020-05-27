@@ -24,10 +24,11 @@ import com.alibaba.flink.ml.cluster.role.WorkerRole;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.graph.StreamGraph;
 import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 public class TableTestUtil {
 
-    public static void execTableJobCustom(MLConfig mlConfig, StreamExecutionEnvironment streamEnv, TableEnvironment tableEnv) throws Exception {
+    public static void execTableJobCustom(MLConfig mlConfig, StreamExecutionEnvironment streamEnv, StreamTableEnvironment tableEnv) throws Exception {
         FlinkJobHelper helper = new FlinkJobHelper();
         helper.like(new WorkerRole().name(), mlConfig.getRoleParallelismMap().get(new WorkerRole().name()));
         helper.like(new AMRole().name(), 1);
@@ -41,5 +42,6 @@ public class TableTestUtil {
         String plan = FlinkJobHelper.streamPlan(streamGraph);
         System.out.println(plan);
         streamEnv.execute();
+//        tableEnv.execute("hh");
     }
 }
