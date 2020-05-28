@@ -14,5 +14,5 @@
 # limitations under the License.
 
 com.alibaba.flink.ml.operator.ops.table.MLTableSourceFactory
-
+com.alibaba.flink.ml.operator.ops.table.TableDummySinkFactory
 
