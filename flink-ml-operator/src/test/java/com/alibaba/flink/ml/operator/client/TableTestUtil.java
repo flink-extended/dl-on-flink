@@ -21,14 +21,18 @@ package com.alibaba.flink.ml.operator.client;
 import com.alibaba.flink.ml.cluster.MLConfig;
 import com.alibaba.flink.ml.cluster.role.AMRole;
 import com.alibaba.flink.ml.cluster.role.WorkerRole;
+import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.graph.StreamGraph;
+import org.apache.flink.table.api.StatementSet;
+import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
-import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+import org.apache.flink.types.Row;
 
 public class TableTestUtil {
 
-    public static void execTableJobCustom(MLConfig mlConfig, StreamExecutionEnvironment streamEnv, StreamTableEnvironment tableEnv) throws Exception {
+    public static void execTableJobCustom(MLConfig mlConfig, StreamExecutionEnvironment streamEnv, TableEnvironment tableEnv, Table table,
+                                          String sinkTable) throws Exception {
         FlinkJobHelper helper = new FlinkJobHelper();
         helper.like(new WorkerRole().name(), mlConfig.getRoleParallelismMap().get(new WorkerRole().name()));
         helper.like(new AMRole().name(), 1);
@@ -36,12 +40,20 @@ public class TableTestUtil {
         helper.like(MLTestConstants.SINK_CONVERSION, 1);
         helper.like("debug_source", 1);
         helper.like(MLTestConstants.SINK, 1);
+        DataStream<Row> rowDataStream = RoleUtils.tableToDS(table, tableEnv);
         StreamGraph streamGraph =  helper.matchStreamGraph(streamEnv.getStreamGraph(
                 StreamExecutionEnvironment.DEFAULT_JOB_NAME,
-                false));
-        String plan = FlinkJobHelper.streamPlan(streamGraph);
-        System.out.println(plan);
-        streamEnv.execute();
+                true));
+        StatementSet statementSet = RoleUtils.getStatementSet(tableEnv);
+        if (sinkTable != null) {
+            Table table1 = RoleUtils.dsToTable(rowDataStream, tableEnv);
+            statementSet.addInsert(sinkTable, table1);
+        }
+        statementSet.execute().getJobClient().get().getJobExecutionResult(Thread.currentThread().getContextClassLoader())
+                .get();
+//        String plan = FlinkJobHelper.streamPlan(streamGraph);
+//        System.out.println(plan);
+//        streamEnv.execute();
 //        tableEnv.execute("hh");
     }
 }

@@ -23,6 +23,7 @@ import com.alibaba.flink.ml.cluster.MLConfig;
 import com.alibaba.flink.ml.operator.ops.MLFlatMapOp;
 import com.alibaba.flink.ml.operator.ops.sink.DummySink;
 import com.alibaba.flink.ml.operator.ops.source.NodeSource;
+import com.alibaba.flink.ml.operator.ops.table.descriptor.DummyTable;
 import com.alibaba.flink.ml.operator.ops.table.descriptor.MLTable;
 import com.alibaba.flink.ml.operator.util.TypeUtil;
 import com.alibaba.flink.ml.cluster.role.AMRole;
@@ -33,13 +34,14 @@ import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.table.api.Table;
-import org.apache.flink.table.api.TableEnvironment;
-import org.apache.flink.table.api.TableSchema;
-import org.apache.flink.table.api.Types;
+import org.apache.flink.table.api.*;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.table.descriptors.Schema;
 import org.apache.flink.types.Row;
+
+import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -48,6 +50,7 @@ import org.apache.flink.types.Row;
  * 2. create a group of machine learning nodes as a named role.
  */
 public class RoleUtils {
+	private static final Map<TableEnvironment, StatementSet> statementSetMap = new HashMap<>();
 	private static final TypeInformation<String> DUMMY_TI = getTypeInfo(String.class);
 	static final TableSchema DUMMY_SCHEMA = new TableSchema(
 			new String[] { "a" }, new TypeInformation[] { Types.STRING() });
@@ -128,10 +131,6 @@ public class RoleUtils {
 		TableSchema workerSchema = outputSchema != null ? outputSchema : DUMMY_SCHEMA;
 		int workerParallelism = mlConfig.getRoleParallelismMap().get(role.name());
 		if (input == null) {
-//			tableEnv.registerTableSource(role.name(),
-//					new MLTableSource(mode, role, mlConfig, workerSchema, workerParallelism));
-//			worker = tableEnv.scan(role.name());
-
 			tableEnv.connect((new MLTable()
 						.mlConfig(mlConfig)
 						.executionMode(mode)
@@ -151,8 +150,12 @@ public class RoleUtils {
 		}
 		if (outputSchema == null) {
 			if (worker != null) {
+				tableEnv.connect(new DummyTable())
+						.withSchema(new Schema().schema(DUMMY_SCHEMA))
+						.createTemporaryTable("table_sink");
+				getStatementSet(tableEnv).addInsert("table_sink", worker);
 //				tableEnv.registerTableSink("table_sink",new TableStreamDummySink());
-				worker.insertInto("table_sink");
+//				worker.insertInto("table_sink");
 			}
 		}
 		return worker;
@@ -167,6 +170,17 @@ public class RoleUtils {
 	 *  machine learning configuration
 	 */
 	public static void addAMRole(TableEnvironment tableEnv, MLConfig mlConfig) {
+		tableEnv.connect(new MLTable().executionMode(ExecutionMode.OTHER).role(new AMRole()).mlConfig(mlConfig).parallelism(1))
+				.withSchema(new Schema().schema(DUMMY_SCHEMA))
+				.createTemporaryTable(new AMRole().name());
+		Table am = tableEnv.from(new AMRole().name());
+
+		tableEnv.connect(new DummyTable())
+				.withSchema(new Schema().schema(DUMMY_SCHEMA))
+				.createTemporaryTable("table_stream_sink");
+
+		getStatementSet(tableEnv).addInsert("table_stream_sink", am);
+
 //		tableEnv.registerTableSource(new AMRole().name(), new MLTableSource(ExecutionMode.OTHER, new AMRole(),
 //				mlConfig, DUMMY_SCHEMA, 1));
 //		Table am = tableEnv.scan(new AMRole().name());
@@ -179,11 +193,16 @@ public class RoleUtils {
 		return clazz == null ? null : TypeInformation.of(clazz);
 	}
 
-	private static Table dsToTable(DataStream<Row> dataStream, TableEnvironment tableEnv) {
+	public static StatementSet getStatementSet(TableEnvironment tableEnvironment) {
+		statementSetMap.putIfAbsent(tableEnvironment, tableEnvironment.createStatementSet());
+		return statementSetMap.get(tableEnvironment);
+	}
+
+	public static Table dsToTable(DataStream<Row> dataStream, TableEnvironment tableEnv) {
 		return ((StreamTableEnvironment) tableEnv).fromDataStream(dataStream);
 	}
 
-	private static DataStream<Row> tableToDS(Table table, TableEnvironment tableEnv) {
+	public static DataStream<Row> tableToDS(Table table, TableEnvironment tableEnv) {
 		if (table == null) {
 			return null;
 		}

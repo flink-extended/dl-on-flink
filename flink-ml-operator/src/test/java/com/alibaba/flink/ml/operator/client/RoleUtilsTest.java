@@ -35,10 +35,7 @@ import org.apache.curator.test.TestingServer;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.table.api.DataTypes;
-import org.apache.flink.table.api.EnvironmentSettings;
-import org.apache.flink.table.api.TableEnvironment;
-import org.apache.flink.table.api.TableSchema;
+import org.apache.flink.table.api.*;
 
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.table.descriptors.Schema;
@@ -127,8 +124,8 @@ public class RoleUtilsTest {
         TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
         PythonFileUtil.registerPythonFiles(streamEnv, mlConfig);
         RoleUtils.addAMRole(tableEnv,mlConfig);
-        RoleUtils.addRole(tableEnv, ExecutionMode.TRAIN, null, mlConfig, null, new WorkerRole());
-        execTableJobCustom(mlConfig, streamEnv, tableEnv);
+        Table table = RoleUtils.addRole(tableEnv, ExecutionMode.TRAIN, null, mlConfig, null, new WorkerRole());
+        execTableJobCustom(mlConfig, streamEnv, tableEnv, table, null);
     }
 
     @Test
@@ -162,11 +159,10 @@ public class RoleUtilsTest {
         tableEnv.connect(new TableDebugRowSinkDescriptor())
                 .withSchema(new Schema().schema(outputSchema))
                 .createTemporaryTable("row_sink");
-        RoleUtils.addRole(tableEnv, ExecutionMode.TRAIN, null, mlConfig, outputSchema, new WorkerRole())
-        .insertInto("row_sink");
+        Table table = RoleUtils.addRole(tableEnv, ExecutionMode.TRAIN, null, mlConfig, outputSchema, new WorkerRole());
 
 
-        execTableJobCustom(mlConfig, streamEnv, tableEnv);
+        execTableJobCustom(mlConfig, streamEnv, tableEnv, table, "row_sink");
     }
 
 //    @Test
