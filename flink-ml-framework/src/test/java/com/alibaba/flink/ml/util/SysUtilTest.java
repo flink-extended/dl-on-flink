@@ -9,6 +9,6 @@ public class SysUtilTest {
 
 	@Test
 	public void getProjectVersion() {
-		Assert.assertEquals("0.2.0", SysUtil.getProjectVersion());
+		Assert.assertEquals("0.2.1", SysUtil.getProjectVersion());
 	}
 }
