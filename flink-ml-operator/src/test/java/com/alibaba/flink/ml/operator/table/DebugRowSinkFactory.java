@@ -1,4 +1,4 @@
-package com.alibaba.flink.ml.operator.sink;
+package com.alibaba.flink.ml.operator.table;
 
 import com.alibaba.flink.ml.operator.util.TypeUtil;
 import org.apache.flink.table.api.TableSchema;

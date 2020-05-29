@@ -16,52 +16,48 @@
  * limitations under the License.
  */
 
-package com.alibaba.flink.ml.operator.source;
+package com.alibaba.flink.ml.operator.table;
 
-import com.alibaba.flink.ml.operator.util.TypeUtil;
+import com.alibaba.flink.ml.operator.sink.DebugRowSink;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.table.api.TableSchema;
-import org.apache.flink.table.sources.StreamTableSource;
+import org.apache.flink.streaming.api.datastream.DataStreamSink;
+import org.apache.flink.table.sinks.AppendStreamTableSink;
+import org.apache.flink.table.sinks.TableSink;
+
 import org.apache.flink.types.Row;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.Serializable;
 
 
-public class TableDebugRowSource implements StreamTableSource<Row>, Serializable {
-
+public class TableDebugRowSink implements AppendStreamTableSink<Row> {
     private RowTypeInfo typeInfo;
 
-    private static Logger LOG = LoggerFactory.getLogger(TableDebugRowSource.class);
-
-    public TableDebugRowSource() {
-        this.typeInfo = DebugRowSource.typeInfo;
+    public TableDebugRowSink(RowTypeInfo typeInfo) {
+        this.typeInfo = typeInfo;
     }
 
-
     @Override
-    public TypeInformation<Row> getReturnType() {
+    public TypeInformation<Row> getOutputType() {
         return typeInfo;
     }
 
     @Override
-    public TableSchema getTableSchema() {
-        return TypeUtil.rowTypeInfoToSchema(typeInfo);
+    public String[] getFieldNames() {
+        return typeInfo.getFieldNames();
     }
 
     @Override
-    public String explainSource() {
-        return "debug_source";
+    public TypeInformation<?>[] getFieldTypes() {
+        return typeInfo.getFieldTypes();
     }
 
     @Override
-    public DataStream<Row> getDataStream(StreamExecutionEnvironment execEnv) {
-        return execEnv.addSource(new DebugRowSource())
-            .name(explainSource());
+    public TableSink<Row> configure(String[] strings, TypeInformation<?>[] typeInformations) {
+        return new TableDebugRowSink(new RowTypeInfo(typeInformations, strings));
     }
 
+    @Override
+    public DataStreamSink<Row> consumeDataStream(DataStream<Row> dataStream) {
+        return dataStream.addSink(new DebugRowSink());
+    }
 }
