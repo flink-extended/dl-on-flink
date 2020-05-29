@@ -19,12 +19,9 @@
 package com.alibaba.flink.ml.operator.source;
 
 import com.alibaba.fastjson.JSONObject;
-import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.ResultTypeQueryable;
-import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.streaming.api.functions.source.ParallelSourceFunction;
-import org.apache.flink.types.Row;
 
 public class DebugJsonSource implements ParallelSourceFunction<JSONObject>, ResultTypeQueryable {
 
