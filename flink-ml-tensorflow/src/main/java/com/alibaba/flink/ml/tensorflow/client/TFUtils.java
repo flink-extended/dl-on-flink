@@ -21,6 +21,7 @@ package com.alibaba.flink.ml.tensorflow.client;
 import com.alibaba.flink.ml.cluster.ExecutionMode;
 import com.alibaba.flink.ml.operator.client.RoleUtils;
 import com.alibaba.flink.ml.operator.ops.table.TableStreamDummySink;
+import com.alibaba.flink.ml.operator.ops.table.descriptor.DummyTable;
 import com.alibaba.flink.ml.operator.util.PythonFileUtil;
 import com.alibaba.flink.ml.operator.util.TypeUtil;
 import com.alibaba.flink.ml.cluster.role.PsRole;
@@ -42,15 +43,18 @@ import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.StatementSet;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.TableSchema;
-import org.apache.flink.table.api.java.StreamTableEnvironment;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+import org.apache.flink.table.descriptors.Schema;
 import org.apache.flink.types.Row;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.management.relation.Role;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -430,8 +434,16 @@ public class TFUtils {
 
 	private static void writeToDummySink(Table tbl, TableEnvironment tableEnvironment) {
 		String sinkName = String.format("dummy_sink_%s", count.getAndIncrement());
-		tableEnvironment.registerTableSink(sinkName, new TableStreamDummySink());
-		tbl.insertInto(sinkName);
+//		tableEnvironment.registerTableSink(sinkName, new TableStreamDummySink());
+		tableEnvironment.connect(new DummyTable())
+				.withSchema(new Schema().schema(DUMMY_SCHEMA))
+				.createTemporaryTable(sinkName);
+//		tbl.insertInto(sinkName);
+		RoleUtils.getStatementSet(tableEnvironment).addInsert(sinkName, tbl);
+	}
+
+	public static StatementSet getStatementSet(TableEnvironment tableEnvironment) {
+		return RoleUtils.getStatementSet(tableEnvironment);
 	}
 
 
