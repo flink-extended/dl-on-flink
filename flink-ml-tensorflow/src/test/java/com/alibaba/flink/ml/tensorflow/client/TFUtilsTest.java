@@ -19,30 +19,22 @@
 package com.alibaba.flink.ml.tensorflow.client;
 
 import com.alibaba.flink.ml.cluster.MLConfig;
-import com.alibaba.flink.ml.operator.client.MLTestConstants;
-import com.alibaba.flink.ml.operator.client.FlinkJobHelper;
 import com.alibaba.flink.ml.operator.coding.RowCSVCoding;
-import com.alibaba.flink.ml.operator.sink.TableDebugRowSink;
 import com.alibaba.flink.ml.operator.source.DebugRowSource;
-import com.alibaba.flink.ml.operator.source.TableDebugRowSource;
+import com.alibaba.flink.ml.operator.table.descriptor.TableDebugRowDescriptor;
 import com.alibaba.flink.ml.operator.util.TypeUtil;
-import com.alibaba.flink.ml.cluster.role.AMRole;
-import com.alibaba.flink.ml.cluster.role.PsRole;
-import com.alibaba.flink.ml.cluster.role.WorkerRole;
 import com.alibaba.flink.ml.tensorflow.hooks.DebugHook;
 import com.alibaba.flink.ml.tensorflow.util.TFConstants;
 import com.alibaba.flink.ml.util.MLConstants;
 import com.alibaba.flink.ml.util.SysUtil;
 import com.alibaba.flink.ml.util.TestUtil;
 import org.apache.curator.test.TestingServer;
-
 import org.apache.flink.api.common.JobExecutionResult;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.graph.StreamGraph;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
-
-import org.apache.flink.table.api.java.StreamTableEnvironment;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+import org.apache.flink.table.descriptors.Schema;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -137,12 +129,19 @@ public class TFUtilsTest {
 		config.getProperties().put(RowCSVCoding.ENCODE_TYPES, inputSb.toString());
 		config.getProperties().put(RowCSVCoding.DECODE_TYPES, inputSb.toString());
 		TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
-		tableEnv.registerTableSource("debug_source", new TableDebugRowSource());
+//		tableEnv.registerTableSource("debug_source", new TableDebugRowSource());
+		tableEnv.connect(new TableDebugRowDescriptor())
+				.withSchema(new Schema().schema(TypeUtil.rowTypeInfoToSchema(DebugRowSource.typeInfo)))
+				.createTemporaryTable("debug_source");
 		Table input = tableEnv.scan("debug_source");
-		tableEnv.registerTableSink("table_row_sink",new TableDebugRowSink(DebugRowSource.typeInfo));
-		TFUtils.train(streamEnv, tableEnv, input, config,
-				TypeUtil.rowTypeInfoToSchema(DebugRowSource.typeInfo))
-				.insertInto("table_row_sink");
+//		tableEnv.registerTableSink("table_row_sink",new TableDebugRowSink(DebugRowSource.typeInfo));
+		tableEnv.connect(new TableDebugRowDescriptor())
+				.withSchema(new Schema().schema(TypeUtil.rowTypeInfoToSchema(DebugRowSource.typeInfo)))
+				.createTemporaryTable("table_row_sink");
+		Table table = TFUtils.train(streamEnv, tableEnv, input, config,
+				TypeUtil.rowTypeInfoToSchema(DebugRowSource.typeInfo));
+		TFUtils.getStatementSet(tableEnv).addInsert("table_row_sink", table);
+//				.insertInto("table_row_sink");
 		execTableJobCustom(config.getMlConfig(), streamEnv, tableEnv);
 	}
 
@@ -176,19 +175,21 @@ public class TFUtilsTest {
 
 	public static void execTableJobCustom(MLConfig mlConfig, StreamExecutionEnvironment streamEnv,
 			TableEnvironment tableEnv) throws Exception {
-		FlinkJobHelper helper = new FlinkJobHelper();
-		helper.like(new WorkerRole().name(), mlConfig.getRoleParallelismMap().get(new WorkerRole().name()));
-		helper.like(new PsRole().name(), mlConfig.getRoleParallelismMap().get(new PsRole().name()));
-		helper.like(new AMRole().name(), 1);
-		helper.like(MLTestConstants.SOURCE_CONVERSION, 1);
-		helper.like(MLTestConstants.SINK_CONVERSION, 1);
-		helper.like("debug_source", 1);
-		helper.like(MLTestConstants.SINK, 1);
-		StreamGraph streamGraph = helper.matchStreamGraph(streamEnv.getStreamGraph(
-				StreamExecutionEnvironment.DEFAULT_JOB_NAME,
-				false));
-		String plan = FlinkJobHelper.streamPlan(streamGraph);
-		System.out.println(plan);
-		streamEnv.execute();
+//		FlinkJobHelper helper = new FlinkJobHelper();
+//		helper.like(new WorkerRole().name(), mlConfig.getRoleParallelismMap().get(new WorkerRole().name()));
+//		helper.like(new PsRole().name(), mlConfig.getRoleParallelismMap().get(new PsRole().name()));
+//		helper.like(new AMRole().name(), 1);
+//		helper.like(MLTestConstants.SOURCE_CONVERSION, 1);
+//		helper.like(MLTestConstants.SINK_CONVERSION, 1);
+//		helper.like("debug_source", 1);
+//		helper.like(MLTestConstants.SINK, 1);
+//		StreamGraph streamGraph = helper.matchStreamGraph(streamEnv.getStreamGraph(
+//				StreamExecutionEnvironment.DEFAULT_JOB_NAME,
+//				false));
+//		String plan = FlinkJobHelper.streamPlan(streamGraph);
+//		System.out.println(plan);
+//		streamEnv.execute();
+		TFUtils.getStatementSet(tableEnv).execute().getJobClient().get()
+				.getJobExecutionResult(Thread.currentThread().getContextClassLoader()).get();
 	}
 }
