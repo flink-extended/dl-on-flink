@@ -43,7 +43,11 @@ public class MLTableSourceFactory implements TableSourceFactory<Row> {
         Map<String, String> mlRoleParallelismProperties = properties.getPropertiesWithPrefix(CONNECTOR_ML_CONFIG_ROLE_PARALLELISM_MAP);
         Map<String, Integer> mlRoleParallelismMap = toMlRoleParallelismMap(mlRoleParallelismProperties);
         String funcName = properties.getString(CONNECTOR_ML_CONFIG_FUNC_NAME);
-        String envPath = properties.getString(CONNECTOR_ML_CONFIG_ENV_PATH);
+        String envPath = null;
+        if (properties.containsKey(CONNECTOR_ML_CONFIG_ENV_PATH)) {
+            envPath = properties.getString(CONNECTOR_ML_CONFIG_ENV_PATH);
+        }
+
         String[] pythonFiles = properties
                 .getFixedIndexedProperties(CONNECTOR_ML_CONFIG_PYTHON_FILES, Collections.singletonList("name"))
                 .stream().map(m -> m.get("name")).toArray(String[]::new);

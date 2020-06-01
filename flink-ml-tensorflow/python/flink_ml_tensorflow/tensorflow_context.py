@@ -36,7 +36,7 @@ class TFContext(Context):
                 for i in range(worker_num):
                     task = job['tasks'][str(i)]
                     ip = task['ip']
-                    port = task['props']['SYS:tf_port']
+                    port = task['props']['sys:tf_port']
                     address = ip + ":" + port
                     tf_cluster['worker'].append(address)
                 continue
@@ -45,7 +45,7 @@ class TFContext(Context):
                 for i in range(ps_num):
                     task = job['tasks'][str(i)]
                     ip = task['ip']
-                    port = task['props']['SYS:tf_port']
+                    port = task['props']['sys:tf_port']
                     address = ip + ":" + port
                     tf_cluster['ps'].append(address)
         if 0 == len(tf_cluster['ps']):

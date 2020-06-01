@@ -23,7 +23,10 @@ public class MLTable extends ConnectorDescriptor {
         Map<String, String> roleParallelismProperties = roleParallelismMapToProperties(mlConfig.getRoleParallelismMap());
         properties.putPropertiesWithPrefix(CONNECTOR_ML_CONFIG_ROLE_PARALLELISM_MAP, roleParallelismProperties);
         properties.putString(CONNECTOR_ML_CONFIG_FUNC_NAME, mlConfig.getFuncName());
-        properties.putString(CONNECTOR_ML_CONFIG_ENV_PATH, mlConfig.getEnvPath());
+
+        if (mlConfig.getEnvPath() != null) {
+            properties.putString(CONNECTOR_ML_CONFIG_ENV_PATH, mlConfig.getEnvPath());
+        }
 
         List<List<String>> pythonFilesIndexedProperties = pythonFilesToIndexedProperties(mlConfig.getPythonFiles());
         properties.putIndexedFixedProperties(CONNECTOR_ML_CONFIG_PYTHON_FILES, Collections.singletonList("name"),
