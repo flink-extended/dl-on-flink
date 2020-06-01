@@ -16,9 +16,9 @@
  * limitations under the License.
  */
 
-package com.alibaba.flink.ml.operator.ops.sink;
+package com.alibaba.flink.ml.operator.ops.table;
 
-import com.alibaba.flink.ml.operator.ops.table.TableDummySinkBase;
+import com.alibaba.flink.ml.operator.ops.sink.LogSink;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSink;

@@ -15,4 +15,5 @@
 
 com.alibaba.flink.ml.operator.ops.table.MLTableSourceFactory
 com.alibaba.flink.ml.operator.ops.table.TableDummySinkFactory
+com.alibaba.flink.ml.operator.ops.table.LogTableSinkFactory
 
