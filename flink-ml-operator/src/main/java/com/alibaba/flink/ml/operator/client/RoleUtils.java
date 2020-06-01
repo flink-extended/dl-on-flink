@@ -42,6 +42,7 @@ import org.apache.flink.types.Row;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -209,5 +210,10 @@ public class RoleUtils {
 		return ((StreamTableEnvironment) tableEnv).toAppendStream(table,
 				TypeUtil.schemaToRowTypeInfo(table.getSchema()));
 
+	}
+
+	public static void executeStatementSet(TableEnvironment tableEnvironment) throws ExecutionException, InterruptedException {
+		getStatementSet(tableEnvironment).execute().getJobClient().get()
+				.getJobExecutionResult(Thread.currentThread().getContextClassLoader()).get();
 	}
 }
