@@ -1,8 +1,9 @@
 package com.alibaba.flink.ml.operator.ops.table.descriptor;
 
 import com.alibaba.flink.ml.operator.ops.table.descriptor.LogTable.RichSinkFunctionSerializer;
-import com.alibaba.flink.ml.proto.Row;
+
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
+import org.apache.flink.types.Row;
 import org.junit.Before;
 import org.junit.Test;
 
