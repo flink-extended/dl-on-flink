@@ -25,14 +25,12 @@ import com.alibaba.flink.ml.examples.tensorflow.mnist.ops.LogInferAccSink;
 import com.alibaba.flink.ml.examples.tensorflow.mnist.ops.MnistTFRExtractRowForJavaFunction;
 import com.alibaba.flink.ml.examples.tensorflow.mnist.ops.MnistTFRPojo;
 import com.alibaba.flink.ml.examples.tensorflow.ops.MnistTFRExtractPojoMapOp;
-import com.alibaba.flink.ml.examples.tensorflow.ops.MnistTFRToRowTableSource;
-import com.alibaba.flink.ml.operator.client.FlinkJobHelper;
+import com.alibaba.flink.ml.examples.tensorflow.ops.descriptor.MnistTFRToRowTable;
+import com.alibaba.flink.ml.operator.client.RoleUtils;
 import com.alibaba.flink.ml.operator.ops.sink.LogSink;
-import com.alibaba.flink.ml.operator.ops.sink.LogTableStreamSink;
+import com.alibaba.flink.ml.operator.ops.table.descriptor.LogTable;
 import com.alibaba.flink.ml.operator.util.FlinkUtil;
-import com.alibaba.flink.ml.cluster.role.AMRole;
-import com.alibaba.flink.ml.cluster.role.PsRole;
-import com.alibaba.flink.ml.cluster.role.WorkerRole;
+import com.alibaba.flink.ml.operator.util.TypeUtil;
 import com.alibaba.flink.ml.tensorflow.client.TFConfig;
 import com.alibaba.flink.ml.tensorflow.client.TFUtils;
 import com.alibaba.flink.ml.tensorflow.coding.ExampleCoding;
@@ -40,22 +38,22 @@ import com.alibaba.flink.ml.tensorflow.coding.ExampleCodingConfig;
 import com.alibaba.flink.ml.tensorflow.io.TFRToRowSourceFunc;
 import com.alibaba.flink.ml.tensorflow.io.TFRecordSource;
 import com.alibaba.flink.ml.tensorflow.util.TFConstants;
-import com.alibaba.flink.ml.util.*;
+import com.alibaba.flink.ml.util.IpHostUtil;
+import com.alibaba.flink.ml.util.MLConstants;
+import com.alibaba.flink.ml.util.SysUtil;
+import com.alibaba.flink.ml.util.TestUtil;
 import com.google.common.base.Joiner;
 import org.apache.curator.test.TestingServer;
-
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.graph.StreamGraph;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.TableSchema;
 import org.apache.flink.table.api.Types;
-import org.apache.flink.table.api.java.StreamTableEnvironment;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+import org.apache.flink.table.descriptors.Schema;
 import org.apache.flink.table.functions.TableFunction;
-import org.apache.flink.table.sources.StreamTableSource;
 import org.apache.flink.types.Row;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,6 +62,8 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static com.alibaba.flink.ml.examples.tensorflow.mnist.MnistJavaInference.OUT_ROW_TYPE;
 
 public class TFMnistInferenceTest {
 
@@ -188,8 +188,11 @@ public class TFMnistInferenceTest {
 		String[] paths = new String[1];
 		paths[0] = testDataPath + "/0.tfrecords";
 		String tblName = "tfr_input_table";
-		tableEnv.registerTableSource(tblName, new MnistTFRToRowTableSource(paths, 1));
-		Table inputTable = tableEnv.scan(tblName);
+//		tableEnv.registerTableSource(tblName, new MnistTFRToRowTableSource(paths, 1));
+		tableEnv.connect(new MnistTFRToRowTable().paths(paths).epochs(1))
+				.withSchema(new Schema().schema(TypeUtil.rowTypeInfoToSchema(OUT_ROW_TYPE)))
+				.createTemporaryTable(tblName);
+		Table inputTable = tableEnv.from(tblName);
 
 		//construct out schema
 		TableSchema outSchema = TableSchema.builder()
@@ -197,10 +200,16 @@ public class TFMnistInferenceTest {
 				.field("predict_label", Types.INT())
 				.build();
 		Table predictTbl = TFUtils.inference(flinkEnv, tableEnv, inputTable, config, outSchema);
-		tableEnv.registerTable("predict_tbl", predictTbl);
-		tableEnv.registerTableSink("predict_sink",outSchema.getFieldNames(), outSchema.getFieldTypes(), new LogTableStreamSink());
-		predictTbl.insertInto("predict_sink");
-		flinkEnv.execute();
+//		tableEnv.registerTable("predict_tbl", predictTbl);
+		tableEnv.createTemporaryView("predict_tbl", predictTbl);
+//		tableEnv.registerTableSink("predict_sink",outSchema.getFieldNames(), outSchema.getFieldTypes(), new LogTableStreamSink());
+		tableEnv.connect(new LogTable())
+				.withSchema(new Schema().schema(outSchema))
+				.createTemporaryTable("predict_sink");
+//		predictTbl.insertInto("predict_sink");
+		RoleUtils.getStatementSet(tableEnv).addInsert("predict_sink", predictTbl);
+//		flinkEnv.execute();
+		RoleUtils.executeStatementSet(tableEnv);
 	}
 
 	@Test
@@ -252,9 +261,18 @@ public class TFMnistInferenceTest {
 		tfConfig.setWorkerNum(2);
 		tfConfig.addProperty(TFConstants.TF_INFERENCE_BATCH_SIZE, String.valueOf(batchSize));
 		File testDataDir = new File(testDataPath);
+		File[] files = testDataDir.listFiles();
+		String[] paths = new String[files.length];
+		for (int i = 0; i < files.length; ++i) {
+			paths[i] = files[i].getAbsolutePath();
+		}
 		String tfrTblName = "tfr_input_table";
-		StreamTableSource<Row> tableSource = new MnistTFRToRowTableSource(testDataDir.listFiles(), 1);
-		tableEnv.registerTableSource(tfrTblName, tableSource);
+//		StreamTableSource<Row> tableSource = new MnistTFRToRowTableSource(testDataDir.listFiles(), 1);
+//		tableEnv.registerTableSource(tfrTblName, tableSource);
+		tableEnv.connect(new MnistTFRToRowTable().paths(paths).epochs(1))
+				.withSchema(new Schema().schema(TypeUtil.rowTypeInfoToSchema(OUT_ROW_TYPE)))
+				.createTemporaryTable(tfrTblName);
+		Table tableSource = tableEnv.from(tfrTblName);
 		TableFunction extractFunc = new MnistTFRExtractRowForJavaFunction();
 		String extFuncName = "tfr_extract";
 		FlinkUtil.registerTableFunction(tableEnv, extFuncName, extractFunc);
@@ -263,7 +281,7 @@ public class TFMnistInferenceTest {
 				.field("image", Types.PRIMITIVE_ARRAY(Types.FLOAT()))
 				.field("org_label", Types.LONG()).build();
 		String outCols = Joiner.on(",").join(extractTableSchema.getFieldNames());
-		String inCols = Joiner.on(",").join(tableSource.getTableSchema().getFieldNames());
+		String inCols = Joiner.on(",").join(tableSource.getSchema().getFieldNames());
 		Table extracted = tableEnv.sqlQuery(String.format("select %s from %s, LATERAL TABLE(%s(%s)) as T(%s)",
 				outCols, tfrTblName, extFuncName, inCols, outCols));
 		TableSchema outSchema = TableSchema.builder().field("real_label", Types.LONG()).
@@ -276,21 +294,27 @@ public class TFMnistInferenceTest {
 		tfConfig.addProperty(TFConstants.TF_INFERENCE_OUTPUT_ROW_FIELDS,
 				Joiner.on(",").join(new String[] { "org_label", "prediction" }));
 		setExampleCodingTypeRow(tfConfig);
-		tableEnv.registerTableSink("inference_sink", outSchema.getFieldNames(), outSchema.getFieldTypes(), new LogTableStreamSink(new LogInferAccSink()));
-		if (toStream) {
-			Table predicted = TFUtils.inference(flinkEnv, tableEnv, extracted, tfConfig, outSchema);
-			predicted.insertInto("inference_sink");
-			flinkEnv.execute();
-		} else {
-			Table predicted = TFUtils.inference(flinkEnv, tableEnv, extracted, tfConfig, outSchema);
-			predicted.insertInto("inference_sink");
-			FlinkJobHelper helper = new FlinkJobHelper();
-			helper.like(new WorkerRole().name(), tfConfig.getWorkerNum());
-			helper.like(new PsRole().name(), tfConfig.getPsNum());
-			helper.like(new AMRole().name(), 1);
-			StreamGraph streamGraph = helper.matchStreamGraph(
-					flinkEnv.getStreamGraph(StreamExecutionEnvironment.DEFAULT_JOB_NAME,false));
-			flinkEnv.execute();
-		}
+//		tableEnv.registerTableSink("inference_sink", outSchema.getFieldNames(), outSchema.getFieldTypes(), new LogTableStreamSink(new LogInferAccSink()));
+		tableEnv.connect(new LogTable().richSinkFunction(new LogInferAccSink()))
+				.withSchema(new Schema().schema(outSchema))
+				.createTemporaryTable("inference_sink");
+		Table predicted = TFUtils.inference(flinkEnv, tableEnv, extracted, tfConfig, outSchema);
+		RoleUtils.getStatementSet(tableEnv).addInsert("inference_sink", predicted);
+		RoleUtils.executeStatementSet(tableEnv);
+//		if (toStream) {
+//			Table predicted = TFUtils.inference(flinkEnv, tableEnv, extracted, tfConfig, outSchema);
+//			predicted.insertInto("inference_sink");
+//			flinkEnv.execute();
+//		} else {
+//			Table predicted = TFUtils.inference(flinkEnv, tableEnv, extracted, tfConfig, outSchema);
+//			predicted.insertInto("inference_sink");
+//			FlinkJobHelper helper = new FlinkJobHelper();
+//			helper.like(new WorkerRole().name(), tfConfig.getWorkerNum());
+//			helper.like(new PsRole().name(), tfConfig.getPsNum());
+//			helper.like(new AMRole().name(), 1);
+//			StreamGraph streamGraph = helper.matchStreamGraph(
+//					flinkEnv.getStreamGraph(StreamExecutionEnvironment.DEFAULT_JOB_NAME,false));
+//			flinkEnv.execute();
+//		}
 	}
 }
