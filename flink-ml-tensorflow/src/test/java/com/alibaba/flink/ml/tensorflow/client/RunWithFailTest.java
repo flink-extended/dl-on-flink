@@ -28,14 +28,17 @@ import org.apache.flink.api.common.JobExecutionResult;
 import org.apache.flink.runtime.client.JobExecutionException;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.hamcrest.Matcher;
+import org.hamcrest.core.IsEqual;
+import org.hamcrest.core.IsInstanceOf;
+import org.junit.*;
+import org.junit.matchers.JUnitMatchers;
+import org.junit.rules.ExpectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
+import java.util.concurrent.ExecutionException;
 
 public class RunWithFailTest {
 
@@ -98,6 +101,9 @@ public class RunWithFailTest {
 		System.out.println(result.getNetRuntime());
 	}
 
+	@Rule
+	public ExpectedException expectedException = ExpectedException.none();
+
 	@Test
 	public void testJobTimeout() throws Exception {
 		TFConfig tfConfig = buildTFConfig(simple_print);
@@ -110,18 +116,11 @@ public class RunWithFailTest {
 		tfConfig.getProperties().put(MLConstants.NODE_IDLE_TIMEOUT, String.valueOf(Duration.ofSeconds(10).toMillis()));
 		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 		TFUtils.train(streamEnv, null, tfConfig);
-		try {
-			streamEnv.execute();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			if (e.getCause().getMessage().matches(".*Job failed.*")) {
-				// expected
-				Thread.sleep(5000);
-				return;
-			}
-			throw e;
-		}
-		Assert.fail("TFNodeServer should timeout and job should fail");
+
+		expectedException.expect(ExecutionException.class);
+		expectedException.expectCause(IsInstanceOf.instanceOf(JobExecutionException.class));
+		expectedException.expectMessage("Job execution failed");
+		streamEnv.execute();
 	}
 
 	private static String scriptAbsolutePath(String script) {
