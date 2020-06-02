@@ -20,6 +20,7 @@ package com.alibaba.flink.ml.examples.tensorflow.mnist;
 
 import com.alibaba.flink.ml.cluster.ExecutionMode;
 import com.alibaba.flink.ml.cluster.node.MLContext;
+import com.alibaba.flink.ml.operator.client.RoleUtils;
 import com.alibaba.flink.ml.tensorflow.client.TFConfig;
 import com.alibaba.flink.ml.tensorflow.client.TFUtils;
 import com.alibaba.flink.ml.util.MLConstants;
@@ -207,7 +208,8 @@ public class MnistDist {
 		}
 		TFConfig tfConfig = prepareTrain(trainPy);
 		TFUtils.train(flinkEnv, tableEnv, null, tfConfig, null);
-		flinkEnv.execute();
+//		flinkEnv.execute();
+		RoleUtils.executeStatementSet(tableEnv);
 	}
 
 	private RestartStrategies.RestartStrategyConfiguration restartStrategy() {

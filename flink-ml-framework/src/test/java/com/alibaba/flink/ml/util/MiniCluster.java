@@ -51,7 +51,7 @@ public class MiniCluster {
 	private static final String VENV_LOCAL_PATH = CONTAINER_WORK_HOME + "/temp/test/" + VENV_PACK;
 	private static final String VENV_HDFS_PATH = "/user/root/" + VENV_PACK;
 	private static final Duration BUILD_SOURCE_TIMEOUT = Duration.ofMinutes(120);
-	private static final int JM_WEBUI_PORT = 8081;
+	private static final int JM_WEBUI_PORT = 8082;
 	private static final String FLINK_LOG_DIR = "/opt/flink/log";
 
 
@@ -172,7 +172,7 @@ public class MiniCluster {
 	private boolean startFlinkJM() {
 		Docker.ContainerBuilder builder = flinkBuilder();
 		builder.name(getJMContainer()).cmd("jobmanager");
-		builder.mapPorts(JM_WEBUI_PORT);
+		builder.mapPorts(JM_WEBUI_PORT, 8081);
 		builder.volumes(TestUtil.getProjectRootPath(), CONTAINER_WORK_HOME);
 		return builder.build();
 	}

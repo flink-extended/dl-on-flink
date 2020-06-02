@@ -23,6 +23,7 @@ import com.alibaba.flink.ml.examples.tensorflow.mnist.ops.MnistTFRPojo;
 import com.alibaba.flink.ml.examples.tensorflow.ops.MnistTFRExtractPojoMapOp;
 import com.alibaba.flink.ml.examples.tensorflow.ops.MnistTFRToRowTableSource;
 import com.alibaba.flink.ml.examples.tensorflow.ops.descriptor.MnistTFRToRowTable;
+import com.alibaba.flink.ml.operator.client.RoleUtils;
 import com.alibaba.flink.ml.operator.util.DataTypes;
 import com.alibaba.flink.ml.operator.util.TypeUtil;
 import com.alibaba.flink.ml.tensorflow.client.TFConfig;
@@ -112,7 +113,8 @@ public class TFMnistTest {
 		TFConfig config = buildTFConfig(mnist_dist);
 		TFUtils.train(flinkEnv, tableEnv, null, config, null);
 
-		flinkEnv.execute();
+//		flinkEnv.execute();
+		RoleUtils.executeStatementSet(tableEnv);
 	}
 
 	@Test
@@ -176,9 +178,10 @@ public class TFMnistTest {
 		tableEnv.connect(new MnistTFRToRowTable().paths(paths).epochs(1))
 				.withSchema(new Schema().schema(TypeUtil.rowTypeInfoToSchema(OUT_ROW_TYPE)))
 				.createTemporaryTable("input");
-		Table inputTable = tableEnv.scan("input");
+		Table inputTable = tableEnv.from("input");
 		TFUtils.train(streamEnv, tableEnv, inputTable, config, null);
-		streamEnv.execute();
+//		streamEnv.execute();
+		RoleUtils.executeStatementSet(tableEnv);
 	}
 
 }

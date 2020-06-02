@@ -50,7 +50,7 @@ public class MLTableSourceFactory implements TableSourceFactory<Row> {
 
         String[] pythonFiles = properties
                 .getFixedIndexedProperties(CONNECTOR_ML_CONFIG_PYTHON_FILES, Collections.singletonList("name"))
-                .stream().map(m -> m.get("name")).toArray(String[]::new);
+                .stream().map(m -> m.get("name")).map(properties::getString).toArray(String[]::new);
         return new MLConfig(mlRoleParallelismMap, mlConfigProperties, pythonFiles, funcName, envPath);
 
     }

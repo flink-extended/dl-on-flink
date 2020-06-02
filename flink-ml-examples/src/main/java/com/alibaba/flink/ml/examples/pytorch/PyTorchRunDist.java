@@ -18,6 +18,7 @@
 
 package com.alibaba.flink.ml.examples.pytorch;
 
+import com.alibaba.flink.ml.operator.client.RoleUtils;
 import com.alibaba.flink.ml.pytorch.PyTorchConfig;
 import com.alibaba.flink.ml.pytorch.PyTorchUtil;
 import com.alibaba.flink.ml.util.MLConstants;
@@ -127,7 +128,8 @@ public class PyTorchRunDist {
 		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 		TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv, TableConfig.getDefault());
 		PyTorchUtil.train(streamEnv, tableEnv, null, pytorchConfig, null);
-		streamEnv.execute("pytorch table");
+//		streamEnv.execute("pytorch table");
+		RoleUtils.executeStatementSet(tableEnv);
 	}
 
 }

@@ -18,7 +18,7 @@ public class DelayedTFRTableSourceFactory implements TableSourceFactory<Row> {
 
     @Override
     public Map<String, String> requiredContext() {
-        return Collections.singletonMap(CONNECTOR_TYPE, "MLTable");
+        return Collections.singletonMap(CONNECTOR_TYPE, "DelayedTFRTable");
     }
 
     @Override

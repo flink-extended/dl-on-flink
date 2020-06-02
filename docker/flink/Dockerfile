@@ -13,11 +13,11 @@ ENV HADOOP_HDFS_HOME /opt/hadoop-2.8.0
 ENV HADOOP_HOME /opt/hadoop-2.8.0
 COPY core-site.xml /opt/hadoop-2.8.0/etc/hadoop/
 
-# install flink 1.10
-RUN rm -rf /opt/flink; wget https://flink-ai-extended.oss-cn-beijing.aliyuncs.com/flink-1.10.0-bin-scala_2.11.tgz
-RUN tar xf flink-1.10.0-bin-scala_2.11.tgz
-RUN mv flink-1.10.0 flink
-RUN rm -f flink-1.10.0-bin-scala_2.11.tgz
+# install flink 1.11
+RUN rm -rf /opt/flink; wget https://flink-ai-extended.oss-cn-beijing.aliyuncs.com/flink-1.11.0-bin-scala_2.11.tgz
+RUN tar xf flink-1.11.0-bin-scala_2.11.tgz
+RUN mv flink-1.11.0 flink
+RUN rm -f flink-1.11.0-bin-scala_2.11.tgz
 
 #RUN rm -rf /opt/flink; wget http://etaose.oss-cn-hangzhou-zmf.aliyuncs.com/test/flink/package/flink-1.8-SNAPSHOT.tgz
 #RUN tar xf flink-1.8-SNAPSHOT.tgz
