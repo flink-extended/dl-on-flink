@@ -295,10 +295,10 @@ public class TFMnistInferenceTest {
 				Joiner.on(",").join(new String[] { "org_label", "prediction" }));
 		setExampleCodingTypeRow(tfConfig);
 //		tableEnv.registerTableSink("inference_sink", outSchema.getFieldNames(), outSchema.getFieldTypes(), new LogTableStreamSink(new LogInferAccSink()));
+		Table predicted = TFUtils.inference(flinkEnv, tableEnv, extracted, tfConfig, outSchema);
 		tableEnv.connect(new LogTable().richSinkFunction(new LogInferAccSink()))
 				.withSchema(new Schema().schema(outSchema))
 				.createTemporaryTable("inference_sink");
-		Table predicted = TFUtils.inference(flinkEnv, tableEnv, extracted, tfConfig, outSchema);
 		RoleUtils.getStatementSet(tableEnv).addInsert("inference_sink", predicted);
 		RoleUtils.executeStatementSet(tableEnv);
 //		if (toStream) {

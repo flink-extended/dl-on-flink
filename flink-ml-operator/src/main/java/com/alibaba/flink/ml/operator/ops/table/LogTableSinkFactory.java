@@ -21,14 +21,17 @@ public class LogTableSinkFactory implements TableSinkFactory<Row> {
         DescriptorProperties properties = new DescriptorProperties();
         properties.putProperties(context.getTable().toProperties());
 
-        String serializedRichFunction = properties.getString(CONNECTOR_RICH_SINK_FUNCTION);
+        String serializedRichFunction = null;
+        if (properties.containsKey(CONNECTOR_RICH_SINK_FUNCTION)) {
+            serializedRichFunction = properties.getString(CONNECTOR_RICH_SINK_FUNCTION);
+        }
         if (serializedRichFunction == null) {
-            return new LogTableStreamSink();
+            return new LogTableStreamSink(context.getTable().getSchema());
         }
 
         try {
             RichSinkFunction<Row> richSinkFunction = LogTable.RichSinkFunctionDeserializer.deserialize(serializedRichFunction);
-            return new LogTableStreamSink(richSinkFunction);
+            return new LogTableStreamSink(context.getTable().getSchema(), richSinkFunction);
         } catch (Exception e) {
             e.printStackTrace();
         }

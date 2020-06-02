@@ -19,8 +19,9 @@ public class TFRToRowTableValidator extends ConnectorDescriptorValidator {
     @Override
     public void validate(DescriptorProperties properties) {
         super.validate(properties);
-
-        validateConverters(properties);
+        if (properties.containsKey(CONNECTOR_CONVERTERS)) {
+            validateConverters(properties);
+        }
     }
 
     private void validateConverters(DescriptorProperties properties) {

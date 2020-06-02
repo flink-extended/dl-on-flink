@@ -40,6 +40,10 @@ public class LogTableStreamSink extends TableDummySinkBase implements AppendStre
 		sinkFunction = new LogSink<>();
 	}
 
+	public LogTableStreamSink(TableSchema schema) {
+		this(schema, new LogSink<>());
+	}
+
 	public LogTableStreamSink(RichSinkFunction<Row> sinkFunction) {
 		this.sinkFunction = sinkFunction;
 	}
