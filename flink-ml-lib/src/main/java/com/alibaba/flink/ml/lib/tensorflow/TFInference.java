@@ -1,5 +1,6 @@
 package com.alibaba.flink.ml.lib.tensorflow;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.flink.types.Row;
 
 import com.alibaba.flink.ml.lib.tensorflow.utils.TensorConversion;
@@ -23,6 +24,7 @@ import org.tensorflow.framework.TensorInfo;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -430,35 +432,35 @@ public class TFInference {
 					case 2:{
 						int[][] res = new int[len][];
 						for (int i = 0; i < res.length; i++) {
-							res[i] = (int[])cache.get(i)[index];
+							res[i] = toPrimitive((Integer[]) cache.get(i)[index]);
 						}
 						return res;
 					}
 					case 3:{
 						int[][][] res = new int[len][][];
 						for (int i = 0; i < res.length; i++) {
-							res[i] = (int[][])cache.get(i)[index];
+							res[i] = toPrimitive((Integer[][]) cache.get(i)[index]);
 						}
 						return res;
 					}
 					case 4:{
 						int[][][][] res = new int[len][][][];
 						for (int i = 0; i < res.length; i++) {
-							res[i] = (int[][][])cache.get(i)[index];
+							res[i] = toPrimitive((Integer[][][]) cache.get(i)[index]);
 						}
 						return res;
 					}
 					case 5:{
 						int[][][][][] res = new int[len][][][][];
 						for (int i = 0; i < res.length; i++) {
-							res[i] = (int[][][][])cache.get(i)[index];
+							res[i] = toPrimitive((Integer[][][][]) cache.get(i)[index]);
 						}
 						return res;
 					}
 					case 6:{
 						int[][][][][][] res = new int[len][][][][][];
 						for (int i = 0; i < res.length; i++) {
-							res[i] = (int[][][][][])cache.get(i)[index];
+							res[i] = toPrimitive((Integer[][][][][]) cache.get(i)[index]);
 						}
 						return res;
 					}
@@ -479,35 +481,35 @@ public class TFInference {
 					case 2:{
 						long[][] res = new long[len][];
 						for (int i = 0; i < res.length; i++) {
-							res[i] = (long[])cache.get(i)[index];
+							res[i] = toPrimitive((Long[]) cache.get(i)[index]);
 						}
 						return res;
 					}
 					case 3:{
 						long[][][] res = new long[len][][];
 						for (int i = 0; i < res.length; i++) {
-							res[i] = (long[][])cache.get(i)[index];
+							res[i] = toPrimitive((Long[][]) cache.get(i)[index]);
 						}
 						return res;
 					}
 					case 4:{
 						long[][][][] res = new long[len][][][];
 						for (int i = 0; i < res.length; i++) {
-							res[i] = (long[][][])cache.get(i)[index];
+							res[i] = toPrimitive((Long[][][]) cache.get(i)[index]);
 						}
 						return res;
 					}
 					case 5:{
 						long[][][][][] res = new long[len][][][][];
 						for (int i = 0; i < res.length; i++) {
-							res[i] = (long[][][][])cache.get(i)[index];
+							res[i] = toPrimitive((Long[][][][]) cache.get(i)[index]);
 						}
 						return res;
 					}
 					case 6:{
 						long[][][][][][] res = new long[len][][][][][];
 						for (int i = 0; i < res.length; i++) {
-							res[i] = (long[][][][][])cache.get(i)[index];
+							res[i] = toPrimitive((Long[][][][][]) cache.get(i)[index]);
 						}
 						return res;
 					}
@@ -528,35 +530,35 @@ public class TFInference {
 					case 2:{
 						float[][] res = new float[len][];
 						for (int i = 0; i < res.length; i++) {
-							res[i] = (float[])cache.get(i)[index];
+							res[i] = toPrimitive((Float[]) cache.get(i)[index]);
 						}
 						return res;
 					}
 					case 3:{
 						float[][][] res = new float[len][][];
 						for (int i = 0; i < res.length; i++) {
-							res[i] = (float[][])cache.get(i)[index];
+							res[i] = toPrimitive((Float[][]) cache.get(i)[index]);
 						}
 						return res;
 					}
 					case 4:{
 						float[][][][] res = new float[len][][][];
 						for (int i = 0; i < res.length; i++) {
-							res[i] = (float[][][])cache.get(i)[index];
+							res[i] = toPrimitive((Float[][][]) cache.get(i)[index]);
 						}
 						return res;
 					}
 					case 5:{
 						float[][][][][] res = new float[len][][][][];
 						for (int i = 0; i < res.length; i++) {
-							res[i] = (float[][][][])cache.get(i)[index];
+							res[i] = toPrimitive((Float[][][][]) cache.get(i)[index]);
 						}
 						return res;
 					}
 					case 6:{
 						float[][][][][][] res = new float[len][][][][][];
 						for (int i = 0; i < res.length; i++) {
-							res[i] = (float[][][][][])cache.get(i)[index];
+							res[i] = toPrimitive((Float[][][][][]) cache.get(i)[index]);
 						}
 						return res;
 					}
@@ -577,35 +579,35 @@ public class TFInference {
 					case 2:{
 						double[][] res = new double[len][];
 						for (int i = 0; i < res.length; i++) {
-							res[i] = (double[])cache.get(i)[index];
+							res[i] = toPrimitive((Double[]) cache.get(i)[index]);
 						}
 						return res;
 					}
 					case 3:{
 						double[][][] res = new double[len][][];
 						for (int i = 0; i < res.length; i++) {
-							res[i] = (double[][])cache.get(i)[index];
+							res[i] = toPrimitive((Double[][]) cache.get(i)[index]);
 						}
 						return res;
 					}
 					case 4:{
 						double[][][][] res = new double[len][][][];
 						for (int i = 0; i < res.length; i++) {
-							res[i] = (double[][][])cache.get(i)[index];
+							res[i] = toPrimitive((Double[][][]) cache.get(i)[index]);
 						}
 						return res;
 					}
 					case 5:{
 						double[][][][][] res = new double[len][][][][];
 						for (int i = 0; i < res.length; i++) {
-							res[i] = (double[][][][])cache.get(i)[index];
+							res[i] = toPrimitive((Double[][][][]) cache.get(i)[index]);
 						}
 						return res;
 					}
 					case 6:{
 						double[][][][][][] res = new double[len][][][][][];
 						for (int i = 0; i < res.length; i++) {
-							res[i] = (double[][][][][])cache.get(i)[index];
+							res[i] = toPrimitive((Double[][][][][]) cache.get(i)[index]);
 						}
 						return res;
 					}
@@ -661,4 +663,86 @@ public class TFInference {
 						"Type can't be converted to tensor: " + dataType.name());
 		}
 	}
+
+	// helper functions to convert the nd-array of Object to primitives
+	private float[] toPrimitive(Float[] floats) {
+		return ArrayUtils.toPrimitive(floats);
+	}
+
+	private float[][] toPrimitive(Float[][] floats) {
+		return Arrays.stream(floats).map(this::toPrimitive).toArray(float[][]::new);
+	}
+
+	private float[][][] toPrimitive(Float[][][] floats) {
+		return Arrays.stream(floats).map(this::toPrimitive).toArray(float[][][]::new);
+	}
+
+	private float[][][][] toPrimitive(Float[][][][] floats) {
+		return Arrays.stream(floats).map(this::toPrimitive).toArray(float[][][][]::new);
+	}
+
+	private float[][][][][] toPrimitive(Float[][][][][] floats) {
+		return Arrays.stream(floats).map(this::toPrimitive).toArray(float[][][][][]::new);
+	}
+
+	private double[] toPrimitive(Double[] doubles) {
+		return ArrayUtils.toPrimitive(doubles);
+	}
+
+	private double[][] toPrimitive(Double[][] doubles) {
+		return Arrays.stream(doubles).map(this::toPrimitive).toArray(double[][]::new);
+	}
+
+	private double[][][] toPrimitive(Double[][][] doubles) {
+		return Arrays.stream(doubles).map(this::toPrimitive).toArray(double[][][]::new);
+	}
+
+	private double[][][][] toPrimitive(Double[][][][] doubles) {
+		return Arrays.stream(doubles).map(this::toPrimitive).toArray(double[][][][]::new);
+	}
+
+	private double[][][][][] toPrimitive(Double[][][][][] doubles) {
+		return Arrays.stream(doubles).map(this::toPrimitive).toArray(double[][][][][]::new);
+	}
+
+	private int[] toPrimitive(Integer[] ints) {
+		return ArrayUtils.toPrimitive(ints);
+	}
+
+	private int[][] toPrimitive(Integer[][] ints) {
+		return Arrays.stream(ints).map(this::toPrimitive).toArray(int[][]::new);
+	}
+
+	private int[][][] toPrimitive(Integer[][][] ints) {
+		return Arrays.stream(ints).map(this::toPrimitive).toArray(int[][][]::new);
+	}
+
+	private int[][][][] toPrimitive(Integer[][][][] ints) {
+		return Arrays.stream(ints).map(this::toPrimitive).toArray(int[][][][]::new);
+	}
+
+	private int[][][][][] toPrimitive(Integer[][][][][] ints) {
+		return Arrays.stream(ints).map(this::toPrimitive).toArray(int[][][][][]::new);
+	}
+
+	private long[] toPrimitive(Long[] longs) {
+		return ArrayUtils.toPrimitive(longs);
+	}
+
+	private long[][] toPrimitive(Long[][] longs) {
+		return Arrays.stream(longs).map(this::toPrimitive).toArray(long[][]::new);
+	}
+
+	private long[][][] toPrimitive(Long[][][] longs) {
+		return Arrays.stream(longs).map(this::toPrimitive).toArray(long[][][]::new);
+	}
+
+	private long[][][][] toPrimitive(Long[][][][] longs) {
+		return Arrays.stream(longs).map(this::toPrimitive).toArray(long[][][][]::new);
+	}
+
+	private long[][][][][] toPrimitive(Long[][][][][] longs) {
+		return Arrays.stream(longs).map(this::toPrimitive).toArray(long[][][][][]::new);
+	}
+
 }
