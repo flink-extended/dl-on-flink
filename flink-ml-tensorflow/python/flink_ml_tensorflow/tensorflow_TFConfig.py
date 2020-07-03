@@ -18,15 +18,22 @@ from pyflink.java_gateway import get_gateway
 
 class TFConfig(object):
 
-    def __init__(self, num_worker, num_ps, python_file, func, properties, env_path, zk_conn, zk_base_path):
+    def __init__(self, num_worker, num_ps, properties, python_file, func, env_path):
+        """
+
+        :param num_worker: the number of TF workers
+        :param num_ps: the number of TF PS
+        :param properties: TF properties
+        :param python_file: the python file, the entry python file
+        :param func: the entry function name in the first python file
+        :param env_path: the path of env
+        """
         self._num_worker = num_worker
         self._num_ps = num_ps
+        self._properties = properties
         self._python_file = python_file
         self._func = func
-        self._properties = properties
         self._env_path = env_path
-        self._zk_conn = zk_conn
-        self._zk_base_path = zk_base_path
 
     def java_config(self):
         return get_gateway().jvm.com.alibaba.flink.ml.tensorflow.client.TFConfig(self._num_worker,

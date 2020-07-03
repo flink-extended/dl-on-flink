@@ -15,6 +15,7 @@
 
 from pyflink.java_gateway import get_gateway
 
+
 class MLCONSTANTS(object):
     ml_constants = get_gateway().jvm.com.alibaba.flink.ml.util.MLConstants
 
@@ -89,10 +90,12 @@ class MLCONSTANTS(object):
     HEARTBEAT_TIMEOUT = str(ml_constants.HEARTBEAT_TIMEOUT)
     HEARTBEAT_TIMEOUT_DEFAULT = str(ml_constants.HEARTBEAT_TIMEOUT_DEFAULT)
 
-    SEPERATOR_COMMA= str(ml_constants.SEPERATOR_COMMA)
+    SEPERATOR_COMMA = str(ml_constants.SEPERATOR_COMMA)
     FLINK_HOOK_CLASSNAMES = str(ml_constants.FLINK_HOOK_CLASSNAMES)
 
     FAILOVER_STRATEGY = str(ml_constants.FAILOVER_STRATEGY)
     FAILOVER_RESTART_ALL_STRATEGY = str(ml_constants.FAILOVER_RESTART_ALL_STRATEGY)
     FAILOVER_RESTART_INDIVIDUAL_STRATEGY = str(ml_constants.FAILOVER_RESTART_INDIVIDUAL_STRATEGY)
     FAILOVER_STRATEGY_DEFAULT = str(ml_constants.FAILOVER_STRATEGY_DEFAULT)
+
+    PYTHON_VERSION = str(ml_constants.PYTHON_VERSION)
