@@ -15,8 +15,8 @@
 
 from pyflink.java_gateway import get_gateway
 
-class TFCONSTANS(object):
 
+class TFCONSTANS(object):
     J_CONSTANTS = get_gateway().jvm.com.alibaba.flink.ml.tensorflow.util.TFConstants
 
     TF_PORT = str(J_CONSTANTS.TF_PORT)
