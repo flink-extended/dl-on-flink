@@ -47,8 +47,9 @@ class TableExample:
         tf_config = TFConfig(work_num, ps_num, prop, python_file, func, env_path)
 
         train(stream_env, table_env, input_tb, tf_config, output_schema)
+        # inference(stream_env, table_env, input_tb, tf_config, output_schema)
 
-        table_env.execute('train')
+        table_env.execute("train")
 
     @staticmethod
     def add_train_chief_alone_table():
@@ -66,7 +67,11 @@ class TableExample:
         output_schema = None
 
         tf_config = TFConfig(work_num, ps_num, prop, python_file, func, env_path)
+
         train(stream_env, table_env, input_tb, tf_config, output_schema)
+        # inference(stream_env, table_env, input_tb, tf_config, output_schema)
+
+        table_env.execute("train")
 
     @staticmethod
     def input_output_table():
@@ -105,6 +110,7 @@ class TableExample:
         tf_config = TFConfig(work_num, ps_num, prop, python_file, func, env_path)
 
         train(stream_env, table_env, input_tb, tf_config, output_schema)
+        # inference(stream_env, table_env, input_tb, tf_config, output_schema)
 
         table_env.execute("train")
 
@@ -123,6 +129,8 @@ class TableExample:
 
         tf_config = TFConfig(work_num, ps_num, prop, python_file, func, env_path)
         train(stream_env, table_env, input_tb, tf_config, output_schema)
+        # inference(stream_env, table_env, input_tb, tf_config, output_schema)
+
         table_env.execute("train")
 
 

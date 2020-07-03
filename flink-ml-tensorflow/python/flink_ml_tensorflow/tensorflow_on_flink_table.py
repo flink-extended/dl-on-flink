@@ -15,7 +15,6 @@
 
 
 from pyflink.java_gateway import get_gateway
-from tensorflow_TFConfig import TFConfig
 from pyflink.datastream.stream_execution_environment import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment
 from pyflink.table.table import Table
