@@ -36,8 +36,10 @@ RUN apt-get install -y openjdk-8-jdk
 ENV JAVA_HOME /docker-java-home
 
 # install dev packages
-RUN apt-get install -y apt-utils vim python2.7 python-pip zip net-tools procps
-RUN apt-get install -y openjdk-8-dbg gdb git cmake python2.7-dbg
+RUN apt-get install -y apt-utils vim python3 python3-pip zip net-tools procps \
+    && ln -sf `which python3` /bin/python \
+    && ln -sf `which pip3` /bin/pip
+RUN apt-get install -y openjdk-8-dbg gdb git cmake python3-dbg
 RUN apt-get install -y libz-dev
 RUN mkdir /root/.pip
 COPY pip.conf /root/.pip/
