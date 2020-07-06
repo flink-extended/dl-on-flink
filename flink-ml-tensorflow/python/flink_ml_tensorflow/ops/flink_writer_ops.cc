@@ -31,7 +31,7 @@ namespace tensorflow {
 
     class FlinkWriterInterface: public ResourceBase{
     public:
-        virtual string DebugString() override {
+        virtual string DebugString() const override {
             return string("WriterBase");
         }
         virtual Status Write(const OpInputList& values) = 0;
