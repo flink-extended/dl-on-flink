@@ -19,5 +19,5 @@
 
 alias ll="ls -l"
 
-export PATH=/opt/hadoop-2.7.0/bin/:/opt/flink/bin/:$PATH
-export HADOOP_CLASSPATH=`/opt/hadoop-2.7.0/bin/hadoop classpath`
+export PATH=/opt/hadoop-2.8.0/bin/:/opt/flink/bin/:$PATH
+export HADOOP_CLASSPATH=`/opt/hadoop-2.8.0/bin/hadoop classpath`

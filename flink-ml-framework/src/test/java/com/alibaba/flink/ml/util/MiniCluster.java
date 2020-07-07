@@ -42,7 +42,7 @@ public class MiniCluster {
 	private static final String FLINK_TM_NAME = "flink-tm";
 	private static final String ZK_SERVER_NAME = "minizk";
 	private static final String HDFS_CMD = "/etc/bootstrap.sh -d";
-	private static final String HDFS_HOME = "/opt/hadoop-2.7.0";
+	private static final String HDFS_HOME = "/opt/hadoop-2.8.0";
 	public static final String HADOOP_BIN = HDFS_HOME + "/bin/hadoop";
 	private static final String FLINK_JM_NAME = "flink-jm";
 	public static final String CONTAINER_WORK_HOME = "/opt/work_home/";
@@ -259,7 +259,7 @@ public class MiniCluster {
 		if (tfenv.exists()) {
 			return true;
 		} else {
-			String cmd = String.format("sh %s", CONTAINER_WORK_HOME + "docker/flink/create_venv.sh");
+			String cmd = String.format("bash %s", CONTAINER_WORK_HOME + "docker/flink/create_venv.sh");
 			return Docker.exec(getJMContainer(), cmd);
 		}
 	}
