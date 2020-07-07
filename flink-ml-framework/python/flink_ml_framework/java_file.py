@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # =============================================================================
+import sys
+import os
+sys.path.insert(0, os.path.dirname(__file__))
 
 import java_file_c
 import struct
@@ -40,7 +43,7 @@ class BytesRecorder(object):
 
     def read_record(self):
         res = self.java_file.read(4)
-        data_len, = struct.unpack("<i", res)
+        data_len, = struct.unpack("<i", bytes(res, 'iso-8859-1'))
         return self.java_file.read(data_len)
 
     def write_record(self, data):
@@ -59,7 +62,7 @@ class JsonRecorder(object):
 
     def read_record(self):
         res = self.java_file.read(4)
-        data_len, = struct.unpack("<i", res)
+        data_len, = struct.unpack("<i", bytes(res, 'iso-8859-1'))
         data = self.java_file.read(data_len)
         return json.loads(data)
 
