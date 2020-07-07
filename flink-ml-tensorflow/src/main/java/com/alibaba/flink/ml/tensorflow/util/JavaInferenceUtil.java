@@ -130,6 +130,7 @@ public class JavaInferenceUtil {
 
 		LOG.info("Java Inference Cmd: " + Joiner.on(" ").join(args));
 		ProcessBuilder builder = new ProcessBuilder(args);
+		builder.redirectOutput(ProcessBuilder.Redirect.INHERIT);
 		return builder.start();
 	}
 
