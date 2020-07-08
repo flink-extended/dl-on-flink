@@ -206,6 +206,25 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-jar</id>
+                        <configuration>
+                            <archive>
+                                <manifestEntries>
+                                    <!--                                    a workaround to ensure that the Tensorflow can get the version when-->
+                                    <!--                                    loading the libtensorflow.so.x. -->
+                                    <!--                                    https://github.com/tensorflow/tensorflow/issues/30635#issuecomment-615513958-->
+                                    <Implementation-Version>1.15</Implementation-Version>
+                                </manifestEntries>
+                            </archive>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>
