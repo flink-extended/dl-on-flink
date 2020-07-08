@@ -40,6 +40,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+
 public class TFUtilsTest {
 	private static TestingServer server;
 	private static final String pythonPath = TestUtil.getProjectRootPath() + "/flink-ml-tensorflow/src/test/python/";
@@ -163,6 +166,27 @@ public class TFUtilsTest {
 		TFUtils.startTensorBoard(flinkEnv, tbConfig);
 
 		JobExecutionResult result = flinkEnv.execute();
+	}
+
+	@Test
+	public void testTensorBoardTable() throws Exception {
+		System.out.println(SysUtil._FUNC_());
+		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
+		TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
+		StatementSet statementSet = tableEnv.createStatementSet();
+
+		TFConfig config = new TFConfig(2, 1, null, addTBScript, "map_func", null);
+		config.getProperties().put(MLConstants.FLINK_HOOK_CLASSNAMES, DebugHook.class.getCanonicalName());
+		config.addProperty(MLConstants.CHECKPOINT_DIR, ckptDir + String.valueOf(System.currentTimeMillis()));
+		TFUtils.train(streamEnv, tableEnv, statementSet, null, config, null);
+
+		TFConfig tbConfig = config.deepCopy();
+		String[] scripts = { tensorboardScript };
+		tbConfig.setPythonFiles(scripts);
+		TFUtils.startTensorBoard(streamEnv, tableEnv, statementSet, tbConfig);
+
+		statementSet.execute().getJobClient().get()
+				.getJobExecutionResult(Thread.currentThread().getContextClassLoader()).get();
 	}
 
 	@Test

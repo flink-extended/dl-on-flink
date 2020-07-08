@@ -152,8 +152,8 @@ public class RoleUtils {
 			if (worker != null) {
 				tableEnv.connect(new DummyTable())
 						.withSchema(new Schema().schema(DUMMY_SCHEMA))
-						.createTemporaryTable("table_sink");
-				statementSet.addInsert("table_sink", worker);
+						.createTemporaryTable(role.name() + "_table_sink");
+				statementSet.addInsert(role.name() + "_table_sink", worker);
 			}
 		}
 		return worker;
@@ -173,9 +173,9 @@ public class RoleUtils {
 
 		tableEnv.connect(new DummyTable())
 				.withSchema(new Schema().schema(DUMMY_SCHEMA))
-				.createTemporaryTable("table_stream_sink");
+				.createTemporaryTable("am_table_stream_sink");
 
-		statementSet.addInsert("table_stream_sink", am);
+		statementSet.addInsert("am_table_stream_sink", am);
 	}
 
 	private static <OUT> TypeInformation<OUT> getTypeInfo(Class<OUT> clazz) {
