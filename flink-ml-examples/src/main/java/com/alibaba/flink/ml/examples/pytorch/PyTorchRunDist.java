@@ -18,7 +18,6 @@
 
 package com.alibaba.flink.ml.examples.pytorch;
 
-import com.alibaba.flink.ml.operator.client.RoleUtils;
 import com.alibaba.flink.ml.pytorch.PyTorchConfig;
 import com.alibaba.flink.ml.pytorch.PyTorchUtil;
 import com.alibaba.flink.ml.util.MLConstants;
@@ -28,6 +27,7 @@ import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
 import org.apache.commons.lang.StringUtils;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.StatementSet;
 import org.apache.flink.table.api.TableConfig;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
@@ -127,9 +127,11 @@ public class PyTorchRunDist {
 				script, "map_func", envPath);
 		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 		TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv, TableConfig.getDefault());
-		PyTorchUtil.train(streamEnv, tableEnv, null, pytorchConfig, null);
-//		streamEnv.execute("pytorch table");
-		RoleUtils.executeStatementSet(tableEnv);
+		StatementSet statementSet = tableEnv.createStatementSet();
+		PyTorchUtil.train(streamEnv, tableEnv, statementSet, null, pytorchConfig, null);
+		statementSet.execute().getJobClient().get()
+				.getJobExecutionResult(Thread.currentThread().getContextClassLoader())
+				.get();
 	}
 
 }

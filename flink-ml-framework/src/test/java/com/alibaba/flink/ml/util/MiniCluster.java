@@ -26,7 +26,12 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.time.Duration;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -172,7 +177,7 @@ public class MiniCluster {
 	private boolean startFlinkJM() {
 		Docker.ContainerBuilder builder = flinkBuilder();
 		builder.name(getJMContainer()).cmd("jobmanager");
-		builder.mapPorts(JM_WEBUI_PORT);
+		builder.mapPorts(8082, JM_WEBUI_PORT);
 		builder.volumes(TestUtil.getProjectRootPath(), CONTAINER_WORK_HOME);
 		return builder.build();
 	}

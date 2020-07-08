@@ -34,15 +34,14 @@ import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.table.api.*;
+import org.apache.flink.table.api.StatementSet;
+import org.apache.flink.table.api.Table;
+import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.table.api.TableSchema;
+import org.apache.flink.table.api.Types;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.table.descriptors.Schema;
 import org.apache.flink.types.Row;
-
-import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -51,7 +50,6 @@ import java.util.concurrent.ExecutionException;
  * 2. create a group of machine learning nodes as a named role.
  */
 public class RoleUtils {
-	private static final Map<TableEnvironment, StatementSet> statementSetMap = new HashMap<>();
 	private static final TypeInformation<String> DUMMY_TI = getTypeInfo(String.class);
 	static final TableSchema DUMMY_SCHEMA = new TableSchema(
 			new String[] { "a" }, new TypeInformation[] { Types.STRING() });
@@ -114,15 +112,16 @@ public class RoleUtils {
 	 * Run ML program for DataStream.
 	 *
 	 * @param tableEnv The Flink TableEnvironment
+	 * @param statementSet The StatementSet created by the given TableEnvironment
 	 * @param mode The mode of the program - can be either TRAIN or INFERENCE
 	 * @param input The input DataStream
-	 * @param mlConfig Configurations for the  program
+	 * @param mlConfig Configurations for the program
 	 * @param outputSchema The TableSchema for the output DataStream. If it's null, a dummy sink will be connected
 	 * to the returned DataStream. Otherwise, caller is responsible to add sink to the output
 	 * DataStream before executing the graph.
 	 * @param role machine learning a group of nodes name.
 	 */
-	public static Table addRole(TableEnvironment tableEnv, ExecutionMode mode,
+	public static Table addRole(TableEnvironment tableEnv, StatementSet statementSet, ExecutionMode mode,
 			Table input, MLConfig mlConfig,
 			TableSchema outputSchema, BaseRole role) {
 		if (null != input) {
@@ -154,9 +153,7 @@ public class RoleUtils {
 				tableEnv.connect(new DummyTable())
 						.withSchema(new Schema().schema(DUMMY_SCHEMA))
 						.createTemporaryTable("table_sink");
-				getStatementSet(tableEnv).addInsert("table_sink", worker);
-//				tableEnv.registerTableSink("table_sink",new TableStreamDummySink());
-//				worker.insertInto("table_sink");
+				statementSet.addInsert("table_sink", worker);
 			}
 		}
 		return worker;
@@ -164,13 +161,11 @@ public class RoleUtils {
 
 	/**
 	 * add application master role to machine learning cluster.
-	 *
-	 * @param tableEnv
-	 *  flink table environment
-	 * @param mlConfig
-	 *  machine learning configuration
+	 *  @param tableEnv flink table environment
+	 * @param statementSet The StatementSet created by the given TableEnvironment
+	 * @param mlConfig Configurations for the program
 	 */
-	public static void addAMRole(TableEnvironment tableEnv, MLConfig mlConfig) {
+	public static void addAMRole(TableEnvironment tableEnv, StatementSet statementSet, MLConfig mlConfig) {
 		tableEnv.connect(new MLTable().executionMode(ExecutionMode.OTHER).role(new AMRole()).mlConfig(mlConfig).parallelism(1))
 				.withSchema(new Schema().schema(DUMMY_SCHEMA))
 				.createTemporaryTable(new AMRole().name());
@@ -180,23 +175,11 @@ public class RoleUtils {
 				.withSchema(new Schema().schema(DUMMY_SCHEMA))
 				.createTemporaryTable("table_stream_sink");
 
-		getStatementSet(tableEnv).addInsert("table_stream_sink", am);
-
-//		tableEnv.registerTableSource(new AMRole().name(), new MLTableSource(ExecutionMode.OTHER, new AMRole(),
-//				mlConfig, DUMMY_SCHEMA, 1));
-//		Table am = tableEnv.scan(new AMRole().name());
-//		tableEnv.registerTableSink("table_stream_sink", new TableStreamDummySink());
-//		am.insertInto("table_stream_sink");
-
+		statementSet.addInsert("table_stream_sink", am);
 	}
 
 	private static <OUT> TypeInformation<OUT> getTypeInfo(Class<OUT> clazz) {
 		return clazz == null ? null : TypeInformation.of(clazz);
-	}
-
-	public static StatementSet getStatementSet(TableEnvironment tableEnvironment) {
-		statementSetMap.putIfAbsent(tableEnvironment, tableEnvironment.createStatementSet());
-		return statementSetMap.get(tableEnvironment);
 	}
 
 	public static Table dsToTable(DataStream<Row> dataStream, TableEnvironment tableEnv) {
@@ -210,10 +193,5 @@ public class RoleUtils {
 		return ((StreamTableEnvironment) tableEnv).toAppendStream(table,
 				TypeUtil.schemaToRowTypeInfo(table.getSchema()));
 
-	}
-
-	public static void executeStatementSet(TableEnvironment tableEnvironment) throws ExecutionException, InterruptedException {
-		getStatementSet(tableEnvironment).execute().getJobClient().get()
-				.getJobExecutionResult(Thread.currentThread().getContextClassLoader()).get();
 	}
 }

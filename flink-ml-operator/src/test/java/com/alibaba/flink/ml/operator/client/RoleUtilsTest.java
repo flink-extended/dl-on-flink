@@ -38,6 +38,7 @@ import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.StatementSet;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.TableSchema;
@@ -125,10 +126,11 @@ public class RoleUtilsTest {
         mlConfig.setFuncName("map_func");
         StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
         TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
+        StatementSet statementSet = tableEnv.createStatementSet();
         PythonFileUtil.registerPythonFiles(streamEnv, mlConfig);
-        RoleUtils.addAMRole(tableEnv,mlConfig);
-        RoleUtils.addRole(tableEnv, ExecutionMode.TRAIN, null, mlConfig, null, new WorkerRole());
-        execTableJobCustom(mlConfig, streamEnv, tableEnv);
+        RoleUtils.addAMRole(tableEnv, statementSet, mlConfig);
+        RoleUtils.addRole(tableEnv, statementSet, ExecutionMode.TRAIN, null, mlConfig, null, new WorkerRole());
+        execTableJobCustom(mlConfig, streamEnv, tableEnv, statementSet);
     }
 
     @Test
@@ -150,19 +152,19 @@ public class RoleUtilsTest {
 
         StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
         TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
+        StatementSet statementSet = tableEnv.createStatementSet();
         PythonFileUtil.registerPythonFiles(streamEnv, mlConfig);
-        RoleUtils.addAMRole(tableEnv,mlConfig);
+        RoleUtils.addAMRole(tableEnv, statementSet, mlConfig);
         String[] names = {"a", "b", "c", "d"};
-        TypeInformation[] types = {Types.STRING, Types.STRING,Types.STRING,Types.STRING,};
+        TypeInformation[] types = {Types.STRING, Types.STRING,Types.STRING, Types.STRING,};
         TableSchema outputSchema = new TableSchema(names, types);
-//        tableEnv.registerTableSink("row_sink",new TableDebugRowSink(TypeUtil.schemaToRowTypeInfo(outputSchema)));
         tableEnv.connect(new TableDebugRowDescriptor())
                 .withSchema(new Schema().schema(outputSchema))
                 .createTemporaryTable("row_sink");
-        Table table = RoleUtils.addRole(tableEnv, ExecutionMode.TRAIN, null, mlConfig, outputSchema, new WorkerRole());
-        RoleUtils.getStatementSet(tableEnv).addInsert("row_sink", table);
+        Table table = RoleUtils.addRole(tableEnv, statementSet, ExecutionMode.TRAIN, null, mlConfig, outputSchema, new WorkerRole());
+        statementSet.addInsert("row_sink", table);
 
-        execTableJobCustom(mlConfig, streamEnv, tableEnv);
+        execTableJobCustom(mlConfig, streamEnv, tableEnv, statementSet);
     }
 
     @Test
@@ -188,23 +190,22 @@ public class RoleUtilsTest {
 
         StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
         TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
+        StatementSet statementSet = tableEnv.createStatementSet();
         PythonFileUtil.registerPythonFiles(streamEnv, mlConfig);
 
-//        tableEnv.registerTableSource("debug_source", new TableDebugRowSource());
         tableEnv.connect(new TableDebugRowDescriptor())
                 .withSchema(new Schema().schema(TypeUtil.rowTypeInfoToSchema(DebugRowSource.typeInfo)))
                 .createTemporaryTable("debug_source");
         Table input = tableEnv.from("debug_source");
-        RoleUtils.addAMRole(tableEnv,mlConfig);
-//        tableEnv.registerTableSink("debug_row_sink", new TableDebugRowSink(DebugRowSource.typeInfo));
+        RoleUtils.addAMRole(tableEnv, statementSet, mlConfig);
         tableEnv.connect(new TableDebugRowDescriptor())
                 .withSchema(new Schema().schema(TypeUtil.rowTypeInfoToSchema(DebugRowSource.typeInfo)))
                 .createTemporaryTable("debug_row_sink");
-        Table table = RoleUtils.addRole(tableEnv, ExecutionMode.TRAIN, input, mlConfig,
+        Table table = RoleUtils.addRole(tableEnv, statementSet, ExecutionMode.TRAIN, input, mlConfig,
                 TypeUtil.rowTypeInfoToSchema(DebugRowSource.typeInfo), new WorkerRole());
-        RoleUtils.getStatementSet(tableEnv).addInsert("debug_row_sink", table);
+        statementSet.addInsert("debug_row_sink", table);
 
-        execTableJobCustom(mlConfig, streamEnv, tableEnv);
+        execTableJobCustom(mlConfig, streamEnv, tableEnv, statementSet);
     }
 
 }

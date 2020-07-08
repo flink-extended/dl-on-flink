@@ -24,8 +24,6 @@ import com.alibaba.flink.ml.examples.tensorflow.mnist.ops.LogInferAccSink;
 import com.alibaba.flink.ml.examples.tensorflow.mnist.ops.MnistTFRExtractRowForJavaFunction;
 import com.alibaba.flink.ml.examples.tensorflow.mnist.ops.MnistTFRPojo;
 import com.alibaba.flink.ml.examples.tensorflow.mnist.ops.descriptor.DelayedTFRTable;
-import com.alibaba.flink.ml.operator.client.RoleUtils;
-import com.alibaba.flink.ml.operator.ops.table.LogTableStreamSink;
 import com.alibaba.flink.ml.operator.ops.table.descriptor.LogTable;
 import com.alibaba.flink.ml.operator.util.FlinkUtil;
 import com.alibaba.flink.ml.operator.util.TypeUtil;
@@ -43,13 +41,13 @@ import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.common.time.Time;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.runtime.state.memory.MemoryStateBackend;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.StatementSet;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableSchema;
 import org.apache.flink.table.api.Types;
@@ -58,14 +56,12 @@ import org.apache.flink.table.descriptors.Schema;
 import org.apache.flink.table.functions.TableFunction;
 import org.apache.flink.table.sources.StreamTableSource;
 import org.apache.flink.types.Row;
-
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
-import javax.management.relation.Role;
 import java.io.IOException;
 import java.net.URI;
 
@@ -157,9 +153,9 @@ public class MnistJavaInference {
 
 		StreamExecutionEnvironment flinkEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 		StreamTableEnvironment tableEnv = StreamTableEnvironment.create(flinkEnv);
+		StatementSet statementSet = tableEnv.createStatementSet();
 		String tfrTblName = "tfr_input_table";
 		StreamTableSource<Row> tableSource = new DelayedTFRTableSourceStream(paths, 1, OUT_ROW_TYPE, CONVERTERS);
-//		tableEnv.registerTableSource(tfrTblName, tableSource);
 		tableEnv.connect(new DelayedTFRTable().paths(paths).epochs(1).converters(CONVERTERS))
 				.withSchema(new Schema().schema(TypeUtil.rowTypeInfoToSchema(OUT_ROW_TYPE)))
 				.createTemporaryTable(tfrTblName);
@@ -184,20 +180,16 @@ public class MnistJavaInference {
 		flinkEnv.setRestartStrategy(RESTART_STRATEGY);
 		setExampleCodingTypeRow(tfConfig);
 
-		Table predicted = TFUtils.inference(flinkEnv, tableEnv, extracted, tfConfig, outSchema);
+		Table predicted = TFUtils.inference(flinkEnv, tableEnv, statementSet, extracted, tfConfig, outSchema);
 		fs = new Path(checkPointURI).getFileSystem(hadoopConf);
 		URI fsURI = fs.getUri();
 		Path outDir = new Path(fsURI.getScheme(), fsURI.getAuthority(), SINK_OUTPUT_PATH);
-//		tableEnv.registerTableSink("sink", new LogTableStreamSink(new LogInferAccSink(outDir.toString())));
 		tableEnv.connect(new LogTable().richSinkFunction(new LogInferAccSink(outDir.toString())))
 				.withSchema(new Schema().schema(outSchema))
 				.createTemporaryTable("sink");
-//		predicted.insertInto("sink");
-		RoleUtils.getStatementSet(tableEnv).addInsert("sink", predicted);
-		// work around table env issue
-		RoleUtils.getStatementSet(tableEnv).execute().getJobClient().get()
+		statementSet.addInsert("sink", predicted);
+		statementSet.execute().getJobClient().get()
 				.getJobExecutionResult(Thread.currentThread().getContextClassLoader()).get();
-//		flinkEnv.execute();
 		verifyNumRecords(fs, outDir, numRecords);
 	}
 
