@@ -54,7 +54,7 @@ public class MLTable extends ConnectorDescriptor {
     }
 
     public MLTable role(BaseRole role) {
-        properties.putString(CONNECTOR_ROLE, role.name());
+        properties.putString(CONNECTOR_ROLE_CLASS, role.getClass().getCanonicalName());
         return this;
     }
 

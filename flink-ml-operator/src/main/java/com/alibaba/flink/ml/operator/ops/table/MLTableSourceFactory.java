@@ -12,6 +12,7 @@ import org.apache.flink.table.factories.TableSourceFactory;
 import org.apache.flink.table.sources.TableSource;
 import org.apache.flink.types.Row;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -62,16 +63,11 @@ public class MLTableSourceFactory implements TableSourceFactory<Row> {
     }
 
     private BaseRole getRole(DescriptorProperties properties) {
-        switch (properties.getString(CONNECTOR_ROLE)) {
-            case "am":
-                return new AMRole();
-            case "ps":
-                return new PsRole();
-            case "worker":
-                return new WorkerRole();
-            // TODO: how about chief and tensorboard role?
-            default:
-                return null;
+        String roleClass = properties.getString(CONNECTOR_ROLE_CLASS);
+        try {
+            return (BaseRole) Class.forName(roleClass).newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

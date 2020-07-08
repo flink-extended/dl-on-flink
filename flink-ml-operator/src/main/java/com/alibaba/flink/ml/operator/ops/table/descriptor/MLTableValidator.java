@@ -11,7 +11,7 @@ import static org.apache.flink.table.descriptors.DescriptorProperties.noValidati
 
 public class MLTableValidator extends ConnectorDescriptorValidator {
 
-    public static final String CONNECTOR_ROLE = "connector.role";
+    public static final String CONNECTOR_ROLE_CLASS = "connector.role.class";
     public static final String CONNECTOR_EXECUTION_MODE = "connector.execution-mode";
     public static final String CONNECTOR_PARALLELISM = "connector.parallelism";
     public static final String CONNECTOR_ML_CONFIG_PROPERTIES = "connector.ml-config.properties";
@@ -25,20 +25,7 @@ public class MLTableValidator extends ConnectorDescriptorValidator {
     public void validate(DescriptorProperties properties) {
         super.validate(properties);
 
-        validateRole(properties);
-
         validateExecutionMode(properties);
-    }
-
-    private void validateRole(DescriptorProperties properties) {
-        Map<String, Consumer<String>> roleValidation = new HashMap<>();
-        roleValidation.put("am", noValidation());
-        roleValidation.put("chief", noValidation());
-        roleValidation.put("ps", noValidation());
-        roleValidation.put("tensorboard", noValidation());
-        roleValidation.put("worker", noValidation());
-
-        properties.validateEnum(CONNECTOR_ROLE, false, roleValidation);
     }
 
     private void validateExecutionMode(DescriptorProperties properties) {
