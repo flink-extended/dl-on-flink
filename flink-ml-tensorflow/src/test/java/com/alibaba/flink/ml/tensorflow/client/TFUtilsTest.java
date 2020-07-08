@@ -31,6 +31,7 @@ import com.alibaba.flink.ml.util.TestUtil;
 import org.apache.curator.test.TestingServer;
 import org.apache.flink.api.common.JobExecutionResult;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.StatementSet;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
@@ -76,11 +77,12 @@ public class TFUtilsTest {
 		System.out.println(SysUtil._FUNC_());
 		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 		TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
+		StatementSet statementSet = tableEnv.createStatementSet();
 
 		TFConfig config = new TFConfig(2, 1, null, add, "map_func", null);
-		TFUtils.train(streamEnv, tableEnv, null, config, null);
+		TFUtils.train(streamEnv, tableEnv, statementSet, null, config, null);
 
-		execTableJobCustom(config.getMlConfig(), streamEnv, tableEnv);
+		execTableJobCustom(config.getMlConfig(), streamEnv, tableEnv, statementSet);
 	}
 
 	@Test
@@ -102,12 +104,13 @@ public class TFUtilsTest {
 		System.out.println(SysUtil._FUNC_());
 		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 		TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
+		StatementSet statementSet = tableEnv.createStatementSet();
 
 		TFConfig config = new TFConfig(2, 1, null, add, "map_func", null);
 		config.addProperty(TFConstants.TF_IS_CHIEF_ALONE, "true");
-		TFUtils.train(streamEnv, tableEnv, null, config, null);
+		TFUtils.train(streamEnv, tableEnv, statementSet, null, config, null);
 
-		execTableJobCustom(config.getMlConfig(), streamEnv, tableEnv);
+		execTableJobCustom(config.getMlConfig(), streamEnv, tableEnv, statementSet);
 	}
 
 	@Test
@@ -129,20 +132,19 @@ public class TFUtilsTest {
 		config.getProperties().put(RowCSVCoding.ENCODE_TYPES, inputSb.toString());
 		config.getProperties().put(RowCSVCoding.DECODE_TYPES, inputSb.toString());
 		TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
-//		tableEnv.registerTableSource("debug_source", new TableDebugRowSource());
+		StatementSet statementSet = tableEnv.createStatementSet();
+
 		tableEnv.connect(new TableDebugRowDescriptor())
 				.withSchema(new Schema().schema(TypeUtil.rowTypeInfoToSchema(DebugRowSource.typeInfo)))
 				.createTemporaryTable("debug_source");
 		Table input = tableEnv.scan("debug_source");
-//		tableEnv.registerTableSink("table_row_sink",new TableDebugRowSink(DebugRowSource.typeInfo));
 		tableEnv.connect(new TableDebugRowDescriptor())
 				.withSchema(new Schema().schema(TypeUtil.rowTypeInfoToSchema(DebugRowSource.typeInfo)))
 				.createTemporaryTable("table_row_sink");
-		Table table = TFUtils.train(streamEnv, tableEnv, input, config,
+		Table table = TFUtils.train(streamEnv, tableEnv, statementSet, input, config,
 				TypeUtil.rowTypeInfoToSchema(DebugRowSource.typeInfo));
-		TFUtils.getStatementSet(tableEnv).addInsert("table_row_sink", table);
-//				.insertInto("table_row_sink");
-		execTableJobCustom(config.getMlConfig(), streamEnv, tableEnv);
+		statementSet.addInsert("table_row_sink", table);
+		execTableJobCustom(config.getMlConfig(), streamEnv, tableEnv, statementSet);
 	}
 
 	@Test
@@ -168,28 +170,15 @@ public class TFUtilsTest {
 		System.out.println(SysUtil._FUNC_());
 		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 		TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
+		StatementSet statementSet = tableEnv.createStatementSet();
 		TFConfig config = new TFConfig(3, 2, null, workerZeroFinishScript, "map_func", null);
-		TFUtils.train(streamEnv, tableEnv, null, config, null);
-		execTableJobCustom(config.getMlConfig(), streamEnv, tableEnv);
+		TFUtils.train(streamEnv, tableEnv, statementSet, null, config, null);
+		execTableJobCustom(config.getMlConfig(), streamEnv, tableEnv, statementSet);
 	}
 
 	public static void execTableJobCustom(MLConfig mlConfig, StreamExecutionEnvironment streamEnv,
-			TableEnvironment tableEnv) throws Exception {
-//		FlinkJobHelper helper = new FlinkJobHelper();
-//		helper.like(new WorkerRole().name(), mlConfig.getRoleParallelismMap().get(new WorkerRole().name()));
-//		helper.like(new PsRole().name(), mlConfig.getRoleParallelismMap().get(new PsRole().name()));
-//		helper.like(new AMRole().name(), 1);
-//		helper.like(MLTestConstants.SOURCE_CONVERSION, 1);
-//		helper.like(MLTestConstants.SINK_CONVERSION, 1);
-//		helper.like("debug_source", 1);
-//		helper.like(MLTestConstants.SINK, 1);
-//		StreamGraph streamGraph = helper.matchStreamGraph(streamEnv.getStreamGraph(
-//				StreamExecutionEnvironment.DEFAULT_JOB_NAME,
-//				false));
-//		String plan = FlinkJobHelper.streamPlan(streamGraph);
-//		System.out.println(plan);
-//		streamEnv.execute();
-		TFUtils.getStatementSet(tableEnv).execute().getJobClient().get()
+										  TableEnvironment tableEnv, StatementSet statementSet) throws Exception {
+		statementSet.execute().getJobClient().get()
 				.getJobExecutionResult(Thread.currentThread().getContextClassLoader()).get();
 	}
 }

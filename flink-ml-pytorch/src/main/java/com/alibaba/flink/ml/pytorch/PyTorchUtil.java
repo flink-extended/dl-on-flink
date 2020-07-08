@@ -27,6 +27,7 @@ import com.alibaba.flink.ml.util.MLConstants;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.StatementSet;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.TableSchema;
@@ -62,6 +63,7 @@ public class PyTorchUtil {
 	 *
 	 * @param streamEnv The Flink StreamExecutionEnvironment.
 	 * @param tableEnv The Flink TableEnvironment.
+	 * @param statementSet
 	 * @param mode The mode of the program - can be either TRAIN or INFERENCE.
 	 * @param input The input DataStream.
 	 * @param pytorchConfig Configurations for the  program.
@@ -69,15 +71,15 @@ public class PyTorchUtil {
 	 * @return to the returned DataStream. Otherwise, caller is responsible to add sink to the output
 	 * DataStream before executing the graph.
 	 */
-	public static Table run(StreamExecutionEnvironment streamEnv, TableEnvironment tableEnv, ExecutionMode mode,
-			Table input, PyTorchConfig pytorchConfig,
-			TableSchema outputSchema) throws IOException {
+	public static Table run(StreamExecutionEnvironment streamEnv, TableEnvironment tableEnv, StatementSet statementSet, ExecutionMode mode,
+							Table input, PyTorchConfig pytorchConfig,
+							TableSchema outputSchema) throws IOException {
 		pytorchConfig.getMlConfig().getProperties()
 				.put(MLConstants.ML_RUNNER_CLASS, PyTorchRunner.class.getCanonicalName());
 		PythonFileUtil.registerPythonFiles(streamEnv, pytorchConfig.getMlConfig());
-		RoleUtils.addAMRole(tableEnv, pytorchConfig.getMlConfig());
+		RoleUtils.addAMRole(tableEnv, statementSet, pytorchConfig.getMlConfig());
 
-		return RoleUtils.addRole(tableEnv, mode, input, pytorchConfig.getMlConfig(), outputSchema, new WorkerRole());
+		return RoleUtils.addRole(tableEnv, statementSet, mode, input, pytorchConfig.getMlConfig(), outputSchema, new WorkerRole());
 	}
 
 	/**
@@ -118,6 +120,7 @@ public class PyTorchUtil {
 	 * Run machine learning train job program for table.
 	 *
 	 * @param streamEnv The Flink StreamExecutionEnvironment.
+	 * @param statementSet The StatementSet created by the given TableEnvironment
 	 * @param input The input DataStream.
 	 * @param pytorchConfig Configurations for the  program.
 	 * @param outputSchema The TableSchema for the output table. If it's null, a dummy sink will be connected
@@ -125,15 +128,16 @@ public class PyTorchUtil {
 	 * DataStream before executing the graph.
 	 */
 	public static Table train(StreamExecutionEnvironment streamEnv, TableEnvironment tableEnv,
-			Table input, PyTorchConfig pytorchConfig,
-			TableSchema outputSchema) throws IOException {
-		return run(streamEnv, tableEnv, ExecutionMode.TRAIN, input, pytorchConfig, outputSchema);
+							  StatementSet statementSet, Table input, PyTorchConfig pytorchConfig,
+							  TableSchema outputSchema) throws IOException {
+		return run(streamEnv, tableEnv, statementSet, ExecutionMode.TRAIN, input, pytorchConfig, outputSchema);
 	}
 
 	/**
 	 * Run machine learning inference job program for table.
 	 *
 	 * @param streamEnv The Flink StreamExecutionEnvironment.
+	 * @param statementSet The StatementSet created by the given TableEnvironment
 	 * @param input The input DataStream.
 	 * @param pytorchConfig Configurations for the  program.
 	 * @param outputSchema The TableSchema for the output table. If it's null, a dummy sink will be connected
@@ -141,8 +145,8 @@ public class PyTorchUtil {
 	 * DataStream before executing the graph.
 	 */
 	public static Table inference(StreamExecutionEnvironment streamEnv, TableEnvironment tableEnv,
-			Table input, PyTorchConfig pytorchConfig,
-			TableSchema outputSchema) throws IOException {
-		return run(streamEnv, tableEnv, ExecutionMode.INFERENCE, input, pytorchConfig, outputSchema);
+								  StatementSet statementSet, Table input, PyTorchConfig pytorchConfig,
+								  TableSchema outputSchema) throws IOException {
+		return run(streamEnv, tableEnv, statementSet, ExecutionMode.INFERENCE, input, pytorchConfig, outputSchema);
 	}
 }

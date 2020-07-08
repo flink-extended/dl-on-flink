@@ -22,6 +22,7 @@ import com.alibaba.flink.ml.util.TestUtil;
 import org.apache.curator.test.TestingServer;
 
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.StatementSet;
 import org.apache.flink.table.api.TableEnvironment;
 
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
@@ -62,8 +63,9 @@ public class PyTorchUtilTest {
 				rootPath + "greeter.py", "map_func", null);
 		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 		TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
-		PyTorchUtil.train(streamEnv, tableEnv, null, pytorchConfig, null);
-		execTableJobCustom(pytorchConfig.getMlConfig(), streamEnv, tableEnv);
+		StatementSet statementSet = tableEnv.createStatementSet();
+		PyTorchUtil.train(streamEnv, tableEnv, statementSet, null, pytorchConfig, null);
+		execTableJobCustom(pytorchConfig.getMlConfig(), streamEnv, tableEnv, statementSet);
 
 	}
 }
