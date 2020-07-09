@@ -18,6 +18,7 @@
 
 package com.alibaba.flink.ml.lib.tensorflow.table;
 
+import com.alibaba.flink.ml.operator.util.TypeUtil;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -34,32 +35,32 @@ import java.io.Serializable;
 
 public class TableDebugRowSource implements StreamTableSource<Row>, Serializable {
 
-    private RowTypeInfo typeInfo;
-    private DebugRowSource debugRowSource;
     private static Logger LOG = LoggerFactory.getLogger(TableDebugRowSource.class);
+    private DebugRowSource debugRowSource;
+    private TableSchema tableSchema;
 
-    public TableDebugRowSource() {
-        this(0);
+    public TableDebugRowSource(TableSchema tableSchema) {
+        this(0, tableSchema);
     }
 
-    public TableDebugRowSource(int rank) {
-        this(rank, false);
+    public TableDebugRowSource(int rank, TableSchema tableSchema) {
+        this(rank, false, tableSchema);
     }
-    public TableDebugRowSource(int rank, boolean hasString) {
-        this.debugRowSource = new DebugRowSource(rank, hasString);
-        this.typeInfo = debugRowSource.getTypeInfo();
+    public TableDebugRowSource(int rank, boolean hasString, TableSchema tableSchema) {
+        this.debugRowSource = new DebugRowSource(rank, hasString, TypeUtil.schemaToRowTypeInfo(tableSchema));
+        this.tableSchema = tableSchema;
     }
 
 
 
     @Override
     public TypeInformation<Row> getReturnType() {
-        return typeInfo;
+        return TypeUtil.schemaToRowTypeInfo(tableSchema);
     }
 
     @Override
     public TableSchema getTableSchema() {
-        return new TableSchema(typeInfo.getFieldNames(), typeInfo.getFieldTypes());
+        return tableSchema;
     }
 
     @Override

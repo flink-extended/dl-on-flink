@@ -31,6 +31,15 @@
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table-api-java</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table-api-java-bridge_2.11</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.alibaba.flink.ml</groupId>
             <artifactId>flink-ml-operator</artifactId>
             <version>${project.parent.version}</version>
@@ -52,6 +61,11 @@
                     <artifactId>guava</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table-planner-blink_2.11</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>

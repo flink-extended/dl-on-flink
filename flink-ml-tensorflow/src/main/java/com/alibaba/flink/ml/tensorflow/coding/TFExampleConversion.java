@@ -67,7 +67,16 @@ public class TFExampleConversion {
 				break;
 			case FLOAT_32_ARRAY:
 				FloatList.Builder floatArrBuilder = FloatList.newBuilder();
-				float[] floats = (float[]) val;
+				Float[] floats;
+				if (val instanceof Float[]) {
+					floats = (Float[]) val;
+				} else { // val is instance of float[]
+					float[] tmp = (float[]) val;
+					floats = new Float[tmp.length];
+					for (int i = 0; i < tmp.length; ++i) {
+						floats[i] = tmp[i];
+					}
+				}
 				for (float f : floats) {
 					floatArrBuilder.addValue(f);
 				}

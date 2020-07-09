@@ -23,8 +23,8 @@ import com.alibaba.flink.ml.cluster.MLConfig;
 import com.alibaba.flink.ml.operator.ops.MLFlatMapOp;
 import com.alibaba.flink.ml.operator.ops.sink.DummySink;
 import com.alibaba.flink.ml.operator.ops.source.NodeSource;
-import com.alibaba.flink.ml.operator.ops.table.MLTableSource;
-import com.alibaba.flink.ml.operator.ops.table.TableStreamDummySink;
+import com.alibaba.flink.ml.operator.ops.table.descriptor.DummyTable;
+import com.alibaba.flink.ml.operator.ops.table.descriptor.MLTable;
 import com.alibaba.flink.ml.operator.util.TypeUtil;
 import com.alibaba.flink.ml.cluster.role.AMRole;
 import com.alibaba.flink.ml.cluster.role.BaseRole;
@@ -34,11 +34,13 @@ import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.StatementSet;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.TableSchema;
 import org.apache.flink.table.api.Types;
-import org.apache.flink.table.api.java.StreamTableEnvironment;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+import org.apache.flink.table.descriptors.Schema;
 import org.apache.flink.types.Row;
 
 
@@ -110,15 +112,16 @@ public class RoleUtils {
 	 * Run ML program for DataStream.
 	 *
 	 * @param tableEnv The Flink TableEnvironment
+	 * @param statementSet The StatementSet created by the given TableEnvironment
 	 * @param mode The mode of the program - can be either TRAIN or INFERENCE
 	 * @param input The input DataStream
-	 * @param mlConfig Configurations for the  program
+	 * @param mlConfig Configurations for the program
 	 * @param outputSchema The TableSchema for the output DataStream. If it's null, a dummy sink will be connected
 	 * to the returned DataStream. Otherwise, caller is responsible to add sink to the output
 	 * DataStream before executing the graph.
 	 * @param role machine learning a group of nodes name.
 	 */
-	public static Table addRole(TableEnvironment tableEnv, ExecutionMode mode,
+	public static Table addRole(TableEnvironment tableEnv, StatementSet statementSet, ExecutionMode mode,
 			Table input, MLConfig mlConfig,
 			TableSchema outputSchema, BaseRole role) {
 		if (null != input) {
@@ -128,9 +131,14 @@ public class RoleUtils {
 		TableSchema workerSchema = outputSchema != null ? outputSchema : DUMMY_SCHEMA;
 		int workerParallelism = mlConfig.getRoleParallelismMap().get(role.name());
 		if (input == null) {
-			tableEnv.registerTableSource(role.name(),
-					new MLTableSource(mode, role, mlConfig, workerSchema, workerParallelism));
-			worker = tableEnv.scan(role.name());
+			tableEnv.connect((new MLTable()
+						.mlConfig(mlConfig)
+						.executionMode(mode)
+						.role(role)
+						.parallelism(workerParallelism)))
+					.withSchema(new Schema().schema(workerSchema))
+					.createTemporaryTable(role.name());
+			worker = tableEnv.from(role.name());
 		} else {
 			DataStream<Row> toDataStream = tableToDS(input, tableEnv);
 			FlatMapFunction<Row, Row> flatMapper = new MLFlatMapOp<>(mode, role, mlConfig, toDataStream.getType(),
@@ -142,8 +150,10 @@ public class RoleUtils {
 		}
 		if (outputSchema == null) {
 			if (worker != null) {
-				tableEnv.registerTableSink("table_sink",new TableStreamDummySink());
-				worker.insertInto("table_sink");
+				tableEnv.connect(new DummyTable())
+						.withSchema(new Schema().schema(DUMMY_SCHEMA))
+						.createTemporaryTable(role.name() + "_table_sink");
+				statementSet.addInsert(role.name() + "_table_sink", worker);
 			}
 		}
 		return worker;
@@ -151,30 +161,32 @@ public class RoleUtils {
 
 	/**
 	 * add application master role to machine learning cluster.
-	 *
-	 * @param tableEnv
-	 *  flink table environment
-	 * @param mlConfig
-	 *  machine learning configuration
+	 *  @param tableEnv flink table environment
+	 * @param statementSet The StatementSet created by the given TableEnvironment
+	 * @param mlConfig Configurations for the program
 	 */
-	public static void addAMRole(TableEnvironment tableEnv, MLConfig mlConfig) {
-		tableEnv.registerTableSource(new AMRole().name(), new MLTableSource(ExecutionMode.OTHER, new AMRole(),
-				mlConfig, DUMMY_SCHEMA, 1));
-		Table am = tableEnv.scan(new AMRole().name());
-		tableEnv.registerTableSink("table_stream_sink", new TableStreamDummySink());
-		am.insertInto("table_stream_sink");
+	public static void addAMRole(TableEnvironment tableEnv, StatementSet statementSet, MLConfig mlConfig) {
+		tableEnv.connect(new MLTable().executionMode(ExecutionMode.OTHER).role(new AMRole()).mlConfig(mlConfig).parallelism(1))
+				.withSchema(new Schema().schema(DUMMY_SCHEMA))
+				.createTemporaryTable(new AMRole().name());
+		Table am = tableEnv.from(new AMRole().name());
 
+		tableEnv.connect(new DummyTable())
+				.withSchema(new Schema().schema(DUMMY_SCHEMA))
+				.createTemporaryTable("am_table_stream_sink");
+
+		statementSet.addInsert("am_table_stream_sink", am);
 	}
 
 	private static <OUT> TypeInformation<OUT> getTypeInfo(Class<OUT> clazz) {
 		return clazz == null ? null : TypeInformation.of(clazz);
 	}
 
-	private static Table dsToTable(DataStream<Row> dataStream, TableEnvironment tableEnv) {
+	public static Table dsToTable(DataStream<Row> dataStream, TableEnvironment tableEnv) {
 		return ((StreamTableEnvironment) tableEnv).fromDataStream(dataStream);
 	}
 
-	private static DataStream<Row> tableToDS(Table table, TableEnvironment tableEnv) {
+	public static DataStream<Row> tableToDS(Table table, TableEnvironment tableEnv) {
 		if (table == null) {
 			return null;
 		}

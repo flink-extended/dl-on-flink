@@ -16,11 +16,12 @@
  * limitations under the License.
  */
 
-package com.alibaba.flink.ml.operator.ops.sink;
+package com.alibaba.flink.ml.operator.ops.table;
 
-import com.alibaba.flink.ml.operator.ops.table.TableDummySinkBase;
+import com.alibaba.flink.ml.operator.ops.sink.LogSink;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.datastream.DataStreamSink;
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
 import org.apache.flink.table.api.TableSchema;
 import org.apache.flink.table.sinks.AppendStreamTableSink;
@@ -39,6 +40,10 @@ public class LogTableStreamSink extends TableDummySinkBase implements AppendStre
 		sinkFunction = new LogSink<>();
 	}
 
+	public LogTableStreamSink(TableSchema schema) {
+		this(schema, new LogSink<>());
+	}
+
 	public LogTableStreamSink(RichSinkFunction<Row> sinkFunction) {
 		this.sinkFunction = sinkFunction;
 	}
@@ -55,7 +60,7 @@ public class LogTableStreamSink extends TableDummySinkBase implements AppendStre
 	}
 
 	@Override
-	public void emitDataStream(DataStream<Row> dataStream) {
-		dataStream.addSink(sinkFunction);
+	public DataStreamSink<?> consumeDataStream(DataStream<Row> dataStream) {
+		return dataStream.addSink(sinkFunction);
 	}
 }

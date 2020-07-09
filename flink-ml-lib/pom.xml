@@ -12,6 +12,11 @@
     <artifactId>flink-ml-lib</artifactId>
     <dependencies>
         <dependency>
+            <groupId>com.alibaba.flink.ml</groupId>
+            <artifactId>flink-ml-operator</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.tensorflow</groupId>
             <artifactId>tensorflow</artifactId>
         </dependency>
@@ -48,6 +53,12 @@
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-table-planner_${scala.major.version}</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table-planner-blink_2.11</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>

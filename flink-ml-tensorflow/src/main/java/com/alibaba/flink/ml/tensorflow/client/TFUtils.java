@@ -20,7 +20,7 @@ package com.alibaba.flink.ml.tensorflow.client;
 
 import com.alibaba.flink.ml.cluster.ExecutionMode;
 import com.alibaba.flink.ml.operator.client.RoleUtils;
-import com.alibaba.flink.ml.operator.ops.table.TableStreamDummySink;
+import com.alibaba.flink.ml.operator.ops.table.descriptor.DummyTable;
 import com.alibaba.flink.ml.operator.util.PythonFileUtil;
 import com.alibaba.flink.ml.operator.util.TypeUtil;
 import com.alibaba.flink.ml.cluster.role.PsRole;
@@ -42,10 +42,12 @@ import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.StatementSet;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.TableSchema;
-import org.apache.flink.table.api.java.StreamTableEnvironment;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+import org.apache.flink.table.descriptors.Schema;
 import org.apache.flink.types.Row;
 
 import org.slf4j.Logger;
@@ -236,13 +238,14 @@ public class TFUtils {
 	 * start a tensorboard service.
 	 * @param streamEnv The Flink StreamExecutionEnvironment.
 	 * @param tableEnv The Flink TableEnvironment.
+	 * @param statementSet The StatementSet created by the given TableEnvironment
 	 * @param tfConfig Configurations for the TF program.
 	 * @throws IOException
 	 */
 	public static void startTensorBoard(StreamExecutionEnvironment streamEnv, TableEnvironment tableEnv,
-			TFConfig tfConfig) throws IOException {
+										StatementSet statementSet, TFConfig tfConfig) throws IOException {
 		TFConfig tbConfig = buildTensorBoardConfig(streamEnv, tfConfig);
-		RoleUtils.addRole(tableEnv, ExecutionMode.OTHER, null, tbConfig.getMlConfig(), null,
+		RoleUtils.addRole(tableEnv, statementSet, ExecutionMode.OTHER, null, tbConfig.getMlConfig(), null,
 				new TensorBoardRole());
 	}
 
@@ -311,15 +314,16 @@ public class TFUtils {
 	 *
 	 * @param streamEnv
 	 * @param tableEnv The Flink TableEnvironment.
+	 * @param statementSet The StatementSet created by the given TableEnvironment
 	 * @param input The input Table.
 	 * @param tfConfig Configurations for the TF program.
 	 * @param outSchema The TableSchema for the output Table. If it's null, a dummy sink will be connected.
 	 * @return output Table. Otherwise, caller is responsible to add sink to the output
 	 * Table before executing the graph.
 	 */
-	public static Table train(StreamExecutionEnvironment streamEnv, TableEnvironment tableEnv, Table input,
-			TFConfig tfConfig, TableSchema outSchema) throws IOException {
-		return run(streamEnv, tableEnv, ExecutionMode.TRAIN, input, tfConfig, outSchema);
+	public static Table train(StreamExecutionEnvironment streamEnv, TableEnvironment tableEnv, StatementSet statementSet, Table input,
+							  TFConfig tfConfig, TableSchema outSchema) throws IOException {
+		return run(streamEnv, tableEnv, statementSet, ExecutionMode.TRAIN, input, tfConfig, outSchema);
 	}
 
 	/**
@@ -327,15 +331,16 @@ public class TFUtils {
 	 *
 	 * @param streamEnv
 	 * @param tableEnv The Flink TableEnvironment.
+	 * @param statementSet The StatementSet created by the given TableEnvironment
 	 * @param input The input Table.
 	 * @param tfConfig Configurations for the TF program.
 	 * @param outSchema The TableSchema for the output Table. If it's null, a dummy sink will be connected.
 	 * @return output Table. Otherwise, caller is responsible to add sink to the output
 	 * Table before executing the graph.
 	 */
-	public static Table inference(StreamExecutionEnvironment streamEnv, TableEnvironment tableEnv, Table input,
-			TFConfig tfConfig, TableSchema outSchema) throws IOException {
-		return run(streamEnv, tableEnv, ExecutionMode.INFERENCE, input, tfConfig, outSchema);
+	public static Table inference(StreamExecutionEnvironment streamEnv, TableEnvironment tableEnv, StatementSet statementSet, Table input,
+								  TFConfig tfConfig, TableSchema outSchema) throws IOException {
+		return run(streamEnv, tableEnv, statementSet, ExecutionMode.INFERENCE, input, tfConfig, outSchema);
 	}
 
 	/**
@@ -343,6 +348,7 @@ public class TFUtils {
 	 *
 	 * @param streamEnv
 	 * @param tableEnv The Flink TableEnvironment.
+	 * @param statementSet The StatementSet created by the given TableEnvironment
 	 * @param mode The mode of the TF program - can be either TRAIN or INFERENCE.
 	 * @param input The input Table.
 	 * @param tfConfig Configurations for the TF program.
@@ -350,8 +356,8 @@ public class TFUtils {
 	 * @return output Table. Otherwise, caller is responsible to add sink to the output
 	 * Table before executing the graph.
 	 */
-	public static Table run(StreamExecutionEnvironment streamEnv, TableEnvironment tableEnv, ExecutionMode mode,
-			Table input, TFConfig tfConfig, TableSchema outSchema) throws IOException {
+	public static Table run(StreamExecutionEnvironment streamEnv, TableEnvironment tableEnv, StatementSet statementSet, ExecutionMode mode,
+							Table input, TFConfig tfConfig, TableSchema outSchema) throws IOException {
 		final boolean hasScript = hasScript(tfConfig);
 		Preconditions.checkArgument(hasScript || mode == ExecutionMode.INFERENCE,
 				"Python script can be omitted only for inference");
@@ -367,9 +373,9 @@ public class TFUtils {
 
 		if (hasScript) {
 			PythonFileUtil.registerPythonFiles(streamEnv, nodeConfig.getMlConfig());
-			RoleUtils.addAMRole(tableEnv, tfConfig.getMlConfig());
+			RoleUtils.addAMRole(tableEnv, statementSet, tfConfig.getMlConfig());
 			if (nodeConfig.getPsNum() > 0) {
-				RoleUtils.addRole(tableEnv, mode, null, nodeConfig.getMlConfig(), null, new PsRole());
+				RoleUtils.addRole(tableEnv, statementSet, mode, null, nodeConfig.getMlConfig(), null, new PsRole());
 			}
 		}
 		TableSchema workerSchema = outSchema != null ? outSchema : DUMMY_SCHEMA;
@@ -383,10 +389,10 @@ public class TFUtils {
 		}
 		if (outSchema == null) {
 			if (worker != null) {
-				writeToDummySink(worker, tableEnv);
+				writeToDummySink(worker, tableEnv, statementSet);
 			}
 			if (chief != null) {
-				writeToDummySink(chief, tableEnv);
+				writeToDummySink(chief, tableEnv, statementSet);
 			}
 		}
 		return worker;
@@ -428,12 +434,13 @@ public class TFUtils {
 	}
 
 
-	private static void writeToDummySink(Table tbl, TableEnvironment tableEnvironment) {
+	private static void writeToDummySink(Table tbl, TableEnvironment tableEnvironment, StatementSet statementSet) {
 		String sinkName = String.format("dummy_sink_%s", count.getAndIncrement());
-		tableEnvironment.registerTableSink(sinkName, new TableStreamDummySink());
-		tbl.insertInto(sinkName);
+		tableEnvironment.connect(new DummyTable())
+				.withSchema(new Schema().schema(DUMMY_SCHEMA))
+				.createTemporaryTable(sinkName);
+		statementSet.addInsert(sinkName, tbl);
 	}
-
 
 	private static boolean hasScript(TFConfig tfConfig) {
 		return tfConfig.getPythonFiles() != null && tfConfig.getPythonFiles().length > 0;

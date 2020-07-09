@@ -19,7 +19,7 @@
 package com.alibaba.flink.ml.util;
 
 public class MLConstants {
-	public static final String SYS_PREFIX = "SYS:";
+	public static final String SYS_PREFIX = "sys:";
 	public static final String ENCODING_CLASS = SYS_PREFIX + "encoding_class";
 	public static final String DECODING_CLASS = SYS_PREFIX + "decoding_class";
 	public static final String RECORD_READER_CLASS = SYS_PREFIX + "record_reader_class";
