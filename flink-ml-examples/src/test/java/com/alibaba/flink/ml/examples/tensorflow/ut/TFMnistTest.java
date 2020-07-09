@@ -21,8 +21,9 @@ package com.alibaba.flink.ml.examples.tensorflow.ut;
 import com.alibaba.flink.ml.examples.tensorflow.mnist.MnistDataUtil;
 import com.alibaba.flink.ml.examples.tensorflow.mnist.ops.MnistTFRPojo;
 import com.alibaba.flink.ml.examples.tensorflow.ops.MnistTFRExtractPojoMapOp;
-import com.alibaba.flink.ml.examples.tensorflow.ops.MnistTFRToRowTableSource;
+import com.alibaba.flink.ml.examples.tensorflow.ops.descriptor.MnistTFRToRowTable;
 import com.alibaba.flink.ml.operator.util.DataTypes;
+import com.alibaba.flink.ml.operator.util.TypeUtil;
 import com.alibaba.flink.ml.tensorflow.client.TFConfig;
 import com.alibaba.flink.ml.tensorflow.client.TFUtils;
 import com.alibaba.flink.ml.tensorflow.coding.ExampleCoding;
@@ -32,14 +33,14 @@ import com.alibaba.flink.ml.tensorflow.util.TFConstants;
 import com.alibaba.flink.ml.util.MLConstants;
 import com.alibaba.flink.ml.util.SysUtil;
 import org.apache.curator.test.TestingServer;
-
 import org.apache.flink.api.common.JobExecutionResult;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.StatementSet;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
-
-import org.apache.flink.table.api.java.StreamTableEnvironment;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+import org.apache.flink.table.descriptors.Schema;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,6 +48,8 @@ import org.junit.Test;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.alibaba.flink.ml.examples.tensorflow.mnist.MnistJavaInference.OUT_ROW_TYPE;
 
 public class TFMnistTest {
 	private static TestingServer server;
@@ -104,10 +107,12 @@ public class TFMnistTest {
 		StreamExecutionEnvironment flinkEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 		flinkEnv.setParallelism(2);
 		TableEnvironment tableEnv = StreamTableEnvironment.create(flinkEnv);
+		StatementSet statementSet = tableEnv.createStatementSet();
 		TFConfig config = buildTFConfig(mnist_dist);
-		TFUtils.train(flinkEnv, tableEnv, null, config, null);
+		TFUtils.train(flinkEnv, tableEnv, statementSet, null, config, null);
 
-		flinkEnv.execute();
+		statementSet.execute().getJobClient().get()
+				.getJobExecutionResult(Thread.currentThread().getContextClassLoader()).get();
 	}
 
 	@Test
@@ -163,14 +168,18 @@ public class TFMnistTest {
 		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 		streamEnv.setParallelism(2);
 		TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
+		StatementSet statementSet = tableEnv.createStatementSet();
 		String rootPath = new File("").getAbsolutePath();
 		String[] paths = new String[2];
 		paths[0] = rootPath + "/target/data/train/0.tfrecords";
 		paths[1] = rootPath + "/target/data/train/1.tfrecords";
-		tableEnv.registerTableSource("input", new MnistTFRToRowTableSource(paths, 1));
-		Table inputTable = tableEnv.scan("input");
-		TFUtils.train(streamEnv, tableEnv, inputTable, config, null);
-		streamEnv.execute();
+		tableEnv.connect(new MnistTFRToRowTable().paths(paths).epochs(1))
+				.withSchema(new Schema().schema(TypeUtil.rowTypeInfoToSchema(OUT_ROW_TYPE)))
+				.createTemporaryTable("input");
+		Table inputTable = tableEnv.from("input");
+		TFUtils.train(streamEnv, tableEnv, statementSet, inputTable, config, null);
+		statementSet.execute().getJobClient().get()
+				.getJobExecutionResult(Thread.currentThread().getContextClassLoader()).get();
 	}
 
 }

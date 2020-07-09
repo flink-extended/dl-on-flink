@@ -29,13 +29,12 @@ import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.common.time.Time;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.StatementSet;
 import org.apache.flink.table.api.TableEnvironment;
-
-import org.apache.flink.table.api.java.StreamTableEnvironment;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -202,12 +201,14 @@ public class MnistDist {
 	private void trainMnistTable(String trainPy) throws Exception {
 		StreamExecutionEnvironment flinkEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 		TableEnvironment tableEnv = StreamTableEnvironment.create(flinkEnv);
+		StatementSet statementSet = tableEnv.createStatementSet();
 		if (withRestart) {
 			flinkEnv.setRestartStrategy(restartStrategy());
 		}
 		TFConfig tfConfig = prepareTrain(trainPy);
-		TFUtils.train(flinkEnv, tableEnv, null, tfConfig, null);
-		flinkEnv.execute();
+		TFUtils.train(flinkEnv, tableEnv, statementSet, null, tfConfig, null);
+		statementSet.execute().getJobClient().get()
+				.getJobExecutionResult(Thread.currentThread().getContextClassLoader()).get();
 	}
 
 	private RestartStrategies.RestartStrategyConfiguration restartStrategy() {

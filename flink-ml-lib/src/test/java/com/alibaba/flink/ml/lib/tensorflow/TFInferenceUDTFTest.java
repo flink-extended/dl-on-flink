@@ -1,14 +1,15 @@
 package com.alibaba.flink.ml.lib.tensorflow;
 
+import com.alibaba.flink.ml.lib.tensorflow.table.descriptor.TableDebugRow;
+import com.alibaba.flink.ml.lib.tensorflow.util.ShellExec;
+import com.alibaba.flink.ml.operator.util.TypeUtil;
 import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.table.api.java.StreamTableEnvironment;
-
-import com.alibaba.flink.ml.lib.tensorflow.table.TableDebugRowSink;
-import com.alibaba.flink.ml.lib.tensorflow.table.TableDebugRowSource;
-import com.alibaba.flink.ml.lib.tensorflow.util.ShellExec;
+import org.apache.flink.table.api.TableSchema;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+import org.apache.flink.table.descriptors.Schema;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -16,6 +17,8 @@ import org.junit.Test;
 
 import java.io.File;
 import java.util.Properties;
+
+import static org.apache.flink.table.api.DataTypes.*;
 
 public class TFInferenceUDTFTest {
 
@@ -60,14 +63,18 @@ public class TFInferenceUDTFTest {
 		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 		StreamTableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
 		streamEnv.setParallelism(1);
-		TableDebugRowSource tableDebugRowSource = new TableDebugRowSource();
-		tableEnv.registerTableSource("source", tableDebugRowSource);
+		tableEnv.connect(new TableDebugRow())
+				.withSchema(new Schema().schema(TableSchema.builder().field("a", FLOAT()).field("b", FLOAT()).build()))
+				.createTemporaryTable("source");
 		tableEnv.registerFunction("inference", predictUDTF);
 
-		tableEnv.registerTableSink("sink", new TableDebugRowSink(typeInfo));
-		tableEnv.sqlUpdate(
-				"INSERT INTO sink SELECT d FROM source, LATERAL TABLE(inference(a, b)) as T(d)");
-		tableEnv.execute("job");
+		tableEnv.connect(new TableDebugRow())
+				.withSchema(new Schema().schema(TypeUtil.rowTypeInfoToSchema(typeInfo)))
+				.createTemporaryTable("sink");
+		tableEnv.executeSql(
+				"INSERT INTO sink SELECT d FROM source, LATERAL TABLE(inference(a, b)) as T(d)")
+				.getJobClient().get()
+				.getJobExecutionResult(Thread.currentThread().getContextClassLoader()).get();
 	}
 
 	@Test
@@ -91,14 +98,18 @@ public class TFInferenceUDTFTest {
 		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 		StreamTableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
 		streamEnv.setParallelism(1);
-		TableDebugRowSource tableDebugRowSource = new TableDebugRowSource();
-		tableEnv.registerTableSource("source", tableDebugRowSource);
+		tableEnv.connect(new TableDebugRow())
+				.withSchema(new Schema().schema(TableSchema.builder().field("a", FLOAT()).field("b", FLOAT()).build()))
+				.createTemporaryTable("source");
 		tableEnv.registerFunction("inference", predictUDTF);
 
-		tableEnv.registerTableSink("sink", new TableDebugRowSink(typeInfo));
-		tableEnv.sqlUpdate(
-				"INSERT INTO sink SELECT d, e FROM source, LATERAL TABLE(inference(a, b)) as T(d, e)");
-		tableEnv.execute("job");
+		tableEnv.connect(new TableDebugRow())
+				.withSchema(new Schema().schema(TypeUtil.rowTypeInfoToSchema(typeInfo)))
+				.createTemporaryTable("sink");
+		tableEnv.executeSql(
+				"INSERT INTO sink SELECT d, e FROM source, LATERAL TABLE(inference(a, b)) as T(d, e)")
+				.getJobClient().get()
+				.getJobExecutionResult(Thread.currentThread().getContextClassLoader()).get();
 	}
 
 	@Test
@@ -121,14 +132,18 @@ public class TFInferenceUDTFTest {
 		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 		StreamTableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
 		streamEnv.setParallelism(1);
-		TableDebugRowSource tableDebugRowSource = new TableDebugRowSource(1);
-		tableEnv.registerTableSource("source", tableDebugRowSource);
+		tableEnv.connect(new TableDebugRow().rank(1))
+				.withSchema(new Schema().schema(TableSchema.builder().field("a", ARRAY(FLOAT())).field("b", ARRAY(FLOAT())).build()))
+				.createTemporaryTable("source");
 		tableEnv.registerFunction("inference", predictUDTF);
 
-		tableEnv.registerTableSink("sink", new TableDebugRowSink(typeInfo));
-		tableEnv.sqlUpdate(
-				"INSERT INTO sink SELECT d, e FROM source, LATERAL TABLE(inference(a, b)) as T(d, e)");
-		tableEnv.execute("job");
+		tableEnv.connect(new TableDebugRow())
+				.withSchema(new Schema().schema(TypeUtil.rowTypeInfoToSchema(typeInfo)))
+				.createTemporaryTable("sink");
+		tableEnv.executeSql(
+				"INSERT INTO sink SELECT d, e FROM source, LATERAL TABLE(inference(a, b)) as T(d, e)")
+				.getJobClient().get()
+				.getJobExecutionResult(Thread.currentThread().getContextClassLoader()).get();
 	}
 
 	@Test
@@ -148,18 +163,29 @@ public class TFInferenceUDTFTest {
 		types[1] = TypeInformation.of(float[].class);
 		types[2] = TypeInformation.of(String[].class);
 
-		RowTypeInfo typeInfo = new RowTypeInfo(types, outputNames.split(","));
 		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 		StreamTableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
 		streamEnv.setParallelism(1);
-		TableDebugRowSource tableDebugRowSource = new TableDebugRowSource(1, true);
-		tableEnv.registerTableSource("source", tableDebugRowSource);
+		TableSchema sourceTableSchema = TableSchema.builder().field("a", ARRAY(FLOAT()))
+				.field("b", ARRAY(FLOAT()))
+				.field("c", ARRAY(STRING())).build();
+		tableEnv.connect(new TableDebugRow().rank(1).hasString(true))
+				.withSchema(new Schema().schema(sourceTableSchema))
+				.createTemporaryTable("source");
+
 		tableEnv.registerFunction("inference", predictUDTF);
 
-		tableEnv.registerTableSink("sink", new TableDebugRowSink(typeInfo));
-		tableEnv.sqlUpdate(
-				"INSERT INTO sink SELECT d, f, h FROM source, LATERAL TABLE(inference(a, b, c)) as T(d, f, h)");
-		tableEnv.execute("job");
+		TableSchema sinkTableSchema = TableSchema.builder().field("d", ARRAY(FLOAT()))
+				.field("f", ARRAY(FLOAT()))
+				.field("h", ARRAY(STRING()))
+				.build();
+		tableEnv.connect(new TableDebugRow())
+				.withSchema(new Schema().schema(sinkTableSchema))
+				.createTemporaryTable("sink");
+		tableEnv.executeSql(
+				"INSERT INTO sink SELECT d, f, h FROM source, LATERAL TABLE(inference(a, b, c)) as T(d, f, h)")
+				.getJobClient().get()
+				.getJobExecutionResult(Thread.currentThread().getContextClassLoader()).get();
 	}
 
 	@Test
@@ -179,18 +205,26 @@ public class TFInferenceUDTFTest {
 		types[1] = TypeInformation.of(float[][].class);
 		types[2] = TypeInformation.of(String[][].class);
 
-		RowTypeInfo typeInfo = new RowTypeInfo(types, outputNames.split(","));
 		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 		StreamTableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
 		streamEnv.setParallelism(1);
-		TableDebugRowSource tableDebugRowSource = new TableDebugRowSource(2, true);
-		tableEnv.registerTableSource("source", tableDebugRowSource);
+		TableSchema sourceTableSchema = TableSchema.builder().field("a", ARRAY(ARRAY(FLOAT())))
+				.field("b", ARRAY(ARRAY(FLOAT())))
+				.field("c", ARRAY(ARRAY(STRING()))).build();
+		tableEnv.connect(new TableDebugRow().rank(2).hasString(true))
+				.withSchema(new Schema().schema(sourceTableSchema))
+				.createTemporaryTable("source");
 		tableEnv.registerFunction("inference", predictUDTF);
 
-		tableEnv.registerTableSink("sink", new TableDebugRowSink(typeInfo));
-		tableEnv.sqlUpdate(
-				"INSERT INTO sink SELECT d, f, h FROM source, LATERAL TABLE(inference(a, b, c)) as T(d, f, h)");
-		tableEnv.execute("job");
+		TableSchema sinkTableSchema = TableSchema.builder().field("a", ARRAY(ARRAY(FLOAT())))
+				.field("b", ARRAY(ARRAY(FLOAT())))
+				.field("c", ARRAY(ARRAY(STRING()))).build();
+		tableEnv.connect(new TableDebugRow())
+				.withSchema(new Schema().schema(sinkTableSchema))
+				.createTemporaryTable("sink");
+		tableEnv.executeSql(
+				"INSERT INTO sink SELECT d, f, h FROM source, LATERAL TABLE(inference(a, b, c)) as T(d, f, h)")
+				.getJobClient().get()
+				.getJobExecutionResult(Thread.currentThread().getContextClassLoader()).get();
 	}
-
 }
