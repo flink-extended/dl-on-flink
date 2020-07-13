@@ -16,9 +16,7 @@
 import os
 
 from pyflink.datastream.stream_execution_environment import StreamExecutionEnvironment
-from pyflink.java_gateway import get_gateway
 from pyflink.table import StreamTableEnvironment, CsvTableSink, WriteMode
-from pyflink.table.descriptors import Schema, ConnectorDescriptor
 from pyflink.table.table import TableSchema
 
 from flink_ml_tensorflow.tensorflow_TFConfig import TFConfig
@@ -26,7 +24,7 @@ from flink_ml_tensorflow.tensorflow_on_flink_table import train, inference
 from flink_ml_tensorflow.tensorflow_on_flink_tfconf import TFCONSTANS
 from flink_ml_tensorflow.tensorflow_on_flink_mlconf import MLCONSTANTS
 from pyflink.table.sources import CsvTableSource
-from pyflink.table.types import DataTypes, RowType
+from pyflink.table.types import DataTypes
 
 
 class TableExample:
@@ -50,12 +48,11 @@ class TableExample:
         tf_config = TFConfig(work_num, ps_num, prop, python_file, func, env_path)
 
         train(stream_env, table_env, statement_set, input_tb, tf_config, output_schema)
+        # inference(stream_env, table_env, statement_set, input_tb, tf_config, output_schema)
+
         job_client = statement_set.execute().get_job_client()
         if job_client is not None:
             job_client.get_job_execution_result(user_class_loader=None).result()
-        # inference(stream_env, table_env, input_tb, tf_config, output_schema)
-
-        # table_env.execute("train")
 
     @staticmethod
     def add_train_chief_alone_table():
@@ -76,12 +73,12 @@ class TableExample:
         tf_config = TFConfig(work_num, ps_num, prop, python_file, func, env_path)
 
         train(stream_env, table_env, statement_set, input_tb, tf_config, output_schema)
+
+        # inference(stream_env, table_env, statement_set, input_tb, tf_config, output_schema)
+
         job_client = statement_set.execute().get_job_client()
         if job_client is not None:
             job_client.get_job_execution_result(user_class_loader=None).result()
-        # inference(stream_env, table_env, input_tb, tf_config, output_schema)
-
-        # table_env.execute("train")
 
     @staticmethod
     def input_output_table():
@@ -97,8 +94,8 @@ class TableExample:
         prop[MLCONSTANTS.ENCODING_CLASS] = "com.alibaba.flink.ml.operator.coding.RowCSVCoding"
         prop[MLCONSTANTS.DECODING_CLASS] = "com.alibaba.flink.ml.operator.coding.RowCSVCoding"
         inputSb = "INT_32" + "," + "INT_64" + "," + "FLOAT_32" + "," + "FLOAT_64" + "," + "STRING"
-        prop["SYS:csv_encode_types"] = inputSb
-        prop["SYS:csv_decode_types"] = inputSb
+        prop["sys:csv_encode_types"] = inputSb
+        prop["sys:csv_decode_types"] = inputSb
         prop[MLCONSTANTS.PYTHON_VERSION] = "3.7"
         source_file = os.getcwd() + "/../../src/test/resources/input.csv"
         sink_file = os.getcwd() + "/../../src/test/resources/output.csv"
@@ -129,13 +126,12 @@ class TableExample:
         table_env.register_table_sink("table_row_sink", sink)
         tf_config = TFConfig(work_num, ps_num, prop, python_file, func, env_path)
         output_table = train(stream_env, table_env, statement_set, input_tb, tf_config, output_schema)
+        # inference(stream_env, table_env, statement_set, input_tb, tf_config, output_schema)
+
         statement_set.add_insert("table_row_sink", output_table)
         job_client = statement_set.execute().get_job_client()
         if job_client is not None:
             job_client.get_job_execution_result(user_class_loader=None).result()
-        # inference(stream_env, table_env, input_tb, tf_config, output_schema)
-
-        # table_env.execute("train")
 
     @staticmethod
     def worker_zero_finish():
@@ -154,16 +150,15 @@ class TableExample:
         tf_config = TFConfig(work_num, ps_num, prop, python_file, func, env_path)
         train(stream_env, table_env, statement_set, input_tb, tf_config, output_schema)
 
+        # inference(stream_env, table_env, statement_set, input_tb, tf_config, output_schema)
+
         job_client = statement_set.execute().get_job_client()
         if job_client is not None:
             job_client.get_job_execution_result(user_class_loader=None).result()
-        # inference(stream_env, table_env, input_tb, tf_config, output_schema)
-
-        # table_env.execute("train")
 
 
 if __name__ == '__main__':
-    # TableExample.add_train_table()
-    # TableExample.add_train_chief_alone_table()
+    TableExample.add_train_table()
+    TableExample.add_train_chief_alone_table()
     TableExample.input_output_table()
-    # TableExample.worker_zero_finish()
+    TableExample.worker_zero_finish()
