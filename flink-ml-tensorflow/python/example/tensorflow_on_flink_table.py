@@ -48,6 +48,7 @@ class TableExample:
         tf_config = TFConfig(work_num, ps_num, prop, python_file, func, env_path)
 
         train(stream_env, table_env, statement_set, input_tb, tf_config, output_schema)
+
         # inference(stream_env, table_env, statement_set, input_tb, tf_config, output_schema)
 
         job_client = statement_set.execute().get_job_client()
@@ -126,7 +127,8 @@ class TableExample:
         table_env.register_table_sink("table_row_sink", sink)
         tf_config = TFConfig(work_num, ps_num, prop, python_file, func, env_path)
         output_table = train(stream_env, table_env, statement_set, input_tb, tf_config, output_schema)
-        # inference(stream_env, table_env, statement_set, input_tb, tf_config, output_schema)
+
+        # output_table = inference(stream_env, table_env, statement_set, input_tb, tf_config, output_schema)
 
         statement_set.add_insert("table_row_sink", output_table)
         job_client = statement_set.execute().get_job_client()
