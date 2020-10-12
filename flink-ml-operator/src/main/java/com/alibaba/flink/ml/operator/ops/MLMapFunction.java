@@ -73,6 +73,7 @@ public class MLMapFunction<IN, OUT> implements Closeable, Serializable {
 	 * @throws Exception
 	 */
 	public void open(RuntimeContext runtimeContext) throws Exception {
+		ResourcesUtils.parseGpuInfo(runtimeContext, config);
 		mlContext = new MLContext(mode, config, role.name(), runtimeContext.getIndexOfThisSubtask(),
 				config.getEnvPath(), null);
 		PythonFileUtil.preparePythonFilesForExec(runtimeContext, mlContext);
