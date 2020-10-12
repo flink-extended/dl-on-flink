@@ -25,6 +25,7 @@ import com.alibaba.flink.ml.cluster.rpc.AppMasterServer;
 import com.alibaba.flink.ml.cluster.rpc.NodeServer;
 import com.alibaba.flink.ml.data.DataExchange;
 import com.alibaba.flink.ml.operator.hook.FlinkOpHookManager;
+import com.alibaba.flink.ml.operator.ops.ResourcesUtils;
 import com.alibaba.flink.ml.operator.util.ColumnInfos;
 import com.alibaba.flink.ml.operator.util.PythonFileUtil;
 import com.alibaba.flink.ml.cluster.role.AMRole;
@@ -34,7 +35,6 @@ import org.apache.flink.api.common.io.RichInputFormat;
 import org.apache.flink.api.common.io.statistics.BaseStatistics;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.configuration.Configuration;
-import org.apache.flink.core.io.InputSplit;
 import org.apache.flink.core.io.InputSplitAssigner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -122,6 +122,7 @@ public class MLInputFormat<OUT> extends RichInputFormat<OUT, MLInputSplit> {
 	 */
 	@Override
 	public void open(MLInputSplit split) throws IOException {
+		ResourcesUtils.parseGpuInfo(getRuntimeContext(), mlConfig);
 		mlContext = new MLContext(mode, mlConfig, role.name(), split.getSplitNumber(),
 				mlConfig.getEnvPath(), ColumnInfos.dummy().getNameToTypeMap());
 
