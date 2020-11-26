@@ -20,7 +20,10 @@ import os
 queue_library = os.path.join(resource_loader.get_data_files_path(),
                              "libflink_ops.so")
 print(queue_library)
-flink_ops = tf.load_op_library(queue_library)
+try:
+    flink_ops = tf.load_op_library(queue_library)
+except Exception as e:
+    flink_ops = tf.load_op_library(queue_library)
 print("load libflink_ops.so success")
 
 

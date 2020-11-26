@@ -99,3 +99,5 @@ class MLCONSTANTS(object):
     FAILOVER_STRATEGY_DEFAULT = str(ml_constants.FAILOVER_STRATEGY_DEFAULT)
 
     PYTHON_VERSION = str(ml_constants.PYTHON_VERSION)
+
+    GPU_INFO = str(ml_constants.GPU_INFO)
