@@ -100,4 +100,6 @@ public class MLConstants {
 	public static final String FAILOVER_RESTART_INDIVIDUAL_STRATEGY = "individual";
 	public static final String FAILOVER_STRATEGY_DEFAULT = FAILOVER_RESTART_ALL_STRATEGY;
 	public static final String PYTHON_VERSION = "python.version";
+
+	public static final String GPU_INFO = "gpu_info";
 }
