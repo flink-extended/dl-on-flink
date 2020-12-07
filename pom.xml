@@ -54,11 +54,12 @@
         <module>flink-ml-pytorch</module>
         <module>flink-ml-examples</module>
         <module>flink-ml-lib</module>
+        <module>flink-ml-dist</module>
     </modules>
 
     <properties>
         <protobuf.version>3.6.0</protobuf.version>
-        <flink.version>1.11.0</flink.version>
+        <flink.version>1.11.2</flink.version>
         <scala.major.version>2.11</scala.major.version>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
