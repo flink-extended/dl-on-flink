@@ -1,6 +1,6 @@
 # flink-ai-extended
 
-Flink-ai-extended is an open source machine learning platform based on Apache Flink. 
+Flink-ai-extended is an open source machine learning platform based on Apache Flink 
 and contains two sub-projects：
 
 1. [flink-ai-flow](flink-ai-flow): This project is an open source platform for managing the machine learning life cycle,
