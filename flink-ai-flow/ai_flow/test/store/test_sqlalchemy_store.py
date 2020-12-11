@@ -935,6 +935,7 @@ class TestSqlAlchemyStoreSqlite(unittest.TestCase):
         self.assertEqual('value_2', metric_summary_list[0].metric_value)
 
 
+@unittest.skip("To run this test you need to configure the mysql info in 'ai_flow/test/test_util.py'")
 @pytest.mark.release
 class TestSqlAlchemyStoreMySQL(TestSqlAlchemyStoreSqlite):
     """

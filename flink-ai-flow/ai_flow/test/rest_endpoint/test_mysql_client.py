@@ -30,6 +30,7 @@ from ai_flow.test.test_util import get_mysql_server_url
 _PORT = '50051'
 
 
+@unittest.skip("To run this test you need to configure the mysql info in 'ai_flow/test/test_util.py'")
 class TestAIFlowClientMySQL(test_client.TestAIFlowClientSqlite):
 
     @classmethod
