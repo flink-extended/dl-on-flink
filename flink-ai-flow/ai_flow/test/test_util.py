@@ -21,9 +21,9 @@ import os
 from ai_flow.api.configuration import set_project_config_file, project_config
 from ai_flow.common import path_util
 
-DEFAULT_MYSQL_USERNAME = 'root'
-DEFAULT_MYSQL_PASSWORD = 'aiflow'
-DEFAULT_MYSQL_HOST = '100.69.96.145'
+DEFAULT_MYSQL_USERNAME = ''
+DEFAULT_MYSQL_PASSWORD = ''
+DEFAULT_MYSQL_HOST = ''
 DEFAULT_MYSQL_PORT = 3306
 
 

@@ -84,6 +84,7 @@ class TestNotificationServiceSqlite(unittest.TestCase):
         self.assertEqual(len(events), 0)
 
 
+@unittest.skip("To run this test you need to configure the mysql info in 'ai_flow/test/test_util.py'")
 class TestNotificationServiceMySQL(TestNotificationServiceSqlite):
 
     @classmethod
