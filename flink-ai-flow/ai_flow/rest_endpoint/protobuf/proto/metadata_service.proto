@@ -1,0 +1,613 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+
+option java_generic_services = true;
+option java_package = "com.aiflow.proto";
+option py_generic_services = true;
+
+import "message.proto";
+import "google/api/annotations.proto";
+
+service MetadataService {
+    //example api
+    rpc getExampleById (IdRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/example/get/id"
+        body: "*"
+        };
+    };
+
+    rpc getExampleByName (NameRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/example/get/name"
+        body: "*"
+        };
+    };
+
+    rpc listExample (ListRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/example/list"
+        body: "*"
+        };
+    };
+
+    rpc registerExample (RegisterExampleRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/example/save"
+        body: "*"
+        };
+    };
+
+    rpc registerExampleWithCatalog (RegisterExampleRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/example/save_with_catalog"
+        body: "*"
+        };
+    };
+
+    rpc registerExamples (RegisterExamplesRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/examples/save"
+        body: "*"
+        };
+    };
+
+    rpc updateExample (UpdateExampleRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/example/update"
+        body: "*"
+        };
+    };
+
+    rpc deleteExampleById (IdRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/example/delete/id"
+        body: "*"
+        };
+    };
+
+    rpc deleteExampleByName (NameRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/example/delete/name"
+        body: "*"
+        };
+    };
+    //model relation api
+    rpc getModelRelationById (IdRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/model_relation/get/id"
+        body: "*"
+        };
+    };
+    rpc getModelRelationByName (NameRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/model_relation/get/name"
+        body: "*"
+        };
+    };
+    rpc listModelRelation (ListRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/model_relation/list"
+        body: "*"
+        };
+    };
+    rpc registerModelRelation (RegisterModelRelationRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/model_relation/save"
+        body: "*"
+        };
+    };
+    rpc deleteModelRelationById (IdRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/model_relation/delete/id"
+        body: "*"
+        };
+    };
+    rpc deleteModelRelationByName (NameRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/model_relation/delete/name"
+        body: "*"
+        };
+    };
+    //model api
+    rpc getModelById (IdRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/model/get/id"
+        body: "*"
+        };
+    };
+    rpc getModelByName (NameRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/model/get/name"
+        body: "*"
+        };
+    };
+    rpc registerModel (RegisterModelRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/model/save"
+        body: "*"
+        };
+    };
+    rpc deleteModelById (IdRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/model/delete/id"
+        body: "*"
+        };
+    };
+    rpc deleteModelByName (NameRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/model/delete/name"
+        body: "*"
+        };
+    };
+    //model version relation api
+    rpc getModelVersionRelationByVersion (ModelVersionNameRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/modelVersion_relation/get/version"
+        body: "*"
+        };
+    };
+    rpc listModelVersionRelation (ListModelVersionRelationRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/modelVersion_relation/list"
+        body: "*"
+        };
+    };
+    rpc registerModelVersionRelation (RegisterModelVersionRelationRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/modelVersion_relation/save"
+        body: "*"
+        };
+    };
+    rpc deleteModelVersionRelationByVersion (ModelVersionNameRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/modelVersion_relation/delete/version"
+        body: "*"
+        };
+    };
+    //model version api
+    rpc getModelVersionByVersion (ModelVersionNameRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/modelVersion/get/version"
+        body: "*"
+        };
+    };
+    rpc registerModelVersion (RegisterModelVersionRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/modelVersion/save"
+        body: "*"
+        };
+    };
+    rpc deleteModelVersionByVersion (ModelVersionNameRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/modelVersion/delete/version"
+        body: "*"
+        };
+    };
+    rpc getDeployedModelVersion (ModelNameRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/modelVersion/get_serving_version"
+        body: "*"
+        };
+    }
+    rpc getLatestValidatedModelVersion (ModelNameRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/modelVersion/get_latest_validated_model_version"
+        body: "*"
+        };
+    }
+    rpc getLatestGeneratedModelVersion (ModelNameRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/modelVersion/get_latest_generated_model_version"
+        body: "*"
+        };
+    }
+    //workflow execution api
+    rpc getWorkFlowExecutionById (IdRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/workflowExecution/get/id"
+        body: "*"
+        };
+    };
+    rpc getWorkFlowExecutionByName (NameRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/workflowExecution/get/name"
+        body: "*"
+        };
+    };
+    rpc listWorkFlowExecution (ListRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/workflowExecution/list"
+        body: "*"
+        };
+    };
+    rpc registerWorkFlowExecution (RegisterWorkFlowExecutionRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/workflowExecution/save"
+        body: "*"
+        };
+    };
+    rpc updateWorkflowExecution (UpdateWorkflowExecutionRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/workflowExecution/update"
+        body: "*"
+        };
+    };
+    rpc deleteWorkflowExecutionById (IdRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/workflowExecution/delete/id"
+        body: "*"
+        };
+    };
+    rpc deleteWorkflowExecutionByName (NameRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/workflowExecution/delete/name"
+        body: "*"
+        };
+    };
+    rpc updateWorkflowExecutionEndTime (UpdateWorkflowExecutionEndTimeRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/workflowExecution/update/end_time"
+        body: "*"
+        };
+    };
+    rpc updateWorkflowExecutionState (UpdateWorkflowExecutionStateRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/workflowExecution/update/state"
+        body: "*"
+        };
+    };
+    //job api
+    rpc getJobById (IdRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/job/get/id"
+        body: "*"
+        };
+    };
+    rpc getJobByName (NameRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/job/get/name"
+        body: "*"
+        };
+    };
+    rpc listJob (ListRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/job/list"
+        body: "*"
+        };
+    };
+    rpc registerJob (RegisterJobRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/job/save"
+        body: "*"
+        };
+    };
+    rpc updateJob (UpdateJobRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/job/update"
+        body: "*"
+        };
+    };
+    rpc updateJobState (UpdateJobStateRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/job/update/state"
+        body: "*"
+        };
+    };
+    rpc updateJobEndTime (UpdateJobEndTimeRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/job/update/end_time"
+        body: "*"
+        };
+    };
+    rpc deleteJobById (IdRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/job/delete/id"
+        body: "*"
+        };
+    };
+    rpc deleteJobByName (NameRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/job/delete/name"
+        body: "*"
+        };
+    };
+    //project api
+    rpc getProjectById (IdRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/project/get/id"
+        body: "*"
+        };
+    };
+    rpc getProjectByName (NameRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/project/get/name"
+        body: "*"
+        };
+    };
+    rpc registerProject (RegisterProjectRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/project/save"
+        body: "*"
+        };
+    };
+    rpc updateProject (UpdateProjectRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/project/update"
+        body: "*"
+        };
+    };
+    rpc listProject (ListRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/project/list"
+        body: "*"
+        };
+    };
+    rpc deleteProjectById (IdRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/project/delete/id"
+        body: "*"
+        };
+    };
+    rpc deleteProjectByName (NameRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/project/delete/name"
+        body: "*"
+        };
+    };
+    //artifact api
+    rpc getArtifactById (IdRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/artifact/get/id"
+        body: "*"
+        };
+    }
+    rpc getArtifactByName (NameRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/artifact/get/name"
+        body: "*"
+        };
+    }
+    rpc updateArtifact (UpdateArtifactRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/artifact/update"
+        body: "*"
+        };
+    };
+    rpc registerArtifact (RegisterArtifactRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/artifact/save"
+        body: "*"
+        };
+    };
+    rpc listArtifact (ListRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/artifact/list"
+        body: "*"
+        };
+    };
+    rpc deleteArtifactById (IdRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/artifact/delete/id"
+        body: "*"
+        };
+    };
+    rpc deleteArtifactByName (NameRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/artifact/delete/name"
+        body: "*"
+        };
+    };
+}
+
+message IdRequest {
+    int64 id = 1;
+}
+
+message NameRequest {
+    string name = 1;
+}
+
+message ListRequest {
+    int64 page_size = 1;
+    int64 offset = 2;
+}
+
+message MetaResponse {
+    string return_code = 1;
+    string return_msg = 2;
+    string data = 3;
+}
+
+//example
+message RegisterExampleRequest {
+    ExampleProto example = 1;
+}
+
+message RegisterExamplesRequest {
+    repeated ExampleProto examples = 1;
+}
+
+message ExampleListProto {
+    repeated ExampleProto examples = 1;
+}
+
+message UpdateExampleRequest {
+    string name = 1;
+    map<string, string> properties = 2;
+    ExampleSupportTypeProto support_type = 3;
+    repeated string name_list = 4;
+    repeated DataTypeProto type_list = 5;
+    google.protobuf.StringValue data_type = 6;
+    google.protobuf.StringValue data_format = 7;
+    google.protobuf.StringValue batch_uri = 8;
+    google.protobuf.StringValue stream_uri = 9;
+    google.protobuf.StringValue description = 10;
+    google.protobuf.Int64Value update_time = 11;
+    google.protobuf.StringValue catalog_name = 12;
+    google.protobuf.StringValue catalog_type = 13;
+    google.protobuf.StringValue catalog_database = 14;
+    google.protobuf.StringValue catalog_connection_uri = 15;
+    google.protobuf.StringValue catalog_version = 16;
+    google.protobuf.StringValue catalog_table = 17;
+}
+
+//model
+message RegisterModelRelationRequest {
+    ModelRelationProto model_relation = 1;
+}
+
+message RegisterModelRequest {
+    ModelProto model = 1;
+}
+
+message ModelRelationListProto {
+    repeated ModelRelationProto model_relations = 1;
+}
+
+//model version
+message ModelVersionNameRequest {
+    string name = 1;
+    int64 model_id = 2;
+}
+
+message RegisterModelVersionRelationRequest {
+    ModelVersionRelationProto model_version_relation = 1;
+}
+
+message RegisterModelVersionRequest {
+    ModelVersionProto model_version = 1;
+}
+
+message ListModelVersionRelationRequest {
+    int64 model_id = 1;
+    int64 page_size = 2;
+    int64 offset = 3;
+}
+
+message ModelVersionRelationListProto {
+    repeated ModelVersionRelationProto model_versions = 1;
+}
+
+message ModelVersionListProto {
+    repeated ModelVersionProto model_versions = 1;
+}
+
+message ModelNameRequest {
+    string name = 1;
+}
+
+//job
+message RegisterJobRequest {
+    JobProto job = 1;
+}
+
+message UpdateJobRequest {
+    string name = 1;
+    google.protobuf.Int64Value workflow_execution_id = 2;
+    StateProto job_state = 3;
+    map<string, string> properties = 4;
+    google.protobuf.StringValue job_id = 5;
+    google.protobuf.Int64Value end_time = 6;
+    google.protobuf.StringValue log_uri = 7;
+    google.protobuf.StringValue signature = 8;
+}
+
+message UpdateJobStateRequest {
+    StateProto state = 1;
+    string name = 2;
+}
+
+message UpdateJobEndTimeRequest {
+    int64 end_time = 1;
+    string name = 2;
+}
+
+message JobListProto {
+    repeated JobProto jobs = 1;
+}
+
+//workflow execution
+message RegisterWorkFlowExecutionRequest {
+    WorkflowExecutionProto workflow_execution = 1;
+}
+
+message UpdateWorkflowExecutionRequest {
+    string name = 1;
+    google.protobuf.Int64Value project_id = 2;
+    StateProto execution_state = 4;
+    map<string, string> properties = 5;
+    google.protobuf.Int64Value end_time = 6;
+    google.protobuf.StringValue log_uri = 7;
+    google.protobuf.StringValue workflow_json = 8;
+    google.protobuf.StringValue signature = 9;
+}
+
+message WorkFlowExecutionListProto {
+    repeated WorkflowExecutionProto workflow_executions = 1;
+}
+
+message UpdateWorkflowExecutionEndTimeRequest {
+    int64 end_time = 1;
+    string name = 2;
+}
+
+message UpdateWorkflowExecutionStateRequest {
+    StateProto state = 1;
+    string name = 2;
+}
+
+//project
+message RegisterProjectRequest {
+    ProjectProto project = 1;
+}
+
+message UpdateProjectRequest {
+    string name = 1;
+    map<string, string> properties = 2;
+    google.protobuf.StringValue project_type = 3;
+    google.protobuf.StringValue uri = 4;
+    google.protobuf.StringValue user = 5;
+    google.protobuf.StringValue password = 6;
+}
+
+message ProjectListProto {
+    repeated ProjectProto projects = 1;
+}
+
+//artifact
+message RegisterArtifactRequest {
+    ArtifactProto artifact = 1;
+}
+
+message UpdateArtifactRequest {
+    string name = 1;
+    map<string, string> properties = 2;
+    google.protobuf.StringValue data_format = 3;
+    google.protobuf.StringValue batch_uri = 4;
+    google.protobuf.StringValue stream_uri = 5;
+    google.protobuf.StringValue description = 6;
+    google.protobuf.Int64Value update_time = 7;
+}
+
+message ArtifactListProto {
+    repeated ArtifactProto artifacts = 1;
+}

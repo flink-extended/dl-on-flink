@@ -27,3 +27,35 @@ Before sending your pull requests, make sure you followed this list.
 - From your fork open a pull request in the correct branch. Go for `master`!
 - Wait for approval.
 - Once the pull request is approved and merged you can pull the changes from `upstream` to your local repo and delete your extra branches.
+
+## Development Notices for AI Flow
+
+Currently the AI Flow project is under the `flink-ai-flow` directory. 
+If you are contributing to AI Flow, it is recommended to change your working directory to `flink-ai-flow`.
+The paths mentioned in following content are all relative paths based on `flink-ai-flow`.
+
+### Prerequisites
+1. java
+2. maven
+
+### Establish Development Environment
+
+You can run the shell script `build_venv.sh` to build a Python environment quickly with all the dependencies installed and configured.
+After that You can run `source venv/bin/activate ""` to activate the environment, and configure it as the Project Interpreter if you are using PyCharm as your IDE.
+
+### Run Tests
+
+You can run the shell script `run_tests.sh` to verify the modification of AI Flow. 
+
+If you modified the bundled Airflow, you need to add relevant test cases and run tests according to [Airflow contributing guidelines](flink-ai-flow/lib/airflow/CONTRIBUTING.rst).
+
+If you modified the bundled Notification Services, you need to add relevant test cases to `lib/notification_service/tests/test_notification.py` and run the test script.
+
+### Contact Us
+
+For more information, you can join the **Flink AI Flow Users Group** on [DingTalk](https://www.dingtalk.com) to contact us.
+The number of the DingTalk group is `35876083`. 
+
+You can also join the group by scanning the QR code below:
+
+![](flink-ai-flow/doc/images/dingtalk_qr_code.png)

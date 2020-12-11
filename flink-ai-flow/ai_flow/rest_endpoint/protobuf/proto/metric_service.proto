@@ -1,0 +1,153 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+syntax = "proto3";
+
+option java_generic_services = true;
+option java_package = "com.aiflow.proto";
+option py_generic_services = true;
+import "message.proto";
+
+import "google/api/annotations.proto";
+
+
+message UuidRequest {
+    int64 uuid = 1;
+}
+
+message MetricMetaRequest {
+    MetricMetaProto metric_meta = 1;
+}
+
+message MetricMetaResponse {
+    int64 return_code = 1;
+    string return_msg = 2;
+    MetricMetaProto metric_meta = 3;
+}
+
+
+message MetricSummaryRequest {
+    MetricSummaryProto metric_summary = 1;
+}
+
+message MetricSummaryResponse {
+    int64 return_code = 1;
+    string return_msg = 2;
+    MetricSummaryProto metric_summary = 3;
+}
+
+message GetMetricMetaRequest {
+    string metric_name = 1;
+}
+
+message GetDataSetMetricMetaRequest {
+    int64 dataset_id = 1;
+}
+
+message GetModelMetricMetaRequest {
+    string model_name = 1;
+    string model_version = 2;
+}
+
+message ListMetricMetaResponse {
+    int64 return_code = 1;
+    string return_msg = 2;
+    repeated MetricMetaProto metric_meta = 3;
+}
+
+message GetMetricSummaryRequest {
+    int64 metric_id = 1;
+}
+
+message ListMetricSummaryResponse {
+    int64 return_code = 1;
+    string return_msg = 2;
+    repeated MetricSummaryProto metric_summary = 3;
+}
+
+service MetricService {
+    rpc registerMetricMeta (MetricMetaRequest) returns (MetricMetaResponse) {
+        option (google.api.http) = {
+        post: "/aiflow/metric/metric_meta/create"
+        body: "*"
+        };
+    };
+
+    rpc registerMetricSummary (MetricSummaryRequest) returns (MetricSummaryResponse) {
+        option (google.api.http) = {
+        post: "/aiflow/metric/metric_summary/create"
+        body: "*"
+        };
+    };
+
+    rpc updateMetricMeta (MetricMetaRequest) returns (MetricMetaResponse) {
+        option (google.api.http) = {
+        post: "/aiflow/metric/metric_meta/update"
+        body: "*"
+        };
+    };
+
+    rpc getMetricMeta (GetMetricMetaRequest) returns (MetricMetaResponse) {
+        option (google.api.http) = {
+        post: "/aiflow/metric/metric_meta/get"
+        body: "*"
+        };
+    };
+
+    rpc updateMetricSummary (MetricSummaryRequest) returns (MetricSummaryResponse) {
+        option (google.api.http) = {
+        post: "/aiflow/metric/metric_summary/update"
+        body: "*"
+        };
+    };
+
+    rpc getDatasetMetricMeta (GetDataSetMetricMetaRequest) returns (ListMetricMetaResponse) {
+        option (google.api.http) = {
+        post: "/aiflow/metric/metric_meta/dataset/get"
+        body: "*"
+        };
+    };
+
+    rpc getModelMetricMeta (GetModelMetricMetaRequest) returns (ListMetricMetaResponse) {
+        option (google.api.http) = {
+        post: "/aiflow/metric/metric_meta/model/get"
+        body: "*"
+        };
+    };
+
+    rpc getMetricSummary (GetMetricSummaryRequest) returns (ListMetricSummaryResponse) {
+        option (google.api.http) = {
+        post: "/aiflow/metric/metric_summary/get"
+        body: "*"
+        };
+    };
+
+    rpc deleteMetricMeta (UuidRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metric/metric_meta/delete"
+        body: "*"
+        };
+    };
+
+    rpc deleteMetricSummary (UuidRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metric/metric_summary/delete"
+        body: "*"
+        };
+    };
+}
+
