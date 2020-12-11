@@ -429,6 +429,100 @@
                             </execution>
                         </executions>
                     </plugin>
+                    <plugin>
+                        <groupId>org.apache.rat</groupId>
+                        <artifactId>apache-rat-plugin</artifactId>
+                        <version>0.12</version>
+                        <inherited>false</inherited>
+                        <executions>
+                            <execution>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <excludeSubProjects>false</excludeSubProjects>
+                            <numUnapprovedLicenses>0</numUnapprovedLicenses>
+                            <licenses>
+                                <!-- Enforce this license:
+                                    Licensed to the Apache Software Foundation (ASF) under one
+                                    or more contributor license agreements.  See the NOTICE file
+                                    distributed with this work for additional information
+                                    regarding copyright ownership.  The ASF licenses this file
+                                    to you under the Apache License, Version 2.0 (the
+                                    "License"); you may not use this file except in compliance
+                                    with the License.  You may obtain a copy of the License at
+                                      http://www.apache.org/licenses/LICENSE-2.0
+                                    Unless required by applicable law or agreed to in writing,
+                                    software distributed under the License is distributed on an
+                                    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+                                    KIND, either express or implied.  See the License for the
+                                    specific language governing permissions and limitations
+                                    under the License.
+                                -->
+                                <license implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
+                                    <licenseFamilyCategory>AL2 </licenseFamilyCategory>
+                                    <licenseFamilyName>Apache License 2.0</licenseFamilyName>
+                                    <notes />
+                                    <patterns>
+                                        <pattern>Licensed to the Apache Software Foundation (ASF) under one</pattern>
+                                    </patterns>
+                                </license>
+                            </licenses>
+                            <licenseFamilies>
+                                <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
+                                    <familyName>Apache License 2.0</familyName>
+                                </licenseFamily>
+                            </licenseFamilies>
+                            <excludes>
+                                <!-- Additional files like .gitignore etc.-->
+                                <exclude>.*/**</exclude>
+
+                                <exclude>**/*.iml</exclude>
+                                <exclude>**/*.md</exclude>
+                                <exclude>**/*.csv</exclude>
+                                <exclude>**/*.log</exclude>
+                                <exclude>**/*.json</exclude>
+                                <exclude>licenses/*</exclude>
+                                <exclude>docker/yarn/slaves</exclude>
+                                <exclude>docker/flink/vimrc</exclude>
+                                <exclude>docker/flink/sources.list</exclude>
+                                <exclude>flink-ai-flow/.*/**</exclude>
+                                <exclude>flink-ai-flow/venv/**</exclude>
+                                <exclude>flink-ai-flow/build/**</exclude>
+                                <exclude>flink-ai-flow/ai_flow.egg-info/*</exclude>
+                                <exclude>flink-ai-flow/ai_flow/application_master/master.yaml.sample</exclude>
+                                <exclude>flink-ai-flow/examples/simple_examples/logs/*</exclude>
+                                <exclude>flink-ai-flow/examples/simple_examples/temp/*</exclude>
+                                <exclude>flink-ai-flow/flink_ai_flow/tests/resources/word_count.txt</exclude>
+                                <exclude>flink-ai-flow/flink_ai_flow/tests/temp/**/*</exclude>
+                                <exclude>flink-ai-flow/lib/airflow/.flake8</exclude>
+                                <exclude>flink-ai-flow/lib/airflow/.rat-excludes</exclude>
+                                <exclude>flink-ai-flow/lib/airflow/airflow/_vendor/**/*</exclude>
+                                <exclude>flink-ai-flow/lib/airflow/airflow/www/static/**/*.js</exclude>
+                                <exclude>flink-ai-flow/lib/airflow/airflow/www/static/bootstrap-toggle.min.css</exclude>
+                                <exclude>flink-ai-flow/lib/airflow/airflow/www_rbac/.eslint*</exclude>
+                                <exclude>flink-ai-flow/lib/airflow/airflow/www_rbac/yarn.lock</exclude>
+                                <exclude>flink-ai-flow/lib/airflow/dev/requirements.txt</exclude>
+                                <exclude>flink-ai-flow/lib/airflow/docs/img/logos/*.svg</exclude>
+                                <exclude>flink-ai-flow/lib/airflow/licenses/*.txt</exclude>
+                                <exclude>flink-ai-flow/lib/airflow/requirements/*.txt</exclude>
+                                <exclude>flink-ai-flow/lib/airflow/tests/dags/**/.airflowignore</exclude>
+                                <exclude>flink-ai-flow/resources/auto_build/sources.list</exclude>
+                                <!-- generated files -->
+                                <exclude>flink-ai-flow/ai_flow/rest_endpoint/protobuf/go/*.go</exclude>
+                                <!-- TODO: add license header for files under other modules. -->
+                                <exclude>flink-ml-framework/**</exclude>
+                                <exclude>flink-ml-examples/**</exclude>
+                                <exclude>flink-ml-lib/**</exclude>
+                                <exclude>flink-ml-operator/**</exclude>
+                                <exclude>flink-ml-pytorch/**</exclude>
+                                <exclude>flink-ml-tensorflow/**</exclude>
+                            </excludes>
+                        </configuration>
+                    </plugin>
                 </plugins>
             </build>
             <distributionManagement>

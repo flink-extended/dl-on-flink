@@ -1,0 +1,320 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+
+option java_generic_services = true;
+option java_package = "com.aiflow.proto";
+option py_generic_services = true;
+
+message SchemaProto {
+    repeated string name_list = 1;
+    repeated DataTypeProto type_list = 2;
+}
+
+message ExampleProto {
+    int64 uuid = 1;
+    string name = 2;
+    map<string, string> properties = 3;
+    ExampleSupportTypeProto support_type = 4;
+    SchemaProto schema = 5;
+    google.protobuf.StringValue data_type = 6;
+    google.protobuf.StringValue data_format = 7;
+    google.protobuf.StringValue batch_uri = 8;
+    google.protobuf.StringValue stream_uri = 9;
+    google.protobuf.StringValue description = 10;
+    google.protobuf.Int64Value create_time = 11;
+    google.protobuf.Int64Value update_time = 12;
+    google.protobuf.StringValue catalog_name = 13;
+    google.protobuf.StringValue catalog_type = 14;
+    google.protobuf.StringValue catalog_database = 15;
+    google.protobuf.StringValue catalog_connection_uri = 16;
+    google.protobuf.StringValue catalog_version = 17;
+    google.protobuf.StringValue catalog_table = 18;
+}
+
+message ModelRelationProto {
+    int64 uuid = 1;
+    string name = 2;
+    google.protobuf.Int64Value project_id = 3;
+}
+
+message ModelProto {
+    int64 uuid = 1;
+    string name = 2;
+    google.protobuf.Int64Value project_id = 3;
+    ModelType model_type = 4;
+    google.protobuf.StringValue model_desc = 5;
+}
+
+message ModelVersionRelationProto {
+    google.protobuf.StringValue version = 1;
+    google.protobuf.Int64Value model_id = 2;
+    google.protobuf.Int64Value workflow_execution_id = 3;
+}
+
+message ModelVersionProto {
+    google.protobuf.StringValue version = 1;
+    google.protobuf.Int64Value model_id = 2;
+    google.protobuf.Int64Value workflow_execution_id = 3;
+    google.protobuf.StringValue model_path = 4;
+    google.protobuf.StringValue model_metric = 5;
+    google.protobuf.StringValue model_flavor = 6;
+    google.protobuf.StringValue version_desc = 7;
+    ModelVersionStage current_stage = 8;
+}
+
+message JobProto {
+    int64 uuid = 1;
+    string name = 2;
+    google.protobuf.Int64Value workflow_execution_id = 3;
+    StateProto job_state = 4;
+    map<string, string> properties = 5;
+    google.protobuf.StringValue job_id = 6;
+    google.protobuf.Int64Value start_time = 7;
+    google.protobuf.Int64Value end_time = 8;
+    google.protobuf.StringValue log_uri = 9;
+    google.protobuf.StringValue signature = 10;
+}
+
+message WorkflowExecutionProto {
+    int64 uuid = 1;
+    string name = 2;
+    google.protobuf.Int64Value project_id = 3;
+    StateProto execution_state = 4;
+    map<string, string> properties = 5;
+    google.protobuf.Int64Value start_time = 6;
+    google.protobuf.Int64Value end_time = 7;
+    google.protobuf.StringValue log_uri = 8;
+    google.protobuf.StringValue workflow_json = 9;
+    google.protobuf.StringValue signature = 10;
+}
+
+message ProjectProto {
+    int64 uuid = 1;
+    string name = 2;
+    map<string, string> properties = 3;
+    google.protobuf.StringValue project_type = 4;
+    google.protobuf.StringValue uri = 5;
+    google.protobuf.StringValue user = 6;
+    google.protobuf.StringValue password = 7;
+}
+
+message ArtifactProto {
+    int64 uuid = 1;
+    string name = 2;
+    map<string, string> properties = 3;
+    google.protobuf.StringValue data_format = 4;
+    google.protobuf.StringValue batch_uri = 5;
+    google.protobuf.StringValue stream_uri = 6;
+    google.protobuf.StringValue description = 7;
+    google.protobuf.Int64Value create_time = 8;
+    google.protobuf.Int64Value update_time = 9;
+}
+
+message RegisteredModelParam {
+    google.protobuf.StringValue model_name = 1;
+    ModelType model_type = 2;
+    google.protobuf.StringValue model_desc = 3;
+}
+
+message ModelVersionParam {
+    google.protobuf.StringValue model_path = 1;
+    google.protobuf.StringValue model_metric = 2;
+    google.protobuf.StringValue model_flavor = 3;
+    google.protobuf.StringValue version_desc = 4;
+    ModelVersionStage current_stage = 5;
+}
+
+message ModelMetaParam {
+    google.protobuf.StringValue model_name = 1;
+    google.protobuf.StringValue model_version = 2;
+}
+
+message Response {
+    string return_code = 1;
+    string return_msg = 2;
+    string data = 3;
+}
+
+message RegisteredModelMeta {
+    string model_name = 1;
+    ModelType model_type = 2;
+    google.protobuf.StringValue model_desc = 3;
+}
+
+message ModelVersionMeta {
+    string model_name = 1;
+    string model_version = 2;
+    google.protobuf.StringValue model_path = 3;
+    google.protobuf.StringValue model_metric = 4;
+    google.protobuf.StringValue model_flavor = 5;
+    google.protobuf.StringValue version_desc = 6;
+    ModelVersionStatus version_status = 7;
+    ModelVersionStage current_stage = 8;
+}
+
+message RegisteredModelDetail {
+    RegisteredModelMeta registered_model = 1;
+    ModelVersionMeta model_version = 2;
+}
+
+message RegisteredModelMetas {
+    repeated RegisteredModelMeta registered_models = 1;
+}
+
+
+enum ReturnCode {
+    // Success response, which represents request execution success.
+    SUCCESS = 0;
+    //
+    // Internal, system-level error codes, which generally cannot be resolved by the user, but
+    // instead are due to service issues.
+    //
+    // Generic internal error occurred.
+    INTERNAL_ERROR = 1;
+    // An internal system could not be contacted due to a period of unavailability.
+    TEMPORARILY_UNAVAILABLE = 2;
+    // Indicates that an IOException has been internally thrown.
+    IO_ERROR = 3;
+    // The request is invalid.
+    BAD_REQUEST = 4;
+    //
+    // Common application-level error codes, which were caused by the user input but may be returned
+    // by multiple services.
+    //
+    // Supplied value for a parameter was invalid (e.g., giving a number for a string parameter).
+    INVALID_PARAMETER_VALUE = 1000;
+    // Indicates that the given API endpoint does not exist.
+    ENDPOINT_NOT_FOUND = 1001;
+    // Indicates that the given API request was malformed.
+    MALFORMED_REQUEST = 1002;
+    // If one or more of the inputs to a given RPC are not in a valid state for the action.
+    INVALID_STATE = 1003;
+    // If a given user/entity doesn't have the required permission(s) to perform an action
+    PERMISSION_DENIED = 1004;
+    // If a given user/entity is trying to use a feature which has been disabled
+    FEATURE_DISABLED = 1005;
+    // If customer-provided credentials are not authorized to perform an operation
+    CUSTOMER_UNAUTHORIZED = 1006;
+    // If the API request is rejected due to throttling
+    REQUEST_LIMIT_EXCEEDED = 1007;
+    // Operation was performed on a resource that already exists.
+    RESOURCE_ALREADY_EXISTS = 2001;
+    // Operation was performed on a resource that does not exist.
+    RESOURCE_DOES_NOT_EXIST = 2002;
+    // DBFS
+    QUOTA_EXCEEDED = 3001;
+    MAX_BLOCK_SIZE_EXCEEDED = 3002;
+    MAX_READ_SIZE_EXCEEDED = 3003;
+}
+
+enum DataTypeProto {
+    DATA_TYPE_UNSPECIFIED = 0;
+    INT32 = 1;
+    INT64 = 2;
+    FLOAT32 = 3;
+    FLOAT64 = 4;
+    STRING = 5;
+    INT32ARRAY = 6;
+    INT64ARRAY = 7;
+    FlOAT32ARRAY = 8;
+    FLOAT64ARRAY = 9;
+    STRINGARRAY = 10;
+    BYTES = 11;
+    BYTESARRAY = 12;
+}
+
+enum ExampleSupportTypeProto {
+    EXAMPLE_SUPPORT_TYPE_UNSPECIFIED = 0;
+    EXAMPLE_STREAM = 1;
+    EXAMPLE_BATCH = 2;
+    EXAMPLE_BOTH = 3;
+}
+
+enum StateProto {
+    STATE_UNSPECIFIED = 0;
+    INIT = 1;
+    STARTING = 2;
+    RUNNING = 3;
+    FINISHED = 4;
+    FAILED = 5;
+}
+
+enum ExecutionMode {
+    EXECUTION_MODE_UNSPECIFIED = 0;
+    BATCH = 1;
+    STREAM = 2;
+}
+
+enum ModelType {
+    NONE_TYPE = 0;
+    CHECKPOINT = 1;
+    SAVED_MODEL = 2;
+    H5 = 3;
+}
+
+enum ModelVersionStatus {
+    // Request to register a new model version is pending as server performs background tasks.
+    PENDING_REGISTRATION = 0;
+    // Request to register a new model version has failed.
+    FAILED_REGISTRATION = 1;
+    // Model version is ready for use.
+    READY = 3;
+    // Request to delete an existing model version is pending as server performs background tasks.
+    PENDING_DELETION = 4;
+    // Request to delete an existing model version has failed.
+    FAILED_DELETION = 5;
+}
+
+enum ModelVersionStage {
+    GENERATED = 0;
+    VALIDATED = 1;
+    DEPLOYED = 2;
+    DEPRECATED = 3;
+    DELETED = 4;
+}
+
+enum MetricTypeProto {
+    DATASET = 0;
+    MODEL = 1;
+}
+
+message MetricMetaProto {
+    int64 uuid = 1;
+    google.protobuf.StringValue name = 2;
+    google.protobuf.Int64Value dataset_id = 3;
+    google.protobuf.StringValue model_name = 4;
+    google.protobuf.StringValue model_version = 5;
+    google.protobuf.Int64Value job_id = 6;
+    google.protobuf.Int64Value start_time = 7;
+    google.protobuf.Int64Value end_time = 8;
+    MetricTypeProto metric_type = 9;
+    google.protobuf.StringValue uri = 10;
+    google.protobuf.StringValue tags = 11;
+    google.protobuf.StringValue metric_description = 12;
+    map<string, string> properties = 13;
+}
+
+message MetricSummaryProto {
+    int64 uuid = 1;
+    google.protobuf.Int64Value metric_id = 2;
+    google.protobuf.StringValue metric_key = 3;
+    google.protobuf.StringValue metric_value = 4;
+}
