@@ -4,7 +4,7 @@ jdk:
 before_install:
 - pip install -U --user pip six numpy wheel mock grpcio grpcio-tools
 script:
-- mvn -DskipITs=true clean package
+- cd deep-learning-on-flink && mvn -DskipITs=true clean package
 branches:
   except:
   - appveyor

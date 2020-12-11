@@ -49,9 +49,7 @@ function run_test_class() {
 }
 # python3 -m unittest discover -v ai_flow.test.api
 
-cd ${SOURCE_ROOT}/../
-mvn org.apache.rat:apache-rat-plugin:check -N
-cd ${SOURCE_ROOT}
+mvn verify
 
 run_test_class 'ai_flow/test/rest_endpoint/' 'test_client.TestAIFlowClientSqlite'
 run_test_class 'ai_flow/test/rest_endpoint/' 'test_mysql_client.TestAIFlowClientMySQL'
