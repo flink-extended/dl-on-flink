@@ -8,12 +8,12 @@ dependency-reduced-pom.xml
 .DS_Store
 .ipynb_checkpoints
 node_modules
-/.bazelrc
-/bazel-*
-/native/bazel-*
-/bazel_pip
-/pip_test
-/_python_build
+/deep-learning-on-flink/.bazelrc
+/deep-learning-on-flink/bazel-*
+/deep-learning-on-flink/native/bazel-*
+/deep-learning-on-flink/bazel_pip
+/deep-learning-on-flink/pip_test
+/deep-learning-on-flink/_python_build
 *.py[cod]
 __pycache__
 .pytest_cache
@@ -21,7 +21,7 @@ __pycache__
 .vscode/
 cmake_build/
 .idea/**
-/build/
+/deep-learning-on-flink/build/
 [Bb]uild/
 Pods
 Podfile.lock
@@ -41,8 +41,8 @@ tfOnFlink/python/var
 *.iml
 local.properties
 gradleBuild
-flink-ml-framework/python/flink_ml_framework/*pb2.py
-flink-ml-framework/python/flink_ml_framework/*pb2_grpc.py
+deep-learning-on-flink/flink-ml-framework/python/flink_ml_framework/*pb2.py
+deep-learning-on-flink/flink-ml-framework/python/flink_ml_framework/*pb2_grpc.py
 
 core/python/cmake-build-debug
 
