@@ -1,7 +1,12 @@
 [![Build Status](https://travis-ci.org/alibaba/flink-ai-extended.svg?branch=master)](https://travis-ci.org/alibaba/flink-ai-extended)
 
 # deep-learning-on-flink
-This project is to extend deep learning framework on Apache Flink. Currently it supports tensorflow running on Apache Flink.
+
+Deep Learning on Flink aims to integrate Flink and deep learning frameworks (e.g. TensorFlow, PyTorch, etc). 
+It runs the deep learning tasks inside a Flink operator, so that Flink can help establish a distributed environment, 
+manage the resource, read/write the records and handle the failures.
+
+Currently Deep Learning on Flink only supports TensorFlow.
 
 **contents**
 

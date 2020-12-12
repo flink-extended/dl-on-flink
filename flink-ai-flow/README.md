@@ -1,8 +1,13 @@
 # Flink AI FLOW
 
-This project is an open source platform for managing the machine learning project life cycle,
-including feature engineering, model training, model evaluation, model service, model inference, monitoring, etc.
-Flink AI Flow is also a system that unified batch and stream machine learning workflow based on the flink engine.
+Flink AI Flow is an open source framework that bridges big data and AI. 
+It manages the entire machine learning project lifecycle as a unified workflow, including feature engineering, 
+model training, model evaluation, model service, model inference, monitoring, etc. 
+Throughout the entire workflow, Flink is used as the general purpose computing engine.
+
+In addition to the capability of orchestrating a group of batch jobs, by leveraging an event-based scheduler, 
+Flink AI Flow also supports workflows that contain streaming jobs. Such capability is quite useful for complicated
+real-time machine learning systems as well as other real-time workflows in general.
 
 You can use Flink AI Flow to do the following:
 
