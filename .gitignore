@@ -29,7 +29,7 @@ Podfile.lock
 *.xcworkspacedata
 xcuserdata/**
 tfOnFlink/python/var
-**/bin
+deep-learning-on-flink/**/bin
 #**/*.so
 **/*.dylib
 **/*.egg-info

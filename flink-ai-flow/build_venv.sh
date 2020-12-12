@@ -41,9 +41,14 @@ ${SOURCE_ROOT}
 ${SOURCE_ROOT}/lib/airflow
 ${SOURCE_ROOT}/lib/notification_service
 EOF
-cp lib/airflow/airflow/bin/airflow venv/bin/
 awk "{gsub(\"#\!/usr/bin/env python\", \"#\!${SOURCE_ROOT}/venv/bin/python\"); print \$0}" lib/airflow/airflow/bin/airflow > venv/bin/airflow
+cp ai_flow/bin/start-aiflow.sh venv/bin/
+cp ai_flow/bin/stop-aiflow.sh venv/bin/
+awk "{gsub(\"#\!/usr/bin/env python\", \"#\!${SOURCE_ROOT}/venv/bin/python\"); print \$0}" ai_flow/bin/start_aiflow.py > venv/bin/start_aiflow.py
 chmod +x venv/bin/airflow
+chmod +x venv/bin/start-aiflow.sh
+chmod +x venv/bin/stop-aiflow.sh
+chmod +x venv/bin/start_aiflow.py
 
 # remove the cached packages
 rm -rf venv/pkgs

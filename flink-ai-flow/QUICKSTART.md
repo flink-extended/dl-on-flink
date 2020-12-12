@@ -207,118 +207,33 @@ AI Flow can also work with Airflow event scheduler, which is more powerful and h
 To start an Airflow server, you need to install and start a mysql server in your machine. 
 Currently the AI Flow bundles a modified Airflow so users do not need to install the Apache Airflow manually.
 
-### Configure and Start Airflow Server
+### Start Airflow Server and AI Flow Server
 
-The Airflow could be configured by following script. Note that the values ​​of the variables should be determined according to your machine.
+Run following command to start AI Flow Server and Airflow Server:
 
 ```shell
-set -e
-export AIRFLOW_HOME=~/airflow
-mkdir ${AIRFLOW_HOME} >/dev/null 2>&1 || true
-MYSQL_HOST="127.0.0.1"
-MYSQL_USER="root"
-MYSQL_PASSWORD="root"
-MYSQL_AIRFLOW_DATABASE="airflow"
-
-CURRENT_DIR=$(pwd)
-cd ${AIRFLOW_HOME}
-
-# if the database has been created this command could be skip
-mysql -h${MYSQL_HOST} -u${MYSQL_USER} -p${MYSQL_PASSWORD} -e "create database if not exists ${MYSQL_AIRFLOW_DATABASE}"
-
-# create the configuration file
-airflow initdb >/dev/null 2>&1 || true
-mv airflow.cfg airflow.cfg.tmpl
-awk "{gsub(\"sql_alchemy_conn = mysql://user:password@host/airflow\", \"sql_alchemy_conn = mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${MYSQL_HOST}/${MYSQL_AIRFLOW_DATABASE}\"); \
- gsub(\"load_examples = True\", \"load_examples = False\"); \
- gsub(\"load_default_connections = True\", \"load_default_connections = False\"); \
- gsub(\"dag_dir_list_interval = 300\", \"dag_dir_list_interval = 3\"); \
- print \$0}" airflow.cfg.tmpl > airflow.cfg
-
-# prepare the database
-airflow resetdb -y
-
-cd ${CURRENT_DIR}
+start-aiflow.sh
 ```
 
-To start the Airflow scheduler and the web server, just run:
+If you execute this command for the first time, you will get the following output:
 
-```shell
-# this path should be determined according to your machine
-export AIRFLOW_HOME=~/airflow
-AIRFLOW_DEPLOY_PATH="${AIRFLOW_HOME}/airflow_deploy"
-
-# create the pending directory if not exists
-mkdir ${AIRFLOW_DEPLOY_PATH} >/dev/null 2>&1 || true
-
-# start airflow scheduler and web server
-airflow event_scheduler --subdir=${AIRFLOW_DEPLOY_PATH} > ${AIRFLOW_HOME}/scheduler.log 2>&1 &
-echo $! > ${AIRFLOW_HOME}/scheduler.pid
-airflow webserver -p 8080 > ${AIRFLOW_HOME}/web.log 2>&1 &
-echo $! > ${AIRFLOW_HOME}/web.pid
-echo "Scheduler log: ${AIRFLOW_HOME}/scheduler.log"
-echo "Scheduler pid: $(cat ${AIRFLOW_HOME}/scheduler.pid)"
-echo "Web Server log: ${AIRFLOW_HOME}/web.log"
-echo "Web Server pid: $(cat ${AIRFLOW_HOME}/web.pid)"
-echo "Airflow deploy path: ${AIRFLOW_DEPLOY_PATH}"
-echo "Visit http://127.0.0.1:8080/ to access the airflow web server."
+```text
+The ${AIRFLOW_HOME}/airflow.cfg is not exists. You need to provide a mysql database to initialize the airflow, e.g.:
+start-aiflow.sh mysql://root:root@127.0.0.1/airflow
 ```
 
-### Start AI Flow Master Server
+Please prepare the mysql database and typed in.
+If the servers start successfully, you will get the output like:
 
-When working with Airflow, the configuration of the AI Flow master server is different from using the built-in scheduler. 
-Run following script to start a standalone AI Flow master server:
-
-```shell
-# this path should be determined according to your machine
-export AIRFLOW_HOME=~/airflow
-cat>${AIRFLOW_HOME}/start_master.py<<EOF
-import os
-import tempfile
-import textwrap
-import ai_flow
-from airflow.logging_config import configure_logging
-
-
-def create_sever_config(root_dir_path):
-    content = textwrap.dedent(f"""\
-        # Config of master server
-
-        # endpoint of master
-        master_ip: localhost
-        master_port: 50051
-        # uri of database backend in master
-        db_uri: sqlite:///{root_dir_path}/aiflow.db
-        # type of database backend in master
-        db_type: sql_lite
-        # the default notification service is no need to started
-        # when using the airflow scheduler 
-        start_default_notification: False
-        # uri of the notification service
-        notification_uri: localhost:50052
-    """)
-    master_yaml_path = root_dir_path + "/master.yaml"
-    with open(master_yaml_path, "w") as f:
-        f.write(content)
-    return master_yaml_path
-
-
-def start_master(master_yaml_path):
-    configure_logging()
-    master = ai_flow.AIFlowMaster(config_file=master_yaml_path)
-    master.start(is_block=True)
-    return master
-
-
-if __name__ == '__main__':
-    root_dir = os.path.dirname(__file__)
-    master_yaml = create_sever_config(root_dir)
-    start_master(master_yaml)
-
-EOF
-python3 ${AIRFLOW_HOME}/start_master.py > ${AIRFLOW_HOME}/master_server.log 2>&1 &
-echo $! > ${AIRFLOW_HOME}/master_server.pid
-echo "Master Server pid: $(cat ${AIRFLOW_HOME}/master_server.pid)"
+```text
+Scheduler log: /Users/xxx/airflow/scheduler.log
+Scheduler pid: 69945
+Web Server log: /Users/xxx/airflow/web.log
+Web Server pid: 69946
+Master Server log: 
+Master Server pid: 69947
+Airflow deploy path: /Users/xxx/airflow/airflow_deploy
+Visit http://127.0.0.1:8080/ to access the airflow web server.
 ```
 
 ### Prepare AI Flow Project
@@ -345,7 +260,6 @@ Run following script to prepare a simple AI Flow project:
 export AIRFLOW_HOME=~/airflow
 
 CURRENT_DIR=$(pwd)
-# the AIRFLOW_DEPLOY_PATH needs to be the same as when starting the airflow server
 AIRFLOW_DEPLOY_PATH="${AIRFLOW_HOME}/airflow_deploy"
 
 # create the dir if not exists
@@ -457,17 +371,8 @@ The outputs of each job can be found under `${AIRFLOW_HOME}/logs/airflow_dag_exa
 
 ### Stop the Airflow Server and the AI Flow Master Server
 
-The Airflow Server and the AI Flow Master don't have stop command so we could only shut down the service by killing related processes:
+Run following command to stop the servers:
 
 ```shell
-# this path should be determined according to your machine
-export AIRFLOW_HOME=~/airflow
-# the AIRFLOW_DEPLOY_PATH needs to be the same as when starting the airflow server
-AIRFLOW_DEPLOY_PATH="${AIRFLOW_HOME}/airflow_deploy"
-
-set +e
-for((i=1;i<=3;i++));do kill $(cat ${AIRFLOW_HOME}/scheduler.pid) >/dev/null 2>&1 && sleep 1;done
-for((i=1;i<=3;i++));do kill $(cat ${AIRFLOW_HOME}/web.pid) >/dev/null 2>&1 && sleep 1;done
-for((i=1;i<=3;i++));do kill $(cat ${AIRFLOW_HOME}/master_server.pid) >/dev/null 2>&1 && sleep 1;done
-rm -rf ${AIRFLOW_DEPLOY_PATH}
+stop-aiflow.sh
 ```
