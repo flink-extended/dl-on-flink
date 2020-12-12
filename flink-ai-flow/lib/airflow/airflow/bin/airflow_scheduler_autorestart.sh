@@ -1,4 +1,4 @@
-#
+#!/usr/bin/env bash
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -15,19 +15,10 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-#
-include requirements.txt
-graft airflow/www/templates
-graft airflow/www/static
-graft airflow/www_rbac
-graft airflow/www_rbac/static
-graft airflow/www_rbac/templates
-graft airflow/www_rbac/translations
-graft airflow/_vendor/
-include airflow/alembic.ini
-include airflow/git_version
-include airflow/serialization/schema.json
-graft airflow/config_templates
-graft ai_flow/bin/
-recursive-exclude airflow/www_rbac/node_modules *
-global-exclude __pycache__  *.pyc
+
+while echo "Running"; do
+    airflow scheduler -n 5
+    echo "Scheduler crashed with exit code $?.  Respawning.." >&2
+    date >> /tmp/airflow_scheduler_errors.txt
+    sleep 1
+done
