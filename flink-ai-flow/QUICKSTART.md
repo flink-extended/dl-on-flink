@@ -226,13 +226,13 @@ Please prepare the mysql database and typed in.
 If the servers start successfully, you will get the output like:
 
 ```text
-Scheduler log: /Users/xxx/airflow/scheduler.log
+Scheduler log: ${AIRFLOW_HOME}/scheduler.log
 Scheduler pid: 69945
-Web Server log: /Users/xxx/airflow/web.log
+Web Server log: ${AIRFLOW_HOME}/web.log
 Web Server pid: 69946
-Master Server log: 
+Master Server log:  ${AIRFLOW_HOME}/master_server.log
 Master Server pid: 69947
-Airflow deploy path: /Users/xxx/airflow/airflow_deploy
+Airflow deploy path: ${AIRFLOW_HOME}/airflow_deploy
 Visit http://127.0.0.1:8080/ to access the airflow web server.
 ```
 
