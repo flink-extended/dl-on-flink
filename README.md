@@ -1,6 +1,6 @@
 # Flink AI Extended
 
-Flink AI Extended is a project trying to integrate Flink and AI. Currently it contains the following two sub projects.
+Flink AI Extended is a project extending Flink to various machine learning scenarios. Currently it contains the following two subprojects.
 
 ## Flink AI Flow
 
