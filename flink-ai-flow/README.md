@@ -5,7 +5,8 @@ It manages the entire machine learning project lifecycle as a unified workflow, 
 model training, model evaluation, model service, model inference, monitoring, etc. 
 Throughout the entire workflow, Flink is used as the general purpose computing engine.
 
-In addition to the capability of orchestrating a group of batch jobs, by leveraging an event-based scheduler, 
+In addition to the capability of orchestrating a group of batch jobs, 
+by leveraging an event-based scheduler(enhanced version of Airflow), 
 Flink AI Flow also supports workflows that contain streaming jobs. Such capability is quite useful for complicated
 real-time machine learning systems as well as other real-time workflows in general.
 
