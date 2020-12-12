@@ -198,7 +198,7 @@ The source code of this example could be found in
 
 ## Work with Airflow
 
-AI Flow can also work with Airflow event scheduler, which is more powerful and has a Web UI to monitor the execution.
+We have added an event-based scheduler named event_scheduler to Airflow, so Flink AI Flow can also work with Airflow's event_scheduler, which is more powerful and has a Web UI to monitor the execution.
 
 ### Prerequisites
 
