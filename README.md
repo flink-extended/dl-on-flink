@@ -26,3 +26,12 @@ manage the resource, read/write the records and handle the failures.
 Currently Deep Learning on Flink only supports TensorFlow.
 
 For more details, please check the [deep-learning-on-flink](deep-learning-on-flink) sub project.
+
+## Contact Us
+
+For more information, you can join the **Flink AI Flow Users Group** on [DingTalk](https://www.dingtalk.com) to contact us.
+The number of the DingTalk group is `35876083`. 
+
+You can also join the group by scanning the QR code below:
+
+![](flink-ai-flow/doc/images/dingtalk_qr_code.png)
