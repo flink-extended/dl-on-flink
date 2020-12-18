@@ -18,6 +18,7 @@
 #
 import abc
 import time
+from mongoengine import (Document, IntField, StringField, SequenceField)
 
 from typing import List
 
@@ -37,6 +38,70 @@ class BaseEvent(object):
     def __str__(self) -> str:
         return 'key:{0}, value:{1}, type:{2}, version:{3}, create_time:{4}, id: {5}' \
             .format(self.key, self.value, self.event_type, self.version, self.create_time, self.id)
+
+
+class MongoEvent(Document):
+    server_id = StringField()
+    key = StringField()
+    value = StringField()
+    event_type = StringField()
+    version = SequenceField()
+    create_time = IntField()
+    auto_increase_id = SequenceField()
+
+    @property
+    def str_id(self):
+        if self.id:
+            return str(self.id)
+
+    def to_dict(self):
+        return {
+            "key": self.key,
+            "value": self.value,
+            "event_type": self.event_type,
+            "version": self.version,
+            "create_time": self.create_time,
+            "id": int(self.auto_increase_id),
+        }
+
+    def to_base_event(self):
+        base_event = BaseEvent(**self.to_dict())
+        return base_event
+    
+    @classmethod
+    def convert_to_base_events(cls, mongo_events: list = None):
+        if not mongo_events:
+            return []
+        base_events = []
+        for mongo_event in mongo_events:
+            base_events.append(mongo_event.to_base_event())
+        return base_events    
+    
+    @classmethod
+    def get_base_events_by_id(cls, server_id: str, event_id: int = None):
+        mongo_events = cls.objects(server_id=server_id).filter(auto_increase_id__gt=event_id).order_by("version")
+        return cls.convert_to_base_events(mongo_events)
+    
+    @classmethod
+    def get_base_events_by_version(cls, server_id: str, key: str, version: int = None):
+        mongo_events = cls.objects(server_id=server_id, key=key).filter(version__gt=version).order_by("version")
+        return cls.convert_to_base_events(mongo_events)
+    
+    @classmethod
+    def get_base_events_by_time(cls, server_id: str, create_time: int = None):
+        mongo_events = cls.objects(server_id=server_id).filter(create_time__gte=create_time).order_by("version")
+        return cls.convert_to_base_events(mongo_events)
+    
+    @classmethod
+    def get_by_key(cls, server_id: str, key: str = None, start: int = None, end: int = None, sort_key: str = "version"):
+        if key:
+            return cls.objects(server_id=server_id, key=key).order_by(sort_key)[start:end]
+        else:
+            raise Exception("key is empty, please provide valid key")
+    
+    @classmethod
+    def delete_by_client(cls, server_id):
+        cls.objects(server_id=server_id).delete()
 
 
 class EventWatcher(metaclass=abc.ABCMeta):
@@ -116,3 +181,11 @@ class BaseNotification(metaclass=abc.ABCMeta):
         :return:
         """
         pass
+    
+    @abc.abstractmethod
+    def get_latest_version(self, key: str = None):
+        """
+        get latest event's version by key
+        :param key: event's key
+        :return: Version number of the specific key
+        """

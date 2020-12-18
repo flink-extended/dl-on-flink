@@ -23,7 +23,8 @@ import time
 
 from notification_service.base_notification import BaseNotification, EventWatcher, BaseEvent
 from notification_service.proto.notification_service_pb2 \
-    import SendEventRequest, ListEventsRequest, EventProto, ReturnStatus, ListAllEventsRequest, ListEventsFromIdRequest
+    import SendEventRequest, ListEventsRequest, EventProto, ReturnStatus, ListAllEventsRequest, \
+        ListEventsFromIdRequest, GetLatestVersionByKeyRequest
 from notification_service.proto import notification_service_pb2_grpc
 from notification_service.proto.notification_service_pb2_grpc import NotificationServiceStub
 from notification_service.utils import event_proto_to_event
@@ -248,5 +249,20 @@ class NotificationClient(BaseNotification):
                 thread._flag = False
                 thread.join()
                 del self.threads[ALL_EVENTS_KEY]
+        finally:
+            self.lock.release()
+
+    def get_latest_version(self, key: str = None):
+        """
+        get latest event's version by key
+        :param key: event's key
+        :return: Version number of the specific key
+        """
+        self.lock.acquire()
+        try:
+            request = GetLatestVersionByKeyRequest(key=key)
+            response = self.notification_stub.getLatestVersionByKey(request)
+            if response.return_code == str(ReturnStatus.SUCCESS):
+                return response.version
         finally:
             self.lock.release()

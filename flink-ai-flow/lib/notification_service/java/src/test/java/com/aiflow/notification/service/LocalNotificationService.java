@@ -116,4 +116,15 @@ public class LocalNotificationService extends NotificationServiceGrpc.Notificati
 		responseObserver.onNext(response);
 		responseObserver.onCompleted();
 	}
+
+	@Override
+	public void getLatestVersionByKey(NotificationServiceOuterClass.GetLatestVersionByKeyRequest request,
+									  StreamObserver<NotificationServiceOuterClass.GetLatestVersionResponse> responseObserver) {
+		long latestVersion = this.id;
+		NotificationServiceOuterClass.GetLatestVersionResponse response =
+				NotificationServiceOuterClass.GetLatestVersionResponse.newBuilder()
+						.setVersion(latestVersion).build();
+		responseObserver.onNext(response);
+		responseObserver.onCompleted();
+	}
 }

@@ -109,4 +109,14 @@ public class NotificationClientTest {
 		assertEquals(3, ii[0].intValue());
 	}
 
+	@Test
+	public void getLatestVersion() throws Exception {
+		for(int i = 0; i <3; i++) {
+			Event event =this.client.sendEvent("key", String.valueOf(i), "type");
+
+		}
+		long latestVersion = this.client.getLatestVersionByKey("key");
+		assertEquals(3, latestVersion);
+	}
+
 }
