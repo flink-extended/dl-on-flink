@@ -69,7 +69,7 @@ try:
 
     setup(
         name='ai_flow',
-        version='0.1',
+        version='0.3.0',
         description='This is an ai flow of the setup',
         author='',
         author_email='',

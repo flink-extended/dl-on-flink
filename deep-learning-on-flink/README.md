@@ -53,7 +53,7 @@ Flink: 1.11.0
 ### Setup
 
 **Requirements**
-1. python: 2.7 future support python 3
+1. python: 3.7
 2. pip
 3. cmake >= 3.6
 4. java 1.8
@@ -65,7 +65,7 @@ macOS
 ```shell
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
-brew install python@2 
+brew install python@3.7
 ```
 Ubuntu
 ```shell
@@ -232,13 +232,13 @@ def map_func(context):
 
     <groupId>com.alibaba</groupId>
     <artifactId>flink-ai-extended-examples</artifactId>
-    <version>0.2.2</version>
+    <version>0.3.0</version>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
             <groupId>com.alibaba.flink.ml</groupId>
             <artifactId>flink-ml-tensorflow</artifactId>
-            <version>0.2.2</version>
+            <version>0.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.curator</groupId>
@@ -444,7 +444,7 @@ docker exec flink-jm /opt/hadoop-2.8.0/bin/hadoop fs -put -f /opt/work_home/flin
 
 ### Submit train job
 ```shell 
-docker exec flink-jm flink run  -c com.alibaba.flink.ml.examples.tensorflow.mnist.MnistDist /opt/work_home/flink-ml-examples/target/flink-ml-examples-0.2.2.jar --zk-conn-str minizk --mode StreamEnv --setup /opt/work_home/flink-ml-examples/src/test/python/mnist_data_setup.py --train mnist_dist.py --envpath hdfs://minidfs:9000/user/root/tfenv.zip --mnist-files /tmp/mnist_input --with-restart false --code-path hdfs://minidfs:9000/user/root/code.zip 
+docker exec flink-jm flink run  -c com.alibaba.flink.ml.examples.tensorflow.mnist.MnistDist /opt/work_home/flink-ml-examples/target/flink-ml-examples-0.3.0.jar --zk-conn-str minizk --mode StreamEnv --setup /opt/work_home/flink-ml-examples/src/test/python/mnist_data_setup.py --train mnist_dist.py --envpath hdfs://minidfs:9000/user/root/tfenv.zip --mnist-files /tmp/mnist_input --with-restart false --code-path hdfs://minidfs:9000/user/root/code.zip 
 ```
 ### Visit Flink Cluster
 [Flink Cluster Address](http://localhost:8081)
