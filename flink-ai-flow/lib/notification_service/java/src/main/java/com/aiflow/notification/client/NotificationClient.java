@@ -177,4 +177,28 @@ public class NotificationClient {
 		}
 	}
 
+	/**
+	 * Get latest version of specific `key` notifications in Notification Service.
+	 *
+	 * @param key Key of notification for listening.
+	 */
+	public long getLatestVersionByKey(String key) throws Exception {
+		if (StringUtils.isEmpty(key)) {
+			throw new Exception("Empty key, please provide valid key");
+		} else {
+			GetLatestVersionByKeyRequest request = GetLatestVersionByKeyRequest.newBuilder().setKey(key).build();
+			GetLatestVersionResponse response = this.notificationServiceStub.getLatestVersionByKey(request);
+			return parseLatestVersionFromResponse(response);
+		}
+	}
+
+	public long parseLatestVersionFromResponse(GetLatestVersionResponse response)
+			throws Exception {
+		if (response.getReturnCode().equals(ReturnStatus.ERROR.toString())) {
+			throw new Exception(response.getReturnMsg());
+		} else {
+			return response.getVersion();
+		}
+	}
+
 }
