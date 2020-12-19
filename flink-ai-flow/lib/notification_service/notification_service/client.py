@@ -254,9 +254,9 @@ class NotificationClient(BaseNotification):
 
     def get_latest_version(self, key: str = None):
         """
-        get latest event's version by key
-        :param key: event's key
-        :return: Version number of the specific key
+        get latest event's version by key.
+        :param key: Key of notification for listening.
+        :return: Version number of the specific key.
         """
         self.lock.acquire()
         try:

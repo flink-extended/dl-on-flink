@@ -74,7 +74,7 @@ class MemoryEventStorage(BaseEventStorage):
             if event.id > id:
                 res.append(event)
         return res
-    
+
     def get_latest_version(self, key: str = None):
         res = []
         for event in self.store:
@@ -93,7 +93,7 @@ class MongoEventStorage(BaseEventStorage):
     def __init__(self, *args, **kwargs):
         self.db_conn = self.setup_connection(**kwargs)
         self.server_id = str(uuid.uuid4())
-    
+
     def setup_connection(self, **kwargs):
         db_conf = {
             "host": kwargs.get("host"),
@@ -105,17 +105,16 @@ class MongoEventStorage(BaseEventStorage):
         # If ignore the authSource, the authentication will be failed.
         conn_uri = "mongodb://{username}:{password}@{host}:{port}/{db}?authSource=admin".format(**db_conf)
         db_conf["host"] = conn_uri
-        print("#####mongo db conf: {}".format(str(db_conf)))
         return connect(
             connect=False,
             **db_conf)
-    
+
     def get_latest_version(self, key: str = None):
         mongo_events = MongoEvent.get_by_key(self.server_id, key, 0, 1, "-version")
         if not mongo_events:
             return 0
         return mongo_events[0].version
-    
+
     def add_event(self, event: BaseEvent):
         kwargs = {
             "server_id": self.server_id,
@@ -143,6 +142,6 @@ class MongoEventStorage(BaseEventStorage):
     def list_all_events_from_id(self, id: int):
         res = MongoEvent.get_base_events_by_id(self.server_id, id)
         return res
-    
+
     def clean_up(self):
         MongoEvent.delete_by_client(self.server_id)

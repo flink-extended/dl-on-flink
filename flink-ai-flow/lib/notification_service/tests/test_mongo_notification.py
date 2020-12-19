@@ -105,6 +105,7 @@ class MongoNotificationTest(unittest.TestCase):
 
             def process(self, events: List[BaseEvent]):
                 self.event_list.extend(events)
+
         try:
             self.client.start_listen_events(watcher=TestWatch(event_list))
             event = self.client.send_event(BaseEvent(key="key1", value="value1"))
@@ -113,7 +114,7 @@ class MongoNotificationTest(unittest.TestCase):
         finally:
             self.client.stop_listen_events()
         self.assertEqual(3, len(event_list))
-    
+
     def test_6_get_latest_version(self):
         event = self.client.send_event(BaseEvent(key="key", value="value1"))
         event = self.client.send_event(BaseEvent(key="key", value="value2"))
