@@ -82,7 +82,7 @@ class CMakeBuild(build_ext):
 
 setup(
     name='flink_ml_framework',
-    version='0.2.2',
+    version='0.3.0',
     include_package_data=True,
     packages=find_packages(),
     ext_modules=[CMakeExtension('flink_ml_framework/flink_ml_framework')],
