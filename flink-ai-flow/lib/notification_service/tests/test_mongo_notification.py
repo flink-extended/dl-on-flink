@@ -18,10 +18,9 @@
 #
 from typing import List
 import unittest
-from mongoengine import connect
 from notification_service.base_notification import BaseEvent, EventWatcher
 from notification_service.client import NotificationClient
-from notification_service.event_storage import MongoEventStorage
+from notification_service.mongo_event_storage import MongoEventStorage
 from notification_service.master import NotificationMaster
 from notification_service.service import NotificationService
 
