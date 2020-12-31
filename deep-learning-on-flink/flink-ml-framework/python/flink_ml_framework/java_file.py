@@ -43,7 +43,7 @@ class BytesRecorder(object):
 
     def read_record(self):
         res = self.java_file.read(4)
-        data_len, = struct.unpack("<i", bytes(res, 'iso-8859-1'))
+        data_len, = struct.unpack("<i", res)
         return self.java_file.read(data_len)
 
     def write_record(self, data):
@@ -62,7 +62,7 @@ class JsonRecorder(object):
 
     def read_record(self):
         res = self.java_file.read(4)
-        data_len, = struct.unpack("<i", bytes(res, 'iso-8859-1'))
+        data_len, = struct.unpack("<i", res)
         data = self.java_file.read(data_len)
         return json.loads(data)
 
