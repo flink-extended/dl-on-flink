@@ -13,7 +13,11 @@ limitations under the License.
 #ifndef FLINK_ML_FRAMEWORK_QUEUE_FILE_H
 #define FLINK_ML_FRAMEWORK_QUEUE_FILE_H
 
+#include <pybind11/pybind11.h>
 #include "spscqueue.h"
+
+namespace py = pybind11;
+
 class JavaFile{
 
 
@@ -46,13 +50,13 @@ public:
         return true;
     }
 
-    std::string readBytes(size_t len){
+    py::bytes readBytes(size_t len){
         int readSize = reader->readBytes(readBuffer, len);
         if(len == readSize){
-            return std::string(readBuffer, len);
+            return py::bytes(std::string(readBuffer, len));
         } else{
             std::cerr << "read EOF" << std::endl;
-            return std::string("");
+            return py::bytes(std::string(""));
         }
     }
 
