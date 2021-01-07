@@ -43,6 +43,10 @@ service NotificationService {
     // List all events from the id.
     rpc listEventsFromId (ListEventsFromIdRequest) returns (ListEventsResponse) {
     }
+
+    // Get latest version by key
+    rpc getLatestVersionByKey (GetLatestVersionByKeyRequest) returns (GetLatestVersionResponse) {
+    }
 }
 
 message EventProto {
@@ -84,6 +88,17 @@ message ListEventsResponse {
     string return_code = 1;
     string return_msg = 2;
     repeated EventProto events = 3;
+}
+
+message GetLatestVersionByKeyRequest {
+    string key = 1;
+    int32 timeout_seconds = 2;
+}
+
+message GetLatestVersionResponse {
+    string return_code = 1;
+    string return_msg = 2;
+    int64 version = 3;
 }
 
 enum ReturnStatus {

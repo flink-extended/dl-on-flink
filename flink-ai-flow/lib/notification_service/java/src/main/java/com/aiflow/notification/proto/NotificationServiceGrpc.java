@@ -175,6 +175,37 @@ public final class NotificationServiceGrpc {
     return getListEventsFromIdMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest,
+      com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse> getGetLatestVersionByKeyMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "getLatestVersionByKey",
+      requestType = com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest.class,
+      responseType = com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest,
+      com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse> getGetLatestVersionByKeyMethod() {
+    io.grpc.MethodDescriptor<com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest, com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse> getGetLatestVersionByKeyMethod;
+    if ((getGetLatestVersionByKeyMethod = NotificationServiceGrpc.getGetLatestVersionByKeyMethod) == null) {
+      synchronized (NotificationServiceGrpc.class) {
+        if ((getGetLatestVersionByKeyMethod = NotificationServiceGrpc.getGetLatestVersionByKeyMethod) == null) {
+          NotificationServiceGrpc.getGetLatestVersionByKeyMethod = getGetLatestVersionByKeyMethod =
+              io.grpc.MethodDescriptor.<com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest, com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "getLatestVersionByKey"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new NotificationServiceMethodDescriptorSupplier("getLatestVersionByKey"))
+              .build();
+        }
+      }
+    }
+    return getGetLatestVersionByKeyMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -269,6 +300,16 @@ public final class NotificationServiceGrpc {
       asyncUnimplementedUnaryCall(getListEventsFromIdMethod(), responseObserver);
     }
 
+    /**
+     * <pre>
+     * Get latest version by key
+     * </pre>
+     */
+    public void getLatestVersionByKey(com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest request,
+        io.grpc.stub.StreamObserver<com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse> responseObserver) {
+      asyncUnimplementedUnaryCall(getGetLatestVersionByKeyMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -299,6 +340,13 @@ public final class NotificationServiceGrpc {
                 com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsFromIdRequest,
                 com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse>(
                   this, METHODID_LIST_EVENTS_FROM_ID)))
+          .addMethod(
+            getGetLatestVersionByKeyMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest,
+                com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse>(
+                  this, METHODID_GET_LATEST_VERSION_BY_KEY)))
           .build();
     }
   }
@@ -366,6 +414,17 @@ public final class NotificationServiceGrpc {
       asyncUnaryCall(
           getChannel().newCall(getListEventsFromIdMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     * <pre>
+     * Get latest version by key
+     * </pre>
+     */
+    public void getLatestVersionByKey(com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest request,
+        io.grpc.stub.StreamObserver<com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getGetLatestVersionByKeyMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -426,6 +485,16 @@ public final class NotificationServiceGrpc {
     public com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse listEventsFromId(com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsFromIdRequest request) {
       return blockingUnaryCall(
           getChannel(), getListEventsFromIdMethod(), getCallOptions(), request);
+    }
+
+    /**
+     * <pre>
+     * Get latest version by key
+     * </pre>
+     */
+    public com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse getLatestVersionByKey(com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest request) {
+      return blockingUnaryCall(
+          getChannel(), getGetLatestVersionByKeyMethod(), getCallOptions(), request);
     }
   }
 
@@ -492,12 +561,24 @@ public final class NotificationServiceGrpc {
       return futureUnaryCall(
           getChannel().newCall(getListEventsFromIdMethod(), getCallOptions()), request);
     }
+
+    /**
+     * <pre>
+     * Get latest version by key
+     * </pre>
+     */
+    public com.google.common.util.concurrent.ListenableFuture<com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse> getLatestVersionByKey(
+        com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(getGetLatestVersionByKeyMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_SEND_EVENT = 0;
   private static final int METHODID_LIST_EVENTS = 1;
   private static final int METHODID_LIST_ALL_EVENTS = 2;
   private static final int METHODID_LIST_EVENTS_FROM_ID = 3;
+  private static final int METHODID_GET_LATEST_VERSION_BY_KEY = 4;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -531,6 +612,10 @@ public final class NotificationServiceGrpc {
         case METHODID_LIST_EVENTS_FROM_ID:
           serviceImpl.listEventsFromId((com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsFromIdRequest) request,
               (io.grpc.stub.StreamObserver<com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse>) responseObserver);
+          break;
+        case METHODID_GET_LATEST_VERSION_BY_KEY:
+          serviceImpl.getLatestVersionByKey((com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest) request,
+              (io.grpc.stub.StreamObserver<com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -597,6 +682,7 @@ public final class NotificationServiceGrpc {
               .addMethod(getListEventsMethod())
               .addMethod(getListAllEventsMethod())
               .addMethod(getListEventsFromIdMethod())
+              .addMethod(getGetLatestVersionByKeyMethod())
               .build();
         }
       }

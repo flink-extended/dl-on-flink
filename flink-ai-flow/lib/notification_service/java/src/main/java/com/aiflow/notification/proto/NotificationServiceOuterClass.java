@@ -5616,6 +5616,1423 @@ public final class NotificationServiceOuterClass {
 
   }
 
+  public interface GetLatestVersionByKeyRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:notification_service.GetLatestVersionByKeyRequest)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string key = 1;</code>
+     * @return The key.
+     */
+    java.lang.String getKey();
+    /**
+     * <code>string key = 1;</code>
+     * @return The bytes for key.
+     */
+    com.google.protobuf.ByteString
+        getKeyBytes();
+
+    /**
+     * <code>int32 timeout_seconds = 2;</code>
+     * @return The timeoutSeconds.
+     */
+    int getTimeoutSeconds();
+  }
+  /**
+   * Protobuf type {@code notification_service.GetLatestVersionByKeyRequest}
+   */
+  public  static final class GetLatestVersionByKeyRequest extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:notification_service.GetLatestVersionByKeyRequest)
+      GetLatestVersionByKeyRequestOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use GetLatestVersionByKeyRequest.newBuilder() to construct.
+    private GetLatestVersionByKeyRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private GetLatestVersionByKeyRequest() {
+      key_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new GetLatestVersionByKeyRequest();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetLatestVersionByKeyRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              key_ = s;
+              break;
+            }
+            case 16: {
+
+              timeoutSeconds_ = input.readInt32();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_GetLatestVersionByKeyRequest_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_GetLatestVersionByKeyRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest.class, com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest.Builder.class);
+    }
+
+    public static final int KEY_FIELD_NUMBER = 1;
+    private volatile java.lang.Object key_;
+    /**
+     * <code>string key = 1;</code>
+     * @return The key.
+     */
+    public java.lang.String getKey() {
+      java.lang.Object ref = key_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        key_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string key = 1;</code>
+     * @return The bytes for key.
+     */
+    public com.google.protobuf.ByteString
+        getKeyBytes() {
+      java.lang.Object ref = key_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        key_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int TIMEOUT_SECONDS_FIELD_NUMBER = 2;
+    private int timeoutSeconds_;
+    /**
+     * <code>int32 timeout_seconds = 2;</code>
+     * @return The timeoutSeconds.
+     */
+    public int getTimeoutSeconds() {
+      return timeoutSeconds_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getKeyBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, key_);
+      }
+      if (timeoutSeconds_ != 0) {
+        output.writeInt32(2, timeoutSeconds_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getKeyBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, key_);
+      }
+      if (timeoutSeconds_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, timeoutSeconds_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest)) {
+        return super.equals(obj);
+      }
+      com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest other = (com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest) obj;
+
+      if (!getKey()
+          .equals(other.getKey())) return false;
+      if (getTimeoutSeconds()
+          != other.getTimeoutSeconds()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + KEY_FIELD_NUMBER;
+      hash = (53 * hash) + getKey().hashCode();
+      hash = (37 * hash) + TIMEOUT_SECONDS_FIELD_NUMBER;
+      hash = (53 * hash) + getTimeoutSeconds();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code notification_service.GetLatestVersionByKeyRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:notification_service.GetLatestVersionByKeyRequest)
+        com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_GetLatestVersionByKeyRequest_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_GetLatestVersionByKeyRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest.class, com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest.Builder.class);
+      }
+
+      // Construct using com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        key_ = "";
+
+        timeoutSeconds_ = 0;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_GetLatestVersionByKeyRequest_descriptor;
+      }
+
+      @java.lang.Override
+      public com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest getDefaultInstanceForType() {
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest build() {
+        com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest buildPartial() {
+        com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest result = new com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest(this);
+        result.key_ = key_;
+        result.timeoutSeconds_ = timeoutSeconds_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest) {
+          return mergeFrom((com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest other) {
+        if (other == com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest.getDefaultInstance()) return this;
+        if (!other.getKey().isEmpty()) {
+          key_ = other.key_;
+          onChanged();
+        }
+        if (other.getTimeoutSeconds() != 0) {
+          setTimeoutSeconds(other.getTimeoutSeconds());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object key_ = "";
+      /**
+       * <code>string key = 1;</code>
+       * @return The key.
+       */
+      public java.lang.String getKey() {
+        java.lang.Object ref = key_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          key_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string key = 1;</code>
+       * @return The bytes for key.
+       */
+      public com.google.protobuf.ByteString
+          getKeyBytes() {
+        java.lang.Object ref = key_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          key_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string key = 1;</code>
+       * @param value The key to set.
+       * @return This builder for chaining.
+       */
+      public Builder setKey(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        key_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string key = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearKey() {
+        
+        key_ = getDefaultInstance().getKey();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string key = 1;</code>
+       * @param value The bytes for key to set.
+       * @return This builder for chaining.
+       */
+      public Builder setKeyBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        key_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int timeoutSeconds_ ;
+      /**
+       * <code>int32 timeout_seconds = 2;</code>
+       * @return The timeoutSeconds.
+       */
+      public int getTimeoutSeconds() {
+        return timeoutSeconds_;
+      }
+      /**
+       * <code>int32 timeout_seconds = 2;</code>
+       * @param value The timeoutSeconds to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTimeoutSeconds(int value) {
+        
+        timeoutSeconds_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 timeout_seconds = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTimeoutSeconds() {
+        
+        timeoutSeconds_ = 0;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:notification_service.GetLatestVersionByKeyRequest)
+    }
+
+    // @@protoc_insertion_point(class_scope:notification_service.GetLatestVersionByKeyRequest)
+    private static final com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest();
+    }
+
+    public static com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<GetLatestVersionByKeyRequest>
+        PARSER = new com.google.protobuf.AbstractParser<GetLatestVersionByKeyRequest>() {
+      @java.lang.Override
+      public GetLatestVersionByKeyRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetLatestVersionByKeyRequest(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<GetLatestVersionByKeyRequest> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetLatestVersionByKeyRequest> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface GetLatestVersionResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:notification_service.GetLatestVersionResponse)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string return_code = 1;</code>
+     * @return The returnCode.
+     */
+    java.lang.String getReturnCode();
+    /**
+     * <code>string return_code = 1;</code>
+     * @return The bytes for returnCode.
+     */
+    com.google.protobuf.ByteString
+        getReturnCodeBytes();
+
+    /**
+     * <code>string return_msg = 2;</code>
+     * @return The returnMsg.
+     */
+    java.lang.String getReturnMsg();
+    /**
+     * <code>string return_msg = 2;</code>
+     * @return The bytes for returnMsg.
+     */
+    com.google.protobuf.ByteString
+        getReturnMsgBytes();
+
+    /**
+     * <code>int64 version = 3;</code>
+     * @return The version.
+     */
+    long getVersion();
+  }
+  /**
+   * Protobuf type {@code notification_service.GetLatestVersionResponse}
+   */
+  public  static final class GetLatestVersionResponse extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:notification_service.GetLatestVersionResponse)
+      GetLatestVersionResponseOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use GetLatestVersionResponse.newBuilder() to construct.
+    private GetLatestVersionResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private GetLatestVersionResponse() {
+      returnCode_ = "";
+      returnMsg_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new GetLatestVersionResponse();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetLatestVersionResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              returnCode_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              returnMsg_ = s;
+              break;
+            }
+            case 24: {
+
+              version_ = input.readInt64();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_GetLatestVersionResponse_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_GetLatestVersionResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse.class, com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse.Builder.class);
+    }
+
+    public static final int RETURN_CODE_FIELD_NUMBER = 1;
+    private volatile java.lang.Object returnCode_;
+    /**
+     * <code>string return_code = 1;</code>
+     * @return The returnCode.
+     */
+    public java.lang.String getReturnCode() {
+      java.lang.Object ref = returnCode_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        returnCode_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string return_code = 1;</code>
+     * @return The bytes for returnCode.
+     */
+    public com.google.protobuf.ByteString
+        getReturnCodeBytes() {
+      java.lang.Object ref = returnCode_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        returnCode_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int RETURN_MSG_FIELD_NUMBER = 2;
+    private volatile java.lang.Object returnMsg_;
+    /**
+     * <code>string return_msg = 2;</code>
+     * @return The returnMsg.
+     */
+    public java.lang.String getReturnMsg() {
+      java.lang.Object ref = returnMsg_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        returnMsg_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string return_msg = 2;</code>
+     * @return The bytes for returnMsg.
+     */
+    public com.google.protobuf.ByteString
+        getReturnMsgBytes() {
+      java.lang.Object ref = returnMsg_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        returnMsg_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int VERSION_FIELD_NUMBER = 3;
+    private long version_;
+    /**
+     * <code>int64 version = 3;</code>
+     * @return The version.
+     */
+    public long getVersion() {
+      return version_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getReturnCodeBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, returnCode_);
+      }
+      if (!getReturnMsgBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, returnMsg_);
+      }
+      if (version_ != 0L) {
+        output.writeInt64(3, version_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getReturnCodeBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, returnCode_);
+      }
+      if (!getReturnMsgBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, returnMsg_);
+      }
+      if (version_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(3, version_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse)) {
+        return super.equals(obj);
+      }
+      com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse other = (com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse) obj;
+
+      if (!getReturnCode()
+          .equals(other.getReturnCode())) return false;
+      if (!getReturnMsg()
+          .equals(other.getReturnMsg())) return false;
+      if (getVersion()
+          != other.getVersion()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + RETURN_CODE_FIELD_NUMBER;
+      hash = (53 * hash) + getReturnCode().hashCode();
+      hash = (37 * hash) + RETURN_MSG_FIELD_NUMBER;
+      hash = (53 * hash) + getReturnMsg().hashCode();
+      hash = (37 * hash) + VERSION_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getVersion());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code notification_service.GetLatestVersionResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:notification_service.GetLatestVersionResponse)
+        com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_GetLatestVersionResponse_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_GetLatestVersionResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse.class, com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse.Builder.class);
+      }
+
+      // Construct using com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        returnCode_ = "";
+
+        returnMsg_ = "";
+
+        version_ = 0L;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_GetLatestVersionResponse_descriptor;
+      }
+
+      @java.lang.Override
+      public com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse getDefaultInstanceForType() {
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse build() {
+        com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse buildPartial() {
+        com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse result = new com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse(this);
+        result.returnCode_ = returnCode_;
+        result.returnMsg_ = returnMsg_;
+        result.version_ = version_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse) {
+          return mergeFrom((com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse other) {
+        if (other == com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse.getDefaultInstance()) return this;
+        if (!other.getReturnCode().isEmpty()) {
+          returnCode_ = other.returnCode_;
+          onChanged();
+        }
+        if (!other.getReturnMsg().isEmpty()) {
+          returnMsg_ = other.returnMsg_;
+          onChanged();
+        }
+        if (other.getVersion() != 0L) {
+          setVersion(other.getVersion());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object returnCode_ = "";
+      /**
+       * <code>string return_code = 1;</code>
+       * @return The returnCode.
+       */
+      public java.lang.String getReturnCode() {
+        java.lang.Object ref = returnCode_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          returnCode_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string return_code = 1;</code>
+       * @return The bytes for returnCode.
+       */
+      public com.google.protobuf.ByteString
+          getReturnCodeBytes() {
+        java.lang.Object ref = returnCode_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          returnCode_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string return_code = 1;</code>
+       * @param value The returnCode to set.
+       * @return This builder for chaining.
+       */
+      public Builder setReturnCode(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        returnCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string return_code = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearReturnCode() {
+        
+        returnCode_ = getDefaultInstance().getReturnCode();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string return_code = 1;</code>
+       * @param value The bytes for returnCode to set.
+       * @return This builder for chaining.
+       */
+      public Builder setReturnCodeBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        returnCode_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object returnMsg_ = "";
+      /**
+       * <code>string return_msg = 2;</code>
+       * @return The returnMsg.
+       */
+      public java.lang.String getReturnMsg() {
+        java.lang.Object ref = returnMsg_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          returnMsg_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string return_msg = 2;</code>
+       * @return The bytes for returnMsg.
+       */
+      public com.google.protobuf.ByteString
+          getReturnMsgBytes() {
+        java.lang.Object ref = returnMsg_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          returnMsg_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string return_msg = 2;</code>
+       * @param value The returnMsg to set.
+       * @return This builder for chaining.
+       */
+      public Builder setReturnMsg(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        returnMsg_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string return_msg = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearReturnMsg() {
+        
+        returnMsg_ = getDefaultInstance().getReturnMsg();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string return_msg = 2;</code>
+       * @param value The bytes for returnMsg to set.
+       * @return This builder for chaining.
+       */
+      public Builder setReturnMsgBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        returnMsg_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long version_ ;
+      /**
+       * <code>int64 version = 3;</code>
+       * @return The version.
+       */
+      public long getVersion() {
+        return version_;
+      }
+      /**
+       * <code>int64 version = 3;</code>
+       * @param value The version to set.
+       * @return This builder for chaining.
+       */
+      public Builder setVersion(long value) {
+        
+        version_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int64 version = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearVersion() {
+        
+        version_ = 0L;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:notification_service.GetLatestVersionResponse)
+    }
+
+    // @@protoc_insertion_point(class_scope:notification_service.GetLatestVersionResponse)
+    private static final com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse();
+    }
+
+    public static com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<GetLatestVersionResponse>
+        PARSER = new com.google.protobuf.AbstractParser<GetLatestVersionResponse>() {
+      @java.lang.Override
+      public GetLatestVersionResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetLatestVersionResponse(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<GetLatestVersionResponse> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetLatestVersionResponse> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   /**
    * <pre>
    * AirFlowService provides notification function rest endpoint of NotificationService for Notification Service component.
@@ -5679,6 +7096,18 @@ public final class NotificationServiceOuterClass {
           com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsFromIdRequest request,
           com.google.protobuf.RpcCallback<com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse> done);
 
+      /**
+       * <pre>
+       * Get latest version by key
+       * </pre>
+       *
+       * <code>rpc getLatestVersionByKey(.notification_service.GetLatestVersionByKeyRequest) returns (.notification_service.GetLatestVersionResponse);</code>
+       */
+      public abstract void getLatestVersionByKey(
+          com.google.protobuf.RpcController controller,
+          com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest request,
+          com.google.protobuf.RpcCallback<com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse> done);
+
     }
 
     public static com.google.protobuf.Service newReflectiveService(
@@ -5716,6 +7145,14 @@ public final class NotificationServiceOuterClass {
           impl.listEventsFromId(controller, request, done);
         }
 
+        @java.lang.Override
+        public  void getLatestVersionByKey(
+            com.google.protobuf.RpcController controller,
+            com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest request,
+            com.google.protobuf.RpcCallback<com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse> done) {
+          impl.getLatestVersionByKey(controller, request, done);
+        }
+
       };
     }
 
@@ -5746,6 +7183,8 @@ public final class NotificationServiceOuterClass {
               return impl.listAllEvents(controller, (com.aiflow.notification.proto.NotificationServiceOuterClass.ListAllEventsRequest)request);
             case 3:
               return impl.listEventsFromId(controller, (com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsFromIdRequest)request);
+            case 4:
+              return impl.getLatestVersionByKey(controller, (com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest)request);
             default:
               throw new java.lang.AssertionError("Can't get here.");
           }
@@ -5768,6 +7207,8 @@ public final class NotificationServiceOuterClass {
               return com.aiflow.notification.proto.NotificationServiceOuterClass.ListAllEventsRequest.getDefaultInstance();
             case 3:
               return com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsFromIdRequest.getDefaultInstance();
+            case 4:
+              return com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest.getDefaultInstance();
             default:
               throw new java.lang.AssertionError("Can't get here.");
           }
@@ -5790,6 +7231,8 @@ public final class NotificationServiceOuterClass {
               return com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse.getDefaultInstance();
             case 3:
               return com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse.getDefaultInstance();
+            case 4:
+              return com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse.getDefaultInstance();
             default:
               throw new java.lang.AssertionError("Can't get here.");
           }
@@ -5846,6 +7289,18 @@ public final class NotificationServiceOuterClass {
         com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsFromIdRequest request,
         com.google.protobuf.RpcCallback<com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse> done);
 
+    /**
+     * <pre>
+     * Get latest version by key
+     * </pre>
+     *
+     * <code>rpc getLatestVersionByKey(.notification_service.GetLatestVersionByKeyRequest) returns (.notification_service.GetLatestVersionResponse);</code>
+     */
+    public abstract void getLatestVersionByKey(
+        com.google.protobuf.RpcController controller,
+        com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest request,
+        com.google.protobuf.RpcCallback<com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse> done);
+
     public static final
         com.google.protobuf.Descriptors.ServiceDescriptor
         getDescriptor() {
@@ -5888,6 +7343,11 @@ public final class NotificationServiceOuterClass {
             com.google.protobuf.RpcUtil.<com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse>specializeCallback(
               done));
           return;
+        case 4:
+          this.getLatestVersionByKey(controller, (com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest)request,
+            com.google.protobuf.RpcUtil.<com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse>specializeCallback(
+              done));
+          return;
         default:
           throw new java.lang.AssertionError("Can't get here.");
       }
@@ -5910,6 +7370,8 @@ public final class NotificationServiceOuterClass {
           return com.aiflow.notification.proto.NotificationServiceOuterClass.ListAllEventsRequest.getDefaultInstance();
         case 3:
           return com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsFromIdRequest.getDefaultInstance();
+        case 4:
+          return com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest.getDefaultInstance();
         default:
           throw new java.lang.AssertionError("Can't get here.");
       }
@@ -5932,6 +7394,8 @@ public final class NotificationServiceOuterClass {
           return com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse.getDefaultInstance();
         case 3:
           return com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse.getDefaultInstance();
+        case 4:
+          return com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse.getDefaultInstance();
         default:
           throw new java.lang.AssertionError("Can't get here.");
       }
@@ -6012,6 +7476,21 @@ public final class NotificationServiceOuterClass {
             com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse.class,
             com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse.getDefaultInstance()));
       }
+
+      public  void getLatestVersionByKey(
+          com.google.protobuf.RpcController controller,
+          com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest request,
+          com.google.protobuf.RpcCallback<com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse> done) {
+        channel.callMethod(
+          getDescriptor().getMethods().get(4),
+          controller,
+          request,
+          com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse.getDefaultInstance(),
+          com.google.protobuf.RpcUtil.generalizeCallback(
+            done,
+            com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse.class,
+            com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse.getDefaultInstance()));
+      }
     }
 
     public static BlockingInterface newBlockingStub(
@@ -6038,6 +7517,11 @@ public final class NotificationServiceOuterClass {
       public com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse listEventsFromId(
           com.google.protobuf.RpcController controller,
           com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsFromIdRequest request)
+          throws com.google.protobuf.ServiceException;
+
+      public com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse getLatestVersionByKey(
+          com.google.protobuf.RpcController controller,
+          com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest request)
           throws com.google.protobuf.ServiceException;
     }
 
@@ -6095,6 +7579,18 @@ public final class NotificationServiceOuterClass {
           com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse.getDefaultInstance());
       }
 
+
+      public com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse getLatestVersionByKey(
+          com.google.protobuf.RpcController controller,
+          com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest request)
+          throws com.google.protobuf.ServiceException {
+        return (com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse) channel.callBlockingMethod(
+          getDescriptor().getMethods().get(4),
+          controller,
+          request,
+          com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse.getDefaultInstance());
+      }
+
     }
 
     // @@protoc_insertion_point(class_scope:notification_service.NotificationService)
@@ -6135,6 +7631,16 @@ public final class NotificationServiceOuterClass {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_notification_service_ListEventsResponse_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_notification_service_GetLatestVersionByKeyRequest_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_notification_service_GetLatestVersionByKeyRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_notification_service_GetLatestVersionResponse_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_notification_service_GetLatestVersionResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -6161,20 +7667,27 @@ public final class NotificationServiceOuterClass {
       "conds\030\002 \001(\005\"o\n\022ListEventsResponse\022\023\n\013ret" +
       "urn_code\030\001 \001(\t\022\022\n\nreturn_msg\030\002 \001(\t\0220\n\006ev" +
       "ents\030\003 \003(\0132 .notification_service.EventP" +
-      "roto*&\n\014ReturnStatus\022\013\n\007SUCCESS\020\000\022\t\n\005ERR" +
-      "OR\020\0012\261\003\n\023NotificationService\022_\n\tsendEven" +
-      "t\022&.notification_service.SendEventReques" +
-      "t\032(.notification_service.SendEventsRespo" +
-      "nse\"\000\022a\n\nlistEvents\022\'.notification_servi" +
-      "ce.ListEventsRequest\032(.notification_serv" +
-      "ice.ListEventsResponse\"\000\022g\n\rlistAllEvent" +
-      "s\022*.notification_service.ListAllEventsRe" +
-      "quest\032(.notification_service.ListEventsR" +
-      "esponse\"\000\022m\n\020listEventsFromId\022-.notifica" +
-      "tion_service.ListEventsFromIdRequest\032(.n" +
-      "otification_service.ListEventsResponse\"\000" +
-      "B%\n\035com.aiflow.notification.proto\210\001\001\220\001\001b" +
-      "\006proto3"
+      "roto\"D\n\034GetLatestVersionByKeyRequest\022\013\n\003" +
+      "key\030\001 \001(\t\022\027\n\017timeout_seconds\030\002 \001(\005\"T\n\030Ge" +
+      "tLatestVersionResponse\022\023\n\013return_code\030\001 " +
+      "\001(\t\022\022\n\nreturn_msg\030\002 \001(\t\022\017\n\007version\030\003 \001(\003" +
+      "*&\n\014ReturnStatus\022\013\n\007SUCCESS\020\000\022\t\n\005ERROR\020\001" +
+      "2\260\004\n\023NotificationService\022_\n\tsendEvent\022&." +
+      "notification_service.SendEventRequest\032(." +
+      "notification_service.SendEventsResponse\"" +
+      "\000\022a\n\nlistEvents\022\'.notification_service.L" +
+      "istEventsRequest\032(.notification_service." +
+      "ListEventsResponse\"\000\022g\n\rlistAllEvents\022*." +
+      "notification_service.ListAllEventsReques" +
+      "t\032(.notification_service.ListEventsRespo" +
+      "nse\"\000\022m\n\020listEventsFromId\022-.notification" +
+      "_service.ListEventsFromIdRequest\032(.notif" +
+      "ication_service.ListEventsResponse\"\000\022}\n\025" +
+      "getLatestVersionByKey\0222.notification_ser" +
+      "vice.GetLatestVersionByKeyRequest\032..noti" +
+      "fication_service.GetLatestVersionRespons" +
+      "e\"\000B%\n\035com.aiflow.notification.proto\210\001\001\220" +
+      "\001\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -6222,6 +7735,18 @@ public final class NotificationServiceOuterClass {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_notification_service_ListEventsResponse_descriptor,
         new java.lang.String[] { "ReturnCode", "ReturnMsg", "Events", });
+    internal_static_notification_service_GetLatestVersionByKeyRequest_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_notification_service_GetLatestVersionByKeyRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_notification_service_GetLatestVersionByKeyRequest_descriptor,
+        new java.lang.String[] { "Key", "TimeoutSeconds", });
+    internal_static_notification_service_GetLatestVersionResponse_descriptor =
+      getDescriptor().getMessageTypes().get(8);
+    internal_static_notification_service_GetLatestVersionResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_notification_service_GetLatestVersionResponse_descriptor,
+        new java.lang.String[] { "ReturnCode", "ReturnMsg", "Version", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -20,16 +20,23 @@ from typing import List
 import unittest
 from notification_service.base_notification import BaseEvent, EventWatcher
 from notification_service.client import NotificationClient
-from notification_service.event_storage import MemoryEventStorage
+from notification_service.mongo_event_storage import MongoEventStorage
 from notification_service.master import NotificationMaster
 from notification_service.service import NotificationService
 
 
-class NotificationTest(unittest.TestCase):
+class MongoNotificationTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.storage = MemoryEventStorage()
+        kwargs = {
+            "host": "127.0.0.1",
+            "port": 2823,
+            "db": "test",
+            "username": "mongo",
+            "password": ""
+        }
+        cls.storage = MongoEventStorage(**kwargs)
         cls.master = NotificationMaster(NotificationService(cls.storage))
         cls.master.run()
         cls.client = NotificationClient(server_uri="localhost:50051")
@@ -39,22 +46,25 @@ class NotificationTest(unittest.TestCase):
         cls.master.stop()
 
     def setUp(self):
-        NotificationTest.storage.clean_up()
+        MongoNotificationTest.storage.clean_up()
 
-    def test_send_event(self):
+    def test_1_send_event(self):
         event = self.client.send_event(BaseEvent(key="key", value="value1"))
-        self.assertEqual(1, event.version)
+        latest_version = self.storage.get_latest_version(key="key")
+        self.assertEqual(event.version, latest_version)
 
-    def test_list_events(self):
+    def test_2_list_events(self):
         event = self.client.send_event(BaseEvent(key="key", value="value1"))
+        first_version = event.version
+        print("######first version: {}".format(first_version))
         event = self.client.send_event(BaseEvent(key="key", value="value2"))
         event = self.client.send_event(BaseEvent(key="key", value="value3"))
-        events = self.client.list_events("key", version=1)
+        events = self.client.list_events("key", version=first_version)
         self.assertEqual(2, len(events))
         events = self.client.list_events("key")
         self.assertEqual(3, len(events))
 
-    def test_listen_events(self):
+    def test_3_listen_events(self):
         event_list = []
 
         class TestWatch(EventWatcher):
@@ -66,29 +76,25 @@ class NotificationTest(unittest.TestCase):
                 self.event_list.extend(events)
 
         event = self.client.send_event(BaseEvent(key="key", value="value1"))
-        self.client.start_listen_event(key="key", watcher=TestWatch(event_list), version=1)
+        first_version = event.version
+        self.client.start_listen_event(key="key", watcher=TestWatch(event_list), version=event.version)
         event = self.client.send_event(BaseEvent(key="key", value="value2"))
         event = self.client.send_event(BaseEvent(key="key", value="value3"))
         self.client.stop_listen_event("key")
-        events = self.client.list_events("key", version=1)
+        events = self.client.list_events("key", version=first_version)
         self.assertEqual(2, len(events))
         self.assertEqual(2, len(event_list))
 
-    def test_all_listen_events(self):
+    def test_4_all_listen_events(self):
         event = self.client.send_event(BaseEvent(key="key", value="value1"))
         event = self.client.send_event(BaseEvent(key="key", value="value2"))
         start_time = event.create_time
+        print("#####start time: {}".format(start_time))
         event = self.client.send_event(BaseEvent(key="key", value="value3"))
         events = self.client.list_all_events(start_time)
         self.assertEqual(2, len(events))
-    
-    def test_get_latest_version(self):
-        event = self.client.send_event(BaseEvent(key="key", value="value1"))
-        event = self.client.send_event(BaseEvent(key="key", value="value2"))
-        latest_version = self.client.get_latest_version(key="key")
-        self.assertEqual(1, latest_version)
 
-    def test_listen_all_events(self):
+    def test_5_listen_all_events(self):
         event_list = []
 
         class TestWatch(EventWatcher):
@@ -98,6 +104,7 @@ class NotificationTest(unittest.TestCase):
 
             def process(self, events: List[BaseEvent]):
                 self.event_list.extend(events)
+
         try:
             self.client.start_listen_events(watcher=TestWatch(event_list))
             event = self.client.send_event(BaseEvent(key="key1", value="value1"))
@@ -107,4 +114,8 @@ class NotificationTest(unittest.TestCase):
             self.client.stop_listen_events()
         self.assertEqual(3, len(event_list))
 
-
+    def test_6_get_latest_version(self):
+        event = self.client.send_event(BaseEvent(key="key", value="value1"))
+        event = self.client.send_event(BaseEvent(key="key", value="value2"))
+        latest_version = self.client.get_latest_version(key="key")
+        print("#####latest version of key: {}".format(latest_version))
