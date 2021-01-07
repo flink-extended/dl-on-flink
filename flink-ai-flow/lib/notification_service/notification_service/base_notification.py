@@ -112,7 +112,15 @@ class BaseNotification(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def stop_listen_events(self):
         """
-        stop listen the events
+        stop listen the events.
         :return:
         """
         pass
+
+    @abc.abstractmethod
+    def get_latest_version(self, key: str = None):
+        """
+        get latest event's version by key.
+        :param key: Key of notification for listening.
+        :return: Version number of the specific key.
+        """

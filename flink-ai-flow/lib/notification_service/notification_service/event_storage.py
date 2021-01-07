@@ -73,8 +73,15 @@ class MemoryEventStorage(BaseEventStorage):
                 res.append(event)
         return res
 
+    def get_latest_version(self, key: str = None):
+        res = []
+        for event in self.store:
+            if event.key == key:
+                res.append(event.version)
+        res.sort()
+        return res[0] if res else 0
+
     def clean_up(self):
         self.store.clear()
         self.kv.clear()
         self.max_id = 0
-

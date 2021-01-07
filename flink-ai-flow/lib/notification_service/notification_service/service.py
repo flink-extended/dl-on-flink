@@ -186,3 +186,38 @@ class NotificationService(notification_service_pb2_grpc.NotificationServiceServi
 
     def _query_all_events_by_id(self, id):
         return self.storage.list_all_events_from_id(id)
+
+    @asyncio.coroutine
+    def getLatestVersionByKey(self, request, context):
+        try:
+            return self._get_latest_version_by_key(request)
+        except Exception as e:
+            return notification_service_pb2.GetLatestVersionResponse(
+                return_code=str(notification_service_pb2.ReturnStatus.ERROR), return_msg=str(e))
+
+    async def _get_latest_version_by_key(self, request):
+        key = request.key
+        timeout_seconds = request.timeout_seconds
+        if 0 == timeout_seconds:
+            latest_version = self._query_latest_version_by_key(key)
+            return notification_service_pb2.GetLatestVersionResponse(
+                return_code=str(notification_service_pb2.ReturnStatus.SUCCESS),
+                return_msg='',
+                version=latest_version)
+        else:
+            start = time.time()
+            latest_version = self._query_latest_version_by_key(key)
+            async with self.write_condition:
+                while time.time() - start < timeout_seconds and latest_version == 0:
+                    try:
+                        await asyncio.wait_for(self.write_condition.wait(), timeout_seconds - time.time() + start)
+                        latest_version = self._query_latest_version_by_key(key)
+                    except asyncio.TimeoutError:
+                        pass
+            return notification_service_pb2.ListEventsResponse(
+                return_code=str(notification_service_pb2.ReturnStatus.SUCCESS),
+                return_msg='',
+                version=latest_version)
+
+    def _query_latest_version_by_key(self, key):
+        return self.storage.get_latest_version(key=key)

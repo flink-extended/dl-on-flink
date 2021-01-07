@@ -55,6 +55,11 @@ class NotificationServiceStub(object):
         request_serializer=notification__service__pb2.ListEventsFromIdRequest.SerializeToString,
         response_deserializer=notification__service__pb2.ListEventsResponse.FromString,
         )
+    self.getLatestVersionByKey = channel.unary_unary(
+        '/notification_service.NotificationService/getLatestVersionByKey',
+        request_serializer=notification__service__pb2.GetLatestVersionByKeyRequest.SerializeToString,
+        response_deserializer=notification__service__pb2.GetLatestVersionResponse.FromString,
+        )
 
 
 class NotificationServiceServicer(object):
@@ -92,6 +97,13 @@ class NotificationServiceServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def getLatestVersionByKey(self, request, context):
+    """Get latest version by key
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
 
 def add_NotificationServiceServicer_to_server(servicer, server):
   rpc_method_handlers = {
@@ -114,6 +126,11 @@ def add_NotificationServiceServicer_to_server(servicer, server):
           servicer.listEventsFromId,
           request_deserializer=notification__service__pb2.ListEventsFromIdRequest.FromString,
           response_serializer=notification__service__pb2.ListEventsResponse.SerializeToString,
+      ),
+      'getLatestVersionByKey': grpc.unary_unary_rpc_method_handler(
+          servicer.getLatestVersionByKey,
+          request_deserializer=notification__service__pb2.GetLatestVersionByKeyRequest.FromString,
+          response_serializer=notification__service__pb2.GetLatestVersionResponse.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(
