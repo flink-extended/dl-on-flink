@@ -54,15 +54,16 @@ class NotificationService(notification_service_pb2_grpc.NotificationServiceServi
             namespace=None if event_proto.namespace == "" else event_proto.namespace)
         uuid = request.uuid
         key = event.key
+        namespace = event.namespace
         # Lock conditions dict for get/check/update of key
         await self.lock.acquire()
-        if self.notification_conditions.get(key) is None:
-            self.notification_conditions.update({(key, asyncio.Condition())})
+        if self.notification_conditions.get((key, namespace)) is None:
+            self.notification_conditions.update({((key, namespace), asyncio.Condition())})
         # Release lock after check/update key of notification conditions dict
         self.lock.release()
-        async with self.notification_conditions.get(key), self.write_condition:
+        async with self.notification_conditions.get((key, namespace)), self.write_condition:
             event: BaseEvent = self.storage.add_event(event, uuid)
-            self.notification_conditions.get(key).notify_all()
+            self.notification_conditions.get((key, namespace)).notify_all()
             self.write_condition.notify_all()
 
         result_event_proto = event_to_proto(event)
@@ -99,14 +100,14 @@ class NotificationService(notification_service_pb2_grpc.NotificationServiceServi
             # Lock conditions dict for get/check/update of key
             await self.lock.acquire()
             for key in keys:
-                if self.notification_conditions.get(key) is None:
-                    self.notification_conditions.update({(key, asyncio.Condition())})
+                if self.notification_conditions.get((key, namespace)) is None:
+                    self.notification_conditions.update({((key, namespace), asyncio.Condition())})
             # Release lock after check/update key of notification conditions dict
             self.lock.release()
             event_models = []
             if len(keys) == 1:
                 key = keys[0]
-                condition = self.notification_conditions.get(key)
+                condition = self.notification_conditions.get((key, namespace))
             else:
                 condition = self.write_condition
             async with condition:

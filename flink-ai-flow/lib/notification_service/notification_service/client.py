@@ -367,7 +367,7 @@ class NotificationClient(BaseNotification):
         """
         self.lock.acquire()
         try:
-            request = GetLatestVersionByKeyRequest(key=key)
+            request = GetLatestVersionByKeyRequest(key=key, namespace=self._default_namespace)
             response = self.notification_stub.getLatestVersionByKey(request)
             if response.return_code == str(ReturnStatus.SUCCESS):
                 return response.version
