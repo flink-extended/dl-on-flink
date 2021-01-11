@@ -20,39 +20,39 @@ from typing import List
 import unittest
 from notification_service.base_notification import BaseEvent, EventWatcher
 from notification_service.client import NotificationClient
-from notification_service.event_storage import MemoryEventStorage
+from notification_service.event_storage import MemoryEventStorage, DbEventStorage
 from notification_service.master import NotificationMaster
 from notification_service.service import NotificationService
 
 
-class NotificationTest(unittest.TestCase):
-
-    @classmethod
-    def setUpClass(cls):
-        cls.storage = MemoryEventStorage()
-        cls.master = NotificationMaster(NotificationService(cls.storage))
-        cls.master.run()
-        cls.client = NotificationClient(server_uri="localhost:50051")
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.master.stop()
-
-    def setUp(self):
-        NotificationTest.storage.clean_up()
+class NotificationTest(object):
 
     def test_send_event(self):
         event = self.client.send_event(BaseEvent(key="key", value="value1"))
-        self.assertEqual(1, event.version)
+        self.assertTrue(event.version >= 1)
 
     def test_list_events(self):
-        event = self.client.send_event(BaseEvent(key="key", value="value1"))
-        event = self.client.send_event(BaseEvent(key="key", value="value2"))
-        event = self.client.send_event(BaseEvent(key="key", value="value3"))
-        events = self.client.list_events("key", version=1)
-        self.assertEqual(2, len(events))
-        events = self.client.list_events("key")
+        self.client._default_namespace = "a"
+        event1 = self.client.send_event(BaseEvent(key="key", value="value1"))
+
+        self.client._default_namespace = "b"
+        self.client.send_event(BaseEvent(key="key", value="value2", event_type="a"))
+        self.client.send_event(BaseEvent(key="key", value="value3"))
+        self.client.send_event(BaseEvent(key="key2", value="value3"))
+
+        events = self.client.list_events(["key", "key2"], version=event1.version)
         self.assertEqual(3, len(events))
+
+        self.client._default_namespace = "a"
+        events = self.client.list_events("key")
+        self.assertEqual(1, len(events))
+
+        self.client._default_namespace = "b"
+        events = self.client.list_events("key")
+        self.assertEqual(2, len(events))
+
+        events = self.client.list_events("key", event_type="a")
+        self.assertEqual(1, len(events))
 
     def test_listen_events(self):
         event_list = []
@@ -65,28 +65,37 @@ class NotificationTest(unittest.TestCase):
             def process(self, events: List[BaseEvent]):
                 self.event_list.extend(events)
 
-        event = self.client.send_event(BaseEvent(key="key", value="value1"))
-        self.client.start_listen_event(key="key", watcher=TestWatch(event_list), version=1)
-        event = self.client.send_event(BaseEvent(key="key", value="value2"))
-        event = self.client.send_event(BaseEvent(key="key", value="value3"))
+        self.client._default_namespace = "a"
+        event1 = self.client.send_event(BaseEvent(key="key", value="value1"))
+        self.client.start_listen_event(key="key",
+                                       watcher=TestWatch(event_list),
+                                       version=event1.version)
+        self.client.send_event(BaseEvent(key="key", value="value2"))
+        self.client.send_event(BaseEvent(key="key", value="value3"))
+
+        self.client._default_namespace = None
+        self.client.send_event(BaseEvent(key="key", value="value4"))
+
+        self.client._default_namespace = "a"
         self.client.stop_listen_event("key")
-        events = self.client.list_events("key", version=1)
+        events = self.client.list_events("key", version=event1.version)
         self.assertEqual(2, len(events))
         self.assertEqual(2, len(event_list))
 
     def test_all_listen_events(self):
-        event = self.client.send_event(BaseEvent(key="key", value="value1"))
-        event = self.client.send_event(BaseEvent(key="key", value="value2"))
-        start_time = event.create_time
-        event = self.client.send_event(BaseEvent(key="key", value="value3"))
+        self.client.send_event(BaseEvent(key="key", value="value1"))
+        event2 = self.client.send_event(BaseEvent(key="key", value="value2"))
+        start_time = event2.create_time
+        self.client.send_event(BaseEvent(key="key", value="value3"))
         events = self.client.list_all_events(start_time)
         self.assertEqual(2, len(events))
-    
-    def test_get_latest_version(self):
-        event = self.client.send_event(BaseEvent(key="key", value="value1"))
-        event = self.client.send_event(BaseEvent(key="key", value="value2"))
-        latest_version = self.client.get_latest_version(key="key")
-        self.assertEqual(1, latest_version)
+
+    def test_list_all_events_with_id_range(self):
+        event1 = self.client.send_event(BaseEvent(key="key", value="value1"))
+        self.client.send_event(BaseEvent(key="key", value="value2"))
+        event3 = self.client.send_event(BaseEvent(key="key", value="value3"))
+        events = self.client.list_all_events(start_version=event1.version, end_version=event3.version)
+        self.assertEqual(2, len(events))
 
     def test_listen_all_events(self):
         event_list = []
@@ -98,13 +107,91 @@ class NotificationTest(unittest.TestCase):
 
             def process(self, events: List[BaseEvent]):
                 self.event_list.extend(events)
+
+        handle = None
         try:
-            self.client.start_listen_events(watcher=TestWatch(event_list))
-            event = self.client.send_event(BaseEvent(key="key1", value="value1"))
-            event = self.client.send_event(BaseEvent(key="key2", value="value2"))
-            event = self.client.send_event(BaseEvent(key="key3", value="value3"))
+            handle = self.client.start_listen_events(watcher=TestWatch(event_list))
+            self.client.send_event(BaseEvent(key="key1", value="value1"))
+            self.client.send_event(BaseEvent(key="key2", value="value2"))
+            self.client.send_event(BaseEvent(key="key3", value="value3"))
         finally:
-            self.client.stop_listen_events()
+            if handle is not None:
+                handle.stop()
         self.assertEqual(3, len(event_list))
 
+    def test_listen_all_events_from_id(self):
+        event_list = []
+
+        class TestWatch(EventWatcher):
+            def __init__(self, event_list) -> None:
+                super().__init__()
+                self.event_list = event_list
+
+            def process(self, events: List[BaseEvent]):
+                self.event_list.extend(events)
+
+        try:
+            event1 = self.client.send_event(BaseEvent(key="key1", value="value1"))
+            self.client.start_listen_events(watcher=TestWatch(event_list), version=event1.version)
+            self.client.send_event(BaseEvent(key="key2", value="value2"))
+            self.client.send_event(BaseEvent(key="key3", value="value3"))
+        finally:
+            self.client.stop_listen_events()
+        self.assertEqual(2, len(event_list))
+
+    def test_get_latest_version(self):
+        event = self.client.send_event(BaseEvent(key="key", value="value1"))
+        event = self.client.send_event(BaseEvent(key="key", value="value2"))
+        latest_version = self.client.get_latest_version(key="key")
+        self.assertEqual(event.version, latest_version)
+
+
+class DbStorageTest(unittest.TestCase, NotificationTest):
+
+    @classmethod
+    def set_up_class(cls):
+        cls.storage = DbEventStorage()
+        cls.master = NotificationMaster(NotificationService(cls.storage))
+        cls.master.run()
+
+    @classmethod
+    def setUpClass(cls):
+        cls.set_up_class()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.master.stop()
+
+    def setUp(self):
+        self.storage.clean_up()
+        self.client = NotificationClient(server_uri="localhost:50051")
+
+    def tearDown(self):
+        self.client.stop_listen_events()
+        self.client.stop_listen_event()
+
+
+class MemoryStorageTest(unittest.TestCase, NotificationTest):
+
+    @classmethod
+    def set_up_class(cls):
+        cls.storage = MemoryEventStorage()
+        cls.master = NotificationMaster(NotificationService(cls.storage))
+        cls.master.run()
+
+    @classmethod
+    def setUpClass(cls):
+        cls.set_up_class()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.master.stop()
+
+    def setUp(self):
+        self.storage.clean_up()
+        self.client = NotificationClient(server_uri="localhost:50051")
+
+    def tearDown(self):
+        self.client.stop_listen_events()
+        self.client.stop_listen_event()
 
