@@ -18,6 +18,8 @@
 #
 import time
 import uuid
+from collections import Iterable
+from typing import Union, Tuple
 
 from mongoengine import connect
 from notification_service.event_storage import BaseEventStorage
@@ -45,38 +47,53 @@ class MongoEventStorage(BaseEventStorage):
             connect=False,
             **db_conf)
 
-    def get_latest_version(self, key: str = None):
+    def get_latest_version(self, key: str, namespace: str = None):
         mongo_events = MongoEvent.get_by_key(self.server_id, key, 0, 1, "-version")
         if not mongo_events:
             return 0
         return mongo_events[0].version
 
-    def add_event(self, event: BaseEvent):
+    def add_event(self, event: BaseEvent, uuid: str):
         kwargs = {
             "server_id": self.server_id,
-            "create_time": time.time_ns(),
+            "create_time": int(time.time() * 1000),
             "event_type": event.event_type,
             "key": event.key,
             "value": event.value,
+            "context": event.context,
+            "namespace": event.namespace,
+            "uuid": uuid
         }
         mongo_event = MongoEvent(**kwargs)
         mongo_event.save()
         mongo_event.reload()
         event.create_time = mongo_event.create_time
         event.version = mongo_event.version
-        event.id = mongo_event.auto_increase_id
         return event
 
-    def list_events(self, key: str, version: int = None):
-        res = MongoEvent.get_base_events_by_version(self.server_id, key, version)
+    def list_events(self,
+                    key: Union[str, Tuple[str]],
+                    version: int = None,
+                    event_type: str = None,
+                    start_time: int = None,
+                    namespace: str = None):
+        key = None if key == "" else key
+        version = None if version == 0 else version
+        event_type = None if event_type == "" else event_type
+        namespace = None if namespace == "" else namespace
+        if isinstance(key, str):
+            key = (key,)
+        elif isinstance(key, Iterable):
+            key = tuple(key)
+        res = MongoEvent.get_base_events(self.server_id, key, version, event_type, namespace)
         return res
 
     def list_all_events(self, start_time: int):
         res = MongoEvent.get_base_events_by_time(self.server_id, start_time)
         return res
 
-    def list_all_events_from_id(self, id: int):
-        res = MongoEvent.get_base_events_by_id(self.server_id, id)
+    def list_all_events_from_version(self, start_version: int, end_version: int = None):
+        res = MongoEvent.get_base_events_by_version(self.server_id, start_version, end_version)
         return res
 
     def clean_up(self):

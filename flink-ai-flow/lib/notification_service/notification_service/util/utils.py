@@ -26,7 +26,8 @@ def event_to_proto(event: BaseEvent):
                                                              value=event.value,
                                                              event_type=event.event_type,
                                                              create_time=event.create_time,
-                                                             id=event.id)
+                                                             namespace=event.namespace,
+                                                             context=event.context)
     return result_event_proto
 
 
@@ -39,9 +40,21 @@ def event_list_to_proto(event_list):
 
 
 def event_proto_to_event(event_proto):
-    return BaseEvent(id=event_proto.id,
-                     key=event_proto.key,
+    return BaseEvent(key=event_proto.key,
                      value=event_proto.value,
                      event_type=event_proto.event_type,
                      version=event_proto.version,
-                     create_time=event_proto.create_time)
+                     create_time=event_proto.create_time,
+                     context=event_proto.context,
+                     namespace=event_proto.namespace)
+
+
+def event_model_to_event(event_model):
+    return BaseEvent(
+            key=event_model.key,
+            value=event_model.value,
+            event_type=event_model.event_type,
+            version=event_model.version,
+            create_time=event_model.create_time,
+            context=event_model.context,
+            namespace=event_model.namespace)
