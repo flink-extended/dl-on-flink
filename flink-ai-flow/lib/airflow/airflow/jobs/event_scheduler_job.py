@@ -49,7 +49,7 @@ from airflow.utils import timezone
 from notification_service.client import NotificationClient, EventWatcher
 from airflow.models.event import DagRunEvent, Event, EventType, TaskInstanceHelper, DagRunFinishedEvent
 from airflow.utils.mailbox import Mailbox
-from airflow.models.event import EventModel
+from notification_service.util.db import EventModel
 
 
 class EventDagFileProcessor(DagFileProcessor):

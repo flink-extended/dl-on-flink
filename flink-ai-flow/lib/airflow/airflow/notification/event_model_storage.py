@@ -15,21 +15,14 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
+from airflow.settings import engine, Session
+from notification_service.util.db import prepare_db
 
-from notification_service.event_storage import BaseEventStorage
-from airflow.models import EventModel
-from airflow.models.event import Event
+from notification_service.event_storage import DbEventStorage
 
 
-class EventModelStorage(BaseEventStorage):
-    def add_event(self, event: Event):
-        return EventModel.add_event(event)
+class EventModelStorage(DbEventStorage):
 
-    def list_events(self, key: str, version: int):
-        return EventModel.list_events(key, version)
-
-    def list_all_events(self, start_time: int):
-        return EventModel.list_all_events(start_time)
-
-    def list_all_events_from_id(self, id: int):
-        return EventModel.list_all_events_from_id(id)
+    def __init__(self):
+        prepare_db(engine, Session)
+        super(EventModelStorage, self).__init__()
