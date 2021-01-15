@@ -20,8 +20,6 @@ import asyncio
 import functools
 import inspect
 import logging
-import os
-import sys
 import threading
 import time
 from concurrent import futures
@@ -93,8 +91,9 @@ class Executor(futures.Executor):
         self._shutdown = False
         self._thread_pool = thread_pool
         self._loop = loop or asyncio.get_event_loop()
-        self._thread = threading.Thread(target=_loop, args=(self._loop,), daemon=True)
-        self._thread.start()
+        if not self._loop.is_running() or self._loop.is_closed():
+            self._thread = threading.Thread(target=_loop, args=(self._loop,), daemon=True)
+            self._thread.start()
 
     def submit(self, fn, *args, **kwargs):
         if self._shutdown:
@@ -109,7 +108,6 @@ class Executor(futures.Executor):
             return self._loop.run_in_executor(self._thread_pool, func)
 
     def shutdown(self, wait=True):
-        self._loop.stop()
         self._shutdown = True
         if wait:
             self._thread_pool.shutdown()
