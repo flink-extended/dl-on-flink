@@ -170,10 +170,10 @@ class NotificationService(notification_service_pb2_grpc.NotificationServiceServi
                 events=event_proto_list)
 
     def _query_all_events(self, start_time, start_version, end_version):
-        if start_time > 0:
-            return self.storage.list_all_events(start_time)
-        else:
+        if start_version > 0:
             return self.storage.list_all_events_from_version(start_version, end_version)
+        else:
+            return self.storage.list_all_events(start_time)
 
     @asyncio.coroutine
     def getLatestVersionByKey(self, request, context):

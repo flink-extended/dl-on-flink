@@ -77,7 +77,7 @@ from airflow.www_rbac.forms import (DateTimeForm, DateTimeWithNumRunsForm,
                                     DateTimeWithNumRunsWithDagRunsForm,
                                     DagRunForm, ConnectionForm)
 from airflow.www_rbac.widgets import AirflowModelListWidget
-
+from notification_service.util.db import EventModel
 
 PAGE_SIZE = conf.getint('webserver', 'page_size')
 FILTER_TAGS_COOKIE = 'tags_filter'
@@ -2837,21 +2837,21 @@ class TaskExecutionModelView(AirflowModelView):
 
 
 class EventModelView(AirflowModelView):
-    route_base = '/event'
+    route_base = '/event_model'
 
-    datamodel = AirflowModelView.CustomSQLAInterface(models.EventModel)
+    datamodel = AirflowModelView.CustomSQLAInterface(EventModel)
 
     base_permissions = ['can_list']
 
     page_size = PAGE_SIZE
 
-    list_columns = ['id', 'key', 'version', 'value', 'event_type', 'create_time']
+    list_columns = ['key', 'version', 'value', 'event_type', 'create_time', 'context', 'namespace']
 
-    search_columns = ['id', 'key', 'version', 'event_type', 'create_time']
+    search_columns = ['key', 'version', 'event_type', 'create_time']
 
-    base_order = ('id', 'asc')
+    base_order = ('version', 'asc')
 
-    base_filters = [['id', DagFilter, lambda: []]]
+    base_filters = [['version', DagFilter, lambda: []]]
 
     formatters_columns = {
         'key': wwwutils.event_key

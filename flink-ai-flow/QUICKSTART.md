@@ -333,7 +333,7 @@ def build_workflow():
             op_2 = af.user_define_operation(af.PythonObjectExecutor(PrintHelloExecutor('job_2')))
 
         with af.config('job_3'):
-            op_3 = af.user_define_operation(af.PythonObjectExecutor(PrintHelloExecutor('job_2')))
+            op_3 = af.user_define_operation(af.PythonObjectExecutor(PrintHelloExecutor('job_3')))
 
     af.stop_before_control_dependency(op_3, op_1)
     af.stop_before_control_dependency(op_3, op_2)
