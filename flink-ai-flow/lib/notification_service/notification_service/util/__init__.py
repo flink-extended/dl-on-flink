@@ -1,4 +1,3 @@
-# coding:utf-8
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -17,16 +16,3 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-
-from setuptools import setup, find_packages
-
-setup(
-    name='notification_service',
-    version='0.1',
-    description='This is an notification setup',
-    author='',
-    author_email='',
-    url='',
-    packages=find_packages(exclude=['tests*']),
-    install_requires=["protobuf==3.11.3", "grpcio==1.26.0", "sqlalchemy>=1.3.18, <2"]
-)

@@ -50,11 +50,6 @@ class NotificationServiceStub(object):
         request_serializer=notification__service__pb2.ListAllEventsRequest.SerializeToString,
         response_deserializer=notification__service__pb2.ListEventsResponse.FromString,
         )
-    self.listEventsFromId = channel.unary_unary(
-        '/notification_service.NotificationService/listEventsFromId',
-        request_serializer=notification__service__pb2.ListEventsFromIdRequest.SerializeToString,
-        response_deserializer=notification__service__pb2.ListEventsResponse.FromString,
-        )
     self.getLatestVersionByKey = channel.unary_unary(
         '/notification_service.NotificationService/getLatestVersionByKey',
         request_serializer=notification__service__pb2.GetLatestVersionByKeyRequest.SerializeToString,
@@ -84,14 +79,7 @@ class NotificationServiceServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def listAllEvents(self, request, context):
-    """List all events from the start time.
-    """
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
-
-  def listEventsFromId(self, request, context):
-    """List all events from the id.
+    """List all events
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -120,11 +108,6 @@ def add_NotificationServiceServicer_to_server(servicer, server):
       'listAllEvents': grpc.unary_unary_rpc_method_handler(
           servicer.listAllEvents,
           request_deserializer=notification__service__pb2.ListAllEventsRequest.FromString,
-          response_serializer=notification__service__pb2.ListEventsResponse.SerializeToString,
-      ),
-      'listEventsFromId': grpc.unary_unary_rpc_method_handler(
-          servicer.listEventsFromId,
-          request_deserializer=notification__service__pb2.ListEventsFromIdRequest.FromString,
           response_serializer=notification__service__pb2.ListEventsResponse.SerializeToString,
       ),
       'getLatestVersionByKey': grpc.unary_unary_rpc_method_handler(
