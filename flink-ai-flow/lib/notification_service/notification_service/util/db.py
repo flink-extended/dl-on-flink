@@ -35,9 +35,12 @@ engine = None
 Session = None
 
 
-def prepare_db(print_sql=False):
+def prepare_db(user_engine=None, user_session=None, print_sql=False):
     global engine
     global Session
+    if user_engine is not None and user_session is not None:
+        engine = user_engine
+        Session = user_session
     if engine is None or Session is None:
         engine_args = {'encoding': "utf-8"}
         if print_sql:

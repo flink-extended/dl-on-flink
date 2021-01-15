@@ -19,8 +19,6 @@
 import abc
 import time
 
-from typing import List
-
 from typing import List, Union, Tuple
 
 UNDEFINED_EVENT_TYPE = "UNDEFINED"

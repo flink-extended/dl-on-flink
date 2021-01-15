@@ -17,15 +17,10 @@
 # under the License.
 
 from enum import Enum
-import time
 
 from notification_service.base_notification import BaseEvent
 
-from airflow.utils.db import provide_session
 from airflow.utils.state import State
-from airflow import LoggingMixin
-from airflow.models import Base
-from sqlalchemy import Column, Integer, BigInteger, String
 
 
 class EventType(str, Enum):
@@ -140,92 +135,6 @@ def event_model_list_to_events(event_model_list):
         for event_model in event_model_list:
             event = Event(key=event_model.key, value=event_model.value,
                           event_type=event_model.event_type, version=event_model.version,
-                          create_time=event_model.create_time, id=event_model.id)
+                          create_time=event_model.create_time)
             events.append(event)
     return events
-
-
-class EventModel(Base, LoggingMixin):
-
-    __tablename__ = "event_model"
-    id = Column(Integer, primary_key=True)
-    key = Column(String(1024), nullable=False)
-    version = Column(Integer, nullable=False)
-    value = Column(String(4096))
-    event_type = Column(String(256))
-    create_time = Column(BigInteger)
-
-    @staticmethod
-    @provide_session
-    def add_event(event: Event, session=None):
-        event_model = EventModel()
-        event_model.key = event.key
-
-        def next_version():
-            return session.query(EventModel).filter(EventModel.key == event.key).count() + 1
-
-        event_model.create_time = time.time_ns()
-        event_model.version = next_version()
-        event_model.value = event.value
-        if event.event_type is None:
-            event_model.event_type = EventType.UNDEFINED
-        else:
-            event_model.event_type = event.event_type
-        session.add(event_model)
-        session.commit()
-        return event_model
-
-    @staticmethod
-    @provide_session
-    def list_events(key: str, version: int, session=None):
-        if key is None:
-            raise Exception('key cannot be empty.')
-
-        if version is None:
-            conditions = [
-                EventModel.key == key,
-            ]
-        else:
-            conditions = [
-                EventModel.key == key,
-                EventModel.version > version
-            ]
-        event_model_list = session.query(EventModel).filter(*conditions).all()
-        return event_model_list
-
-    @staticmethod
-    @provide_session
-    def list_all_events(start_time: int, session=None):
-
-        conditions = [
-            EventModel.create_time >= start_time
-        ]
-        event_model_list = session.query(EventModel).filter(*conditions).all()
-        return event_model_list
-
-    @staticmethod
-    @provide_session
-    def list_all_events_from_id(id: int, session=None):
-
-        conditions = [
-            EventModel.id > id
-        ]
-        event_model_list = session.query(EventModel).filter(*conditions).all()
-        return event_model_list
-
-    @staticmethod
-    @provide_session
-    def sync_event(event: Event, session=None):
-        event_model = EventModel()
-        event_model.key = event.key
-        event_model.create_time = event.create_time
-        event_model.version = event.version
-        event_model.value = event.value
-        if event.event_type is None or not EventType.is_in(event.event_type):
-            event_model.event_type = EventType.UNDEFINED
-        else:
-            event_model.event_type = event.event_type
-        session.add(event_model)
-        session.commit()
-        return event_model
-

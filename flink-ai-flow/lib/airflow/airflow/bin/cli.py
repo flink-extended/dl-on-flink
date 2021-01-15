@@ -60,7 +60,7 @@ from airflow.configuration import conf
 from airflow.exceptions import AirflowException, AirflowWebServerTimeout
 from airflow.executors import get_default_executor
 from airflow.models import (
-    Connection, DagModel, DagBag, DagPickle, TaskInstance, DagRun, Variable, DAG, EventModel
+    Connection, DagModel, DagBag, DagPickle, TaskInstance, DagRun, Variable, DAG
 )
 from airflow.ti_deps.dep_context import (DepContext, SCHEDULER_QUEUED_DEPS)
 from airflow.utils import cli as cli_utils, db
