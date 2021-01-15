@@ -3167,15 +3167,15 @@ class TaskExecutionModelView(ModelViewOnly):
 class EventModelView(ModelViewOnly):
     verbose_name_plural = "events"
     verbose_name = "event"
-    column_filters = ('id', 'key', 'version', 'event_type', 'create_time')
+    column_filters = ('key', 'event_type', 'create_time')
     filter_converter = wwwutils.UtcFilterConverter()
     named_filter_urls = True
     column_formatters = dict(
         key=event_key
     )
-    column_searchable_list = ('key', 'version', 'event_type')
-    column_default_sort = ('id', True)
-    column_list = ('id', 'key', 'version', 'value', 'event_type', 'create_time')
+    column_searchable_list = ('key', 'event_type')
+    column_default_sort = ('version', True)
+    column_list = ('key', 'version', 'value', 'event_type', 'create_time', 'context', 'namespace')
     page_size = PAGE_SIZE
 
     def get_one(self, id):

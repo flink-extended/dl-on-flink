@@ -40,6 +40,8 @@ from airflow import jobs
 from airflow import settings
 from airflow.utils.net import get_hostname
 
+from notification_service.util.db import EventModel
+
 csrf = CSRFProtect()
 
 
@@ -110,7 +112,7 @@ def create_app(config=None, testing=False):
                                     Session, name="Task Instances", category="Browse"))
         av(vs.TaskExecutionModelView(models.TaskExecution,
                                      Session, name="Task Executions", category="Browse"))
-        av(vs.EventModelView(models.EventModel,
+        av(vs.EventModelView(EventModel,
                                      Session, name="Events", category="Browse"))
         av(vs.LogModelView(
             models.Log, Session, name="Logs", category="Browse"))

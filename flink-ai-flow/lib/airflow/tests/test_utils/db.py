@@ -20,12 +20,13 @@ from airflow.models.taskstate import TaskState
 
 from airflow.models import (
     Connection, DagModel, DagRun, DagTag, Pool, RenderedTaskInstanceFields, SlaMiss, TaskInstance, Variable,
-    errors, EventModel, DagPickle
+    errors, DagPickle
 )
 from airflow.models.dagcode import DagCode
 from airflow.models.taskexecution import TaskExecution
 from airflow.utils.db import add_default_pool_if_not_exists, create_default_connections, \
     create_session
+from notification_service.util.db import EventModel
 
 
 def clear_db_runs():

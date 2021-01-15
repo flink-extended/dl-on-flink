@@ -17,10 +17,10 @@
 # under the License.
 #
 from notification_service import service
-from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
+from notification_service.event_storage import DbEventStorage
 
 
 class NotificationService(service.NotificationService):
 
     def __init__(self, backend_store_uri):
-        super().__init__(storage=SqlAlchemyStore(backend_store_uri))
+        super().__init__(storage=DbEventStorage(backend_store_uri))
