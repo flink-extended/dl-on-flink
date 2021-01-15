@@ -47,6 +47,17 @@ class BaseEvent(object):
             .format(self.key, self.value, self.event_type, self.version, self.create_time,
                     self.context, self.namespace)
 
+    def __eq__(self, other):
+        if not isinstance(other, BaseEvent):
+            return False
+        return self.key == other.key and \
+            self.value == other.value and \
+            self.event_type == other.event_type and \
+            self.version == other.version and \
+            self.create_time == other.create_time and \
+            self.context == other.context and \
+            self.namespace == other.namespace
+
 
 class EventWatcher(metaclass=abc.ABCMeta):
     """
@@ -173,3 +184,11 @@ class BaseNotification(metaclass=abc.ABCMeta):
         :return: Version number of the specific key.
         """
         pass
+
+
+class Member(object):
+
+    def __init__(self, version, server_uri, update_time):
+        self.version = version
+        self.server_uri = server_uri
+        self.update_time = update_time
