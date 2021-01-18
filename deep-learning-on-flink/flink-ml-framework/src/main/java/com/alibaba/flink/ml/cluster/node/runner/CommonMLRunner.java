@@ -69,6 +69,7 @@ public class CommonMLRunner implements MLRunner {
 
 	protected boolean doRegisterAction() throws Exception {
 		createNodeSpec(true);
+		getCurrentJobVersion();
 		SimpleResponse response = amClient.registerNode(version, nodeSpec);
 		if (RpcCode.OK.ordinal() == response.getCode()) {
 			return true;
