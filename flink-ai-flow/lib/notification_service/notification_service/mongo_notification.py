@@ -61,7 +61,7 @@ class MongoEvent(Document):
     def get_base_events_by_version(cls, server_id: str, start_version: int, end_version: int = None):
         conditions = dict()
         conditions["version__gt"] = start_version
-        if end_version is not None:
+        if end_version is not None and end_version > 0:
             conditions["version__lte"] = end_version
         mongo_events = cls.objects(server_id=server_id).filter(**conditions).order_by("version")
         return cls.convert_to_base_events(mongo_events)
@@ -79,11 +79,11 @@ class MongoEvent(Document):
             conditions["key"] = key[0]
         elif len(key) > 1:
             conditions["key__in"] = list(key)
-        if version > 0:
+        if version is not None and version > 0:
             conditions["version__gt"] = version
         if event_type is not None:
             conditions["event_type"] = event_type
-        if start_time > 0:
+        if start_time is not None and start_time > 0:
             conditions["start_time_gte"] = start_time
         conditions["namespace"] = namespace
         mongo_events = cls.objects(server_id=server_id).filter(**conditions).order_by("version")
