@@ -19,24 +19,33 @@
 import abc
 import time
 
-from typing import List
+from typing import List, Union, Tuple
 
 UNDEFINED_EVENT_TYPE = "UNDEFINED"
 
 
 class BaseEvent(object):
-    def __init__(self, key: str, value: str, event_type: str = UNDEFINED_EVENT_TYPE,
-                 version: int = None, create_time: int = None, id: int = None):
+    def __init__(self,
+                 key: str,
+                 value: str,
+                 event_type: str = UNDEFINED_EVENT_TYPE,
+                 version: int = None,
+                 create_time: int = None,
+                 context: str = None,
+                 namespace: str = None):
         self.key = key
         self.value = value
         self.event_type = event_type
         self.version = version
         self.create_time = create_time
-        self.id = id
+        self.context = context
+        self.namespace = namespace
 
     def __str__(self) -> str:
-        return 'key:{0}, value:{1}, type:{2}, version:{3}, create_time:{4}, id: {5}' \
-            .format(self.key, self.value, self.event_type, self.version, self.create_time, self.id)
+        return 'key:{0}, value:{1}, type:{2}, version:{3}, create_time:{4}, ' \
+               'context: {5}, namespace: {6}' \
+            .format(self.key, self.value, self.event_type, self.version, self.create_time,
+                    self.context, self.namespace)
 
 
 class EventWatcher(metaclass=abc.ABCMeta):
@@ -50,70 +59,109 @@ class EventWatcher(metaclass=abc.ABCMeta):
         pass
 
 
+class EventWatcherHandle(metaclass=abc.ABCMeta):
+    """
+    The EventWatcherHandle used to stop the relevant watch thread.
+    """
+
+    @abc.abstractmethod
+    def stop(self):
+        pass
+
+
 class BaseNotification(metaclass=abc.ABCMeta):
+
     @abc.abstractmethod
-    def send_event(self, event: BaseEvent) -> BaseEvent:
+    def send_event(self, event: BaseEvent):
         """
-        Send event to Notification
+        Send event to Notification Service.
+
         :param event: the event updated.
-        :return: A single object of Event created in Notification.
+        :return: The created event which has version and create time.
         """
         pass
 
     @abc.abstractmethod
-    def list_events(self, key: str, version: int = None) -> list:
+    def list_events(self,
+                    key: Union[str, List[str]],
+                    version: int = None,
+                    event_type: str = None,
+                    start_time: int = None) -> List[BaseEvent]:
         """
-        List specific `key` or `version` of events in Notification Service.
+        List specific events in Notification Service.
+
         :param key: Key of the event for listening.
-        :param version: (Optional) Version of the signal for listening.
-        :return: Specific `key` or `version` event notification list.
+        :param version: (Optional) The version of the events must greater than this version.
+        :param event_type: (Optional) Type of the events.
+        :param start_time: (Optional) Start time of the events.
+        :return: The event list.
         """
         pass
 
     @abc.abstractmethod
-    def start_listen_event(self, key: str, watcher: EventWatcher, version: int = None):
+    def start_listen_event(self,
+                           key: Union[str, Tuple[str]],
+                           watcher: EventWatcher,
+                           version: int = None,
+                           event_type: str = None,
+                           start_time: int = None) -> EventWatcherHandle:
         """
         Start listen specific `key` or `version` notifications in Notification Service.
 
         :param key: Key of notification for listening.
-        :param watcher: Watcher instance for listening notification.
-        :param version: (Optional) Version of notification for listening.
+        :param watcher: Watcher instance for listening.
+        :param version: (Optional) The version of the events must greater than this version.
+        :param event_type: (Optional) Type of the events for listening.
+        :param start_time: (Optional) Start time of the events for listening.
+        :return: The handle used to stop the listening.
         """
         pass
 
     @abc.abstractmethod
-    def stop_listen_event(self, key: str = None):
+    def stop_listen_event(self, key: Union[str, Tuple[str]] = None):
         """
         Stop listen specific `key` notifications in Notification Service.
 
-        :param key: Key of notification for listening.
+        :param key: Keys of notification for listening.
         """
         pass
 
     @abc.abstractmethod
-    def list_all_events(self, start_time: int):
+    def list_all_events(self,
+                        start_time: int = None,
+                        start_version: int = None,
+                        end_version: int = None) -> List[BaseEvent]:
         """
         List specific `key` or `version` of events in Notification Service.
-        :param start_time: the event after this time.
-        :return:
+
+        :param start_time: (Optional) Start time of the events.
+        :param start_version: (Optional) the version of the events must greater than the
+                              start_version.
+        :param end_version: (Optional) the version of the events must equal or less than the
+                            end_version.
+        :return: The event list.
         """
         pass
 
     @abc.abstractmethod
-    def start_listen_events(self, watcher: EventWatcher, start_time=time.time_ns()):
+    def start_listen_events(self,
+                            watcher: EventWatcher,
+                            start_time=int(time.time() * 1000),
+                            version: int = None) -> EventWatcherHandle:
         """
-        start listen all events.
+        Start listen all events.
+
         :param watcher: process event.
-        :param start_time: the earliest event time.
-        :return:
+        :param start_time: (Optional) the earliest event time.
+        :param version: (Optional) the start version of the event.
+        :return: The handle used to stop the listening.
         """
         pass
 
     @abc.abstractmethod
     def stop_listen_events(self):
         """
-        stop listen the events.
-        :return:
+        Stop the global listening threads.
         """
         pass
 
@@ -124,3 +172,4 @@ class BaseNotification(metaclass=abc.ABCMeta):
         :param key: Key of notification for listening.
         :return: Version number of the specific key.
         """
+        pass

@@ -22,7 +22,6 @@ from typing import List
 from notification_service.service import NotificationService
 
 from airflow.notification.event_model_storage import EventModelStorage
-from tests.test_utils.db import clear_db_event_model
 import unittest
 from airflow.models.event import Event
 from notification_service.master import NotificationMaster
@@ -30,28 +29,34 @@ from notification_service.client import NotificationClient, EventWatcher
 
 
 class NotificationTest(unittest.TestCase):
-    def setUp(self):
-        clear_db_event_model()
 
     @classmethod
     def setUpClass(cls):
-        cls.master = NotificationMaster(NotificationService(EventModelStorage()))
+        cls.storage = EventModelStorage()
+        cls.master = NotificationMaster(NotificationService(cls.storage))
         cls.master.run()
-        cls.client = NotificationClient(server_uri="localhost:50051")
 
     @classmethod
     def tearDownClass(cls):
         cls.master.stop()
 
+    def setUp(self):
+        self.storage.clean_up()
+        self.client = NotificationClient(server_uri="localhost:50051")
+
+    def tearDown(self):
+        self.client.stop_listen_events()
+        self.client.stop_listen_event()
+
     def test_send_event(self):
         event = self.client.send_event(Event(key="key", value="value1"))
-        self.assertEqual(1, event.version)
+        self.assertTrue(event.version > 0)
 
     def test_list_events(self):
-        event = self.client.send_event(Event(key="key", value="value1"))
-        event = self.client.send_event(Event(key="key", value="value2"))
-        event = self.client.send_event(Event(key="key", value="value3"))
-        events = self.client.list_events("key", version=1)
+        event1 = self.client.send_event(Event(key="key", value="value1"))
+        event2 = self.client.send_event(Event(key="key", value="value2"))
+        event3 = self.client.send_event(Event(key="key", value="value3"))
+        events = self.client.list_events("key", version=event1.version)
         self.assertEqual(2, len(events))
 
     def test_listen_events(self):
@@ -65,12 +70,12 @@ class NotificationTest(unittest.TestCase):
             def process(self, events: List[Event]):
                 self.event_list.extend(events)
 
-        event = self.client.send_event(Event(key="key", value="value1"))
-        self.client.start_listen_event(key="key", watcher=TestWatch(event_list), version=1)
+        event1 = self.client.send_event(Event(key="key", value="value1"))
+        self.client.start_listen_event(key="key", watcher=TestWatch(event_list), version=event1.version)
         event = self.client.send_event(Event(key="key", value="value2"))
         event = self.client.send_event(Event(key="key", value="value3"))
         self.client.stop_listen_event("key")
-        events = self.client.list_events("key", version=1)
+        events = self.client.list_events("key", version=event1.version)
         self.assertEqual(2, len(events))
         self.assertEqual(2, len(event_list))
 
@@ -100,5 +105,3 @@ class NotificationTest(unittest.TestCase):
         finally:
             self.client.stop_listen_events()
         self.assertEqual(3, len(event_list))
-
-
