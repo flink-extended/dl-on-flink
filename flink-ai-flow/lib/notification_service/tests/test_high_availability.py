@@ -118,3 +118,8 @@ class HaServerTest(unittest.TestCase):
         finally:
             self.client.stop_listen_events()
         self.assertEqual(2, len(event_list))
+
+    def test_start_with_multiple_servers(self):
+        self.client.disable_high_availability()
+        self.client = NotificationClient(server_uri="localhost:55001,localhost:50051", enable_ha=True)
+        self.assertTrue(self.client.current_uri, "localhost:50051")

@@ -33,8 +33,7 @@ from notification_service.proto.notification_service_pb2 \
     import SendEventRequest, ListEventsRequest, EventProto, ReturnStatus, ListAllEventsRequest, \
     GetLatestVersionByKeyRequest, ListMembersRequest
 from notification_service.proto import notification_service_pb2_grpc
-from notification_service.proto.notification_service_pb2_grpc import NotificationServiceStub
-from notification_service.util.utils import event_proto_to_event, proto_to_member
+from notification_service.util.utils import event_proto_to_event, proto_to_member, sleep_and_detecting_running
 
 NOTIFICATION_TIMEOUT_SECONDS = os.environ.get("NOTIFICATION_TIMEOUT_SECONDS", 5)
 ALL_EVENTS_KEY = "_*"
@@ -66,12 +65,31 @@ class NotificationClient(BaseNotification):
     """
 
     def __init__(self,
-                 server_uri,
+                 server_uri: str,
                  default_namespace: str = None,
                  enable_ha: bool = False,
                  list_member_interval_ms: int = 5000,
                  retry_interval_ms: int = 1000,
                  retry_timeout_ms: int = 10000):
+        """
+        The constructor of the NotificationClient.
+
+        :param server_uri: Target server uri/uris. If `enable_ha` is True, multiple uris separated
+                           by "," can be accepted.
+        :param default_namespace: The default namespace that this client is working on.
+        :param enable_ha: Enable high-available functionality.
+        :param list_member_interval_ms: When `enable_ha` is True, this client will request the
+                                        living members periodically. A member means a server node
+                                        of the Notification server cluster. This param specifies
+                                        the interval of the listing member requests.
+        :param retry_interval_ms: When `enable_ha` is True and a rpc call has failed on all the
+                                  living members, this client will retry until success or timeout.
+                                  This param specifies the retry interval.
+
+        :param retry_timeout_ms: When `enable_ha` is True and a rpc call has failed on all the
+                                 living members, this client will retry until success or timeout.
+                                 This param specifies the retry timeout.
+        """
         channel = grpc.insecure_channel(server_uri)
         self._default_namespace = default_namespace
         self.notification_stub = notification_service_pb2_grpc.NotificationServiceStub(channel)
@@ -82,17 +100,30 @@ class NotificationClient(BaseNotification):
         self.retry_interval_ms = retry_interval_ms
         self.retry_timeout_ms = retry_timeout_ms
         if self.enable_ha:
+            server_uris = server_uri.split(",")
+            self.living_members = []
+            self.current_uri = None
+            last_error = None
+            for server_uri in server_uris:
+                channel = grpc.insecure_channel(server_uri)
+                notification_stub = notification_service_pb2_grpc.NotificationServiceStub(channel)
+                try:
+                    request = ListMembersRequest(timeout_seconds=0)
+                    response = notification_stub.listMembers(request)
+                    if response.return_code == ReturnStatus.SUCCESS:
+                        self.living_members = [proto_to_member(proto).server_uri
+                                               for proto in response.members]
+                    else:
+                        raise Exception(response.return_msg)
+                    self.current_uri = server_uri
+                    self.notification_stub = notification_stub
+                    break
+                except grpc.RpcError as e:
+                    last_error = e
+            if self.current_uri is None:
+                raise Exception("No available server uri!") from last_error
             self.ha_change_lock = threading.Lock()
             self.ha_running = True
-            self.living_members = []
-            self.current_uri = server_uri
-            request = ListMembersRequest()
-            response = self.notification_stub.listMembers(request)
-            if response.return_code == ReturnStatus.SUCCESS:
-                self.living_members = [proto_to_member(proto).server_uri
-                                       for proto in response.members]
-            else:
-                raise Exception(response.return_msg)
             self.notification_stub = self._wrap_rpcs(self.notification_stub, server_uri)
             self.list_member_thread = threading.Thread(target=self._list_members, daemon=True)
             self.list_member_thread.start()
