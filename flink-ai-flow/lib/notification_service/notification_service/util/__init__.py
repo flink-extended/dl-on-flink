@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -15,14 +15,4 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-from airflow.settings import engine, Session
-from notification_service.util.db import prepare_db
-
-from notification_service.event_storage import DbEventStorage
-
-
-class EventModelStorage(DbEventStorage):
-
-    def __init__(self):
-        prepare_db(engine, Session)
-        super(EventModelStorage, self).__init__()
+#

@@ -16,6 +16,8 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+from typing import Tuple
+
 from mongoengine import (Document, IntField, StringField, SequenceField)
 from notification_service.base_notification import BaseEvent
 
@@ -25,23 +27,21 @@ class MongoEvent(Document):
     key = StringField()
     value = StringField()
     event_type = StringField()
-    version = SequenceField()
+    version = SequenceField()  # use 'version' as the auto increase id
     create_time = IntField()
-    auto_increase_id = SequenceField()
-
-    @property
-    def str_id(self):
-        if self.id:
-            return str(self.id)
+    context = StringField()
+    namespace = StringField()
+    uuid = StringField()
 
     def to_dict(self):
         return {
             "key": self.key,
             "value": self.value,
             "event_type": self.event_type,
-            "version": self.version,
+            "version": int(self.version),
             "create_time": self.create_time,
-            "id": int(self.auto_increase_id),
+            "context": self.context,
+            "namespace": self.namespace
         }
 
     def to_base_event(self):
@@ -58,13 +58,35 @@ class MongoEvent(Document):
         return base_events
 
     @classmethod
-    def get_base_events_by_id(cls, server_id: str, event_id: int = None):
-        mongo_events = cls.objects(server_id=server_id).filter(auto_increase_id__gt=event_id).order_by("version")
+    def get_base_events_by_version(cls, server_id: str, start_version: int, end_version: int = None):
+        conditions = dict()
+        conditions["version__gt"] = start_version
+        if end_version is not None and end_version > 0:
+            conditions["version__lte"] = end_version
+        mongo_events = cls.objects(server_id=server_id).filter(**conditions).order_by("version")
         return cls.convert_to_base_events(mongo_events)
 
     @classmethod
-    def get_base_events_by_version(cls, server_id: str, key: str, version: int = None):
-        mongo_events = cls.objects(server_id=server_id, key=key).filter(version__gt=version).order_by("version")
+    def get_base_events(cls,
+                        server_id: str,
+                        key: Tuple[str],
+                        version: int = None,
+                        event_type: str = None,
+                        start_time: int = None,
+                        namespace: str = None):
+        conditions = dict()
+        if len(key) == 1:
+            conditions["key"] = key[0]
+        elif len(key) > 1:
+            conditions["key__in"] = list(key)
+        if version is not None and version > 0:
+            conditions["version__gt"] = version
+        if event_type is not None:
+            conditions["event_type"] = event_type
+        if start_time is not None and start_time > 0:
+            conditions["start_time_gte"] = start_time
+        conditions["namespace"] = namespace
+        mongo_events = cls.objects(server_id=server_id).filter(**conditions).order_by("version")
         return cls.convert_to_base_events(mongo_events)
 
     @classmethod
