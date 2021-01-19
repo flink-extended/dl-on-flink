@@ -216,7 +216,7 @@ class MemberModel(Base):
     __tablename__ = "member_model"
     id = Column(BigInteger().with_variant(Integer, "sqlite"), primary_key=True)
     version = Column(BigInteger(), nullable=False)
-    server_uri = Column(String(1024), nullable=False, unique=True)
+    server_uri = Column(String(767), nullable=False, unique=True)
     update_time = Column(BigInteger(), nullable=False)
     uuid = Column(String(128), nullable=False, unique=True)
 
