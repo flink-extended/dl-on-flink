@@ -91,7 +91,7 @@ class SqlModelRelation(base, Base):
     project_id = Column(BigInteger, ForeignKey('project.uuid', onupdate='cascade'))
     is_deleted = Column(String(256), default='False')
 
-    model_relation = relationship("SqlProject", backref=backref('model_relation', cascade='all'))
+    project = relationship("SqlProject", backref=backref('model_relation', cascade='all'))
 
     def __repr__(self):
         return '<model_relation ({}, {}, {})>'.format(self.uuid, self.name, self.project_id)
@@ -130,7 +130,7 @@ class SqlWorkflowExecution(base, Base):
     project_id = Column(BigInteger, ForeignKey('project.uuid', onupdate='cascade'))
     is_deleted = Column(String(256), default='False')
 
-    workflow_execution = relationship("SqlProject", backref=backref('workflow_execution', cascade='all'))
+    project = relationship("SqlProject", backref=backref('workflow_execution', cascade='all'))
 
     def __repr__(self):
         return '<workflow_execution ({}, {}, {}, {}, {}, {}, {}, {}, {}, {})>'.format(self.uuid, self.name,
@@ -158,8 +158,8 @@ class SqlModelVersionRelation(base):
     UniqueConstraint(version, model_id)
     UniqueConstraint(version, workflow_execution_id)
 
-    model_version_relations = relationship("SqlModelRelation", backref=backref('model_version_relation', cascade='all'))
-    model_version_relation = relationship("SqlWorkflowExecution",
+    model_relation = relationship("SqlModelRelation", backref=backref('model_version_relation', cascade='all'))
+    workflow_execution = relationship("SqlWorkflowExecution",
                                           backref=backref('model_version_relation', cascade='all'))
 
     def __repr__(self):
@@ -184,7 +184,7 @@ class SqlJob(base, Base):
     workflow_execution_id = Column(BigInteger, ForeignKey('workflow_execution.uuid', onupdate='cascade'))
     is_deleted = Column(String(256), default='False')
 
-    job = relationship("SqlWorkflowExecution", backref=backref('job_info', cascade='all'))
+    workflow_execution = relationship("SqlWorkflowExecution", backref=backref('job_info', cascade='all'))
 
     def __repr__(self):
         return '<SqlJob ({}, {}, {}, {}, {}, {}, {}, {}, {}, {})>'.format(self.uuid, self.job_id, self.name,
