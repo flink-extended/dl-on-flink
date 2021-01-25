@@ -16,13 +16,30 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+import time
 from typing import List
 import unittest
 from notification_service.base_notification import BaseEvent, EventWatcher
 from notification_service.client import NotificationClient
 from notification_service.event_storage import MemoryEventStorage, DbEventStorage
+from notification_service.high_availability import SimpleNotificationServerHaManager, DbHighAvailabilityStorage
 from notification_service.master import NotificationMaster
-from notification_service.service import NotificationService
+from notification_service.service import NotificationService, HighAvailabilityNotificationService
+
+
+def start_ha_master(host, port):
+    server_uri = host + ":" + str(port)
+    storage = DbEventStorage()
+    ha_manager = SimpleNotificationServerHaManager()
+    ha_storage = DbHighAvailabilityStorage()
+    service = HighAvailabilityNotificationService(
+        storage,
+        ha_manager,
+        server_uri,
+        ha_storage)
+    master = NotificationMaster(service, port=port)
+    master.run()
+    return master
 
 
 class NotificationTest(object):
@@ -195,3 +212,41 @@ class MemoryStorageTest(unittest.TestCase, NotificationTest):
         self.client.stop_listen_events()
         self.client.stop_listen_event()
 
+
+class HaDbStorageTest(unittest.TestCase, NotificationTest):
+    """
+    This test is used to ensure the high availability would not break the original functionality.
+    """
+
+    @classmethod
+    def set_up_class(cls):
+        cls.storage = DbEventStorage()
+        cls.master1 = start_ha_master("localhost", 50051)
+        # The server startup is asynchronous, we need to wait for a while
+        # to ensure it writes its metadata to the db.
+        time.sleep(0.1)
+        cls.master2 = start_ha_master("localhost", 50052)
+        time.sleep(0.1)
+        cls.master3 = start_ha_master("localhost", 50053)
+        time.sleep(0.1)
+
+    @classmethod
+    def setUpClass(cls):
+        cls.set_up_class()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.master1.stop()
+        cls.master2.stop()
+        cls.master3.stop()
+
+    def setUp(self):
+        self.storage.clean_up()
+        self.client = NotificationClient(server_uri="localhost:50052", enable_ha=True,
+                                         list_member_interval_ms=1000,
+                                         retry_timeout_ms=10000)
+
+    def tearDown(self):
+        self.client.stop_listen_events()
+        self.client.stop_listen_event()
+        self.client.disable_high_availability()
