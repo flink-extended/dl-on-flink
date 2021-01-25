@@ -74,5 +74,47 @@ class ProjectConfig(AIFlowConfiguration):
     def set_schedule_interval(self, schedule_interval):
         self["schedule_interval"] = schedule_interval
 
+    def get_enable_ha(self):
+        if "enable_ha" in self:
+            raw = self["enable_ha"]
+            assert str(raw).strip().lower() in {"true", "false"}
+            return bool(str(raw).strip().lower())
+        else:
+            return False
+
+    def set_enable_ha(self, enable_ha):
+        assert str(enable_ha).strip().lower() in {"true", "false"}
+        self["enable_ha"] = enable_ha
+
+    def _get_time_interval_ms(self, key, default):
+        if key in self:
+            raw = self[key]
+            assert int(str(raw).strip()) >= 0
+            return int(str(raw).strip())
+        else:
+            return default
+
+    def _set_time_interval_ms(self, key, value):
+        assert int(str(value).strip()) >= 0
+        self[key] = value
+
+    def get_list_member_interval_ms(self):
+        return self._get_time_interval_ms("list_member_interval_ms", 5000)
+
+    def set_list_member_interval_ms(self, list_member_interval_ms):
+        self._set_time_interval_ms("list_member_interval_ms", list_member_interval_ms)
+
+    def get_retry_interval_ms(self):
+        return self._get_time_interval_ms("retry_interval_ms", 1000)
+
+    def set_retry_interval_ms(self, retry_interval_ms):
+        self._set_time_interval_ms("retry_interval_ms", retry_interval_ms)
+
+    def get_retry_timeout_ms(self):
+        return self._get_time_interval_ms("retry_timeout_ms", 10000)
+
+    def set_retry_timeout_ms(self, retry_timeout_ms):
+        self._set_time_interval_ms("retry_timeout_ms", retry_timeout_ms)
+
 
 _default_project_config = ProjectConfig()

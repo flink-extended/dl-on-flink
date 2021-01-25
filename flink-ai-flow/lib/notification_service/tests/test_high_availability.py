@@ -25,7 +25,7 @@ from notification_service.client import NotificationClient
 from notification_service.event_storage import DbEventStorage
 from notification_service.high_availability import SimpleNotificationServerHaManager, DbHighAvailabilityStorage
 from notification_service.master import NotificationMaster
-from notification_service.service import HighAvailabilityNotificationService
+from notification_service.service import HighAvailableNotificationService
 
 
 class HaServerTest(unittest.TestCase):
@@ -37,7 +37,7 @@ class HaServerTest(unittest.TestCase):
         storage = DbEventStorage()
         ha_manager = SimpleNotificationServerHaManager()
         ha_storage = DbHighAvailabilityStorage()
-        service = HighAvailabilityNotificationService(
+        service = HighAvailableNotificationService(
             storage,
             ha_manager,
             server_uri,

@@ -68,6 +68,7 @@ class KubernetesJobStatusListener(AbstractJobStatusListener):
         self.status_map = {}
         self.running = True
         self.lock = threading.Lock()
+        self.started = False
 
     def listen(self):
 
@@ -130,9 +131,14 @@ class KubernetesJobStatusListener(AbstractJobStatusListener):
         if not kubernetes_util.kubernetes_cluster_available:
             logging.info("Kubernetes cluster is not available.")
             return
-        self.setDaemon(daemonic=True)
-        self.setName(self.platform + "_listener")
-        self.start()
+        if not self.started:
+            self.setDaemon(daemonic=True)
+            self.setName(self.platform + "_listener")
+            self.start()
+            self.started = True
+        else:
+            logging.error("The LocalJobStatusListener can not be started twice! "
+                          "Please check the code.")
 
     def stop_listen(self):
         if not kubernetes_util.kubernetes_cluster_available:

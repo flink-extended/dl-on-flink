@@ -19,10 +19,10 @@
 import os
 import time
 import unittest
-from abc import ABCMeta
 from typing import List
 from unittest import TestCase
 
+from ai_flow.project.project_config import ProjectConfig
 from notification_service.base_notification import EventWatcher
 
 from ai_flow.common.properties import Properties
@@ -35,7 +35,7 @@ from ai_flow.model_center.entity.model_version_stage import ModelVersionStage
 from ai_flow.rest_endpoint.protobuf.message_pb2 import RESOURCE_ALREADY_EXISTS
 from ai_flow.rest_endpoint.service.client.aiflow_client import AIFlowClient
 from ai_flow.rest_endpoint.service.exception import AIFlowException
-from ai_flow.rest_endpoint.service.server import AIFlowServer
+from ai_flow.rest_endpoint.service.server import AIFlowServer, HighAvailableAIFlowServer
 from ai_flow.store.db.base_model import base
 from ai_flow.test.store.test_sqlalchemy_store import _get_store
 
@@ -48,35 +48,7 @@ client1 = None
 client2 = None
 
 
-class TestAIFlowClientSqlite(unittest.TestCase):
-    __metaclass__ = ABCMeta
-
-    @classmethod
-    def setUpClass(cls) -> None:
-        global client, client1, client2
-        print("TestAIFlowClientSqlite setUpClass")
-        if os.path.exists(_SQLITE_DB_FILE):
-            os.remove(_SQLITE_DB_FILE)
-        cls.server = AIFlowServer(store_uri=_SQLITE_DB_URI, port=_PORT)
-        cls.server.run()
-        client = AIFlowClient(server_uri='localhost:' + _PORT)
-        client1 = AIFlowClient(server_uri='localhost:' + _PORT)
-        client2 = AIFlowClient(server_uri='localhost:' + _PORT)
-
-    @classmethod
-    def tearDownClass(cls) -> None:
-        client.stop_listen_event()
-        client1.stop_listen_event()
-        client2.stop_listen_event()
-        cls.server.stop()
-        os.remove(_SQLITE_DB_FILE)
-
-    def setUp(self) -> None:
-        _get_store(_SQLITE_DB_URI)
-
-    def tearDown(self) -> None:
-        store = _get_store(_SQLITE_DB_URI)
-        base.metadata.drop_all(store.db_engine)
+class AIFlowClientTestCases(object):
 
     """test example"""
 
@@ -1063,40 +1035,42 @@ class TestAIFlowClientSqlite(unittest.TestCase):
         self.assertIsNotNone(response)
         self.assertEqual(response.key, key)
         self.assertEqual(response.value, value1)
-        self.assertEqual(response.version, 1)
+        self.assertTrue(response.version > 0)
         notifications = client.list_events(key=key)
         self.assertEqual(len(notifications), 1)
         self.assertEqual(notifications[0].key, key)
         self.assertEqual(notifications[0].value, value1)
-        self.assertEqual(notifications[0].version, 1)
+        self.assertEqual(notifications[0].version, response.version)
         notifications = client.list_events(key=key, version=0)
         self.assertEqual(len(notifications), 1)
         self.assertEqual(notifications[0].key, key)
         self.assertEqual(notifications[0].value, value1)
 
         value2 = 'test_publish_event_value2'
+        old_response = response
         response = client.publish_event(key=key, value=value2)
         self.assertIsNotNone(response)
-        self.assertEqual(response.version, 2)
+        self.assertEqual(response.version, old_response.version + 1)
         notifications = client.list_events(key=key)
         self.assertEqual(len(notifications), 2)
         self.assertEqual(notifications[1].key, key)
         self.assertEqual(notifications[1].value, value2)
-        self.assertEqual(notifications[1].version, 2)
-        notifications = client.list_events(key=key, version=1)
+        self.assertEqual(notifications[1].version, old_response.version + 1)
+        notifications = client.list_events(key=key, version=old_response.version)
         self.assertEqual(len(notifications), 1)
         self.assertEqual(notifications[0].key, key)
         self.assertEqual(notifications[0].value, value2)
 
+        old_response = response
         response = client.publish_event(key=key, value=value2)
         self.assertIsNotNone(response)
-        self.assertEqual(response.version, 3)
+        self.assertEqual(response.version, old_response.version + 1)
         notifications = client.list_events(key=key)
         self.assertEqual(len(notifications), 3)
         self.assertEqual(notifications[2].key, key)
         self.assertEqual(notifications[2].value, value2)
-        self.assertEqual(notifications[2].version, 3)
-        notifications = client.list_events(key=key, version=2)
+        self.assertEqual(notifications[2].version, old_response.version + 1)
+        notifications = client.list_events(key=key, version=old_response.version)
         self.assertEqual(len(notifications), 1)
         self.assertEqual(notifications[0].key, key)
         self.assertEqual(notifications[0].value, value2)
@@ -1294,6 +1268,76 @@ class TestAIFlowClientSqlite(unittest.TestCase):
         client.delete_metric_summary(metric_summary_result[2][0].uuid)
         metric_summary_result = client.get_metric_summary(metric_id=1)
         self.assertEqual(1, len(metric_summary_result[2]))
+
+
+class TestAIFlowClientSqlite(AIFlowClientTestCases, unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        global client, client1, client2
+        print("TestAIFlowClientSqlite setUpClass")
+        if os.path.exists(_SQLITE_DB_FILE):
+            os.remove(_SQLITE_DB_FILE)
+        cls.server = AIFlowServer(store_uri=_SQLITE_DB_URI, port=_PORT)
+        cls.server.run()
+        client = AIFlowClient(server_uri='localhost:' + _PORT)
+        client1 = AIFlowClient(server_uri='localhost:' + _PORT)
+        client2 = AIFlowClient(server_uri='localhost:' + _PORT)
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        client.stop_listen_event()
+        client1.stop_listen_event()
+        client2.stop_listen_event()
+        cls.server.stop()
+        os.remove(_SQLITE_DB_FILE)
+
+    def setUp(self) -> None:
+        _get_store(_SQLITE_DB_URI)
+
+    def tearDown(self) -> None:
+        store = _get_store(_SQLITE_DB_URI)
+        base.metadata.drop_all(store.db_engine)
+
+
+class TestAIFlowClientSqliteWithSingleHighAvailableServer(
+        AIFlowClientTestCases, unittest.TestCase):
+    """
+    Used to ensure the high available server has the same functionality with normal server.
+    """
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        global client, client1, client2
+        print("TestAIFlowClientSqlite setUpClass")
+        if os.path.exists(_SQLITE_DB_FILE):
+            os.remove(_SQLITE_DB_FILE)
+        cls.server = HighAvailableAIFlowServer(store_uri=_SQLITE_DB_URI, port=_PORT,
+                                               server_uri='localhost:' + _PORT)
+        cls.server.run()
+        config = ProjectConfig()
+        config.set_enable_ha(True)
+        client = AIFlowClient(server_uri='localhost:' + _PORT, project_config=config)
+        client1 = AIFlowClient(server_uri='localhost:' + _PORT, project_config=config)
+        client2 = AIFlowClient(server_uri='localhost:' + _PORT, project_config=config)
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        client.stop_listen_event()
+        client.disable_high_availability()
+        client1.stop_listen_event()
+        client1.disable_high_availability()
+        client2.stop_listen_event()
+        client2.disable_high_availability()
+        cls.server.stop()
+        os.remove(_SQLITE_DB_FILE)
+
+    def setUp(self) -> None:
+        _get_store(_SQLITE_DB_URI)
+
+    def tearDown(self) -> None:
+        store = _get_store(_SQLITE_DB_URI)
+        base.metadata.drop_all(store.db_engine)
 
 
 if __name__ == '__main__':
