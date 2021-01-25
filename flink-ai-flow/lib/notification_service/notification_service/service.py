@@ -268,7 +268,7 @@ class NotificationService(notification_service_pb2_grpc.NotificationServiceServi
             return_msg='')
 
 
-class HighAvailabilityNotificationService(NotificationService):
+class HighAvailableNotificationService(NotificationService):
 
     def __init__(self,
                  storage,
@@ -277,7 +277,7 @@ class HighAvailabilityNotificationService(NotificationService):
                  ha_storage,
                  ttl_ms: int = 10000,
                  min_notify_interval_ms: int = 100):
-        super(HighAvailabilityNotificationService, self).__init__(storage)
+        super(HighAvailableNotificationService, self).__init__(storage)
         self.server_uri = server_uri
         self.ha_storage = ha_storage
         self.ttl_ms = ttl_ms
@@ -296,7 +296,7 @@ class HighAvailabilityNotificationService(NotificationService):
         self.ha_manager.stop()
 
     async def _send_event(self, request):
-        response = await super(HighAvailabilityNotificationService, self)._send_event(request)
+        response = await super(HighAvailableNotificationService, self)._send_event(request)
         try:
             if response.return_code == notification_service_pb2.ReturnStatus.SUCCESS:
                 self.ha_manager.notify_others(event_proto_to_event(response.event))
