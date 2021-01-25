@@ -104,18 +104,17 @@ class MongoNotificationTest(unittest.TestCase):
 
             def process(self, events: List[BaseEvent]):
                 self.event_list.extend(events)
-
         try:
             self.client.start_listen_events(watcher=TestWatch(event_list))
-            event = self.client.send_event(BaseEvent(key="key1", value="value1"))
-            event = self.client.send_event(BaseEvent(key="key2", value="value2"))
-            event = self.client.send_event(BaseEvent(key="key3", value="value3"))
+            self.client.send_event(BaseEvent(key="key1", value="value1"))
+            self.client.send_event(BaseEvent(key="key2", value="value2"))
+            self.client.send_event(BaseEvent(key="key3", value="value3"))
         finally:
             self.client.stop_listen_events()
         self.assertEqual(3, len(event_list))
 
     def test_6_get_latest_version(self):
-        event = self.client.send_event(BaseEvent(key="key", value="value1"))
-        event = self.client.send_event(BaseEvent(key="key", value="value2"))
+        self.client.send_event(BaseEvent(key="key", value="value1"))
+        self.client.send_event(BaseEvent(key="key", value="value2"))
         latest_version = self.client.get_latest_version(key="key")
         print("#####latest version of key: {}".format(latest_version))
