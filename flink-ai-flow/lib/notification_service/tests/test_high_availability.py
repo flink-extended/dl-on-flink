@@ -16,6 +16,7 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+import os
 import time
 import unittest
 import sqlalchemy
@@ -53,11 +54,17 @@ class HaServerTest(unittest.TestCase):
         return master
 
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls) -> None:
+        if os.path.exists(_SQLITE_DB_FILE):
+            os.remove(_SQLITE_DB_FILE)
         cls.storage = DbEventStorage()
         cls.master1 = None
         cls.master2 = None
         cls.master3 = None
+    
+    @classmethod
+    def tearDownClass(cls) -> None:
+        os.remove(_SQLITE_DB_FILE)
 
     def setUp(self):
         self.storage.clean_up()
