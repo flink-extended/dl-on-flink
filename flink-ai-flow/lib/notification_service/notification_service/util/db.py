@@ -265,6 +265,29 @@ class MemberModel(Base):
 
     @staticmethod
     @provide_session
+    def get_dead_members(ttl, session=None):
+        member_models = session.query(MemberModel) \
+            .filter(MemberModel.update_time < time.time_ns() / 1000000 - ttl) \
+            .all()
+        return [Member(m.version, m.server_uri, int(m.update_time)) for m in member_models]
+
+    @staticmethod
+    @provide_session
+    def delete_member(server_uri=None, server_uuid=None, session=None):
+        conditions = []
+        if server_uri:
+            conditions.append(MemberModel.server_uri == server_uri)
+        if server_uuid:
+            conditions.append(MemberModel.uuid == server_uuid)
+        if len(conditions) != 1:
+            raise Exception("Please provide exactly one param, server_uri or server_uuid")
+        member = session.query(MemberModel).filter(*conditions).first()
+        if member is not None:
+            session.delete(member)
+        session.commit()
+
+    @staticmethod
+    @provide_session
     def clear_dead_members(ttl, session=None):
         session.query(MemberModel) \
             .filter(MemberModel.update_time < time.time_ns() / 1000000 - ttl) \
