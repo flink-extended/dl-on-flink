@@ -66,6 +66,10 @@ class HaServerTest(unittest.TestCase):
     def tearDownClass(cls) -> None:
         os.remove(_SQLITE_DB_FILE)
 
+    @classmethod
+    def tearDownClass(cls) -> None:
+        os.remove(_SQLITE_DB_FILE)
+
     def setUp(self):
         self.storage.clean_up()
         self.master1 = self.start_master("localhost", "50051")
