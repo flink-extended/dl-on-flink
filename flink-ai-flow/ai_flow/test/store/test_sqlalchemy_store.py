@@ -844,64 +844,6 @@ class TestSqlAlchemyStoreSqlite(unittest.TestCase):
 
         self.store.delete_model_version(model_version)
 
-    def _add_event(self, key, value):
-        return self.store.add_event(BaseEvent(key, value))
-
-    def test_create_notification(self):
-        key = 'test_for_update_ev_key'
-        value = 'test_for_update_ev_value'
-        with mock.patch('time.time') as mock_time:
-            mock_time.return_value = 456778
-            event1 = self._add_event(key, value)
-            self.assertEqual(event1.key, key)
-            self.assertEqual(event1.value, value)
-            self.assertEqual(event1.version, 1)
-
-        # new model versions for same name autoincrement versions
-        event2 = self._add_event(key, value)
-        self.assertEqual(event2.key, key)
-        self.assertEqual(event2.value, value)
-        self.assertEqual(event2.version, 2)
-
-        event3 = self._add_event(key, value)
-        self.assertEqual(event3.key, key)
-        self.assertEqual(event3.value, value)
-        self.assertEqual(event3.version, 3)
-
-    def test_list_notifications(self):
-        key = 'test_for_list_ev_key'
-        value1 = 'test_for_list_ev_value1'
-        notification1 = self._add_event(key, value1)
-        self.assertEqual(notification1.key, key)
-        self.assertEqual(notification1.value, value1)
-        self.assertEqual(notification1.version, 1)
-        value2 = 'test_for_list_ev_value2'
-        notification2 = self._add_event(key, value2)
-        self.assertEqual(notification2.value, value2)
-        self.assertEqual(notification2.version, 2)
-        value3 = 'test_for_list_ev_value3'
-        notification3 = self._add_event(key, value3)
-        self.assertEqual(notification3.value, value3)
-        self.assertEqual(notification3.version, 3)
-        value4 = 'test_for_list_ev_value4'
-        notification4 = self._add_event(key, value4)
-        self.assertEqual(notification4.value, value4)
-        self.assertEqual(notification4.version, 4)
-
-        notifications = self.store.list_events(key=key)
-        self.assertEqual(len(notifications), 4)
-        self.assertEqual(set([le.value for le in notifications]), {value1, value2, value3, value4})
-        notifications = self.store.list_events(key=key, version=2)
-        self.assertEqual(len(notifications), 2)
-        self.assertEqual(set([le.value for le in notifications]), {value3, value4})
-        latest_version = self.store.get_latest_version(key=key)
-        self.assertEqual(latest_version, 4)
-        notifications = self.store.list_all_events_from_version(start_version=0)
-        self.assertEqual(len(notifications), 4)
-        self.store.clean_up()
-        notifications = self.store.list_all_events_from_version(start_version=0)
-        self.assertEqual(len(notifications), 0)
-
     def test_create_metric_meta(self):
         start = round(time.time())
         end = start + 1

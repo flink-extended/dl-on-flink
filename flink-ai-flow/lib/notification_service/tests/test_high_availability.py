@@ -16,16 +16,23 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+import os
 import time
 import unittest
+import sqlalchemy
 from typing import List
+from sqlalchemy.ext.declarative import declarative_base
 
 from notification_service.base_notification import BaseEvent, EventWatcher
 from notification_service.client import NotificationClient
 from notification_service.event_storage import DbEventStorage
 from notification_service.high_availability import SimpleNotificationServerHaManager, DbHighAvailabilityStorage
 from notification_service.master import NotificationMaster
-from notification_service.service import HighAvailabilityNotificationService
+from notification_service.service import HighAvailableNotificationService
+
+
+_SQLITE_DB_FILE = 'notification_service.db'
+_SQLITE_DB_URI = '%s%s' % ('sqlite:///', _SQLITE_DB_FILE)
 
 
 class HaServerTest(unittest.TestCase):
@@ -36,8 +43,8 @@ class HaServerTest(unittest.TestCase):
         server_uri = host + ":" + port
         storage = DbEventStorage()
         ha_manager = SimpleNotificationServerHaManager()
-        ha_storage = DbHighAvailabilityStorage()
-        service = HighAvailabilityNotificationService(
+        ha_storage = DbHighAvailabilityStorage(db_conn=_SQLITE_DB_URI)
+        service = HighAvailableNotificationService(
             storage,
             ha_manager,
             server_uri,
@@ -47,16 +54,23 @@ class HaServerTest(unittest.TestCase):
         return master
 
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls) -> None:
+        if os.path.exists(_SQLITE_DB_FILE):
+            os.remove(_SQLITE_DB_FILE)
         cls.storage = DbEventStorage()
         cls.master1 = None
         cls.master2 = None
         cls.master3 = None
 
+    @classmethod
+    def tearDownClass(cls) -> None:
+        os.remove(_SQLITE_DB_FILE)
+
     def setUp(self):
         self.storage.clean_up()
         self.master1 = self.start_master("localhost", "50051")
         self.client = NotificationClient(server_uri="localhost:50051", enable_ha=True)
+        self.wait_for_new_members_detected("localhost:50051")
 
     def tearDown(self):
         self.client.stop_listen_events()
@@ -68,6 +82,8 @@ class HaServerTest(unittest.TestCase):
             self.master2.stop()
         if self.master3 is not None:
             self.master3.stop()
+        db_engine = sqlalchemy.create_engine(_SQLITE_DB_URI, pool_pre_ping=True)
+        declarative_base().metadata.drop_all(db_engine)
 
     def wait_for_new_members_detected(self, new_member_uri):
         for i in range(100):
@@ -77,7 +93,7 @@ class HaServerTest(unittest.TestCase):
             else:
                 time.sleep(0.1)
 
-    def test_server_change(self):
+    def test_1_server_change(self):
         self.client.send_event(BaseEvent(key="key", value="value1"))
         self.client.send_event(BaseEvent(key="key", value="value2"))
         self.client.send_event(BaseEvent(key="key", value="value3"))
@@ -96,7 +112,7 @@ class HaServerTest(unittest.TestCase):
         self.assertEqual(results2, results3)
         self.assertEqual(self.client.current_uri, "localhost:50053")
 
-    def test_send_listening_on_different_server(self):
+    def test_2_send_listening_on_different_server(self):
         event_list = []
 
         class TestWatch(EventWatcher):
@@ -119,7 +135,7 @@ class HaServerTest(unittest.TestCase):
             self.client.stop_listen_events()
         self.assertEqual(2, len(event_list))
 
-    def test_start_with_multiple_servers(self):
+    def test_3_start_with_multiple_servers(self):
         self.client.disable_high_availability()
         self.client = NotificationClient(server_uri="localhost:55001,localhost:50051", enable_ha=True)
         self.assertTrue(self.client.current_uri, "localhost:50051")
