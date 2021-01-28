@@ -235,6 +235,9 @@ class NotificationService(notification_service_pb2_grpc.NotificationServiceServi
                     self.notification_conditions.get((notify.key, notify.namespace)).notify_all()
         async with self.write_condition:
             self.write_condition.notify_all()
+        return notification_service_pb2.NotifyResponse(
+            return_code=notification_service_pb2.ReturnStatus.SUCCESS,
+            return_msg='')
 
     @asyncio.coroutine
     def listMembers(self, request, context):
