@@ -41,10 +41,22 @@ class HaServerTest(unittest.TestCase):
             storage,
             ha_manager,
             server_uri,
-            ha_storage)
+            ha_storage,
+            5000)
         master = NotificationMaster(service, port=int(port))
         master.run()
         return master
+
+    @classmethod
+    def wait_for_master_started(cls, server_uri="localhost:50051"):
+        last_exception = None
+        for i in range(100):
+            try:
+                return NotificationClient(server_uri="localhost:50051", enable_ha=True)
+            except Exception as e:
+                time.sleep(0.1)
+                last_exception = e
+        raise Exception("The server %s is unavailable." % server_uri) from last_exception
 
     @classmethod
     def setUpClass(cls):
@@ -56,7 +68,7 @@ class HaServerTest(unittest.TestCase):
     def setUp(self):
         self.storage.clean_up()
         self.master1 = self.start_master("localhost", "50051")
-        self.client = NotificationClient(server_uri="localhost:50051", enable_ha=True)
+        self.client = self.wait_for_master_started("localhost:50051")
 
     def tearDown(self):
         self.client.stop_listen_events()
