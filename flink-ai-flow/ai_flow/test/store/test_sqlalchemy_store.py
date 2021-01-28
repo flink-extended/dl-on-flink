@@ -899,6 +899,8 @@ class TestSqlAlchemyStoreSqlite(unittest.TestCase):
         notifications = self.store.list_all_events_from_version(start_version=0)
         self.assertEqual(len(notifications), 4)
         self.store.clean_up()
+        notifications = self.store.list_all_events_from_version(start_version=0)
+        self.assertEqual(len(notifications), 0)
 
     def test_create_metric_meta(self):
         start = round(time.time())

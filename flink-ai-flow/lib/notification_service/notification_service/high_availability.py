@@ -90,7 +90,7 @@ class DbHighAvailabilityStorage(HighAvailabilityStorage):
     def update_member(self, server_uri, server_uuid):
         MemberModel.update_member(server_uri, server_uuid)
 
-    def delete_member(self, server_uri, server_uuid=None):
+    def delete_member(self, server_uri=None, server_uuid=None):
         MemberModel.delete_member(server_uri, server_uuid)
 
     def clear_dead_members(self, ttl_ms):
