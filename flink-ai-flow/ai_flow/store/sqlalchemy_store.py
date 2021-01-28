@@ -1798,7 +1798,8 @@ class SqlAlchemyStore(AbstractStore):
 
     def get_latest_version(self, key: str, namespace: str = None):
         with self.ManagedSessionMaker() as session:
-            return session.query(SqlEvent).filter(SqlEvent.key == key).count()
+            latest_event = session.query(SqlEvent).filter(SqlEvent.key == key).order_by(SqlEvent.version.desc()).first()
+            return latest_event.version if latest_event else 0
 
     def clean_up(self):
         with self.ManagedSessionMaker() as session:
