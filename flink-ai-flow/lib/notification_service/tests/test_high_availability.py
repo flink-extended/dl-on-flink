@@ -61,7 +61,7 @@ class HaServerTest(unittest.TestCase):
             try:
                 return NotificationClient(server_uri="localhost:50051", enable_ha=True)
             except Exception as e:
-                time.sleep(0.1)
+                time.sleep(10)
                 last_exception = e
         raise Exception("The server %s is unavailable." % server_uri) from last_exception
 
@@ -100,7 +100,7 @@ class HaServerTest(unittest.TestCase):
             if new_member_uri in living_member:
                 break
             else:
-                time.sleep(0.1)
+                time.sleep(10)
 
     def test_server_change(self):
         self.client.send_event(BaseEvent(key="key", value="value1"))
