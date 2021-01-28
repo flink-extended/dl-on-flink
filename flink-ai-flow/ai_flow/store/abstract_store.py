@@ -20,10 +20,9 @@ from abc import abstractmethod, ABCMeta
 from typing import Text, Union, List, Optional
 
 from ai_flow.meta.metric_meta import MetricMeta, MetricSummary
-from notification_service.event_storage import BaseEventStorage
 
 
-class AbstractStore(BaseEventStorage):
+class AbstractStore(object):
     __metaclass__ = ABCMeta
 
     def __init__(self):
@@ -787,4 +786,18 @@ class AbstractStore(BaseEventStorage):
         :param metric_id:
         :return:
         """
+        pass
+
+    """For high availability:"""
+
+    @abstractmethod
+    def list_living_members(self, ttl_ms) -> List['Member']:
+        pass
+
+    @abstractmethod
+    def update_member(self, server_uri, server_uuid):
+        pass
+
+    @abstractmethod
+    def clear_dead_members(self, ttl_ms):
         pass
