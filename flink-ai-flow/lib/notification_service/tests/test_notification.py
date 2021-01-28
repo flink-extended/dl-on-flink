@@ -24,7 +24,7 @@ from notification_service.client import NotificationClient
 from notification_service.event_storage import MemoryEventStorage, DbEventStorage
 from notification_service.high_availability import SimpleNotificationServerHaManager, DbHighAvailabilityStorage
 from notification_service.master import NotificationMaster
-from notification_service.service import NotificationService, HighAvailabilityNotificationService
+from notification_service.service import NotificationService, HighAvailableNotificationService
 
 
 def start_ha_master(host, port):
@@ -32,7 +32,7 @@ def start_ha_master(host, port):
     storage = DbEventStorage()
     ha_manager = SimpleNotificationServerHaManager()
     ha_storage = DbHighAvailabilityStorage()
-    service = HighAvailabilityNotificationService(
+    service = HighAvailableNotificationService(
         storage,
         ha_manager,
         server_uri,

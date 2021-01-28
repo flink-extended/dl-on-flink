@@ -169,6 +169,13 @@ python3 -m grpc.tools.protoc -I. \
   --grpc_python_out=.. \
   metric_service.proto
 
+python3 -m grpc.tools.protoc -I. \
+  -I/usr/local/include \
+  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+  --python_out=.. \
+  --grpc_python_out=.. \
+  high_availability.proto
+
 cd ..
 
 sed -i '' 's/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/\/\/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/g' go/metadata_service.pb.go
@@ -185,5 +192,6 @@ sed -i -E 's/^import model_center_service_pb2 as model__center__service__pb2/fro
 #sed -i -E 's/^import notification_service_pb2 as notification__service__pb2/from \. import notification_service_pb2 as notification__service__pb2/' *pb2*.py
 sed -i -E 's/^import deploy_service_pb2 as deploy__service__pb2/from \. import deploy_service_pb2 as deploy__service__pb2/' *pb2*.py
 sed -i -E 's/^import metric_service_pb2 as metric__service__pb2/from \. import metric_service_pb2 as metric__service__pb2/' *pb2*.py
+sed -i -E 's/^import high_availability_pb2 as high__availability__pb2/from \. import high_availability_pb2 as high__availability__pb2/' *pb2*.py
 
 rm -rf *.py-E
