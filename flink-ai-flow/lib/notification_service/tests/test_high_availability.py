@@ -48,15 +48,25 @@ class HaServerTest(unittest.TestCase):
             storage,
             ha_manager,
             server_uri,
-            ha_storage)
+            ha_storage,
+            5000)
         master = NotificationMaster(service, port=int(port))
         master.run()
         return master
 
     @classmethod
-    def setUpClass(cls) -> None:
-        if os.path.exists(_SQLITE_DB_FILE):
-            os.remove(_SQLITE_DB_FILE)
+    def wait_for_master_started(cls, server_uri="localhost:50051"):
+        last_exception = None
+        for i in range(100):
+            try:
+                return NotificationClient(server_uri="localhost:50051", enable_ha=True)
+            except Exception as e:
+                time.sleep(0.1)
+                last_exception = e
+        raise Exception("The server %s is unavailable." % server_uri) from last_exception
+
+    @classmethod
+    def setUpClass(cls):
         cls.storage = DbEventStorage()
         cls.master1 = None
         cls.master2 = None
@@ -69,8 +79,7 @@ class HaServerTest(unittest.TestCase):
     def setUp(self):
         self.storage.clean_up()
         self.master1 = self.start_master("localhost", "50051")
-        self.client = NotificationClient(server_uri="localhost:50051", enable_ha=True)
-        self.wait_for_new_members_detected("localhost:50051")
+        self.client = self.wait_for_master_started("localhost:50051")
 
     def tearDown(self):
         self.client.stop_listen_events()
@@ -93,7 +102,7 @@ class HaServerTest(unittest.TestCase):
             else:
                 time.sleep(0.1)
 
-    def test_1_server_change(self):
+    def test_server_change(self):
         self.client.send_event(BaseEvent(key="key", value="value1"))
         self.client.send_event(BaseEvent(key="key", value="value2"))
         self.client.send_event(BaseEvent(key="key", value="value3"))
@@ -112,7 +121,7 @@ class HaServerTest(unittest.TestCase):
         self.assertEqual(results2, results3)
         self.assertEqual(self.client.current_uri, "localhost:50053")
 
-    def test_2_send_listening_on_different_server(self):
+    def test_send_listening_on_different_server(self):
         event_list = []
 
         class TestWatch(EventWatcher):
@@ -135,7 +144,7 @@ class HaServerTest(unittest.TestCase):
             self.client.stop_listen_events()
         self.assertEqual(2, len(event_list))
 
-    def test_3_start_with_multiple_servers(self):
+    def test_start_with_multiple_servers(self):
         self.client.disable_high_availability()
         self.client = NotificationClient(server_uri="localhost:55001,localhost:50051", enable_ha=True)
         self.assertTrue(self.client.current_uri, "localhost:50051")
