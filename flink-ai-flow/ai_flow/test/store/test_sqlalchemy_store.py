@@ -894,6 +894,11 @@ class TestSqlAlchemyStoreSqlite(unittest.TestCase):
         notifications = self.store.list_events(key=key, version=2)
         self.assertEqual(len(notifications), 2)
         self.assertEqual(set([le.value for le in notifications]), {value3, value4})
+        latest_version = self.store.get_latest_version(key=key)
+        self.assertEqual(latest_version, 4)
+        notifications = self.store.list_all_events_from_version(start_version=0)
+        self.assertEqual(len(notifications), 4)
+        self.store.clean_up()
 
     def test_create_metric_meta(self):
         start = round(time.time())
