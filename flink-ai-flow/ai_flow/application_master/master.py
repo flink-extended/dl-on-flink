@@ -18,7 +18,7 @@
 #
 import os
 from typing import Text
-from ai_flow.rest_endpoint.service.server import AIFlowServer
+from ai_flow.rest_endpoint.service.server import AIFlowServer, HighAvailableAIFlowServer
 from ai_flow.store.db.base_model import base
 from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
 from ai_flow.application_master.master_config import MasterConfig, DBType
@@ -36,7 +36,7 @@ class AIFlowMaster(object):
     """
     AI flow master.
     """
-    def __init__(self, config_file: Text = None) -> None:
+    def __init__(self, config_file: Text = None, enable_ha=False, server_uri: str = None, ttl_ms=10000) -> None:
         """
         Set the master attribute according to the master config file.
 
@@ -46,6 +46,9 @@ class AIFlowMaster(object):
         self.config_file = config_file
         self.server = None
         self.master_config = MasterConfig()
+        self.enable_ha = enable_ha
+        self.server_uri = server_uri
+        self.ttl_ms = ttl_ms
 
     def start(self,
               is_block=False) -> None:
@@ -61,10 +64,20 @@ class AIFlowMaster(object):
         global GLOBAL_MASTER_CONFIG
         GLOBAL_MASTER_CONFIG = self.master_config
         logging.info("AI Flow Master Config {}".format(GLOBAL_MASTER_CONFIG))
-        self.server = AIFlowServer(store_uri=self.master_config.get_db_uri(),
-                                   port=str(self.master_config.get_master_port()),
-                                   start_default_notification=self.master_config.start_default_notification(),
-                                   notification_uri=self.master_config.get_notification_uri())
+        if not self.master_config.get_enable_ha():
+            self.server = AIFlowServer(
+                store_uri=self.master_config.get_db_uri(),
+                port=str(self.master_config.get_master_port()),
+                start_default_notification=self.master_config.start_default_notification(),
+                notification_uri=self.master_config.get_notification_uri())
+        else:
+            self.server = HighAvailableAIFlowServer(
+                store_uri=self.master_config.get_db_uri(),
+                port=str(self.master_config.get_master_port()),
+                start_default_notification=self.master_config.start_default_notification(),
+                notification_uri=self.master_config.get_notification_uri(),
+                server_uri=self.master_config.get_master_ip() + ":" + self.master_config.get_master_port(),
+                ttl_ms=self.master_config.get_ha_ttl_ms())
         self.server.run(is_block=is_block)
 
     def stop(self, clear_sql_lite_db_file=True) -> None:

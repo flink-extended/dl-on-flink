@@ -273,7 +273,7 @@ class MemberModel(Base):
 
     @staticmethod
     @provide_session
-    def delete_member(server_uri, server_uuid=None, session=None):
+    def delete_member(server_uri=None, server_uuid=None, session=None):
         conditions = []
         if server_uri:
             conditions.append(MemberModel.server_uri == server_uri)

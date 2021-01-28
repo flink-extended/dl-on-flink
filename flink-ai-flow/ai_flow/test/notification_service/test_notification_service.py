@@ -19,6 +19,7 @@
 import asyncio
 import os
 import unittest
+import uuid
 from abc import ABCMeta
 
 import sqlalchemy
@@ -55,12 +56,13 @@ class TestNotificationServiceSqlite(unittest.TestCase):
     async def _send_event(self, k, v, s):
         await asyncio.sleep(s)
         send_event_req = SendEventRequest(
-            event=EventProto(key=k, value=v))
+            event=EventProto(key=k, value=v), uuid=str(uuid.uuid4()))
         await self.notification_service.sendEvent(send_event_req, None)
 
     async def _list_events(self, k, v, timeout):
         list_events_req = ListEventsRequest(
-            event=EventProto(key=k, version=v),
+            keys=[k],
+            start_version=v,
             timeout_seconds=timeout)
         return await self.notification_service.listEvents(list_events_req, None)
 
@@ -79,7 +81,7 @@ class TestNotificationServiceSqlite(unittest.TestCase):
 
     def testnotification_service_with_timeout_waiting(self):
         result = asyncio.get_event_loop().run_until_complete(
-            self._gather_coroutine('test_ns_wait_key', 'test_ns_wait_value', 0, 3, 3))
+            self._gather_coroutine('test_ns_wait_key', 'test_ns_wait_value', 0, 3, 4))
         events = result[0].events
         self.assertEqual(len(events), 0)
 
