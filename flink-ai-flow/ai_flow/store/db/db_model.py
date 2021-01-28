@@ -353,9 +353,25 @@ class SqlMetricSummary(base, Base):
     """
     __tablename__ = 'metric_summary'
     metric_id = Column(BigInteger, nullable=False)
-    metric_key = Column(String(128), nullable=False)
+    metric_key = Column(String(128), unique=True, nullable=False)
     metric_value = Column(String(2048), nullable=False)
     is_deleted = Column(String(128), default='False')
 
     def __repr__(self):
         return '<SqlMetricSummary ({}, {}, {})>'.format(self.metric_id, self.metric_key, self.metric_value)
+
+
+class SqlMember(base):
+    """
+    SQL model of cluster member.
+    """
+    __tablename__ = 'aiflow_member'
+    id = Column(BigInteger().with_variant(Integer, "sqlite"), primary_key=True)
+    version = Column(BigInteger(), nullable=False)
+    server_uri = Column(String(767), nullable=False, unique=True)
+    update_time = Column(BigInteger(), nullable=False)
+    uuid = Column(String(128), nullable=False, unique=True)
+
+    def __repr__(self):
+        return '<SqlMember ({}, {}, {}, {}, {})>'.format(
+            self.id, self.version, self.server_uri, self.update_time, self.uuid)
