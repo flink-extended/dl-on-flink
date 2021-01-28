@@ -1783,6 +1783,27 @@ class SqlAlchemyStore(AbstractStore):
                 event_list.append(sql_event.to_event())
             return event_list
 
+    def list_all_events_from_version(self, start_version: int, end_version: int = None):
+        with self.ManagedSessionMaker() as session:
+            conditions = [
+                SqlEvent.version > start_version
+            ]
+            if end_version is not None and end_version > 0:
+                conditions.append(SqlEvent.version <= end_version)
+            sql_event_list = session.query(SqlEvent).filter(*conditions).all()
+            event_list = []
+            for sql_event in sql_event_list:
+                event_list.append(sql_event.to_event())
+            return event_list
+
+    def get_latest_version(self, key: str, namespace: str = None):
+        with self.ManagedSessionMaker() as session:
+            return session.query(SqlEvent).filter(SqlEvent.key == key).count()
+
+    def clean_up(self):
+        with self.ManagedSessionMaker() as session:
+            session.query(SqlEvent).delete()
+
     def register_metric_meta(self,
                              name,
                              dataset_id,

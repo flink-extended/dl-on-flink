@@ -50,6 +50,21 @@ class NotificationServiceStub(object):
         request_serializer=notification__service__pb2.ListAllEventsRequest.SerializeToString,
         response_deserializer=notification__service__pb2.ListEventsResponse.FromString,
         )
+    self.notify = channel.unary_unary(
+        '/notification_service.NotificationService/notify',
+        request_serializer=notification__service__pb2.NotifyRequest.SerializeToString,
+        response_deserializer=notification__service__pb2.NotifyResponse.FromString,
+        )
+    self.listMembers = channel.unary_unary(
+        '/notification_service.NotificationService/listMembers',
+        request_serializer=notification__service__pb2.ListMembersRequest.SerializeToString,
+        response_deserializer=notification__service__pb2.ListMembersResponse.FromString,
+        )
+    self.notifyNewMember = channel.unary_unary(
+        '/notification_service.NotificationService/notifyNewMember',
+        request_serializer=notification__service__pb2.NotifyNewMemberRequest.SerializeToString,
+        response_deserializer=notification__service__pb2.NotifyNewMemberResponse.FromString,
+        )
     self.getLatestVersionByKey = channel.unary_unary(
         '/notification_service.NotificationService/getLatestVersionByKey',
         request_serializer=notification__service__pb2.GetLatestVersionByKeyRequest.SerializeToString,
@@ -85,6 +100,27 @@ class NotificationServiceServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def notify(self, request, context):
+    """Accepts notifications from other members.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def listMembers(self, request, context):
+    """List current living members.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def notifyNewMember(self, request, context):
+    """Notify current members that there is a new member added.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
   def getLatestVersionByKey(self, request, context):
     """Get latest version by key
     """
@@ -109,6 +145,21 @@ def add_NotificationServiceServicer_to_server(servicer, server):
           servicer.listAllEvents,
           request_deserializer=notification__service__pb2.ListAllEventsRequest.FromString,
           response_serializer=notification__service__pb2.ListEventsResponse.SerializeToString,
+      ),
+      'notify': grpc.unary_unary_rpc_method_handler(
+          servicer.notify,
+          request_deserializer=notification__service__pb2.NotifyRequest.FromString,
+          response_serializer=notification__service__pb2.NotifyResponse.SerializeToString,
+      ),
+      'listMembers': grpc.unary_unary_rpc_method_handler(
+          servicer.listMembers,
+          request_deserializer=notification__service__pb2.ListMembersRequest.FromString,
+          response_serializer=notification__service__pb2.ListMembersResponse.SerializeToString,
+      ),
+      'notifyNewMember': grpc.unary_unary_rpc_method_handler(
+          servicer.notifyNewMember,
+          request_deserializer=notification__service__pb2.NotifyNewMemberRequest.FromString,
+          response_serializer=notification__service__pb2.NotifyNewMemberResponse.SerializeToString,
       ),
       'getLatestVersionByKey': grpc.unary_unary_rpc_method_handler(
           servicer.getLatestVersionByKey,
