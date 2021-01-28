@@ -84,8 +84,14 @@ class DbHighAvailabilityStorage(HighAvailabilityStorage):
     def list_living_members(self, ttl_ms):
         return MemberModel.get_living_members(ttl_ms)
 
+    def list_dead_members(self, ttl_ms):
+        return MemberModel.get_dead_members(ttl_ms)
+
     def update_member(self, server_uri, server_uuid):
         MemberModel.update_member(server_uri, server_uuid)
+
+    def delete_member(self, server_uri, server_uuid=None):
+        MemberModel.delete_member(server_uri, server_uuid)
 
     def clear_dead_members(self, ttl_ms):
         MemberModel.clear_dead_members(ttl_ms)
@@ -199,7 +205,11 @@ class SimpleNotificationServerHaManager(NotificationServerHaManager):
         if member.server_uri not in [member.server_uri for member in self.living_members]:
             self.living_members.append(member)
 
+    def detach_member_from_cluster(self):
+        self.storage.delete_member(self.server_uri)
+
     def stop(self):
         self.running = False
+        self.detach_member_from_cluster()
         self.heartbeat_thread.join()
         self.notify_thread.join()
