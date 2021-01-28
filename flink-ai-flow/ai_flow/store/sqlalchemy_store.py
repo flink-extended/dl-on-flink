@@ -17,11 +17,10 @@
 # under the License.
 #
 import logging
-from typing import Optional, Text, List, Union
 import time
+from typing import Optional, Text, List, Union
 import sqlalchemy.exc
 import sqlalchemy.orm
-from numpy import long
 from sqlalchemy import and_
 
 from ai_flow.common.status import Status
@@ -38,13 +37,13 @@ from ai_flow.metric.utils import table_to_metric_meta, table_to_metric_summary, 
     metric_summary_to_table
 from ai_flow.model_center.entity.model_version_stage import STAGE_DELETED, get_canonical_stage, STAGE_GENERATED, \
     STAGE_DEPLOYED, STAGE_VALIDATED
-from notification_service.base_notification import BaseEvent, UNDEFINED_EVENT_TYPE
 from ai_flow.rest_endpoint.protobuf.message_pb2 import INVALID_PARAMETER_VALUE, RESOURCE_ALREADY_EXISTS
 from ai_flow.rest_endpoint.service.exception import AIFlowException
+from ai_flow.rest_endpoint.service.high_availability import Member
 from ai_flow.store.abstract_store import AbstractStore
 from ai_flow.store.db.base_model import base
 from ai_flow.store.db.db_model import SqlExample, SqlModelRelation, SqlModelVersionRelation, SqlProject, \
-    SqlWorkflowExecution, SqlWorkflow, SqlJob, SqlEvent, SqlArtifact
+    SqlWorkflowExecution, SqlWorkflow, SqlJob, SqlEvent, SqlArtifact, SqlMember
 from ai_flow.store.db.db_model import SqlMetricMeta, SqlMetricSummary
 from ai_flow.store.db.db_model import SqlRegisteredModel, SqlModelVersion
 from ai_flow.store.db.db_util import extract_db_engine_from_uri, create_sqlalchemy_engine, _get_managed_session_maker
@@ -110,7 +109,8 @@ class SqlAlchemyStore(AbstractStore):
             SqlArtifact.__tablename__,
             SqlRegisteredModel.__tablename__,
             SqlModelVersion.__tablename__,
-            SqlEvent.__tablename__
+            SqlEvent.__tablename__,
+            SqlMember.__tablename__
         ]
         if any([table not in inspected_tables for table in expected_tables]):
             raise AIFlowException("Database migration in unexpected state.")
@@ -1726,84 +1726,6 @@ class SqlAlchemyStore(AbstractStore):
             sql_model_version = self._get_sql_model_version(session, model_version)
             return None if sql_model_version is None else sql_model_version.to_meta_entity()
 
-    def add_event(self, event: BaseEvent):
-        sql_event = SqlEvent()
-        sql_event.key = event.key
-        with self.ManagedSessionMaker() as session:
-            def next_version():
-                return session.query(SqlEvent).filter(SqlEvent.key == event.key).count() + 1
-
-            sql_event.create_time = time.time_ns()
-            sql_event.version = next_version()
-            sql_event.value = event.value
-            sql_event.event_type = event.event_type
-            session.add(sql_event)
-            session.commit()
-            return sql_event.to_event()
-
-    def list_events(self, key: str, version: int=None):
-        with self.ManagedSessionMaker() as session:
-            if key is None:
-                raise Exception('key cannot be empty.')
-
-            if version is None:
-                conditions = [
-                    SqlEvent.key == key,
-                ]
-            else:
-                conditions = [
-                    SqlEvent.key == key,
-                    SqlEvent.version > version
-                ]
-            sql_event_list = session.query(SqlEvent).filter(*conditions).all()
-            event_list = []
-            for sql_event in sql_event_list:
-                event_list.append(sql_event.to_event())
-            return event_list
-
-    def list_all_events(self, start_time: int):
-        with self.ManagedSessionMaker() as session:
-            conditions = [
-                SqlEvent.create_time >= start_time
-            ]
-            sql_event_list = session.query(SqlEvent).filter(*conditions).all()
-            event_list = []
-            for sql_event in sql_event_list:
-                event_list.append(sql_event.to_event())
-            return event_list
-
-    def list_all_events_from_id(self, id: int):
-        with self.ManagedSessionMaker() as session:
-            conditions = [
-                SqlEvent.id > id
-            ]
-            sql_event_list = session.query(SqlEvent).filter(*conditions).all()
-            event_list = []
-            for sql_event in sql_event_list:
-                event_list.append(sql_event.to_event())
-            return event_list
-
-    def list_all_events_from_version(self, start_version: int, end_version: int = None):
-        with self.ManagedSessionMaker() as session:
-            conditions = [
-                SqlEvent.version > start_version
-            ]
-            if end_version is not None and end_version > 0:
-                conditions.append(SqlEvent.version <= end_version)
-            sql_event_list = session.query(SqlEvent).filter(*conditions).all()
-            event_list = []
-            for sql_event in sql_event_list:
-                event_list.append(sql_event.to_event())
-            return event_list
-
-    def get_latest_version(self, key: str, namespace: str = None):
-        with self.ManagedSessionMaker() as session:
-            return session.query(SqlEvent).filter(SqlEvent.key == key).count()
-
-    def clean_up(self):
-        with self.ManagedSessionMaker() as session:
-            session.query(SqlEvent).delete()
-
     def register_metric_meta(self,
                              name,
                              dataset_id,
@@ -2127,6 +2049,46 @@ class SqlAlchemyStore(AbstractStore):
             except Exception as e:
                 raise AIFlowException('Get metric summary  '
                                       'Error: {}'.format(str(e)))
+
+    def list_living_members(self, ttl_ms) -> List[Member]:
+        with self.ManagedSessionMaker() as session:
+            try:
+                member_models = session.query(SqlMember) \
+                    .filter(SqlMember.update_time >= time.time_ns() / 1000000 - ttl_ms) \
+                    .all()
+                return [Member(m.version, m.server_uri, int(m.update_time)) for m in member_models]
+            except Exception as e:
+                raise AIFlowException("List living AIFlow Member Error.") from e
+
+    def update_member(self, server_uri, server_uuid):
+        with self.ManagedSessionMaker() as session:
+            try:
+                member = session.query(SqlMember) \
+                    .filter(SqlMember.server_uri == server_uri).first()
+                if member is None:
+                    member = SqlMember()
+                    member.version = 1
+                    member.server_uri = server_uri
+                    member.update_time = time.time_ns() / 1000000
+                    member.uuid = server_uuid
+                    session.add(member)
+                else:
+                    if member.uuid != server_uuid:
+                        raise Exception("The server uri '%s' is already exists in the storage!" %
+                                        server_uri)
+                    member.version += 1
+                    member.update_time = time.time_ns() / 1000000
+            except Exception as e:
+                raise AIFlowException("Update AIFlow Member Error.") from e
+
+    def clear_dead_members(self, ttl_ms):
+        with self.ManagedSessionMaker() as session:
+            try:
+                session.query(SqlMember) \
+                    .filter(SqlMember.update_time < time.time_ns() / 1000000 - ttl_ms) \
+                    .delete()
+            except Exception as e:
+                raise AIFlowException("Clear dead AIFlow Member Error.") from e
 
 
 def _gen_entity_name_prefix(name):

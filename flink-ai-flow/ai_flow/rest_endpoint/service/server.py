@@ -19,7 +19,6 @@
 import asyncio
 import functools
 import inspect
-import logging
 import os
 import sys
 import tempfile
@@ -32,6 +31,10 @@ from grpc import _common, _server
 from grpc._cython.cygrpc import StatusCode
 from grpc._server import _serialize_response, _status, _abort, _Context, _unary_request, \
     _select_thread_pool_for_behavior, _unary_response_in_pool
+
+from ai_flow.rest_endpoint.protobuf.high_availability_pb2_grpc import add_HighAvailabilityManagerServicer_to_server
+from ai_flow.rest_endpoint.service.high_availability import SimpleAIFlowServerHaManager, HighAvailableService
+from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
 from notification_service.proto import notification_service_pb2_grpc
 
 from ai_flow.deployer.deploy_service import DeployService
@@ -71,7 +74,7 @@ class AIFlowServer(object):
         metric_service_pb2_grpc.add_MetricServiceServicer_to_server(MetricService(db_uri=store_uri), self.server)
         self.deploy_service = DeployService(server_uri=server_uri)
         deploy_service_pb2_grpc.add_DeployServiceServicer_to_server(self.deploy_service, self.server)
-        self.server.add_insecure_port('[::]:' + port)
+        self.server.add_insecure_port('[::]:' + str(port))
 
     def run(self, is_block=False):
         self.server.start()
@@ -94,6 +97,42 @@ class AIFlowServer(object):
         logging.info('AIFlow server stopped.')
 
 
+class HighAvailableAIFlowServer(AIFlowServer):
+    """
+    High available AIFlow server.
+    """
+
+    def __init__(self,
+                 store_uri=None,
+                 port=_PORT,
+                 start_default_notification: bool = True,
+                 notification_uri=None,
+                 ha_manager=None,
+                 server_uri=None,
+                 ha_storage=None,
+                 ttl_ms: int = 10000):
+        super(HighAvailableAIFlowServer, self).__init__(
+            store_uri, port, start_default_notification, notification_uri)
+        if ha_manager is None:
+            ha_manager = SimpleAIFlowServerHaManager()
+        if server_uri is None:
+            raise ValueError("server_uri is required!")
+        if ha_storage is None:
+            ha_storage = SqlAlchemyStore(store_uri)
+        self.ha_service = HighAvailableService(ha_manager, server_uri, ha_storage, ttl_ms)
+        add_HighAvailabilityManagerServicer_to_server(self.ha_service, self.server)
+
+    def run(self, is_block=False):
+        self.ha_service.start()
+        logging.info('HA service started.')
+        super(HighAvailableAIFlowServer, self).run(is_block)
+
+    def stop(self):
+        super(HighAvailableAIFlowServer, self).stop()
+        logging.info('HA service stopped.')
+        self.ha_service.stop()
+
+
 def _loop(loop: asyncio.AbstractEventLoop):
     asyncio.set_event_loop(loop)
     if not loop.is_running() or loop.is_closed():
@@ -109,8 +148,9 @@ class Executor(futures.Executor):
         self._shutdown = False
         self._thread_pool = thread_pool
         self._loop = loop or asyncio.get_event_loop()
-        self._thread = threading.Thread(target=_loop, args=(self._loop,), daemon=True)
-        self._thread.start()
+        if not self._loop.is_running() or self._loop.is_closed():
+            self._thread = threading.Thread(target=_loop, args=(self._loop,), daemon=True)
+            self._thread.start()
 
     def submit(self, fn, *args, **kwargs):
         if self._shutdown:
@@ -125,7 +165,6 @@ class Executor(futures.Executor):
             return self._loop.run_in_executor(self._thread_pool, func)
 
     def shutdown(self, wait=True):
-        self._loop.stop()
         self._shutdown = True
         if wait:
             self._thread_pool.shutdown()
