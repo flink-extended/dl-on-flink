@@ -17,6 +17,7 @@
 # under the License.
 #
 import time
+from abc import ABC, abstractmethod
 from collections import Iterable
 from typing import Union, Tuple
 
@@ -25,11 +26,13 @@ from notification_service.util import db
 from notification_service.util.db import EventModel
 
 
-class BaseEventStorage(object):
+class BaseEventStorage(ABC):
 
+    @abstractmethod
     def add_event(self, event: BaseEvent, uuid: str):
         pass
 
+    @abstractmethod
     def list_events(self,
                     key: Union[str, Tuple[str]],
                     version: int = None,
@@ -38,12 +41,19 @@ class BaseEventStorage(object):
                     namespace: str = None):
         pass
 
+    @abstractmethod
     def list_all_events(self, start_time: int):
         pass
 
+    @abstractmethod
     def list_all_events_from_version(self, start_version: int, end_version: int = None):
         pass
 
+    @abstractmethod
+    def clean_up(self):
+        pass
+
+    @abstractmethod
     def get_latest_version(self, key: str, namespace: str = None):
         pass
 

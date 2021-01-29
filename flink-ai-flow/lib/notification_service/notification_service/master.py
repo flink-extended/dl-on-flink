@@ -45,6 +45,7 @@ class NotificationMaster(object):
     def __init__(self, service, port=_PORT):
         self.executor = Executor(futures.ThreadPoolExecutor(max_workers=10))
         self.server = grpc.server(self.executor)
+        self.service = service
         notification_service_pb2_grpc.add_NotificationServiceServicer_to_server(service,
                                                                                 self.server)
         self.server.add_insecure_port('[::]:' + str(port))
@@ -55,6 +56,7 @@ class NotificationMaster(object):
         :param is_block: is block mode
         :return:
         """
+        self.service.start()
         self.server.start()
         print('Notification master started.')
         if is_block:
@@ -73,6 +75,7 @@ class NotificationMaster(object):
         """
         self.executor.shutdown()
         self.server.stop(0)
+        self.service.stop()
         print('Notification master stopped.')
 
 

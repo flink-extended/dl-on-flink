@@ -40,6 +40,9 @@ class MasterConfig(AIFlowConfiguration):
         db_uri = self.get_db_uri()
         return db_uri[10:]
 
+    def get_master_ip(self):
+        return self["master_ip"]
+
     def get_master_port(self):
         return self["master_port"]
 
@@ -49,12 +52,37 @@ class MasterConfig(AIFlowConfiguration):
     def get_db_type(self) -> DBType:
         return DBType.value_of(self["db_type"])
 
+    def get_enable_ha(self):
+        if "enable_ha" in self:
+            raw = self.get("enable_ha")
+            assert str(raw).strip().lower() in {"true", "false"}
+            return bool(str(raw).strip().lower())
+        else:
+            return False
+
+    def get_ha_ttl_ms(self):
+        if "ha_ttl_ms" in self:
+            return int(self.get("ha_ttl_ms"))
+        else:
+            return 10000
+
     def set_master_port(self, value):
         self["master_port"] = value
+
+    def set_master_ip(self, value):
+        self["master_ip"] = value
 
     def set_db_uri(self, db_type: DBType, uri: Text):
         self["db_type"] = db_type.value
         self["db_uri"] = uri
+
+    def set_enable_ha(self, enable_ha):
+        assert str(enable_ha).strip().lower() in {"true", "false"}
+        self["enable_ha"] = str(enable_ha)
+
+    def set_ha_ttl_ms(self, ha_ttl_ms):
+        assert int(str(ha_ttl_ms).strip()) >= 0
+        self["ha_ttl_ms"] = str(ha_ttl_ms).strip()
 
     def start_default_notification(self)->bool:
         if "start_default_notification" in self and self['start_default_notification'] is False:
@@ -67,4 +95,3 @@ class MasterConfig(AIFlowConfiguration):
 
     def get_notification_uri(self):
         return self.get('notification_uri')
-

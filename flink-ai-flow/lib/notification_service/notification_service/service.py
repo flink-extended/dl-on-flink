@@ -23,7 +23,8 @@ import traceback
 from notification_service.base_notification import BaseEvent
 from notification_service.event_storage import BaseEventStorage
 from notification_service.proto import notification_service_pb2_grpc, notification_service_pb2
-from notification_service.util.utils import event_to_proto, event_list_to_proto
+from notification_service.util.utils import event_to_proto, event_list_to_proto, member_to_proto, event_proto_to_event, \
+    proto_to_member
 
 
 class NotificationService(notification_service_pb2_grpc.NotificationServiceServicer):
@@ -33,6 +34,12 @@ class NotificationService(notification_service_pb2_grpc.NotificationServiceServi
         self.notification_conditions = {}
         self.lock = asyncio.Lock()
         self.write_condition = asyncio.Condition()
+
+    def start(self):
+        pass
+
+    def stop(self):
+        pass
 
     @asyncio.coroutine
     def sendEvent(self, request, context):
@@ -212,3 +219,121 @@ class NotificationService(notification_service_pb2_grpc.NotificationServiceServi
         if len(namespace) == 0:
             namespace = None
         return self.storage.get_latest_version(key=key, namespace=namespace)
+
+    @asyncio.coroutine
+    def notify(self, request, context):
+        try:
+            return self._notify(request)
+        except Exception as e:
+            return notification_service_pb2.NotifyResponse(
+                return_code=notification_service_pb2.ReturnStatus.ERROR, return_msg=str(e))
+
+    async def _notify(self, request):
+        for notify in request.notifies:
+            if (notify.key, notify.namespace) in self.notification_conditions:
+                async with self.notification_conditions.get((notify.key, notify.namespace)):
+                    self.notification_conditions.get((notify.key, notify.namespace)).notify_all()
+        async with self.write_condition:
+            self.write_condition.notify_all()
+        return notification_service_pb2.NotifyResponse(
+            return_code=notification_service_pb2.ReturnStatus.SUCCESS,
+            return_msg='')
+
+    @asyncio.coroutine
+    def listMembers(self, request, context):
+        try:
+            return self._list_members(request)
+        except Exception as e:
+            return notification_service_pb2.ListMembersResponse(
+                return_code=notification_service_pb2.ReturnStatus.ERROR, return_msg=str(e))
+
+    async def _list_members(self, request):
+        timeout_seconds = request.timeout_seconds
+        time.sleep(timeout_seconds)
+        # this method is used in HA mode, so we just return an empty list here.
+        return notification_service_pb2.ListMembersResponse(
+            return_code=notification_service_pb2.ReturnStatus.SUCCESS,
+            return_msg='',
+            members=[])
+
+    @asyncio.coroutine
+    def notifyNewMember(self, request, context):
+        try:
+            return self._notify_new_member(request)
+        except Exception as e:
+            return notification_service_pb2.ListMembersResponse(
+                return_code=notification_service_pb2.ReturnStatus.ERROR, return_msg=str(e))
+
+    async def _notify_new_member(self, request):
+        # this method is used in HA mode, so we just return here.
+        return notification_service_pb2.NotifyNewMemberResponse(
+            return_code=notification_service_pb2.ReturnStatus.SUCCESS,
+            return_msg='')
+
+
+class HighAvailableNotificationService(NotificationService):
+
+    def __init__(self,
+                 storage,
+                 ha_manager,
+                 server_uri,
+                 ha_storage,
+                 ttl_ms: int = 10000,
+                 min_notify_interval_ms: int = 100):
+        super(HighAvailableNotificationService, self).__init__(storage)
+        self.server_uri = server_uri
+        self.ha_storage = ha_storage
+        self.ttl_ms = ttl_ms
+        self.min_notify_interval_ms = min_notify_interval_ms
+        self.ha_manager = ha_manager  # type: NotificationServerHaManager
+        self.member_updated_condition = asyncio.Condition()
+
+    def start(self):
+        self.ha_manager.start(self.server_uri,
+                              self.ha_storage,
+                              self.ttl_ms,
+                              self.min_notify_interval_ms,
+                              self.member_updated_condition)
+
+    def stop(self):
+        self.ha_manager.stop()
+
+    async def _send_event(self, request):
+        response = await super(HighAvailableNotificationService, self)._send_event(request)
+        try:
+            if response.return_code == notification_service_pb2.ReturnStatus.SUCCESS:
+                self.ha_manager.notify_others(event_proto_to_event(response.event))
+        finally:
+            return response
+
+    async def _list_members(self, request):
+        timeout_seconds = request.timeout_seconds
+        if 0 == timeout_seconds:
+            return notification_service_pb2.ListMembersResponse(
+                return_code=notification_service_pb2.ReturnStatus.SUCCESS,
+                return_msg='',
+                members=[member_to_proto(member) for member in self.ha_manager.get_living_members()])
+        else:
+            start = time.time()
+            members = self.ha_manager.get_living_members()
+            async with self.member_updated_condition:
+                while time.time() - start < timeout_seconds:
+                    try:
+                        await asyncio.wait_for(self.member_updated_condition.wait(),
+                                               timeout_seconds - time.time() + start)
+                        members = self.ha_manager.get_living_members()
+                        break
+                    except asyncio.TimeoutError:
+                        pass
+            return notification_service_pb2.ListMembersResponse(
+                return_code=notification_service_pb2.ReturnStatus.SUCCESS,
+                return_msg='',
+                members=[member_to_proto(member) for member in members])
+
+    async def _notify_new_member(self, request):
+        self.ha_manager.add_living_member(proto_to_member(request.member))
+        async with self.member_updated_condition:
+            self.member_updated_condition.notify_all()
+        return notification_service_pb2.NotifyNewMemberResponse(
+            return_code=notification_service_pb2.ReturnStatus.SUCCESS,
+            return_msg='')

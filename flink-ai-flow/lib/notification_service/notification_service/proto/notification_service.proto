@@ -40,6 +40,18 @@ service NotificationService {
     rpc listAllEvents (ListAllEventsRequest) returns (ListEventsResponse) {
     }
 
+    // Accepts notifications from other members.
+    rpc notify (NotifyRequest) returns (NotifyResponse) {
+    }
+
+    // List current living members.
+    rpc listMembers (ListMembersRequest) returns (ListMembersResponse) {
+    }
+
+    // Notify current members that there is a new member added.
+    rpc notifyNewMember (NotifyNewMemberRequest) returns (NotifyNewMemberResponse) {
+    }
+
     // Get latest version by key
     rpc getLatestVersionByKey (GetLatestVersionByKeyRequest) returns (GetLatestVersionResponse) {
     }
@@ -105,4 +117,43 @@ message GetLatestVersionResponse {
     string return_code = 1;
     string return_msg = 2;
     int64 version = 3;
+}
+
+message MemberProto {
+    int64 version = 1;
+    string server_uri = 2;
+    int64 update_time = 3;
+}
+
+message Notify {
+    string key = 1;
+    string namespace = 2;
+}
+
+message NotifyRequest {
+    repeated Notify notifies = 1;
+}
+
+message NotifyResponse {
+    ReturnStatus return_code = 1;
+    string return_msg = 2;
+}
+
+message ListMembersRequest {
+    int32 timeout_seconds = 1;
+}
+
+message ListMembersResponse {
+    ReturnStatus return_code = 1;
+    string return_msg = 2;
+    repeated MemberProto members = 3;
+}
+
+message NotifyNewMemberRequest {
+    MemberProto member = 1;
+}
+
+message NotifyNewMemberResponse {
+    ReturnStatus return_code = 1;
+    string return_msg = 2;
 }
