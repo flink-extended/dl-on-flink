@@ -54,6 +54,7 @@ class LocalJobStatusListener(AbstractJobStatusListener):
         self.status_map = {}
         self.running = True
         self.lock = threading.Lock()
+        self.started = False
 
     def listen(self):
         while self.running:
@@ -126,9 +127,14 @@ class LocalJobStatusListener(AbstractJobStatusListener):
             traceback.print_exc()
 
     def start_listen(self):
-        self.setDaemon(daemonic=True)
-        self.setName(self.platform + "_listener")
-        self.start()
+        if not self.started:
+            self.setDaemon(daemonic=True)
+            self.setName(self.platform + "_listener")
+            self.start()
+            self.started = True
+        else:
+            logging.error("The LocalJobStatusListener can not be started twice! "
+                          "Please check the code.")
 
     def stop_listen(self):
         self.running = False
