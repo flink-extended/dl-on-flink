@@ -23,7 +23,7 @@ from notification_service.base_notification import BaseEvent
 
 
 class MongoEvent(Document):
-    server_id = StringField()
+    server_ip = StringField()   # track server that the event belongs to
     key = StringField()
     value = StringField()
     event_type = StringField()
@@ -58,17 +58,16 @@ class MongoEvent(Document):
         return base_events
 
     @classmethod
-    def get_base_events_by_version(cls, server_id: str, start_version: int, end_version: int = None):
+    def get_base_events_by_version(cls, start_version: int, end_version: int = None):
         conditions = dict()
         conditions["version__gt"] = start_version
         if end_version is not None and end_version > 0:
             conditions["version__lte"] = end_version
-        mongo_events = cls.objects(server_id=server_id).filter(**conditions).order_by("version")
+        mongo_events = cls.objects(**conditions).order_by("version")
         return cls.convert_to_base_events(mongo_events)
 
     @classmethod
     def get_base_events(cls,
-                        server_id: str,
                         key: Tuple[str],
                         version: int = None,
                         event_type: str = None,
@@ -86,21 +85,21 @@ class MongoEvent(Document):
         if start_time is not None and start_time > 0:
             conditions["start_time_gte"] = start_time
         conditions["namespace"] = namespace
-        mongo_events = cls.objects(server_id=server_id).filter(**conditions).order_by("version")
+        mongo_events = cls.objects(**conditions).order_by("version")
         return cls.convert_to_base_events(mongo_events)
 
     @classmethod
-    def get_base_events_by_time(cls, server_id: str, create_time: int = None):
-        mongo_events = cls.objects(server_id=server_id).filter(create_time__gte=create_time).order_by("version")
+    def get_base_events_by_time(cls, create_time: int = None):
+        mongo_events = cls.objects(create_time__gte=create_time).order_by("version")
         return cls.convert_to_base_events(mongo_events)
 
     @classmethod
-    def get_by_key(cls, server_id: str, key: str = None, start: int = None, end: int = None, sort_key: str = "version"):
+    def get_by_key(cls, key: str = None, start: int = None, end: int = None, sort_key: str = "version"):
         if key:
-            return cls.objects(server_id=server_id, key=key).order_by(sort_key)[start:end]
+            return cls.objects(key=key).order_by(sort_key)[start:end]
         else:
             raise Exception("key is empty, please provide valid key")
 
     @classmethod
-    def delete_by_client(cls, server_id):
-        cls.objects(server_id=server_id).delete()
+    def delete_by_client(cls, server_ip):
+        cls.objects(server_ip=server_ip).delete()

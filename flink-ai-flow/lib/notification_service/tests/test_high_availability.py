@@ -71,6 +71,10 @@ class HaServerTest(unittest.TestCase):
         cls.master1 = None
         cls.master2 = None
         cls.master3 = None
+    
+    @classmethod
+    def tearDownClass(cls) -> None:
+        os.remove(_SQLITE_DB_FILE)
 
     @classmethod
     def tearDownClass(cls) -> None:
