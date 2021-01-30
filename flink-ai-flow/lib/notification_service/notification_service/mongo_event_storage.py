@@ -17,7 +17,7 @@
 # under the License.
 #
 import time
-import uuid
+import socket
 from collections import Iterable
 from typing import Union, Tuple
 
@@ -30,32 +30,36 @@ from notification_service.mongo_notification import MongoEvent
 class MongoEventStorage(BaseEventStorage):
     def __init__(self, *args, **kwargs):
         self.db_conn = self.setup_connection(**kwargs)
-        self.server_id = str(uuid.uuid4())
+        self.server_ip = socket.gethostbyname(socket.gethostname())
 
     def setup_connection(self, **kwargs):
         db_conf = {
             "host": kwargs.get("host"),
             "port": kwargs.get("port"),
-            "username": kwargs.get("username"),
-            "password": kwargs.get("password"),
             "db": kwargs.get("db"),
         }
-        # If ignore the authSource, the authentication will be failed.
-        conn_uri = "mongodb://{username}:{password}@{host}:{port}/{db}?authSource=admin".format(**db_conf)
-        db_conf["host"] = conn_uri
-        return connect(
-            connect=False,
-            **db_conf)
+        username = kwargs.get("username", None)
+        password = kwargs.get("password", None)
+        authentication_source = kwargs.get("authentication_source", "admin")
+        if (username or password) and not (username and password):
+            raise Exception("Please provide valid username and password")
+        if username and password:
+            db_conf.update({
+                "username": username,
+                "password": password,
+                "authentication_source": authentication_source
+            })
+        return connect(**db_conf)
 
     def get_latest_version(self, key: str, namespace: str = None):
-        mongo_events = MongoEvent.get_by_key(self.server_id, key, 0, 1, "-version")
+        mongo_events = MongoEvent.get_by_key(key, 0, 1, "-version")
         if not mongo_events:
             return 0
         return mongo_events[0].version
 
     def add_event(self, event: BaseEvent, uuid: str):
         kwargs = {
-            "server_id": self.server_id,
+            "server_ip": self.server_ip,
             "create_time": int(time.time() * 1000),
             "event_type": event.event_type,
             "key": event.key,
@@ -85,16 +89,16 @@ class MongoEventStorage(BaseEventStorage):
             key = (key,)
         elif isinstance(key, Iterable):
             key = tuple(key)
-        res = MongoEvent.get_base_events(self.server_id, key, version, event_type, namespace)
+        res = MongoEvent.get_base_events(key, version, event_type, start_time, namespace)
         return res
 
     def list_all_events(self, start_time: int):
-        res = MongoEvent.get_base_events_by_time(self.server_id, start_time)
+        res = MongoEvent.get_base_events_by_time(start_time)
         return res
 
     def list_all_events_from_version(self, start_version: int, end_version: int = None):
-        res = MongoEvent.get_base_events_by_version(self.server_id, start_version, end_version)
+        res = MongoEvent.get_base_events_by_version(start_version, end_version)
         return res
 
     def clean_up(self):
-        MongoEvent.delete_by_client(self.server_id)
+        MongoEvent.delete_by_client(self.server_ip)
