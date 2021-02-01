@@ -35,6 +35,9 @@ from grpc._server import _serialize_response, _status, _abort, _Context, _unary_
 from ai_flow.rest_endpoint.protobuf.high_availability_pb2_grpc import add_HighAvailabilityManagerServicer_to_server
 from ai_flow.rest_endpoint.service.high_availability import SimpleAIFlowServerHaManager, HighAvailableService
 from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
+from ai_flow.store.mongo_store import MongoStore
+from ai_flow.store.db.db_util import extract_db_engine_from_uri, parse_mongo_uri
+from ai_flow.application_master.master_config import DBType
 from notification_service.proto import notification_service_pb2_grpc
 
 from ai_flow.deployer.deploy_service import DeployService
@@ -118,7 +121,16 @@ class HighAvailableAIFlowServer(AIFlowServer):
         if server_uri is None:
             raise ValueError("server_uri is required!")
         if ha_storage is None:
-            ha_storage = SqlAlchemyStore(store_uri)
+            db_engine = extract_db_engine_from_uri(store_uri)
+            if DBType.value_of(db_engine) == DBType.MONGODB:
+                username, password, host, port, db = parse_mongo_uri(store_uri)
+                ha_storage = MongoStore(host=host,
+                                        port=int(port),
+                                        username=username,
+                                        password=password,
+                                        db=db)
+            else:
+                ha_storage = SqlAlchemyStore(store_uri)
         self.ha_service = HighAvailableService(ha_manager, server_uri, ha_storage, ttl_ms)
         add_HighAvailabilityManagerServicer_to_server(self.ha_service, self.server)
 

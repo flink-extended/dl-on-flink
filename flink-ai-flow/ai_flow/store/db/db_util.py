@@ -18,6 +18,7 @@
 #
 import logging
 import os
+import re
 import urllib.parse
 from contextlib import contextmanager
 
@@ -98,3 +99,19 @@ def create_sqlalchemy_engine(db_uri):
     if pool_kwargs:
         _logger.info("Create SQLAlchemy engine with pool options %s", pool_kwargs)
     return sqlalchemy.create_engine(db_uri, pool_pre_ping=True, **pool_kwargs)
+
+def parse_mongo_uri(db_uri):
+    """
+    Parse MongoDB URI-style string to split up and return credentials
+
+    Args:
+        db_uri (string): MongoDB URI-style string
+    Return:
+
+    """
+    regex_str = r'^(?P<schema>(mongodb:(?:\/{2})?))((?P<user>\w+?):(?P<pwd>(\w+?))@|:@?)(?P<host>(\S+?)):(?P<port>(\d+))(\/(?P<db>(\S+?)))$'
+    pattern = re.compile(regex_str)
+    m = pattern.match(db_uri)
+    if m is None:
+        raise Exception('The URI of MongoDB is invalid')
+    return m.group('user'), m.group('pwd'), m.group('host'), m.group('port'), m.group('db')
