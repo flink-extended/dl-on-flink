@@ -59,7 +59,7 @@ class HaServerTest(unittest.TestCase):
         last_exception = None
         for i in range(100):
             try:
-                return NotificationClient(server_uri="localhost:50051", enable_ha=True)
+                return NotificationClient(server_uri=server_uri, enable_ha=True)
             except Exception as e:
                 time.sleep(10)
                 last_exception = e
