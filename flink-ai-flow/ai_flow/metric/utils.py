@@ -26,6 +26,7 @@ from ai_flow.meta.metric_meta import MetricMeta, MetricType, MetricSummary
 from ai_flow.rest_endpoint.protobuf.message_pb2 import MetricMetaProto, MetricSummaryProto, MetricTypeProto, ReturnCode, \
     SUCCESS, RESOURCE_DOES_NOT_EXIST
 from ai_flow.store.db.db_model import SqlMetricMeta, SqlMetricSummary
+from ai_flow.store.db.db_model import MongoMetricSummary, MongoMetricMeta
 
 
 def table_to_metric_meta(metric_meta_result) -> MetricMeta:
@@ -65,29 +66,39 @@ def metric_meta_to_table(name: Text,
                          uri: Text,
                          tags: Text,
                          metric_description: Text,
-                         properties: Properties):
+                         properties: Properties,
+                         store_type: Text = 'SqlAlchemyStore'):
     if properties is not None:
         properties = str(properties)
-    return SqlMetricMeta(name=name,
-                         dataset_id=dataset_id,
-                         model_name=model_name,
-                         model_version=model_version,
-                         job_id=job_id,
-                         start_time=start_time,
-                         end_time=end_time,
-                         metric_type=metric_type.value,
-                         uri=uri,
-                         tags=tags,
-                         metric_description=metric_description,
-                         properties=properties)
+    if store_type == 'MongoStore':
+        _class = MongoMetricMeta
+    else:
+        _class = SqlMetricMeta
+    return _class(name=name,
+                  dataset_id=dataset_id,
+                  model_name=model_name,
+                  model_version=model_version,
+                  job_id=job_id,
+                  start_time=start_time,
+                  end_time=end_time,
+                  metric_type=metric_type.value,
+                  uri=uri,
+                  tags=tags,
+                  metric_description=metric_description,
+                  properties=properties)
 
 
 def metric_summary_to_table(metric_id: int,
                             metric_key: Text,
-                            metric_value: Text):
-    return SqlMetricSummary(metric_id=metric_id,
-                            metric_key=metric_key,
-                            metric_value=metric_value)
+                            metric_value: Text,
+                            store_type: Text = 'SqlAlchemyStore'):
+    if store_type == 'MongoStore':
+        _class = MongoMetricSummary
+    else:
+        _class = SqlMetricSummary
+    return _class(metric_id=metric_id,
+                  metric_key=metric_key,
+                  metric_value=metric_value)
 
 
 def metric_meta_to_proto(metric_meta: MetricMeta) -> MetricMetaProto:
