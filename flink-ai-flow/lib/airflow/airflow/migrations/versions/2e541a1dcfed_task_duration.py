@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -25,8 +24,8 @@ Create Date: 2015-10-28 20:38:41.266143
 
 """
 
-from alembic import op
 import sqlalchemy as sa
+from alembic import op
 from sqlalchemy.dialects import mysql
 
 # revision identifiers, used by Alembic.
@@ -36,14 +35,16 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade():  # noqa: D103
     # use batch_alter_table to support SQLite workaround
     with op.batch_alter_table("task_instance") as batch_op:
-        batch_op.alter_column('duration',
-                              existing_type=mysql.INTEGER(display_width=11),
-                              type_=sa.Float(),
-                              existing_nullable=True)
+        batch_op.alter_column(
+            'duration',
+            existing_type=mysql.INTEGER(display_width=11),
+            type_=sa.Float(),
+            existing_nullable=True,
+        )
 
 
-def downgrade():
+def downgrade():  # noqa: D103
     pass

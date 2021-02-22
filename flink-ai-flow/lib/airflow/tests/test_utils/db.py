@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -16,17 +15,30 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-from airflow.models.taskstate import TaskState
+from airflow.models.taskexecution import TaskExecution
 
+from airflow.jobs.base_job import BaseJob
 from airflow.models import (
-    Connection, DagModel, DagRun, DagTag, Pool, RenderedTaskInstanceFields, SlaMiss, TaskInstance, Variable,
-    errors, DagPickle
+    Connection,
+    DagModel,
+    DagRun,
+    DagTag,
+    Log,
+    Pool,
+    RenderedTaskInstanceFields,
+    SlaMiss,
+    TaskFail,
+    TaskInstance,
+    TaskReschedule,
+    Variable,
+    XCom,
+    errors,
 )
 from airflow.models.dagcode import DagCode
-from airflow.models.taskexecution import TaskExecution
-from airflow.utils.db import add_default_pool_if_not_exists, create_default_connections, \
-    create_session
-from notification_service.util.db import EventModel
+from airflow.models.serialized_dag import SerializedDagModel
+from airflow.models.taskstate import TaskState
+from airflow.utils.db import add_default_pool_if_not_exists, create_default_connections
+from airflow.utils.session import create_session
 
 
 def clear_db_runs():
@@ -39,6 +51,11 @@ def clear_db_dags():
     with create_session() as session:
         session.query(DagTag).delete()
         session.query(DagModel).delete()
+
+
+def clear_db_serialized_dags():
+    with create_session() as session:
+        session.query(SerializedDagModel).delete()
 
 
 def clear_db_sla_miss():
@@ -57,10 +74,11 @@ def clear_db_pools():
         add_default_pool_if_not_exists(session)
 
 
-def clear_db_connections():
+def clear_db_connections(add_default_connections_back=True):
     with create_session() as session:
         session.query(Connection).delete()
-        create_default_connections(session)
+        if add_default_connections_back:
+            create_default_connections(session)
 
 
 def clear_db_variables():
@@ -84,18 +102,41 @@ def clear_rendered_ti_fields():
         session.query(RenderedTaskInstanceFields).delete()
 
 
-def clear_db_event_model():
+def clear_db_import_errors():
     with create_session() as session:
-        session.query(EventModel).delete()
+        session.query(errors.ImportError).delete()
 
 
-def clear_db_dag_pickle():
+def clear_db_xcom():
     with create_session() as session:
-        session.query(DagPickle).delete()
+        session.query(XCom).delete()
 
 
-def clear_db_task_instance():
+def clear_db_logs():
     with create_session() as session:
-        session.query(TaskInstance).delete()
-        session.query(TaskExecution).delete()
+        session.query(Log).delete()
+
+
+def clear_db_jobs():
+    with create_session() as session:
+        session.query(BaseJob).delete()
+
+
+def clear_db_task_fail():
+    with create_session() as session:
+        session.query(TaskFail).delete()
+
+
+def clear_db_task_reschedule():
+    with create_session() as session:
+        session.query(TaskReschedule).delete()
+
+
+def clear_db_task_state():
+    with create_session() as session:
         session.query(TaskState).delete()
+
+
+def clear_db_task_execution():
+    with create_session() as session:
+        session.query(TaskExecution).delete()

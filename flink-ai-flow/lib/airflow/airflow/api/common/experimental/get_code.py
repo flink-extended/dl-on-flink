@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -22,7 +21,7 @@ from airflow.exceptions import AirflowException, DagCodeNotFound
 from airflow.models.dagcode import DagCode
 
 
-def get_code(dag_id):  # type (str) -> str
+def get_code(dag_id: str) -> str:
     """Return python code of a given dag_id.
 
     :param dag_id: DAG id
