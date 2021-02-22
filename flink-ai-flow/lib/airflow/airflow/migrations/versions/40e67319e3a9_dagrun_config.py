@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -24,8 +23,8 @@ Revises: 2e541a1dcfed
 Create Date: 2015-10-29 08:36:31.726728
 
 """
-from alembic import op
 import sqlalchemy as sa
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = '40e67319e3a9'
@@ -34,9 +33,9 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade():  # noqa: D103
     op.add_column('dag_run', sa.Column('conf', sa.PickleType(), nullable=True))
 
 
-def downgrade():
+def downgrade():  # noqa: D103
     op.drop_column('dag_run', 'conf')

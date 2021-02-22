@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -18,11 +17,11 @@
 # under the License.
 
 import unittest
+
 from airflow.utils.trigger_rule import TriggerRule
 
 
 class TestTriggerRule(unittest.TestCase):
-
     def test_valid_trigger_rules(self):
         self.assertTrue(TriggerRule.is_valid(TriggerRule.ALL_SUCCESS))
         self.assertTrue(TriggerRule.is_valid(TriggerRule.ALL_FAILED))

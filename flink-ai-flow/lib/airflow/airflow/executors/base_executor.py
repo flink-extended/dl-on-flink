@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -16,78 +14,104 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-
-from builtins import range
+"""Base executor - this is the base class for all the implemented executors."""
+import sys
+import time
 from collections import OrderedDict
-import copy
-# To avoid circular imports
-import airflow.utils.dag_processing
+from typing import Any, Dict, List, Optional, Set, Tuple
+
+from airflow.events.scheduler_events import TaskStatusChangedEvent
+from sqlalchemy.orm import Session, selectinload
+
 from airflow.configuration import conf
-from notification_service.client import NotificationClient
-from airflow.settings import Stats
+from airflow.executors.scheduling_action import SchedulingAction
+from airflow.models.taskinstance import TaskInstance, TaskInstanceKey
+from airflow.stats import Stats
 from airflow.utils.log.logging_mixin import LoggingMixin
+from airflow.utils.session import provide_session
 from airflow.utils.state import State
-from airflow.models.event import TaskStatusEvent, TaskInstanceHelper
+from airflow.settings import CHECK_TASK_STOPPED_INTERVAL, CHECK_TASK_STOPPED_NUM
+
+PARALLELISM: int = conf.getint('core', 'PARALLELISM')
+
+NOT_STARTED_MESSAGE = "The executor should be started first!"
+
+# Command to execute - list of strings
+# the first element is always "airflow".
+# It should be result of TaskInstance.generate_command method.q
+CommandType = List[str]
 
 
-PARALLELISM = conf.getint('core', 'PARALLELISM')
+# Task that is queued. It contains all the information that is
+# needed to run the task.
+#
+# Tuple of: command, priority, queue name, TaskInstance
+QueuedTaskInstanceType = Tuple[CommandType, int, Optional[str], TaskInstance]
+
+# Event_buffer dict value type
+# Tuple of: state, info
+EventBufferValueType = Tuple[Optional[str], Any]
 
 
 class BaseExecutor(LoggingMixin):
+    """
+    Class to derive in order to interface with executor-type systems
+    like Celery, Kubernetes, Local, Sequential and the likes.
 
-    def __init__(self, parallelism=PARALLELISM):
-        """
-        Class to derive in order to interface with executor-type systems
-        like Celery, Mesos, Yarn and the likes.
+    :param parallelism: how many jobs should run at one time. Set to
+        ``0`` for infinity
+    """
 
-        :param parallelism: how many jobs should run at one time. Set to
-            ``0`` for infinity
-        :type parallelism: int
-        """
-        self.parallelism = parallelism
-        self.queued_tasks = OrderedDict()
-        self.running = {}
-        self.event_buffer = {}
-        self.use_nf = False
-        self.nf_host = conf.get('scheduler', 'notification_host', fallback='localhost')
-        self.nf_port = conf.getint('scheduler', 'notification_port', fallback=50051)
-        self.client: NotificationClient = None
+    job_id: Optional[str] = None
 
-    def set_use_nf(self, use_nf):
-        self.use_nf = use_nf
+    def __init__(self, parallelism: int = PARALLELISM):
+        super().__init__()
+        self.parallelism: int = parallelism
+        self.queued_tasks: OrderedDict[TaskInstanceKey, QueuedTaskInstanceType] = OrderedDict()
+        self.running: Set[TaskInstanceKey] = set()
+        self.event_buffer: Dict[TaskInstanceKey, EventBufferValueType] = {}
+        self._mailbox = None
+
+    def set_mailbox(self, mailbox):
+        self._mailbox = mailbox
 
     def start(self):  # pragma: no cover
-        """
-        Executors may need to get things started. For example LocalExecutor
-        starts N workers.
-        """
+        """Executors may need to get things started."""
 
-    def queue_command(self, simple_task_instance, command, priority=1, queue=None):
-        key = simple_task_instance.key
-        if key not in self.queued_tasks and key not in self.running:
+    def queue_command(
+        self,
+        task_instance: TaskInstance,
+        command: CommandType,
+        priority: int = 1,
+        queue: Optional[str] = None,
+    ):
+        """Queues command to task"""
+        if task_instance.key not in self.queued_tasks and task_instance.key not in self.running:
             self.log.info("Adding to queue: %s", command)
-            self.queued_tasks[key] = (command, priority, queue, simple_task_instance)
+            self.queued_tasks[task_instance.key] = (command, priority, queue, task_instance)
         else:
-            self.log.info("could not queue task %s", key)
+            self.log.error("could not queue task %s", task_instance.key)
 
     def queue_task_instance(
-            self,
-            task_instance,
-            mark_success=False,
-            pickle_id=None,
-            ignore_all_deps=False,
-            ignore_depends_on_past=False,
-            ignore_task_deps=False,
-            ignore_ti_state=False,
-            pool=None,
-            cfg_path=None):
+        self,
+        task_instance: TaskInstance,
+        mark_success: bool = False,
+        pickle_id: Optional[str] = None,
+        ignore_all_deps: bool = False,
+        ignore_depends_on_past: bool = False,
+        ignore_task_deps: bool = False,
+        ignore_ti_state: bool = False,
+        pool: Optional[str] = None,
+        cfg_path: Optional[str] = None,
+    ) -> None:
+        """Queues task instance."""
         pool = pool or task_instance.pool
 
         # TODO (edgarRd): AIRFLOW-1985:
         # cfg_path is needed to propagate the config values if using impersonation
         # (run_as_user), given that there are different code paths running tasks.
         # For a long term solution we need to address AIRFLOW-1986
-        command = task_instance.command_as_list(
+        command_list_to_run = task_instance.command_as_list(
             local=True,
             mark_success=mark_success,
             ignore_all_deps=ignore_all_deps,
@@ -96,48 +120,113 @@ class BaseExecutor(LoggingMixin):
             ignore_ti_state=ignore_ti_state,
             pool=pool,
             pickle_id=pickle_id,
-            cfg_path=cfg_path)
+            cfg_path=cfg_path,
+        )
+        self.log.debug("created command %s", command_list_to_run)
         self.queue_command(
-            airflow.utils.dag_processing.SimpleTaskInstance(task_instance),
-            command,
+            task_instance,
+            command_list_to_run,
             priority=task_instance.task.priority_weight_total,
-            queue=task_instance.task.queue)
+            queue=task_instance.task.queue,
+        )
 
-    def has_task(self, task_instance):
+    def schedule_task(self, key: TaskInstanceKey, action: SchedulingAction):
         """
-        Checks if a task is either queued or running in this executor
+        Schedule a task
+
+        :param key: task instance key
+        :param action: task scheduling action in [START, STOP, RESTART]
+        """
+        if SchedulingAction.START == action:
+            self._start_task_instance(key)
+        elif SchedulingAction.STOP == action:
+            self._stop_task_instance(key)
+        elif SchedulingAction.RESTART == action:
+            self._restart_task_instance(key)
+        else:
+            raise ValueError('The task scheduling action must in ["START", "STOP", "RESTART"].')
+
+    def _start_task_instance(self, key: TaskInstanceKey):
+        """
+        Ignore all dependencies, force start a task instance
+        """
+        ti = self.get_task_instance(key)
+        if ti is None:
+            self.log.error("TaskInstance not found in DB, %s.", str(key))
+            return
+        command = TaskInstance.generate_command(
+            ti.dag_id,
+            ti.task_id,
+            ti.execution_date,
+            local=True,
+            mark_success=False,
+            ignore_all_deps=True,
+            ignore_depends_on_past=True,
+            ignore_task_deps=True,
+            ignore_ti_state=True,
+            pool=ti.pool,
+            file_path=ti.dag_model.fileloc,
+            pickle_id=ti.dag_model.pickle_id
+        )
+        ti.set_state(State.QUEUED)
+        self.execute_async(
+            key=key,
+            command=command,
+            queue=ti.queue,
+            executor_config=ti.executor_config
+        )
+
+    def _stop_related_process(self, ti: TaskInstance) -> bool:
+        raise NotImplementedError()
+
+    def _stop_task_instance(self, key: TaskInstanceKey) -> bool:
+        """
+        Force stopping a task instance.
+        return: True if successfully kill the task instance
+        """
+        ti = self.get_task_instance(key)
+        if ti is None:
+            self.log.error("Task not found in DB, %s.", str(key))
+            return False
+        elif ti.state in State.finished:
+            self.log.info("Task has been finished with state %s, %s", ti.state, str(key))
+            return True
+        try:
+            self.running.remove(ti.key)
+        except KeyError:
+            self.log.debug('Could not find key: %s', str(ti.key))
+        ti.set_state(State.KILLING)
+        self._stop_related_process(ti)
+        stopped = self._wait_for_stopping_task(
+            key=key,
+            check_interval=CHECK_TASK_STOPPED_INTERVAL,
+            max_check_num=CHECK_TASK_STOPPED_NUM)
+        if not stopped:
+            self.log.error("Failed to stop task instance: %s, please try again.", str(ti))
+        return stopped
+
+    def _restart_task_instance(self, key: TaskInstanceKey):
+        """Force restarting a task instance"""
+        if self._stop_task_instance(key):
+            self._start_task_instance(key)
+
+    def has_task(self, task_instance: TaskInstance) -> bool:
+        """
+        Checks if a task is either queued or running in this executor.
 
         :param task_instance: TaskInstance
         :return: True if the task is known to this executor
         """
-        if task_instance.key in self.queued_tasks or task_instance.key in self.running:
-            return True
+        return task_instance.key in self.queued_tasks or task_instance.key in self.running
 
-    def stop_task(self, task_instance):
-        """
-        Stop task if a task is either queued or running in this executor
-
-        :param task_instance: TaskInstance
-        :return: True if the task is known to this executor
-        """
-        if task_instance.key in self.queued_tasks:
-            self.queued_tasks.pop(task_instance.key())
-            self.log.debug("remove task {0} from queue.".format(task_instance.key()))
-            return True
-
-        if task_instance.key in self.running:
-            self.running.pop(task_instance.key())
-            self.log.debug("remove task {0} from running task.".format(task_instance.key()))
-            return True
-
-    def sync(self):
+    def sync(self) -> None:
         """
         Sync will get called periodically by the heartbeat method.
         Executors should override this to perform gather statuses.
         """
 
-    def heartbeat(self):
-        # Triggering new jobs
+    def heartbeat(self) -> None:
+        """Heartbeat sent to trigger new jobs."""
         if not self.parallelism:
             open_slots = len(self.queued_tasks)
         else:
@@ -160,153 +249,206 @@ class BaseExecutor(LoggingMixin):
         self.log.debug("Calling the %s sync method", self.__class__)
         self.sync()
 
-    def trigger_tasks(self, open_slots):
+    def order_queued_tasks_by_priority(self) -> List[Tuple[TaskInstanceKey, QueuedTaskInstanceType]]:
         """
-        Trigger tasks
+        Orders the queued tasks by priority.
+
+        :return: List of tuples from the queued_tasks according to the priority.
+        """
+        return sorted(
+            [(k, v) for k, v in self.queued_tasks.items()],  # pylint: disable=unnecessary-comprehension
+            key=lambda x: x[1][1],
+            reverse=True,
+        )
+
+    def trigger_tasks(self, open_slots: int) -> None:
+        """
+        Triggers tasks
 
         :param open_slots: Number of open slots
-        :return:
         """
-        sorted_queue = sorted(
-            [(k, v) for k, v in self.queued_tasks.items()],
-            key=lambda x: x[1][1],
-            reverse=True)
-        for i in range(min((open_slots, len(self.queued_tasks)))):
-            key, (command, _, queue, simple_ti) = sorted_queue.pop(0)
+        sorted_queue = self.order_queued_tasks_by_priority()
+
+        for _ in range(min((open_slots, len(self.queued_tasks)))):
+            key, (command, _, _, ti) = sorted_queue.pop(0)
             self.queued_tasks.pop(key)
-            self.running[key] = command
-            self.execute_async(key=key,
-                               command=command,
-                               queue=queue,
-                               executor_config=simple_ti.executor_config)
+            self.running.add(key)
+            self.execute_async(key=key, command=command, queue=None, executor_config=ti.executor_config)
 
-    def change_state(self, key, state):
-        self.log.debug("Changing state: %s %s", key, state)
-        self.running.pop(key, None)
-        if self.use_nf:
-            if self.client is None:
-                self.client: NotificationClient = NotificationClient(
-                    server_uri="{0}:{1}".format(self.nf_host,
-                                                self.nf_port))
-            dag_id, task_id, execution_date, try_number = key
-            self.client.send_event(TaskStatusEvent(
-                task_instance_key=TaskInstanceHelper.to_task_key(dag_id, task_id, execution_date),
-                status=TaskInstanceHelper.to_event_value(state, try_number)))
-        else:
-            self.event_buffer[key] = state
-
-    def fail(self, key):
-        self.change_state(key, State.FAILED)
-
-    def success(self, key):
-        self.change_state(key, State.SUCCESS)
-
-    def stop_task(self, ti):
+    def change_state(self, key: TaskInstanceKey, state: str, info=None) -> None:
         """
-        stop the task, call task on_kill function to do custom action.
-        :param ti: TaskInstance
-        :return: None
+        Changes state of the task.
+
+        :param info: Executor information for the task instance
+        :param key: Unique key for the task instance
+        :param state: State to set for the task.
         """
-        key = ti.key
-        if key in self.queued_tasks:
-            self.queued_tasks.pop(key)
+        self.log.debug("Changing state: %s", key)
+        try:
+            self.running.remove(key)
+        except KeyError:
+            self.log.debug('Could not find key: %s', str(key))
+        self.event_buffer[key] = state, info
 
-        if key in self.running:
-            task = ti.task
-            task_copy = copy.copy(task)
-            task_copy.on_kill()
-            self.running.pop(key, None)
-
-    def shutdown(self, ti):
+    def fail(self, key: TaskInstanceKey, info=None) -> None:
         """
-        shutdown the task
-        :param ti: the taskinstance
-        :return:
+        Set fail state for the event.
+
+        :param info: Executor information for the task instance
+        :param key: Unique key for the task instance
         """
-        self.stop_task(ti)
-        self.change_state(ti.key, State.SHUTDOWN)
+        self.change_state(key, State.FAILED, info)
 
-    def restart(self, ti, full_filepath, pickle_id=None):
+    def success(self, key: TaskInstanceKey, info=None) -> None:
         """
-        restart the task
-        :param ti: the task instance
-        :param full_filepath: the dag full_filepath
-        :param pickle_id: the dag pickle_id
-        :return:
+        Set success state for the event.
+
+        :param info: Executor information for the task instance
+        :param key: Unique key for the task instance
         """
-        self.stop_task(ti)
+        self.change_state(key, State.SUCCESS, info)
 
-        from airflow.models.taskinstance import TaskInstance as TI
-        simple_task_instance = airflow.utils.dag_processing.SimpleTaskInstance(ti)
-        command = TI.generate_command(
-            simple_task_instance.dag_id,
-            simple_task_instance.task_id,
-            simple_task_instance.execution_date,
-            local=True,
-            mark_success=False,
-            ignore_all_deps=False,
-            ignore_depends_on_past=False,
-            ignore_task_deps=False,
-            ignore_ti_state=False,
-            pool=simple_task_instance.pool,
-            file_path=full_filepath,
-            pickle_id=pickle_id)
-
-        priority = simple_task_instance.priority_weight
-        queue = simple_task_instance.queue
-        self.log.info(
-            "Sending %s to executor with priority %s and queue %s",
-            simple_task_instance.key, priority, queue
-        )
-        self.queue_command(
-            simple_task_instance,
-            command,
-            priority=priority,
-            queue=queue)
-
-        self.change_state(ti.key, State.SCHEDULED)
-
-    def get_event_buffer(self, dag_ids=None):
+    def get_event_buffer(self, dag_ids=None) -> Dict[TaskInstanceKey, EventBufferValueType]:
         """
         Returns and flush the event buffer. In case dag_ids is specified
         it will only return and flush events for the given dag_ids. Otherwise
-        it returns and flushes all
+        it returns and flushes all events.
 
         :param dag_ids: to dag_ids to return events for, if None returns all
         :return: a dict of events
         """
-        cleared_events = dict()
+        cleared_events: Dict[TaskInstanceKey, EventBufferValueType] = {}
         if dag_ids is None:
             cleared_events = self.event_buffer
-            self.event_buffer = dict()
+            self.event_buffer = {}
         else:
-            for key in list(self.event_buffer.keys()):
-                dag_id, _, _, _ = key
-                if dag_id in dag_ids:
-                    cleared_events[key] = self.event_buffer.pop(key)
+            for ti_key in list(self.event_buffer.keys()):
+                if ti_key.dag_id in dag_ids:
+                    cleared_events[ti_key] = self.event_buffer.pop(ti_key)
 
         return cleared_events
 
-    def execute_async(self,
-                      key,
-                      command,
-                      queue=None,
-                      executor_config=None):  # pragma: no cover
+    def execute_async(
+        self,
+        key: TaskInstanceKey,
+        command: CommandType,
+        queue: Optional[str] = None,
+        executor_config: Optional[Any] = None,
+    ) -> None:  # pragma: no cover
         """
         This method will execute the command asynchronously.
+
+        :param key: Unique key for the task instance
+        :param command: Command to run
+        :param queue: name of the queue
+        :param executor_config: Configuration passed to the executor.
         """
         raise NotImplementedError()
 
-    def end(self):  # pragma: no cover
+    def end(self) -> None:  # pragma: no cover
         """
-        This method is called when the caller is done submitting job and is
+        This method is called when the caller is done submitting job and
         wants to wait synchronously for the job submitted previously to be
         all done.
         """
         raise NotImplementedError()
 
     def terminate(self):
-        """
-        This method is called when the daemon receives a SIGTERM
-        """
+        """This method is called when the daemon receives a SIGTERM"""
         raise NotImplementedError()
+
+    def try_adopt_task_instances(self, tis: List[TaskInstance]) -> List[TaskInstance]:
+        """
+        Try to adopt running task instances that have been abandoned by a SchedulerJob dying.
+
+        Anything that is not adopted will be cleared by the scheduler (and then become eligible for
+        re-scheduling)
+
+        :return: any TaskInstances that were unable to be adopted
+        :rtype: list[airflow.models.TaskInstance]
+        """
+        # By default, assume Executors cannot adopt tasks, so just say we failed to adopt anything.
+        # Subclasses can do better!
+        return tis
+
+    @property
+    def slots_available(self):
+        """Number of new tasks this executor instance can accept"""
+        if self.parallelism:
+            return self.parallelism - len(self.running) - len(self.queued_tasks)
+        else:
+            return sys.maxsize
+
+    @staticmethod
+    def validate_command(command: List[str]) -> None:
+        """Check if the command to execute is airflow command"""
+        if command[0:3] != ["airflow", "tasks", "run"]:
+            raise ValueError('The command must start with ["airflow", "tasks", "run"].')
+
+    def debug_dump(self):
+        """Called in response to SIGUSR2 by the scheduler"""
+        self.log.info(
+            "executor.queued (%d)\n\t%s",
+            len(self.queued_tasks),
+            "\n\t".join(map(repr, self.queued_tasks.items())),
+        )
+        self.log.info("executor.running (%d)\n\t%s", len(self.running), "\n\t".join(map(repr, self.running)))
+        self.log.info(
+            "executor.event_buffer (%d)\n\t%s",
+            len(self.event_buffer),
+            "\n\t".join(map(repr, self.event_buffer.items())),
+        )
+
+    @provide_session
+    def get_task_instance(self, key: TaskInstanceKey, session: Session = None) -> Optional[TaskInstance]:
+        """
+        Returns the task instance specified by TaskInstanceKey
+
+        :param key: the task instance key
+        :type key: TaskInstanceKey
+        :param session: Sqlalchemy ORM Session
+        :type session: Session
+        """
+        return (
+            session.query(TaskInstance).filter(
+                TaskInstance.dag_id == key.dag_id,
+                TaskInstance.execution_date == key.execution_date,
+                TaskInstance.task_id == key.task_id
+            ).options(selectinload('dag_model')).first()
+        )
+
+    def send_message(self, key: TaskInstanceKey):
+        if self._mailbox is not None:
+            ti = self.get_task_instance(key)
+            task_status_changed_event = TaskStatusChangedEvent(
+                ti.task_id,
+                ti.dag_id,
+                ti.execution_date,
+                ti.state
+            )
+            self._mailbox.send_message(task_status_changed_event)
+
+    def _wait_for_stopping_task(
+        self,
+        key: TaskInstanceKey,
+        check_interval: int,
+        max_check_num: int,
+    ) -> bool:
+        """
+        Wait check_interval * max_check_num seconds for task to be killed successfully
+        :param key: the task instance key
+        :type key: TaskInstanceKey
+        :param check_interval: interval between checking state
+        :type check_interval: int
+        :param max_check_num: max times of checking state
+        :type max_check_num: int
+        """
+        check_num = 0
+        while check_num < max_check_num and check_interval > 0:
+            check_num = check_num + 1
+            ti = self.get_task_instance(key)
+            if ti and ti.state == State.KILLED:
+                return True
+            else:
+                time.sleep(check_interval)
+        return False
