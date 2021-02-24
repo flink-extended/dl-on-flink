@@ -259,17 +259,6 @@ def upgrade():
             sa.Column('dag_id', sa.String(length=250), nullable=False),
             sa.PrimaryKeyConstraint('id')
         )
-    if 'event_model' not in tables:
-        op.create_table(
-            'event_model',
-            sa.Column('id', sa.Integer(), nullable=False),
-            sa.Column('key', sa.String(length=1024), nullable=False),
-            sa.Column('version', sa.Integer(), nullable=False),
-            sa.Column('value', sa.String(length=4096), nullable=True),
-            sa.Column('event_type', sa.String(length=256), nullable=False),
-            sa.Column('create_time', sa.BigInteger(), nullable=False),
-            sa.PrimaryKeyConstraint('id')
-        )
 
     if 'task_state' not in tables:
         op.create_table(
