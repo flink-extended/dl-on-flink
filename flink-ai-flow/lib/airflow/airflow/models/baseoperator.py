@@ -24,9 +24,6 @@ import sys
 import warnings
 from abc import ABCMeta, abstractmethod
 from datetime import datetime, timedelta
-
-from airflow.executors.scheduling_action import SchedulingAction
-from airflow.models.taskstate import TaskState
 from typing import (
     TYPE_CHECKING,
     Any,
@@ -53,12 +50,14 @@ from sqlalchemy.orm import Session
 
 from airflow.configuration import conf
 from airflow.exceptions import AirflowException
+from airflow.executors.scheduling_action import SchedulingAction
 from airflow.lineage import apply_lineage, prepare_lineage
 from airflow.models.base import Operator
 from airflow.models.eventhandler import EventHandler
 from airflow.models.pool import Pool
 from airflow.models.taskinstance import Context, TaskInstance, clear_task_instances
 from airflow.models.taskmixin import TaskMixin
+from airflow.models.taskstate import TaskState
 from airflow.models.xcom import XCOM_RETURN_KEY
 from airflow.ti_deps.deps.base_ti_dep import BaseTIDep
 from airflow.ti_deps.deps.not_in_retry_period_dep import NotInRetryPeriodDep

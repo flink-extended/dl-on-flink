@@ -298,6 +298,20 @@ class EventBasedScheduler(LoggingMixin):
         self._verify_integrity_if_dag_changed(dag_run=dag_run, session=session)
 
         schedulable_tis, callback_to_run = dag_run.update_state(session=session, execute_callbacks=False)
+        dag_run.schedule_tis(schedulable_tis, session)
+
+        query = (session.query(TI)
+                 .outerjoin(TI.dag_run)
+                 .filter(or_(DR.run_id.is_(None), DR.run_type != DagRunType.BACKFILL_JOB))
+                 .join(TI.dag_model)
+                 .filter(not_(DM.is_paused))
+                 .filter(TI.state == State.SCHEDULED)
+                 .options(selectinload('dag_model')))
+        scheduled_tis: List[TI] = with_row_locks(
+            query,
+            of=TI,
+            **skip_locked(session=session),
+        ).all()
 
         # todo self._send_dag_callbacks_to_processor(dag_run, callback_to_run)
 
@@ -305,7 +319,7 @@ class EventBasedScheduler(LoggingMixin):
         # query to update all the TIs across all the execution dates and dag
         # IDs in a single query, but it turns out that can be _very very slow_
         # see #11147/commit ee90807ac for more details
-        return schedulable_tis
+        return scheduled_tis
 
     @provide_session
     def _verify_integrity_if_dag_changed(self, dag_run: DagRun, session=None):
