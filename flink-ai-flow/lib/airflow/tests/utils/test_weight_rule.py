@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -18,11 +17,11 @@
 # under the License.
 
 import unittest
+
 from airflow.utils.weight_rule import WeightRule
 
 
 class TestWeightRule(unittest.TestCase):
-
     def test_valid_weight_rules(self):
         self.assertTrue(WeightRule.is_valid(WeightRule.DOWNSTREAM))
         self.assertTrue(WeightRule.is_valid(WeightRule.UPSTREAM))

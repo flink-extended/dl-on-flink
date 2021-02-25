@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -16,43 +15,28 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-#
-# flake8: noqa: E402
-import inspect
-from future import standard_library
-standard_library.install_aliases()  # noqa: E402
-from builtins import str, object
-
-from io import BytesIO as IO
-import functools
-import gzip
 import json
 import time
-import wtforms
-from wtforms.compat import text_type
+from urllib.parse import urlencode
 
-from flask import after_this_request, request, Markup, Response
-from flask_admin.model import filters
-import flask_admin.contrib.sqla.filters as sqlafilters
-from flask_login import current_user
-from six.moves.urllib.parse import urlencode
+import markdown
+import sqlalchemy as sqla
+from flask import Markup, Response, request, url_for
+from flask_appbuilder.forms import FieldConverter
+from flask_appbuilder.models.sqla import filters as fab_sqlafilters
+from flask_appbuilder.models.sqla.interface import SQLAInterface
+from pygments import highlight, lexers
+from pygments.formatters import HtmlFormatter  # noqa pylint: disable=no-name-in-module
 
-from airflow import models, settings
 from airflow.configuration import conf
-from airflow.utils.db import create_session
 from airflow.utils import timezone
+from airflow.utils.code_utils import get_python_source
 from airflow.utils.json import AirflowJsonEncoder
+from airflow.utils.state import State
+from airflow.www.forms import DateTimeWithTimezoneField
+from airflow.www.widgets import AirflowDateTimePickerWidget
 
-try:
-    # cgi.escape has been deprecated since 3.3 and removed in 3.8
-    from html import escape
-except ImportError:
-    # Use cgi.escape for Python 2
-    from cgi import escape  # type: ignore
-
-AUTHENTICATE = conf.getboolean('webserver', 'AUTHENTICATE')
-
-DEFAULT_SENSITIVE_VARIABLE_FIELDS = (
+DEFAULT_SENSITIVE_VARIABLE_FIELDS = [
     'password',
     'secret',
     'passwd',
@@ -60,68 +44,35 @@ DEFAULT_SENSITIVE_VARIABLE_FIELDS = (
     'api_key',
     'apikey',
     'access_token',
-)
+]
+
+
+def get_sensitive_variables_fields():
+    """Get comma-separated sensitive Variable Fields from airflow.cfg."""
+    sensitive_fields = set(DEFAULT_SENSITIVE_VARIABLE_FIELDS)
+    sensitive_variable_fields = conf.get('admin', 'sensitive_variable_fields')
+    if sensitive_variable_fields:
+        sensitive_fields.update({field.strip() for field in sensitive_variable_fields.split(',')})
+    return sensitive_fields
 
 
 def should_hide_value_for_key(key_name):
+    """Returns True if hide_sensitive_variable_fields is True, else False"""
     # It is possible via importing variables from file that a key is empty.
     if key_name:
-        config_set = conf.getboolean('admin',
-                                                   'hide_sensitive_variable_fields')
-        field_comp = any(s in key_name.lower() for s in DEFAULT_SENSITIVE_VARIABLE_FIELDS)
+        config_set = conf.getboolean('admin', 'hide_sensitive_variable_fields')
+
+        field_comp = any(s in key_name.strip().lower() for s in get_sensitive_variables_fields())
         return config_set and field_comp
     return False
 
 
-class LoginMixin(object):
-    def is_accessible(self):
-        return (
-            not AUTHENTICATE or (
-                not current_user.is_anonymous and
-                current_user.is_authenticated
-            )
-        )
-
-
-class SuperUserMixin(object):
-    def is_accessible(self):
-        return (
-            not AUTHENTICATE or
-            (not current_user.is_anonymous and current_user.is_superuser())
-        )
-
-
-class DataProfilingMixin(object):
-    def is_accessible(self):
-        return (
-            not AUTHENTICATE or
-            (not current_user.is_anonymous and current_user.data_profiling())
-        )
-
-
 def get_params(**kwargs):
-    hide_paused_dags_by_default = conf.getboolean('webserver',
-                                                  'hide_paused_dags_by_default')
-    if 'showPaused' in kwargs:
-        show_paused_dags_url_param = kwargs['showPaused']
-        if _should_remove_show_paused_from_url_params(
-            show_paused_dags_url_param,
-            hide_paused_dags_by_default
-        ):
-            kwargs.pop('showPaused')
-    return urlencode({d: v if v is not None else '' for d, v in kwargs.items()})
+    """Return URL-encoded params"""
+    return urlencode({d: v for d, v in kwargs.items() if v is not None})
 
 
-def _should_remove_show_paused_from_url_params(show_paused_dags_url_param,
-                                               hide_paused_dags_by_default):
-    return any([
-        show_paused_dags_url_param != hide_paused_dags_by_default,
-        show_paused_dags_url_param is None
-    ])
-
-
-def generate_pages(current_page, num_of_pages,
-                   search=None, showPaused=None, window=7):
+def generate_pages(current_page, num_of_pages, search=None, status=None, window=7):
     """
     Generates the HTML for a paging component using a similar logic to the paging
     auto-generated by Flask managed views. The paging component defines a number of
@@ -130,359 +81,366 @@ def generate_pages(current_page, num_of_pages,
     current one in the middle of the pager component. When in the last pages,
     the pages won't scroll and just keep moving until the last page. Pager also contains
     <first, previous, ..., next, last> pages.
-    This component takes into account custom parameters such as search and showPaused,
+    This component takes into account custom parameters such as search and status,
     which could be added to the pages link in order to maintain the state between
     client and server. It also allows to make a bookmark on a specific paging state.
 
     :param current_page: the current page number, 0-indexed
     :param num_of_pages: the total number of pages
     :param search: the search query string, if any
-    :param showPaused: false if paused dags will be hidden, otherwise true to show them
+    :param status: 'all', 'active', or 'paused'
     :param window: the number of pages to be shown in the paging component (7 default)
     :return: the HTML string of the paging component
     """
-
     void_link = 'javascript:void(0)'
-    first_node = Markup("""<li class="paginate_button {disabled}" id="dags_first">
+    first_node = Markup(
+        """<li class="paginate_button {disabled}" id="dags_first">
     <a href="{href_link}" aria-controls="dags" data-dt-idx="0" tabindex="0">&laquo;</a>
-</li>""")
+</li>"""
+    )
 
-    previous_node = Markup("""<li class="paginate_button previous {disabled}" id="dags_previous">
+    previous_node = Markup(
+        """<li class="paginate_button previous {disabled}" id="dags_previous">
     <a href="{href_link}" aria-controls="dags" data-dt-idx="0" tabindex="0">&lsaquo;</a>
-</li>""")
+</li>"""
+    )
 
-    next_node = Markup("""<li class="paginate_button next {disabled}" id="dags_next">
+    next_node = Markup(
+        """<li class="paginate_button next {disabled}" id="dags_next">
     <a href="{href_link}" aria-controls="dags" data-dt-idx="3" tabindex="0">&rsaquo;</a>
-</li>""")
+</li>"""
+    )
 
-    last_node = Markup("""<li class="paginate_button {disabled}" id="dags_last">
+    last_node = Markup(
+        """<li class="paginate_button {disabled}" id="dags_last">
     <a href="{href_link}" aria-controls="dags" data-dt-idx="3" tabindex="0">&raquo;</a>
-</li>""")
+</li>"""
+    )
 
-    page_node = Markup("""<li class="paginate_button {is_active}">
+    page_node = Markup(
+        """<li class="paginate_button {is_active}">
     <a href="{href_link}" aria-controls="dags" data-dt-idx="2" tabindex="0">{page_num}</a>
-</li>""")
+</li>"""
+    )
 
-    output = [Markup('<ul class="pagination" style="margin-top:0px;">')]
+    output = [Markup('<ul class="pagination" style="margin-top:0;">')]
 
     is_disabled = 'disabled' if current_page <= 0 else ''
-    output.append(first_node.format(href_link="?{}"
-                                    .format(get_params(page=0,
-                                                       search=search,
-                                                       showPaused=showPaused)),
-                                    disabled=is_disabled))
+    output.append(
+        first_node.format(
+            href_link="?{}".format(get_params(page=0, search=search, status=status)),  # noqa
+            disabled=is_disabled,
+        )
+    )
 
     page_link = void_link
     if current_page > 0:
-        page_link = '?{}'.format(get_params(page=(current_page - 1),
-                                            search=search,
-                                            showPaused=showPaused))
+        page_link = '?{}'.format(get_params(page=(current_page - 1), search=search, status=status))
 
-    output.append(previous_node.format(href_link=page_link,
-                                       disabled=is_disabled))
+    output.append(previous_node.format(href_link=page_link, disabled=is_disabled))  # noqa
 
     mid = int(window / 2)
     last_page = num_of_pages - 1
 
     if current_page <= mid or num_of_pages < window:
-        pages = [i for i in range(0, min(num_of_pages, window))]
+        pages = list(range(0, min(num_of_pages, window)))
     elif mid < current_page < last_page - mid:
-        pages = [i for i in range(current_page - mid, current_page + mid + 1)]
+        pages = list(range(current_page - mid, current_page + mid + 1))
     else:
-        pages = [i for i in range(num_of_pages - window, last_page + 1)]
+        pages = list(range(num_of_pages - window, last_page + 1))
 
-    def is_current(current, page):
+    def is_current(current, page):  # noqa
         return page == current
 
     for page in pages:
         vals = {
             'is_active': 'active' if is_current(current_page, page) else '',
-            'href_link': void_link if is_current(current_page, page)
-                         else '?{}'.format(get_params(page=page,
-                                                      search=search,
-                                                      showPaused=showPaused)),
-            'page_num': page + 1
+            'href_link': void_link
+            if is_current(current_page, page)
+            else '?{}'.format(get_params(page=page, search=search, status=status)),
+            'page_num': page + 1,
         }
-        output.append(page_node.format(**vals))
+        output.append(page_node.format(**vals))  # noqa
 
     is_disabled = 'disabled' if current_page >= num_of_pages - 1 else ''
 
-    page_link = (void_link if current_page >= num_of_pages - 1
-                 else '?{}'.format(get_params(page=current_page + 1,
-                                              search=search,
-                                              showPaused=showPaused)))
+    page_link = (
+        void_link
+        if current_page >= num_of_pages - 1
+        else '?{}'.format(get_params(page=current_page + 1, search=search, status=status))
+    )
 
-    output.append(next_node.format(href_link=page_link, disabled=is_disabled))
-    output.append(last_node.format(href_link="?{}"
-                                   .format(get_params(page=last_page,
-                                                      search=search,
-                                                      showPaused=showPaused)),
-                                   disabled=is_disabled))
+    output.append(next_node.format(href_link=page_link, disabled=is_disabled))  # noqa
+    output.append(
+        last_node.format(
+            href_link="?{}".format(get_params(page=last_page, search=search, status=status)),  # noqa
+            disabled=is_disabled,
+        )
+    )
 
     output.append(Markup('</ul>'))
 
     return Markup('\n'.join(output))
 
 
-def limit_sql(sql, limit, conn_type):
-    sql = sql.strip()
-    sql = sql.rstrip(';')
-    if sql.lower().startswith("select"):
-        if conn_type in ['mssql']:
-            sql = """\
-            SELECT TOP {limit} * FROM (
-            {sql}
-            ) qry
-            """.format(limit=limit, sql=sql)
-        elif conn_type in ['oracle']:
-            sql = """\
-            SELECT * FROM (
-            {sql}
-            ) qry
-            WHERE ROWNUM <= {limit}
-            """.format(limit=limit, sql=sql)
-        else:
-            sql = """\
-            SELECT * FROM (
-            {sql}
-            ) qry
-            LIMIT {limit}
-            """.format(limit=limit, sql=sql)
-    return sql
-
-
 def epoch(dttm):
-    """Returns an epoch-type date"""
-    return int(time.mktime(dttm.timetuple())) * 1000,
-
-
-def action_logging(f):
-    """
-    Decorator to log user actions
-    """
-    @functools.wraps(f)
-    def wrapper(*args, **kwargs):
-        # AnonymousUserMixin() has user attribute but its value is None.
-        if current_user and hasattr(current_user, 'user') and current_user.user:
-            user = current_user.user.username
-        else:
-            user = 'anonymous'
-
-        log = models.Log(
-            event=f.__name__,
-            task_instance=None,
-            owner=user,
-            extra=str(list(request.values.items())),
-            task_id=request.values.get('task_id'),
-            dag_id=request.values.get('dag_id'))
-
-        if request.values.get('execution_date'):
-            log.execution_date = timezone.parse(request.values.get('execution_date'))
-
-        with create_session() as session:
-            session.add(log)
-            session.commit()
-
-        return f(*args, **kwargs)
-
-    return wrapper
-
-
-def notify_owner(f):
-    """
-    Decorator to notify owner of actions taken on their DAGs by others
-    """
-    @functools.wraps(f)
-    def wrapper(*args, **kwargs):
-        """
-        if request.args.get('confirmed') == "true":
-            dag_id = request.args.get('dag_id')
-            task_id = request.args.get('task_id')
-            dagbag = models.DagBag(settings.DAGS_FOLDER)
-            dag = dagbag.get_dag(dag_id)
-            task = dag.get_task(task_id)
-
-            if current_user and hasattr(current_user, 'user') and current_user.user:
-                user = current_user.username
-            else:
-                user = 'anonymous'
-
-            if task.owner != user:
-                subject = (
-                    'Actions taken on DAG {0} by {1}'.format(
-                        dag_id, user))
-                items = request.args.items()
-                content = Template('''
-                    action: <i>{{ f.__name__ }}</i><br>
-                    <br>
-                    <b>Parameters</b>:<br>
-                    <table>
-                    {% for k, v in items %}
-                        {% if k != 'origin' %}
-                            <tr>
-                                <td>{{ k }}</td>
-                                <td>{{ v }}</td>
-                            </tr>
-                        {% endif %}
-                    {% endfor %}
-                    </table>
-                    ''').render(**locals())
-                if task.email:
-                    send_email(task.email, subject, content)
-        """
-        return f(*args, **kwargs)
-    return wrapper
+    """Returns an epoch-type date (tuple with no timezone)"""
+    return (int(time.mktime(dttm.timetuple())) * 1000,)
 
 
 def json_response(obj):
-    """
-    returns a json response from a json serializable python object
-    """
+    """Returns a json response from a json serializable python object"""
     return Response(
-        response=json.dumps(
-            obj, indent=4, cls=AirflowJsonEncoder),
-        status=200,
-        mimetype="application/json")
-
-
-def gzipped(f):
-    """
-    Decorator to make a view compressed
-    """
-    @functools.wraps(f)
-    def view_func(*args, **kwargs):
-        @after_this_request
-        def zipper(response):
-            accept_encoding = request.headers.get('Accept-Encoding', '')
-
-            if 'gzip' not in accept_encoding.lower():
-                return response
-
-            response.direct_passthrough = False
-
-            if (response.status_code < 200 or
-                response.status_code >= 300 or
-                'Content-Encoding' in response.headers):
-                return response
-            gzip_buffer = IO()
-            gzip_file = gzip.GzipFile(mode='wb',
-                                      fileobj=gzip_buffer)
-            gzip_file.write(response.data)
-            gzip_file.close()
-
-            response.data = gzip_buffer.getvalue()
-            response.headers['Content-Encoding'] = 'gzip'
-            response.headers['Vary'] = 'Accept-Encoding'
-            response.headers['Content-Length'] = len(response.data)
-
-            return response
-
-        return f(*args, **kwargs)
-
-    return view_func
+        response=json.dumps(obj, indent=4, cls=AirflowJsonEncoder), status=200, mimetype="application/json"
+    )
 
 
 def make_cache_key(*args, **kwargs):
-    """
-    Used by cache to get a unique key per URL
-    """
+    """Used by cache to get a unique key per URL"""
     path = request.path
     args = str(hash(frozenset(request.args.items())))
     return (path + args).encode('ascii', 'ignore')
 
 
-def get_python_source(x, return_none_if_x_none=False):
-    """
-    Helper function to get Python source (or not), preventing exceptions
-    """
-    if isinstance(x, str):
-        return x
+def task_instance_link(attr):
+    """Generates a URL to the Graph View for a TaskInstance."""
+    dag_id = attr.get('dag_id')
+    task_id = attr.get('task_id')
+    execution_date = attr.get('execution_date')
+    url = url_for('Airflow.task', dag_id=dag_id, task_id=task_id, execution_date=execution_date.isoformat())
+    url_root = url_for(
+        'Airflow.graph', dag_id=dag_id, root=task_id, execution_date=execution_date.isoformat()
+    )
+    return Markup(  # noqa
+        """
+        <span style="white-space: nowrap;">
+        <a href="{url}">{task_id}</a>
+        <a href="{url_root}" title="Filter on this task and upstream">
+        <span class="material-icons" style="margin-left:0;"
+            aria-hidden="true">filter_alt</span>
+        </a>
+        </span>
+        """
+    ).format(url=url, task_id=task_id, url_root=url_root)
 
-    if x is None and return_none_if_x_none:
+
+def state_token(state):
+    """Returns a formatted string with HTML for a given State"""
+    color = State.color(state)
+    fg_color = State.color_fg(state)
+    return Markup(  # noqa
+        """
+        <span class="label" style="color:{fg_color}; background-color:{color};"
+            title="Current State: {state}">{state}</span>
+        """
+    ).format(color=color, state=state, fg_color=fg_color)
+
+
+def state_f(attr):
+    """Gets 'state' & returns a formatted string with HTML for a given State"""
+    state = attr.get('state')
+    return state_token(state)
+
+
+def nobr_f(attr_name):
+    """Returns a formatted string with HTML with a Non-breaking Text element"""
+
+    def nobr(attr):
+        f = attr.get(attr_name)
+        return Markup("<nobr>{}</nobr>").format(f)  # noqa
+
+    return nobr
+
+
+def datetime_f(attr_name):
+    """Returns a formatted string with HTML for given DataTime"""
+
+    def dt(attr):  # pylint: disable=invalid-name
+        f = attr.get(attr_name)
+        as_iso = f.isoformat() if f else ''
+        if not as_iso:
+            return Markup('')
+        f = as_iso
+        if timezone.utcnow().isoformat()[:4] == f[:4]:
+            f = f[5:]
+        # The empty title will be replaced in JS code when non-UTC dates are displayed
+        return Markup('<nobr><time title="" datetime="{}">{}</time></nobr>').format(as_iso, f)  # noqa
+
+    return dt
+
+
+# pylint: enable=invalid-name
+
+
+def json_f(attr_name):
+    """Returns a formatted string with HTML for given JSON serializable"""
+
+    def json_(attr):
+        f = attr.get(attr_name)
+        serialized = json.dumps(f)
+        return Markup('<nobr>{}</nobr>').format(serialized)  # noqa
+
+    return json_
+
+
+def dag_link(attr):
+    """Generates a URL to the Graph View for a Dag."""
+    dag_id = attr.get('dag_id')
+    execution_date = attr.get('execution_date')
+    url = url_for('Airflow.graph', dag_id=dag_id, execution_date=execution_date)
+    return Markup('<a href="{}">{}</a>').format(url, dag_id)  # noqa
+
+
+def dag_run_link(attr):
+    """Generates a URL to the Graph View for a DagRun."""
+    dag_id = attr.get('dag_id')
+    run_id = attr.get('run_id')
+    execution_date = attr.get('execution_date')
+    url = url_for('Airflow.graph', dag_id=dag_id, run_id=run_id, execution_date=execution_date)
+    return Markup('<a href="{url}">{run_id}</a>').format(url=url, run_id=run_id)  # noqa
+
+
+def pygment_html_render(s, lexer=lexers.TextLexer):  # noqa pylint: disable=no-member
+    """Highlight text using a given Lexer"""
+    return highlight(s, lexer(), HtmlFormatter(linenos=True))
+
+
+def render(obj, lexer):
+    """Render a given Python object with a given Pygments lexer"""
+    out = ""
+    if isinstance(obj, str):
+        out = Markup(pygment_html_render(obj, lexer))
+    elif isinstance(obj, (tuple, list)):
+        for i, text_to_render in enumerate(obj):
+            out += Markup("<div>List item #{}</div>").format(i)  # noqa
+            out += Markup("<div>" + pygment_html_render(text_to_render, lexer) + "</div>")
+    elif isinstance(obj, dict):
+        for k, v in obj.items():
+            out += Markup('<div>Dict item "{}"</div>').format(k)  # noqa
+            out += Markup("<div>" + pygment_html_render(v, lexer) + "</div>")
+    return out
+
+
+def wrapped_markdown(s, css_class=None):
+    """Convert a Markdown string to HTML."""
+    if s is None:
         return None
 
-    source_code = None
-
-    if isinstance(x, functools.partial):
-        source_code = inspect.getsource(x.func)
-
-    if source_code is None:
-        try:
-            source_code = inspect.getsource(x)
-        except TypeError:
-            pass
-
-    if source_code is None:
-        try:
-            source_code = inspect.getsource(x.__call__)
-        except (TypeError, AttributeError):
-            pass
-
-    if source_code is None:
-        source_code = 'No source code available for {}'.format(type(x))
-
-    return source_code
+    return Markup(f'<div class="{css_class}" >' + markdown.markdown(s) + "</div>")
 
 
-class AceEditorWidget(wtforms.widgets.TextArea):
+# pylint: disable=no-member
+def get_attr_renderer():
+    """Return Dictionary containing different Pygments Lexers for Rendering & Highlighting"""
+    return {
+        'bash': lambda x: render(x, lexers.BashLexer),
+        'bash_command': lambda x: render(x, lexers.BashLexer),
+        'hql': lambda x: render(x, lexers.SqlLexer),
+        'html': lambda x: render(x, lexers.HtmlLexer),
+        'sql': lambda x: render(x, lexers.SqlLexer),
+        'doc': lambda x: render(x, lexers.TextLexer),
+        'doc_json': lambda x: render(x, lexers.JsonLexer),
+        'doc_rst': lambda x: render(x, lexers.RstLexer),
+        'doc_yaml': lambda x: render(x, lexers.YamlLexer),
+        'doc_md': wrapped_markdown,
+        'json': lambda x: render(x, lexers.JsonLexer),
+        'md': wrapped_markdown,
+        'py': lambda x: render(get_python_source(x), lexers.PythonLexer),
+        'python_callable': lambda x: render(get_python_source(x), lexers.PythonLexer),
+        'rst': lambda x: render(x, lexers.RstLexer),
+        'yaml': lambda x: render(x, lexers.YamlLexer),
+    }
+
+
+# pylint: enable=no-member
+
+
+def get_chart_height(dag):
     """
-    Renders an ACE code editor.
+    We use the number of tasks in the DAG as a heuristic to
+    approximate the size of generated chart (otherwise the charts are tiny and unreadable
+    when DAGs have a large number of tasks). Ideally nvd3 should allow for dynamic-height
+    charts, that is charts that take up space based on the size of the components within.
+    TODO(aoen): See [AIRFLOW-1263]
     """
-    def __call__(self, field, **kwargs):
-        kwargs.setdefault('id', field.id)
-        html = '''
-        <div id="{el_id}" style="height:100px;">{contents}</div>
-        <textarea
-            id="{el_id}_ace" name="{form_name}"
-            style="display:none;visibility:hidden;">
-        </textarea>
-        '''.format(
-            el_id=kwargs.get('id', field.id),
-            contents=escape(text_type(field._value())),
-            form_name=field.id,
-        )
-        return wtforms.widgets.core.HTMLString(html)
+    return 600 + len(dag.tasks) * 10
 
 
-class UtcDateTimeFilterMixin(object):
-    def clean(self, value):
-        dt = super(UtcDateTimeFilterMixin, self).clean(value)
-        if isinstance(dt, list):
-            return [timezone.make_aware(d, timezone=timezone.utc) for d in dt]
-        return timezone.make_aware(dt, timezone=timezone.utc)
+class UtcAwareFilterMixin:  # noqa: D101
+    """Mixin for filter for UTC time."""
+
+    def apply(self, query, value):
+        """Apply the filter."""
+        value = timezone.parse(value, timezone=timezone.utc)
+
+        return super().apply(query, value)  # noqa
 
 
-class UtcDateTimeEqualFilter(UtcDateTimeFilterMixin, sqlafilters.DateTimeEqualFilter):
-    pass
+class UtcAwareFilterEqual(UtcAwareFilterMixin, fab_sqlafilters.FilterEqual):  # noqa: D101
+    """Equality filter for UTC time."""
 
 
-class UtcDateTimeNotEqualFilter(UtcDateTimeFilterMixin, sqlafilters.DateTimeNotEqualFilter):
-    pass
+class UtcAwareFilterGreater(UtcAwareFilterMixin, fab_sqlafilters.FilterGreater):  # noqa: D101
+    """Greater Than filter for UTC time."""
 
 
-class UtcDateTimeGreaterFilter(UtcDateTimeFilterMixin, sqlafilters.DateTimeGreaterFilter):
-    pass
+class UtcAwareFilterSmaller(UtcAwareFilterMixin, fab_sqlafilters.FilterSmaller):  # noqa: D101
+    """Smaller Than filter for UTC time."""
 
 
-class UtcDateTimeSmallerFilter(UtcDateTimeFilterMixin, sqlafilters.DateTimeSmallerFilter):
-    pass
+class UtcAwareFilterNotEqual(UtcAwareFilterMixin, fab_sqlafilters.FilterNotEqual):  # noqa: D101
+    """Not Equal To filter for UTC time."""
 
 
-class UtcDateTimeBetweenFilter(UtcDateTimeFilterMixin, sqlafilters.DateTimeBetweenFilter):
-    pass
+class UtcAwareFilterConverter(fab_sqlafilters.SQLAFilterConverter):  # noqa: D101
+    """Retrieve conversion tables for UTC-Aware filters."""
+
+    conversion_table = (
+        (
+            'is_utcdatetime',
+            [UtcAwareFilterEqual, UtcAwareFilterGreater, UtcAwareFilterSmaller, UtcAwareFilterNotEqual],
+        ),
+    ) + fab_sqlafilters.SQLAFilterConverter.conversion_table
 
 
-class UtcDateTimeNotBetweenFilter(UtcDateTimeFilterMixin, sqlafilters.DateTimeNotBetweenFilter):
-    pass
+class CustomSQLAInterface(SQLAInterface):
+    """
+    FAB does not know how to handle columns with leading underscores because
+    they are not supported by WTForm. This hack will remove the leading
+    '_' from the key to lookup the column names.
+
+    """
+
+    def __init__(self, obj, session=None):
+        super().__init__(obj, session=session)
+
+        def clean_column_names():
+            if self.list_properties:
+                self.list_properties = {k.lstrip('_'): v for k, v in self.list_properties.items()}
+            if self.list_columns:
+                self.list_columns = {k.lstrip('_'): v for k, v in self.list_columns.items()}
+
+        clean_column_names()
+
+    def is_utcdatetime(self, col_name):
+        """Check if the datetime is a UTC one."""
+        from airflow.utils.sqlalchemy import UtcDateTime
+
+        if col_name in self.list_columns:
+            obj = self.list_columns[col_name].type
+            return (
+                isinstance(obj, UtcDateTime)
+                or isinstance(obj, sqla.types.TypeDecorator)
+                and isinstance(obj.impl, UtcDateTime)
+            )
+        return False
+
+    filter_converter_class = UtcAwareFilterConverter
 
 
-class UtcFilterConverter(sqlafilters.FilterConverter):
-
-    utcdatetime_filters = (UtcDateTimeEqualFilter, UtcDateTimeNotEqualFilter,
-                           UtcDateTimeGreaterFilter, UtcDateTimeSmallerFilter,
-                           UtcDateTimeBetweenFilter, UtcDateTimeNotBetweenFilter,
-                           sqlafilters.FilterEmpty)
-
-    @filters.convert('utcdatetime')
-    def conv_utcdatetime(self, column, name, **kwargs):
-        return [f(column, name, **kwargs) for f in self.utcdatetime_filters]
+# This class is used directly (i.e. we cant tell Fab to use a different
+# subclass) so we have no other option than to edit the conversion table in
+# place
+FieldConverter.conversion_table = (
+    ('is_utcdatetime', DateTimeWithTimezoneField, AirflowDateTimePickerWidget),
+) + FieldConverter.conversion_table

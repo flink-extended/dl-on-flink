@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -24,7 +23,7 @@ from airflow.exceptions import TaskInstanceNotFound
 from airflow.models import TaskInstance
 
 
-def get_task_instance(dag_id, task_id, execution_date):  # type: (str, str, datetime) -> TaskInstance
+def get_task_instance(dag_id: str, task_id: str, execution_date: datetime) -> TaskInstance:
     """Return the task object identified by the given dag_id and task_id."""
     dag = check_and_get_dag(dag_id, task_id)
 
@@ -32,8 +31,7 @@ def get_task_instance(dag_id, task_id, execution_date):  # type: (str, str, date
     # Get task instance object and check that it exists
     task_instance = dagrun.get_task_instance(task_id)
     if not task_instance:
-        error_message = ('Task {} instance for date {} not found'
-                         .format(task_id, execution_date))
+        error_message = f'Task {task_id} instance for date {execution_date} not found'
         raise TaskInstanceNotFound(error_message)
 
     return task_instance

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -26,7 +25,7 @@ Addresses issue #1225.
 from datetime import datetime
 
 from airflow.models import DAG
-from airflow.operators.dummy_operator import DummyOperator
+from airflow.operators.dummy import DummyOperator
 
 dag = DAG(dag_id='test_backfill_pooled_task_dag')
 task = DummyOperator(
@@ -34,4 +33,5 @@ task = DummyOperator(
     dag=dag,
     pool='test_backfill_pooled_task_pool',
     owner='airflow',
-    start_date=datetime(2016, 2, 1))
+    start_date=datetime(2016, 2, 1),
+)
