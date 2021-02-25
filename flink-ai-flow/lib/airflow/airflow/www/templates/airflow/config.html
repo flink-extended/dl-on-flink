@@ -17,13 +17,13 @@
  under the License.
 #}
 
-{% extends "airflow/master.html" %}
+{% extends base_template %}
 
 {% block title %}
     {{ title }}
 {% endblock %}
 
-{% block body %}
+{% block content %}
     {{ super() }}
     <h2>{{ title }}</h2>
 
@@ -36,7 +36,7 @@
     {% endif %}
 
     {% if code_html %}
-        {{ code_html|safe }}
+        {{ code_html }}
     {% endif %}
 
     <hr>

@@ -28,6 +28,14 @@ java -jar apache-rat.jar -E ./.rat-excludes -d .
 python3 -m venv PATH_TO_YOUR_VENV
 source PATH_TO_YOUR_VENV/bin/activate
 
+NOTE!!
+
+On November 2020, new version of PIP (20.3) has been released with a new, 2020 resolver. This resolver
+does not yet work with Apache Airflow and might leads to errors in installation - depends on your choice
+of extras. In order to install Airflow you need to either downgrade pip to version 20.2.4
+``pip upgrade --pip==20.2.4`` or, in case you use Pip 20.3, you need to add option
+``--use-deprecated legacy-resolver`` to your pip install command.
+
 # [required] building and installing by pip (preferred)
 pip install .
 
@@ -35,22 +43,45 @@ pip install .
 python setup.py install
 
 # You can also install recommended version of the dependencies by using
-# requirements-python<PYTHON_MAJOR_MINOR_VERSION>.txt as constraint file. This is needed in case
+# constraint-python<PYTHON_MAJOR_MINOR_VERSION>.txt files as constraint file. This is needed in case
 # you have problems with installing the current requirements from PyPI.
-# There are different requirements for different python versions. For example"
+# There are different constraint files for different python versions. For example"
 
-pip install . --constraint requirements/requirements-python3.7.txt
+pip install . \
+  --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-master/constraints-3.6.txt"
+
+
+By default `pip install` in Airflow 2.0 installs only the provider packages that are needed by the extras,
+however if you want to install all providers (which was default behaviour in 1.10.*)
+you can do it by setting environment variable INSTALL_PROVIDERS_FROM_SOURCES to `true`.
+
+
+INSTALL_PROVIDERS_FROM_SOURCES="true" pip install . \
+  --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-master/constraints-3.6.txt"
+
+
+You can also install airflow in "editable mode" (with -e) flag and then provider packages will be
+available, because they are used directly from the airflow sources:
+
+
+pip install -e . \
+  --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-master/constraints-3.6.txt"
+
 
 # You can also install Airflow with extras specified. The list of available extras:
 # START EXTRAS HERE
 
-all, all_dbs, async, atlas, aws, azure, azure_blob_storage, azure_container_instances, azure_cosmos,
-azure_data_lake, cassandra, celery, cgroups, cloudant, crypto, dask, databricks, datadog, devel,
-devel_azure, devel_ci, devel_hadoop, doc, docker, druid, elasticsearch, emr, gcp, gcp_api,
-github_enterprise, google_auth, grpc, hashicorp, hdfs, hive, jdbc, jira, kerberos, kubernetes, ldap,
-mongo, mssql, mysql, oracle, papermill, password, pinot, postgres, presto, qds, rabbitmq, redis, s3,
-salesforce, samba, segment, sendgrid, sentry, slack, snowflake, ssh, statsd, vertica, virtualenv,
-webhdfs, winrm
+all_dbs, amazon, apache.atlas, apache.beam, apache.cassandra, apache.druid, apache.hdfs,
+apache.hive, apache.kylin, apache.livy, apache.pig, apache.pinot, apache.spark, apache.sqoop,
+apache.webhdfs, async, atlas, aws, azure, cassandra, celery, cgroups, cloudant, cncf.kubernetes,
+crypto, dask, databricks, datadog, dingding, discord, docker, druid, elasticsearch, exasol,
+facebook, ftp, gcp, gcp_api, github_enterprise, google, google_auth, grpc, hashicorp, hdfs, hive,
+http, imap, jdbc, jenkins, jira, kerberos, kubernetes, ldap, microsoft.azure, microsoft.mssql,
+microsoft.winrm, mongo, mssql, mysql, odbc, openfaas, opsgenie, oracle, pagerduty, papermill,
+password, pinot, plexus, postgres, presto, qds, qubole, rabbitmq, redis, s3, salesforce, samba,
+segment, sendgrid, sentry, sftp, singularity, slack, snowflake, spark, sqlite, ssh, statsd, tableau,
+telegram, vertica, virtualenv, webhdfs, winrm, yandex, zendesk, all, devel, devel_hadoop, doc,
+devel_all, devel_ci
 
 # END EXTRAS HERE
 

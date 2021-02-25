@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -25,8 +24,8 @@ Create Date: 2015-12-10 11:26:18.439223
 
 """
 
-from alembic import op
 import sqlalchemy as sa
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = '4446e08588'
@@ -35,11 +34,11 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade():  # noqa: D103
     op.add_column('dag_run', sa.Column('end_date', sa.DateTime(), nullable=True))
     op.add_column('dag_run', sa.Column('start_date', sa.DateTime(), nullable=True))
 
 
-def downgrade():
+def downgrade():  # noqa: D103
     op.drop_column('dag_run', 'start_date')
     op.drop_column('dag_run', 'end_date')

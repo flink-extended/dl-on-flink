@@ -47,8 +47,6 @@ from ai_flow.meta.model_meta import *
 from ai_flow.meta.model_meta import *
 from ai_flow.meta.project_meta import *
 from ai_flow.meta.workflow_execution_meta import *
-from ai_flow.plugins.kubernetes_cmd_job_plugin import KubernetesCMDJobConfig
-from ai_flow.plugins.kubernetes_platform import KubernetesPlatform
 from ai_flow.plugins.local_cmd_job_plugin import LocalCMDJobConfig
 from ai_flow.plugins.local_platform import LocalPlatform
 from ai_flow.udf.function_context import FunctionContext

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -21,7 +19,8 @@ import queue
 
 
 class Mailbox(object):
-    def __init__(self):
+
+    def __init__(self) -> None:
         self.queue = queue.Queue()
 
     def send_message(self, message):
@@ -32,3 +31,9 @@ class Mailbox(object):
 
     def length(self):
         return self.queue.qsize()
+
+    def get_message_with_timeout(self, timeout=1):
+        try:
+            return self.queue.get(timeout=timeout)
+        except Exception as e:
+            return None

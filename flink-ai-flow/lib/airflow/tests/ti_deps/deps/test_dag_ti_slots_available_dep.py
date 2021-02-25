@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -18,19 +17,18 @@
 # under the License.
 
 import unittest
-from mock import Mock
+from unittest.mock import Mock
 
 from airflow.models import TaskInstance
 from airflow.ti_deps.deps.dag_ti_slots_available_dep import DagTISlotsAvailableDep
 
 
-class DagTISlotsAvailableDepTest(unittest.TestCase):
-
+class TestDagTISlotsAvailableDep(unittest.TestCase):
     def test_concurrency_reached(self):
         """
         Test concurrency reached should fail dep
         """
-        dag = Mock(concurrency=1, concurrency_reached=True)
+        dag = Mock(concurrency=1, get_concurrency_reached=Mock(return_value=True))
         task = Mock(dag=dag, pool_slots=1)
         ti = TaskInstance(task, execution_date=None)
 
@@ -40,7 +38,7 @@ class DagTISlotsAvailableDepTest(unittest.TestCase):
         """
         Test all conditions met should pass dep
         """
-        dag = Mock(concurrency=1, concurrency_reached=False)
+        dag = Mock(concurrency=1, get_concurrency_reached=Mock(return_value=False))
         task = Mock(dag=dag, pool_slots=1)
         ti = TaskInstance(task, execution_date=None)
 

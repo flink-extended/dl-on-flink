@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -17,17 +16,16 @@
 # specific language governing permissions and limitations
 # under the License.
 import unittest
-
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 
 from airflow.models import Pool
-from airflow.ti_deps.deps.pool_slots_available_dep import PoolSlotsAvailableDep, \
-    STATES_TO_COUNT_AS_RUNNING
-from airflow.utils.db import create_session
+from airflow.ti_deps.dependencies_states import EXECUTION_STATES
+from airflow.ti_deps.deps.pool_slots_available_dep import PoolSlotsAvailableDep
+from airflow.utils.session import create_session
 from tests.test_utils import db
 
 
-class PoolSlotsAvailableDepTest(unittest.TestCase):
+class TestPoolSlotsAvailableDep(unittest.TestCase):
     def setUp(self):
         db.clear_db_pools()
         with create_session() as session:
@@ -53,7 +51,7 @@ class PoolSlotsAvailableDepTest(unittest.TestCase):
     @patch('airflow.models.Pool.open_slots', return_value=0)
     # pylint: disable=unused-argument
     def test_running_pooled_task_pass(self, mock_open_slots):
-        for state in STATES_TO_COUNT_AS_RUNNING:
+        for state in EXECUTION_STATES:
             ti = Mock(pool='test_pool', state=state, pool_slots=1)
             self.assertTrue(PoolSlotsAvailableDep().is_met(ti=ti))
 
