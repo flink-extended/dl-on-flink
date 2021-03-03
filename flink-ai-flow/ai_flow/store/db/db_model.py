@@ -18,7 +18,7 @@
 #
 from notification_service.base_notification import BaseEvent
 from sqlalchemy import (
-    Column, String, ForeignKey, Integer, PrimaryKeyConstraint, BigInteger, UniqueConstraint)
+    Column, String, ForeignKey, Integer, PrimaryKeyConstraint, BigInteger, UniqueConstraint, Text)
 from sqlalchemy.orm import relationship, backref
 from mongoengine import (Document, StringField, IntField, LongField, ReferenceField,
                          BooleanField, ListField, ObjectIdField, SequenceField)
@@ -123,12 +123,12 @@ class SqlWorkflowExecution(base, Base):
     __tablename__ = 'workflow_execution'
 
     name = Column(String(255), unique=True, nullable=False)
-    properties = Column(String(1000))
+    properties = Column(Text)
     start_time = Column(BigInteger)
     end_time = Column(BigInteger)
     execution_state = Column(String(256))
     log_uri = Column(String(1000))
-    workflow_json = Column(String(1000))
+    workflow_json = Column(Text)
     signature = Column(String(1000))
     project_id = Column(BigInteger, ForeignKey('project.uuid', onupdate='cascade'))
     is_deleted = Column(String(256), default='False')

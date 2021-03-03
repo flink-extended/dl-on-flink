@@ -33,16 +33,16 @@ if [[ ! -f "${AIRFLOW_HOME}/airflow.cfg" ]] ; then
     cd ${AIRFLOW_HOME}
 
     # create the configuration file
-    airflow initdb >/dev/null 2>&1 || true
+    airflow db init >/dev/null 2>&1 || true
     mv airflow.cfg airflow.cfg.tmpl
-    awk "{gsub(\"sql_alchemy_conn = mysql://user:password@host/airflow\", \"sql_alchemy_conn = ${MYSQL_CONN}\"); \
+    awk "{gsub(\"sql_alchemy_conn = sqlite:///${AIRFLOW_HOME}/airflow.db\", \"sql_alchemy_conn = ${MYSQL_CONN}\"); \
         gsub(\"load_examples = True\", \"load_examples = False\"); \
         gsub(\"load_default_connections = True\", \"load_default_connections = False\"); \
         gsub(\"dag_dir_list_interval = 300\", \"dag_dir_list_interval = 3\"); \
         print \$0}" airflow.cfg.tmpl > airflow.cfg
 
     # prepare the database
-    airflow resetdb -y
+    airflow db reset -y
 
     cd ${CURRENT_DIR}
 fi
