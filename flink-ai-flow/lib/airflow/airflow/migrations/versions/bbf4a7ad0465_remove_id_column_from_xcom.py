@@ -45,7 +45,7 @@ def upgrade():
         if "id" in xcom_columns:
             bop.drop_column('id')
             bop.drop_index('idx_xcom_dag_task_date')
-            bop.create_primary_key('pk_xcom', ['dag_id', 'task_id', 'key', 'execution_date'])
+            #bop.create_primary_key('pk_xcom', ['dag_id', 'task_id', 'key', 'execution_date'])
 
 
 def downgrade():
@@ -53,4 +53,4 @@ def downgrade():
     with op.batch_alter_table('xcom') as bop:
         bop.drop_constraint('pk_xcom', type_='primary')
         bop.add_column(Column('id', Integer, primary_key=True))
-        bop.create_index('idx_xcom_dag_task_date', ['dag_id', 'task_id', 'key', 'execution_date'])
+        #bop.create_index('idx_xcom_dag_task_date', ['dag_id', 'task_id', 'key', 'execution_date'])

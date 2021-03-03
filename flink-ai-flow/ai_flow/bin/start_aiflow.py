@@ -18,8 +18,6 @@
 # under the License.
 #
 import os
-import subprocess
-import sys
 import textwrap
 import ai_flow
 from airflow.logging_config import configure_logging
