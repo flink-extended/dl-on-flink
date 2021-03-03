@@ -12,11 +12,16 @@ If you are installing AI Flow from source, you can install AIflow by running the
 
 ```shell
 # remove the build cache if exists
+cd flink-ai-extended
 rm -rf ai_flow.egg-info
 rm -rf build
 rm -rf dist
-python3 setup.py bdist_wheel
-python3 -m pip install dist/*.whl
+#python3 setup.py bdist_wheel
+#python3 -m pip install dist/*.whl
+pip uninstall typing
+pip install ./flink-ai-flow/lib/notification_service
+sudo pip install ./flink-ai-flow/lib/airflow
+pip install ./flink-ai-flow/
 ```
 
 If you are installing AI Flow from the release package, just run:
@@ -207,8 +212,12 @@ We have added an event-based scheduler named event_scheduler to Airflow, so Flin
 To start an Airflow server, you need to install and start a mysql server in your machine. 
 Currently the AI Flow bundles a modified Airflow so users do not need to install the Apache Airflow manually.
 
-### Start Airflow Server and AI Flow Server
+### Start notification server, Airflow Server and AI Flow Server
 
+Start a local notification server
+```
+nohup start_notification_service.py > ${AIRFLOW_HOME}/notification_service.log 2>&1 &
+```
 Run following command to start AI Flow Server and Airflow Server:
 
 ```shell
@@ -234,6 +243,20 @@ Master Server log:  ${AIRFLOW_HOME}/master_server.log
 Master Server pid: 69947
 Airflow deploy path: ${AIRFLOW_HOME}/airflow_deploy
 Visit http://127.0.0.1:8080/ to access the airflow web server.
+```
+Now you can submit workflow to server. But for run following example, some config needs to be changed. Firstly stop the server started just now:
+```text
+stop-aiflow.sh
+```
+change master.yaml options related to db to mysql:
+```text
+db_uri=mysql://user:password@host/db
+db_type=mysql
+```
+change airflow.cfg config:
+```text
+executor = LocalExecutor
+dags_are_paused_at_creation = False
 ```
 
 ### Prepare AI Flow Project
