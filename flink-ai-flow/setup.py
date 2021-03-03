@@ -79,7 +79,8 @@ try:
         include_package_data=True,
         scripts=['ai_flow/bin/start-aiflow.sh',
                  'ai_flow/bin/stop-aiflow.sh',
-                 'ai_flow/bin/start_aiflow.py'],
+                 'ai_flow/bin/start_aiflow.py',
+                 'ai_flow/bin/start_notification_service.py'],
         package_data={
             '': ['airflow/alembic.ini', "airflow/git_version", "*.ipynb",
                  "airflow/providers/cncf/kubernetes/example_dags/*.yaml"],

@@ -28,6 +28,8 @@ from alembic import op
 from sqlalchemy.dialects import mysql
 
 # revision identifiers, used by Alembic.
+from sqlalchemy.engine.reflection import Inspector
+
 revision = 'd47076ca1426'
 down_revision = '98271e7606e2'
 branch_labels = None
@@ -39,6 +41,9 @@ def upgrade():
     is_mysql = bool(conn.dialect.name == "mysql")
     is_sqlite = bool(conn.dialect.name == "sqlite")
     datetime = sa.DATETIME() if not is_mysql else mysql.DATETIME(fsp=6)
+    inspector = Inspector.from_engine(conn)
+    tables = inspector.get_table_names()
+
 
     if is_sqlite:
         op.execute("PRAGMA foreign_keys=off")
@@ -53,40 +58,42 @@ def upgrade():
         batch_op.add_column(sa.Column('event_ack_id', sa.BigInteger(), nullable=True))
 
     """Add task_state table"""
-    op.create_table(
-        'task_state',
-        sa.Column('task_id', sa.String(length=250), nullable=False),
-        sa.Column('dag_id', sa.String(length=250), nullable=False),
-        sa.Column('execution_date', datetime, nullable=False),
-        sa.Column('state', sa.PickleType(), nullable=True),
-        sa.PrimaryKeyConstraint('task_id', 'dag_id', 'execution_date')
-    )
+    if 'task_state' not in tables:
+        op.create_table(
+            'task_state',
+            sa.Column('task_id', sa.String(length=250), nullable=False),
+            sa.Column('dag_id', sa.String(length=250), nullable=False),
+            sa.Column('execution_date', datetime, nullable=False),
+            sa.Column('state', sa.PickleType(), nullable=True),
+            sa.PrimaryKeyConstraint('task_id', 'dag_id', 'execution_date')
+        )
 
     """Add task_execution table"""
-    op.create_table(
-        'task_execution',
-        sa.Column('task_id', sa.String(length=250), nullable=False),
-        sa.Column('dag_id', sa.String(length=250), nullable=False),
-        sa.Column('execution_date', datetime, nullable=False),
-        sa.Column('seq_num', sa.Integer(), nullable=False),
-        sa.Column('start_date', datetime, nullable=True),
-        sa.Column('end_date', datetime, nullable=True),
-        sa.Column('duration', sa.Float(), nullable=True),
-        sa.Column('state', sa.String(length=20), nullable=True),
-        sa.Column('hostname', sa.String(length=1000), nullable=True),
-        sa.Column('unixname', sa.String(length=1000), nullable=True),
-        sa.Column('job_id', sa.Integer(), nullable=True),
-        sa.Column('pool', sa.String(length=50), nullable=True),
-        sa.Column('pool_slots', sa.Integer(), default=1),
-        sa.Column('queue', sa.String(length=256), nullable=True),
-        sa.Column('priority_weight', sa.Integer(), nullable=True),
-        sa.Column('operator', sa.String(length=1000), nullable=True),
-        sa.Column('queued_dttm', datetime, nullable=True),
-        sa.Column('queued_by_job_id', sa.Integer(), nullable=True),
-        sa.Column('pid', sa.Integer(), nullable=True),
-        sa.Column('executor_config', sa.PickleType(), nullable=True),
-        sa.PrimaryKeyConstraint('task_id', 'dag_id', 'execution_date', 'seq_num')
-    )
+    if 'task_execution' not in tables:
+        op.create_table(
+            'task_execution',
+            sa.Column('task_id', sa.String(length=250), nullable=False),
+            sa.Column('dag_id', sa.String(length=250), nullable=False),
+            sa.Column('execution_date', datetime, nullable=False),
+            sa.Column('seq_num', sa.Integer(), nullable=False),
+            sa.Column('start_date', datetime, nullable=True),
+            sa.Column('end_date', datetime, nullable=True),
+            sa.Column('duration', sa.Float(), nullable=True),
+            sa.Column('state', sa.String(length=20), nullable=True),
+            sa.Column('hostname', sa.String(length=1000), nullable=True),
+            sa.Column('unixname', sa.String(length=1000), nullable=True),
+            sa.Column('job_id', sa.Integer(), nullable=True),
+            sa.Column('pool', sa.String(length=50), nullable=True),
+            sa.Column('pool_slots', sa.Integer(), default=1),
+            sa.Column('queue', sa.String(length=256), nullable=True),
+            sa.Column('priority_weight', sa.Integer(), nullable=True),
+            sa.Column('operator', sa.String(length=1000), nullable=True),
+            sa.Column('queued_dttm', datetime, nullable=True),
+            sa.Column('queued_by_job_id', sa.Integer(), nullable=True),
+            sa.Column('pid', sa.Integer(), nullable=True),
+            sa.Column('executor_config', sa.PickleType(), nullable=True),
+            sa.PrimaryKeyConstraint('task_id', 'dag_id', 'execution_date', 'seq_num')
+        )
 
 
 def downgrade():
