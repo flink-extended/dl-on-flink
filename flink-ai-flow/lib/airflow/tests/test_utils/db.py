@@ -33,6 +33,7 @@ from airflow.models import (
     Variable,
     XCom,
     errors,
+    Message,
 )
 from airflow.models.dagcode import DagCode
 from airflow.models.serialized_dag import SerializedDagModel
@@ -140,3 +141,8 @@ def clear_db_task_state():
 def clear_db_task_execution():
     with create_session() as session:
         session.query(TaskExecution).delete()
+
+
+def clear_db_message():
+    with create_session() as session:
+        session.query(Message).delete()
