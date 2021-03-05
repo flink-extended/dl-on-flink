@@ -452,3 +452,9 @@ class BaseExecutor(LoggingMixin):
             else:
                 time.sleep(check_interval)
         return False
+
+    def recover_state(self):
+        """
+        Recover the state of dags after restarting scheduler.
+        """
+        pass

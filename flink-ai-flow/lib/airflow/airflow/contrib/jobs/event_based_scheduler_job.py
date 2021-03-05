@@ -15,56 +15,33 @@
 # specific language governing permissions and limitations
 # under the License.
 
-import datetime
-import itertools
-import logging
-import multiprocessing
 import os
 import sched
 import signal
 import sys
 import threading
 import time
-from collections import defaultdict
-from contextlib import redirect_stderr, redirect_stdout, suppress
-from datetime import timedelta
-from multiprocessing.connection import Connection as MultiprocessingConnection
-from typing import Any, Callable, DefaultDict, Dict, Iterable, List, Optional, Set, Tuple
-
-from airflow.models.taskstate import TaskState
-from setproctitle import setproctitle
-from sqlalchemy import and_, func, not_, or_
-from sqlalchemy.exc import OperationalError
-from sqlalchemy.orm import load_only, selectinload
-from sqlalchemy.orm.session import Session, make_transient
+from typing import Callable, List, Optional
+from airflow.models.message import IdentifiedMessage, MessageState
+from sqlalchemy import func, not_, or_, asc
+from sqlalchemy.orm import selectinload
+from sqlalchemy.orm.session import Session
 from airflow import models, settings
 from airflow.configuration import conf
-from airflow.exceptions import AirflowException, TaskNotFound
 from airflow.executors.base_executor import BaseExecutor
-from airflow.executors.executor_loader import UNPICKLEABLE_EXECUTORS
 from airflow.jobs.base_job import BaseJob
-from airflow.models import DAG, DagModel, SlaMiss, errors
+from airflow.models import DagModel
 from airflow.models.dag import DagEventDependencies
 from airflow.models.dagbag import DagBag
 from airflow.models.dagrun import DagRun
 from airflow.models.eventhandler import EventKey
 from airflow.models.serialized_dag import SerializedDagModel
-from airflow.models.taskinstance import SimpleTaskInstance, TaskInstanceKey
+from airflow.models.taskinstance import TaskInstanceKey
 from airflow.stats import Stats
-from airflow.ti_deps.dependencies_states import EXECUTION_STATES
 from airflow.utils import timezone
-from airflow.utils.callback_requests import (
-    CallbackRequest,
-    DagCallbackRequest,
-    SlaCallbackRequest,
-    TaskCallbackRequest,
-)
-from airflow.utils.dag_processing import AbstractDagFileProcessorProcess, DagFileProcessorAgent
-from airflow.utils.email import get_email_address_list, send_email
-from airflow.utils.log.logging_mixin import LoggingMixin, StreamLogWriter, set_context
-from airflow.utils.mixins import MultiprocessingStartMethodMixin
+from airflow.utils.log.logging_mixin import LoggingMixin
 from airflow.utils.session import create_session, provide_session
-from airflow.utils.sqlalchemy import is_lock_not_available_error, prohibit_commit, skip_locked, with_row_locks
+from airflow.utils.sqlalchemy import prohibit_commit, skip_locked, with_row_locks
 from airflow.utils.state import State
 from airflow.utils.types import DagRunType
 
@@ -81,6 +58,7 @@ from airflow.executors.scheduling_action import SchedulingAction
 TI = models.TaskInstance
 DR = models.DagRun
 DM = models.DagModel
+MSG = models.Message
 
 
 class EventBasedScheduler(LoggingMixin):
@@ -122,7 +100,8 @@ class EventBasedScheduler(LoggingMixin):
         self.log.info("Starting the scheduler.")
 
         while True:
-            event = self.mailbox.get_message()
+            identified_message = self.mailbox.get_identified_message()
+            event = identified_message.deserialize()
             with create_session() as session:
                 if isinstance(event, BaseEvent):
                     dagruns = self._find_dagruns_by_event(event, session)
@@ -149,11 +128,32 @@ class EventBasedScheduler(LoggingMixin):
                     break
                 else:
                     self.log.error("can not handler the event {}".format(event))
+                identified_message.remove_handled_message()
                 session.expunge_all()
 
     def stop(self) -> None:
         self.mailbox.send_message(StopSchedulerEvent())
         self.log.info("Send stop event to the scheduler.")
+
+    def recover(self):
+        self.log.info("Waiting for executor recovery")
+        self.executor.recover_state()
+        unprocessed_messages = self.get_unprocessed_message()
+        for msg in unprocessed_messages:
+            self.mailbox.send_identified_message(msg)
+
+    @staticmethod
+    def get_unprocessed_message() -> List[IdentifiedMessage]:
+        # We should get last_scheduler_id from db and query related messages
+        # SchedulerJob.most_recent_job()
+        with create_session() as session:
+            results: List[MSG] = session.query(MSG).filter(
+                MSG.state == MessageState.QUEUED
+            ).order_by(asc(MSG.id)).all()
+        unprocessed: List[IdentifiedMessage] = []
+        for msg in results:
+            unprocessed.append(IdentifiedMessage(msg.data, msg.id))
+        return unprocessed
 
     def _find_dagrun(self, dag_id, execution_date, session)->DagRun:
         dagrun = session.query(DagRun).filter(
@@ -423,6 +423,7 @@ class EventBasedSchedulerJob(BaseJob):
             execute_start_time = timezone.utcnow()
 
             self.scheduler.submit_sync_thread()
+            self.scheduler.recover()
             self.scheduler.schedule()
 
             self.executor.end()

@@ -38,6 +38,8 @@ from setproctitle import setproctitle  # pylint: disable=no-name-in-module
 from airflow import settings
 from airflow.exceptions import AirflowException
 from airflow.executors.base_executor import NOT_STARTED_MESSAGE, PARALLELISM, BaseExecutor, CommandType
+from airflow.executors.scheduling_action import SchedulingAction
+from airflow.models import DagRun
 from airflow.models.taskinstance import (  # pylint: disable=unused-import # noqa: F401
     TaskInstanceKey,
     TaskInstanceStateType, TaskInstance,
@@ -384,6 +386,12 @@ class LocalExecutor(BaseExecutor):
         children = process.children(recursive=False)
         for pid in children:
             os.kill(pid.pid, sig)
+
+    def recover_state(self):
+        """
+        Recover the state of dags after restarting scheduler.
+        """
+        self.log.info("Start to recover LocalExecutor.")
 
     def sync(self) -> None:
         """Sync will get called periodically by the heartbeat method."""
