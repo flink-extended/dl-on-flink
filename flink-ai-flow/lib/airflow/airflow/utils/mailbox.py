@@ -14,19 +14,35 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-
+import pickle
 import queue
 
+from airflow.models.message import Message, IdentifiedMessage
+from airflow.utils.log.logging_mixin import LoggingMixin
 
-class Mailbox(object):
+
+class Mailbox(LoggingMixin):
 
     def __init__(self) -> None:
         self.queue = queue.Queue()
 
     def send_message(self, message):
+        message_obj = Message(message)
+        identified_message = message_obj.save_queued_message()
+        self.queue.put(identified_message)
+
+    def send_identified_message(self, message: IdentifiedMessage):
         self.queue.put(message)
 
     def get_message(self):
+        identified_message: IdentifiedMessage = self.queue.get()
+        try:
+            return pickle.loads(identified_message.serialized_message)
+        except Exception as e:
+            self.log.error("Error occurred when load message from database, %s", e)
+            return None
+
+    def get_identified_message(self) -> IdentifiedMessage:
         return self.queue.get()
 
     def length(self):

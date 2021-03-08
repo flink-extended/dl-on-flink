@@ -209,7 +209,10 @@ We have added an event-based scheduler named event_scheduler to Airflow, so Flin
 
 1. mysql
 
-To start an Airflow server, you need to install and start a mysql server in your machine. 
+To start an Airflow server, you need to install and start a mysql server in your machine. You need to create a database with specific character set in case of error when creating Apache Airflow tables, for example: 
+```text
+CREATE DATABASE airflow CHARACTER SET UTF8mb3 COLLATE utf8_general_ci
+```
 Currently the AI Flow bundles a modified Airflow so users do not need to install the Apache Airflow manually.
 
 ### Start notification server, Airflow Server and AI Flow Server
