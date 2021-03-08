@@ -14,7 +14,9 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
+import datetime
 import os
+import pickle
 import time
 import unittest
 from typing import List
@@ -23,13 +25,16 @@ import psutil
 from airflow.models.taskexecution import TaskExecution
 from notification_service.base_notification import BaseEvent, UNDEFINED_EVENT_TYPE
 from notification_service.client import NotificationClient
-from notification_service.event_storage import MemoryEventStorage
+from notification_service.event_storage import MemoryEventStorage, DbEventStorage
 from notification_service.master import NotificationMaster
 from notification_service.service import NotificationService
 
-from airflow.contrib.jobs.event_based_scheduler_job import EventBasedSchedulerJob
+from airflow.contrib.jobs.event_based_scheduler_job import EventBasedSchedulerJob, SchedulerEventWatcher, \
+    EventBasedScheduler
 from airflow.executors.local_executor import LocalExecutor
-from airflow.models import TaskInstance
+from airflow.models import TaskInstance, Message
+from airflow.utils import timezone
+from airflow.utils.mailbox import Mailbox
 from airflow.utils.session import create_session, provide_session
 from tests.test_utils import db
 
@@ -41,16 +46,20 @@ class TestEventBasedScheduler(unittest.TestCase):
         db.clear_db_serialized_dags()
         db.clear_db_runs()
         db.clear_db_task_execution()
-        storage = MemoryEventStorage()
-        self.master = NotificationMaster(NotificationService(storage))
+        db.clear_db_message()
+
+        self.storage = MemoryEventStorage()
+        self.master = NotificationMaster(NotificationService(self.storage), 50091)
         self.master.run()
-        self.client = NotificationClient(server_uri="localhost:50051",
+        self.client = NotificationClient(server_uri="localhost:50091",
                                          default_namespace="test_namespace")
 
     def tearDown(self):
         self.master.stop()
 
     def test_event_based_scheduler(self):
+        import time
+        start_time = int(time.time())
         pid = os.fork()
         if pid == 0:
             try:
@@ -66,10 +75,12 @@ class TestEventBasedScheduler(unittest.TestCase):
                 print("Waiting for task starting")
                 time.sleep(20)
                 self.send_event("stop")
+                print("all models: " + str(self.storage.list_all_events(start_time=start_time)))
                 self.wait_for_task("event_based_scheduler_dag", "sleep_1000_secs", "killed")
                 tes: List[TaskExecution] = self.get_task_execution("event_based_scheduler_dag", "python_sleep")
                 self.assertEqual(len(tes), 1)
                 self.send_event("any_key")
+                print("all models: " + str(self.storage.list_all_events(start_time=start_time)))
                 self.wait_for_task_execution("event_based_scheduler_dag", "python_sleep", 2)
                 self.wait_for_task("event_based_scheduler_dag", "python_sleep", "running")
             finally:
@@ -77,6 +88,26 @@ class TestEventBasedScheduler(unittest.TestCase):
                 for child in parent.children(recursive=True):  # or parent.children() for recursive=False
                     child.kill()
                 parent.kill()
+
+    def test_replay_message(self):
+        key = "stop"
+        mailbox = Mailbox()
+        watcher = SchedulerEventWatcher(mailbox)
+        self.client.start_listen_events(
+            watcher=watcher,
+            start_time=int(time.time() * 1000),
+            version=None
+        )
+        self.send_event(key)
+        msg: BaseEvent = mailbox.get_message()
+        self.assertEqual(msg.key, key)
+        with create_session() as session:
+            msg_from_db = session.query(Message).first()
+            unprocessed = EventBasedScheduler.get_unprocessed_message()
+            self.assertEqual(unprocessed[0].serialized_message, msg_from_db.data)
+        deserialized_data = pickle.loads(msg_from_db.data)
+        self.assertEqual(deserialized_data.key, key)
+        self.assertEqual(msg, deserialized_data)
 
     def send_event(self, key):
         event = self.client.send_event(BaseEvent(key=key,
@@ -90,15 +121,14 @@ class TestEventBasedScheduler(unittest.TestCase):
                                                    TaskExecution.task_id == task_id).all()
 
     def start_scheduler(self):
+        self.scheduler = EventBasedSchedulerJob(
+            dag_directory="../../dags/test_event_based_scheduler.py",
+            server_uri="localhost:50051",
+            executor=LocalExecutor(3)
+        )
+        print("scheduler starting")
 
-        with create_session() as session:
-            scheduler = EventBasedSchedulerJob(
-                dag_directory="../../dags/test_event_based_scheduler.py",
-                server_uri="localhost:50051",
-                executor=LocalExecutor(3)
-            )
-            print("scheduler starting")
-            scheduler.run()
+        self.scheduler.run()
 
     def wait_for_task_execution(self, dag_id, task_id, expected_num):
         result = False

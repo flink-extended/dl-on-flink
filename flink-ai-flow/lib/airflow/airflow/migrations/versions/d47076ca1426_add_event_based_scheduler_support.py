@@ -95,6 +95,21 @@ def upgrade():
             sa.PrimaryKeyConstraint('task_id', 'dag_id', 'execution_date', 'seq_num')
         )
 
+    """Add message table"""
+    if 'message' not in tables:
+        op.create_table(
+            'message',
+            sa.Column('id', sa.Integer(), nullable=False),
+            sa.Column('message_type', sa.String(length=250), nullable=False),
+            sa.Column('data', sa.PickleType(), nullable=True),
+            sa.Column('state', sa.String(length=250), nullable=False),
+            sa.Column('scheduling_job_id', sa.Integer(), nullable=False),
+            sa.Column('queue_time', sa.DateTime(), nullable=True),
+            sa.Column('complete_time', sa.DateTime(), nullable=True),
+            sa.PrimaryKeyConstraint('id')
+        )
+        op.create_index('ti_queue_time', 'message', ['queue_time'], unique=False)
+        op.create_index('ti_state', 'message', ['state'], unique=False)
 
 def downgrade():
     conn = op.get_bind()  # pylint: disable=no-member
@@ -112,3 +127,4 @@ def downgrade():
 
     op.drop_table('task_state')
     op.drop_table('task_execution')
+    op.drop_table('message')
