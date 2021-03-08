@@ -103,7 +103,7 @@ def upgrade():
             sa.Column('message_type', sa.String(length=250), nullable=False),
             sa.Column('data', sa.PickleType(), nullable=True),
             sa.Column('state', sa.String(length=250), nullable=False),
-            sa.Column('scheduling_job_id', sa.Integer(), nullable=False),
+            sa.Column('scheduling_job_id', sa.Integer(), nullable=True),
             sa.Column('queue_time', sa.DateTime(), nullable=True),
             sa.Column('complete_time', sa.DateTime(), nullable=True),
             sa.PrimaryKeyConstraint('id')
