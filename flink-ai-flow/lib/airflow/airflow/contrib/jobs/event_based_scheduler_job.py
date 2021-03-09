@@ -135,19 +135,20 @@ class EventBasedScheduler(LoggingMixin):
         self.mailbox.send_message(StopSchedulerEvent())
         self.log.info("Send stop event to the scheduler.")
 
-    def recover(self):
-        self.log.info("Waiting for executor recovery")
+    def recover(self, last_scheduling_id):
+        self.log.info("Waiting for executor recovery...")
         self.executor.recover_state()
-        unprocessed_messages = self.get_unprocessed_message()
+        unprocessed_messages = self.get_unprocessed_message(last_scheduling_id)
+        self.log.info("Recovering %s messages of last scheduler job with id: %s",
+                      len(unprocessed_messages), last_scheduling_id)
         for msg in unprocessed_messages:
             self.mailbox.send_identified_message(msg)
 
     @staticmethod
-    def get_unprocessed_message() -> List[IdentifiedMessage]:
-        # We should get last_scheduler_id from db and query related messages
-        # SchedulerJob.most_recent_job()
+    def get_unprocessed_message(last_scheduling_id: int) -> List[IdentifiedMessage]:
         with create_session() as session:
             results: List[MSG] = session.query(MSG).filter(
+                MSG.scheduling_job_id == last_scheduling_id,
                 MSG.state == MessageState.QUEUED
             ).order_by(asc(MSG.id)).all()
         unprocessed: List[IdentifiedMessage] = []
@@ -383,6 +384,8 @@ class EventBasedSchedulerJob(BaseJob):
     2. todo check other scheduler failed
     3. todo timeout dagrun
     """
+    __mapper_args__ = {'polymorphic_identity': 'EventBasedSchedulerJob'}
+
     def __init__(self, dag_directory, server_uri=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.mailbox: Mailbox = Mailbox()
@@ -402,6 +405,15 @@ class EventBasedSchedulerJob(BaseJob):
             self.executor
         )
         self.notification_client: NotificationClient = NotificationClient(server_uri=server_uri)
+        self.last_scheduling_id = self._last_scheduler_job_id()
+
+    @staticmethod
+    def _last_scheduler_job_id():
+        last_run = EventBasedSchedulerJob.most_recent_job()
+        if not last_run:
+            return None
+        else:
+            return last_run.id
 
     def _execute(self):
         self.log.info("Starting the scheduler Job")
@@ -410,6 +422,7 @@ class EventBasedSchedulerJob(BaseJob):
         #pickle_dags = self.do_pickle and self.executor_class not in UNPICKLEABLE_EXECUTORS
 
         try:
+            self.mailbox.set_scheduling_job_id(self.id)
             self._start_listen_events()
             self.dag_trigger.start()
             self.task_event_manager.start()
@@ -423,7 +436,7 @@ class EventBasedSchedulerJob(BaseJob):
             execute_start_time = timezone.utcnow()
 
             self.scheduler.submit_sync_thread()
-            self.scheduler.recover()
+            self.scheduler.recover(self.last_scheduling_id)
             self.scheduler.schedule()
 
             self.executor.end()
