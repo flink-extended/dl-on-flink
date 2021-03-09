@@ -33,7 +33,6 @@ from airflow.contrib.jobs.event_based_scheduler_job import EventBasedSchedulerJo
     EventBasedScheduler
 from airflow.executors.local_executor import LocalExecutor
 from airflow.models import TaskInstance, Message
-from airflow.utils import timezone
 from airflow.utils.mailbox import Mailbox
 from airflow.utils.session import create_session, provide_session
 from tests.test_utils import db
@@ -75,12 +74,10 @@ class TestEventBasedScheduler(unittest.TestCase):
                 print("Waiting for task starting")
                 time.sleep(20)
                 self.send_event("stop")
-                print("all models: " + str(self.storage.list_all_events(start_time=start_time)))
                 self.wait_for_task("event_based_scheduler_dag", "sleep_1000_secs", "killed")
                 tes: List[TaskExecution] = self.get_task_execution("event_based_scheduler_dag", "python_sleep")
                 self.assertEqual(len(tes), 1)
                 self.send_event("any_key")
-                print("all models: " + str(self.storage.list_all_events(start_time=start_time)))
                 self.wait_for_task_execution("event_based_scheduler_dag", "python_sleep", 2)
                 self.wait_for_task("event_based_scheduler_dag", "python_sleep", "running")
             finally:
@@ -92,6 +89,7 @@ class TestEventBasedScheduler(unittest.TestCase):
     def test_replay_message(self):
         key = "stop"
         mailbox = Mailbox()
+        mailbox.set_scheduling_job_id(1234)
         watcher = SchedulerEventWatcher(mailbox)
         self.client.start_listen_events(
             watcher=watcher,
@@ -103,7 +101,9 @@ class TestEventBasedScheduler(unittest.TestCase):
         self.assertEqual(msg.key, key)
         with create_session() as session:
             msg_from_db = session.query(Message).first()
-            unprocessed = EventBasedScheduler.get_unprocessed_message()
+            expect_non_unprocessed = EventBasedScheduler.get_unprocessed_message(1000)
+            self.assertEqual(0, len(expect_non_unprocessed))
+            unprocessed = EventBasedScheduler.get_unprocessed_message(1234)
             self.assertEqual(unprocessed[0].serialized_message, msg_from_db.data)
         deserialized_data = pickle.loads(msg_from_db.data)
         self.assertEqual(deserialized_data.key, key)

@@ -25,10 +25,13 @@ class Mailbox(LoggingMixin):
 
     def __init__(self) -> None:
         self.queue = queue.Queue()
+        self.scheduling_job_id = None
 
     def send_message(self, message):
+        if not self.scheduling_job_id:
+            self.log.warning("scheduling_job_id not set, missing messages cannot be recovered.")
         message_obj = Message(message)
-        identified_message = message_obj.save_queued_message()
+        identified_message = message_obj.save_queued_message(self.scheduling_job_id)
         self.queue.put(identified_message)
 
     def send_identified_message(self, message: IdentifiedMessage):
@@ -53,3 +56,6 @@ class Mailbox(LoggingMixin):
             return self.queue.get(timeout=timeout)
         except Exception as e:
             return None
+
+    def set_scheduling_job_id(self, scheduling_job_id):
+        self.scheduling_job_id = scheduling_job_id

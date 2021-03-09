@@ -76,8 +76,9 @@ class Message(Base):
         return type(obj).__name__
 
     @provide_session
-    def save_queued_message(self, session: Session = None) -> IdentifiedMessage:
+    def save_queued_message(self, scheduling_job_id: int, session: Session = None) -> IdentifiedMessage:
         self.state = MessageState.QUEUED
+        self.scheduling_job_id = scheduling_job_id
         self.queue_time = timezone.utcnow()
         session.add(self)
         session.commit()
