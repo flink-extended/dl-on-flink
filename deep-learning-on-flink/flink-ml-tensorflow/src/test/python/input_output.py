@@ -1,10 +1,12 @@
 from __future__ import print_function
-import tensorflow as tf
+# A quick fix to run TF 1.X code in TF 2.X, we may want to properly migrate the Python script to TF 2.X API.
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 import sys
 import time
 from tensorflow.python.summary.writer.writer_cache import FileWriterCache as SummaryWriterCache
 from flink_ml_tensorflow import tensorflow_on_flink_ops as tff_ops
-from flink_ml_tensorflow.tensorflow_context import *
+from flink_ml_tensorflow.tensorflow_context import TFContext
 import traceback
 
 
@@ -32,10 +34,10 @@ def map_func(context):
             dataset = tf_context.flink_stream_dataset(buffer_size=0)
             dataset = dataset.map(lambda record: tf.decode_csv(record, record_defaults=record_defaults))
             dataset = dataset.batch(3)
-            iterator = dataset.make_one_shot_iterator()
+            iterator = tf.data.make_one_shot_iterator(dataset)
             input_records = iterator.get_next()
 
-            global_step = tf.contrib.framework.get_or_create_global_step()
+            global_step = tf.train.get_or_create_global_step()
             global_step_inc = tf.assign_add(global_step, 1)
             out = tff_ops.encode_csv(input_list=input_records)
             fw = tff_ops.FlinkTFRecordWriter(address=context.to_java())

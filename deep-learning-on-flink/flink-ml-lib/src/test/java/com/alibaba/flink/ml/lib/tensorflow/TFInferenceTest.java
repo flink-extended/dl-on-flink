@@ -7,7 +7,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.tensorflow.framework.DataType;
+import org.tensorflow.proto.framework.DataType;
 
 import java.io.File;
 import java.util.ArrayList;

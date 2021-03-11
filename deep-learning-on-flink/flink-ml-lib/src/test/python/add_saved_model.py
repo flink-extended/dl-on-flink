@@ -1,4 +1,6 @@
-import tensorflow as tf
+# A quick fix to run TF 1.X code in TF 2.X, we may want to properly migrate the Python script to TF 2.X API.
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 import os
 
 a = tf.placeholder(tf.float32, shape=None, name="a")
@@ -6,7 +8,7 @@ b = tf.placeholder(tf.float32, shape=None, name="b")
 v = tf.Variable(dtype=tf.float32, initial_value=tf.constant(1.0), name="v")
 c = tf.add(a, b, name="c")
 d = tf.add(c, v)
-global_step = tf.contrib.framework.get_or_create_global_step()
+global_step = tf.train.get_or_create_global_step()
 global_step_inc = tf.assign_add(global_step, 1)
 hooks = [tf.train.StopAtStepHook(last_step=2)]
 with tf.Session() as mon_sess:

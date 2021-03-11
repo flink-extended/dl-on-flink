@@ -92,7 +92,7 @@ class TFContext(Context):
 
     def example_input_dataset(self):
         dataset = tf.data.TFRecordDataset(self.from_java())
-        dataset = dataset.map(lambda record: tf.parse_single_example(record, features=self.features))
+        dataset = dataset.map(lambda record: tf.io.parse_single_example(record, features=self.features))
         return dataset
 
     def output_writer_op(self, input_list):

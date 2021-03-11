@@ -1,4 +1,6 @@
-import tensorflow as tf
+# A quick fix to run TF 1.X code in TF 2.X, we may want to properly migrate the Python script to TF 2.X API.
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 import sys
 import time
 import json
@@ -24,7 +26,7 @@ def map_fun(context):
     else:
         with tf.device(tf.train.replica_device_setter(worker_device='/job:worker/task:' + str(index), cluster=cluster)):
 
-            global_step = tf.contrib.framework.get_or_create_global_step()
+            global_step = tf.train.get_or_create_global_step()
             global_step_inc = tf.assign_add(global_step, 1)
             input_records = [tf.constant([1, 2, 3]),
                              tf.constant([1.0, 2.0, 3.0]), tf.constant(['1.0', '2.0', '3.0'])]
