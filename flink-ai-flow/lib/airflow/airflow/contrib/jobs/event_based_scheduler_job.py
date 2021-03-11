@@ -22,6 +22,8 @@ import sys
 import threading
 import time
 from typing import Callable, List, Optional
+
+from airflow.exceptions import SerializedDagNotFound
 from airflow.models.message import IdentifiedMessage, MessageState
 from sqlalchemy import func, not_, or_, asc
 from sqlalchemy.orm import selectinload
@@ -170,7 +172,11 @@ class EventBasedScheduler(LoggingMixin):
                 Unconditionally create a DAG run for the given DAG, and update the dag_model's fields to control
                 if/when the next DAGRun should be created
                 """
-                dag = self.dagbag.get_dag(dag_id, session=session)
+                try:
+                    dag = self.dagbag.get_dag(dag_id, session=session)
+                except SerializedDagNotFound:
+                    self.log.exception("DAG '%s' not found in serialized_dag table", dag_id)
+                    return None
                 dag_model = session \
                     .query(DagModel).filter(DagModel.dag_id == dag_id).first()
                 next_dagrun = dag_model.next_dagrun
@@ -265,8 +271,13 @@ class EventBasedScheduler(LoggingMixin):
         :param dag_run: The DagRun to schedule
         :return: scheduled tasks
         """
-
-        dag = dag_run.dag = self.dagbag.get_dag(dag_run.dag_id, session=session)
+        if not dag_run:
+            return
+        try:
+            dag = dag_run.dag = self.dagbag.get_dag(dag_run.dag_id, session=session)
+        except SerializedDagNotFound:
+            self.log.exception("DAG '%s' not found in serialized_dag table", dag_run.dag_id)
+            return None
 
         if not dag:
             self.log.error("Couldn't find dag %s in DagBag/DB!", dag_run.dag_id)
@@ -444,8 +455,8 @@ class EventBasedSchedulerJob(BaseJob):
             self.task_event_manager.end()
 
             settings.Session.remove()  # type: ignore
-        except Exception:  # pylint: disable=broad-except
-            self.log.exception("Exception when executing scheduler")
+        except Exception as e:  # pylint: disable=broad-except
+            self.log.exception("Exception when executing scheduler, %s", e)
         finally:
             self.log.info("Exited execute loop")
 
