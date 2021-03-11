@@ -21,10 +21,10 @@ package com.alibaba.flink.ml.tensorflow.coding;
 import com.alibaba.flink.ml.coding.CodingException;
 import com.alibaba.flink.ml.operator.util.DataTypes;
 import com.google.protobuf.ByteString;
-import org.tensorflow.example.BytesList;
-import org.tensorflow.example.Feature;
-import org.tensorflow.example.FloatList;
-import org.tensorflow.example.Int64List;
+import org.tensorflow.proto.example.BytesList;
+import org.tensorflow.proto.example.Feature;
+import org.tensorflow.proto.example.FloatList;
+import org.tensorflow.proto.example.Int64List;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;

@@ -58,7 +58,7 @@
     </modules>
 
     <properties>
-        <protobuf.version>3.6.0</protobuf.version>
+        <protobuf.version>3.8.0</protobuf.version>
         <flink.version>1.11.2</flink.version>
         <scala.major.version>2.11</scala.major.version>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -66,7 +66,8 @@
         <grpc.version>1.13.2</grpc.version>
         <log4j.version>2.11.1</log4j.version>
         <hadoop.version>2.8.0</hadoop.version>
-        <tensorflow.version>1.15.0</tensorflow.version>
+        <tensorflow.version>2.3.1</tensorflow.version>
+        <tensorflow.java.version>0.2.0</tensorflow.java.version>
         <tensorflow.package.name>tensorflow</tensorflow.package.name>
         <netty.version>4.1.30.Final</netty.version>
         <curator.version>2.7.1</curator.version>
@@ -82,6 +83,7 @@
         <pip.install.option>--user</pip.install.option>
         <gpg.skip>true</gpg.skip>
         <javadoc.skip>true</javadoc.skip>
+        <javacpp.platform.extension></javacpp.platform.extension>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -290,18 +292,20 @@
             </dependency>
             <dependency>
                 <groupId>org.tensorflow</groupId>
-                <artifactId>tensorflow</artifactId>
-                <version>${tensorflow.version}</version>
+                <artifactId>tensorflow-core-api</artifactId>
+                <version>${tensorflow.java.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.tensorflow</groupId>
-                <artifactId>proto</artifactId>
-                <version>${tensorflow.version}</version>
+                <artifactId>tensorflow-core-api</artifactId>
+                <version>${tensorflow.java.version}</version>
+                <classifier>linux-x86_64${javacpp.platform.extension}</classifier>
             </dependency>
             <dependency>
                 <groupId>org.tensorflow</groupId>
-                <artifactId>tensorflow-hadoop</artifactId>
-                <version>${tensorflow.version}</version>
+                <artifactId>tensorflow-core-api</artifactId>
+                <version>${tensorflow.java.version}</version>
+                <classifier>macosx-x86_64${javacpp.platform.extension}</classifier>
             </dependency>
         </dependencies>
     </dependencyManagement>

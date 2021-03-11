@@ -20,7 +20,7 @@ package com.alibaba.flink.ml.tensorflow.data;
 
 import com.alibaba.flink.ml.cluster.node.MLContext;
 import com.alibaba.flink.ml.data.RecordWriter;
-import org.tensorflow.hadoop.util.TFRecordWriter;
+import com.alibaba.flink.ml.tensorflow.util.TFRecordWriter;
 
 import java.io.DataOutputStream;
 import java.io.IOException;

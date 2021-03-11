@@ -33,10 +33,10 @@ import org.slf4j.LoggerFactory;
 import org.tensorflow.SavedModelBundle;
 import org.tensorflow.Session;
 import org.tensorflow.Tensor;
-import org.tensorflow.framework.ConfigProto;
-import org.tensorflow.framework.MetaGraphDef;
-import org.tensorflow.framework.SignatureDef;
-import org.tensorflow.framework.TensorInfo;
+import org.tensorflow.proto.framework.ConfigProto;
+import org.tensorflow.proto.framework.MetaGraphDef;
+import org.tensorflow.proto.framework.SignatureDef;
+import org.tensorflow.proto.framework.TensorInfo;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
@@ -80,7 +80,7 @@ public class JavaInference implements Closeable {
 		if (StringUtils.isEmpty(scheme) || scheme.equals("file")) {
 			//model = SavedModelBundle.load(exportDir, TAG);
 			model = SavedModelBundle.loader(exportDir)
-					.withConfigProto(configProto.toByteArray())
+					.withConfigProto(configProto)
 					.withTags(TAG)
 					.load();
 		} else if (scheme.equals("hdfs")) {
@@ -92,13 +92,13 @@ public class JavaInference implements Closeable {
 			fs.copyToLocalFile(modelPath, localPath);
 			//model = SavedModelBundle.load(localPath.toString(), TAG);
 			model = SavedModelBundle.loader(localPath.toString())
-					.withConfigProto(configProto.toByteArray())
+					.withConfigProto(configProto)
 					.withTags(TAG)
 					.load();
 		} else {
 			throw new IllegalArgumentException("Model URI not supported: " + exportDir);
 		}
-		modelSig = MetaGraphDef.parseFrom(model.metaGraphDef()).getSignatureDefOrThrow("serving_default");
+		modelSig = MetaGraphDef.parseFrom(model.metaGraphDef().toByteArray()).getSignatureDefOrThrow("serving_default");
 		logSignature();
 
 		// input tensor names must exist in the model and input TableSchema

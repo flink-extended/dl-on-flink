@@ -20,7 +20,14 @@ package com.alibaba.flink.ml.tensorflow.util;
 
 import com.google.common.base.Preconditions;
 import org.tensorflow.Tensor;
-import org.tensorflow.framework.TensorInfo;
+import org.tensorflow.ndarray.Shape;
+import org.tensorflow.ndarray.buffer.DataBuffers;
+import org.tensorflow.proto.framework.TensorInfo;
+import org.tensorflow.types.TFloat32;
+import org.tensorflow.types.TFloat64;
+import org.tensorflow.types.TInt32;
+import org.tensorflow.types.TInt64;
+
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -54,7 +61,7 @@ public class TFTensorConversion {
 					intBuffer.put((int[]) obj);
 				}
 				intBuffer.flip();
-				return Tensor.create(shape, intBuffer);
+				return TInt32.tensorOf(Shape.of(shape), DataBuffers.of(intBuffer));
 			}
 			case DT_INT64: {
 				long[] shape = new long[] { objects.length, ((long[]) objects[0]).length };
@@ -63,7 +70,7 @@ public class TFTensorConversion {
 					longBuffer.put((long[]) obj);
 				}
 				longBuffer.flip();
-				return Tensor.create(shape, longBuffer);
+				return TInt64.tensorOf(Shape.of(shape), DataBuffers.of(longBuffer));
 			}
 			case DT_FLOAT: {
 				long[] shape = new long[] { objects.length, ((float[]) objects[0]).length };
@@ -72,7 +79,7 @@ public class TFTensorConversion {
 					floatBuffer.put((float[]) obj);
 				}
 				floatBuffer.flip();
-				return Tensor.create(shape, floatBuffer);
+				return TFloat32.tensorOf(Shape.of(shape), DataBuffers.of(floatBuffer));
 			}
 			case DT_DOUBLE: {
 				long[] shape = new long[] { objects.length, ((double[]) objects[0]).length };
@@ -81,7 +88,7 @@ public class TFTensorConversion {
 					doubleBuffer.put((double[]) obj);
 				}
 				doubleBuffer.flip();
-				return Tensor.create(shape, doubleBuffer);
+				return TFloat64.tensorOf(Shape.of(shape), DataBuffers.of(doubleBuffer));
 			}
 			default:
 				throw new UnsupportedOperationException(
@@ -95,37 +102,36 @@ public class TFTensorConversion {
 	 * @return java objects corresponded to given tensor.
 	 */
 	public static Object[] fromTensor(Tensor<?> tensor) {
-		Preconditions.checkArgument(tensor.shape().length == 1, "Can only convert tensors with shape long[]");
-		final int size = (int) tensor.shape()[0];
+		Preconditions.checkArgument(tensor.shape().numDimensions() == 1, "Can only convert tensors with shape long[]");
+		final int size = (int) tensor.shape().size(0);
 		Object[] res = new Object[size];
-		switch (tensor.dataType()) {
-			case INT32:
-				int[] ints = tensor.copyTo(new int[size]);
-				for (int i = 0; i < size; i++) {
-					res[i] = ints[i];
-				}
-				break;
-			case FLOAT:
-				float[] floats = tensor.copyTo(new float[size]);
-				for (int i = 0; i < size; i++) {
-					res[i] = floats[i];
-				}
-				break;
-			case INT64:
-				long[] longs = tensor.copyTo(new long[size]);
-				for (int i = 0; i < size; i++) {
-					res[i] = longs[i];
-				}
-				break;
-			case DOUBLE:
-				double[] doubles = tensor.copyTo(new double[size]);
-				for (int i = 0; i < size; i++) {
-					res[i] = doubles[i];
-				}
-				break;
-			default:
-				throw new UnsupportedOperationException(
-						"Type can't be converted from tensor: " + tensor.dataType().name());
+		if (TInt32.DTYPE.equals(tensor.dataType())) {
+			int[] ints = new int[size];
+			tensor.rawData().asInts().read(ints);
+			for (int i = 0; i < size; i++) {
+				res[i] = ints[i];
+			}
+		} else if (TFloat32.DTYPE.equals(tensor.dataType())) {
+			float[] floats = new float[size];
+			tensor.rawData().asFloats().read(floats);
+			for (int i = 0; i < size; i++) {
+				res[i] = floats[i];
+			}
+		} else if (TInt64.DTYPE.equals(tensor.dataType())) {
+			long[] longs = new long[size];
+			tensor.rawData().asLongs().read(longs);
+			for (int i = 0; i < size; i++) {
+				res[i] = longs[i];
+			}
+		} else if (TFloat64.DTYPE.equals(tensor.dataType())) {
+			double[] doubles = new double[size];
+			tensor.rawData().asDoubles().read(doubles);
+			for (int i = 0; i < size; i++) {
+				res[i] = doubles[i];
+			}
+		} else {
+			throw new UnsupportedOperationException(
+					"Type can't be converted from tensor: " + tensor.dataType().name());
 		}
 		return res;
 	}

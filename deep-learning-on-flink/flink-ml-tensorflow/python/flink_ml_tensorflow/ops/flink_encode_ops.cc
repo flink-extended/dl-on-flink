@@ -59,10 +59,10 @@ namespace tensorflow {
                             item = std::to_string(values[i].flat<double>()(j));
                             break;
                         case DT_STRING:
-                            item = values[i].flat<string>()(j);
+                            item = values[i].flat<tstring>()(j);
                             break;
                         default:
-                            item = values[i].flat<string>()(j);
+                            item = values[i].flat<tstring>()(j);
 
                     }
                     row += item;
@@ -70,7 +70,7 @@ namespace tensorflow {
                         row += delim_;
                     }
                 }
-                outputs[0]->flat<string>()(j) = row;
+                outputs[0]->flat<tstring>()(j) = row;
             }
         }
 
@@ -127,18 +127,18 @@ namespace tensorflow {
                         }
                         case DT_STRING: {
                             auto *field_list = (*feature_map)[input_names_[i]].mutable_bytes_list();
-                            field_list->add_value(values[i].flat<string>()(j));
+                            field_list->add_value(values[i].flat<tstring>()(j));
                             break;
                         }
                         default: {
                             auto *field_list = (*feature_map)[input_names_[i]].mutable_bytes_list();
-                            field_list->add_value(values[i].flat<string>()(j));
+                            field_list->add_value(values[i].flat<tstring>()(j));
                             break;
                         }
 
                     }
                 }
-                outputs[0]->flat<string>()(j) = example.SerializeAsString();
+                outputs[0]->flat<tstring>()(j) = example.SerializeAsString();
             }
         }
 

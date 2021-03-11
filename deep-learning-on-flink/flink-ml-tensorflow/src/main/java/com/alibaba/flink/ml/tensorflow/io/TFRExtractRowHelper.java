@@ -30,9 +30,9 @@ import org.apache.flink.types.Row;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.tensorflow.example.Example;
-import org.tensorflow.example.Feature;
-import org.tensorflow.example.Features;
+import org.tensorflow.proto.example.Example;
+import org.tensorflow.proto.example.Feature;
+import org.tensorflow.proto.example.Features;
 
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
