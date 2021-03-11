@@ -1,6 +1,8 @@
 from __future__ import print_function
 from datetime import datetime
-import tensorflow as tf
+# A quick fix to run TF 1.X code in TF 2.X, we may want to properly migrate the Python script to TF 2.X API.
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 import sys
 import time
 import json
@@ -38,7 +40,7 @@ def map_fun(context):
         filename_queue = tf.train.string_input_producer([data_file], num_epochs=epochs)
         reader = tf.TextLineReader()
         key, value = reader.read(filename_queue)
-        global_step = tf.contrib.framework.get_or_create_global_step()
+        global_step = tf.train.get_or_create_global_step()
         global_step_inc = tf.assign_add(global_step, 1)
         is_chief = (index == 0)
         print (datetime.now().isoformat() + " started ------------------------------------")

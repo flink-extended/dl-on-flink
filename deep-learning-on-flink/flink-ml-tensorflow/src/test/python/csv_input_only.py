@@ -1,5 +1,7 @@
 from __future__ import print_function
-import tensorflow as tf
+# A quick fix to run TF 1.X code in TF 2.X, we may want to properly migrate the Python script to TF 2.X API.
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 import sys
 import time
 import json
@@ -36,7 +38,7 @@ def map_fun(context):
             iterator = dataset.make_one_shot_iterator()
             input_records = iterator.get_next()
 
-            global_step = tf.contrib.framework.get_or_create_global_step()
+            global_step = tf.train.get_or_create_global_step()
             global_step_inc = tf.assign_add(global_step, 1)
             out_list = [input_records[0], input_records[2], input_records[4]]
             out = tff_ops.encode_csv(input_list=out_list)

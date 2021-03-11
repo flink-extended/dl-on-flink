@@ -8,6 +8,9 @@
         <version>0.3.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <properties>
+        <javacpp.platform.extension></javacpp.platform.extension>
+    </properties>
 
     <artifactId>flink-ml-lib</artifactId>
     <dependencies>
@@ -18,15 +21,17 @@
         </dependency>
         <dependency>
             <groupId>org.tensorflow</groupId>
-            <artifactId>tensorflow</artifactId>
+            <artifactId>tensorflow-core-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.tensorflow</groupId>
-            <artifactId>proto</artifactId>
+            <artifactId>tensorflow-core-api</artifactId>
+            <classifier>linux-x86_64${javacpp.platform.extension}</classifier>
         </dependency>
         <dependency>
             <groupId>org.tensorflow</groupId>
-            <artifactId>tensorflow-hadoop</artifactId>
+            <artifactId>tensorflow-core-api</artifactId>
+            <classifier>macosx-x86_64${javacpp.platform.extension}</classifier>
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>

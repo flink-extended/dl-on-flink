@@ -113,12 +113,10 @@ public class MnistDataUtil {
 	}
 
 	public static void prepareData() throws IOException {
-		downloadData();
 		genTFRecord();
 	}
 
 	public static void main(String[] args) throws IOException {
-		downloadData();
 		genTFRecord();
 	}
 

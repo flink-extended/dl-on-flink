@@ -6,8 +6,10 @@ import numpy
 import tensorflow as tf
 import math
 import sys
-from tensorflow.contrib.learn.python.learn.datasets import mnist
+from tensorflow.keras.datasets import mnist
 
+
+# from tensorflow.contrib.learn.python.learn.datasets import mnist
 
 def _int64_feature(value):
     return tf.train.Feature(int64_list=tf.train.Int64List(value=value))
@@ -17,13 +19,7 @@ def _bytes_feature(value):
     return tf.train.Feature(bytes_list=tf.train.BytesList(value=[value]))
 
 
-def write_mnist_data(input_images, input_labels, output, partitions):
-    with open(input_images, 'rb') as f:
-        images = numpy.array(mnist.extract_images(f))
-
-    with open(input_labels, 'rb') as f:
-        labels = numpy.array(mnist.extract_labels(f, one_hot=True))
-
+def write_mnist_data(images, labels, output, partitions):
     shape = images.shape
     print("images.shape: {0}".format(shape))
     print("labels.shape: {0}".format(labels.shape))
@@ -32,14 +28,14 @@ def write_mnist_data(input_images, input_labels, output, partitions):
     num_per_part = int(math.ceil(float(shape[0]) / partitions))
     seq = 0
     filename = output + "/" + str(seq) + ".tfrecords"
-    writer = tf.python_io.TFRecordWriter(filename)
+    writer = tf.io.TFRecordWriter(filename)
 
     for i in range(shape[0]):
         if i != 0 and i % num_per_part == 0:
             writer.close()
             seq += 1
             filename = output + "/" + str(seq) + ".tfrecords"
-            writer = tf.python_io.TFRecordWriter(filename)
+            writer = tf.io.TFRecordWriter(filename)
         image_raw = images[i].tostring()
         example = tf.train.Example(features=tf.train.Features(feature={
             'image_raw': _bytes_feature(image_raw),
@@ -62,10 +58,7 @@ if __name__ == "__main__":
         output = sys.argv[2]
         partitions = sys.argv[3]
 
-    write_mnist_data(input + "/train-images-idx3-ubyte.gz",
-                     input + "/train-labels-idx1-ubyte.gz",
-                     output + "/train", int(partitions))
+    (x_train, y_train), (x_test, y_test) = mnist.load_data()
+    write_mnist_data(x_train, tf.keras.utils.to_categorical(y_train), output + "/train", int(partitions))
 
-    write_mnist_data(input + "/t10k-images-idx3-ubyte.gz",
-                     input + "/t10k-labels-idx1-ubyte.gz",
-                     output + "/test", int(partitions))
+    write_mnist_data(x_test, tf.keras.utils.to_categorical(y_test), output + "/test", int(partitions))

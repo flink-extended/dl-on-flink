@@ -58,7 +58,7 @@ namespace tensorflow {
             }
             int64 elementNum = values[0].NumElements();
             for (int i = 0; i < elementNum; i++){
-                string v = values[0].flat<string>()(i);
+                string v = values[0].flat<tstring>()(i);
                 writer_->WriteRecord(v);
             }
 
@@ -111,7 +111,7 @@ namespace tensorflow {
                                            return Status::OK();
                                        }));
                 writer->Unref();
-                auto h = handle_.AccessTensor(context)->flat<string>();
+                auto h = handle_.AccessTensor(context)->flat<tstring>();
                 h(0) = cinfo_.container();
                 h(1) = cinfo_.name();
                 have_handle_ = true;
@@ -121,8 +121,8 @@ namespace tensorflow {
 
     private:
         mutex mu_;
-        bool have_handle_ GUARDED_BY(mu_);
-        PersistentTensor handle_ GUARDED_BY(mu_);
+        bool have_handle_ TF_GUARDED_BY(mu_);
+        PersistentTensor handle_ TF_GUARDED_BY(mu_);
         ContainerInfo cinfo_;
         string address;
     };

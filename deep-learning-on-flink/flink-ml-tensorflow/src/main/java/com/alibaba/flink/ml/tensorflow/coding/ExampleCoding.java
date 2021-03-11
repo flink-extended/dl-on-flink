@@ -24,9 +24,9 @@ import com.alibaba.flink.ml.coding.Coding;
 import com.alibaba.flink.ml.coding.CodingException;
 import com.alibaba.flink.ml.operator.util.DataTypes;
 import com.google.protobuf.InvalidProtocolBufferException;
-import org.tensorflow.example.Example;
-import org.tensorflow.example.Feature;
-import org.tensorflow.example.Features;
+import org.tensorflow.proto.example.Example;
+import org.tensorflow.proto.example.Feature;
+import org.tensorflow.proto.example.Features;
 
 import java.util.ArrayList;
 import java.util.List;

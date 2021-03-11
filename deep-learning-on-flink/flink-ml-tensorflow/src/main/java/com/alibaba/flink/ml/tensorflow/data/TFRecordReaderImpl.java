@@ -21,7 +21,7 @@ package com.alibaba.flink.ml.tensorflow.data;
 import com.alibaba.flink.ml.cluster.node.MLContext;
 import com.alibaba.flink.ml.data.RecordReader;
 import com.alibaba.flink.ml.util.SpscOffHeapQueue;
-import org.tensorflow.hadoop.util.TFRecordReader;
+import com.alibaba.flink.ml.tensorflow.util.TFRecordReader;
 
 import java.io.DataInputStream;
 import java.io.IOException;
