@@ -98,7 +98,7 @@ class EventBasedScheduler(LoggingMixin):
 
     def schedule(self):
         self.log.info("Starting the scheduler.")
-
+        self._restore_unfinished_dag_run()
         while True:
             identified_message = self.mailbox.get_identified_message()
             event = identified_message.deserialize()
@@ -363,6 +363,25 @@ class EventBasedScheduler(LoggingMixin):
             Stats.gauge(f'pool.open_slots.{pool_name}', slot_stats["open"])
             Stats.gauge(f'pool.queued_slots.{pool_name}', slot_stats[State.QUEUED])
             Stats.gauge(f'pool.running_slots.{pool_name}', slot_stats[State.RUNNING])
+
+    @staticmethod
+    def _reset_unfinished_task_state(dag_run):
+        with create_session() as session:
+            to_be_reset = [s for s in State.unfinished if s not in [State.RUNNING, State.QUEUED]]
+            tis = dag_run.get_task_instances(to_be_reset, session)
+            for ti in tis:
+                ti.state = State.NONE
+            session.commit()
+
+    @provide_session
+    def _restore_unfinished_dag_run(self, session):
+        dag_runs = DagRun.next_dagruns_to_examine(session, max_number=sys.maxsize).all()
+        if not dag_runs or len(dag_runs) == 0:
+            return
+        for dag_run in dag_runs:
+            self._reset_unfinished_task_state(dag_run)
+            tasks = self._find_schedulable_tasks(dag_run, session)
+            self._send_scheduling_task_events(tasks, SchedulingAction.START)
 
     @provide_session
     def heartbeat_callback(self, session: Session = None) -> None:
