@@ -18,6 +18,7 @@
 #
 import os
 import unittest
+from unittest import mock
 
 from parameterized import parameterized
 
@@ -26,35 +27,33 @@ from airflow.models.variable import Variable
 from airflow.secrets.base_secrets import BaseSecretsBackend
 from airflow.secrets.environment_variables import EnvironmentVariablesBackend
 from airflow.secrets.metastore import MetastoreBackend
-from airflow.utils.db import create_session
+from airflow.utils.session import create_session
 from tests.test_utils.db import clear_db_connections, clear_db_variables
-from tests.compat import mock
 
 
 class SampleConn:
-    def __init__(self, conn_id, variation):
+    def __init__(self, conn_id, variation: str):
         self.conn_id = conn_id
         self.var_name = "AIRFLOW_CONN_" + self.conn_id.upper()
-        self.host = "host_{}.com".format(variation)
-        self.conn_uri = (
-            "mysql://user:pw@" + self.host + "/schema?extra1=val%2B1&extra2=val%2B2"
-        )
+        self.host = f"host_{variation}.com"
+        self.conn_uri = "mysql://user:pw@" + self.host + "/schema?extra1=val%2B1&extra2=val%2B2"
         self.conn = Connection(conn_id=self.conn_id, uri=self.conn_uri)
 
 
 class TestBaseSecretsBackend(unittest.TestCase):
-
-    def setUp(self):
+    def setUp(self) -> None:
         clear_db_variables()
 
-    def tearDown(self):
+    def tearDown(self) -> None:
         clear_db_connections()
         clear_db_variables()
 
-    @parameterized.expand([
-        ('default', {"path_prefix": "PREFIX", "secret_id": "ID"}, "PREFIX/ID"),
-        ('with_sep', {"path_prefix": "PREFIX", "secret_id": "ID", "sep": "-"}, "PREFIX-ID")
-    ])
+    @parameterized.expand(
+        [
+            ('default', {"path_prefix": "PREFIX", "secret_id": "ID"}, "PREFIX/ID"),
+            ('with_sep', {"path_prefix": "PREFIX", "secret_id": "ID", "sep": "-"}, "PREFIX-ID"),
+        ]
+    )
     def test_build_path(self, _, kwargs, output):
         build_path = BaseSecretsBackend.build_path
         self.assertEqual(build_path(**kwargs), output)
@@ -71,23 +70,22 @@ class TestBaseSecretsBackend(unittest.TestCase):
         self.assertEqual(sample_conn_1.host.lower(), conn.host)
 
     def test_connection_metastore_secrets_backend(self):
-        sample_conn_2a = SampleConn("sample_2", "A")
-        sample_conn_2b = SampleConn("sample_2", "B")
+        sample_conn_2 = SampleConn("sample_2", "A")
         with create_session() as session:
-            session.add(sample_conn_2a.conn)
-            session.add(sample_conn_2b.conn)
+            session.add(sample_conn_2.conn)
             session.commit()
         metastore_backend = MetastoreBackend()
         conn_list = metastore_backend.get_connections("sample_2")
         host_list = {x.host for x in conn_list}
-        self.assertEqual(
-            {sample_conn_2a.host.lower(), sample_conn_2b.host.lower()}, set(host_list)
-        )
+        self.assertEqual({sample_conn_2.host.lower()}, set(host_list))
 
-    @mock.patch.dict('os.environ', {
-        'AIRFLOW_VAR_HELLO': 'World',
-        'AIRFLOW_VAR_EMPTY_STR': '',
-    })
+    @mock.patch.dict(
+        'os.environ',
+        {
+            'AIRFLOW_VAR_HELLO': 'World',
+            'AIRFLOW_VAR_EMPTY_STR': '',
+        },
+    )
     def test_variable_env_secrets_backend(self):
         env_secrets_backend = EnvironmentVariablesBackend()
         variable_value = env_secrets_backend.get_variable(key="hello")
@@ -103,7 +101,3 @@ class TestBaseSecretsBackend(unittest.TestCase):
         self.assertEqual("World", variable_value)
         self.assertIsNone(metastore_backend.get_variable(key="non_existent_key"))
         self.assertEqual('', metastore_backend.get_variable(key="empty_str"))
-
-
-if __name__ == "__main__":
-    unittest.main()

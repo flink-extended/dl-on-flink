@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -16,72 +14,48 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-from enum import Enum
-from airflow.utils.db import provide_session
-from sqlalchemy import Column, Integer, PickleType, String
-from airflow.models.base import Base, ID_LEN
+from __future__ import annotations
+
+import logging
+from datetime import datetime
+
+import dill
+from sqlalchemy.orm import Session
+
+from airflow.utils.session import provide_session
+
+from sqlalchemy import Column, PickleType, String
+from airflow.models.base import COLLATION_ARGS, ID_LEN, Base
 from airflow.utils.log.logging_mixin import LoggingMixin
 from airflow.utils.sqlalchemy import UtcDateTime
-
-
-class TaskAction(str, Enum):
-    """
-    NONE: No action needs to be taken.
-    START: Start to initialize the task instance.
-    RESTART: Start to initialize the task instance or stop running the task instance and
-                       start the task instance.
-    STOP: Stop running the task instance.
-    """
-    NONE = "NONE"
-    START = "START"
-    RESTART = "RESTART"
-    STOP = "STOP"
-
-
-START_ACTION = {
-    TaskAction.START,
-    TaskAction.RESTART,
-}
-
-SCHEDULED_ACTION = {
-    TaskAction.START,
-    TaskAction.RESTART,
-    TaskAction.STOP
-}
 
 
 class TaskState(Base, LoggingMixin):
     __tablename__ = "task_state"
 
-    task_id = Column(String(ID_LEN), primary_key=True)
-    dag_id = Column(String(ID_LEN), primary_key=True)
+    task_id = Column(String(ID_LEN, **COLLATION_ARGS), primary_key=True)
+    dag_id = Column(String(ID_LEN, **COLLATION_ARGS), primary_key=True)
     execution_date = Column(UtcDateTime, primary_key=True)
-    ack_id = Column(Integer, nullable=True)
-    task_state = Column(PickleType, nullable=True)
-    event_handler = Column(PickleType, nullable=True)
-    action = Column(String(32), nullable=True)
+    state = Column(PickleType(pickler=dill))
 
-    def __init__(self, task_instance):
+    def __init__(self, task_id, dag_id, execution_date, state=None):
         super().__init__()
-        self.task_id = task_instance.task_id
-        self.dag_id = task_instance.dag_id
-        self.execution_date = task_instance.execution_date
-        self.ack_id = 0
+        self.dag_id = dag_id
+        self.task_id = task_id
+        self.execution_date = execution_date
+        self._log = logging.getLogger("airflow.task")
+        if state:
+            self.state = state
 
-    @classmethod
+    @staticmethod
     @provide_session
-    def query_task_state(cls, ti, session=None):
-        return session.query(TaskState).filter(TaskState.dag_id == ti.dag_id,
-                                               TaskState.task_id == ti.task_id,
-                                               TaskState.execution_date == ti.execution_date).first()
+    def get_task_state(dag_id: str, task_id: str, executor_date: datetime, session: Session = None) -> TaskState:
+        return session.query(TaskState).filter(TaskState.dag_id == dag_id,
+                                               TaskState.task_id == task_id,
+                                               TaskState.execution_date == executor_date).first()
 
-    @classmethod
-    def in_stop_or_restart(cls, action):
-        return action is not None and (TaskAction(action) == TaskAction.RESTART
-                                       or TaskAction(action) == TaskAction.STOP)
+    @provide_session
+    def update_task_state(self, session: Session = None):
+        session.merge(self)
+        session.commit()
 
-
-@provide_session
-def action_is_stop_or_restart(ti, session=None) -> bool:
-    ts = TaskState.query_task_state(ti, session)
-    return TaskState.in_stop_or_restart(ts.action)
