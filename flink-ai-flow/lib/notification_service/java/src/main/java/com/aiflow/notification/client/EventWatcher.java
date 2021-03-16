@@ -18,8 +18,11 @@
  */
 package com.aiflow.notification.client;
 
+import com.aiflow.notification.entity.EventMeta;
+
 import java.util.List;
 
 public interface EventWatcher {
-	void process(List<Event> events);
+	void process(List<EventMeta> events);
 }
+
