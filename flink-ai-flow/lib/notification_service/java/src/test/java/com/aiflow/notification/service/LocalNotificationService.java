@@ -49,13 +49,12 @@ public class LocalNotificationService extends NotificationServiceGrpc.Notificati
 			.setValue(request.getEvent().getValue())
 			.setEventType(request.getEvent().getEventType())
 			.setCreateTime(System.nanoTime())
-			.setVersion(version.intValue())
-			.setId(id.intValue()).build();
+			.setVersion(version.intValue()).build();
 
 		store.add(eventProto);
 		NotificationServiceOuterClass.SendEventsResponse response
 			= NotificationServiceOuterClass.SendEventsResponse.newBuilder().setEvent(eventProto).setReturnCode(
-			String.valueOf(NotificationServiceOuterClass.ReturnStatus.SUCCESS)).build();
+			NotificationServiceOuterClass.ReturnStatus.SUCCESS).build();
 		responseObserver.onNext(response);
 		responseObserver.onCompleted();
 	}
@@ -63,8 +62,8 @@ public class LocalNotificationService extends NotificationServiceGrpc.Notificati
 	@Override
 	public void listEvents(NotificationServiceOuterClass.ListEventsRequest request,
 		StreamObserver<NotificationServiceOuterClass.ListEventsResponse> responseObserver) {
-		String key = request.getEvent().getKey();
-		int version = request.getEvent().getVersion();
+		String key = request.getKeys(0);
+		long version = request.getStartVersion();
 		List<NotificationServiceOuterClass.EventProto> eventProtos = new ArrayList<>();
 		for (NotificationServiceOuterClass.EventProto eventProto : store) {
 			if (key.equals(eventProto.getKey()) && eventProto.getVersion() > version) {
@@ -91,22 +90,6 @@ public class LocalNotificationService extends NotificationServiceGrpc.Notificati
 		List<NotificationServiceOuterClass.EventProto> eventProtos = new ArrayList<>();
 		for (NotificationServiceOuterClass.EventProto eventProto : store) {
 			if (eventProto.getCreateTime() >= request.getStartTime()) {
-				eventProtos.add(eventProto);
-			}
-		}
-		NotificationServiceOuterClass.ListEventsResponse response
-			= NotificationServiceOuterClass.ListEventsResponse.newBuilder()
-			.addAllEvents(eventProtos).build();
-		responseObserver.onNext(response);
-		responseObserver.onCompleted();
-	}
-
-	@Override
-	public void listEventsFromId(NotificationServiceOuterClass.ListEventsFromIdRequest request,
-		StreamObserver<NotificationServiceOuterClass.ListEventsResponse> responseObserver) {
-		List<NotificationServiceOuterClass.EventProto> eventProtos = new ArrayList<>();
-		for (NotificationServiceOuterClass.EventProto eventProto : store) {
-			if (eventProto.getId() > request.getId()) {
 				eventProtos.add(eventProto);
 			}
 		}

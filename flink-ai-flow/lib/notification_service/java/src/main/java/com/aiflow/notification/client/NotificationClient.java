@@ -18,44 +18,61 @@
  */
 package com.aiflow.notification.client;
 
-import com.aiflow.notification.proto.NotificationServiceGrpc;
-import com.aiflow.notification.proto.NotificationServiceOuterClass.*;
+import com.aiflow.notification.entity.EventMeta;
+import com.aiflow.notification.proto.NotificationServiceGrpc.NotificationServiceBlockingStub;
+import com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto;
+import com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest;
+import com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse;
+import com.aiflow.notification.proto.NotificationServiceOuterClass.ListAllEventsRequest;
+import com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsRequest;
+import com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse;
+import com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus;
+import com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventRequest;
+import com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventsResponse;
 import io.grpc.ManagedChannelBuilder;
-import com.google.protobuf.util.JsonFormat.Parser;
-import io.grpc.Channel;
 import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
-import static com.google.protobuf.util.JsonFormat.parser;
-
+import static com.aiflow.notification.entity.EventMeta.buildEventMeta;
+import static com.aiflow.notification.proto.NotificationServiceGrpc.newBlockingStub;
 
 public class NotificationClient {
+
 	public static final String SERVER_URI = "localhost:50051";
 
-	private final NotificationServiceGrpc.NotificationServiceBlockingStub notificationServiceStub;
-	private final Map<String, EventListener> threads;
+	private final String defaultNamespace;
+	private final Boolean enableHa;
+	private final Integer listMemberIntervalMs;
+	private final Integer retryIntervalMs;
+	private final Integer retryTimeoutMs;
+	private final NotificationServiceBlockingStub notificationServiceStub;
+	private final Map<Map<String, String>, EventListener> threads;
 
-	private final Parser parser = parser().ignoringUnknownFields();
-
-	public NotificationClient() {
-		this(SERVER_URI);
-	}
-
-	public NotificationClient(String target) {
-		this(ManagedChannelBuilder.forTarget(target).usePlaintext().build());
-	}
-
-	public NotificationClient(Channel channel) {
-		this.notificationServiceStub = NotificationServiceGrpc.newBlockingStub(channel);
+	public NotificationClient(
+			String target,
+			String defaultNamespace,
+			Boolean enableHa,
+			Integer listMemberIntervalMs,
+			Integer retryIntervalMs,
+			Integer retryTimeoutMs) {
+		this.defaultNamespace = defaultNamespace;
+		this.enableHa = enableHa;
+		this.listMemberIntervalMs = listMemberIntervalMs;
+		this.retryIntervalMs = retryIntervalMs;
+		this.retryTimeoutMs = retryTimeoutMs;
+		this.notificationServiceStub =
+				newBlockingStub(
+						ManagedChannelBuilder.forTarget(
+								StringUtils.isEmpty(target) ? SERVER_URI : target)
+								.usePlaintext()
+								.build());
 		this.threads = new HashMap<>();
-	}
-
-	public static Event eventProtoToEvent(EventProto eventProto) {
-		return new Event(eventProto.getKey(), eventProto.getValue(), eventProto.getEventType(),
-			eventProto.getVersion(), eventProto.getCreateTime(), eventProto.getId());
 	}
 
 	/**
@@ -63,85 +80,114 @@ public class NotificationClient {
 	 *
 	 * @param key Key of event updated in Notification Service.
 	 * @param value Value of event updated in Notification Service.
+	 * @param eventType Type of event updated in Notification Service.
+	 * @param context Context of event updated in Notification Service.
 	 * @return Object of Event created in Notification Service.
 	 */
-	public Event sendEvent(String key, String value, String eventType) throws Exception {
-		SendEventRequest request = SendEventRequest.newBuilder()
-			.setEvent(EventProto.newBuilder().setKey(key).setValue(value).setEventType(eventType).build()).build();
+	public EventMeta sendEvent(String key, String value, String eventType, String context)
+			throws Exception {
+		SendEventRequest request =
+				SendEventRequest.newBuilder()
+						.setEvent(
+								EventProto.newBuilder()
+										.setKey(key)
+										.setValue(value)
+										.setEventType(eventType)
+										.setContext(context)
+										.setNamespace(defaultNamespace)
+										.build())
+						.setUuid(UUID.randomUUID().toString())
+						.build();
 		SendEventsResponse response = this.notificationServiceStub.sendEvent(request);
-		if (response.getReturnCode().equals(ReturnStatus.ERROR.toString())) {
-			throw new Exception(response.getReturnMsg());
+		if (response.getReturnCode() == ReturnStatus.SUCCESS) {
+			return buildEventMeta(response.getEvent());
 		} else {
-			EventProto eventProto = response.getEvent();
-			return eventProtoToEvent(eventProto);
+			throw new Exception(response.getReturnMsg());
 		}
 	}
 
 	/**
 	 * List specific `key` or `version` notifications in Notification Service.
 	 *
-	 * @param key Key of notification for listening.
+	 * @param keys Keys of notification for listening.
 	 * @param version (Optional) Version of notification for listening.
+	 * @param eventType (Optional) Type of event for listening.
+	 * @param startTime (Optional) Type of event for listening.
 	 * @return List of Notification updated in Notification Service.
 	 */
-	public List<Event> listEvents(String key, int version) throws Exception {
-		return listEvents(this.notificationServiceStub, key, version, 0);
+	public List<EventMeta> listEvents(
+			List<String> keys, long version, String eventType, long startTime) throws Exception {
+		return listEvents(
+				this.notificationServiceStub,
+				keys,
+				version,
+				eventType,
+				startTime,
+				defaultNamespace,
+				0);
 	}
 
 	/**
 	 * List specific registered listener events in Notification Service.
 	 *
 	 * @param serviceStub Notification service GRPC stub.
-	 * @param key Key of event for listening.
+	 * @param keys Keys of event for listening.
 	 * @param version (Optional) Version of event for listening.
 	 * @param timeoutSeconds List events request timeout seconds.
 	 * @return List of event updated in Notification Service.
 	 */
-	public static List<Event> listEvents(
-		NotificationServiceGrpc.NotificationServiceBlockingStub serviceStub, String key, int version,
-		Integer timeoutSeconds) throws Exception {
-		ListEventsRequest request = ListEventsRequest.newBuilder()
-			.setEvent(EventProto.newBuilder().setKey(key)
-				.setVersion(version).build()).setTimeoutSeconds(timeoutSeconds).build();
-		ListEventsResponse response = serviceStub.listEvents(request);
-		return parseEventsFromResponse(response);
+	protected static List<EventMeta> listEvents(
+			NotificationServiceBlockingStub serviceStub,
+			List<String> keys,
+			long version,
+			String eventType,
+			long startTime,
+			String namespace,
+			Integer timeoutSeconds)
+			throws Exception {
+		ListEventsRequest request =
+				ListEventsRequest.newBuilder()
+						.addAllKeys(keys)
+						.setStartVersion(version)
+						.setEventType(eventType)
+						.setStartTime(startTime)
+						.setNamespace(namespace)
+						.setTimeoutSeconds(timeoutSeconds)
+						.build();
+		return parseEventsFromResponse(serviceStub.listEvents(request));
 	}
 
 	/**
+	 * List all registered listener events in Notification Service.
 	 *
-	 * @param startTime The event create time after the given startTime.
+	 * @param startTime (Optional) The event create time after the given startTime.
+	 * @param startVersion (Optional) Start version of event for listening.
+	 * @param endVersion (Optional) End version of event for listening.
 	 * @return List of event updated in Notification Service.
-	 * @throws Exception
 	 */
-	public List<Event> listAllEvents(long startTime) throws Exception {
-		ListAllEventsRequest request = ListAllEventsRequest.newBuilder().setStartTime(startTime).build();
+	public List<EventMeta> listAllEvents(long startTime, long startVersion, long endVersion)
+			throws Exception {
+		ListAllEventsRequest request =
+				ListAllEventsRequest.newBuilder()
+						.setStartTime(startTime)
+						.setStartVersion(startVersion)
+						.setEndVersion(endVersion)
+						.build();
 		ListEventsResponse response = this.notificationServiceStub.listAllEvents(request);
 		return parseEventsFromResponse(response);
 	}
 
-	private static List<Event> parseEventsFromResponse(ListEventsResponse response)
-		throws Exception {
-		if (response.getReturnCode().equals(ReturnStatus.ERROR.toString())) {
-			throw new Exception(response.getReturnMsg());
-		} else {
-			List<Event> result = new ArrayList<>();
+	private static List<EventMeta> parseEventsFromResponse(ListEventsResponse response)
+			throws Exception {
+		if (response.getReturnCode() == ReturnStatus.SUCCESS) {
+			List<EventMeta> eventMetas = new ArrayList<>();
 			for (EventProto eventProto : response.getEventsList()) {
-				result.add(eventProtoToEvent(eventProto));
+				eventMetas.add(buildEventMeta(eventProto));
 			}
-			return result;
+			return eventMetas;
+		} else {
+			throw new Exception(response.getReturnMsg());
 		}
-	}
-
-	/**
-	 *
-	 * @param id The event id after the given id.
-	 * @return List of event updated in Notification Service.
-	 * @throws Exception
-	 */
-	public List<Event> listEventsFromId(long id) throws Exception {
-		ListEventsFromIdRequest request = ListEventsFromIdRequest.newBuilder().setId(id).build();
-		ListEventsResponse response = this.notificationServiceStub.listEventsFromId(request);
-		return parseEventsFromResponse(response);
 	}
 
 	/**
@@ -150,13 +196,20 @@ public class NotificationClient {
 	 * @param key Key of notification for listening.
 	 * @param watcher Watcher instance for listening notification.
 	 * @param version (Optional) Version of notification for listening.
+	 * @param eventType (Optional) Type of event for listening.
+	 * @param startTime (Optional) Type of event for listening.
 	 */
-	public void startListenEvent(String key, EventWatcher watcher, Integer version) {
-		if (!this.threads.containsKey(key)) {
+	public void startListenEvent(String key, EventWatcher watcher, long version, String eventType, long startTime) {
+		String namespace = this.defaultNamespace;
+		Map<String, String> listenKey = new HashMap<String, String>() {{
+			put(key, namespace);
+		}};
+		if (!this.threads.containsKey(listenKey)) {
+			ArrayList<String> curListenerKeys = new ArrayList<String>(){{add(key);}};
 			EventListener listener = new EventListener(this.notificationServiceStub,
-				key, version, watcher, 5);
+					curListenerKeys, version, eventType, startTime, namespace, watcher, 5);
 			listener.start();
-			this.threads.put(key, listener);
+			this.threads.put(listenKey, listener);
 		}
 	}
 
@@ -166,13 +219,15 @@ public class NotificationClient {
 	 * @param key Key of notification for listening.
 	 */
 	public void stopListenEvent(String key) {
+		String namespace = this.defaultNamespace;
+		Map<String, String> listenKey = new HashMap<String, String>(){{put(key, namespace);}};
 		if (StringUtils.isEmpty(key)) {
-			for (Map.Entry<String, EventListener> entry : threads.entrySet()) {
+			for (Map.Entry<Map<String, String>, EventListener> entry : threads.entrySet()) {
 				entry.getValue().shutdown();
 			}
 		} else {
-			if(this.threads.containsKey(key)) {
-				this.threads.get(key).shutdown();
+			if(this.threads.containsKey(listenKey)) {
+				this.threads.get(listenKey).shutdown();
 			}
 		}
 	}
@@ -182,15 +237,18 @@ public class NotificationClient {
 	 *
 	 * @param key Key of notification for listening.
 	 */
-	public long getLatestVersionByKey(String key) throws Exception {
+	public long getLatestVersion(String key) throws Exception {
 		if (StringUtils.isEmpty(key)) {
 			throw new Exception("Empty key, please provide valid key");
 		} else {
-			GetLatestVersionByKeyRequest request = GetLatestVersionByKeyRequest.newBuilder().setKey(key).build();
-			GetLatestVersionResponse response = this.notificationServiceStub.getLatestVersionByKey(request);
+			GetLatestVersionByKeyRequest request =
+					GetLatestVersionByKeyRequest.newBuilder().setKey(key).build();
+			GetLatestVersionResponse response =
+					this.notificationServiceStub.getLatestVersionByKey(request);
 			return parseLatestVersionFromResponse(response);
 		}
 	}
+
 
 	public long parseLatestVersionFromResponse(GetLatestVersionResponse response)
 			throws Exception {
