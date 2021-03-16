@@ -32,6 +32,7 @@
         <protoc.version>3.11.0</protoc.version>
         <commons.lang3.version>3.9</commons.lang3.version>
         <commons.collections4.version>4.4</commons.collections4.version>
+        <slf4j.version>1.7.30</slf4j.version>
         <junit.version>4.12</junit.version>
         <mockito.version>2.28.2</mockito.version>
         <jython.version>2.7.0</jython.version>
@@ -112,6 +113,11 @@
             <groupId>org.python</groupId>
             <artifactId>jython</artifactId>
             <version>${jython.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
     </dependencies>
 
