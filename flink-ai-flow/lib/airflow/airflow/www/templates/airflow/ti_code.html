@@ -20,11 +20,11 @@
 {% extends "airflow/task_instance.html" %}
 {% block title %}Airflow - DAGs{% endblock %}
 
-{% block body %}
-    {{ super() }}
-    <h4>{{ title }}</h4>
-    {% for k, v in html_dict.items() %}
-        <h5>{{ k }}</h5>
-        {{ v|safe }}
-    {% endfor %}
+{% block content %}
+  {{ super() }}
+  <h4>{{ title }}</h4>
+  {% for k, v in html_dict.items() %}
+    <h5>{{ k }}</h5>
+    {{ v }}
+  {% endfor %}
 {% endblock %}

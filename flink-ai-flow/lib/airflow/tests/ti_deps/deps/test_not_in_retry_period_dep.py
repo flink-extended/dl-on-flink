@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -19,8 +18,9 @@
 
 import unittest
 from datetime import timedelta
+from unittest.mock import Mock
+
 from freezegun import freeze_time
-from mock import Mock
 
 from airflow.models import TaskInstance
 from airflow.ti_deps.deps.not_in_retry_period_dep import NotInRetryPeriodDep
@@ -28,10 +28,8 @@ from airflow.utils.state import State
 from airflow.utils.timezone import datetime
 
 
-class NotInRetryPeriodDepTest(unittest.TestCase):
-
-    def _get_task_instance(self, state, end_date=None,
-                           retry_delay=timedelta(minutes=15)):
+class TestNotInRetryPeriodDep(unittest.TestCase):
+    def _get_task_instance(self, state, end_date=None, retry_delay=timedelta(minutes=15)):
         task = Mock(retry_delay=retry_delay, retry_exponential_backoff=False)
         ti = TaskInstance(task=task, state=state, execution_date=None)
         ti.end_date = end_date
@@ -42,8 +40,7 @@ class NotInRetryPeriodDepTest(unittest.TestCase):
         """
         Task instances that are in their retry period should fail this dep
         """
-        ti = self._get_task_instance(State.UP_FOR_RETRY,
-                                     end_date=datetime(2016, 1, 1, 15, 30))
+        ti = self._get_task_instance(State.UP_FOR_RETRY, end_date=datetime(2016, 1, 1, 15, 30))
         self.assertTrue(ti.is_premature)
         self.assertFalse(NotInRetryPeriodDep().is_met(ti=ti))
 
@@ -52,8 +49,7 @@ class NotInRetryPeriodDepTest(unittest.TestCase):
         """
         Task instance's that have had their retry period elapse should pass this dep
         """
-        ti = self._get_task_instance(State.UP_FOR_RETRY,
-                                     end_date=datetime(2016, 1, 1))
+        ti = self._get_task_instance(State.UP_FOR_RETRY, end_date=datetime(2016, 1, 1))
         self.assertFalse(ti.is_premature)
         self.assertTrue(NotInRetryPeriodDep().is_met(ti=ti))
 

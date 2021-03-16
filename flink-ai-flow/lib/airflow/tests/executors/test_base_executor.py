@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -18,39 +17,29 @@
 # under the License.
 
 import unittest
-from notification_service.service import NotificationService
-from airflow.notification.event_model_storage import EventModelStorage
-from tests.compat import mock
+from datetime import datetime, timedelta
+from unittest import mock
+
 from airflow.executors.base_executor import BaseExecutor
+from airflow.models.baseoperator import BaseOperator
+from airflow.models.dag import DAG
+from airflow.models.taskinstance import TaskInstance, TaskInstanceKey
 from airflow.utils.state import State
-from notification_service.master import NotificationMaster
-from notification_service.client import NotificationClient
-from tests.test_utils.db import clear_db_event_model
-from datetime import datetime
 
 
-class BaseExecutorTest(unittest.TestCase):
-    def setUp(self):
-        clear_db_event_model()
-        self.master = NotificationMaster(service=NotificationService(EventModelStorage()))
-        self.master.run()
-        self.client = NotificationClient(server_uri="localhost:50051")
-
-    def tearDown(self) -> None:
-        self.master.stop()
-
+class TestBaseExecutor(unittest.TestCase):
     def test_get_event_buffer(self):
         executor = BaseExecutor()
 
         date = datetime.utcnow()
         try_number = 1
-        key1 = ("my_dag1", "my_task1", date, try_number)
-        key2 = ("my_dag2", "my_task1", date, try_number)
-        key3 = ("my_dag2", "my_task2", date, try_number)
+        key1 = TaskInstanceKey("my_dag1", "my_task1", date, try_number)
+        key2 = TaskInstanceKey("my_dag2", "my_task1", date, try_number)
+        key3 = TaskInstanceKey("my_dag2", "my_task2", date, try_number)
         state = State.SUCCESS
-        executor.event_buffer[key1] = state
-        executor.event_buffer[key2] = state
-        executor.event_buffer[key3] = state
+        executor.event_buffer[key1] = state, None
+        executor.event_buffer[key2] = state, None
+        executor.event_buffer[key3] = state, None
 
         self.assertEqual(len(executor.get_event_buffer(("my_dag1",))), 1)
         self.assertEqual(len(executor.get_event_buffer()), 2)
@@ -58,19 +47,28 @@ class BaseExecutorTest(unittest.TestCase):
 
     @mock.patch('airflow.executors.base_executor.BaseExecutor.sync')
     @mock.patch('airflow.executors.base_executor.BaseExecutor.trigger_tasks')
-    @mock.patch('airflow.settings.Stats.gauge')
+    @mock.patch('airflow.executors.base_executor.Stats.gauge')
     def test_gauge_executor_metrics(self, mock_stats_gauge, mock_trigger_tasks, mock_sync):
         executor = BaseExecutor()
         executor.heartbeat()
-        calls = [mock.call('executor.open_slots', mock.ANY),
-                 mock.call('executor.queued_tasks', mock.ANY),
-                 mock.call('executor.running_tasks', mock.ANY)]
+        calls = [
+            mock.call('executor.open_slots', mock.ANY),
+            mock.call('executor.queued_tasks', mock.ANY),
+            mock.call('executor.running_tasks', mock.ANY),
+        ]
         mock_stats_gauge.assert_has_calls(calls)
 
-    def test_use_nf_executor(self):
-        executor = BaseExecutor()
-        executor.set_use_nf(True)
-        executor.change_state('key', State.RUNNING)
-        executor.change_state('key', State.SUCCESS)
-        events = self.client.list_all_events(1)
-        self.assertEqual(2, len(events))
+    def test_try_adopt_task_instances(self):
+        date = datetime.utcnow()
+        start_date = datetime.utcnow() - timedelta(days=2)
+
+        with DAG("test_try_adopt_task_instances"):
+            task_1 = BaseOperator(task_id="task_1", start_date=start_date)
+            task_2 = BaseOperator(task_id="task_2", start_date=start_date)
+            task_3 = BaseOperator(task_id="task_3", start_date=start_date)
+
+        key1 = TaskInstance(task=task_1, execution_date=date)
+        key2 = TaskInstance(task=task_2, execution_date=date)
+        key3 = TaskInstance(task=task_3, execution_date=date)
+        tis = [key1, key2, key3]
+        self.assertEqual(BaseExecutor().try_adopt_task_instances(tis), tis)

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -17,14 +16,19 @@
 # specific language governing permissions and limitations
 # under the License.
 """
-This module contains DebugExecutor that is a single
-process executor meaning it does not use multiprocessing.
+DebugExecutor
+
+.. seealso::
+    For more information on how the DebugExecutor works, take a look at the guide:
+    :ref:`executor:DebugExecutor`
 """
 
 import threading
+from typing import Any, Dict, List, Optional
 
-from airflow import conf
+from airflow.configuration import conf
 from airflow.executors.base_executor import BaseExecutor
+from airflow.models.taskinstance import TaskInstance, TaskInstanceKey
 from airflow.utils.state import State
 
 
@@ -39,18 +43,16 @@ class DebugExecutor(BaseExecutor):
     _terminated = threading.Event()
 
     def __init__(self):
-        super(DebugExecutor, self).__init__()
-        self.tasks_to_run = []
+        super().__init__()
+        self.tasks_to_run: List[TaskInstance] = []
         # Place where we keep information for task instance raw run
-        self.tasks_params = {}
+        self.tasks_params: Dict[TaskInstanceKey, Dict[str, Any]] = {}
         self.fail_fast = conf.getboolean("debug", "fail_fast")
 
-    def execute_async(self, *args, **kwargs):
-        """
-        The method is replaced by custom trigger_task implementation.
-        """
+    def execute_async(self, *args, **kwargs) -> None:  # pylint: disable=signature-differs
+        """The method is replaced by custom trigger_task implementation."""
 
-    def sync(self):
+    def sync(self) -> None:
         task_succeeded = True
         while self.tasks_to_run:
             ti = self.tasks_to_run.pop(0)
@@ -61,23 +63,19 @@ class DebugExecutor(BaseExecutor):
                 continue
 
             if self._terminated.is_set():
-                self.log.info(
-                    "Executor is terminated! Stopping %s to %s", ti.key, State.FAILED
-                )
+                self.log.info("Executor is terminated! Stopping %s to %s", ti.key, State.FAILED)
                 ti.set_state(State.FAILED)
                 self.change_state(ti.key, State.FAILED)
                 continue
 
             task_succeeded = self._run_task(ti)
 
-    def _run_task(self, ti):
+    def _run_task(self, ti: TaskInstance) -> bool:
         self.log.debug("Executing task: %s", ti)
         key = ti.key
         try:
             params = self.tasks_params.pop(ti.key, {})
-            ti._run_raw_task(  # pylint: disable=protected-access
-                job_id=ti.job_id, **params
-            )
+            ti._run_raw_task(job_id=ti.job_id, **params)  # pylint: disable=protected-access
             self.change_state(key, State.SUCCESS)
             return True
         except Exception as e:  # pylint: disable=broad-except
@@ -87,19 +85,17 @@ class DebugExecutor(BaseExecutor):
 
     def queue_task_instance(
         self,
-        task_instance,
-        mark_success=False,
-        pickle_id=None,
-        ignore_all_deps=False,
-        ignore_depends_on_past=False,
-        ignore_task_deps=False,
-        ignore_ti_state=False,
-        pool=None,
-        cfg_path=None,
-    ):
-        """
-        Queues task instance with empty command because we do not need it.
-        """
+        task_instance: TaskInstance,
+        mark_success: bool = False,
+        pickle_id: Optional[str] = None,
+        ignore_all_deps: bool = False,
+        ignore_depends_on_past: bool = False,
+        ignore_task_deps: bool = False,
+        ignore_ti_state: bool = False,
+        pool: Optional[str] = None,
+        cfg_path: Optional[str] = None,
+    ) -> None:
+        """Queues task instance with empty command because we do not need it."""
         self.queue_command(
             task_instance,
             [str(task_instance)],  # Just for better logging, it's not used anywhere
@@ -112,7 +108,7 @@ class DebugExecutor(BaseExecutor):
             "pool": pool,
         }
 
-    def trigger_tasks(self, open_slots):
+    def trigger_tasks(self, open_slots: int) -> None:
         """
         Triggers tasks. Instead of calling exec_async we just
         add task instance to tasks_to_run queue.
@@ -120,17 +116,17 @@ class DebugExecutor(BaseExecutor):
         :param open_slots: Number of open slots
         """
         sorted_queue = sorted(
-            [(k, v) for k, v in self.queued_tasks.items()],
+            [(k, v) for k, v in self.queued_tasks.items()],  # pylint: disable=unnecessary-comprehension
             key=lambda x: x[1][1],
             reverse=True,
         )
         for _ in range(min((open_slots, len(self.queued_tasks)))):
             key, (_, _, _, ti) = sorted_queue.pop(0)
             self.queued_tasks.pop(key)
-            self.running[key] = ti
+            self.running.add(key)
             self.tasks_to_run.append(ti)  # type: ignore
 
-    def end(self):
+    def end(self) -> None:
         """
         When the method is called we just set states of queued tasks
         to UPSTREAM_FAILED marking them as not executed.
@@ -140,10 +136,10 @@ class DebugExecutor(BaseExecutor):
             ti.set_state(State.UPSTREAM_FAILED)
             self.change_state(ti.key, State.UPSTREAM_FAILED)
 
-    def terminate(self):
+    def terminate(self) -> None:
         self._terminated.set()
 
-    def change_state(self, key, state):
+    def change_state(self, key: TaskInstanceKey, state: str, info=None) -> None:
         self.log.debug("Popping %s from executor task queue.", key)
-        self.running.pop(key)
-        self.event_buffer[key] = state
+        self.running.remove(key)
+        self.event_buffer[key] = state, info
