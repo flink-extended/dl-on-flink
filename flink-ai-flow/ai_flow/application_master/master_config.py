@@ -24,13 +24,16 @@ from typing import Text
 class DBType(str, Enum):
     SQLITE = "sql_lite"
     MYSQL = "mysql"
+    MONGODB = "mongodb"
 
     @staticmethod
     def value_of(db_type):
-        if db_type in ('SQL_LITE', 'sql_lite'):
+        if db_type in ('SQL_LITE', 'sql_lite', 'sqlite'):
             return DBType.SQLITE
         elif db_type in ('MYSQL', 'mysql'):
             return DBType.MYSQL
+        elif db_type in ('MONGODB', 'mongodb'):
+            return DBType.MONGODB
         else:
             raise NotImplementedError
 

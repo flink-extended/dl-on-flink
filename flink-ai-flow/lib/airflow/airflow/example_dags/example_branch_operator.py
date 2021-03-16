@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -17,23 +16,25 @@
 # specific language governing permissions and limitations
 # under the License.
 
+"""Example DAG demonstrating the usage of the BranchPythonOperator."""
+
 import random
 
-from airflow.models import DAG
-from airflow.operators.dummy_operator import DummyOperator
-from airflow.operators.python_operator import BranchPythonOperator
+from airflow import DAG
+from airflow.operators.dummy import DummyOperator
+from airflow.operators.python import BranchPythonOperator
 from airflow.utils.dates import days_ago
 
 args = {
-    'owner': 'Airflow',
-    'start_date': days_ago(2),
+    'owner': 'airflow',
 }
 
 dag = DAG(
     dag_id='example_branch_operator',
     default_args=args,
+    start_date=days_ago(2),
     schedule_interval="@daily",
-    tags=['example']
+    tags=['example', 'example2'],
 )
 
 run_this_first = DummyOperator(

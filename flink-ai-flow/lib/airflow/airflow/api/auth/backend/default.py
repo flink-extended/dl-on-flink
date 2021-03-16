@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -18,18 +17,25 @@
 # under the License.
 """Default authentication backend - everything is allowed"""
 from functools import wraps
+from typing import Callable, Optional, Tuple, TypeVar, Union, cast
 
-CLIENT_AUTH = None
+from requests.auth import AuthBase
+
+CLIENT_AUTH: Optional[Union[Tuple[str, str], AuthBase]] = None
 
 
 def init_app(_):
     """Initializes authentication backend"""
 
 
-def requires_authentication(function):
+T = TypeVar("T", bound=Callable)  # pylint: disable=invalid-name
+
+
+def requires_authentication(function: T):
     """Decorator for functions that require authentication"""
+
     @wraps(function)
     def decorated(*args, **kwargs):
         return function(*args, **kwargs)
 
-    return decorated
+    return cast(T, decorated)
