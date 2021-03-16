@@ -74,6 +74,7 @@ flink-ai-flow/python_ai_flow/test/python_codes/evaluate_component/batch_evaluate
 flink-ai-flow/python_ai_flow/test/python_codes/evaluate_component/saved_models/*
 flink-ai-flow/python_ai_flow/test/temp/*
 flink-ai-flow/venv/*
+flink-ai-flow/dist/*
 
 
 # Airflow configuration

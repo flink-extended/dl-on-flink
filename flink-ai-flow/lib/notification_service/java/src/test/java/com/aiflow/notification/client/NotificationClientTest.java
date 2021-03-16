@@ -18,6 +18,7 @@
  */
 package com.aiflow.notification.client;
 
+import com.aiflow.notification.entity.EventMeta;
 import com.aiflow.notification.service.LocalNotificationService;
 import io.grpc.ManagedChannel;
 import io.grpc.inprocess.InProcessChannelBuilder;
@@ -29,7 +30,10 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -48,23 +52,27 @@ public class NotificationClientTest {
 
 		// Create a server, add service, start, and register for automatic graceful shutdown.
 		this.grpcCleanup.register(InProcessServerBuilder
-			.forName(serverName).directExecutor().fallbackHandlerRegistry(this.serviceRegistry)
-			.addService(mockNotificationService).build().start());
+				.forName(serverName).directExecutor().fallbackHandlerRegistry(this.serviceRegistry)
+				.addService(mockNotificationService).build().start());
 
 		// Create a client channel and register for automatic graceful shutdown.
 		ManagedChannel channel = this.grpcCleanup.register(
-			InProcessChannelBuilder.forName(serverName).directExecutor().build());
+				InProcessChannelBuilder.forName(serverName).directExecutor().build());
 
 		// Create a NotificationClient using the in-process channel
-		this.client = new NotificationClient(channel);
+		this.client = new NotificationClient("localhost:50051", "default", false,
+				5, 10, 2000);
 	}
 
 	@Test
 	public void sendEvent() throws Exception {
+		long latestVersion = this.client.getLatestVersion("key");
 		for(int i = 0; i <3; i++) {
-			Event event =this.client.sendEvent("key", String.valueOf(i), "type");
+			EventMeta event =this.client.sendEvent("key", String.valueOf(i), "type", "");
 		}
-		List<Event> eventList = this.client.listEvents("key", 0);
+		ArrayList<String> listenerKeys = new ArrayList<String>(){{add("key");}};
+		long startTime = System.currentTimeMillis();
+		List<EventMeta> eventList = this.client.listEvents(listenerKeys, latestVersion, "type", 0);
 		assertEquals(3, eventList.size());
 	}
 
@@ -72,51 +80,44 @@ public class NotificationClientTest {
 	public void listAllEvents() throws Exception{
 		long startTime=0;
 		for(int i = 0; i <3; i++) {
-			Event event =this.client.sendEvent("key", String.valueOf(i), "type");
+			EventMeta event =this.client.sendEvent("key", String.valueOf(i), "type", "");
 			if(i == 1){
-				startTime = event.getCreate_time();
+				startTime = event.getCreateTime();
 			}
 		}
-		List<Event> eventList = this.client.listAllEvents(startTime);
-		assertEquals(2, eventList.size());
-	}
-
-	@Test
-	public void listEventsFromId() throws Exception {
-		for(int i = 0; i <3; i++) {
-			Event event =this.client.sendEvent("key", String.valueOf(i), "type");
-		}
-		List<Event> eventList = this.client.listEventsFromId(1l);
+		List<EventMeta> eventList = this.client.listAllEvents(startTime, 0, 0);
 		assertEquals(2, eventList.size());
 	}
 
 	@Test
 	public void startListenEvent() throws Exception{
+		long latestVersion = this.client.getLatestVersion("key");
 		for(int i = 0; i <3; i++) {
-			Event event =this.client.sendEvent("key", String.valueOf(i), "type");
+			EventMeta event =this.client.sendEvent("key", String.valueOf(i), "type", "");
 
 		}
 		final Integer[] ii = { 0 };
-		this.client.startListenEvent("key", new EventWatcher() {
+		String listenerKey = "key";
+		this.client.startListenEvent(listenerKey, new EventWatcher() {
 			@Override
-			public void process(List<Event> events) {
+			public void process(List<EventMeta> events) {
 				ii[0] += events.size();
 			}
-		}, 0);
+		}, latestVersion, "type", 0);
 
-		Thread.sleep(1000);
+		Thread.sleep(10000);
 		this.client.stopListenEvent("key");
 		assertEquals(3, ii[0].intValue());
 	}
 
 	@Test
 	public void getLatestVersion() throws Exception {
+		long latestVersion = this.client.getLatestVersion("key");
 		for(int i = 0; i <3; i++) {
-			Event event =this.client.sendEvent("key", String.valueOf(i), "type");
+			EventMeta event =this.client.sendEvent("key", String.valueOf(i), "type", "");
 
 		}
-		long latestVersion = this.client.getLatestVersionByKey("key");
-		assertEquals(3, latestVersion);
+		long newLatestVersion = this.client.getLatestVersion("key");
+		assertEquals(latestVersion + 3, newLatestVersion);
 	}
-
 }

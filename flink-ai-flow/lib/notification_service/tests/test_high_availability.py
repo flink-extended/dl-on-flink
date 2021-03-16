@@ -59,7 +59,7 @@ class HaServerTest(unittest.TestCase):
         last_exception = None
         for i in range(100):
             try:
-                return NotificationClient(server_uri="localhost:50051", enable_ha=True)
+                return NotificationClient(server_uri=server_uri, enable_ha=True)
             except Exception as e:
                 time.sleep(10)
                 last_exception = e
@@ -71,10 +71,6 @@ class HaServerTest(unittest.TestCase):
         cls.master1 = None
         cls.master2 = None
         cls.master3 = None
-    
-    @classmethod
-    def tearDownClass(cls) -> None:
-        os.remove(_SQLITE_DB_FILE)
 
     @classmethod
     def tearDownClass(cls) -> None:

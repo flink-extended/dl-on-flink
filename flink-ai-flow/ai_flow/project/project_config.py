@@ -69,7 +69,7 @@ class ProjectConfig(AIFlowConfiguration):
         if "schedule_interval" in self:
             return self["schedule_interval"]
         else:
-            return '@deploy'
+            return "@once"
 
     def set_schedule_interval(self, schedule_interval):
         self["schedule_interval"] = schedule_interval

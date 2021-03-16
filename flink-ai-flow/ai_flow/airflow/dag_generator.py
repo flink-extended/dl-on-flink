@@ -79,8 +79,6 @@ class DAGTemplate(object):
 from airflow.utils import timezone
 from airflow.ti_deps.met_handlers.aiflow_met_handler import AIFlowMetHandler
 from airflow.operators.dummy_operator import DummyOperator
-from airflow.models.event import Event
-from airflow.operators.send_event_operator import SendEventOperator
 from airflow.operators.bash_operator import BashOperator
 from ai_flow.deployer.utils.kubernetes_util import load_kubernetes_config
 import ai_flow as af

@@ -24,10 +24,12 @@ MYSQL = 'mysql'
 SQLITE = 'sqlite'
 POSTGRES = 'postgresql'
 MSSQL = 'mssql'
+MONGODB = 'mongodb'
 
 DATABASE_ENGINES = [
     MYSQL,
     SQLITE,
     POSTGRES,
     MSSQL,
+    MONGODB,
 ]

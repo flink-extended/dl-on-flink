@@ -24,8 +24,8 @@ Create Date: 2018-12-27 18:39:25.748032
 
 """
 
-from alembic import op
 import sqlalchemy as sa
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = 'dd4ecb8fbee3'
@@ -34,9 +34,9 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade():  # noqa: D103
     op.add_column('dag', sa.Column('schedule_interval', sa.Text(), nullable=True))
 
 
-def downgrade():
+def downgrade():  # noqa: D103
     op.drop_column('dag', 'schedule_interval')

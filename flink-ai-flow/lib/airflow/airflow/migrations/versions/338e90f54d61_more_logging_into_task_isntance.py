@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -24,8 +23,8 @@ Revises: 13eb55f81627
 Create Date: 2015-08-25 06:09:20.460147
 
 """
-from alembic import op
 import sqlalchemy as sa
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = '338e90f54d61'
@@ -34,11 +33,11 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade():  # noqa: D103
     op.add_column('task_instance', sa.Column('operator', sa.String(length=1000), nullable=True))
     op.add_column('task_instance', sa.Column('queued_dttm', sa.DateTime(), nullable=True))
 
 
-def downgrade():
+def downgrade():  # noqa: D103
     op.drop_column('task_instance', 'queued_dttm')
     op.drop_column('task_instance', 'operator')

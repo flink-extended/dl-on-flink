@@ -22,7 +22,7 @@ from typing import Dict
 
 def load_yaml_file(file_path) -> Dict:
     with open(file_path, 'r') as f:
-        return yaml.load(f)
+        return yaml.load(f, Loader=yaml.FullLoader)
 
 
 def dump_yaml_file(data: Dict, file_path):

@@ -25,8 +25,8 @@ import time
 from notification_service.base_notification import BaseEvent, UNDEFINED_EVENT_TYPE
 from airflow.models import TaskInstance
 from airflow.models.baseoperator import EventMetHandler
-from airflow.models.event import Event
-from airflow.models.taskstate import TaskState, TaskAction, SCHEDULED_ACTION
+from airflow.models.taskstate import TaskState
+from airflow.executors.scheduling_action import SchedulingAction
 
 
 class MetCondition(str, Enum):
@@ -59,7 +59,7 @@ class MetConfig(object):
                  event_value: Text,
                  event_type: Text = UNDEFINED_EVENT_TYPE,
                  condition: MetCondition = MetCondition.NECESSARY,
-                 action: TaskAction = TaskAction.START,
+                 action: SchedulingAction = SchedulingAction.START,
                  life: EventLife = EventLife.ONCE,
                  value_condition: MetValueCondition = MetValueCondition.EQUAL
                  ):
@@ -82,7 +82,7 @@ class AiFlowTs(object):
 
 
 class ActionWrapper(object):
-    def __init__(self, action=TaskAction.NONE):
+    def __init__(self, action=SchedulingAction.NONE):
         self.action = action
 
 
@@ -98,14 +98,14 @@ class AIFlowMetHandler(EventMetHandler):
             met_config = MetConfig(event_key=config['event_key'],
                                    event_value=config['event_value'],
                                    event_type=config['event_type'],
-                                   action=TaskAction(config['action']),
+                                   action=SchedulingAction(config['action']),
                                    condition=MetCondition(config['condition']),
                                    value_condition=MetValueCondition(config['value_condition']),
                                    life=EventLife(config['life']))
             configs.append(met_config)
         return configs
 
-    def handle_event(self, event: Event, ti: TaskInstance, ts: TaskState, session=None)->TaskAction:
+    def handle_event(self, event: BaseEvent, ti: TaskInstance, ts: TaskState, session=None) -> SchedulingAction:
 
         if ts.task_state is None:
             ts.task_state = AiFlowTs()
@@ -114,20 +114,20 @@ class AIFlowMetHandler(EventMetHandler):
         aw = ActionWrapper()
         res = self.met_sc(af_ts, aw)
         if res:
-            if aw.action in SCHEDULED_ACTION:
+            if aw.action in SchedulingAction:
                 af_ts.schedule_time = time.time_ns()
             ts.task_state = af_ts
             session.merge(ts)
             session.commit()
             if len(self.configs) == 0:
-                return TaskAction.START
+                return SchedulingAction.START
             else:
                 return aw.action
         else:
             ts.task_state = af_ts
             session.merge(ts)
             session.commit()
-            return TaskAction.NONE
+            return SchedulingAction.NONE
 
     def met_sc(self, ts: AiFlowTs, aw: ActionWrapper)->bool:
         event_map: Dict = ts.event_map

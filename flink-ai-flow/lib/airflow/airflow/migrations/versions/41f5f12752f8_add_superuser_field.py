@@ -23,9 +23,8 @@ Create Date: 2018-12-04 15:50:04.456875
 
 """
 
-from alembic import op
 import sqlalchemy as sa
-
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = '41f5f12752f8'
@@ -34,9 +33,9 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade():  # noqa: D103
     op.add_column('users', sa.Column('superuser', sa.Boolean(), default=False))
 
 
-def downgrade():
+def downgrade():  # noqa: D103
     op.drop_column('users', 'superuser')

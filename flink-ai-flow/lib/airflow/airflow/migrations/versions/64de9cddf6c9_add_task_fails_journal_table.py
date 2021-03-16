@@ -23,22 +23,24 @@ Revises: 211e584da130
 Create Date: 2016-08-03 14:02:59.203021
 
 """
-from alembic import op
 import sqlalchemy as sa
+from alembic import op
 
 # revision identifiers, used by Alembic.
+from airflow.models.base import COLLATION_ARGS
+
 revision = '64de9cddf6c9'
 down_revision = '211e584da130'
 branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade():  # noqa: D103
     op.create_table(
         'task_fail',
         sa.Column('id', sa.Integer(), nullable=False),
-        sa.Column('task_id', sa.String(length=250), nullable=False),
-        sa.Column('dag_id', sa.String(length=250), nullable=False),
+        sa.Column('task_id', sa.String(length=250, **COLLATION_ARGS), nullable=False),
+        sa.Column('dag_id', sa.String(length=250, **COLLATION_ARGS), nullable=False),
         sa.Column('execution_date', sa.DateTime(), nullable=False),
         sa.Column('start_date', sa.DateTime(), nullable=True),
         sa.Column('end_date', sa.DateTime(), nullable=True),
@@ -47,5 +49,5 @@ def upgrade():
     )
 
 
-def downgrade():
+def downgrade():  # noqa: D103
     op.drop_table('task_fail')

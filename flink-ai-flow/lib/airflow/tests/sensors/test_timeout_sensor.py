@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -16,14 +15,13 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-import unittest
-
 import time
+import unittest
 from datetime import timedelta
 
-from airflow import DAG
 from airflow.exceptions import AirflowSensorTimeout, AirflowSkipException
-from airflow.sensors.base_sensor_operator import BaseSensorOperator
+from airflow.models.dag import DAG
+from airflow.sensors.base import BaseSensorOperator
 from airflow.utils import timezone
 from airflow.utils.decorators import apply_defaults
 from airflow.utils.timezone import datetime
@@ -41,12 +39,9 @@ class TimeoutTestSensor(BaseSensorOperator):
     """
 
     @apply_defaults
-    def __init__(self,
-                 return_value=False,
-                 *args,
-                 **kwargs):
+    def __init__(self, return_value=False, **kwargs):
         self.return_value = return_value
-        super(TimeoutTestSensor, self).__init__(*args, **kwargs)
+        super().__init__(**kwargs)
 
     def poke(self, context):
         return self.return_value
@@ -66,25 +61,20 @@ class TimeoutTestSensor(BaseSensorOperator):
         self.log.info("Success criteria met. Exiting.")
 
 
-class SensorTimeoutTest(unittest.TestCase):
+class TestSensorTimeout(unittest.TestCase):
     def setUp(self):
-        args = {
-            'owner': 'airflow',
-            'start_date': DEFAULT_DATE
-        }
+        args = {'owner': 'airflow', 'start_date': DEFAULT_DATE}
         self.dag = DAG(TEST_DAG_ID, default_args=args)
 
     def test_timeout(self):
-        t = TimeoutTestSensor(
+        op = TimeoutTestSensor(
             task_id='test_timeout',
             execution_timeout=timedelta(days=2),
             return_value=False,
             poke_interval=5,
             params={'time_jump': timedelta(days=2, seconds=1)},
-            dag=self.dag
+            dag=self.dag,
         )
         self.assertRaises(
-            AirflowSensorTimeout,
-            t.run,
-            start_date=DEFAULT_DATE, end_date=DEFAULT_DATE, ignore_ti_state=True
+            AirflowSensorTimeout, op.run, start_date=DEFAULT_DATE, end_date=DEFAULT_DATE, ignore_ti_state=True
         )
