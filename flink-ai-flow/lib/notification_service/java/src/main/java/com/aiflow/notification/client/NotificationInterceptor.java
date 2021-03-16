@@ -19,29 +19,25 @@
 package com.aiflow.notification.client;
 
 import com.aiflow.notification.proto.NotificationServiceGrpc.NotificationServiceBlockingStub;
-import io.grpc.CallOptions;
-import io.grpc.Channel;
-import io.grpc.ClientCall;
-import io.grpc.ClientInterceptor;
-import io.grpc.MethodDescriptor;
+import com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto;
+import io.grpc.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Logger;
-
-import com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto;
 
 import static com.aiflow.notification.client.NotificationClient.wrapBlockingStub;
 
 public class NotificationInterceptor implements ClientInterceptor {
 
+    private static final Logger logger = LoggerFactory.getLogger(NotificationInterceptor.class);
     private NotificationServiceBlockingStub stub;
     private String target;
     private Set<MemberProto> livingMembers;
     private Boolean haRunning;
     private Integer retryIntervalMs;
     private Integer retryTimeoutMs;
-    private final Logger logger;
 
     public NotificationInterceptor(
             NotificationServiceBlockingStub stub,
@@ -56,7 +52,6 @@ public class NotificationInterceptor implements ClientInterceptor {
         this.haRunning = haRunning;
         this.retryIntervalMs = retryIntervalMs;
         this.retryTimeoutMs = retryTimeoutMs;
-        this.logger = Logger.getLogger(NotificationInterceptor.class.getName());
     }
 
     @Override
@@ -92,9 +87,9 @@ public class NotificationInterceptor implements ClientInterceptor {
             }
             if (!haRunning || System.currentTimeMillis() > startTime + retryTimeoutMs) {
                 if (!haRunning) {
-                    this.logger.warning("HA has been disabled.");
+                    logger.warn("HA has been disabled.");
                 } else {
-                    this.logger.warning("Rpc retry timeout!");
+                    logger.warn("Rpc retry timeout!");
                 }
             }
         }
