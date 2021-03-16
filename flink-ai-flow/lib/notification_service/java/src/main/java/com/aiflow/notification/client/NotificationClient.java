@@ -29,15 +29,16 @@ import com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsRes
 import com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus;
 import com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventRequest;
 import com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventsResponse;
+import com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersRequest;
+import com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersResponse;
+import com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.grpc.ManagedChannelBuilder;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static com.aiflow.notification.entity.EventMeta.buildEventMeta;
 import static com.aiflow.notification.proto.NotificationServiceGrpc.newBlockingStub;
@@ -46,13 +47,33 @@ public class NotificationClient {
 
 	public static final String SERVER_URI = "localhost:50051";
 
+	private NotificationServiceBlockingStub notificationServiceStub;
+	private Set<MemberProto> livingMembers;
+	private Boolean enableHa;
+	private String currentUri;
 	private final String defaultNamespace;
-	private final Boolean enableHa;
 	private final Integer listMemberIntervalMs;
 	private final Integer retryIntervalMs;
 	private final Integer retryTimeoutMs;
-	private final NotificationServiceBlockingStub notificationServiceStub;
 	private final Map<Map<String, String>, EventListener> threads;
+	private final ExecutorService listMembersService;
+
+	protected void initNotificationServiceStub() {
+		this.notificationServiceStub =
+				newBlockingStub(
+						ManagedChannelBuilder.forTarget(
+								StringUtils.isEmpty(this.currentUri) ? SERVER_URI : this.currentUri)
+								.usePlaintext()
+								.build());
+		this.notificationServiceStub =
+				wrapBlockingStub(
+						this.notificationServiceStub,
+						StringUtils.isEmpty(this.currentUri) ? SERVER_URI : this.currentUri,
+						livingMembers,
+						this.enableHa,
+						this.retryIntervalMs,
+						this.retryTimeoutMs);
+	}
 
 	public NotificationClient(
 			String target,
@@ -60,19 +81,76 @@ public class NotificationClient {
 			Boolean enableHa,
 			Integer listMemberIntervalMs,
 			Integer retryIntervalMs,
-			Integer retryTimeoutMs) {
+			Integer retryTimeoutMs) throws Exception {
 		this.defaultNamespace = defaultNamespace;
 		this.enableHa = enableHa;
 		this.listMemberIntervalMs = listMemberIntervalMs;
 		this.retryIntervalMs = retryIntervalMs;
 		this.retryTimeoutMs = retryTimeoutMs;
-		this.notificationServiceStub =
-				newBlockingStub(
-						ManagedChannelBuilder.forTarget(
-								StringUtils.isEmpty(target) ? SERVER_URI : target)
-								.usePlaintext()
-								.build());
+		if (this.enableHa) {
+			String[] serverUris = StringUtils.split(target, ",");
+			boolean lastError = false;
+			for (String serverUri: serverUris) {
+				this.currentUri = serverUri;
+				this.initNotificationServiceStub();
+				ListMembersRequest request = ListMembersRequest.newBuilder().setTimeoutSeconds(this.listMemberIntervalMs / 1000).build();
+				ListMembersResponse response = this.notificationServiceStub.listMembers(request);
+				if (response.getReturnCode() == ReturnStatus.SUCCESS) {
+					this.livingMembers = new HashSet<>(response.getMembersList());
+					lastError = false;
+					break;
+				} else {
+					lastError = true;
+				}
+			}
+			if (lastError) {
+				throw new Exception("No available server uri!");
+			}
+		} else {
+			this.currentUri = target;
+			this.initNotificationServiceStub();
+		}
 		this.threads = new HashMap<>();
+		this.livingMembers = new HashSet<>();
+		this.listMembersService = Executors.newSingleThreadExecutor(
+				new ThreadFactoryBuilder()
+						.setDaemon(true)
+						.setNameFormat("listen-notification-%d")
+						.build());
+		this.listMembersService.submit(this.listMembers());
+	}
+
+	/**
+	 * List living members under high available mode
+	 */
+	protected Runnable listMembers() {
+		return () -> {
+			while (this.enableHa) {
+				try {
+					if (Thread.currentThread().isInterrupted()) {
+						break;
+					}
+					ListMembersRequest request = ListMembersRequest.newBuilder().setTimeoutSeconds(this.listMemberIntervalMs / 1000).build();
+					ListMembersResponse response = this.notificationServiceStub.listMembers(request);
+					if (response.getReturnCode() == ReturnStatus.SUCCESS) {
+						this.livingMembers = new HashSet<>(response.getMembersList());
+					} else {
+						throw new Exception(response.getReturnMsg());
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw new RuntimeException("Error while listening notification", e);
+				}
+			}
+		};
+	}
+
+	/**
+	 * Disable high availability mode
+	 */
+	public void disableHighAvailability() {
+		this.enableHa = false;
+		this.listMembersService.shutdown();
 	}
 
 	/**
@@ -249,6 +327,23 @@ public class NotificationClient {
 		}
 	}
 
+	protected static NotificationServiceBlockingStub wrapBlockingStub(
+			NotificationServiceBlockingStub stub,
+			String target,
+			Set<MemberProto> livingMembers,
+			Boolean haRunning,
+			Integer retryIntervalMs,
+			Integer retryTimeoutMs) {
+		return newBlockingStub(ManagedChannelBuilder.forTarget(target).usePlaintext().build())
+				.withInterceptors(
+						new NotificationInterceptor(
+								stub,
+								target,
+								livingMembers,
+								haRunning,
+								retryIntervalMs,
+								retryTimeoutMs));
+	}
 
 	public long parseLatestVersionFromResponse(GetLatestVersionResponse response)
 			throws Exception {
