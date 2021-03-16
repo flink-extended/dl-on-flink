@@ -18,9 +18,11 @@
  */
 package com.aiflow.notification.client;
 
-import com.aiflow.notification.proto.NotificationServiceGrpc;
+import com.aiflow.notification.entity.EventMeta;
+import com.aiflow.notification.proto.NotificationServiceGrpc.NotificationServiceBlockingStub;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.apache.commons.collections4.CollectionUtils;
+import sun.util.logging.resources.logging;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -29,23 +31,41 @@ import java.util.concurrent.Executors;
 import static com.aiflow.notification.client.NotificationClient.listEvents;
 
 public class EventListener {
-	private NotificationServiceGrpc.NotificationServiceBlockingStub serviceStub;
-	private String key;
-	private Integer version;
-	private EventWatcher watcher;
+
+	private final NotificationServiceBlockingStub serviceStub;
+	private final List<String> keys;
+	private final long version;
+	private final String eventType;
+	private final long startTime;
+	private final String namespace;
+	private final EventWatcher watcher;
 	private final ExecutorService executorService;
-	private int timeoutSeconds;
+	private final int timeoutSeconds;
 	private volatile boolean isRunning = true;
 
-	public EventListener(NotificationServiceGrpc.NotificationServiceBlockingStub serviceStub, String key,
-		Integer version, EventWatcher watcher, Integer timeoutSeconds) {
+	public EventListener(
+			NotificationServiceBlockingStub serviceStub,
+			List<String> keys,
+			long version,
+			String eventType,
+			long startTime,
+			String namespace,
+			EventWatcher watcher,
+			Integer timeoutSeconds) {
 		this.serviceStub = serviceStub;
-		this.key = key;
+		this.keys = keys;
 		this.version = version;
+		this.eventType = eventType;
+		this.startTime = startTime;
+		this.namespace = namespace;
 		this.watcher = watcher;
 		this.timeoutSeconds = timeoutSeconds;
-		this.executorService = Executors.newSingleThreadExecutor(
-			new ThreadFactoryBuilder().setDaemon(true).setNameFormat("listen-notification-%d").build());
+		this.executorService =
+				Executors.newSingleThreadExecutor(
+						new ThreadFactoryBuilder()
+								.setDaemon(true)
+								.setNameFormat("listen-notification-%d")
+								.build());
 	}
 
 	public void start() {
@@ -59,13 +79,22 @@ public class EventListener {
 
 	public Runnable listenEvents() {
 		return () -> {
-			Integer listenVersion = this.version;
+			long listenVersion = this.version;
 			while (this.isRunning) {
 				try {
 					if (Thread.currentThread().isInterrupted()) {
 						break;
 					}
-					List<Event> events = listEvents(this.serviceStub, this.key, listenVersion, this.timeoutSeconds);
+					List<EventMeta> events =
+							listEvents(
+									this.serviceStub,
+									this.keys,
+									listenVersion,
+									this.eventType,
+									this.startTime,
+									this.namespace,
+									this.timeoutSeconds);
+					System.out.println("######" + events.size());
 					if (CollectionUtils.isNotEmpty(events)) {
 						this.watcher.process(events);
 						listenVersion = events.get(events.size() - 1).getVersion();
