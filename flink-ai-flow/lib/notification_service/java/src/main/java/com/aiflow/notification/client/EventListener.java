@@ -22,7 +22,6 @@ import com.aiflow.notification.entity.EventMeta;
 import com.aiflow.notification.proto.NotificationServiceGrpc.NotificationServiceBlockingStub;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.apache.commons.collections4.CollectionUtils;
-import sun.util.logging.resources.logging;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -94,7 +93,6 @@ public class EventListener {
 									this.startTime,
 									this.namespace,
 									this.timeoutSeconds);
-					System.out.println("######" + events.size());
 					if (CollectionUtils.isNotEmpty(events)) {
 						this.watcher.process(events);
 						listenVersion = events.get(events.size() - 1).getVersion();

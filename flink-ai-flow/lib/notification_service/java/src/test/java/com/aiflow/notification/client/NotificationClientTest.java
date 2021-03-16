@@ -46,7 +46,7 @@ public class NotificationClientTest {
 	private LocalNotificationService mockNotificationService = new LocalNotificationService();
 
 	@Before
-	public void setUp() throws IOException {
+	public void setUp() throws Exception {
 		// Generate a unique in-process server name.
 		String serverName = InProcessServerBuilder.generateName();
 
@@ -60,8 +60,12 @@ public class NotificationClientTest {
 				InProcessChannelBuilder.forName(serverName).directExecutor().build());
 
 		// Create a NotificationClient using the in-process channel
-		this.client = new NotificationClient("localhost:50051", "default", false,
+		try {
+			this.client = new NotificationClient("localhost:50052,localhost:50051", "default", true,
 				5, 10, 2000);
+		} catch (Exception e) {
+			throw new Exception("Failed to init notification client", e);
+		}
 	}
 
 	@Test
