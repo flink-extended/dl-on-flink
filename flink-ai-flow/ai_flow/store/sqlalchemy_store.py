@@ -21,7 +21,7 @@ import time
 from typing import Optional, Text, List, Union
 import sqlalchemy.exc
 import sqlalchemy.orm
-from sqlalchemy import and_
+from sqlalchemy import and_, cast, Integer
 
 from ai_flow.common.status import Status
 from ai_flow.meta.artifact_meta import ArtifactMeta
@@ -1419,11 +1419,12 @@ class SqlAlchemyStore(AbstractStore):
             raise AIFlowException('Registered model name cannot be empty.', INVALID_PARAMETER_VALUE)
         with self.ManagedSessionMaker() as session:
             model_version = session.query(SqlModelVersion).filter(
-                and_(SqlModelVersion.model_name == model_name, SqlModelVersion.current_stage == stage)).all()
-            if len(model_version) == 0:
+                and_(SqlModelVersion.model_name == model_name, SqlModelVersion.current_stage == stage))\
+                .order_by(cast(SqlModelVersion.model_version, Integer).desc()).first()
+            if model_version is None:
                 return None
             else:
-                return model_version[len(model_version) - 1].to_meta_entity()
+                return model_version.to_meta_entity()
 
     @classmethod
     def _get_registered_model(cls, session, model_name):
