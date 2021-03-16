@@ -110,7 +110,7 @@ class EventBasedScheduler(LoggingMixin):
                         self.task_event_manager.handle_event(dag_run_id, event)
                 elif isinstance(event, TaskSchedulingEvent):
                     self._schedule_task(event)
-                elif isinstance(event, TaskStatusChangedEvent):
+                elif isinstance(event, TaskStatusChangedEvent) and event.status == State.SUCCESS:
                     dagrun = self._find_dagrun(event.dag_id, event.execution_date, session)
                     tasks = self._find_schedulable_tasks(dagrun, session)
                     self._send_scheduling_task_events(tasks, SchedulingAction.START)
