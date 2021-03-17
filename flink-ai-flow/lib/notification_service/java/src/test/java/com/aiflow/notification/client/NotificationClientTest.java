@@ -29,95 +29,107 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class NotificationClientTest {
-	private NotificationClient client;
+    @Rule public final GrpcCleanupRule grpcCleanup = new GrpcCleanupRule();
+    private final MutableHandlerRegistry serviceRegistry = new MutableHandlerRegistry();
+    private NotificationClient client;
+    private LocalNotificationService mockNotificationService = new LocalNotificationService();
 
-	@Rule
-	public final GrpcCleanupRule grpcCleanup = new GrpcCleanupRule();
-	private final MutableHandlerRegistry serviceRegistry = new MutableHandlerRegistry();
-	private LocalNotificationService mockNotificationService = new LocalNotificationService();
+    @Before
+    public void setUp() throws Exception {
+        // Generate a unique in-process server name.
+        String serverName = InProcessServerBuilder.generateName();
 
-	@Before
-	public void setUp() throws IOException {
-		// Generate a unique in-process server name.
-		String serverName = InProcessServerBuilder.generateName();
+        // Create a server, add service, start, and register for automatic graceful shutdown.
+        this.grpcCleanup.register(
+                InProcessServerBuilder.forName(serverName)
+                        .directExecutor()
+                        .fallbackHandlerRegistry(this.serviceRegistry)
+                        .addService(mockNotificationService)
+                        .build()
+                        .start());
 
-		// Create a server, add service, start, and register for automatic graceful shutdown.
-		this.grpcCleanup.register(InProcessServerBuilder
-				.forName(serverName).directExecutor().fallbackHandlerRegistry(this.serviceRegistry)
-				.addService(mockNotificationService).build().start());
+        // Create a client channel and register for automatic graceful shutdown.
+        ManagedChannel channel =
+                this.grpcCleanup.register(
+                        InProcessChannelBuilder.forName(serverName).directExecutor().build());
 
-		// Create a client channel and register for automatic graceful shutdown.
-		ManagedChannel channel = this.grpcCleanup.register(
-				InProcessChannelBuilder.forName(serverName).directExecutor().build());
+        // Create a NotificationClient using the in-process channel
+        try {
+            this.client =
+                    new NotificationClient(
+                            "localhost:50051,localhost:50052", "default", true, 5, 10, 2000);
+        } catch (Exception e) {
+            throw new Exception("Failed to init notification client", e);
+        }
+    }
 
-		// Create a NotificationClient using the in-process channel
-		this.client = new NotificationClient("localhost:50051", "default", false,
-				5, 10, 2000);
-	}
+    @Test
+    public void sendEvent() throws Exception {
+        long latestVersion = this.client.getLatestVersion("key");
+        for (int i = 0; i < 3; i++) {
+            EventMeta event = this.client.sendEvent("key", String.valueOf(i), "type", "");
+        }
+        ArrayList<String> listenerKeys =
+                new ArrayList<String>() {
+                    {
+                        add("key");
+                    }
+                };
+        long startTime = System.currentTimeMillis();
+        List<EventMeta> eventList = this.client.listEvents(listenerKeys, latestVersion, "type", 0);
+        assertEquals(3, eventList.size());
+    }
 
-	@Test
-	public void sendEvent() throws Exception {
-		long latestVersion = this.client.getLatestVersion("key");
-		for(int i = 0; i <3; i++) {
-			EventMeta event =this.client.sendEvent("key", String.valueOf(i), "type", "");
-		}
-		ArrayList<String> listenerKeys = new ArrayList<String>(){{add("key");}};
-		long startTime = System.currentTimeMillis();
-		List<EventMeta> eventList = this.client.listEvents(listenerKeys, latestVersion, "type", 0);
-		assertEquals(3, eventList.size());
-	}
+    @Test
+    public void listAllEvents() throws Exception {
+        long startTime = 0;
+        for (int i = 0; i < 3; i++) {
+            EventMeta event = this.client.sendEvent("key", String.valueOf(i), "type", "");
+            if (i == 1) {
+                startTime = event.getCreateTime();
+            }
+        }
+        List<EventMeta> eventList = this.client.listAllEvents(startTime, 0, 0);
+        assertEquals(2, eventList.size());
+    }
 
-	@Test
-	public void listAllEvents() throws Exception{
-		long startTime=0;
-		for(int i = 0; i <3; i++) {
-			EventMeta event =this.client.sendEvent("key", String.valueOf(i), "type", "");
-			if(i == 1){
-				startTime = event.getCreateTime();
-			}
-		}
-		List<EventMeta> eventList = this.client.listAllEvents(startTime, 0, 0);
-		assertEquals(2, eventList.size());
-	}
+    @Test
+    public void startListenEvent() throws Exception {
+        long latestVersion = this.client.getLatestVersion("key");
+        for (int i = 0; i < 3; i++) {
+            EventMeta event = this.client.sendEvent("key", String.valueOf(i), "type", "");
+        }
+        final Integer[] ii = {0};
+        String listenerKey = "key";
+        this.client.startListenEvent(
+                listenerKey,
+                new EventWatcher() {
+                    @Override
+                    public void process(List<EventMeta> events) {
+                        ii[0] += events.size();
+                    }
+                },
+                latestVersion,
+                "type",
+                0);
 
-	@Test
-	public void startListenEvent() throws Exception{
-		long latestVersion = this.client.getLatestVersion("key");
-		for(int i = 0; i <3; i++) {
-			EventMeta event =this.client.sendEvent("key", String.valueOf(i), "type", "");
+        Thread.sleep(10000);
+        assertEquals(3, ii[0].intValue());
+    }
 
-		}
-		final Integer[] ii = { 0 };
-		String listenerKey = "key";
-		this.client.startListenEvent(listenerKey, new EventWatcher() {
-			@Override
-			public void process(List<EventMeta> events) {
-				ii[0] += events.size();
-			}
-		}, latestVersion, "type", 0);
-
-		Thread.sleep(10000);
-		this.client.stopListenEvent("key");
-		assertEquals(3, ii[0].intValue());
-	}
-
-	@Test
-	public void getLatestVersion() throws Exception {
-		long latestVersion = this.client.getLatestVersion("key");
-		for(int i = 0; i <3; i++) {
-			EventMeta event =this.client.sendEvent("key", String.valueOf(i), "type", "");
-
-		}
-		long newLatestVersion = this.client.getLatestVersion("key");
-		assertEquals(latestVersion + 3, newLatestVersion);
-	}
+    @Test
+    public void getLatestVersion() throws Exception {
+        long latestVersion = this.client.getLatestVersion("key");
+        for (int i = 0; i < 3; i++) {
+            EventMeta event = this.client.sendEvent("key", String.valueOf(i), "type", "");
+        }
+        long newLatestVersion = this.client.getLatestVersion("key");
+        assertEquals(latestVersion + 3, newLatestVersion);
+    }
 }
