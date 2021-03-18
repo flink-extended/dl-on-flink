@@ -58,7 +58,6 @@ class TestEventBasedScheduler(unittest.TestCase):
 
     def test_event_based_scheduler(self):
         import time
-        start_time = int(time.time())
         pid = os.fork()
         if pid == 0:
             try:
@@ -123,7 +122,7 @@ class TestEventBasedScheduler(unittest.TestCase):
     def start_scheduler(self):
         self.scheduler = EventBasedSchedulerJob(
             dag_directory="../../dags/test_event_based_scheduler.py",
-            server_uri="localhost:50051",
+            server_uri="localhost:50091",
             executor=LocalExecutor(3)
         )
         print("scheduler starting")
