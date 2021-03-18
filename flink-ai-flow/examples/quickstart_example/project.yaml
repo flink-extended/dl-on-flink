@@ -1,0 +1,5 @@
+project_name: simple_project
+master_ip: localhost
+master_port: 50051
+# for airflow scheduler this option should be enabled.
+notification_uri: localhost:50052

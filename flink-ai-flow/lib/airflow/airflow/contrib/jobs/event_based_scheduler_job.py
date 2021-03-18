@@ -21,9 +21,10 @@ import signal
 import sys
 import threading
 import time
+import faulthandler
 from typing import Callable, List, Optional
 
-from airflow.exceptions import SerializedDagNotFound
+from airflow.exceptions import SerializedDagNotFound, AirflowException
 from airflow.models.message import IdentifiedMessage, MessageState
 from sqlalchemy import func, not_, or_, asc
 from sqlalchemy.orm import selectinload
@@ -61,6 +62,8 @@ TI = models.TaskInstance
 DR = models.DagRun
 DM = models.DagModel
 MSG = models.Message
+
+faulthandler.enable()
 
 
 class EventBasedScheduler(LoggingMixin):
@@ -174,28 +177,32 @@ class EventBasedScheduler(LoggingMixin):
                 """
                 try:
                     dag = self.dagbag.get_dag(dag_id, session=session)
+                    dag_model = session \
+                        .query(DagModel).filter(DagModel.dag_id == dag_id).first()
+                    next_dagrun = dag_model.next_dagrun
+                    dag_hash = self.dagbag.dags_hash.get(dag.dag_id)
+                    dag_run = dag.create_dagrun(
+                        run_type=DagRunType.SCHEDULED,
+                        execution_date=next_dagrun,
+                        start_date=timezone.utcnow(),
+                        state=State.RUNNING,
+                        external_trigger=False,
+                        session=session,
+                        dag_hash=dag_hash,
+                        creating_job_id=self.id,
+                    )
+                    self._update_dag_next_dagrun(dag_id, session)
+
+                    # commit the session - Release the write lock on DagModel table.
+                    guard.commit()
+                    # END: create dagrun
+                    return dag_run
                 except SerializedDagNotFound:
                     self.log.exception("DAG '%s' not found in serialized_dag table", dag_id)
                     return None
-                dag_model = session \
-                    .query(DagModel).filter(DagModel.dag_id == dag_id).first()
-                next_dagrun = dag_model.next_dagrun
-                dag_hash = self.dagbag.dags_hash.get(dag.dag_id)
-                dag_run = dag.create_dagrun(
-                    run_type=DagRunType.SCHEDULED,
-                    execution_date=next_dagrun,
-                    start_date=timezone.utcnow(),
-                    state=State.RUNNING,
-                    external_trigger=False,
-                    session=session,
-                    dag_hash=dag_hash,
-                    creating_job_id=self.id,
-                )
-                self._update_dag_next_dagrun(dag_id, session)
-                # commit the session - Release the write lock on DagModel table.
-                guard.commit()
-                # END: create dagrun
-                return dag_run
+                except Exception:
+                    self.log.exception("Error occurred when create dag_run of dag: %s", dag_id)
+
 
     def _update_dag_next_dagrun(self, dag_id, session):
         """
