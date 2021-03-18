@@ -137,10 +137,10 @@ class EventOperator(LoggingMixin, Operator):
         :type event_handler: EventHandler
         """
         super().__init__()
-        self._subscribed_event: Set[Tuple[str, str, str]] = set()
-        self._events_handler: EventHandler = event_handler
+        self._subscribed_events: Set[Tuple[str, str, str]] = set()
+        self._event_handler: EventHandler = event_handler
 
-    def subscribe_event(self, event_key: str, event_namespace: str = 'default', event_type: str = UNDEFINED_EVENT_TYPE):
+    def subscribe_event(self, event_key: str, event_type: str = UNDEFINED_EVENT_TYPE, event_namespace: str = 'default'):
         """
         Subscribe to the events with the event_key and event_type. The event_handler will only handle the
         event that the operator subscribes to. event_type is optional, if it is not specify, it subscribes to all type
@@ -153,21 +153,28 @@ class EventOperator(LoggingMixin, Operator):
         :type event_type: str
         :return: None
         """
-        self._subscribed_event.add((event_namespace, event_key, event_type))
+        self._subscribed_events.add((event_namespace, event_key, event_type))
 
     def get_subscribed_event(self) -> Set[Tuple[str, str, str]]:
         """
         :return: the set of events that the operator subscribes to.
         :rtype: Set[str, str, str]
         """
-        return self._subscribed_event
+        return self._subscribed_events
 
     def get_event_handler(self) -> EventHandler:
         """
         :return: the event_handler of the operator.
         :rtype: EventHandler
         """
-        return self._events_handler
+        return self._event_handler
+
+    def set_event_handler(self, event_handler: EventHandler) -> None:
+        """
+        :return: the event_handler of the operator.
+        :rtype: EventHandler
+        """
+        self._event_handler = event_handler
 
 
 # pylint: disable=too-many-instance-attributes,too-many-public-methods
