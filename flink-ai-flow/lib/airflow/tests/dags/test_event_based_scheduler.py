@@ -25,23 +25,10 @@ from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
 from airflow.utils import timezone
 
-yesterday = datetime.date.today() + datetime.timedelta(-1)
-DEFAULT_DATE = timezone.datetime(yesterday.year, yesterday.month, yesterday.day)
-
-default_args = {
-    'owner': 'airflow',
-    'depends_on_past': False,
-    'start_date': DEFAULT_DATE,
-    'email': ['airflow@example.com'],
-    'email_on_failure': False,
-    'email_on_retry': False,
-    'retries': 1,
-    'retry_delay': timedelta(minutes=1),
-}
 dag = DAG(
     dag_id='event_based_scheduler_dag',
-    default_args=default_args,
-    #schedule_interval=timedelta(days=1),
+    start_date=timezone.utcnow(),
+    schedule_interval='@once'
 )
 
 t1 = BashOperator(
