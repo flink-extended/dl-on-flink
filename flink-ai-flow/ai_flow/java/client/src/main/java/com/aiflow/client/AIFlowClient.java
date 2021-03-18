@@ -20,15 +20,18 @@ package com.aiflow.client;
 
 import com.aiflow.common.*;
 import com.aiflow.entity.*;
-import com.aiflow.notification.client.Event;
 import com.aiflow.notification.client.EventWatcher;
 import com.aiflow.notification.client.NotificationClient;
+import com.aiflow.notification.entity.EventMeta;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.aiflow.common.Constant.DEFAULT_NAMESPACE;
 import static com.aiflow.common.Constant.SERVER_URI;
 
 /**
@@ -40,18 +43,22 @@ public class AIFlowClient {
     private final ModelCenterClient modelCenterClient;
     private final NotificationClient notificationClient;
 
-    public AIFlowClient() {
-        this(SERVER_URI);
+  public AIFlowClient(
+      String target,
+      String defaultNamespace,
+      Boolean enableHa,
+      Integer listMemberIntervalMs,
+      Integer retryIntervalMs,
+      Integer retryTimeoutMs) {
+        this(ManagedChannelBuilder.forTarget(target).usePlaintext().build(), StringUtils.isEmpty(target) ? SERVER_URI : target, StringUtils.isEmpty(defaultNamespace) ? DEFAULT_NAMESPACE : defaultNamespace,
+                enableHa, listMemberIntervalMs, retryIntervalMs, retryTimeoutMs);
     }
 
-    public AIFlowClient(String target) {
-        this(ManagedChannelBuilder.forTarget(target).usePlaintext().build());
-    }
-
-    public AIFlowClient(Channel channel) {
+    public AIFlowClient(Channel channel, String target, String defaultNamespace, Boolean enableHa,
+                        Integer listMemberIntervalMs, Integer retryIntervalMs, Integer retryTimeoutMs) {
         this.metadataClient = new MetadataClient(channel);
         this.modelCenterClient = new ModelCenterClient(channel);
-        this.notificationClient = new NotificationClient(channel);
+        this.notificationClient = new NotificationClient(target, defaultNamespace, enableHa, listMemberIntervalMs, retryIntervalMs, retryTimeoutMs);
     }
 
     /**
@@ -888,8 +895,8 @@ public class AIFlowClient {
      * @param value Value of notification updated in Notification Service.
      * @return Object of Notification created in Notification Service.
      */
-    public Event updateNotification(String key, String value) throws Exception {
-        return this.notificationClient.sendEvent(key, value, "");
+    public EventMeta updateNotification(String key, String value) throws Exception {
+        return this.notificationClient.sendEvent(key, value, "", "");
     }
 
     /**
@@ -899,8 +906,8 @@ public class AIFlowClient {
      * @param version (Optional) Version of notification for listening.
      * @return List of Notification updated in Notification Service.
      */
-    public List<Event> listNotifications(String key, Integer version) throws Exception {
-        return this.notificationClient.listEvents(key, version);
+    public List<EventMeta> listNotifications(String key, Integer version) throws Exception {
+        return this.notificationClient.listEvents(new ArrayList<String>(){{add(key);}}, version, "", 0);
     }
 
     /**
@@ -911,7 +918,7 @@ public class AIFlowClient {
      * @param version      (Optional) Version of notification for listening.
      */
     public void startListenNotification(String key, EventWatcher watcher, Integer version) {
-        this.notificationClient.startListenEvent(key, watcher, version);
+        this.notificationClient.startListenEvent(key, watcher, version, "", 0);
     }
 
     /**
