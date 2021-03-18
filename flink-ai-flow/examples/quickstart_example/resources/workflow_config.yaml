@@ -1,0 +1,14 @@
+job_1:
+  platform: local
+  engine: python
+  job_name: job_1
+
+job_2:
+  platform: local
+  engine: python
+  job_name: job_2
+
+job_3:
+  platform: local
+  engine: python
+  job_name: job_3
