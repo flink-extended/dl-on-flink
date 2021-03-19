@@ -39,6 +39,10 @@ if [[ ! -f "${AIRFLOW_HOME}/airflow.cfg" ]] ; then
         gsub(\"load_examples = True\", \"load_examples = False\"); \
         gsub(\"load_default_connections = True\", \"load_default_connections = False\"); \
         gsub(\"dag_dir_list_interval = 300\", \"dag_dir_list_interval = 3\"); \
+        gsub(\"executor = SequentialExecutor\", \"executor = LocalExecutor\"); \
+        gsub(\"dags_are_paused_at_creation = True\", \"dags_are_paused_at_creation = False\"); \
+        gsub(\"# mp_start_method =\", \"mp_start_method = forkserver\"); \
+        gsub(\"execute_tasks_new_python_interpreter = False\", \"execute_tasks_new_python_interpreter = True\"); \
         print \$0}" airflow.cfg.tmpl > airflow.cfg
 
     # prepare the database
@@ -52,6 +56,10 @@ AIRFLOW_DEPLOY_PATH="${AIRFLOW_HOME}/airflow_deploy"
 # create the pending directory if not exists
 mkdir ${AIRFLOW_DEPLOY_PATH} >/dev/null 2>&1 || true
 
+# start notification service
+start_notification_service.py > ${AIRFLOW_HOME}/notification_service.log 2>&1 &
+echo $! > ${AIRFLOW_HOME}/notification_service.pid
+
 # start airflow scheduler and web server
 airflow event_scheduler --subdir=${AIRFLOW_DEPLOY_PATH} > ${AIRFLOW_HOME}/scheduler.log 2>&1 &
 echo $! > ${AIRFLOW_HOME}/scheduler.pid
@@ -59,6 +67,8 @@ airflow webserver -p 8080 > ${AIRFLOW_HOME}/web.log 2>&1 &
 echo $! > ${AIRFLOW_HOME}/web.pid
 start_aiflow.py > ${AIRFLOW_HOME}/master_server.log 2>&1 &
 echo $! > ${AIRFLOW_HOME}/master_server.pid
+echo "Notification service log: ${AIRFLOW_HOME}/notification_service.log"
+echo "Notification service pid: $(cat ${AIRFLOW_HOME}/notification_service.pid)"
 echo "Scheduler log: ${AIRFLOW_HOME}/scheduler.log"
 echo "Scheduler pid: $(cat ${AIRFLOW_HOME}/scheduler.pid)"
 echo "Web Server log: ${AIRFLOW_HOME}/web.log"
