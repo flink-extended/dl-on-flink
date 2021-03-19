@@ -216,12 +216,7 @@ CREATE DATABASE airflow CHARACTER SET UTF8mb3 COLLATE utf8_general_ci
 Currently the AI Flow bundles a modified Airflow so users do not need to install the Apache Airflow manually.
 
 ### Start notification server, Airflow Server and AI Flow Server
-
-Start a local notification server
-```
-nohup start_notification_service.py > ${AIRFLOW_HOME}/notification_service.log 2>&1 &
-```
-Run following command to start AI Flow Server and Airflow Server:
+Run following command to start Notification service, AI Flow Server and Airflow Server:
 
 ```shell
 start-aiflow.sh
@@ -246,20 +241,6 @@ Master Server log:  ${AIRFLOW_HOME}/master_server.log
 Master Server pid: 69947
 Airflow deploy path: ${AIRFLOW_HOME}/airflow_deploy
 Visit http://127.0.0.1:8080/ to access the airflow web server.
-```
-Now you can submit workflow to server. But for run following example, some config needs to be changed. Firstly stop the server started just now:
-```text
-stop-aiflow.sh
-```
-change master.yaml options related to db to mysql:
-```text
-db_uri=mysql://user:password@host/db
-db_type=mysql
-```
-change airflow.cfg config:
-```text
-executor = LocalExecutor
-dags_are_paused_at_creation = False
 ```
 
 ### Prepare AI Flow Project
@@ -402,3 +383,18 @@ Run following command to stop the servers:
 ```shell
 stop-aiflow.sh
 ```
+## Run in docker
+The Dockerfile is also provided, which helps start a Flink AI Flow server. You can build an image like this:
+```shell
+docker build --rm -t flink-ai-extended/flink-ai-flow:v1 .
+```
+To run the image, you need to pass your mysql connection string as parameter, e.g.
+```shell
+ docker run -it -p 8080:8080 flink-ai-extended/flink-ai-flow:v1 mysql://user:password@127.0.0.1/airflow
+```
+After that you will entry the container and you can check the AI Flow processes. If you pass a clean database, it will init database and create necessary tables. 
+To submit a workflow, you can run following commands.
+```shell
+python ${FLINK_AI_FLOW_SOURCES}/examples/quickstart_example/python_codes/airflow_dag_example.py
+```
+You can find the scheduled workflow on the [Airflow Web Server](http://127.0.0.1:8080/).
