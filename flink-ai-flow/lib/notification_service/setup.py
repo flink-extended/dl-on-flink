@@ -28,5 +28,5 @@ setup(
     author_email='',
     url='',
     packages=find_packages(exclude=['tests*']),
-    install_requires=["protobuf==3.11.3", "grpcio==1.35.0", "sqlalchemy>=1.3.18, <2"]
+    install_requires=["protobuf==3.11.3", "grpcio==1.34.0", "sqlalchemy>=1.3.18, <2"]
 )

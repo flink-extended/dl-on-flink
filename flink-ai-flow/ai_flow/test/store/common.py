@@ -754,15 +754,21 @@ class AbstractTestStore(object):
 
         self.store.update_model_version(model_version=model_version,
                                         current_stage='VALIDATED')
+
+        for i in range(10):
+            model_version = self._create_model_version(model_name)
+            self.store.update_model_version(model_version=model_version, current_stage='VALIDATED')
         serving_model_version = self.store.get_latest_validated_model_version(model_name)
-        self.assertEqual(serving_model_version.model_version, model_version.model_version)
+        self.assertEqual(model_version.model_version, serving_model_version.model_version)
 
     def test_get_latest_generated_model_version(self):
         model_name = 'test_for_get_generated_model_version'
         self._create_registered_model(model_name)
-        model_version = self._create_model_version(model_name)
+
+        for i in range(10):
+            model_version = self._create_model_version(model_name)
         generated_model_version = self.store.get_latest_generated_model_version(model_name)
-        self.assertEqual(generated_model_version.model_version, model_version.model_version)
+        self.assertEqual(model_version.model_version, generated_model_version.model_version)
 
     def test_update_model_version(self):
         model_name = 'test_for_update_model_version'
