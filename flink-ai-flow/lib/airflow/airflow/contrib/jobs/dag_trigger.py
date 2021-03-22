@@ -91,6 +91,7 @@ class ParsingStatRetrieveThread(StoppableThread):
             except EOFError as _:
                 # log and ignore
                 self.log.warning("nothing left to receive from DagFileProcessorManager")
+                time.sleep(10)
         self.log.info("ParsingStatRetriever exiting")
 
 
