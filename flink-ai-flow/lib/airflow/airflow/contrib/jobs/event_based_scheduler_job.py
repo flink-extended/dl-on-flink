@@ -135,7 +135,8 @@ class EventBasedScheduler(LoggingMixin):
                     ti = dag_runs[0].get_task_instance(event.task_id)
                     self._send_scheduling_task_event(ti, event.action)
                 elif isinstance(event, StopSchedulerEvent):
-                    if self.id == event.job_id:
+                    self.log.info("{} {}".format(self.id, event.job_id))
+                    if self.id == event.job_id or 0 == event.job_id:
                         self.log.info("break the scheduler event loop.")
                         break
                     else:
@@ -470,6 +471,7 @@ class EventBasedSchedulerJob(BaseJob):
 
         try:
             self.mailbox.set_scheduling_job_id(self.id)
+            self.scheduler.id = self.id
             self._start_listen_events()
             self.dag_trigger.start()
             self.task_event_manager.start()

@@ -14,12 +14,19 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-from datetime import datetime, timedelta
+from datetime import datetime
 from airflow.operators.bash import BashOperator
+from airflow.contrib.jobs.event_handlers import ActionEventHandler
 
 from airflow import DAG
 
 DEFAULT_DATE = datetime(2016, 1, 1)
-dag = DAG(dag_id="single", start_date=datetime.utcnow(), schedule_interval='@once')
+dag = DAG(dag_id="event_dag", start_date=datetime.utcnow(), schedule_interval='@once')
 
-op1 = BashOperator(task_id="task_1", dag=dag,  owner='airflow', bash_command='echo "hello world!"')
+op1 = BashOperator(task_id="task_1", dag=dag,  owner='airflow', bash_command='echo "hello world 1!"')
+
+op2 = BashOperator(task_id="task_2", dag=dag,  owner='airflow', bash_command='echo "hello world 2!"')
+
+op2.subscribe_event('start', '', '')
+op2.set_event_handler(ActionEventHandler())
+
