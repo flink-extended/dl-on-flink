@@ -18,7 +18,7 @@ from enum import Enum
 
 
 class SchedulingAction(str, Enum):
-    NONE = "RESTART"
+    NONE = "NONE"
     START = "START"
     STOP = "STOP"
     RESTART = "RESTART"

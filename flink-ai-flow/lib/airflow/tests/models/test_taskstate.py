@@ -46,10 +46,10 @@ class TestTaskState(unittest.TestCase):
     def test_update_task_state(self):
         self._create_task_state("1", "2", self.execution_date)
         task_state = TaskState.get_task_state(self.dag_id, self.task_id, self.execution_date)
-        task_state.state = 100
+        task_state.task_state = 100
         task_state.update_task_state()
         task_state = TaskState.get_task_state(self.dag_id, self.task_id, self.execution_date)
-        assert task_state.state == 100
+        assert task_state.task_state == 100
 
     @staticmethod
     def _create_task_state(dag_id, task_id, execution_date):
