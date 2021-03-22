@@ -37,7 +37,7 @@ class Edge(Jsonable):
         """
         super().__init__()
         if target_node_id is None or source_node_id is None:
-            raise Exception('target node id and source node id can not None!')
+            raise Exception('target node id or source node id can not be None!')
         self.target_node_id = target_node_id
         self.source_node_id = source_node_id
 
@@ -48,7 +48,7 @@ class Edge(Jsonable):
             return False
 
     def __ne__(self, o: object) -> bool:
-        return not self.__eq__(0)
+        return not self.__eq__(o)
 
 
 class DataEdge(Edge):
@@ -70,7 +70,7 @@ class DataEdge(Edge):
             return False
 
     def __ne__(self, o: object) -> bool:
-        return not self.__eq__(0)
+        return not self.__eq__(o)
 
 
 class MetCondition(str, Enum):
