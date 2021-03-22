@@ -1,6 +1,6 @@
 # Quickstart
 
-The Quickstart will introduce you how to install AIflow and help you get started with an example in AIflow.
+The Quickstart will show you how to install AI Flow and help you get started with an example in AI Flow.
 
 ## Prerequisites
 1. python3.7
@@ -8,7 +8,7 @@ The Quickstart will introduce you how to install AIflow and help you get started
 
 ## Installing AI Flow
 
-If you are installing AI Flow from source, you can install AIflow by running the following command:
+If you are installing AI Flow from source, you can install AI Flow by running the following command:
 
 ```shell
 # remove the build cache if exists
@@ -30,8 +30,11 @@ If you are installing AI Flow from the release package, just run:
 python3 -m pip install ai_flow-xxx-none-any.whl
 ```
 
+If you meet any problems during the installation, please refer to the [Troubleshooting](troubleshooting) section to see if it can help.
+
 ## Python AI Flow Example
-Here is a simple AI Flow example, and a line-by-line explanation will follows right below:
+
+Here is a simple AI Flow example, and a line-by-line explanation follows right below. 
 
 ```python
 import tempfile
@@ -184,6 +187,11 @@ if __name__ == '__main__':
 
 ```
 
+You can run it with following command:
+```shell
+python examples/simple_examples/python_codes/hello_world_example.py` in your terminal.
+```
+
 The output in the logs directory should be:
 
 *1_job_1_{timestamp}_stdout.log*:
@@ -198,8 +206,6 @@ hello world! job_1
 hello world! job_2
 ```
 
-The source code of this example could be found in 
-`examples/simple_examples/python_codes/hello_world_example.py`
 
 ## Work with Airflow
 
@@ -207,11 +213,11 @@ We have added an event-based scheduler named event_scheduler to Airflow, so Flin
 
 ### Prerequisites
 
-1. mysql
+1. MySQL
 
-To start an Airflow server, you need to install and start a mysql server in your machine. You need to create a database with specific character set in case of error when creating Apache Airflow tables, for example: 
+To start an Airflow server, you need to install and start a MySQL server in your machine. You need to create a database with specific character set in case of error when creating Apache Airflow tables, for example: 
 ```text
-CREATE DATABASE airflow CHARACTER SET UTF8mb3 COLLATE utf8_general_ci
+CREATE DATABASE airflow CHARACTER SET UTF8mb3 COLLATE utf8_general_ci;
 ```
 Currently the AI Flow bundles a modified Airflow so users do not need to install the Apache Airflow manually.
 
@@ -229,7 +235,7 @@ The ${AIRFLOW_HOME}/airflow.cfg is not exists. You need to provide a mysql datab
 start-aiflow.sh mysql://root:root@127.0.0.1/airflow
 ```
 
-Please prepare the mysql database and typed in.
+Please prepare the MySQL database and rerun the `start-aiflow.sh` with the MySQL parameter.
 If the servers start successfully, you will get the output like:
 
 ```text
@@ -383,18 +389,47 @@ Run following command to stop the servers:
 ```shell
 stop-aiflow.sh
 ```
-## Run in docker
-The Dockerfile is also provided, which helps start a Flink AI Flow server. You can build an image like this:
+## Run in Docker
+The Dockerfile is also provided, which helps users start a Flink AI Flow server. You can build an image like this:
 ```shell
 docker build --rm -t flink-ai-extended/flink-ai-flow:v1 .
 ```
-To run the image, you need to pass your mysql connection string as parameter, e.g.
+
+Before starting the container with the image, you need to make sure your MySQL server on your host machine has a valid database.
+You can create the database using the following command in your MySQL CLI:
+```SQL
+CREATE DATABASE airflow CHARACTER SET UTF8mb3 COLLATE utf8_general_ci;
+```
+
+Then, to run the image, you need to pass your MySQL connection string as parameter, e.g.
 ```shell
  docker run -it -p 8080:8080 flink-ai-extended/flink-ai-flow:v1 mysql://user:password@127.0.0.1/airflow
 ```
-After that you will entry the container and you can check the AI Flow processes. If you pass a clean database, it will init database and create necessary tables. 
+Note, `127.0.0.1` should be replaced with `host.docker.internal` or any valid IP address which can be utilized by docker to access host machine's MySQL service.
+
 To submit a workflow, you can run following commands.
 ```shell
 python ${FLINK_AI_FLOW_SOURCES}/examples/quickstart_example/python_codes/airflow_dag_example.py
 ```
 You can find the scheduled workflow on the [Airflow Web Server](http://127.0.0.1:8080/).
+Once the workflow is done, you can check its correctness by viewing the output logs under `${AIRFLOW_HOME}/logs/airflow_dag_example` directory or via [Web UI](http://127.0.0.1:8080/). 
+
+
+## Troubleshooting
+#### 1. Fail on mysqlclient installation
+According to mysqlclient's [document](https://github.com/PyMySQL/mysqlclient#install), extra steps are needed for installing mysqlclient with pip. Please check the document and take corresponding actions.
+
+#### 2. `(2002, "Can't connect to MySQL server on '127.0.0.1' (115)")`
+Replace `mysql://user:password@127.0.0.1/airflow` with `mysql://user:password@host.docker.internal/airflow`.
+
+#### 3. `Plugin caching_sha2_password could not be loaded:...` when running in docker
+Due to MySQL's [document](https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html), caching_sha2_password is the the default authentication plugin since MySQL 8.0. If you meet this problem 
+when launching docker, you can fix it by changing it back to naive version. To do that, in your MySQL server on host machine, type following command:
+
+```SQL
+ALTER USER 'username' IDENTIFIED WITH mysql_native_password BY 'password';
+```
+Then restart MySQL service and the docker image.
+
+
+
