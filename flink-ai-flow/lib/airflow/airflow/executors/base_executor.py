@@ -426,7 +426,7 @@ class BaseExecutor(LoggingMixin):
                 ti.execution_date,
                 ti.state
             )
-            self._mailbox.send_message(task_status_changed_event)
+            self._mailbox.send_message(task_status_changed_event.to_event())
 
     def _wait_for_stopping_task(
         self,

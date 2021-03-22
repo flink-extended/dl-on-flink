@@ -76,15 +76,18 @@ class TestDagRunEventManager(EventHandlerTestBase):
         event_manager.handle_event(DagRunId(self._dag_run.dag_id, self._dag_run.run_id), event)
         event_manager.handle_event(DagRunId(self._dag_run.dag_id, self._dag_run.run_id), event)
 
-        message = mailbox.get_message()
+        handle_event = mailbox.get_message()
+        message = EventHandleResult.from_event(handle_event)
         assert message == EventHandleResult(DagRunId(self._dag_run.dag_id, self._dag_run.run_id), "operator_toggle_handler", SchedulingAction.START)
 
-        message = mailbox.get_message()
+        handle_event = mailbox.get_message()
+        message = EventHandleResult.from_event(handle_event)
         assert message == EventHandleResult(DagRunId(self._dag_run.dag_id, self._dag_run.run_id), "operator_toggle_handler", SchedulingAction.STOP)
 
         time.sleep(2)
         event_manager.handle_event(DagRunId(self._dag_run.dag_id, self._dag_run.run_id), event)
-        message = mailbox.get_message()
+        handle_event = mailbox.get_message()
+        message = EventHandleResult.from_event(handle_event)
         assert message == EventHandleResult(DagRunId(self._dag_run.dag_id, self._dag_run.run_id), "operator_toggle_handler", SchedulingAction.START)
         event_manager.end()
 
@@ -114,13 +117,15 @@ class TestDagRunEventManager(EventHandlerTestBase):
         event_manager = DagRunEventManager(mailbox=mailbox)
         event_manager.handle_event(DagRunId(dag_run1.dag_id, dag_run1.run_id), event)
         event_manager.handle_event(DagRunId(dag_run2.dag_id, dag_run2.run_id), event)
-        messages = [mailbox.get_message(), mailbox.get_message()]
+        messages = [EventHandleResult.from_event(mailbox.get_message()),
+                    EventHandleResult.from_event(mailbox.get_message())]
         assert EventHandleResult(DagRunId(dag_run1.dag_id, dag_run1.run_id), "operator_toggle_handler", SchedulingAction.START) in messages
         assert EventHandleResult(DagRunId(dag_run2.dag_id, dag_run2.run_id), "operator_toggle_handler", SchedulingAction.START) in messages
 
         event_manager.handle_event(DagRunId(dag_run1.dag_id, dag_run1.run_id), event)
         event_manager.handle_event(DagRunId(dag_run2.dag_id, dag_run2.run_id), event)
-        messages = [mailbox.get_message(), mailbox.get_message()]
+        messages = [EventHandleResult.from_event(mailbox.get_message()),
+                    EventHandleResult.from_event(mailbox.get_message())]
         assert EventHandleResult(DagRunId(dag_run1.dag_id, dag_run1.run_id), "operator_toggle_handler", SchedulingAction.STOP) in messages
         assert EventHandleResult(DagRunId(dag_run2.dag_id, dag_run2.run_id), "operator_toggle_handler", SchedulingAction.STOP) in messages
 
@@ -160,11 +165,13 @@ class TestTaskEventExecutorRunner(EventHandlerTestBase):
         executor_runner.put_event(event)
 
         executor_runner.run()
-        message = mailbox.get_message()
+        handle_event = mailbox.get_message()
+        message = EventHandleResult.from_event(handle_event)
         assert message == EventHandleResult(DagRunId(self._dag_run.dag_id, self._dag_run.run_id),
                                             "operator_toggle_handler", SchedulingAction.START)
 
-        message = mailbox.get_message()
+        handle_event = mailbox.get_message()
+        message = EventHandleResult.from_event(handle_event)
         assert message == EventHandleResult(DagRunId(self._dag_run.dag_id, self._dag_run.run_id),
                                             "operator_toggle_handler", SchedulingAction.STOP)
 
@@ -200,10 +207,10 @@ class TestTaskEventExecutor(EventHandlerTestBase):
         assert actions['operator_toggle_handler'] == SchedulingAction.START
         assert TaskState.get_task_state(dag_id="test_event_handler",
                                         task_id="operator_toggle_handler",
-                                        executor_date=self._dag_run.execution_date).state is True
+                                        executor_date=self._dag_run.execution_date).task_state is True
 
         actions = event_executor.execute_event_handler(self._dag_run, event=event)
         assert actions['operator_toggle_handler'] == SchedulingAction.STOP
         assert TaskState.get_task_state(dag_id="test_event_handler",
                                         task_id="operator_toggle_handler",
-                                        executor_date=self._dag_run.execution_date).state is False
+                                        executor_date=self._dag_run.execution_date).task_state is False

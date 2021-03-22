@@ -36,16 +36,16 @@ class TaskState(Base, LoggingMixin):
     task_id = Column(String(ID_LEN, **COLLATION_ARGS), primary_key=True)
     dag_id = Column(String(ID_LEN, **COLLATION_ARGS), primary_key=True)
     execution_date = Column(UtcDateTime, primary_key=True)
-    state = Column(PickleType(pickler=dill))
+    task_state = Column(PickleType(pickler=dill))
 
-    def __init__(self, task_id, dag_id, execution_date, state=None):
+    def __init__(self, task_id, dag_id, execution_date, task_state=None):
         super().__init__()
         self.dag_id = dag_id
         self.task_id = task_id
         self.execution_date = execution_date
         self._log = logging.getLogger("airflow.task")
-        if state:
-            self.state = state
+        if task_state:
+            self.task_state = task_state
 
     @staticmethod
     @provide_session

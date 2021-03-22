@@ -50,12 +50,13 @@ from airflow.utils.types import DagRunType
 
 from airflow.utils.mailbox import Mailbox
 from airflow.events.scheduler_events import (
-    StopSchedulerEvent, TaskSchedulingEvent, DagExecutableEvent, TaskStatusChangedEvent
+    StopSchedulerEvent, TaskSchedulingEvent, DagExecutableEvent, TaskStatusChangedEvent, EventHandleEvent,
+    SchedulerInnerEventUtil
 )
 from notification_service.base_notification import BaseEvent
 from notification_service.client import EventWatcher, NotificationClient
 from airflow.contrib.jobs.dag_trigger import DagTrigger
-from airflow.contrib.jobs.dagrun_event_manager import DagRunEventManager, EventHandleResult, DagRunId
+from airflow.contrib.jobs.dagrun_event_manager import DagRunEventManager, DagRunId
 from airflow.executors.scheduling_action import SchedulingAction
 
 TI = models.TaskInstance
@@ -106,7 +107,12 @@ class EventBasedScheduler(LoggingMixin):
         self._restore_unfinished_dag_run()
         while True:
             identified_message = self.mailbox.get_identified_message()
-            event = identified_message.deserialize()
+            origin_event = identified_message.deserialize()
+            self.log.debug("Event: {}".format(origin_event))
+            if SchedulerInnerEventUtil.is_inner_event(origin_event):
+                event = SchedulerInnerEventUtil.to_inner_event(origin_event)
+            else:
+                event = origin_event
             with create_session() as session:
                 if isinstance(event, BaseEvent):
                     dagruns = self._find_dagruns_by_event(event, session)
@@ -115,7 +121,7 @@ class EventBasedScheduler(LoggingMixin):
                         self.task_event_manager.handle_event(dag_run_id, event)
                 elif isinstance(event, TaskSchedulingEvent):
                     self._schedule_task(event)
-                elif isinstance(event, TaskStatusChangedEvent) and event.status == State.SUCCESS:
+                elif isinstance(event, TaskStatusChangedEvent):
                     dagrun = self._find_dagrun(event.dag_id, event.execution_date, session)
                     tasks = self._find_schedulable_tasks(dagrun, session)
                     self._send_scheduling_task_events(tasks, SchedulingAction.START)
@@ -123,21 +129,24 @@ class EventBasedScheduler(LoggingMixin):
                     dagrun = self._create_dag_run(event.dag_id, session=session)
                     tasks = self._find_schedulable_tasks(dagrun, session)
                     self._send_scheduling_task_events(tasks, SchedulingAction.START)
-                elif isinstance(event, EventHandleResult):
-                    dag_runs = DagRun.find(dag_id=event.dag_run_id.dag_id, run_id=event.dag_run_id.run_id)
+                elif isinstance(event, EventHandleEvent):
+                    dag_runs = DagRun.find(dag_id=event.dag_id, run_id=event.dag_run_id)
                     assert len(dag_runs) == 1
                     ti = dag_runs[0].get_task_instance(event.task_id)
-                    self._send_scheduling_task_event(ti, event.scheduling_action)
+                    self._send_scheduling_task_event(ti, event.action)
                 elif isinstance(event, StopSchedulerEvent):
-                    self.log.info("break the scheduler event loop.")
-                    break
+                    if self.id == event.job_id:
+                        self.log.info("break the scheduler event loop.")
+                        break
+                    else:
+                        continue
                 else:
                     self.log.error("can not handler the event {}".format(event))
                 identified_message.remove_handled_message()
                 session.expunge_all()
 
     def stop(self) -> None:
-        self.mailbox.send_message(StopSchedulerEvent())
+        self.mailbox.send_message(StopSchedulerEvent(self.id).to_event())
         self.log.info("Send stop event to the scheduler.")
 
     def recover(self, last_scheduling_id):
@@ -366,7 +375,7 @@ class EventBasedScheduler(LoggingMixin):
             ti.try_number,
             action
         )
-        self.mailbox.send_message(task_scheduling_event)
+        self.mailbox.send_message(task_scheduling_event.to_event())
 
     def _send_scheduling_task_events(self, tis: Optional[List[TI]], action: SchedulingAction):
         if tis is None:
@@ -423,15 +432,16 @@ class EventBasedSchedulerJob(BaseJob):
     """
     __mapper_args__ = {'polymorphic_identity': 'EventBasedSchedulerJob'}
 
-    def __init__(self, dag_directory, server_uri=None, *args, **kwargs):
+    def __init__(self, dag_directory, server_uri=None, max_runs=-1, refresh_dag_dir_interval=0, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.mailbox: Mailbox = Mailbox()
         self.dag_trigger: DagTrigger = DagTrigger(
             dag_directory=dag_directory,
-            max_runs=-1,
+            max_runs=max_runs,
             dag_ids=None,
             pickle_dags=False,
             mailbox=self.mailbox,
+            refresh_dag_dir_interval= refresh_dag_dir_interval
         )
         self.task_event_manager = DagRunEventManager(self.mailbox)
         self.executor.set_mailbox(self.mailbox)
@@ -479,6 +489,7 @@ class EventBasedSchedulerJob(BaseJob):
             self.executor.end()
             self.dag_trigger.end()
             self.task_event_manager.end()
+            self._stop_listen_events()
 
             settings.Session.remove()  # type: ignore
         except Exception as e:  # pylint: disable=broad-except
@@ -493,6 +504,9 @@ class EventBasedSchedulerJob(BaseJob):
             start_time=int(time.time() * 1000),
             version=None
         )
+
+    def _stop_listen_events(self):
+        self.notification_client.stop_listen_events()
 
     def register_signals(self) -> None:
         """Register signals that stop child processes"""
