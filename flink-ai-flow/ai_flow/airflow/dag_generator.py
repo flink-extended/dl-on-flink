@@ -77,7 +77,7 @@ def get_airflow_code_manager() -> AirflowCodeManager:
 class DAGTemplate(object):
     AIRFLOW_IMPORT = """from airflow.models.dag import DAG
 from airflow.utils import timezone
-from airflow.ti_deps.met_handlers.aiflow_met_handler import AIFlowMetHandler
+from airflow.contrib.jobs.event_handlers import AIFlowHandler
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.bash_operator import BashOperator
 from ai_flow.deployer.utils.kubernetes_util import load_kubernetes_config
@@ -90,10 +90,10 @@ load_kubernetes_config()\n"""
 
     UPSTREAM_OP = """{0}.set_upstream({1})\n"""
 
-    EVENT_DEPS = """{0}.add_event_dependency('{1}', '{2}')\n"""
+    EVENT_DEPS = """{0}.subscribe_event('{1}', '{2}, '{3}')\n"""
 
     MET_HANDLER = """configs_{0}='{1}'\n
-{0}.set_event_met_handler(AIFlowMetHandler(configs_{0}))\n"""
+{0}.set_event_handler(AIFlowHandler(configs_{0}))\n"""
 
 
 class DAGGenerator(object):
@@ -110,7 +110,7 @@ class DAGGenerator(object):
         return DAGTemplate.UPSTREAM_OP.format(op_1, op_2)
 
     def generate_event_deps(self, op, met_config):
-        return DAGTemplate.EVENT_DEPS.format(op, met_config.event_key, met_config.event_type)
+        return DAGTemplate.EVENT_DEPS.format(op, met_config.event_key, met_config.event_type, met_config.namespace)
 
     def generate_handler(self, op, configs: List[MetConfig]):
         return DAGTemplate.MET_HANDLER.format(op, json_utils.dumps(configs))
