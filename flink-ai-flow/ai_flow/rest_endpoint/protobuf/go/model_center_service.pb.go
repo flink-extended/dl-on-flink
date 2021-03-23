@@ -404,9 +404,7 @@ func init() {
 	proto.RegisterType((*GetModelVersionDetailRequest)(nil), "GetModelVersionDetailRequest")
 }
 
-func init() {
-	proto.RegisterFile("model_center_service.proto", fileDescriptor_ee2c1b045eb52880)
-}
+func init() { proto.RegisterFile("model_center_service.proto", fileDescriptor_ee2c1b045eb52880) }
 
 var fileDescriptor_ee2c1b045eb52880 = []byte{
 	// 537 bytes of a gzipped FileDescriptorProto
@@ -448,11 +446,11 @@ var fileDescriptor_ee2c1b045eb52880 = []byte{
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ context.Context
-var _ grpc.ClientConnInterface
+var _ grpc.ClientConn
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
-const _ = grpc.SupportPackageIsVersion6
+const _ = grpc.SupportPackageIsVersion4
 
 // ModelCenterServiceClient is the client API for ModelCenterService service.
 //
@@ -479,10 +477,10 @@ type ModelCenterServiceClient interface {
 }
 
 type modelCenterServiceClient struct {
-	cc grpc.ClientConnInterface
+	cc *grpc.ClientConn
 }
 
-func NewModelCenterServiceClient(cc grpc.ClientConnInterface) ModelCenterServiceClient {
+func NewModelCenterServiceClient(cc *grpc.ClientConn) ModelCenterServiceClient {
 	return &modelCenterServiceClient{cc}
 }
 
