@@ -161,14 +161,16 @@ public class NotificationClient {
                                         StringUtils.isEmpty(currentUri) ? SERVER_URI : currentUri)
                                 .usePlaintext()
                                 .build());
-        notificationServiceStub =
-                wrapBlockingStub(
-                        notificationServiceStub,
-                        StringUtils.isEmpty(currentUri) ? SERVER_URI : currentUri,
-                        livingMembers,
-                        enableHa,
-                        retryIntervalMs,
-                        retryTimeoutMs);
+        if (enableHa) {
+            notificationServiceStub =
+                    wrapBlockingStub(
+                            notificationServiceStub,
+                            StringUtils.isEmpty(currentUri) ? SERVER_URI : currentUri,
+                            livingMembers,
+                            enableHa,
+                            retryIntervalMs,
+                            retryTimeoutMs);
+        }
     }
 
     /** Select a valid server from server candidates as current server. */
