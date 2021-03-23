@@ -194,20 +194,22 @@ class TestEventBasedScheduler(unittest.TestCase):
 
     def run_event_task_function(self):
         client = NotificationClient(server_uri="localhost:{}".format(self.port),
-                                    default_namespace="test_namespace")
+                                    default_namespace="")
         while True:
             with create_session() as session:
                 tes = session.query(TaskExecution).filter(TaskExecution.dag_id == 'event_dag',
                                                           TaskExecution.task_id == 'task_1').all()
                 if len(tes) > 0:
-                    client.send_event(BaseEvent(key='start', value='', namespace=''))
+                    time.sleep(5)
+                    client.send_event(BaseEvent(key='start', value='', event_type='', namespace=''))
                     while True:
-                        tes_2 = session.query(TaskExecution).filter(TaskExecution.dag_id == 'event_dag',
-                                                                    TaskExecution.task_id == 'task_2').all()
-                        if len(tes_2) > 0:
-                            break
-                        else:
-                            time.sleep(1)
+                        with create_session() as session_2:
+                            tes_2 = session_2.query(TaskExecution).filter(TaskExecution.dag_id == 'event_dag',
+                                                                          TaskExecution.task_id == 'task_2').all()
+                            if len(tes_2) > 0:
+                                break
+                            else:
+                                time.sleep(1)
                     break
                 else:
                     time.sleep(1)

@@ -243,7 +243,7 @@ class DagRunEventExecutorRunner(LoggingMixin):
             if event is None:
                 break
             for task_id, action in executor.execute_event_handler(self._dag_run, event).items():
-                self._mailbox.send_message(EventHandleResult(self._dag_run_id, task_id, action).to_event())
+                self._mailbox.send_message(EventHandleResult(self._dag_run_id, task_id, action).to_event().to_event())
             event_processed = event_processed + 1
             if event_processed >= self._max_num_event:
                 self.log.debug("DagRunEventExecutorRunner for {} exceed max_num_event: {}"
@@ -259,7 +259,7 @@ class DagRunEventExecutorRunner(LoggingMixin):
             return None
 
 
-class DagRunEventExecutor:
+class DagRunEventExecutor(LoggingMixin):
     """
     :class:`DagRunEventExecutor` is used to execute the EventHandler for Tasks in one dag.
     """
@@ -269,6 +269,7 @@ class DagRunEventExecutor:
         :param serialized_dag_model: the dag where the tasks that should run event handler belongs to.
         :type serialized_dag_model: SerializedDagModel
         """
+        super().__init__()
         self._dag = serialized_dag_model.dag
         self._dependency: DagEventDependencies = \
             DagEventDependencies.from_json(serialized_dag_model.event_relationships)
@@ -303,7 +304,8 @@ class DagRunEventExecutor:
     @staticmethod
     def _operator_handle_event(event, operator, execution_date) -> SchedulingAction:
         task_state = TaskState.get_task_state(operator.dag_id, operator.task_id, execution_date)
-        event_handler = operator.get_event_handler()
+        event_handler = operator.get_events_handler()
+        print('event handler {}'.format(event_handler))
         if task_state:
             scheduling_action, state = event_handler.handle_event(event, task_state.task_state)
             task_state.task_state = state

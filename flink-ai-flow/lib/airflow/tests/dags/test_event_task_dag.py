@@ -28,5 +28,5 @@ op1 = BashOperator(task_id="task_1", dag=dag,  owner='airflow', bash_command='ec
 op2 = BashOperator(task_id="task_2", dag=dag,  owner='airflow', bash_command='echo "hello world 2!"')
 
 op2.subscribe_event('start', '', '')
-op2.set_event_handler(ActionEventHandler())
+op2.set_events_handler(ActionEventHandler())
 

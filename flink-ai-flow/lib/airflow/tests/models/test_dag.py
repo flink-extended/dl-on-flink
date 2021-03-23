@@ -84,6 +84,8 @@ class TestDagEventDependencies(unittest.TestCase):
         dag_event_dependencies_copy.add_dependencies('task_4', EventKey(key='key_1', event_type='type_1'))
         tasks = dag_event_dependencies_copy.find_affected_tasks(EventKey('key_1', 'type_1'))
         self.assertEqual(3, len(tasks))
+        event_tasks = dag_event_dependencies_copy.find_event_dependencies_tasks()
+        self.assertEqual(4, len(event_tasks))
 
 
 class TestDag(unittest.TestCase):

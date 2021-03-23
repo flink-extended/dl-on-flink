@@ -116,6 +116,7 @@ class EventBasedScheduler(LoggingMixin):
             with create_session() as session:
                 if isinstance(event, BaseEvent):
                     dagruns = self._find_dagruns_by_event(event, session)
+                    self.log.debug('dag_run {}'.format(len(dagruns)))
                     for dagrun in dagruns:
                         dag_run_id = DagRunId(dagrun.dag_id, dagrun.run_id)
                         self.task_event_manager.handle_event(dag_run_id, event)
@@ -213,7 +214,6 @@ class EventBasedScheduler(LoggingMixin):
                 except Exception:
                     self.log.exception("Error occurred when create dag_run of dag: %s", dag_id)
 
-
     def _update_dag_next_dagrun(self, dag_id, session):
         """
                 Bulk update the next_dagrun and next_dagrun_create_after for all the dags.
@@ -257,13 +257,20 @@ class EventBasedScheduler(LoggingMixin):
         event_key = EventKey(event.key, event.event_type, event.namespace)
         dag_runs = session \
             .query(DagRun).filter(DagRun.state == State.RUNNING).all()
+        self.log.debug('dag_runs {}'.format(len(dag_runs)))
+
         if dag_runs is None or len(dag_runs) == 0:
             return affect_dag_runs
         dags = session.query(SerializedDagModel).filter(
             SerializedDagModel.dag_id.in_(dag_run.dag_id for dag_run in dag_runs)
         ).all()
+        self.log.debug('dags {}'.format(len(dags)))
+
         affect_dags = set()
         for dag in dags:
+            self.log.debug('dag config {}'.format(dag.event_relationships))
+            self.log.debug('event key {} {} {}'.format(event.key, event.event_type, event.namespace))
+
             dep: DagEventDependencies = DagEventDependencies.from_json(dag.event_relationships)
             if dep.is_affect(event_key):
                 affect_dags.add(dag.dag_id)
@@ -341,14 +348,17 @@ class EventBasedScheduler(LoggingMixin):
             of=TI,
             **skip_locked(session=session),
         ).all()
+        # filter need event tasks
+        serialized_dag = session.query(SerializedDagModel).filter(
+            SerializedDagModel.dag_id == dag_run.dag_id).first()
+        dep: DagEventDependencies = DagEventDependencies.from_json(serialized_dag.event_relationships)
+        event_task_set = dep.find_event_dependencies_tasks()
+        final_scheduled_tis = []
+        for ti in scheduled_tis:
+            if ti.task_id not in event_task_set:
+                final_scheduled_tis.append(ti)
 
-        # todo self._send_dag_callbacks_to_processor(dag_run, callback_to_run)
-
-        # This will do one query per dag run. We "could" build up a complex
-        # query to update all the TIs across all the execution dates and dag
-        # IDs in a single query, but it turns out that can be _very very slow_
-        # see #11147/commit ee90807ac for more details
-        return scheduled_tis
+        return final_scheduled_tis
 
     @provide_session
     def _verify_integrity_if_dag_changed(self, dag_run: DagRun, session=None):

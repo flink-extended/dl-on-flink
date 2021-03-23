@@ -2082,6 +2082,15 @@ class DagEventDependencies(object):
             return False
         else:
             return True
+        
+    def find_event_dependencies_tasks(self)->set:
+        tasks = set()
+        for n in self.task_event_dependencies:
+            for k in self.task_event_dependencies[n]:
+                for t in self.task_event_dependencies[n][k]:
+                    for task in self.task_event_dependencies[n][k][t]:
+                        tasks.add(task)
+        return tasks
 
     @classmethod
     def to_json(cls, deps)->str:
