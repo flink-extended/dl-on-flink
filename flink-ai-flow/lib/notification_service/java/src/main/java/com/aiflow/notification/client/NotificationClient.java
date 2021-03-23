@@ -103,11 +103,11 @@ public class NotificationClient {
      */
     protected static List<EventMeta> listEvents(
             NotificationServiceBlockingStub serviceStub,
+            String namespace,
             List<String> keys,
             long version,
             String eventType,
             long startTime,
-            String namespace,
             Integer timeoutSeconds)
             throws Exception {
         ListEventsRequest request =
@@ -236,13 +236,15 @@ public class NotificationClient {
     /**
      * Send the event to Notification Service.
      *
+     * @param namespace Namespace of event updated in Notification Service.
      * @param key Key of event updated in Notification Service.
      * @param value Value of event updated in Notification Service.
      * @param eventType Type of event updated in Notification Service.
      * @param context Context of event updated in Notification Service.
      * @return Object of Event created in Notification Service.
      */
-    public EventMeta sendEvent(String key, String value, String eventType, String context)
+    public EventMeta sendEvent(
+            String namespace, String key, String value, String eventType, String context)
             throws Exception {
         SendEventRequest request =
                 SendEventRequest.newBuilder()
@@ -252,7 +254,10 @@ public class NotificationClient {
                                         .setValue(value)
                                         .setEventType(eventType)
                                         .setContext(context)
-                                        .setNamespace(defaultNamespace)
+                                        .setNamespace(
+                                                StringUtils.isEmpty(namespace)
+                                                        ? defaultNamespace
+                                                        : namespace)
                                         .build())
                         .setUuid(UUID.randomUUID().toString())
                         .build();
@@ -267,6 +272,7 @@ public class NotificationClient {
     /**
      * List specific `key` or `version` notifications in Notification Service.
      *
+     * @param namespace Namespace of notification for listening.
      * @param keys Keys of notification for listening.
      * @param version (Optional) Version of notification for listening.
      * @param eventType (Optional) Type of event for listening.
@@ -274,9 +280,16 @@ public class NotificationClient {
      * @return List of Notification updated in Notification Service.
      */
     public List<EventMeta> listEvents(
-            List<String> keys, long version, String eventType, long startTime) throws Exception {
+            String namespace, List<String> keys, long version, String eventType, long startTime)
+            throws Exception {
         return listEvents(
-                notificationServiceStub, keys, version, eventType, startTime, defaultNamespace, 0);
+                notificationServiceStub,
+                StringUtils.isEmpty(namespace) ? defaultNamespace : namespace,
+                keys,
+                version,
+                eventType,
+                startTime,
+                0);
     }
 
     /**
@@ -302,6 +315,7 @@ public class NotificationClient {
     /**
      * Start listen specific `key` or `version` notifications in Notification Service.
      *
+     * @param namespace Namespace of notification for listening.
      * @param key Key of notification for listening.
      * @param watcher Watcher instance for listening notification.
      * @param version (Optional) Version of notification for listening.
@@ -309,8 +323,12 @@ public class NotificationClient {
      * @param startTime (Optional) Type of event for listening.
      */
     public void startListenEvent(
-            String key, EventWatcher watcher, long version, String eventType, long startTime) {
-        String namespace = defaultNamespace;
+            String namespace,
+            String key,
+            EventWatcher watcher,
+            long version,
+            String eventType,
+            long startTime) {
         Map<String, String> listenKey =
                 new HashMap<String, String>() {
                     {
@@ -331,7 +349,7 @@ public class NotificationClient {
                             version,
                             eventType,
                             startTime,
-                            namespace,
+                            StringUtils.isEmpty(namespace) ? defaultNamespace : namespace,
                             watcher,
                             5);
             listener.start();
@@ -344,12 +362,11 @@ public class NotificationClient {
      *
      * @param key Key of notification for listening.
      */
-    public void stopListenEvent(String key) {
-        String namespace = defaultNamespace;
+    public void stopListenEvent(String namespace, String key) {
         Map<String, String> listenKey =
                 new HashMap<String, String>() {
                     {
-                        put(key, namespace);
+                        put(key, StringUtils.isEmpty(namespace) ? defaultNamespace : namespace);
                     }
                 };
         if (StringUtils.isEmpty(key)) {
@@ -366,14 +383,19 @@ public class NotificationClient {
     /**
      * Get latest version of specific `key` notifications in Notification Service.
      *
+     * @param namespace Namespace of notification for listening.
      * @param key Key of notification for listening.
      */
-    public long getLatestVersion(String key) throws Exception {
+    public long getLatestVersion(String namespace, String key) throws Exception {
         if (StringUtils.isEmpty(key)) {
             throw new Exception("Empty key, please provide valid key");
         } else {
             GetLatestVersionByKeyRequest request =
-                    GetLatestVersionByKeyRequest.newBuilder().setKey(key).build();
+                    GetLatestVersionByKeyRequest.newBuilder()
+                            .setNamespace(
+                                    StringUtils.isEmpty(namespace) ? defaultNamespace : namespace)
+                            .setKey(key)
+                            .build();
             GetLatestVersionResponse response =
                     notificationServiceStub.getLatestVersionByKey(request);
             return parseLatestVersionFromResponse(response);

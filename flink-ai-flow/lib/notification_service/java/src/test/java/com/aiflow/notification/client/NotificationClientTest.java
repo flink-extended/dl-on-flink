@@ -29,12 +29,13 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public class NotificationClientTest {
+
     @Rule public final GrpcCleanupRule grpcCleanup = new GrpcCleanupRule();
     private final MutableHandlerRegistry serviceRegistry = new MutableHandlerRegistry();
     private NotificationClient client;
@@ -71,18 +72,13 @@ public class NotificationClientTest {
 
     @Test
     public void sendEvent() throws Exception {
-        long latestVersion = this.client.getLatestVersion("key");
+        long latestVersion = this.client.getLatestVersion("default", "key");
         for (int i = 0; i < 3; i++) {
-            EventMeta event = this.client.sendEvent("key", String.valueOf(i), "type", "");
+            this.client.sendEvent("default", "key", String.valueOf(i), "type", "");
         }
-        ArrayList<String> listenerKeys =
-                new ArrayList<String>() {
-                    {
-                        add("key");
-                    }
-                };
-        long startTime = System.currentTimeMillis();
-        List<EventMeta> eventList = this.client.listEvents(listenerKeys, latestVersion, "type", 0);
+        List<String> listenerKeys = Collections.singletonList("key");
+        List<EventMeta> eventList =
+                this.client.listEvents("default", listenerKeys, latestVersion, "type", 0);
         assertEquals(3, eventList.size());
     }
 
@@ -90,7 +86,8 @@ public class NotificationClientTest {
     public void listAllEvents() throws Exception {
         long startTime = 0;
         for (int i = 0; i < 3; i++) {
-            EventMeta event = this.client.sendEvent("key", String.valueOf(i), "type", "");
+            EventMeta event =
+                    this.client.sendEvent("default", "key", String.valueOf(i), "type", "");
             if (i == 1) {
                 startTime = event.getCreateTime();
             }
@@ -101,23 +98,14 @@ public class NotificationClientTest {
 
     @Test
     public void startListenEvent() throws Exception {
-        long latestVersion = this.client.getLatestVersion("key");
+        long latestVersion = this.client.getLatestVersion("default", "key");
         for (int i = 0; i < 3; i++) {
-            EventMeta event = this.client.sendEvent("key", String.valueOf(i), "type", "");
+            this.client.sendEvent("default", "key", String.valueOf(i), "type", "");
         }
         final Integer[] ii = {0};
         String listenerKey = "key";
         this.client.startListenEvent(
-                listenerKey,
-                new EventWatcher() {
-                    @Override
-                    public void process(List<EventMeta> events) {
-                        ii[0] += events.size();
-                    }
-                },
-                latestVersion,
-                "type",
-                0);
+                "default", listenerKey, events -> ii[0] += events.size(), latestVersion, "type", 0);
 
         Thread.sleep(10000);
         assertEquals(3, ii[0].intValue());
@@ -125,11 +113,11 @@ public class NotificationClientTest {
 
     @Test
     public void getLatestVersion() throws Exception {
-        long latestVersion = this.client.getLatestVersion("key");
+        long latestVersion = this.client.getLatestVersion("default", "key");
         for (int i = 0; i < 3; i++) {
-            EventMeta event = this.client.sendEvent("key", String.valueOf(i), "type", "");
+            this.client.sendEvent("default", "key", String.valueOf(i), "type", "");
         }
-        long newLatestVersion = this.client.getLatestVersion("key");
+        long newLatestVersion = this.client.getLatestVersion("default", "key");
         assertEquals(latestVersion + 3, newLatestVersion);
     }
 }

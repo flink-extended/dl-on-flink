@@ -87,11 +87,11 @@ public class EventListener {
 					List<EventMeta> events =
 							listEvents(
 									this.serviceStub,
+                                    this.namespace,
 									this.keys,
 									listenVersion,
 									this.eventType,
 									this.startTime,
-									this.namespace,
 									this.timeoutSeconds);
 					if (CollectionUtils.isNotEmpty(events)) {
 						this.watcher.process(events);

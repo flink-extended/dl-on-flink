@@ -1120,53 +1120,75 @@ public class AIFlowClient {
     return this.modelCenterClient.getModelVersionDetail(modelName, modelVersion);
   }
 
-  /**
-   * Update given key and value of event in Notification Service.
-   *
-   * @param key Key of event updated in Notification Service.
-   * @param value Value of event updated in Notification Service.
-   * @return Object of event created in Notification Service.
-   */
-  public EventMeta updateEvent(String key, String value) throws Exception {
-    return this.notificationClient.sendEvent(key, value, "", "");
-  }
+    /**
+     * Send the event to Notification Service.
+     *
+     * @param namespace Namespace of event updated in Notification Service.
+     * @param key Key of event updated in Notification Service.
+     * @param value Value of event updated in Notification Service.
+     * @param eventType Type of event updated in Notification Service.
+     * @param context Context of event updated in Notification Service.
+     * @return Object of Event created in Notification Service.
+     */
+    public EventMeta sendEvent(
+            String namespace, String key, String value, String eventType, String context)
+            throws Exception {
+        return this.notificationClient.sendEvent(namespace, key, value, eventType, context);
+    }
 
-  /**
-   * List specific `key` or `version` events in Notification Service.
-   *
-   * @param key Key of event for listening.
-   * @param version (Optional) Version of event for listening.
-   * @return List of event updated in Notification Service.
-   */
-  public List<EventMeta> listEvents(String key, Integer version) throws Exception {
-    return this.notificationClient.listEvents(
-        new ArrayList<String>() {
-          {
-            add(key);
-          }
-        },
-        (long) version,
-        "",
-        0);
-  }
+    /**
+     * List specific `key` or `version` notifications in Notification Service.
+     *
+     * @param namespace Namespace of notification for listening.
+     * @param keys Keys of notification for listening.
+     * @param version (Optional) Version of notification for listening.
+     * @param eventType (Optional) Type of event for listening.
+     * @param startTime (Optional) Type of event for listening.
+     * @return List of Notification updated in Notification Service.
+     */
+    public List<EventMeta> listEvents(
+            String namespace, List<String> keys, long version, String eventType, long startTime)
+            throws Exception {
+        return this.notificationClient.listEvents(namespace, keys, version, eventType, startTime);
+    }
 
-  /**
-   * Start listen specific `key` or `version` events in Notification Service.
-   *
-   * @param key Key of event for listening.
-   * @param watcher Watcher instance for listening event.
-   * @param version (Optional) Version of event for listening.
-   */
-  public void startListenEvent(String key, EventWatcher watcher, Integer version) {
-    this.notificationClient.startListenEvent(key, watcher, (long)version, "", 0);
-  }
+    /**
+     * Start listen specific `key` or `version` notifications in Notification Service.
+     *
+     * @param namespace Namespace of notification for listening.
+     * @param key Key of notification for listening.
+     * @param watcher Watcher instance for listening notification.
+     * @param version (Optional) Version of notification for listening.
+     * @param eventType (Optional) Type of event for listening.
+     * @param startTime (Optional) Type of event for listening.
+     */
+    public void startListenEvent(
+            String namespace,
+            String key,
+            EventWatcher watcher,
+            long version,
+            String eventType,
+            long startTime) {
+        this.notificationClient.startListenEvent(
+                namespace, key, watcher, version, eventType, startTime);
+    }
 
-  /**
-   * Stop listen specific `key` events in Notification Service.
-   *
-   * @param key Key of event for listening.
-   */
-  public void stopListenEvent(String key) {
-    this.notificationClient.stopListenEvent(key);
-  }
+    /**
+     * Stop listen specific `key` notifications in Notification Service.
+     *
+     * @param key Key of notification for listening.
+     */
+    public void stopListenEvent(String namespace, String key) {
+        this.notificationClient.stopListenEvent(namespace, key);
+    }
+
+    /**
+     * Get latest version of specific `key` notifications in Notification Service.
+     *
+     * @param namespace Namespace of notification for listening.
+     * @param key Key of notification for listening.
+     */
+    public long getLatestVersion(String namespace, String key) throws Exception {
+        return this.notificationClient.getLatestVersion(namespace, key);
+    }
 }
