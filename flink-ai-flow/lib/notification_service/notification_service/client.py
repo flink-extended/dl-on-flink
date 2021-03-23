@@ -141,7 +141,7 @@ class NotificationClient(BaseNotification):
                 value=event.value,
                 event_type=event.event_type,
                 context=event.context,
-                namespace=self._default_namespace),
+                namespace=self._default_namespace if event.namespace is None else event.namespace),
             uuid=str(uuid.uuid4()))
         response = self.notification_stub.sendEvent(request)
         if response.return_code == ReturnStatus.SUCCESS:
@@ -151,6 +151,7 @@ class NotificationClient(BaseNotification):
 
     def list_events(self,
                     key: Union[str, List[str]],
+                    namespace: str = None,
                     version: int = None,
                     event_type: str = None,
                     start_time: int = None) -> List[BaseEvent]:
@@ -158,13 +159,14 @@ class NotificationClient(BaseNotification):
         List specific events in Notification Service.
 
         :param key: Key of the event for listening.
+        :param namespace: Namespace of the event for listening.
         :param version: (Optional) The version of the events must greater than this version.
         :param event_type: (Optional) Type of the events.
         :param start_time: (Optional) Start time of the events.
         :return: The event list.
         """
         if isinstance(key, str):
-            key = (key, )
+            key = (key,)
         elif isinstance(key, Iterable):
             key = tuple(key)
         request = ListEventsRequest(
@@ -172,7 +174,7 @@ class NotificationClient(BaseNotification):
             start_version=version,
             event_type=event_type,
             start_time=start_time,
-            namespace=self._default_namespace)
+            namespace=self._default_namespace if namespace is None else namespace)
         response = self.notification_stub.listEvents(request)
         if response.return_code == ReturnStatus.SUCCESS:
             if response.events is None:
@@ -189,6 +191,7 @@ class NotificationClient(BaseNotification):
     def start_listen_event(self,
                            key: Union[str, Tuple[str]],
                            watcher: EventWatcher,
+                           namespace: str = None,
                            version: int = None,
                            event_type: str = None,
                            start_time: int = None) -> EventWatcherHandle:
@@ -197,16 +200,17 @@ class NotificationClient(BaseNotification):
 
         :param key: Key of notification for listening.
         :param watcher: Watcher instance for listening.
+        :param namespace: Namespace of the event for listening.
         :param version: (Optional) The version of the events must greater than this version.
         :param event_type: (Optional) Type of the events for listening.
         :param start_time: (Optional) Start time of the events for listening.
         :return: The handle used to stop the listening.
         """
         if isinstance(key, str):
-            key = (key, )
+            key = (key,)
         elif isinstance(key, Iterable):
             key = tuple(key)
-        namespace = self._default_namespace
+        namespace = self._default_namespace if namespace is None else namespace
 
         def list_events(client,
                         k: Tuple[str],
@@ -266,13 +270,14 @@ class NotificationClient(BaseNotification):
             self.lock.release()
         return ThreadEventWatcherHandle(thread, (key, namespace), self)
 
-    def stop_listen_event(self, key: Union[str, Tuple[str]] = None):
+    def stop_listen_event(self, key: Union[str, Tuple[str]] = None, namespace: str = None):
         """
         Stop listen specific `key` notifications in Notification Service.
 
         :param key: Keys of notification for listening.
+        :param namespace: Namespace of notification for listening.
         """
-        namespace = self._default_namespace
+        namespace = self._default_namespace if namespace is None else namespace
         if key is None:
             for (thread_key, v) in self.threads.items():
                 if thread_key == ALL_EVENTS_KEY:
@@ -287,7 +292,7 @@ class NotificationClient(BaseNotification):
         else:
             self.lock.acquire()
             if isinstance(key, str):
-                key = (key, )
+                key = (key,)
             try:
                 if (key, namespace) in self.threads:
                     threads = self.threads[(key, namespace)]
@@ -420,15 +425,17 @@ class NotificationClient(BaseNotification):
         finally:
             self.lock.release()
 
-    def get_latest_version(self, key: str = None):
+    def get_latest_version(self, key: str = None, namespace: str = None):
         """
         get latest event's version by key.
         :param key: Key of notification for listening.
+        :param namespace: Namespace of notification for listening.
         :return: Version number of the specific key.
         """
         self.lock.acquire()
         try:
-            request = GetLatestVersionByKeyRequest(key=key, namespace=self._default_namespace)
+            request = GetLatestVersionByKeyRequest(key=key,
+                                                   namespace=self._default_namespace if namespace is None else namespace)
             response = self.notification_stub.getLatestVersionByKey(request)
             if response.return_code == str(ReturnStatus.SUCCESS):
                 return response.version
@@ -455,7 +462,7 @@ class NotificationClient(BaseNotification):
                                            for proto in response.members]
             else:
                 logging.error("Exception thrown when updating the living members: %s" %
-                          response.return_msg)
+                              response.return_msg)
 
     def _ha_wrapper(self, func):
         @wraps(func)
