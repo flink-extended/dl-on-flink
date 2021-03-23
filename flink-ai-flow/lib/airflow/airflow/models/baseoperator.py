@@ -138,7 +138,7 @@ class EventOperator(LoggingMixin, Operator):
         """
         super().__init__()
         self._subscribed_events: Set[Tuple[str, str, str]] = set()
-        self._event_handler: EventHandler = event_handler
+        self._events_handler: EventHandler = event_handler
 
     def subscribe_event(self, event_key: str, event_type: str = UNDEFINED_EVENT_TYPE, event_namespace: str = 'default'):
         """
@@ -162,19 +162,19 @@ class EventOperator(LoggingMixin, Operator):
         """
         return self._subscribed_events
 
-    def get_event_handler(self) -> EventHandler:
+    def get_events_handler(self) -> EventHandler:
         """
         :return: the event_handler of the operator.
         :rtype: EventHandler
         """
-        return self._event_handler
+        return self._events_handler
 
-    def set_event_handler(self, event_handler: EventHandler) -> None:
+    def set_events_handler(self, events_handler: EventHandler) -> None:
         """
         :return: the event_handler of the operator.
         :rtype: EventHandler
         """
-        self._event_handler = event_handler
+        self._events_handler = events_handler
 
 
 # pylint: disable=too-many-instance-attributes,too-many-public-methods

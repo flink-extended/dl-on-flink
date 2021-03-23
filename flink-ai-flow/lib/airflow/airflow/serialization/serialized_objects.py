@@ -403,9 +403,9 @@ class SerializedBaseOperator(BaseOperator, BaseSerialization):
                 if not cls._is_excluded(value, template_field, op):
                     serialize_op[template_field] = serialize_template_field(value)
 
-        event_handler = op.get_event_handler()
+        event_handler = op.get_events_handler()
         if event_handler is not None:
-            serialize_op['_events_handler'] = EventHandler.serialize(op.get_event_handler())
+            serialize_op['_events_handler'] = EventHandler.serialize(op.get_events_handler())
 
         return serialize_op
 
