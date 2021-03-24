@@ -1809,9 +1809,7 @@ func init() {
 	proto.RegisterType((*ArtifactListProto)(nil), "ArtifactListProto")
 }
 
-func init() {
-	proto.RegisterFile("metadata_service.proto", fileDescriptor_a1212871fbd63cc6)
-}
+func init() { proto.RegisterFile("metadata_service.proto", fileDescriptor_a1212871fbd63cc6) }
 
 var fileDescriptor_a1212871fbd63cc6 = []byte{
 	// 2696 bytes of a gzipped FileDescriptorProto
@@ -1988,11 +1986,11 @@ var fileDescriptor_a1212871fbd63cc6 = []byte{
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ context.Context
-var _ grpc.ClientConnInterface
+var _ grpc.ClientConn
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
-const _ = grpc.SupportPackageIsVersion6
+const _ = grpc.SupportPackageIsVersion4
 
 // MetadataServiceClient is the client API for MetadataService service.
 //
@@ -2072,10 +2070,10 @@ type MetadataServiceClient interface {
 }
 
 type metadataServiceClient struct {
-	cc grpc.ClientConnInterface
+	cc *grpc.ClientConn
 }
 
-func NewMetadataServiceClient(cc grpc.ClientConnInterface) MetadataServiceClient {
+func NewMetadataServiceClient(cc *grpc.ClientConn) MetadataServiceClient {
 	return &metadataServiceClient{cc}
 }
 

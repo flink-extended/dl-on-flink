@@ -2011,9 +2011,7 @@ func init() {
 	proto.RegisterType((*MetricSummaryProto)(nil), "MetricSummaryProto")
 }
 
-func init() {
-	proto.RegisterFile("message.proto", fileDescriptor_33c57e4bae7b9afd)
-}
+func init() { proto.RegisterFile("message.proto", fileDescriptor_33c57e4bae7b9afd) }
 
 var fileDescriptor_33c57e4bae7b9afd = []byte{
 	// 2340 bytes of a gzipped FileDescriptorProto
