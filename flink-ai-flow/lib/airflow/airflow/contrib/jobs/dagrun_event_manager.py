@@ -305,7 +305,6 @@ class DagRunEventExecutor(LoggingMixin):
     def _operator_handle_event(event, operator, execution_date) -> SchedulingAction:
         task_state = TaskState.get_task_state(operator.dag_id, operator.task_id, execution_date)
         event_handler = operator.get_events_handler()
-        print('event handler {}'.format(event_handler))
         if task_state:
             scheduling_action, state = event_handler.handle_event(event, task_state.task_state)
             task_state.task_state = state
