@@ -14,9 +14,9 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-import datetime
 import os
 import pickle
+import sqlalchemy
 import time
 import unittest
 from typing import List
@@ -25,7 +25,7 @@ import psutil
 from airflow.models.taskexecution import TaskExecution
 from notification_service.base_notification import BaseEvent, UNDEFINED_EVENT_TYPE
 from notification_service.client import NotificationClient
-from notification_service.event_storage import MemoryEventStorage, DbEventStorage
+from notification_service.event_storage import MemoryEventStorage
 from notification_service.master import NotificationMaster
 from notification_service.service import NotificationService
 
@@ -33,24 +33,31 @@ from airflow.contrib.jobs.event_based_scheduler_job import EventBasedSchedulerJo
     EventBasedScheduler
 from airflow.executors.local_executor import LocalExecutor
 from airflow.models import TaskInstance, Message
+from airflow.jobs.base_job import BaseJob
 from airflow.utils.mailbox import Mailbox
 from airflow.utils.session import create_session, provide_session
+from airflow.events.scheduler_events import StopSchedulerEvent
 from tests.test_utils import db
+
+TEST_DAG_FOLDER = os.path.join(
+    os.path.dirname(os.path.realpath(__file__)), os.pardir, 'dags')
 
 
 class TestEventBasedScheduler(unittest.TestCase):
 
     def setUp(self):
+        db.clear_db_jobs()
         db.clear_db_dags()
         db.clear_db_serialized_dags()
         db.clear_db_runs()
         db.clear_db_task_execution()
         db.clear_db_message()
-
+        self.scheduler = None
+        self.port = 50101
         self.storage = MemoryEventStorage()
-        self.master = NotificationMaster(NotificationService(self.storage), 50091)
+        self.master = NotificationMaster(NotificationService(self.storage), self.port)
         self.master.run()
-        self.client = NotificationClient(server_uri="localhost:50091",
+        self.client = NotificationClient(server_uri="localhost:{}".format(self.port),
                                          default_namespace="test_namespace")
 
     def tearDown(self):
@@ -64,7 +71,7 @@ class TestEventBasedScheduler(unittest.TestCase):
                 ppid = os.fork()
                 if ppid == 0:
                     # Fork twice to avoid the sleeping in main process block scheduler
-                    self.start_scheduler()
+                    self.start_scheduler("../../dags/test_event_based_scheduler.py")
             except Exception as e:
                 print("Failed to execute task %s.", str(e))
         else:
@@ -119,14 +126,19 @@ class TestEventBasedScheduler(unittest.TestCase):
         return session.query(TaskExecution).filter(TaskExecution.dag_id == dag_id,
                                                    TaskExecution.task_id == task_id).all()
 
-    def start_scheduler(self):
+    @provide_session
+    def get_latest_job_id(self, session):
+        return session.query(BaseJob).order_by(sqlalchemy.desc(BaseJob.id)).first().id
+
+    def start_scheduler(self, file_path):
         self.scheduler = EventBasedSchedulerJob(
-            dag_directory="../../dags/test_event_based_scheduler.py",
-            server_uri="localhost:50091",
-            executor=LocalExecutor(3)
+            dag_directory=file_path,
+            server_uri="localhost:{}".format(self.port),
+            executor=LocalExecutor(3),
+            max_runs=-1,
+            refresh_dag_dir_interval=30
         )
         print("scheduler starting")
-
         self.scheduler.run()
 
     def wait_for_task_execution(self, dag_id, task_id, expected_num):
@@ -157,5 +169,57 @@ class TestEventBasedScheduler(unittest.TestCase):
                 break
         self.assertTrue(result)
 
-    def tearDown(self):
-        pass
+    def test_notification(self):
+        self.client.send_event(BaseEvent(key='a', value='b'))
+
+    def run_a_task_function(self):
+        while True:
+            with create_session() as session:
+                tes = session.query(TaskExecution).filter(TaskExecution.dag_id == 'single',
+                                                          TaskExecution.task_id == 'task_1').all()
+                if len(tes) > 0:
+                    break
+                else:
+                    time.sleep(1)
+        self.client.send_event(StopSchedulerEvent(job_id=0).to_event())
+
+    def test_run_a_task(self):
+        import threading
+        t = threading.Thread(target=self.run_a_task_function, args=())
+        t.setDaemon(True)
+        t.start()
+        self.start_scheduler('../../dags/test_single_task_dag.py')
+        tes: List[TaskExecution] = self.get_task_execution("single", "task_1")
+        self.assertEqual(len(tes), 1)
+
+    def run_event_task_function(self):
+        client = NotificationClient(server_uri="localhost:{}".format(self.port),
+                                    default_namespace="")
+        while True:
+            with create_session() as session:
+                tes = session.query(TaskExecution).filter(TaskExecution.dag_id == 'event_dag',
+                                                          TaskExecution.task_id == 'task_1').all()
+                if len(tes) > 0:
+                    time.sleep(5)
+                    client.send_event(BaseEvent(key='start', value='', event_type='', namespace=''))
+                    while True:
+                        with create_session() as session_2:
+                            tes_2 = session_2.query(TaskExecution).filter(TaskExecution.dag_id == 'event_dag',
+                                                                          TaskExecution.task_id == 'task_2').all()
+                            if len(tes_2) > 0:
+                                break
+                            else:
+                                time.sleep(1)
+                    break
+                else:
+                    time.sleep(1)
+        client.send_event(StopSchedulerEvent(job_id=0).to_event())
+
+    def test_run_event_task(self):
+        import threading
+        t = threading.Thread(target=self.run_event_task_function, args=())
+        t.setDaemon(True)
+        t.start()
+        self.start_scheduler('../../dags/test_event_task_dag.py')
+        tes: List[TaskExecution] = self.get_task_execution("event_dag", "task_2")
+        self.assertEqual(len(tes), 1)

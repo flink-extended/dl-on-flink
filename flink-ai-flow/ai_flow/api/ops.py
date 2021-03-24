@@ -16,7 +16,6 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-import sys
 from typing import Union, Text, Tuple, Optional, List
 
 from ai_flow.api.ai_flow_context import config, BaseJobConfig
@@ -29,7 +28,7 @@ from ai_flow.graph.ai_node import AINode
 from ai_flow.graph.channel import Channel, NoneChannel
 from ai_flow.graph.edge import StartBeforeControlEdge, StopBeforeControlEdge, RestartBeforeControlEdge, \
     ModelVersionControlEdge, ExampleControlEdge, UserDefineControlEdge, \
-    TaskAction, EventLife, MetValueCondition, MetCondition
+    TaskAction, EventLife, MetValueCondition, MetCondition, DEFAULT_NAMESPACE
 from ai_flow.graph.graph import _default_ai_graph
 from ai_flow.meta.example_meta import ExampleMeta
 from ai_flow.meta.model_meta import ModelMeta, ModelVersionMeta
@@ -503,18 +502,6 @@ def external_trigger(name: Text = None) -> NoneChannel:
     :param name: Name of the trigger.
     :return: NoneChannel: Identify external event triggers.
     """
-    # trigger_config = BaseJobConfig(platform='local', engine='cmd_line')
-    # trigger_config.job_name = name
-    # with config(trigger_config):
-    #     need_sleep_time = sys.maxsize
-    #     executor = CmdExecutor(cmd_line="echo 'run sleep job' && sleep {}".format(need_sleep_time))
-    #     node = ExecutableNode(name=name,
-    #                           output_num=0,
-    #                           executor=executor)
-    #     _add_execute_node_to_graph(executor, node, inputs=None)
-    #     output: NoneChannel = node.outputs()[0]
-    #     return output
-
     trigger_config = BaseJobConfig(platform='local', engine='dummy')
     trigger_config.job_name = name
     with config(trigger_config):
@@ -565,43 +552,57 @@ def user_define_operation(
 
 def start_before_control_dependency(src: Channel,
                                     dependency: Channel,
+                                    namespace: Text = DEFAULT_NAMESPACE
                                     ) -> None:
     """
     Add start-before control dependency. It means src channel will start when and only the dependency channel start.
 
+    :param namespace:
     :param src: The src channel depended on the dependency channel.
     :param dependency: The channel which is the dependency.
     :return: None.
     """
-    tmp = StartBeforeControlEdge(source_node_id=src.node_id, target_node_id=dependency.node_id)
+    tmp = StartBeforeControlEdge(source_node_id=src.node_id,
+                                 target_node_id=dependency.node_id,
+                                 namespace=namespace)
     _default_ai_graph.add_edge(src.node_id, tmp)
 
 
 def stop_before_control_dependency(src: Channel,
                                    dependency: Channel,
+                                   namespace: Text = DEFAULT_NAMESPACE
                                    ) -> None:
     """
     Add stop-before control dependency. It means src channel will start when and only the dependency channel stop.
 
+    :param namespace:
     :param src: The src channel depended on the dependency channel.
     :param dependency: The channel which is the dependency.
     :return: None.
     """
-    tmp = StopBeforeControlEdge(source_node_id=src.node_id, target_node_id=dependency.node_id)
+
+    tmp = StopBeforeControlEdge(source_node_id=src.node_id,
+                                target_node_id=dependency.node_id,
+                                namespace=namespace)
     _default_ai_graph.add_edge(src.node_id, tmp)
 
 
 def restart_before_control_dependency(src: Channel,
                                       dependency: Channel,
+                                      namespace: Text = DEFAULT_NAMESPACE
                                       ) -> None:
     """
     Add restart-before control dependency. It means src channel will restart when and only the dependency channel stop.
 
+    :param namespace:
     :param src: The src channel depended on the dependency channel.
     :param dependency: The channel which is the dependency.
     :return: None.
     """
-    tmp = RestartBeforeControlEdge(source_node_id=src.node_id, target_node_id=dependency.node_id)
+
+    tmp = RestartBeforeControlEdge(source_node_id=src.node_id,
+                                   target_node_id=dependency.node_id,
+                                   namespace=namespace)
     _default_ai_graph.add_edge(src.node_id, tmp)
 
 
@@ -609,37 +610,46 @@ def model_version_control_dependency(src: Channel,
                                      model_name: Text,
                                      model_version_event_type,
                                      dependency: Channel,
+                                     namespace: Text = DEFAULT_NAMESPACE
                                      ) -> None:
     """
     Add model version control dependency. It means src channel will start when and only a new model version of the
     specific model is updated in notification service.
 
+    :param namespace:
     :param model_version_event_type: one of ModelVersionEventType
     :param src: The src channel depended on the new model version which is updated in notification service.
     :param model_name: Name of the model, refers to a specific model.
     :param dependency: The channel which is the dependency.
     :return: None.
     """
-    tmp = ModelVersionControlEdge(model_name=model_name, model_type=model_version_event_type,
-                                  target_node_id=dependency.node_id, source_node_id=src.node_id)
+    tmp = ModelVersionControlEdge(model_name=model_name,
+                                  model_type=model_version_event_type,
+                                  target_node_id=dependency.node_id,
+                                  source_node_id=src.node_id,
+                                  namespace=namespace)
     _default_ai_graph.add_edge(src.node_id, tmp)
 
 
 def example_control_dependency(src: Channel,
                                example_name: Text,
                                dependency: Channel,
+                               namespace: Text = DEFAULT_NAMESPACE
                                ) -> None:
     """
     Add example control dependency. It means src channel will start when and only the an new example of the specific
     example is updated in notification service.
 
+    :param namespace: the namespace of the example
     :param src: The src channel depended on the example which is updated in notification service.
     :param example_name: Name of the example, refers to a specific example.
     :param dependency: The channel which is the dependency.
     :return: None.
     """
     tmp = ExampleControlEdge(example_name=example_name,
-                             target_node_id=dependency.node_id, source_node_id=src.node_id)
+                             target_node_id=dependency.node_id,
+                             source_node_id=src.node_id,
+                             namespace=namespace)
     _default_ai_graph.add_edge(src.node_id, tmp)
 
 
@@ -651,11 +661,13 @@ def user_define_control_dependency(src: Channel,
                                    condition: MetCondition = MetCondition.NECESSARY,
                                    action: TaskAction = TaskAction.START,
                                    life: EventLife = EventLife.ONCE,
-                                   value_condition: MetValueCondition = MetValueCondition.EQUAL
+                                   value_condition: MetValueCondition = MetValueCondition.EQUAL,
+                                   namespace: Text = DEFAULT_NAMESPACE
                                    ) -> None:
     """
     Add user defined control dependency.
 
+    :param namespace: the project name
     :param src: The src channel depended the event which is updated in notification service.
     :param dependency: The channel which is the dependency.
     :param event_key: The key of the event.
@@ -679,6 +691,7 @@ def user_define_control_dependency(src: Channel,
                                          condition=condition,
                                          action=action,
                                          life=life,
-                                         value_condition=value_condition
+                                         value_condition=value_condition,
+                                         namespace=namespace
                                          )
     _default_ai_graph.add_edge(src.node_id, control_edge)

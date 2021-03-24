@@ -1,4 +1,3 @@
-#
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -15,21 +14,19 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
+from datetime import datetime
+from airflow.operators.bash import BashOperator
+from airflow.contrib.jobs.event_handlers import ActionEventHandler
 
-from datetime import datetime, timedelta
-
-from airflow.models import DAG
-from airflow.operators.dummy import DummyOperator
+from airflow import DAG
 
 DEFAULT_DATE = datetime(2016, 1, 1)
+dag = DAG(dag_id="event_dag", start_date=datetime.utcnow(), schedule_interval='@once')
 
-# DAG tests backfill with pooled tasks
-# Previously backfill would queue the task but never run it
-dag1 = DAG(dag_id='test_start_date_scheduling', start_date=datetime.utcnow())
-dag1_task1 = DummyOperator(task_id='dummy', dag=dag1, owner='airflow')
+op1 = BashOperator(task_id="task_1", dag=dag,  owner='airflow', bash_command='echo "hello world 1!"')
 
-dag2 = DAG(dag_id='test_task_start_date_scheduling', start_date=DEFAULT_DATE)
-dag2_task1 = DummyOperator(
-    task_id='dummy1', dag=dag2, owner='airflow', start_date=DEFAULT_DATE + timedelta(days=3)
-)
-dag2_task2 = DummyOperator(task_id='dummy2', dag=dag2, owner='airflow')
+op2 = BashOperator(task_id="task_2", dag=dag,  owner='airflow', bash_command='echo "hello world 2!"')
+
+op2.subscribe_event('start', '', '')
+op2.set_events_handler(ActionEventHandler())
+

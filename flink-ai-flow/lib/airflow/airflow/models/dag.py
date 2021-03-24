@@ -2045,7 +2045,7 @@ class DagEventDependencies(object):
         self.task_event_dependencies = {}
         if dag is not None:
             for task_id, op in dag.task_dict.items():
-                dep_set: Set[Tuple[str, str, str]] = op.get_subscribed_event()
+                dep_set: Set[Tuple[str, str, str]] = op.get_subscribed_events()
                 for event_namespace, event_key, event_type in dep_set:
                     self.add_dependencies(task_id, EventKey(event_key, event_type, event_namespace))
 
@@ -2082,6 +2082,15 @@ class DagEventDependencies(object):
             return False
         else:
             return True
+        
+    def find_event_dependencies_tasks(self)->set:
+        tasks = set()
+        for n in self.task_event_dependencies:
+            for k in self.task_event_dependencies[n]:
+                for t in self.task_event_dependencies[n][k]:
+                    for task in self.task_event_dependencies[n][k][t]:
+                        tasks.add(task)
+        return tasks
 
     @classmethod
     def to_json(cls, deps)->str:

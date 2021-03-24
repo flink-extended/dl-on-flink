@@ -89,19 +89,10 @@
                         <exclude>examples/simple_examples/temp/*</exclude>
                         <exclude>flink_ai_flow/tests/resources/word_count.txt</exclude>
                         <exclude>flink_ai_flow/tests/temp/**/*</exclude>
-                        <exclude>lib/airflow/.flake8</exclude>
-                        <exclude>lib/airflow/.rat-excludes</exclude>
-                        <exclude>lib/airflow/airflow/_vendor/**/*</exclude>
-                        <exclude>lib/airflow/airflow/www/static/**/*.js</exclude>
-                        <exclude>lib/airflow/airflow/www/static/bootstrap-toggle.min.css</exclude>
-                        <exclude>lib/airflow/airflow/www_rbac/.eslint*</exclude>
-                        <exclude>lib/airflow/airflow/www_rbac/yarn.lock</exclude>
-                        <exclude>lib/airflow/dev/requirements.txt</exclude>
-                        <exclude>lib/airflow/docs/img/logos/*.svg</exclude>
-                        <exclude>lib/airflow/licenses/*.txt</exclude>
-                        <exclude>lib/airflow/requirements/*.txt</exclude>
-                        <exclude>lib/airflow/tests/dags/**/.airflowignore</exclude>
                         <exclude>resources/auto_build/sources.list</exclude>
+                        <exclude>lib/notification_service/.idea/*</exclude>
+                        <exclude>lib/airflow/*</exclude>
+                        <exclude>lib/airflow/**/*</exclude>
                         <!-- generated files -->
                         <exclude>ai_flow/rest_endpoint/protobuf/go/*.go</exclude>
                     </excludes>
