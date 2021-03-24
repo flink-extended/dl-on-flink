@@ -74,7 +74,7 @@ class DagRunnableReportingThread(StoppableThread, LoggingMixin):
 
     def _send_dag_executable(self, dag_models: Set[DagModel]):
         for dag_model in dag_models:
-            self._mailbox.send_message(DagExecutableEvent(dag_model.dag_id))
+            self._mailbox.send_message(DagExecutableEvent(dag_model.dag_id).to_event())
 
 
 class ParsingStatRetrieveThread(StoppableThread):
@@ -91,6 +91,7 @@ class ParsingStatRetrieveThread(StoppableThread):
             except EOFError as _:
                 # log and ignore
                 self.log.warning("nothing left to receive from DagFileProcessorManager")
+                time.sleep(10)
         self.log.info("ParsingStatRetriever exiting")
 
 
@@ -101,7 +102,8 @@ class DagTrigger(BackgroundService, MultiprocessingStartMethodMixin):
                  max_runs: int,
                  dag_ids: Optional[List[str]],
                  pickle_dags: bool,
-                 mailbox: Mailbox):
+                 mailbox: Mailbox,
+                 refresh_dag_dir_interval=1):
         """
         :param dag_directory: Directory where DAG definitions are kept. All
         files in file_paths should be under this directory
@@ -131,6 +133,7 @@ class DagTrigger(BackgroundService, MultiprocessingStartMethodMixin):
         self._parsing_stat_process_thread: Optional[StoppableThread] = None
         self._manager_process: Optional[BaseProcess] = None
         self._parent_conn = None
+        self._refresh_dag_dir_interval = refresh_dag_dir_interval
 
     def start(self):
         self._start_dag_file_processor_manager()
@@ -172,7 +175,8 @@ class DagTrigger(BackgroundService, MultiprocessingStartMethodMixin):
                                                     child_conn,
                                                     self._dag_ids,
                                                     self._pickle_dags,
-                                                    self._async_mode
+                                                    self._async_mode,
+                                                    self._refresh_dag_dir_interval
                                                 ))
         self._manager_process.start()
 

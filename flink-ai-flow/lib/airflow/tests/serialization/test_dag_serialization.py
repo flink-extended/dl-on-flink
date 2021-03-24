@@ -980,15 +980,16 @@ class TestStringifiedDAGs(unittest.TestCase):
         op = DummyOperator(task_id='dummy', event_handler=StartEventHandler())
         encoded_op = SerializedBaseOperator.serialize_operator(op)
         deserialized_op = SerializedBaseOperator.deserialize_operator(encoded_op)
-        event_handler = deserialized_op.get_event_handler()
+        event_handler = deserialized_op.get_events_handler()
         assert type(event_handler) == StartEventHandler
         assert event_handler.handle_event(event, None)[0] == SchedulingAction.START
 
         op = DummyOperator(task_id='dummy')
         encoded_op = SerializedBaseOperator.serialize_operator(op)
         deserialized_op = SerializedBaseOperator.deserialize_operator(encoded_op)
-        event_handler = deserialized_op.get_event_handler()
+        event_handler = deserialized_op.get_events_handler()
         assert event_handler is None
+
 
 def test_kubernetes_optional():
     """Serialisation / deserialisation continues to work without kubernetes installed"""

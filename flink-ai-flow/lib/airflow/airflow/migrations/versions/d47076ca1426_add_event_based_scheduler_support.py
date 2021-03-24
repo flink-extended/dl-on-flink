@@ -64,7 +64,7 @@ def upgrade():
             sa.Column('task_id', sa.String(length=250), nullable=False),
             sa.Column('dag_id', sa.String(length=250), nullable=False),
             sa.Column('execution_date', datetime, nullable=False),
-            sa.Column('state', sa.PickleType(), nullable=True),
+            sa.Column('task_state', sa.PickleType(), nullable=True),
             sa.PrimaryKeyConstraint('task_id', 'dag_id', 'execution_date')
         )
 

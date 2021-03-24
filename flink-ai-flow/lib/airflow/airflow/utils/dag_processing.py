@@ -200,6 +200,7 @@ class DagFileProcessorAgent(LoggingMixin, MultiprocessingStartMethodMixin):
         dag_ids: Optional[List[str]],
         pickle_dags: bool,
         async_mode: bool,
+        refresh_dag_dir_interval=0
     ):
         super().__init__()
         self._file_path_queue: List[str] = []
@@ -221,6 +222,7 @@ class DagFileProcessorAgent(LoggingMixin, MultiprocessingStartMethodMixin):
         self._parent_signal_conn: Optional[MultiprocessingConnection] = None
 
         self._last_parsing_stat_received_at: float = time.monotonic()
+        self.refresh_dag_dir_interval = refresh_dag_dir_interval
 
     def start(self) -> None:
         """Launch DagFileProcessorManager processor and start DAG parsing loop in manager."""
@@ -241,6 +243,7 @@ class DagFileProcessorAgent(LoggingMixin, MultiprocessingStartMethodMixin):
                 self._dag_ids,
                 self._pickle_dags,
                 self._async_mode,
+                self.refresh_dag_dir_interval
             ),
         )
         self._process = process
@@ -331,6 +334,7 @@ class DagFileProcessorAgent(LoggingMixin, MultiprocessingStartMethodMixin):
         dag_ids: Optional[List[str]],
         pickle_dags: bool,
         async_mode: bool,
+        refresh_dag_dir_interval=0
     ) -> None:
 
         # Make this process start as a new process group - that makes it easy
@@ -360,6 +364,7 @@ class DagFileProcessorAgent(LoggingMixin, MultiprocessingStartMethodMixin):
             dag_ids,
             pickle_dags,
             async_mode,
+            refresh_dag_dir_interval
         )
 
         processor_manager.start()
@@ -497,6 +502,7 @@ class DagFileProcessorManager(LoggingMixin):  # pylint: disable=too-many-instanc
         dag_ids: Optional[List[str]],
         pickle_dags: bool,
         async_mode: bool = True,
+        refresh_dag_dir_interval = 0
     ):
         super().__init__()
         self._file_paths: List[str] = []
@@ -509,6 +515,7 @@ class DagFileProcessorManager(LoggingMixin):  # pylint: disable=too-many-instanc
         self._dag_ids = dag_ids
         self._async_mode = async_mode
         self._parsing_start_time: Optional[int] = None
+        self._refresh_dag_dir_interval = refresh_dag_dir_interval
 
         self._parallelism = conf.getint('scheduler', 'parsing_processes')
         if 'sqlite' in conf.get('core', 'sql_alchemy_conn') and self._parallelism > 1:
@@ -709,6 +716,12 @@ class DagFileProcessorManager(LoggingMixin):  # pylint: disable=too-many-instanc
                     poll_time = 1 - loop_duration
                 else:
                     poll_time = 0.0
+
+            refresh_dag_dir_interval = time.monotonic() - loop_start_time
+            if refresh_dag_dir_interval < self._refresh_dag_dir_interval:
+                self.log.info('Dag ProcessorManager sleep {}.'
+                              .format(self._refresh_dag_dir_interval-refresh_dag_dir_interval))
+                time.sleep(self._refresh_dag_dir_interval-refresh_dag_dir_interval)
 
     def _add_callback_to_queue(self, request: CallbackRequest):
         self._callback_to_execute[request.full_filepath].append(request)

@@ -24,6 +24,7 @@ from airflow.contrib.jobs.dag_trigger import DagTrigger
 from airflow.models import DagModel
 from airflow.utils.mailbox import Mailbox
 from airflow.utils.session import create_session
+from airflow.events.scheduler_events import SchedulerInnerEventUtil
 from tests.test_utils import db
 
 
@@ -50,6 +51,7 @@ class TestDagTrigger(unittest.TestCase):
         type(self)._add_dag_needing_dagrun()
 
         message = mailbox.get_message()
+        message = SchedulerInnerEventUtil.to_inner_event(message)
         assert message.dag_id == "test"
         dag_trigger.end()
 
@@ -59,6 +61,7 @@ class TestDagTrigger(unittest.TestCase):
         dag_trigger.start()
 
         message = mailbox.get_message()
+        message = SchedulerInnerEventUtil.to_inner_event(message)
         # only one dag is executable
         assert "test_task_start_date_scheduling" == message.dag_id
 
