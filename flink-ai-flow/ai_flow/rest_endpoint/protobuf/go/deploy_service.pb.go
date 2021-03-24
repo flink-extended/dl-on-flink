@@ -229,9 +229,7 @@ func init() {
 	proto.RegisterMapType((map[string]string)(nil), "MasterConfigResponse.ConfigEntry")
 }
 
-func init() {
-	proto.RegisterFile("deploy_service.proto", fileDescriptor_4f431ac2f5cae27c)
-}
+func init() { proto.RegisterFile("deploy_service.proto", fileDescriptor_4f431ac2f5cae27c) }
 
 var fileDescriptor_4f431ac2f5cae27c = []byte{
 	// 481 bytes of a gzipped FileDescriptorProto
@@ -270,11 +268,11 @@ var fileDescriptor_4f431ac2f5cae27c = []byte{
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ context.Context
-var _ grpc.ClientConnInterface
+var _ grpc.ClientConn
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
-const _ = grpc.SupportPackageIsVersion6
+const _ = grpc.SupportPackageIsVersion4
 
 // DeployServiceClient is the client API for DeployService service.
 //
@@ -288,10 +286,10 @@ type DeployServiceClient interface {
 }
 
 type deployServiceClient struct {
-	cc grpc.ClientConnInterface
+	cc *grpc.ClientConn
 }
 
-func NewDeployServiceClient(cc grpc.ClientConnInterface) DeployServiceClient {
+func NewDeployServiceClient(cc *grpc.ClientConn) DeployServiceClient {
 	return &deployServiceClient{cc}
 }
 
