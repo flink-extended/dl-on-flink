@@ -20,44 +20,33 @@
 set -e
 
 #generate go file
-protoc -I/usr/local/include -I. \
-  -I$GOPATH/src \
-  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-  --go_out=Mgoogle/api/annotations.proto=github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api,plugins=grpc:../go \
-  message.proto
-
-protoc -I/usr/local/include -I. \
-  -I$GOPATH/src \
-  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-  --go_out=Mgoogle/api/annotations.proto=github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api,plugins=grpc:../go \
-  metadata_service.proto
-
-protoc -I/usr/local/include -I. \
-  -I$GOPATH/src \
-  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-  --go_out=Mgoogle/api/annotations.proto=github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api,plugins=grpc:../go \
-  model_center_service.proto
-
 #protoc -I/usr/local/include -I. \
 #  -I$GOPATH/src \
 #  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
 #  --go_out=Mgoogle/api/annotations.proto=github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api,plugins=grpc:../go \
-#  notification_service.proto
-
-protoc -I/usr/local/include -I. \
-  -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-  --grpc-gateway_out=logtostderr=true:../go \
-  metadata_service.proto
-
-protoc -I/usr/local/include -I. \
-  -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-  --grpc-gateway_out=logtostderr=true:../go \
-  model_center_service.proto
+#  message.proto
+#
+#protoc -I/usr/local/include -I. \
+#  -I$GOPATH/src \
+#  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+#  --go_out=Mgoogle/api/annotations.proto=github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api,plugins=grpc:../go \
+#  metadata_service.proto
+#
+#protoc -I/usr/local/include -I. \
+#  -I$GOPATH/src \
+#  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+#  --go_out=Mgoogle/api/annotations.proto=github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api,plugins=grpc:../go \
+#  model_center_service.proto
 
 #protoc -I/usr/local/include -I. \
 #  -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
 #  --grpc-gateway_out=logtostderr=true:../go \
-#  notification_service.proto
+#  metadata_service.proto
+#
+#protoc -I/usr/local/include -I. \
+#  -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+#  --grpc-gateway_out=logtostderr=true:../go \
+#  model_center_service.proto
 
 #generate java file
 protoc -I/usr/local/include -I. \
@@ -91,19 +80,6 @@ protoc -I/usr/local/include -I. \
   --grpc-java_out=../../../java/client/src/main/java \
   --proto_path=. \
   model_center_service.proto
-
-#protoc -I/usr/local/include -I. \
-#  -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-#  --java_out=../../../java/client/src/main/java \
-#  --proto_path=. \
-#  notification_service.proto
-
-#protoc -I/usr/local/include -I. \
-#  -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-#  --plugin=protoc-gen-grpc-java \
-#  --grpc-java_out=../../../java/client/src/main/java \
-#  --proto_path=. \
-#  notification_service.proto
 
 protoc -I/usr/local/include -I. \
   -I$GOPATH/src \
@@ -147,13 +123,6 @@ python3 -m grpc.tools.protoc -I. \
   --python_out=.. \
   --grpc_python_out=.. \
   model_center_service.proto
-
-#python3 -m grpc.tools.protoc -I. \
-#  -I/usr/local/include \
-#  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-#  --python_out=.. \
-#  --grpc_python_out=.. \
-#  notification_service.proto
 
 python3 -m grpc.tools.protoc -I. \
   -I/usr/local/include \
