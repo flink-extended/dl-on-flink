@@ -155,7 +155,7 @@ class EventOperator(LoggingMixin, Operator):
         """
         self._subscribed_events.add((event_namespace, event_key, event_type))
 
-    def get_subscribed_event(self) -> Set[Tuple[str, str, str]]:
+    def get_subscribed_events(self) -> Set[Tuple[str, str, str]]:
         """
         :return: the set of events that the operator subscribes to.
         :rtype: Set[str, str, str]
