@@ -15,7 +15,7 @@ The Codegen will show you how to install GRPC related dependencies and help you 
 # install protobuf
 wget https://github.com/protocolbuffers/protobuf/releases/download/v3.15.6/protobuf-all-3.15.6.tar.gz
 tar -zxvf protobuf-all-3.15.6.tar.gz
-cd protobuf-all-3.15.6
+cd protobuf-3.15.6
 ./configure
 make
 make check
@@ -25,8 +25,8 @@ make install
 pip install google-api-core==1.26.1
 
 # install grpcio
-pip install grpcio==1.36.1
-pip install grpcio-tools==1.36.1
+pip install grpcio==1.34.0
+pip install grpcio-tools==1.34.0
 ```
 
 # Codegen
