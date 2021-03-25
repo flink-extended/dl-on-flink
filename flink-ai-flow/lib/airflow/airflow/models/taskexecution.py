@@ -91,3 +91,6 @@ class TaskExecution(Base, LoggingMixin):
         self.pid = pid
         self.executor_config = executor_config
         self._log = logging.getLogger("airflow.task")
+
+    def __repr__(self):
+        return f"<TaskExecution: {self.dag_id}.{self.task_id} {self.execution_date} {self.seq_num} [{self.state}]>"
