@@ -29,6 +29,8 @@ class SchedulerInnerEventType(Enum):
     TASK_SCHEDULING = 'TASK_SCHEDULING'
     DAG_EXECUTABLE = 'DAG_EXECUTABLE'
     EVENT_HANDLE = 'EVENT_HANDLE'
+    REQUEST = 'REQUEST'
+    RESPONSE = 'RESPONSE'
 
 
 class SchedulerInnerEvent(object):
@@ -40,9 +42,85 @@ class SchedulerInnerEvent(object):
     @classmethod
     def from_base_event(cls, event: BaseEvent) -> 'SchedulerInnerEvent':
         raise NotImplementedError()
-    
-    def to_event(self)->BaseEvent:
+
+    def to_event(self) -> BaseEvent:
         return self.to_base_event(self)
+
+
+class UserDefineMessageType(Enum):
+    RUN_DAG = 'RUN_DAG'
+    STOP_DAG_RUN = 'STOP_DAG_RUN'
+    EXECUTE_TASK = 'EXECUTE_TASK'
+
+
+class BaseUserDefineMessage(object):
+    def __init__(self, message_type: UserDefineMessageType = None):
+        self.message_type = message_type
+        
+    def to_json(self) -> str:
+        o = {}
+        for k, v in self.__dict__.items():
+            if k == 'message_type':
+                o[k] = v.value
+            else:
+                o[k] = v
+        return json.dumps(o)
+
+    def from_json(self, json_str):
+        o = json.loads(json_str)
+        for k, v in o.items():
+            if k == 'message_type':
+                self.__dict__[k] = UserDefineMessageType(v)
+            else:
+                self.__dict__[k] = v
+
+
+class RunDagMessage(BaseUserDefineMessage):
+    def __init__(self, dag_id):
+        super().__init__(UserDefineMessageType.RUN_DAG)
+        self.dag_id = dag_id
+        
+        
+class StopDagRunMessage(BaseUserDefineMessage):
+    def __init__(self, dagrun_id):
+        super().__init__(UserDefineMessageType.RUN_DAG)
+        self.dagrun_id = dagrun_id
+        
+        
+class ExecuteTaskMessage(BaseUserDefineMessage):
+    def __init__(self, dagrun_id, task_id, action):
+        super().__init__(UserDefineMessageType.EXECUTE_TASK)
+        self.dagrun_id = dagrun_id
+        self.task_id = task_id
+        self.action = action
+
+
+class RequestEvent(SchedulerInnerEvent):
+    def __init__(self, request_id, body):
+        self.request_id = request_id
+        self.body = body
+
+    @classmethod
+    def to_base_event(cls, event: 'RequestEvent') -> BaseEvent:
+        return BaseEvent(key=str(event.request_id), value=event.body, event_type=SchedulerInnerEventType.REQUEST.value)
+
+    @classmethod
+    def from_base_event(cls, event: BaseEvent) -> 'SchedulerInnerEvent':
+        return RequestEvent(event.key, event.value)
+
+
+class ResponseEvent(SchedulerInnerEvent):
+    def __init__(self, request_id, body):
+        self.request_id = request_id
+        self.body = body
+
+    @classmethod
+    def to_base_event(cls, event: 'ResponseEvent') -> BaseEvent:
+        return BaseEvent(key=str(event.request_id), value=event.body, event_type=SchedulerInnerEventType.RESPONSE.value)
+
+    @classmethod
+    def from_base_event(cls, event: BaseEvent) -> 'SchedulerInnerEvent':
+        return ResponseEvent(event.key, event.value)
 
 
 class StopSchedulerEvent(SchedulerInnerEvent):
@@ -163,9 +241,9 @@ class EventHandleEvent(SchedulerInnerEvent):
     @classmethod
     def from_base_event(cls, event: BaseEvent) -> 'EventHandleEvent':
         o = json.loads(event.value)
-        return EventHandleEvent(task_id=o['task_id'], 
-                                dag_run_id=o['dag_run_id'], 
-                                dag_id=o['dag_id'], 
+        return EventHandleEvent(task_id=o['task_id'],
+                                dag_run_id=o['dag_run_id'],
+                                dag_id=o['dag_id'],
                                 action=SchedulingAction(o['action']))
 
 
@@ -177,16 +255,16 @@ class SchedulerInnerEventUtil(object):
             return True
         except ValueError as e:
             return False
-        
+
     @staticmethod
     def event_type(event: BaseEvent) -> SchedulerInnerEventType:
         try:
             return SchedulerInnerEventType(event.event_type)
         except ValueError as e:
             return None
-        
+
     @staticmethod
-    def to_inner_event(event: BaseEvent)->SchedulerInnerEvent:
+    def to_inner_event(event: BaseEvent) -> SchedulerInnerEvent:
         event_type = SchedulerInnerEventUtil.event_type(event)
         if SchedulerInnerEventType.STOP_SCHEDULER == event_type:
             return StopSchedulerEvent.from_base_event(event)
@@ -198,6 +276,9 @@ class SchedulerInnerEventUtil(object):
             return DagExecutableEvent.from_base_event(event)
         elif SchedulerInnerEventType.EVENT_HANDLE == event_type:
             return EventHandleEvent.from_base_event(event)
+        elif SchedulerInnerEventType.REQUEST == event_type:
+            return RequestEvent.from_base_event(event)
+        elif SchedulerInnerEventType.RESPONSE == event_type:
+            return ResponseEvent.from_base_event(event)
         else:
             return None
-
