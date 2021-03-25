@@ -94,6 +94,7 @@ class TestDAGGenerator(unittest.TestCase):
         job: BaseJob = LocalCMDJob(exec_cmd=['echo "{0} hello word!"'.format(index)])
         job.job_context.workflow_execution_id = 1
         job.instance_id = str(index) + "_job"
+        job.name = str(index) + "_job"
         job.uuid = index
         job.job_name = job.instance_id
         return job
@@ -103,44 +104,20 @@ class TestDAGGenerator(unittest.TestCase):
         workflow = Workflow()
         workflow.project_desc = ProjectDesc()
         workflow.project_desc.project_name = "workflow_1"
-        for i in range(6):
-            if i == 2:
-                job = TestDAGGenerator.create_dummy_job(i)
-                job.job_config = SendEventJobConfig('localhost:50051', 'key_1', 'value_1', UNDEFINED_EVENT_TYPE)
-            elif i == 3:
-                job = TestDAGGenerator.create_dummy_job(i)
-                job.job_config = SendEventJobConfig('localhost:50051', 'key_2', 'value_2', UNDEFINED_EVENT_TYPE)
-            elif i == 5:
-                job = TestDAGGenerator.create_dummy_job(i)
-                job.job_config = SendEventJobConfig('localhost:50051', 'key_2', 'value_2', "STOP_SCHEDULER_CMD")
-            else:
-                job = TestDAGGenerator.create_bash_job(i)
+        for i in range(3):
+            job = TestDAGGenerator.create_bash_job(i)
             workflow.add_job(job)
-        deps = []
-        deps.append(JobControlEdge(target_node_id='0_job', source_node_id='2_job',
-                                   met_config=MetConfig(event_key=generate_job_status_key('0_job'),
-                                                        event_value=State.FINISHED.value)))
-        deps.append(JobControlEdge(target_node_id='1_job', source_node_id='2_job',
-                                   met_config=MetConfig(event_key=generate_job_status_key('1_job'),
-                                                        event_value=State.FINISHED.value)))
-        workflow.add_edges("2_job", deps)
+        deps_1 = [JobControlEdge(target_node_id='', source_node_id='1_job',
+                                 met_config=MetConfig(event_key='key_1',
+                                                      event_value='value_1',
+                                                      event_type=UNDEFINED_EVENT_TYPE))]
+        deps_2 = [JobControlEdge(target_node_id='', source_node_id='2_job',
+                                 met_config=MetConfig(event_key='key_2',
+                                                      event_value='value_2',
+                                                      event_type=UNDEFINED_EVENT_TYPE))]
 
-        deps = []
-        deps.append(JobControlEdge(target_node_id='2_job', source_node_id='4_job',
-                                   met_config=MetConfig(event_key='key_1',
-                                                        event_value='value_1',
-                                                        event_type=UNDEFINED_EVENT_TYPE)))
-        deps.append(JobControlEdge(target_node_id='3_job', source_node_id='4_job',
-                                   met_config=MetConfig(event_key='key_2',
-                                                        event_value='value_2',
-                                                        event_type=UNDEFINED_EVENT_TYPE)))
-        workflow.add_edges("4_job", deps)
-
-        deps = []
-        deps.append(JobControlEdge(target_node_id='4_job', source_node_id='5_job',
-                                   met_config=MetConfig(event_key=generate_job_status_key('5_job'),
-                                                        event_value=State.FINISHED.value)))
-        workflow.add_edges("5_job", deps)
+        workflow.add_edges("1_job", deps_1)
+        workflow.add_edges("2_job", deps_2)
         workflow.workflow_id = 1
         return workflow
 

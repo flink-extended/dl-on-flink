@@ -120,8 +120,8 @@ class ActionWrapper(object):
 
 
 class AIFlowHandler(EventHandler):
-    def __init__(self, config_str: str):
-        self.configs: List[MetConfig] = AIFlowHandler.parse_configs(config_str)
+    def __init__(self, config: str):
+        self.config = config
 
     @staticmethod
     def parse_configs(config_str: str):
@@ -140,28 +140,28 @@ class AIFlowHandler(EventHandler):
         return configs
 
     def handle_event(self, event: BaseEvent, task_state: object) -> Tuple[SchedulingAction, object]:
-
+        configs: List[MetConfig] = AIFlowHandler.parse_configs(self.config)
         if task_state is None:
             task_state = AiFlowTs()
         af_ts = copy.deepcopy(task_state)
         af_ts.event_map[(event.namespace, event.key, event.event_type)] = event
         aw = ActionWrapper()
-        res = self.met_sc(af_ts, aw)
+        res = self.met_sc(configs, af_ts, aw)
         if res:
             if aw.action in SchedulingAction:
                 af_ts.schedule_time = time.time_ns()
-            if len(self.configs) == 0:
+            if len(configs) == 0:
                 return SchedulingAction.START, af_ts
             else:
                 return aw.action, af_ts
         else:
             return SchedulingAction.NONE, af_ts
 
-    def met_sc(self, ts: AiFlowTs, aw: ActionWrapper)->bool:
+    def met_sc(self, configs, ts: AiFlowTs, aw: ActionWrapper)->bool:
         event_map: Dict = ts.event_map
         schedule_time = ts.schedule_time
         has_necessary_edge = False
-        for met_config in self.configs:
+        for met_config in configs:
             namespace = met_config.namespace
             key = met_config.event_key
             value = met_config.event_value
@@ -215,7 +215,7 @@ class AIFlowHandler(EventHandler):
                         if v is None:
                             return False
         if has_necessary_edge:
-            aw.action = self.configs[0].action
+            aw.action = configs[0].action
             return True
         else:
             return False

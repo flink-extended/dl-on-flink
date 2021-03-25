@@ -90,10 +90,10 @@ load_kubernetes_config()\n"""
 
     UPSTREAM_OP = """{0}.set_upstream({1})\n"""
 
-    EVENT_DEPS = """{0}.subscribe_event('{1}', '{2}, '{3}')\n"""
+    EVENT_DEPS = """{0}.subscribe_event('{1}', '{2}', '{3}')\n"""
 
     MET_HANDLER = """configs_{0}='{1}'\n
-{0}.set_event_handler(AIFlowHandler(configs_{0}))\n"""
+{0}.set_events_handler(AIFlowHandler(configs_{0}))\n"""
 
 
 class DAGGenerator(object):
