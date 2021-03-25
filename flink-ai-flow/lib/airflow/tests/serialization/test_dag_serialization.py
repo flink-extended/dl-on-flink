@@ -972,23 +972,30 @@ class TestStringifiedDAGs(unittest.TestCase):
 
     def test_serialize_event_handler(self):
         from airflow.operators.dummy import DummyOperator
-        from airflow.contrib.jobs.event_handlers import StartEventHandler
+        from airflow.contrib.jobs.event_handlers import StartEventHandler, AIFlowHandler
         from notification_service.base_notification import BaseEvent
         from airflow.executors.scheduling_action import SchedulingAction
 
-        event = BaseEvent(key='k', value='v')
-        op = DummyOperator(task_id='dummy', event_handler=StartEventHandler())
-        encoded_op = SerializedBaseOperator.serialize_operator(op)
-        deserialized_op = SerializedBaseOperator.deserialize_operator(encoded_op)
-        event_handler = deserialized_op.get_events_handler()
-        assert type(event_handler) == StartEventHandler
-        assert event_handler.handle_event(event, None)[0] == SchedulingAction.START
+        # event = BaseEvent(key='k', value='v')
+        # op = DummyOperator(task_id='dummy', event_handler=StartEventHandler())
+        # encoded_op = SerializedBaseOperator.serialize_operator(op)
+        # deserialized_op = SerializedBaseOperator.deserialize_operator(encoded_op)
+        # event_handler = deserialized_op.get_events_handler()
+        # assert type(event_handler) == StartEventHandler
+        # assert event_handler.handle_event(event, None)[0] == SchedulingAction.START
+        #
+        # op = DummyOperator(task_id='dummy')
+        # encoded_op = SerializedBaseOperator.serialize_operator(op)
+        # deserialized_op = SerializedBaseOperator.deserialize_operator(encoded_op)
+        # event_handler = deserialized_op.get_events_handler()
+        # assert event_handler is None
 
-        op = DummyOperator(task_id='dummy')
+        configs = '[{"__af_object_type__": "jsonable", "__class__": "MetConfig", "__module__": "ai_flow.graph.edge", "action": "START", "condition": "NECESSARY", "event_key": "key_1", "event_type": "UNDEFINED", "event_value": "value_1", "life": "ONCE", "namespace": "default", "value_condition": "EQUAL"}]'
+        op = DummyOperator(task_id='dummy', event_handler=AIFlowHandler(config=configs))
         encoded_op = SerializedBaseOperator.serialize_operator(op)
         deserialized_op = SerializedBaseOperator.deserialize_operator(encoded_op)
         event_handler = deserialized_op.get_events_handler()
-        assert event_handler is None
+        assert type(event_handler) == AIFlowHandler
 
 
 def test_kubernetes_optional():
