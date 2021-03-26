@@ -71,7 +71,7 @@ class DagRunnableReportingThread(StoppableThread, LoggingMixin):
                 dag_models = DagModel.dags_needing_dagruns(session).all()
                 self.log.debug("dags needs dagruns: {}".format(dag_models))
                 self._send_dag_executable(dag_models)
-            time.sleep(1)
+            time.sleep(5)
         self.log.info("DagRunnableReporter exiting")
 
     def _send_dag_executable(self, dag_models: Set[DagModel]):
@@ -101,7 +101,8 @@ class DagTrigger(BackgroundService, MultiprocessingStartMethodMixin):
                  dag_ids: Optional[List[str]],
                  pickle_dags: bool,
                  mailbox: Mailbox,
-                 refresh_dag_dir_interval=1):
+                 refresh_dag_dir_interval=1,
+                 notification_service_uri=None):
         """
         :param dag_directory: Directory where DAG definitions are kept. All
         files in file_paths should be under this directory
@@ -131,6 +132,7 @@ class DagTrigger(BackgroundService, MultiprocessingStartMethodMixin):
         self._parsing_stat_process_thread: Optional[StoppableThread] = None
         self._dag_file_processor_agent: Optional[DagTriggerDagFileProcessorAgent] = None
         self._refresh_dag_dir_interval = refresh_dag_dir_interval
+        self._notification_service_uri = notification_service_uri
 
     def start(self):
         self._start_dag_file_processor_manager()
@@ -171,7 +173,8 @@ class DagTrigger(BackgroundService, MultiprocessingStartMethodMixin):
                                                                          [],
                                                                          self._pickle_dags,
                                                                          self._async_mode,
-                                                                         self._refresh_dag_dir_interval)
+                                                                         self._refresh_dag_dir_interval,
+                                                                         self._notification_service_uri)
         self._dag_file_processor_agent.start()
 
     @staticmethod

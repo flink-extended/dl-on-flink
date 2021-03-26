@@ -26,7 +26,7 @@ from sqlalchemy import create_engine, Column, String, BigInteger, Text, Integer
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-from notification_service.base_notification import BaseEvent, Member
+from notification_service.base_notification import BaseEvent, Member, ANY_CONDITION
 from notification_service.util.utils import event_model_to_event
 
 # use sqlite by default for testing
@@ -142,15 +142,16 @@ class EventModel(Base):
             raise Exception('key cannot be empty.')
 
         conditions = []
-        if event_type is not None:
+        if event_type is not None and event_type != ANY_CONDITION:
             conditions.append(EventModel.event_type == event_type)
         if start_time is not None and start_time > 0:
             conditions.append(EventModel.create_time >= start_time)
-        conditions.append(EventModel.namespace == namespace)
+        if ANY_CONDITION != namespace:
+            conditions.append(EventModel.namespace == namespace)
         if version > 0:
             conditions.append(EventModel.version > version)
-        conditions.append(EventModel.key.in_(key))
-
+        if ANY_CONDITION not in key:
+            conditions.append(EventModel.key.in_(key))
         event_model_list = session.query(EventModel).filter(*conditions).all()
         return [event_model_to_event(event_model) for event_model in event_model_list]
 

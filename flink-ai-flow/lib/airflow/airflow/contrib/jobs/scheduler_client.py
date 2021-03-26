@@ -52,33 +52,44 @@ class EventSchedulerClient(object):
     def generate_id(id):
         return '{}_{}'.format(id, time.time_ns())
 
-    def parse_dag(self, dag_id):
-        pass
+    def trigger_parse_dag(self)->bool:
+        id = self.generate_id('')
+        watcher: ResponseWatcher = ResponseWatcher()
+        handler: ThreadEventWatcherHandle \
+            = self.ns_client.start_listen_event(key=id,
+                                                event_type=SchedulerInnerEventType.PARSE_DAG_RESPONSE.value,
+                                                namespace=SCHEDULER_NAMESPACE, watcher=watcher)
+
+        self.ns_client.send_event(BaseEvent(key=id,
+                                            event_type=SchedulerInnerEventType.PARSE_DAG_REQUEST.value, value=''))
+        result = watcher.get_result()
+        handler.stop()
+        return True
 
     def schedule_dag(self, dag_id) -> ExecutionContext:
         id = self.generate_id(dag_id)
-        self.ns_client.send_event(RequestEvent(request_id=id, body=RunDagMessage(dag_id).to_json()).to_event())
         watcher: ResponseWatcher = ResponseWatcher()
         handler: ThreadEventWatcherHandle \
             = self.ns_client.start_listen_event(key=id,
                                                 event_type=SchedulerInnerEventType.RESPONSE.value,
                                                 namespace=SCHEDULER_NAMESPACE, watcher=watcher)
+        self.ns_client.send_event(RequestEvent(request_id=id, body=RunDagMessage(dag_id).to_json()).to_event())
         result: ResponseEvent = ResponseEvent.from_base_event(watcher.get_result())
         handler.stop()
         return ExecutionContext(dagrun_id=result.body)
 
     def schedule_task(self, task_id: str, action: SchedulingAction, context: ExecutionContext) -> ExecutionContext:
         id = self.generate_id(context.dagrun_id)
-        self.ns_client.send_event(RequestEvent(request_id=id,
-                                               body=ExecuteTaskMessage(task_id=task_id,
-                                                                       dagrun_id=context.dagrun_id,
-                                                                       action=action.value)
-                                               .to_json()).to_event())
         watcher: ResponseWatcher = ResponseWatcher()
         handler: ThreadEventWatcherHandle \
             = self.ns_client.start_listen_event(key=id,
                                                 event_type=SchedulerInnerEventType.RESPONSE.value,
                                                 namespace=SCHEDULER_NAMESPACE, watcher=watcher)
+        self.ns_client.send_event(RequestEvent(request_id=id,
+                                               body=ExecuteTaskMessage(task_id=task_id,
+                                                                       dagrun_id=context.dagrun_id,
+                                                                       action=action.value)
+                                               .to_json()).to_event())
         result: ResponseEvent = ResponseEvent.from_base_event(watcher.get_result())
         handler.stop()
         return ExecutionContext(dagrun_id=result.body)
