@@ -513,6 +513,14 @@ class DagRun(Base, LoggingMixin):
             finished_tasks=finished_tasks,
         )
 
+    @provide_session
+    def stop_dag_run(self, session):
+        """
+        Set state of dag_run to KILLED.
+        """
+        self.set_state(State.KILLED)
+        session.merge(self)
+
     def _get_ready_tis(
         self,
         scheduleable_tasks: List[TI],

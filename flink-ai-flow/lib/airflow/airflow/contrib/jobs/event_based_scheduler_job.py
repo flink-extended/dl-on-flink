@@ -51,8 +51,9 @@ from airflow.utils.types import DagRunType
 from airflow.utils.mailbox import Mailbox
 from airflow.events.scheduler_events import (
     StopSchedulerEvent, TaskSchedulingEvent, DagExecutableEvent, TaskStatusChangedEvent, EventHandleEvent, RequestEvent,
-    ResponseEvent, SchedulerInnerEventUtil,
+    ResponseEvent, StopDagEvent, SchedulerInnerEventUtil,
     BaseUserDefineMessage, UserDefineMessageType)
+
 from notification_service.base_notification import BaseEvent
 from notification_service.client import EventWatcher, NotificationClient
 from airflow.contrib.jobs.dag_trigger import DagTrigger
@@ -151,6 +152,8 @@ class EventBasedScheduler(LoggingMixin):
                     assert len(dag_runs) == 1
                     ti = dag_runs[0].get_task_instance(event.task_id)
                     self._send_scheduling_task_event(ti, event.action)
+                elif isinstance(event, StopDagEvent):
+                    self._stop_dag(event.dag_id, session)
                 elif isinstance(event, StopSchedulerEvent):
                     self.log.info("{} {}".format(self.id, event.job_id))
                     if self.id == event.job_id or 0 == event.job_id:
@@ -312,7 +315,7 @@ class EventBasedScheduler(LoggingMixin):
         :param dag_run: The DagRun to schedule
         :return: scheduled tasks
         """
-        if not dag_run:
+        if not dag_run or dag_run.get_state() in State.finished:
             return
         try:
             dag = dag_run.dag = self.dagbag.get_dag(dag_run.dag_id, session=session)
@@ -463,6 +466,19 @@ class EventBasedScheduler(LoggingMixin):
                 action=SchedulingAction(message.action)
             ).to_event())
             self.notification_client.send_event(ResponseEvent(event.request_id, dagrun.run_id).to_event())
+
+    def _stop_dag(self, dag_id, session: Session):
+        """
+        Stop the dag. Pause the dag and cancel all running dag_runs and task_instances.
+        """
+        DagModel.get_dagmodel(dag_id, session)\
+            .set_is_paused(is_paused=True, including_subdags=True, session=session)
+        active_runs = DagRun.find(dag_id=dag_id, state=State.RUNNING)
+        for dag_run in active_runs:
+            dag_run.stop_dag_run()
+            for ti in dag_run.get_task_instances():
+                if ti.state in State.unfinished:
+                    self.executor.schedule_task(ti.key, SchedulingAction.STOP)
 
 
 class SchedulerEventWatcher(EventWatcher):

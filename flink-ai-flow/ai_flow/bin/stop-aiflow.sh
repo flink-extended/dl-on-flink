@@ -25,3 +25,4 @@ set +e
 for((i=1;i<=3;i++));do kill $(cat ${AIRFLOW_HOME}/scheduler.pid) >/dev/null 2>&1 && sleep 1;done
 for((i=1;i<=3;i++));do kill $(cat ${AIRFLOW_HOME}/web.pid) >/dev/null 2>&1 && sleep 1;done
 for((i=1;i<=3;i++));do kill $(cat ${AIRFLOW_HOME}/master_server.pid) >/dev/null 2>&1 && sleep 1;done
+for((i=1;i<=3;i++));do kill $(cat ${AIRFLOW_HOME}/notification_service.pid) >/dev/null 2>&1 && sleep 1;done

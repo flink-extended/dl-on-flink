@@ -15,14 +15,10 @@
 # specific language governing permissions and limitations
 # under the License.
 
-import multiprocessing
 import threading
 import time
 from datetime import timedelta
-from multiprocessing.process import BaseProcess
 from typing import List, Optional, Set
-
-from airflow.utils.log.logging_mixin import LoggingMixin
 
 import airflow.utils.dag_processing as dag_processing
 from airflow.configuration import conf
@@ -30,9 +26,15 @@ from airflow.contrib.jobs.background_service import BackgroundService
 from airflow.events.scheduler_events import DagExecutableEvent
 from airflow.jobs import scheduler_job
 from airflow.models import DagModel
+from airflow.utils.log.logging_mixin import LoggingMixin
 from airflow.utils.mailbox import Mailbox
 from airflow.utils.mixins import MultiprocessingStartMethodMixin
 from airflow.utils.session import create_session
+
+
+class DagTriggerDagFileProcessorAgent(dag_processing.DagFileProcessorAgent):
+    def wait_on_manager_message(self, timeout=None):
+        self._parent_signal_conn.poll(timeout)
 
 
 class StoppableThread(threading.Thread, LoggingMixin):
@@ -53,18 +55,18 @@ class StoppableThread(threading.Thread, LoggingMixin):
 
 class DagRunnableReportingThread(StoppableThread, LoggingMixin):
 
-    def __init__(self, async_mode: bool, parent_conn, mailbox: Mailbox, *args, **kwargs):
+    def __init__(self, async_mode: bool, dag_file_processor_agent, mailbox: Mailbox, *args, **kwargs):
         super(DagRunnableReportingThread, self).__init__(*args, **kwargs)
         self.setName("DagTrigger-DagRunnableReporter")
         self._async_mode = async_mode
-        self._parent_conn = parent_conn
+        self._dag_file_processor_agent: DagTriggerDagFileProcessorAgent = dag_file_processor_agent
         self._mailbox = mailbox
 
     def run(self) -> None:
         while not self.stopped():
             # send AGENT_RUN_ONCE to DagFileProcessorManager to trigger dag parsing if not async mode
             if not self._async_mode:
-                self._parent_conn.send(dag_processing.DagParsingSignal.AGENT_RUN_ONCE)
+                self._dag_file_processor_agent.run_single_parsing_loop()
             with create_session() as session:
                 dag_models = DagModel.dags_needing_dagruns(session).all()
                 self.log.debug("dags needs dagruns: {}".format(dag_models))
@@ -78,20 +80,16 @@ class DagRunnableReportingThread(StoppableThread, LoggingMixin):
 
 
 class ParsingStatRetrieveThread(StoppableThread):
-    def __init__(self, parent_conn, *args, **kwargs):
+    def __init__(self, dag_file_processor_agent, *args, **kwargs):
         super(ParsingStatRetrieveThread, self).__init__(*args, **kwargs)
         self.setName("DagTrigger-ParsingStatRetriever")
-        self._parent_conn = parent_conn
+        self._dag_file_processor_agent: DagTriggerDagFileProcessorAgent = dag_file_processor_agent
 
     def run(self) -> None:
-        while not self.stopped() and self._parent_conn.poll(None):
-            try:
-                message = self._parent_conn.recv()
-                self.log.debug("receiving parsing stat from dag file processor manager: {}".format(message))
-            except EOFError as _:
-                # log and ignore
-                self.log.warning("nothing left to receive from DagFileProcessorManager")
-                time.sleep(10)
+        while not self.stopped():
+            self._dag_file_processor_agent.wait_on_manager_message()
+            self._dag_file_processor_agent.heartbeat()
+            time.sleep(10)
         self.log.info("ParsingStatRetriever exiting")
 
 
@@ -131,54 +129,50 @@ class DagTrigger(BackgroundService, MultiprocessingStartMethodMixin):
 
         self._dag_runnable_reporting_thread: Optional[StoppableThread] = None
         self._parsing_stat_process_thread: Optional[StoppableThread] = None
-        self._manager_process: Optional[BaseProcess] = None
-        self._parent_conn = None
+        self._dag_file_processor_agent: Optional[DagTriggerDagFileProcessorAgent] = None
         self._refresh_dag_dir_interval = refresh_dag_dir_interval
 
     def start(self):
         self._start_dag_file_processor_manager()
-        self._dag_runnable_reporting_thread = DagRunnableReportingThread(self._async_mode, self._parent_conn,
+        self._dag_runnable_reporting_thread = DagRunnableReportingThread(self._async_mode,
+                                                                         self._dag_file_processor_agent,
                                                                          self._mailbox)
         self._dag_runnable_reporting_thread.start()
 
-        self._parsing_stat_process_thread = ParsingStatRetrieveThread(self._parent_conn)
+        self._parsing_stat_process_thread = ParsingStatRetrieveThread(self._dag_file_processor_agent)
         self._parsing_stat_process_thread.start()
 
     def end(self) -> None:
-        if self._manager_process is not None:
-            self._manager_process.terminate()
+        if self._dag_file_processor_agent is not None:
+            self._dag_file_processor_agent.terminate()
         if self._dag_runnable_reporting_thread is not None:
             self._dag_runnable_reporting_thread.stop()
         if self._parsing_stat_process_thread is not None:
             self._parsing_stat_process_thread.stop()
-        self._manager_process.join()
         self._dag_runnable_reporting_thread.join()
         self._parsing_stat_process_thread.join()
+        self._dag_file_processor_agent.end()
 
     def terminate(self):
-        if self._manager_process is not None:
-            self._manager_process.kill()
+        if self._dag_file_processor_agent is not None:
+            self._dag_file_processor_agent.end()
         if self._dag_runnable_reporting_thread is not None:
             self._dag_runnable_reporting_thread.stop()
         if self._parsing_stat_process_thread is not None:
             self._parsing_stat_process_thread.stop()
 
     def _start_dag_file_processor_manager(self):
-        context = multiprocessing.get_context(super()._get_multiprocessing_start_method())
-        self._parent_conn, child_conn = context.Pipe(duplex=True)
-        self._manager_process = context.Process(target=dag_processing.DagFileProcessorAgent._run_processor_manager,
-                                                args=(
-                                                    self._dag_directory,
-                                                    self._max_runs,
-                                                    scheduler_job.SchedulerJob._create_dag_file_processor,
-                                                    self._get_processor_timeout(),
-                                                    child_conn,
-                                                    self._dag_ids,
-                                                    self._pickle_dags,
-                                                    self._async_mode,
-                                                    self._refresh_dag_dir_interval
-                                                ))
-        self._manager_process.start()
+        processor_factory = scheduler_job.SchedulerJob._create_dag_file_processor
+
+        self._dag_file_processor_agent = DagTriggerDagFileProcessorAgent(self._dag_directory,
+                                                                         self._max_runs,
+                                                                         processor_factory,
+                                                                         self._get_processor_timeout(),
+                                                                         [],
+                                                                         self._pickle_dags,
+                                                                         self._async_mode,
+                                                                         self._refresh_dag_dir_interval)
+        self._dag_file_processor_agent.start()
 
     @staticmethod
     def _get_processor_timeout():
@@ -186,6 +180,6 @@ class DagTrigger(BackgroundService, MultiprocessingStartMethodMixin):
         return timedelta(seconds=processor_timeout_seconds)
 
     def is_alive(self) -> bool:
-        return self._manager_process is not None and self._manager_process.is_alive() \
+        return self._dag_file_processor_agent is not None \
                and self._dag_runnable_reporting_thread is not None and self._dag_runnable_reporting_thread.is_alive() \
                and self._parsing_stat_process_thread is not None and self._parsing_stat_process_thread.is_alive()
