@@ -191,6 +191,9 @@ class BaseExecutor(LoggingMixin):
         elif ti.state in State.finished:
             self.log.info("Task has been finished with state %s, %s", ti.state, str(key))
             return True
+        elif ti.state != State.RUNNING:
+            ti.set_state(State.KILLED)
+            return True
         try:
             self.running.remove(ti.key)
         except KeyError:

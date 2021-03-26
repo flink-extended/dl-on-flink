@@ -16,8 +16,6 @@
 # specific language governing permissions and limitations
 # under the License.
 import time
-from datetime import timedelta
-import datetime
 from notification_service.base_notification import UNDEFINED_EVENT_TYPE
 from airflow.contrib.jobs.event_handlers import ActionEventHandler, RestartEventHandler
 from airflow import DAG
@@ -39,13 +37,22 @@ t1 = BashOperator(
 
 t2 = BashOperator(
     task_id='sleep_1000_secs',
-    bash_command='sleep 1000',
+    bash_command='sleep 100',
     dag=dag,
     event_handler=ActionEventHandler()
 )
+t2.subscribe_event('start', '', event_namespace='test_namespace')
 t2.subscribe_event(event_key="stop",
                    event_namespace='test_namespace',
                    event_type=UNDEFINED_EVENT_TYPE)
+
+
+t4 = BashOperator(
+    task_id='sleep_to_be_stopped',
+    bash_command='sleep 100',
+    dag=dag,
+    event_handler=ActionEventHandler()
+)
 
 
 def my_sleeping_function(random_base):
@@ -56,15 +63,16 @@ def my_sleeping_function(random_base):
 t3 = PythonOperator(
         task_id='python_sleep',
         python_callable=my_sleeping_function,
-        op_kwargs={'random_base': 1000},
+        op_kwargs={'random_base': 100},
         dag=dag,
-        event_handler=RestartEventHandler()
+        event_handler=ActionEventHandler()
 )
-t3.subscribe_event(event_key="any_key",
+t3.subscribe_event('start', '', event_namespace='test_namespace')
+t3.subscribe_event(event_key="restart",
                    event_namespace='test_namespace',
                    event_type=UNDEFINED_EVENT_TYPE)
 
 dag.doc_md = __doc__
 
 
-t1 >> [t2, t3]
+t1 >> [t2, t3, t4]
