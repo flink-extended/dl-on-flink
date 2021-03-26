@@ -26,6 +26,8 @@ from airflow.utils.state import State
 from typing import List
 
 import psutil
+from airflow.executors.scheduling_action import SchedulingAction
+from airflow.contrib.jobs.scheduler_client import EventSchedulerClient
 from airflow.models.taskexecution import TaskExecution
 from notification_service.base_notification import BaseEvent, UNDEFINED_EVENT_TYPE
 from notification_service.client import NotificationClient
@@ -245,6 +247,66 @@ class TestEventBasedScheduler(unittest.TestCase):
         tes: List[TaskExecution] = self.get_task_execution("event_dag", "task_2")
         self.assertEqual(len(tes), 1)
 
+    def run_trigger_dag_function(self):
+        # waiting parsed dag file done,
+        time.sleep(5)
+        ns_client = NotificationClient(server_uri="localhost:{}".format(self.port), default_namespace="")
+        client = EventSchedulerClient(ns_client=ns_client)
+        while True:
+            with create_session() as session:
+                tes = session.query(TaskExecution).filter(TaskExecution.dag_id == 'trigger_dag',
+                                                          TaskExecution.task_id == 'task_1').all()
+                if len(tes) > 0:
+                    break
+                else:
+                    result = client.schedule_dag('trigger_dag')
+                    print('result {}'.format(result.dagrun_id))
+                time.sleep(5)
+        ns_client.send_event(StopSchedulerEvent(job_id=0).to_event())
+
+    def test_run_trigger_dag(self):
+        import threading
+        t = threading.Thread(target=self.run_trigger_dag_function, args=())
+        t.setDaemon(True)
+        t.start()
+        self.start_scheduler('../../dags/test_run_trigger_dag.py')
+        tes: List[TaskExecution] = self.get_task_execution("trigger_dag", "task_1")
+        self.assertEqual(len(tes), 1)
+
+    def run_trigger_task_function(self):
+        # waiting parsed dag file done,
+        time.sleep(5)
+        ns_client = NotificationClient(server_uri="localhost:{}".format(self.port), default_namespace="")
+        client = EventSchedulerClient(ns_client=ns_client)
+        execution_context = client.schedule_dag('trigger_task')
+        while True:
+            with create_session() as session:
+                tes = session.query(TaskExecution).filter(TaskExecution.dag_id == 'trigger_task',
+                                                          TaskExecution.task_id == 'task_1').all()
+                if len(tes) > 0:
+                    client.schedule_task('task_2', SchedulingAction.START, execution_context)
+                    while True:
+                        with create_session() as session_2:
+                            tes_2 = session_2.query(TaskExecution).filter(TaskExecution.dag_id == 'trigger_task',
+                                                                          TaskExecution.task_id == 'task_2').all()
+                            if len(tes_2) > 0:
+                                break
+                            else:
+                                time.sleep(1)
+                    break
+                else:
+                    time.sleep(1)
+        ns_client.send_event(StopSchedulerEvent(job_id=0).to_event())
+
+    def test_task_trigger_dag(self):
+        import threading
+        t = threading.Thread(target=self.run_trigger_task_function, args=())
+        t.setDaemon(True)
+        t.start()
+        self.start_scheduler('../../dags/test_task_trigger_dag.py')
+        tes: List[TaskExecution] = self.get_task_execution("trigger_task", "task_2")
+        self.assertEqual(len(tes), 1)
+
     def run_ai_flow_function(self):
         client = NotificationClient(server_uri="localhost:{}".format(self.port),
                                     default_namespace="default")
@@ -252,7 +314,6 @@ class TestEventBasedScheduler(unittest.TestCase):
             with create_session() as session:
                 tes = session.query(TaskExecution).filter(TaskExecution.dag_id == 'workflow_1',
                                                           TaskExecution.task_id == '0_job').all()
-                print("xxxxx: {} ".format(len(tes)))
                 if len(tes) > 0:
                     time.sleep(5)
                     client.send_event(BaseEvent(key='key_1', value='value_1', event_type='UNDEFINED'))
@@ -267,6 +328,7 @@ class TestEventBasedScheduler(unittest.TestCase):
                     break
                 else:
                     time.sleep(1)
+        time.sleep(3)
         client.send_event(StopSchedulerEvent(job_id=0).to_event())
 
     def test_run_ai_flow_dag(self):

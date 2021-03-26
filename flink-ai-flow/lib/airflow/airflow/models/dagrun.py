@@ -704,6 +704,23 @@ class DagRun(Base, LoggingMixin):
         )
         return qry.first()
 
+    @staticmethod
+    def get_run_by_id(session: Session, run_id: str):
+        """
+        Get a single DAG Run
+        :param session: Sqlalchemy ORM Session
+        :type session: Session
+        :param run_id: dag run_id
+
+        :return: DagRun corresponding to the given dag_id and execution date
+            if one exists. None otherwise.
+        :rtype: airflow.models.DagRun
+        """
+        qry = session.query(DagRun).filter(
+            DagRun.run_id == run_id,
+        )
+        return qry.first()
+
     @property
     def is_backfill(self):
         return self.run_type == DagRunType.BACKFILL_JOB
