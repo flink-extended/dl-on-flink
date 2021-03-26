@@ -84,7 +84,6 @@ class EventBasedScheduler(LoggingMixin):
         self.executor = executor
         self.notification_client = notification_client
         self.dagbag = DagBag(read_dags_from_db=True)
-        self._running = True
         self._timer_handler = None
         self.timers = sched.scheduler()
 
@@ -163,7 +162,6 @@ class EventBasedScheduler(LoggingMixin):
                     self.log.error("can not handler the event {}".format(event))
                 identified_message.remove_handled_message()
                 session.expunge_all()
-        self._running = False
         self._stop_timer()
 
     def stop(self) -> None:
