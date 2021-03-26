@@ -24,6 +24,7 @@ import multiprocessing
 import os
 import signal
 import sys
+import queue
 import time
 from abc import ABCMeta, abstractmethod
 from collections import defaultdict
@@ -31,11 +32,12 @@ from datetime import datetime, timedelta
 from importlib import import_module
 from multiprocessing.connection import Connection as MultiprocessingConnection
 from typing import Any, Callable, Dict, List, NamedTuple, Optional, Tuple, Union, cast
-
 from setproctitle import setproctitle  # pylint: disable=no-name-in-module
+
+from notification_service.base_notification import EventWatcher, BaseEvent, BaseNotification
+from notification_service.client import NotificationClient
 from sqlalchemy import or_
 from tabulate import tabulate
-
 import airflow.models
 from airflow.configuration import conf
 from airflow.models import DagModel, errors
@@ -200,7 +202,8 @@ class DagFileProcessorAgent(LoggingMixin, MultiprocessingStartMethodMixin):
         dag_ids: Optional[List[str]],
         pickle_dags: bool,
         async_mode: bool,
-        refresh_dag_dir_interval=0
+        refresh_dag_dir_interval=0,
+        notification_service_uri=None
     ):
         super().__init__()
         self._file_path_queue: List[str] = []
@@ -214,7 +217,7 @@ class DagFileProcessorAgent(LoggingMixin, MultiprocessingStartMethodMixin):
         # Map from file path to the processor
         self._processors: Dict[str, AbstractDagFileProcessorProcess] = {}
         # Pipe for communicating signals
-        self._process: Optional[multiprocessing.process.BaseProcess] = None
+        self._process: Optional[multiprocessing.Process] = None
         self._done: bool = False
         # Initialized as true so we do not deactivate w/o any actual DAG parsing.
         self._all_files_processed = True
@@ -223,6 +226,7 @@ class DagFileProcessorAgent(LoggingMixin, MultiprocessingStartMethodMixin):
 
         self._last_parsing_stat_received_at: float = time.monotonic()
         self.refresh_dag_dir_interval = refresh_dag_dir_interval
+        self.notification_service_uri = notification_service_uri
 
     def start(self) -> None:
         """Launch DagFileProcessorManager processor and start DAG parsing loop in manager."""
@@ -243,7 +247,8 @@ class DagFileProcessorAgent(LoggingMixin, MultiprocessingStartMethodMixin):
                 self._dag_ids,
                 self._pickle_dags,
                 self._async_mode,
-                self.refresh_dag_dir_interval
+                self.refresh_dag_dir_interval,
+                self.notification_service_uri
             ),
         )
         self._process = process
@@ -334,7 +339,8 @@ class DagFileProcessorAgent(LoggingMixin, MultiprocessingStartMethodMixin):
         dag_ids: Optional[List[str]],
         pickle_dags: bool,
         async_mode: bool,
-        refresh_dag_dir_interval=0
+        refresh_dag_dir_interval=0,
+        notification_service_uri=None
     ) -> None:
 
         # Make this process start as a new process group - that makes it easy
@@ -364,7 +370,8 @@ class DagFileProcessorAgent(LoggingMixin, MultiprocessingStartMethodMixin):
             dag_ids,
             pickle_dags,
             async_mode,
-            refresh_dag_dir_interval
+            refresh_dag_dir_interval,
+            notification_service_uri
         )
 
         processor_manager.start()
@@ -463,6 +470,15 @@ class DagFileProcessorAgent(LoggingMixin, MultiprocessingStartMethodMixin):
         self._parent_signal_conn.close()
 
 
+class ProcessorManagerWatcher(EventWatcher):
+    def __init__(self, signal_queue: queue.Queue):
+        self.signal_queue = signal_queue
+
+    def process(self, events: List[BaseEvent]):
+        for e in events:
+            self.signal_queue.put(e)
+
+
 class DagFileProcessorManager(LoggingMixin):  # pylint: disable=too-many-instance-attributes
     """
     Given a list of DAG definition files, this kicks off several processors
@@ -502,7 +518,8 @@ class DagFileProcessorManager(LoggingMixin):  # pylint: disable=too-many-instanc
         dag_ids: Optional[List[str]],
         pickle_dags: bool,
         async_mode: bool = True,
-        refresh_dag_dir_interval = 0
+        refresh_dag_dir_interval=0,
+        notification_service_uri=None
     ):
         super().__init__()
         self._file_paths: List[str] = []
@@ -516,6 +533,12 @@ class DagFileProcessorManager(LoggingMixin):  # pylint: disable=too-many-instanc
         self._async_mode = async_mode
         self._parsing_start_time: Optional[int] = None
         self._refresh_dag_dir_interval = refresh_dag_dir_interval
+        self.notification_service_uri = notification_service_uri
+        self.ns_client: BaseNotification = None
+        self.signal_queue = queue.Queue()
+        if notification_service_uri is not None:
+            self.watcher = ProcessorManagerWatcher(self.signal_queue)
+            self.message_buffer = []
 
         self._parallelism = conf.getint('scheduler', 'parsing_processes')
         if 'sqlite' in conf.get('core', 'sql_alchemy_conn') and self._parallelism > 1:
@@ -599,8 +622,21 @@ class DagFileProcessorManager(LoggingMixin):  # pylint: disable=too-many-instanc
         self.log.info(
             "Checking for new files in %s every %s seconds", self._dag_directory, self.dag_dir_list_interval
         )
-
+        self._listen_parse_dag_event()
         return self._run_parsing_loop()
+
+    def _listen_parse_dag_event(self):
+        if self.notification_service_uri is not None:
+            self.ns_client = NotificationClient(server_uri=self.notification_service_uri,
+                                                default_namespace='scheduler')
+            self.ns_client.start_listen_event(key='*',
+                                              event_type='PARSE_DAG_REQUEST', 
+                                              namespace='*',
+                                              watcher=self.watcher)
+
+    def _stop_listen_events(self):
+        if self.ns_client is not None:
+            self.ns_client.stop_listen_event(key=None)
 
     def _run_parsing_loop(self):
 
@@ -716,12 +752,24 @@ class DagFileProcessorManager(LoggingMixin):  # pylint: disable=too-many-instanc
                     poll_time = 1 - loop_duration
                 else:
                     poll_time = 0.0
+            # send event to notify parse dag finished
+            if self.notification_service_uri is not None and len(self.message_buffer) > 0:
+                for e in self.message_buffer:
+                    self.ns_client.send_event(BaseEvent(key=e.key, value='', event_type='PARSE_DAG_RESPONSE'))
 
             refresh_dag_dir_interval = time.monotonic() - loop_start_time
             if refresh_dag_dir_interval < self._refresh_dag_dir_interval:
+                wait_time = self._refresh_dag_dir_interval - refresh_dag_dir_interval
                 self.log.info('Dag ProcessorManager sleep {}.'
-                              .format(self._refresh_dag_dir_interval-refresh_dag_dir_interval))
-                time.sleep(self._refresh_dag_dir_interval-refresh_dag_dir_interval)
+                              .format(wait_time))
+                try:
+                    message: BaseEvent = self.signal_queue.get(timeout=wait_time)
+                    self.message_buffer.append(message)
+                    if self.signal_queue.qsize() > 0:
+                        for i in range(self.signal_queue.qsize()):
+                            self.message_buffer.append(self.signal_queue.get())
+                except Exception as e:
+                    pass
 
     def _add_callback_to_queue(self, request: CallbackRequest):
         self._callback_to_execute[request.full_filepath].append(request)
@@ -1137,6 +1185,7 @@ class DagFileProcessorManager(LoggingMixin):  # pylint: disable=too-many-instanc
         Stops all running processors
         :return: None
         """
+        self._stop_listen_events()
         for processor in self._processors.values():
             Stats.decr('dag_processing.processes')
             processor.terminate()
@@ -1146,6 +1195,7 @@ class DagFileProcessorManager(LoggingMixin):  # pylint: disable=too-many-instanc
         Kill all child processes on exit since we don't want to leave
         them as orphaned.
         """
+        self._stop_listen_events()
         pids_to_kill = self.get_all_pids()
         if pids_to_kill:
             kill_child_processes_by_pids(pids_to_kill)
