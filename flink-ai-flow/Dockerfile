@@ -99,7 +99,7 @@ RUN chmod 755 /entrypoint.sh
 
 RUN echo "airflow_deploy_path: ${AIRFLOW_DEPLOY_PATH}" >> ${FLINK_AI_FLOW_SOURCES}/examples/quickstart_example/project.yaml
 
-EXPOSE 8080
+EXPOSE 8080 50051 50052
 
 USER root
 WORKDIR ${AIRFLOW_USER_HOME}

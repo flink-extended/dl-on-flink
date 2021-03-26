@@ -352,7 +352,8 @@ class LocalExecutor(BaseExecutor):
         self.impl.start()
 
     def _stop_related_process(self, ti: TaskInstance) -> bool:
-        self.kill_children(ti.pid, signal.SIGTERM)
+        if ti.pid:
+            self.kill_children(ti.pid, signal.SIGTERM)
 
     def execute_async(
         self,

@@ -19,6 +19,10 @@ import pickle
 import sqlalchemy
 import time
 import unittest
+import threading
+import logging
+
+from airflow.utils.state import State
 from typing import List
 
 import psutil
@@ -38,11 +42,12 @@ from airflow.models import TaskInstance, Message
 from airflow.jobs.base_job import BaseJob
 from airflow.utils.mailbox import Mailbox
 from airflow.utils.session import create_session, provide_session
-from airflow.events.scheduler_events import StopSchedulerEvent
+from airflow.events.scheduler_events import StopSchedulerEvent, StopDagEvent
 from tests.test_utils import db
 
 TEST_DAG_FOLDER = os.path.join(
     os.path.dirname(os.path.realpath(__file__)), os.pardir, 'dags')
+EVENT_BASED_SCHEDULER_DAG = 'event_based_scheduler_dag'
 
 
 class TestEventBasedScheduler(unittest.TestCase):
@@ -65,34 +70,52 @@ class TestEventBasedScheduler(unittest.TestCase):
     def tearDown(self):
         self.master.stop()
 
+    def _get_task_instance(self, dag_id, task_id, session):
+        return session.query(TaskInstance).filter(
+            TaskInstance.dag_id == dag_id,
+            TaskInstance.task_id == task_id
+        ).first()
+
+    def schedule_task_function(self):
+        stopped = False
+        while not stopped:
+            with create_session() as session:
+                ti_sleep_1000_secs = self._get_task_instance(EVENT_BASED_SCHEDULER_DAG, 'sleep_1000_secs', session)
+                ti_python_sleep = self._get_task_instance(EVENT_BASED_SCHEDULER_DAG, 'python_sleep', session)
+                if ti_sleep_1000_secs and ti_sleep_1000_secs.state == State.SCHEDULED and \
+                   ti_python_sleep and ti_python_sleep.state == State.SCHEDULED:
+                    self.client.send_event(BaseEvent(key='start', value='', event_type='', namespace='test_namespace'))
+
+                    while not stopped:
+                        ti_sleep_1000_secs.refresh_from_db()
+                        ti_python_sleep.refresh_from_db()
+                        if ti_sleep_1000_secs and ti_sleep_1000_secs.state == State.RUNNING and \
+                           ti_python_sleep and ti_python_sleep.state == State.RUNNING:
+                            time.sleep(10)
+                            break
+                        else:
+                            time.sleep(1)
+                    self.client.send_event(BaseEvent(key='stop', value='',
+                                                     event_type=UNDEFINED_EVENT_TYPE, namespace='test_namespace'))
+                    self.client.send_event(BaseEvent(key='restart', value='',
+                                                     event_type=UNDEFINED_EVENT_TYPE, namespace='test_namespace'))
+                    while not stopped:
+                        ti_sleep_1000_secs.refresh_from_db()
+                        ti_python_sleep.refresh_from_db()
+                        if ti_sleep_1000_secs and ti_sleep_1000_secs.state == State.KILLED and \
+                           ti_python_sleep and ti_python_sleep.state == State.RUNNING:
+                            stopped = True
+                        else:
+                            time.sleep(1)
+                else:
+                    time.sleep(1)
+        self.client.send_event(StopSchedulerEvent(job_id=0).to_event())
+
     def test_event_based_scheduler(self):
-        import time
-        pid = os.fork()
-        if pid == 0:
-            try:
-                ppid = os.fork()
-                if ppid == 0:
-                    # Fork twice to avoid the sleeping in main process block scheduler
-                    self.start_scheduler("../../dags/test_event_based_scheduler.py")
-            except Exception as e:
-                print("Failed to execute task %s.", str(e))
-        else:
-            try:
-                self.wait_for_task("event_based_scheduler_dag", "sleep_1000_secs", "running")
-                print("Waiting for task starting")
-                time.sleep(20)
-                self.send_event("stop")
-                self.wait_for_task("event_based_scheduler_dag", "sleep_1000_secs", "killed")
-                tes: List[TaskExecution] = self.get_task_execution("event_based_scheduler_dag", "python_sleep")
-                self.assertEqual(len(tes), 1)
-                self.send_event("any_key")
-                self.wait_for_task_execution("event_based_scheduler_dag", "python_sleep", 2)
-                self.wait_for_task("event_based_scheduler_dag", "python_sleep", "running")
-            finally:
-                parent = psutil.Process(pid)
-                for child in parent.children(recursive=True):  # or parent.children() for recursive=False
-                    child.kill()
-                parent.kill()
+        t = threading.Thread(target=self.schedule_task_function)
+        t.setDaemon(True)
+        t.start()
+        self.start_scheduler('../../dags/test_event_based_scheduler.py')
 
     def test_replay_message(self):
         key = "stop"
@@ -186,7 +209,6 @@ class TestEventBasedScheduler(unittest.TestCase):
         self.client.send_event(StopSchedulerEvent(job_id=0).to_event())
 
     def test_run_a_task(self):
-        import threading
         t = threading.Thread(target=self.run_a_task_function, args=())
         t.setDaemon(True)
         t.start()
@@ -218,7 +240,6 @@ class TestEventBasedScheduler(unittest.TestCase):
         client.send_event(StopSchedulerEvent(job_id=0).to_event())
 
     def test_run_event_task(self):
-        import threading
         t = threading.Thread(target=self.run_event_task_function, args=())
         t.setDaemon(True)
         t.start()
@@ -318,3 +339,35 @@ class TestEventBasedScheduler(unittest.TestCase):
         self.start_scheduler('../../dags/test_aiflow_dag.py')
         tes: List[TaskExecution] = self.get_task_execution("workflow_1", "1_job")
         self.assertEqual(len(tes), 1)
+
+    def stop_dag_function(self):
+        stopped = False
+        while not stopped:
+            tes = self.get_task_execution(EVENT_BASED_SCHEDULER_DAG, 'sleep_to_be_stopped')
+            if tes and len(tes) == 1:
+                self.client.send_event(StopDagEvent(EVENT_BASED_SCHEDULER_DAG).to_event())
+                while not stopped:
+                    tes2 = self.get_task_execution(EVENT_BASED_SCHEDULER_DAG, 'sleep_to_be_stopped')
+                    if tes2[0].state == State.KILLED:
+                        stopped = True
+                        time.sleep(5)
+                    else:
+                        time.sleep(1)
+            else:
+                time.sleep(1)
+        self.client.send_event(StopSchedulerEvent(job_id=0).to_event())
+
+    def test_stop_dag(self):
+        t = threading.Thread(target=self.stop_dag_function)
+        t.setDaemon(True)
+        t.start()
+        self.start_scheduler('../../dags/test_event_based_scheduler.py')
+        with create_session() as session:
+            from airflow.models import DagModel
+            dag_model: DagModel = DagModel.get_dagmodel(EVENT_BASED_SCHEDULER_DAG)
+            self.assertTrue(dag_model.is_paused)
+            self.assertEqual(dag_model.get_last_dagrun().state, "killed")
+            for ti in session.query(TaskInstance).filter(TaskInstance.dag_id == EVENT_BASED_SCHEDULER_DAG):
+                self.assertTrue(ti.state in [State.SUCCESS, State.KILLED])
+            for te in session.query(TaskExecution).filter(TaskExecution.dag_id == EVENT_BASED_SCHEDULER_DAG):
+                self.assertTrue(te.state in [State.SUCCESS, State.KILLED])

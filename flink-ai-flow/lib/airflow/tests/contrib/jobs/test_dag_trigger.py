@@ -71,6 +71,19 @@ class TestDagTrigger(unittest.TestCase):
         assert SerializedDagModel.get(dag_id="test_start_date_scheduling") is not None
         dag_trigger.end()
 
+    def test_file_processor_manager_kill(self):
+        mailbox = Mailbox()
+        dag_trigger = DagTrigger(".", -1, [], False, mailbox)
+        dag_trigger.start()
+        dag_file_processor_manager_process = dag_trigger._dag_file_processor_agent._process
+        dag_file_processor_manager_process.kill()
+        dag_file_processor_manager_process.join(1)
+        assert not dag_file_processor_manager_process.is_alive()
+        time.sleep(5)
+        dag_file_processor_manager_process = dag_trigger._dag_file_processor_agent._process
+        assert dag_file_processor_manager_process.is_alive()
+        dag_trigger.end()
+
     @staticmethod
     def _add_dag_needing_dagrun():
         with create_session() as session:
