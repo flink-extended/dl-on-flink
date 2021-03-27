@@ -120,6 +120,7 @@ class DAGGenerator(object):
         if dag_id is None:
             dag_id = workflow.project_desc.project_name
         code_text = DAGTemplate.AIRFLOW_IMPORT
+        workflow.workflow_name = dag_id
 
         op_set = set()
         for name, job in workflow.jobs.items():

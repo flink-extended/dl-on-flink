@@ -198,7 +198,7 @@ class EventBasedScheduler(LoggingMixin):
         ).first()
         return dagrun
 
-    def _create_dag_run(self, dag_id, session) -> DagRun:
+    def _create_dag_run(self, dag_id, session, run_type=DagRunType.SCHEDULED) -> DagRun:
         with prohibit_commit(session) as guard:
             if settings.USE_JOB_SCHEDULE:
                 """
@@ -211,9 +211,13 @@ class EventBasedScheduler(LoggingMixin):
                         .query(DagModel).filter(DagModel.dag_id == dag_id).first()
                     next_dagrun = dag_model.next_dagrun
                     dag_hash = self.dagbag.dags_hash.get(dag.dag_id)
+                    run_id = None
+                    if run_type == DagRunType.MANUAL:
+                        run_id = f"{run_type}__{timezone.utcnow().isoformat()}"
                     dag_run = dag.create_dagrun(
-                        run_type=DagRunType.SCHEDULED,
+                        run_type=run_type,
                         execution_date=next_dagrun,
+                        run_id=run_id,
                         start_date=timezone.utcnow(),
                         state=State.RUNNING,
                         external_trigger=False,
@@ -221,7 +225,8 @@ class EventBasedScheduler(LoggingMixin):
                         dag_hash=dag_hash,
                         creating_job_id=self.id,
                     )
-                    self._update_dag_next_dagrun(dag_id, session)
+                    if run_type == DagRunType.SCHEDULED:
+                        self._update_dag_next_dagrun(dag_id, session)
 
                     # commit the session - Release the write lock on DagModel table.
                     guard.commit()
@@ -447,25 +452,33 @@ class EventBasedScheduler(LoggingMixin):
 
     @provide_session
     def _process_request_event(self, event: RequestEvent, session: Session = None):
-        message = BaseUserDefineMessage()
-        message.from_json(event.body)
-        if message.message_type == UserDefineMessageType.RUN_DAG:
-            # todo make sure dag file is parsed.
-            dagrun = self._create_dag_run(message.dag_id, session=session)
-            tasks = self._find_schedulable_tasks(dagrun, session, False)
-            self._send_scheduling_task_events(tasks, SchedulingAction.START)
-            self.notification_client.send_event(ResponseEvent(event.request_id, dagrun.run_id).to_event())
-        elif message.message_type == UserDefineMessageType.EXECUTE_TASK:
-            dagrun = DagRun.get_run_by_id(session=session, run_id=message.dagrun_id)
-            ti: TI = dagrun.get_task_instance(task_id=message.task_id)
-            self.mailbox.send_message(TaskSchedulingEvent(
-                task_id=ti.task_id,
-                dag_id=ti.dag_id,
-                execution_date=ti.execution_date,
-                try_number=ti.try_number,
-                action=SchedulingAction(message.action)
-            ).to_event())
-            self.notification_client.send_event(ResponseEvent(event.request_id, dagrun.run_id).to_event())
+        try:
+            message = BaseUserDefineMessage()
+            message.from_json(event.body)
+            if message.message_type == UserDefineMessageType.RUN_DAG:
+                # todo make sure dag file is parsed.
+                dagrun = self._create_dag_run(message.dag_id, session=session, run_type=DagRunType.MANUAL)
+                if not dagrun:
+                    self.log.error("Failed to create dag_run.")
+                    # TODO Need to add ret_code and errro_msg in ExecutionContext in case of exception
+                    self.notification_client.send_event(ResponseEvent(event.request_id, None).to_event())
+                    return
+                tasks = self._find_schedulable_tasks(dagrun, session, False)
+                self._send_scheduling_task_events(tasks, SchedulingAction.START)
+                self.notification_client.send_event(ResponseEvent(event.request_id, dagrun.run_id).to_event())
+            elif message.message_type == UserDefineMessageType.EXECUTE_TASK:
+                dagrun = DagRun.get_run_by_id(session=session, dag_id=message.dag_id, run_id=message.dagrun_id)
+                ti: TI = dagrun.get_task_instance(task_id=message.task_id)
+                self.mailbox.send_message(TaskSchedulingEvent(
+                    task_id=ti.task_id,
+                    dag_id=ti.dag_id,
+                    execution_date=ti.execution_date,
+                    try_number=ti.try_number,
+                    action=SchedulingAction(message.action)
+                ).to_event())
+                self.notification_client.send_event(ResponseEvent(event.request_id, dagrun.run_id).to_event())
+        except Exception:
+            self.log.exception("Error occurred when processing request event.")
 
     def _stop_dag(self, dag_id, session: Session):
         """
