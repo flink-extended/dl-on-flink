@@ -29,6 +29,7 @@ class Workflow(BaseNode):
     def __init__(self) -> None:
         super().__init__()
         self.workflow_id: int = None
+        self.workflow_name: Text = None
         self.execution_name: Text = None
         self.jobs: Dict[Text, BaseJob] = {}
         self.edges: Dict[Text, List[JobControlEdge]] = {}
