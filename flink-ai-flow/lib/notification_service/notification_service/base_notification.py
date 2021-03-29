@@ -22,6 +22,7 @@ import time
 from typing import List, Union, Tuple
 
 UNDEFINED_EVENT_TYPE = "UNDEFINED"
+ANY_CONDITION = "*"
 
 
 class BaseEvent(object):

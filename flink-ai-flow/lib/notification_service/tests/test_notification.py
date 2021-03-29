@@ -162,6 +162,23 @@ class NotificationTest(object):
         latest_version = self.client.get_latest_version(key="key")
         self.assertEqual(event.version, latest_version)
 
+    def test_list_any_condition(self):
+        self.client._default_namespace = 'a'
+        self.client.send_event(BaseEvent(key="key_1", value="value1"))
+        self.client.send_event(BaseEvent(key="key_2", value="value2"))
+        result = self.client.list_events(key='*', event_type='*')
+        self.assertEqual(2, len(result))
+        self.client._default_namespace = 'b'
+        self.client.send_event(BaseEvent(key="key_1", value="value1", event_type='event_type'))
+        result = self.client.list_events(key='*', event_type='*')
+        self.assertEqual(1, len(result))
+        result = self.client.list_events(key='*', event_type='*', namespace='*')
+        self.assertEqual(3, len(result))
+        result = self.client.list_events(key='key_1', event_type='*', namespace='*')
+        self.assertEqual(2, len(result))
+        result = self.client.list_events(key='key_1', event_type='event_type', namespace='*')
+        self.assertEqual(1, len(result))
+        
 
 class DbStorageTest(unittest.TestCase, NotificationTest):
 

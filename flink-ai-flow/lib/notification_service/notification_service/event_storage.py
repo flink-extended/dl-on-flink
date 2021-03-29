@@ -21,7 +21,7 @@ from abc import ABC, abstractmethod
 from collections import Iterable
 from typing import Union, Tuple
 
-from notification_service.base_notification import BaseEvent
+from notification_service.base_notification import BaseEvent, ANY_CONDITION
 from notification_service.util import db
 from notification_service.util.db import EventModel
 
@@ -87,15 +87,15 @@ class MemoryEventStorage(BaseEventStorage):
         elif isinstance(key, Iterable):
             key = tuple(key)
         for event in self.store:
-            if key is not None and event.key not in key:
+            if key is not None and event.key not in key and ANY_CONDITION not in key:
                 continue
             if version is not None and event.version <= version:
                 continue
-            if event_type is not None and event.event_type != event_type:
+            if event_type is not None and event.event_type != event_type and event_type != ANY_CONDITION:
                 continue
             if start_time is not None and event.create_time < start_time:
                 continue
-            if event.namespace != namespace:
+            if namespace != ANY_CONDITION and event.namespace != namespace:
                 continue
             res.append(event)
         return res

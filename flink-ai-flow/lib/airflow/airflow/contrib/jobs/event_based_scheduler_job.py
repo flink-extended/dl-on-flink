@@ -51,7 +51,7 @@ from airflow.utils.types import DagRunType
 from airflow.utils.mailbox import Mailbox
 from airflow.events.scheduler_events import (
     StopSchedulerEvent, TaskSchedulingEvent, DagExecutableEvent, TaskStatusChangedEvent, EventHandleEvent, RequestEvent,
-    ResponseEvent, StopDagEvent, SchedulerInnerEventUtil,
+    ResponseEvent, StopDagEvent, ParseDagRequestEvent, ParseDagResponseEvent, SchedulerInnerEventUtil,
     BaseUserDefineMessage, UserDefineMessageType)
 
 from notification_service.base_notification import BaseEvent
@@ -153,6 +153,8 @@ class EventBasedScheduler(LoggingMixin):
                     self._send_scheduling_task_event(ti, event.action)
                 elif isinstance(event, StopDagEvent):
                     self._stop_dag(event.dag_id, session)
+                elif isinstance(event, ParseDagRequestEvent) or isinstance(event, ParseDagResponseEvent):
+                    pass
                 elif isinstance(event, StopSchedulerEvent):
                     self.log.info("{} {}".format(self.id, event.job_id))
                     if self.id == event.job_id or 0 == event.job_id:
@@ -505,7 +507,8 @@ class EventBasedSchedulerJob(BaseJob):
             dag_ids=None,
             pickle_dags=False,
             mailbox=self.mailbox,
-            refresh_dag_dir_interval=refresh_dag_dir_interval
+            refresh_dag_dir_interval=refresh_dag_dir_interval,
+            notification_service_uri=server_uri
         )
         self.task_event_manager = DagRunEventManager(self.mailbox)
         self.executor.set_mailbox(self.mailbox)

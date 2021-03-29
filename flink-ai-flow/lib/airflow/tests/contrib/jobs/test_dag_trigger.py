@@ -18,9 +18,13 @@ import time
 import unittest
 
 import pendulum.datetime
+from notification_service.event_storage import MemoryEventStorage
+from notification_service.master import NotificationMaster
+from notification_service.service import NotificationService
 from airflow.models.serialized_dag import SerializedDagModel
 
 from airflow.contrib.jobs.dag_trigger import DagTrigger
+from airflow.contrib.jobs.scheduler_client import EventSchedulerClient
 from airflow.models import DagModel
 from airflow.utils.mailbox import Mailbox
 from airflow.utils.session import create_session
@@ -70,6 +74,24 @@ class TestDagTrigger(unittest.TestCase):
         assert SerializedDagModel.get(dag_id="test_task_start_date_scheduling") is not None
         assert SerializedDagModel.get(dag_id="test_start_date_scheduling") is not None
         dag_trigger.end()
+
+    def test_user_trigger_parse_dag(self):
+        port = 50101
+        service_uri = 'localhost:{}'.format(port)
+        storage = MemoryEventStorage()
+        master = NotificationMaster(NotificationService(storage), port)
+        master.run()
+        mailbox = Mailbox()
+        dag_trigger = DagTrigger("../../dags/test_scheduler_dags.py", -1, [], False, mailbox, 5, service_uri)
+        dag_trigger.start()
+        message = mailbox.get_message()
+        message = SchedulerInnerEventUtil.to_inner_event(message)
+        # only one dag is executable
+        assert "test_task_start_date_scheduling" == message.dag_id
+        sc = EventSchedulerClient(server_uri=service_uri, namespace='a')
+        sc.trigger_parse_dag()
+        dag_trigger.end()
+        master.stop()
 
     def test_file_processor_manager_kill(self):
         mailbox = Mailbox()

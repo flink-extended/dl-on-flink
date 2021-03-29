@@ -19,7 +19,7 @@
 from typing import Tuple
 
 from mongoengine import (Document, IntField, StringField, SequenceField)
-from notification_service.base_notification import BaseEvent
+from notification_service.base_notification import BaseEvent, ANY_CONDITION
 
 
 class MongoEvent(Document):
@@ -75,16 +75,19 @@ class MongoEvent(Document):
                         namespace: str = None):
         conditions = dict()
         if len(key) == 1:
-            conditions["key"] = key[0]
+            if ANY_CONDITION != key[0]:
+                conditions["key"] = key[0]
         elif len(key) > 1:
             conditions["key__in"] = list(key)
         if version is not None and version > 0:
             conditions["version__gt"] = version
         if event_type is not None:
-            conditions["event_type"] = event_type
+            if event_type != ANY_CONDITION:
+                conditions["event_type"] = event_type
         if start_time is not None and start_time > 0:
             conditions["start_time_gte"] = start_time
-        conditions["namespace"] = namespace
+        if ANY_CONDITION != namespace:
+            conditions["namespace"] = namespace
         mongo_events = cls.objects(**conditions).order_by("version")
         return cls.convert_to_base_events(mongo_events)
 

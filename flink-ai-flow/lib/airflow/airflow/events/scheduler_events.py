@@ -32,6 +32,8 @@ class SchedulerInnerEventType(Enum):
     REQUEST = 'REQUEST'
     RESPONSE = 'RESPONSE'
     STOP_DAG = 'STOP_DAG'
+    PARSE_DAG_REQUEST = 'PARSE_DAG_REQUEST'
+    PARSE_DAG_RESPONSE = 'PARSE_DAG_RESPONSE'
 
 
 class SchedulerInnerEvent(object):
@@ -48,6 +50,36 @@ class SchedulerInnerEvent(object):
         return self.to_base_event(self)
 
 
+class ParseDagRequestEvent(SchedulerInnerEvent):
+    def __init__(self, request_id):
+        self.request_id = request_id
+
+    @classmethod
+    def to_base_event(cls, event: 'ParseDagRequestEvent') -> BaseEvent:
+        return BaseEvent(key=str(event.request_id), 
+                         value='', 
+                         event_type=SchedulerInnerEventType.PARSE_DAG_REQUEST.value)
+
+    @classmethod
+    def from_base_event(cls, event: BaseEvent) -> 'SchedulerInnerEvent':
+        return ParseDagRequestEvent(event.key)
+
+
+class ParseDagResponseEvent(SchedulerInnerEvent):
+    def __init__(self, request_id):
+        self.request_id = request_id
+
+    @classmethod
+    def to_base_event(cls, event: 'ParseDagResponseEvent') -> BaseEvent:
+        return BaseEvent(key=str(event.request_id), 
+                         value='', 
+                         event_type=SchedulerInnerEventType.PARSE_DAG_RESPONSE.value)
+
+    @classmethod
+    def from_base_event(cls, event: BaseEvent) -> 'SchedulerInnerEvent':
+        return ParseDagResponseEvent(event.key)
+    
+    
 class UserDefineMessageType(Enum):
     RUN_DAG = 'RUN_DAG'
     STOP_DAG_RUN = 'STOP_DAG_RUN'
@@ -299,5 +331,9 @@ class SchedulerInnerEventUtil(object):
             return ResponseEvent.from_base_event(event)
         elif SchedulerInnerEventType.STOP_DAG == event_type:
             return StopDagEvent.from_base_event(event)
+        elif SchedulerInnerEventType.PARSE_DAG_REQUEST == event_type:
+            return ParseDagRequestEvent.from_base_event(event)
+        elif SchedulerInnerEventType.PARSE_DAG_RESPONSE == event_type:
+            return ParseDagResponseEvent.from_base_event(event)
         else:
             return None
