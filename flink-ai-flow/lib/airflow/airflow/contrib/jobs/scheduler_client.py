@@ -19,7 +19,7 @@ import queue
 import time
 from airflow.contrib.jobs.event_based_scheduler_job import SCHEDULER_NAMESPACE
 from airflow.events.scheduler_events import RequestEvent, SchedulerInnerEventType, \
-    ResponseEvent, RunDagMessage, ExecuteTaskMessage
+    ResponseEvent, RunDagMessage, ExecuteTaskMessage, StopDagRunMessage
 from airflow.executors.scheduling_action import SchedulingAction
 from notification_service.base_notification import BaseEvent, EventWatcher
 from notification_service.client import NotificationClient, ThreadEventWatcherHandle
@@ -52,7 +52,7 @@ class EventSchedulerClient(object):
     def generate_id(id):
         return '{}_{}'.format(id, time.time_ns())
 
-    def trigger_parse_dag(self)->bool:
+    def trigger_parse_dag(self) -> bool:
         id = self.generate_id('')
         watcher: ResponseWatcher = ResponseWatcher()
         handler: ThreadEventWatcherHandle \
@@ -78,7 +78,23 @@ class EventSchedulerClient(object):
         handler.stop()
         return ExecutionContext(dagrun_id=result.body)
 
-    def schedule_task(self, task_id: str, action: SchedulingAction, context: ExecutionContext) -> ExecutionContext:
+    def stop_dag_run(self, dag_id, context: ExecutionContext) -> ExecutionContext:
+        id = self.generate_id(str(dag_id) + str(context.dagrun_id))
+        watcher: ResponseWatcher = ResponseWatcher()
+        handler: ThreadEventWatcherHandle \
+            = self.ns_client.start_listen_event(key=id,
+                                                event_type=SchedulerInnerEventType.RESPONSE.value,
+                                                namespace=SCHEDULER_NAMESPACE, watcher=watcher)
+        self.ns_client.send_event(RequestEvent(request_id=id,
+                                               body=StopDagRunMessage(dag_id=dag_id,
+                                                                      dagrun_id=context.dagrun_id)
+                                               .to_json()).to_event())
+        result: ResponseEvent = ResponseEvent.from_base_event(watcher.get_result())
+        handler.stop()
+        return ExecutionContext(dagrun_id=result.body)
+
+    def schedule_task(self, dag_id: str, task_id: str,
+                      action: SchedulingAction, context: ExecutionContext) -> ExecutionContext:
         id = self.generate_id(context.dagrun_id)
         watcher: ResponseWatcher = ResponseWatcher()
         handler: ThreadEventWatcherHandle \
@@ -86,7 +102,8 @@ class EventSchedulerClient(object):
                                                 event_type=SchedulerInnerEventType.RESPONSE.value,
                                                 namespace=SCHEDULER_NAMESPACE, watcher=watcher)
         self.ns_client.send_event(RequestEvent(request_id=id,
-                                               body=ExecuteTaskMessage(task_id=task_id,
+                                               body=ExecuteTaskMessage(dag_id=dag_id,
+                                                                       task_id=task_id,
                                                                        dagrun_id=context.dagrun_id,
                                                                        action=action.value)
                                                .to_json()).to_event())
