@@ -60,12 +60,13 @@ class TestEventBasedScheduler(unittest.TestCase):
         db.clear_db_task_execution()
         db.clear_db_message()
         self.scheduler = None
-        self.port = 50101
+        self.port = 50102
         self.storage = MemoryEventStorage()
         self.master = NotificationMaster(NotificationService(self.storage), self.port)
         self.master.run()
         self.client = NotificationClient(server_uri="localhost:{}".format(self.port),
                                          default_namespace="test_namespace")
+        time.sleep(1)
 
     def tearDown(self):
         self.master.stop()
@@ -249,7 +250,6 @@ class TestEventBasedScheduler(unittest.TestCase):
 
     def run_trigger_dag_function(self):
         # waiting parsed dag file done,
-        time.sleep(5)
         ns_client = NotificationClient(server_uri="localhost:{}".format(self.port), default_namespace="")
         client = EventSchedulerClient(ns_client=ns_client)
         while True:
@@ -259,16 +259,21 @@ class TestEventBasedScheduler(unittest.TestCase):
                 if len(tes) > 0:
                     break
                 else:
+                    client.trigger_parse_dag()
                     result = client.schedule_dag('trigger_dag')
                     print('result {}'.format(result.dagrun_id))
                 time.sleep(5)
         ns_client.send_event(StopSchedulerEvent(job_id=0).to_event())
 
     def test_run_trigger_dag(self):
-        import threading
-        t = threading.Thread(target=self.run_trigger_dag_function, args=())
-        t.setDaemon(True)
-        t.start()
+        # using Thread notification maybe hung
+        # import threading
+        # t = threading.Thread(target=self.run_trigger_dag_function, args=())
+        # t.setDaemon(True)
+        # t.start()
+        import multiprocessing
+        p = multiprocessing.Process(target=self.run_trigger_dag_function, args=())
+        p.start()
         self.start_scheduler('../../dags/test_run_trigger_dag.py')
         tes: List[TaskExecution] = self.get_task_execution("trigger_dag", "task_1")
         self.assertEqual(len(tes), 1)
@@ -276,7 +281,7 @@ class TestEventBasedScheduler(unittest.TestCase):
     def run_trigger_task_function(self):
         # waiting parsed dag file done,
         time.sleep(5)
-        ns_client = NotificationClient(server_uri="localhost:{}".format(self.port), default_namespace="")
+        ns_client = NotificationClient(server_uri="localhost:{}".format(self.port), default_namespace="a")
         client = EventSchedulerClient(ns_client=ns_client)
         execution_context = client.schedule_dag('trigger_task')
         while True:
