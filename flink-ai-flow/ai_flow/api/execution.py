@@ -49,7 +49,7 @@ class AirflowOperation(object):
 
     def stop_workflow(self, workflow_name) -> bool:
         """
-        Stop the workflow. No more dag_run would be scheduled and all running jobs would be stopped.
+        Stop the workflow. No more workflow execution(Airflow dag_run) would be scheduled and all running jobs would be stopped.
 
         :param workflow_name: workflow name
         :return: True if succeed
@@ -81,7 +81,7 @@ class AirflowOperation(object):
         """
         pass
 
-    def trigger_workflow_run(self, workflow_name) -> ExecutionContext:
+    def trigger_workflow_execution(self, workflow_name) -> ExecutionContext:
         """
         Trigger a new instance of workflow immediately.
 
@@ -89,6 +89,17 @@ class AirflowOperation(object):
         :return: True if a new instance is triggered
         """
         return self.airflow_client.schedule_dag(workflow_name)
+
+    def stop_workflow_execution(self, workflow_name, context) -> bool:
+        """
+        Stop the specific workflow execution(Airflow dag_run)
+        """
+        result = self.airflow_client.stop_dag_run(dag_id=workflow_name,
+                                                  context=context)
+        if result and result.dagrun_id == context.dagrun_id:
+            return True
+        else:
+            return False
 
     def start_task_instance(self, workflow_name, job_name, context: ExecutionContext) -> bool:
         """
