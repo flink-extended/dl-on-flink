@@ -705,11 +705,12 @@ class DagRun(Base, LoggingMixin):
         return qry.first()
 
     @staticmethod
-    def get_run_by_id(session: Session, run_id: str):
+    def get_run_by_id(session: Session, dag_id: str, run_id: str):
         """
         Get a single DAG Run
         :param session: Sqlalchemy ORM Session
         :type session: Session
+        :param dag_id: dag id
         :param run_id: dag run_id
 
         :return: DagRun corresponding to the given dag_id and execution date
@@ -717,6 +718,7 @@ class DagRun(Base, LoggingMixin):
         :rtype: airflow.models.DagRun
         """
         qry = session.query(DagRun).filter(
+            DagRun.dag_id == dag_id,
             DagRun.run_id == run_id,
         )
         return qry.first()

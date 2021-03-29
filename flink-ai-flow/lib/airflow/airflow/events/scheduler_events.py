@@ -89,7 +89,7 @@ class UserDefineMessageType(Enum):
 class BaseUserDefineMessage(object):
     def __init__(self, message_type: UserDefineMessageType = None):
         self.message_type = message_type
-        
+
     def to_json(self) -> str:
         o = {}
         for k, v in self.__dict__.items():
@@ -112,17 +112,19 @@ class RunDagMessage(BaseUserDefineMessage):
     def __init__(self, dag_id):
         super().__init__(UserDefineMessageType.RUN_DAG)
         self.dag_id = dag_id
-        
-        
+
+
 class StopDagRunMessage(BaseUserDefineMessage):
-    def __init__(self, dagrun_id):
-        super().__init__(UserDefineMessageType.RUN_DAG)
+    def __init__(self, dag_id, dagrun_id):
+        super().__init__(UserDefineMessageType.STOP_DAG_RUN)
+        self.dag_id = dag_id
         self.dagrun_id = dagrun_id
-        
-        
+
+
 class ExecuteTaskMessage(BaseUserDefineMessage):
-    def __init__(self, dagrun_id, task_id, action):
+    def __init__(self, dag_id, dagrun_id, task_id, action):
         super().__init__(UserDefineMessageType.EXECUTE_TASK)
+        self.dag_id = dag_id
         self.dagrun_id = dagrun_id
         self.task_id = task_id
         self.action = action
@@ -290,9 +292,9 @@ class EventHandleEvent(SchedulerInnerEvent):
     @classmethod
     def from_base_event(cls, event: BaseEvent) -> 'EventHandleEvent':
         o = json.loads(event.value)
-        return EventHandleEvent(task_id=o['task_id'], 
-                                dag_run_id=o['dag_run_id'], 
-                                dag_id=o['dag_id'], 
+        return EventHandleEvent(task_id=o['task_id'],
+                                dag_run_id=o['dag_run_id'],
+                                dag_id=o['dag_id'],
                                 action=SchedulingAction(o['action']))
 
 
@@ -304,14 +306,14 @@ class SchedulerInnerEventUtil(object):
             return True
         except ValueError as e:
             return False
-        
+
     @staticmethod
     def event_type(event: BaseEvent) -> SchedulerInnerEventType:
         try:
             return SchedulerInnerEventType(event.event_type)
         except ValueError as e:
             return None
-        
+
     @staticmethod
     def to_inner_event(event: BaseEvent)->SchedulerInnerEvent:
         event_type = SchedulerInnerEventUtil.event_type(event)
