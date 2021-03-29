@@ -115,8 +115,9 @@ class RunDagMessage(BaseUserDefineMessage):
 
 
 class StopDagRunMessage(BaseUserDefineMessage):
-    def __init__(self, dagrun_id):
-        super().__init__(UserDefineMessageType.RUN_DAG)
+    def __init__(self, dag_id, dagrun_id):
+        super().__init__(UserDefineMessageType.STOP_DAG_RUN)
+        self.dag_id = dag_id
         self.dagrun_id = dagrun_id
 
 

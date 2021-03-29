@@ -136,6 +136,8 @@ class EventBasedScheduler(LoggingMixin):
                         self.task_event_manager.handle_event(dag_run_id, event)
                 elif isinstance(event, RequestEvent):
                     self._process_request_event(event)
+                elif isinstance(event, ResponseEvent):
+                    continue
                 elif isinstance(event, TaskSchedulingEvent):
                     self._schedule_task(event)
                 elif isinstance(event, TaskStatusChangedEvent):
@@ -466,6 +468,10 @@ class EventBasedScheduler(LoggingMixin):
                 tasks = self._find_schedulable_tasks(dagrun, session, False)
                 self._send_scheduling_task_events(tasks, SchedulingAction.START)
                 self.notification_client.send_event(ResponseEvent(event.request_id, dagrun.run_id).to_event())
+            elif message.message_type == UserDefineMessageType.STOP_DAG_RUN:
+                dag_run = DagRun.get_run_by_id(session=session, dag_id=message.dag_id, run_id=message.dagrun_id)
+                self._stop_dag_run(dag_run)
+                self.notification_client.send_event(ResponseEvent(event.request_id, dag_run.run_id).to_event())
             elif message.message_type == UserDefineMessageType.EXECUTE_TASK:
                 dagrun = DagRun.get_run_by_id(session=session, dag_id=message.dag_id, run_id=message.dagrun_id)
                 ti: TI = dagrun.get_task_instance(task_id=message.task_id)
@@ -488,10 +494,13 @@ class EventBasedScheduler(LoggingMixin):
             .set_is_paused(is_paused=True, including_subdags=True, session=session)
         active_runs = DagRun.find(dag_id=dag_id, state=State.RUNNING)
         for dag_run in active_runs:
-            dag_run.stop_dag_run()
-            for ti in dag_run.get_task_instances():
-                if ti.state in State.unfinished:
-                    self.executor.schedule_task(ti.key, SchedulingAction.STOP)
+            self._stop_dag_run(dag_run)
+
+    def _stop_dag_run(self, dag_run: DagRun):
+        dag_run.stop_dag_run()
+        for ti in dag_run.get_task_instances():
+            if ti.state in State.unfinished:
+                self.executor.schedule_task(ti.key, SchedulingAction.STOP)
 
 
 class SchedulerEventWatcher(EventWatcher):
