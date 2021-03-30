@@ -20,6 +20,14 @@ import sys
 import time
 import unittest
 
+from airflow.contrib.jobs.event_based_scheduler_job import EventBasedSchedulerJob
+from airflow.contrib.jobs.scheduler_client import EventSchedulerClient
+from airflow.events.scheduler_events import StopSchedulerEvent
+from airflow.executors.local_executor import LocalExecutor
+from notification_service.client import NotificationClient
+
+from ai_flow.common.scheduler_type import SchedulerType
+
 import ai_flow as af
 from ai_flow import AIFlowMaster
 from ai_flow.executor.executor import CmdExecutor
@@ -196,6 +204,38 @@ class TestProject(unittest.TestCase):
         time.sleep(3)
         res = af.stop_execution_by_id(exec_id)
         self.assertEqual(0, res[0])
+
+    def run_airflow_dag_function(self):
+        # waiting parsed dag file done
+        time.sleep(10)
+        ns_client = NotificationClient(server_uri='loaclhost:50052')
+        client = EventSchedulerClient(ns_client=ns_client)
+        with af.global_config_file(test_util.get_workflow_config_file()):
+
+            with af.config('task_1'):
+                cmd_executor = af.user_define_operation(output_num=0,
+                                                        executor=CmdExecutor(
+                                                            cmd_line=['echo "hello world!"']))
+        path, context = af.run(project_path=test_util.get_project_path(), dag_id='test_dag_111', scheduler_type=SchedulerType.AIRFLOW)
+        print(path, context.dagrun_id)
+        time.sleep(5)
+        ns_client.send_event(StopSchedulerEvent(job_id=0).to_event())
+
+    # def test_airflow_worflow(self):
+    #     server_uri = af.project_config().get_master_uri()
+    #     print(server_uri)
+    #     import multiprocessing
+    #     p = multiprocessing.Process(target=self.run_airflow_dag_function, args=())
+    #     p.start()
+    #     scheduler = EventBasedSchedulerJob(
+    #         dag_directory='/tmp/airflow',
+    #         server_uri=server_uri,
+    #         executor=LocalExecutor(3),
+    #         max_runs=-1,
+    #         refresh_dag_dir_interval=30
+    #     )
+    #     print("scheduler starting")
+    #     scheduler.run()
 
 
 if __name__ == '__main__':

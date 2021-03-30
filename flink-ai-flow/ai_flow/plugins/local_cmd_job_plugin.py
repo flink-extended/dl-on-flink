@@ -148,6 +148,9 @@ class LocalCMDJobPlugin(LocalJobPlugin):
 
     def generate_code(self, op_index, job: AbstractJob):
         LOCAL_CMD_OPERATOR = """op_{0} = BashOperator(task_id='{1}', dag=dag, bash_command='{2}')\n"""
-        cmd = " ".join(job.exec_cmd)
-        code_text = LOCAL_CMD_OPERATOR.format(op_index, job.job_name, cmd)
+        if isinstance(job.exec_cmd, list):
+            cmd = " ".join(job.exec_cmd)
+        else:
+            cmd = job.exec_cmd
+        code_text = LOCAL_CMD_OPERATOR.format(op_index, job_name_to_task_id(job.job_name), cmd)
         return code_text

@@ -60,7 +60,7 @@ class ProjectConfig(AIFlowConfiguration):
         if "notification_uri" in self:
             return self["notification_uri"]
         else:
-            return None
+            return self.get_master_uri()
 
     def set_notification_service_uri(self, uri):
         self["notification_uri"] = uri

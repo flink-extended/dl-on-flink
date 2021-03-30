@@ -1,0 +1,6 @@
+workflow_name: test111_dag
+task_1:
+  platform: local
+  engine: cmd_line
+  job_name: task_1
+
