@@ -280,7 +280,7 @@ op_{0} = BashOperator(task_id='{1}', dag=dag, bash_command='{2}', env=env_{0})\n
                job.exec_func_file, job.exec_args_file, entry_module_path]
         cmd_str = ' '.join(cmd)
         add_path = ':'.join(copy_path)
-        code_text = LOCAL_PYTHON_OPERATOR.format(op_index, job.job_name, cmd_str, add_path)
+        code_text = LOCAL_PYTHON_OPERATOR.format(op_index, job_name_to_task_id(job.job_name), cmd_str, add_path)
         return code_text
 
 

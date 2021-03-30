@@ -41,11 +41,16 @@ def get_workflow_execution_id():
 
 
 class AirflowOperation(object):
-    def __init__(self, notification_server_uri):
+    def __init__(self, notification_server_uri=None, ns_client: NotificationClient = None):
         self.server_uri = notification_server_uri
         self.namespace = SCHEDULER_NAMESPACE
-        self.airflow_client = EventSchedulerClient(server_uri=notification_server_uri,
-                                                   namespace=SCHEDULER_NAMESPACE)
+        if ns_client is not None:
+            self.airflow_client = EventSchedulerClient(ns_client=ns_client, namespace=SCHEDULER_NAMESPACE)
+        elif notification_server_uri is not None:
+            self.airflow_client = EventSchedulerClient(server_uri=notification_server_uri,
+                                                       namespace=SCHEDULER_NAMESPACE)
+        else:
+            raise Exception('notification_server_uri and ns_client can not both empty!')
 
     def stop_workflow(self, workflow_name) -> bool:
         """
@@ -88,6 +93,7 @@ class AirflowOperation(object):
         :param workflow_name: workflow name
         :return: True if a new instance is triggered
         """
+        self.airflow_client.trigger_parse_dag()
         return self.airflow_client.schedule_dag(workflow_name)
 
     def stop_workflow_execution(self, workflow_name, context) -> bool:

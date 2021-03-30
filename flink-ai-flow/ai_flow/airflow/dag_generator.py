@@ -38,7 +38,12 @@ def match_stop_before_config(met_config: MetConfig) -> bool:
 def job_name_to_task_id(job_name):
     first_index = job_name.find('_')
     last_index = job_name.rfind('_')
-    return job_name[first_index+1: last_index]
+    if -1 == first_index:
+        return job_name
+    elif first_index == last_index:
+        return job_name
+    else:
+        return job_name[first_index+1: last_index]
 
 
 class AirflowCodeGenerator(ABC):
@@ -78,11 +83,11 @@ class DAGTemplate(object):
     AIRFLOW_IMPORT = """from airflow.models.dag import DAG
 from airflow.utils import timezone
 from airflow.contrib.jobs.event_handlers import AIFlowHandler
-from airflow.operators.dummy_operator import DummyOperator
-from airflow.operators.bash_operator import BashOperator
-from ai_flow.deployer.utils.kubernetes_util import load_kubernetes_config
-import ai_flow as af
-load_kubernetes_config()\n"""
+from airflow.operators.dummy import DummyOperator
+from airflow.operators.bash import BashOperator\n"""
+# from ai_flow.deployer.utils.kubernetes_util import load_kubernetes_config
+# import ai_flow as af
+# load_kubernetes_config()\n"""
 
     SET_CONFIG = """af.set_project_config_file('{0}')\naf.set_master_config()\n"""
 
@@ -129,7 +134,7 @@ class DAGGenerator(object):
                 code_text += generator.generate_operator_code()
                 op_set.add(generator)
 
-        code_text += DAGTemplate.SET_CONFIG.format(workflow.project_desc.project_path + '/project.yaml')
+        # code_text += DAGTemplate.SET_CONFIG.format(workflow.project_desc.project_path + '/project.yaml')
         code_text += DAGTemplate.DAG_DEFINE.format(dag_id, workflow.project_desc.project_config.get_schedule_interval())
 
         task_map = {}

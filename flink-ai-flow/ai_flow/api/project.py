@@ -34,6 +34,8 @@ from ai_flow.project.project_util import file_path_to_absolute_module
 from ai_flow.rest_endpoint.service.client.aiflow_client import AIFlowClient
 from ai_flow.translator.base_translator import get_default_translator
 from ai_flow.workflow.workflow import Workflow
+from ai_flow.api.ai_flow_context import default_af_job_context
+from ai_flow.api.execution import AirflowOperation
 
 
 class Project(object):
@@ -143,7 +145,7 @@ def run(project_path: Text = None, dag_id: Text = None,
     """
     project_desc = generate_project_desc(project_path)
     if scheduler_type == SchedulerType.AIRFLOW:
-        return deploy_to_airflow(project_desc=project_desc, dag_id=dag_id)
+        return submit_to_airflow(project_desc=project_desc, dag_id=dag_id)
     else:
         return submit_ai_flow(ai_graph=default_graph(), project_desc=project_desc)
 
@@ -189,6 +191,8 @@ def deploy_to_airflow(project_desc: ProjectDesc = ProjectDesc(), dag_id: Text = 
     :return: Workflow id.
     """
     if dag_id is None:
+        dag_id = default_af_job_context().global_workflow_config.name
+    if dag_id is None:
         dag_id = project_desc.project_name
     deploy_path = project_desc.project_config.get_airflow_deploy_path()
     if deploy_path is None:
@@ -196,12 +200,19 @@ def deploy_to_airflow(project_desc: ProjectDesc = ProjectDesc(), dag_id: Text = 
     airflow_file_path = deploy_path + '/' + dag_id + '.py'
     if os.path.exists(airflow_file_path):
         os.remove(airflow_file_path)
-
     generated_code = _generate_airflow_file_text(ai_graph=default_graph(), project_desc=project_desc, dag_id=dag_id)
     with NamedTemporaryFile(mode='w+t', prefix=dag_id, suffix='.py', dir='/tmp', delete=False) as f:
         f.write(generated_code)
     os.rename(f.name, airflow_file_path)
     return airflow_file_path, generated_code
+
+
+def submit_to_airflow(project_desc: ProjectDesc = ProjectDesc(), dag_id: Text = None):
+    airflow_file_path, generated_code = deploy_to_airflow(project_desc, dag_id)
+    airflow_operation = AirflowOperation(ns_client=_default_project.get_client())
+    airflow_operation.trigger_workflow_execution(dag_id)
+    return airflow_file_path, airflow_operation.trigger_workflow_execution(dag_id)
+    # return airflow_file_path
 
 
 def generate_project_desc(project_path: Text = None) -> ProjectDesc:

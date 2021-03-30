@@ -23,12 +23,14 @@ from ai_flow.common import yaml_utils
 
 
 GLOBAL_CONFIG_KEY = "global_config_key"
+WORKFLOW_NAME = "workflow_name"
 
 
 class WorkFlowConfig(Jsonable):
 
     def __init__(self) -> None:
         super().__init__()
+        self.name = None
         self.job_configs: Dict[Text, BaseJobConfig] = {}
 
     def add_job_config(self, config_key: Text, job_config: BaseJobConfig):
@@ -54,6 +56,9 @@ def load_workflow_config(config_path: Text) -> WorkFlowConfig:
         workflow_config: WorkFlowConfig = WorkFlowConfig()
         for k, v in workflow_data.items():
             if k == GLOBAL_CONFIG_KEY:
+                continue
+            elif k == WORKFLOW_NAME:
+                workflow_config.name = v
                 continue
             job_config_class = get_job_config_class(v['platform'], v['engine'])
             job_config = job_config_class()
