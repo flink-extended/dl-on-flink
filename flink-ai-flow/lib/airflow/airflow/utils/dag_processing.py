@@ -755,7 +755,9 @@ class DagFileProcessorManager(LoggingMixin):  # pylint: disable=too-many-instanc
             # send event to notify parse dag finished
             if self.notification_service_uri is not None and len(self.message_buffer) > 0:
                 for e in self.message_buffer:
+                    self.log.info('send message key {}'.format(e.key))
                     self.ns_client.send_event(BaseEvent(key=e.key, value='', event_type='PARSE_DAG_RESPONSE'))
+                self.message_buffer.clear()
 
             refresh_dag_dir_interval = time.monotonic() - loop_start_time
             if refresh_dag_dir_interval < self._refresh_dag_dir_interval:
@@ -764,10 +766,13 @@ class DagFileProcessorManager(LoggingMixin):  # pylint: disable=too-many-instanc
                               .format(wait_time))
                 try:
                     message: BaseEvent = self.signal_queue.get(timeout=wait_time)
+                    self.log.info('receive message key {}'.format(message.key))
                     self.message_buffer.append(message)
                     if self.signal_queue.qsize() > 0:
                         for i in range(self.signal_queue.qsize()):
-                            self.message_buffer.append(self.signal_queue.get())
+                            message = self.signal_queue.get()
+                            self.log.info('receive message key {}'.format(message.key))
+                            self.message_buffer.append(message)
                 except Exception as e:
                     pass
 
