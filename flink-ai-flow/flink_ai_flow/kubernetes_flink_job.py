@@ -241,7 +241,7 @@ class KubernetesFlinkJobPlugin(LocalFlinkJobPlugin):
                                 dir=job.job_config.project_desc.get_absolute_temp_path(), delete=False) as f:
             f.write(json_utils.dumps(job))
             K8S_FLINK = """k8s_flink_{0} = "{2}"\nop_{0} = KubernetesFlinkOperator(task_id='{1}', dag=dag, job_file=k8s_flink_{0})\n"""
-            return K8S_FLINK.format(op_index, job.job_name, f.name)
+            return K8S_FLINK.format(op_index, job_name_to_task_id(job.job_name), f.name)
 
     def generate_operator_code(self):
         return "from flink_ai_flow.kubernetes_flink_operator import KubernetesFlinkOperator\n"

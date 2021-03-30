@@ -32,12 +32,20 @@ DEFAULT_MONGODB_HOST = ''
 DEFAULT_MONGODB_PORT = 27017
 
 
+def get_project_path():
+    return os.path.dirname(os.path.abspath(__file__))
+
+
 def get_project_config_file():
     return os.path.dirname(os.path.abspath(__file__)) + "/project.yaml"
 
 
 def get_master_config_file():
     return os.path.dirname(os.path.abspath(__file__)) + "/master.yaml"
+
+
+def get_workflow_config_file():
+    return os.path.dirname(os.path.abspath(__file__)) + "/workflow_config.yaml"
 
 
 def set_project_config(main_file):
