@@ -16,7 +16,6 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-from ai_flow.client.ai_flow_client import get_ai_flow_client
 from airflow.contrib.jobs.scheduler_client import EventSchedulerClient, ExecutionContext
 from airflow.contrib.jobs.event_based_scheduler_job import SCHEDULER_NAMESPACE
 from airflow.events.scheduler_events import StopDagEvent
@@ -154,3 +153,7 @@ class AirflowOperation(object):
             return True
         else:
             return False
+
+    def trigger_parse_dag(self):
+        """Trigger a dag parse. """
+        return self.airflow_client.trigger_parse_dag()

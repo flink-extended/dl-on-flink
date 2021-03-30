@@ -65,8 +65,6 @@ DR = models.DagRun
 DM = models.DagModel
 MSG = models.Message
 
-faulthandler.enable()
-
 SCHEDULER_NAMESPACE = 'scheduler'
 
 
@@ -554,6 +552,7 @@ class EventBasedSchedulerJob(BaseJob):
             return last_run.id
 
     def _execute(self):
+        faulthandler.enable()
         self.log.info("Starting the scheduler Job")
 
         # DAGs can be pickled for easier remote execution by some executors
