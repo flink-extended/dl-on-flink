@@ -81,7 +81,7 @@ def get_airflow_code_manager() -> AirflowCodeManager:
 
 class DAGTemplate(object):
     AIRFLOW_IMPORT = """from airflow.models.dag import DAG
-from airflow.utils import timezone
+from datetime import datetime, timedelta
 from airflow.contrib.jobs.event_handlers import AIFlowHandler
 from airflow.operators.dummy import DummyOperator
 from airflow.operators.bash import BashOperator\n"""
@@ -91,7 +91,7 @@ from airflow.operators.bash import BashOperator\n"""
 
     SET_CONFIG = """af.set_project_config_file('{0}')\naf.set_master_config()\n"""
 
-    DAG_DEFINE = """dag = DAG(dag_id='{0}', start_date=timezone.utcnow(), schedule_interval='{1}')\n"""
+    DAG_DEFINE = """dag = DAG(dag_id='{0}', start_date=datetime.utcnow()+timedelta(1), schedule_interval='{1}')\n"""
 
     UPSTREAM_OP = """{0}.set_upstream({1})\n"""
 

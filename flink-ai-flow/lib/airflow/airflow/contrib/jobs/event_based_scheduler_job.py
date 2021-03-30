@@ -161,6 +161,8 @@ class EventBasedScheduler(LoggingMixin):
                     self.log.info("{} {}".format(self.id, event.job_id))
                     if self.id == event.job_id or 0 == event.job_id:
                         self.log.info("break the scheduler event loop.")
+                        identified_message.remove_handled_message()
+                        session.expunge_all()
                         break
                 else:
                     self.log.error("can not handler the event {}".format(event))

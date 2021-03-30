@@ -209,7 +209,8 @@ def deploy_to_airflow(project_desc: ProjectDesc = ProjectDesc(), dag_id: Text = 
 
 def submit_to_airflow(project_desc: ProjectDesc = ProjectDesc(), dag_id: Text = None):
     airflow_file_path, generated_code = deploy_to_airflow(project_desc, dag_id)
-    airflow_operation = AirflowOperation(ns_client=_default_project.get_client())
+    airflow_operation = AirflowOperation(notification_server_uri=_default_project.
+                                         project_desc.project_config.get_notification_service_uri())
     airflow_operation.trigger_workflow_execution(dag_id)
     return airflow_file_path, airflow_operation.trigger_workflow_execution(dag_id)
     # return airflow_file_path
