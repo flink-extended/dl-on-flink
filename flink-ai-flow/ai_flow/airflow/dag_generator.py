@@ -93,7 +93,7 @@ from airflow.operators.bash import BashOperator\n"""
     SET_CONFIG = """af.set_project_config_file('{0}')\naf.set_master_config()\n"""
 
     DEFAULT_ARGS = """default_args = {0}\n"""
-    DEFAULT_ARGS_VALUE = {'schedule_interval': None, 'start_date': datetime(2100, 1, 1)}
+    DEFAULT_ARGS_VALUE = {'schedule_interval': None, 'start_date': datetime(2025, 1, 1)}
 
     DAG_DEFINE = """dag = DAG(dag_id='{0}', default_args=default_args)\n"""
 
