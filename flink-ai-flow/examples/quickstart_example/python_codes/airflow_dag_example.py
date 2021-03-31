@@ -39,7 +39,7 @@ def run_workflow():
     af.set_project_config_file(project_path + '/project.yaml')
     # the airflow scheduler do not support waiting until the execution finished
     # so we just submit the workflow and exit
-    af.run(project_path, dag_id='airflow_dag_example', scheduler_type=SchedulerType.AIRFLOW)
+    af.deploy_to_airflow(project_path, dag_id='airflow_dag_example')
 
 
 if __name__ == '__main__':
