@@ -213,6 +213,8 @@ class EventBasedScheduler(LoggingMixin):
                     dag = self.dagbag.get_dag(dag_id, session=session)
                     dag_model = session \
                         .query(DagModel).filter(DagModel.dag_id == dag_id).first()
+                    if dag_model is None:
+                        return None
                     next_dagrun = dag_model.next_dagrun
                     dag_hash = self.dagbag.dags_hash.get(dag.dag_id)
                     run_id = None
