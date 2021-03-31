@@ -145,7 +145,7 @@ def run(project_path: Text = None, dag_id: Text = None,
     """
     project_desc = generate_project_desc(project_path)
     if scheduler_type == SchedulerType.AIRFLOW:
-        return submit_to_airflow(project_desc=project_desc, dag_id=dag_id)
+        return _submit_to_airflow(project_desc=project_desc, dag_id=dag_id)
     else:
         return submit_ai_flow(ai_graph=default_graph(), project_desc=project_desc)
 
@@ -166,7 +166,8 @@ def generate_airflow_file_text(project_path: Text,
 
 def _generate_airflow_file_text(ai_graph: AIGraph = default_graph(),
                                 project_desc: ProjectDesc = ProjectDesc(),
-                                dag_id=None
+                                dag_id=None,
+                                default_args=None
                                 ) -> Optional[str]:
     """
     Submit ai flow to schedule.
@@ -179,17 +180,21 @@ def _generate_airflow_file_text(ai_graph: AIGraph = default_graph(),
     for job in ex_workflow.jobs.values():
         register_job_meta(workflow_id=ex_workflow.workflow_id, job=job)
     _default_project.upload_project_package(ex_workflow)
-    return DAGGenerator().generator(ex_workflow, dag_id)
+    return DAGGenerator().generator(ex_workflow, dag_id, default_args)
 
 
-def deploy_to_airflow(project_desc: ProjectDesc = ProjectDesc(), dag_id: Text = None):
+def deploy_to_airflow(project_path: Text = None,
+                      dag_id: Text = None,
+                      default_args=None):
     """
     Run project under the current project path.
 
-    :param project_desc: The description of the project..
+    :param project_path: The description of the project..
     :param dag_id: The airflow dag id.
-    :return: Workflow id.
+    :param default_args:
+    :return: (airflow dag file path, airflow dag code).
     """
+    project_desc = generate_project_desc(project_path)
     if dag_id is None:
         dag_id = default_af_job_context().global_workflow_config.name
     if dag_id is None:
@@ -200,19 +205,20 @@ def deploy_to_airflow(project_desc: ProjectDesc = ProjectDesc(), dag_id: Text = 
     airflow_file_path = deploy_path + '/' + dag_id + '.py'
     if os.path.exists(airflow_file_path):
         os.remove(airflow_file_path)
-    generated_code = _generate_airflow_file_text(ai_graph=default_graph(), project_desc=project_desc, dag_id=dag_id)
+    generated_code = _generate_airflow_file_text(ai_graph=default_graph(),
+                                                 project_desc=project_desc,
+                                                 dag_id=dag_id,
+                                                 default_args=default_args)
     with NamedTemporaryFile(mode='w+t', prefix=dag_id, suffix='.py', dir='/tmp', delete=False) as f:
         f.write(generated_code)
     os.rename(f.name, airflow_file_path)
     return airflow_file_path, generated_code
 
 
-def submit_to_airflow(project_desc: ProjectDesc = ProjectDesc(), dag_id: Text = None):
-    airflow_file_path, generated_code = deploy_to_airflow(project_desc, dag_id)
-    airflow_operation = AirflowOperation(ns_client=_default_project.get_client())
-    airflow_operation.trigger_workflow_execution(dag_id)
-    return airflow_file_path, airflow_operation.trigger_workflow_execution(dag_id)
-    # return airflow_file_path
+def _submit_to_airflow(project_desc: ProjectDesc = ProjectDesc(), dag_id: Text = None):
+    airflow_operation = AirflowOperation(
+        notification_server_uri=project_desc.project_config.get_notification_service_uri())
+    return airflow_operation.trigger_workflow_execution(dag_id)
 
 
 def generate_project_desc(project_path: Text = None) -> ProjectDesc:

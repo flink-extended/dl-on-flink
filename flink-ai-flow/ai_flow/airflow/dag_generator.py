@@ -16,6 +16,7 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+from datetime import datetime
 from abc import ABC
 from typing import Text, List
 from ai_flow.common.registry import BaseRegistry
@@ -81,7 +82,7 @@ def get_airflow_code_manager() -> AirflowCodeManager:
 
 class DAGTemplate(object):
     AIRFLOW_IMPORT = """from airflow.models.dag import DAG
-from airflow.utils import timezone
+import datetime
 from airflow.contrib.jobs.event_handlers import AIFlowHandler
 from airflow.operators.dummy import DummyOperator
 from airflow.operators.bash import BashOperator\n"""
@@ -91,7 +92,10 @@ from airflow.operators.bash import BashOperator\n"""
 
     SET_CONFIG = """af.set_project_config_file('{0}')\naf.set_master_config()\n"""
 
-    DAG_DEFINE = """dag = DAG(dag_id='{0}', start_date=timezone.utcnow(), schedule_interval='{1}')\n"""
+    DEFAULT_ARGS = """default_args = {0}\n"""
+    DEFAULT_ARGS_VALUE = {'schedule_interval': None, 'start_date': datetime(2100, 1, 1)}
+
+    DAG_DEFINE = """dag = DAG(dag_id='{0}', default_args=default_args)\n"""
 
     UPSTREAM_OP = """{0}.set_upstream({1})\n"""
 
@@ -120,7 +124,12 @@ class DAGGenerator(object):
     def generate_handler(self, op, configs: List[MetConfig]):
         return DAGTemplate.MET_HANDLER.format(op, json_utils.dumps(configs))
 
-    def generator(self, workflow: Workflow, dag_id=None) -> Text:
+    def generator(self,
+                  workflow: Workflow,
+                  dag_id=None,
+                  default_args=None) -> Text:
+        if default_args is None:
+            default_args = DAGTemplate.DEFAULT_ARGS_VALUE
         self.op_count = -1
         if dag_id is None:
             dag_id = workflow.project_desc.project_name
@@ -135,7 +144,8 @@ class DAGGenerator(object):
                 op_set.add(generator)
 
         # code_text += DAGTemplate.SET_CONFIG.format(workflow.project_desc.project_path + '/project.yaml')
-        code_text += DAGTemplate.DAG_DEFINE.format(dag_id, workflow.project_desc.project_config.get_schedule_interval())
+        code_text += DAGTemplate.DEFAULT_ARGS.format(default_args)
+        code_text += DAGTemplate.DAG_DEFINE.format(dag_id)
 
         task_map = {}
         for name, job in workflow.jobs.items():

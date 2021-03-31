@@ -159,6 +159,8 @@ class EventBasedScheduler(LoggingMixin):
                     self.log.info("{} {}".format(self.id, event.job_id))
                     if self.id == event.job_id or 0 == event.job_id:
                         self.log.info("break the scheduler event loop.")
+                        identified_message.remove_handled_message()
+                        session.expunge_all()
                         break
                 else:
                     self.log.error("can not handler the event {}".format(event))
@@ -209,6 +211,8 @@ class EventBasedScheduler(LoggingMixin):
                     dag = self.dagbag.get_dag(dag_id, session=session)
                     dag_model = session \
                         .query(DagModel).filter(DagModel.dag_id == dag_id).first()
+                    if dag_model is None:
+                        return None
                     next_dagrun = dag_model.next_dagrun
                     dag_hash = self.dagbag.dags_hash.get(dag.dag_id)
                     run_id = None
