@@ -98,6 +98,8 @@ flink-ai-flow/lib/airflow/airflow/www_rbac/static/coverage/
 flink-ai-flow/lib/airflow/airflow/www_rbac/static/dist/
 
 flink-ai-flow/**/logs/
+flink-ai-flow/**/saved_model/
+flink-ai-flow/**/pushed_model/
 flink-ai-flow/lib/airflow/airflow-webserver.pid
 
 # Byte-compiled / optimized / DLL files
