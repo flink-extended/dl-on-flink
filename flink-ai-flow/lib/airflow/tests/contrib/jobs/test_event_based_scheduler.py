@@ -249,6 +249,7 @@ class TestEventBasedScheduler(unittest.TestCase):
         self.assertEqual(len(tes), 1)
 
     def run_trigger_dag_function(self):
+        time.sleep(5)
         ns_client = NotificationClient(server_uri="localhost:{}".format(self.port), default_namespace="")
         client = EventSchedulerClient(ns_client=ns_client)
         while True:

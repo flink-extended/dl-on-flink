@@ -318,8 +318,10 @@ class DAG(LoggingMixin):
             self.default_args['start_date'] = timezone.convert_to_utc(self.default_args['start_date'])
         if 'end_date' in self.default_args:
             self.default_args['end_date'] = timezone.convert_to_utc(self.default_args['end_date'])
-
-        self.schedule_interval = schedule_interval
+        if 'schedule_interval' in self.default_args:
+            self.schedule_interval = self.default_args['schedule_interval']
+        else:
+            self.schedule_interval = schedule_interval
         if isinstance(template_searchpath, str):
             template_searchpath = [template_searchpath]
         self.template_searchpath = template_searchpath

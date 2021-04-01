@@ -218,6 +218,7 @@ class EventBasedScheduler(LoggingMixin):
                     run_id = None
                     if run_type == DagRunType.MANUAL:
                         run_id = f"{run_type}__{timezone.utcnow().isoformat()}"
+                        next_dagrun = timezone.utcnow()
                     dag_run = dag.create_dagrun(
                         run_type=run_type,
                         execution_date=next_dagrun,
@@ -313,7 +314,7 @@ class EventBasedScheduler(LoggingMixin):
         self,
         dag_run: DagRun,
         session: Session,
-        check_execution_date=True
+        check_execution_date=False
     ) -> Optional[List[TI]]:
         """
         Make scheduling decisions about an individual dag run
@@ -462,12 +463,14 @@ class EventBasedScheduler(LoggingMixin):
             if message.message_type == UserDefineMessageType.RUN_DAG:
                 # todo make sure dag file is parsed.
                 dagrun = self._create_dag_run(message.dag_id, session=session, run_type=DagRunType.MANUAL)
+                print('run_id {}'.format(dagrun.run_id))
                 if not dagrun:
                     self.log.error("Failed to create dag_run.")
                     # TODO Need to add ret_code and errro_msg in ExecutionContext in case of exception
                     self.notification_client.send_event(ResponseEvent(event.request_id, None).to_event())
                     return
                 tasks = self._find_schedulable_tasks(dagrun, session, False)
+                print('task : {}'.format(len(tasks)))
                 self._send_scheduling_task_events(tasks, SchedulingAction.START)
                 self.notification_client.send_event(ResponseEvent(event.request_id, dagrun.run_id).to_event())
             elif message.message_type == UserDefineMessageType.STOP_DAG_RUN:

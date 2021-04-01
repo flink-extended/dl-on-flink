@@ -662,7 +662,7 @@ class DagRun(Base, LoggingMixin):
 
         # check for missing tasks
         for task in dag.task_dict.values():
-            if task.start_date > self.execution_date and not self.is_backfill:
+            if task.start_date > self.execution_date and not self.is_backfill and self.run_type != DagRunType.MANUAL:
                 continue
 
             if task.task_id not in task_ids:
