@@ -522,7 +522,11 @@ class EventBasedSchedulerJob(BaseJob):
     """
     __mapper_args__ = {'polymorphic_identity': 'EventBasedSchedulerJob'}
 
-    def __init__(self, dag_directory, server_uri=None, max_runs=-1, refresh_dag_dir_interval=0, *args, **kwargs):
+    def __init__(self, dag_directory,
+                 server_uri=None,
+                 max_runs=-1,
+                 refresh_dag_dir_interval=conf.getint('scheduler', 'refresh_dag_dir_interval', fallback=30),
+                 *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.mailbox: Mailbox = Mailbox()
         self.dag_trigger: DagTrigger = DagTrigger(
@@ -556,7 +560,7 @@ class EventBasedSchedulerJob(BaseJob):
             return last_run.id
 
     def _execute(self):
-        faulthandler.enable()
+        # faulthandler.enable()
         self.log.info("Starting the scheduler Job")
 
         # DAGs can be pickled for easier remote execution by some executors
