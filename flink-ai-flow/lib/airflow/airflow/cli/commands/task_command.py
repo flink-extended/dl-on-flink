@@ -41,6 +41,7 @@ from airflow.utils.cli import (
     get_dag_by_pickle,
     get_dags,
     suppress_logs_and_warning,
+    get_dag_from_db,
 )
 from airflow.utils.log.logging_mixin import StreamLogWriter
 from airflow.utils.net import get_hostname
