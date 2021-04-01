@@ -313,7 +313,7 @@ class EventBasedScheduler(LoggingMixin):
         self,
         dag_run: DagRun,
         session: Session,
-        check_execution_date=True
+        check_execution_date=False
     ) -> Optional[List[TI]]:
         """
         Make scheduling decisions about an individual dag run
