@@ -19,7 +19,7 @@ from datetime import datetime, timedelta
 from airflow.operators.bash import BashOperator
 
 from airflow import DAG
-
-dag = DAG(dag_id="trigger_dag", start_date=datetime.utcnow() + timedelta(1), schedule_interval='@once')
+default_args = {'start_date': datetime.utcnow() + timedelta(1), 'schedule_interval': None}
+dag = DAG(dag_id="trigger_dag", default_args=default_args)
 
 op1 = BashOperator(task_id="task_1", dag=dag,  owner='airflow', bash_command='echo "hello world!"')
