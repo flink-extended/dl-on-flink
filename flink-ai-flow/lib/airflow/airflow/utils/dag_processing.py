@@ -762,9 +762,12 @@ class DagFileProcessorManager(LoggingMixin):  # pylint: disable=too-many-instanc
                     self.ns_client.send_event(BaseEvent(key=e.key, value='', event_type='PARSE_DAG_RESPONSE'))
                 self.message_buffer.clear()
 
-            refresh_dag_dir_interval = time.monotonic() - loop_start_time
-            if refresh_dag_dir_interval < self._refresh_dag_dir_interval:
-                wait_time = self._refresh_dag_dir_interval - refresh_dag_dir_interval
+            if 0 != self._refresh_dag_dir_interval:
+                refresh_dag_dir_interval = time.monotonic() - loop_start_time
+                if refresh_dag_dir_interval < self._refresh_dag_dir_interval:
+                    wait_time = self._refresh_dag_dir_interval - refresh_dag_dir_interval
+                else:
+                    wait_time = 1.0
                 self.log.info('Dag ProcessorManager sleep {}.'
                               .format(wait_time))
                 try:

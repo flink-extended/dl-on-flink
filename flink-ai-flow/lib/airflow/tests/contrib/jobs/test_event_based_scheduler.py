@@ -249,7 +249,6 @@ class TestEventBasedScheduler(unittest.TestCase):
         self.assertEqual(len(tes), 1)
 
     def run_trigger_dag_function(self):
-        # waiting parsed dag file done,
         ns_client = NotificationClient(server_uri="localhost:{}".format(self.port), default_namespace="")
         client = EventSchedulerClient(ns_client=ns_client)
         while True:
@@ -266,17 +265,30 @@ class TestEventBasedScheduler(unittest.TestCase):
         ns_client.send_event(StopSchedulerEvent(job_id=0).to_event())
 
     def test_run_trigger_dag(self):
-        # using Thread notification maybe hung
-        # import threading
-        # t = threading.Thread(target=self.run_trigger_dag_function, args=())
-        # t.setDaemon(True)
-        # t.start()
         import multiprocessing
         p = multiprocessing.Process(target=self.run_trigger_dag_function, args=())
         p.start()
         self.start_scheduler('../../dags/test_run_trigger_dag.py')
         tes: List[TaskExecution] = self.get_task_execution("trigger_dag", "task_1")
         self.assertEqual(len(tes), 1)
+
+    def run_no_dag_file_function(self):
+        ns_client = NotificationClient(server_uri="localhost:{}".format(self.port), default_namespace="")
+        client = EventSchedulerClient(ns_client=ns_client)
+        with create_session() as session:
+            client.trigger_parse_dag()
+            result = client.schedule_dag('no_dag')
+            print('result {}'.format(result.dagrun_id))
+            time.sleep(5)
+        ns_client.send_event(StopSchedulerEvent(job_id=0).to_event())
+
+    def test_no_dag_file_trigger_dag(self):
+        import multiprocessing
+        p = multiprocessing.Process(target=self.run_no_dag_file_function, args=())
+        p.start()
+        self.start_scheduler('../../dags/test_run_trigger_dag.py')
+        tes: List[TaskExecution] = self.get_task_execution("trigger_dag", "task_1")
+        self.assertEqual(len(tes), 0)
 
     def run_trigger_task_function(self):
         # waiting parsed dag file done,
