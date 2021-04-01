@@ -43,7 +43,7 @@ if [[ ! -f "${AIRFLOW_HOME}/airflow.cfg" ]] ; then
         gsub(\"dags_are_paused_at_creation = True\", \"dags_are_paused_at_creation = False\"); \
         gsub(\"# mp_start_method =\", \"mp_start_method = forkserver\"); \
         gsub(\"execute_tasks_new_python_interpreter = False\", \"execute_tasks_new_python_interpreter = True\"); \
-        gsub(\"min_serialized_dag_update_interval = 30\", \"min_serialized_dag_update_interval = None\"); \
+        gsub(\"min_serialized_dag_update_interval = 30\", \"min_serialized_dag_update_interval = 0\"); \
         print \$0}" airflow.cfg.tmpl > airflow.cfg
 
     # prepare the database
