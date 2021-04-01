@@ -219,6 +219,15 @@ def get_dag_by_pickle(pickle_id, session=None):
     return pickle_dag
 
 
+def get_dag_from_db(subdir: Optional[str], dag_id: str) -> "DAG":
+    """Returns DAG of a given dag_id from database. """
+    from airflow.models import DagBag
+
+    dagbag = DagBag(dag_folder=process_subdir(subdir),
+                    read_dags_from_db=True)
+    return dagbag.get_dag(dag_id)
+
+
 def setup_locations(process, pid=None, stdout=None, stderr=None, log=None):
     """Creates logging paths"""
     if not stderr:
