@@ -15,46 +15,144 @@
 # specific language governing permissions and limitations
 # under the License.
 
+import queue
+import threading
 from typing import Any, Dict, List, Optional
-
+from concurrent.futures import ThreadPoolExecutor
+from airflow.models.dagbag import DagBag
+from airflow.utils.state import State
+from airflow.executors.scheduling_action import SchedulingAction
+from airflow.models import dagbag
 from airflow.configuration import conf
 from airflow.executors.base_executor import BaseExecutor, CommandType
 from airflow.models.taskinstance import TaskInstance, TaskInstanceKey
+from airflow.utils.session import create_session, provide_session
+from airflow.utils.vvp import VVPRestfulUtil
+from airflow.models import BaseOperator
+from airflow.utils.decorators import apply_defaults
+
+
+class EndMessage(object):
+    pass
+
+
+class VVPOperator(BaseOperator):
+    @apply_defaults
+    def __init__(self, *, namespace: str, deployment_id: str, action: str, **kwargs):
+        super().__init__(**kwargs)
+        self.namespace = namespace
+        self.deployment_id = deployment_id
+        self.action = action
+
+    def execute(self, context: Any):
+        pass
 
 
 class VVPExecutor(BaseExecutor):
     """
-    This executor is meant for debugging purposes. It can be used with SQLite.
-
-    It executes one task instance at time. Additionally to support working
-    with sensors, all sensors ``mode`` will be automatically set to "reschedule".
+    This executor handle jobs on vvp platform
     """
 
     def __init__(self):
         super().__init__()
-        self.tasks_to_run: List[TaskInstance] = []
-        # Place where we keep information for task instance raw run
-        self.tasks_params: Dict[TaskInstanceKey, Dict[str, Any]] = {}
-        self.fail_fast = conf.getboolean("debug", "fail_fast")
+        self.queue = queue.Queue()
+        self.threading_pool = ThreadPoolExecutor(conf.get('VVPExecutor', 'parallelism', fallback=3))
+        self.dagbag = dagbag.DagBag(read_dags_from_db=True)
+        self.vvp_restful_util = VVPRestfulUtil(base_url=conf.get('VVPExecutor', 'base_url'),
+                                               namespaces=conf.get('VVPExecutor', 'namespaces', fallback='vvp'),
+                                               token=conf.get('VVPExecutor', 'token', fallback=None))
+        self.thread = None
 
     def _start_task_instance(self, key: TaskInstanceKey):
-        super()._start_task_instance(key)
+        ti = self.get_task_instance(key)
+        ti.set_state(State.QUEUED)
+        ti.register_task_execution()
+        self.queue.put((key, SchedulingAction.START))
 
     def _stop_related_process(self, ti: TaskInstance) -> bool:
-        pass
+        return True
 
     def _stop_task_instance(self, key: TaskInstanceKey) -> bool:
-        return super()._stop_task_instance(key)
+        ti = self.get_task_instance(key)
+        ti.set_state(State.KILLING)
+        self.queue.put((key, SchedulingAction.STOP))
+        return True
 
     def execute_async(self, key: TaskInstanceKey, command: CommandType, queue: Optional[str] = None,
                       executor_config: Optional[Any] = None) -> None:
-        pass
+        self._start_task_instance(key)
+
+    def start(self):
+        def _handler(queue: queue.Queue, vvp_restful_util: VVPRestfulUtil, dagbag: DagBag):
+            while True:
+                message = queue.get()
+                if isinstance(message, EndMessage):
+                    break
+                else:
+                    key, action = message
+                    with create_session() as session:
+                        dag = dagbag.get_dag(key.dag_id, session)
+                        task = dag.get_task(key.task_id)
+                        if isinstance(task, VVPOperator):
+                            if SchedulingAction.START == action:
+                                vvp_restful_util.start_deployment(task.namespace, task.deployment_id)
+                            elif SchedulingAction.STOP == action:
+                                vvp_restful_util.stop_deployment(task.namespace, task.deployment_id)
+
+        self.thread = threading.Thread(target=_handler, args=(self.queue, self.vvp_restful_util, self.dagbag))
+        self.thread.setDaemon(True)
+        self.thread.start()
+
+    def sync(self) -> None:
+        # Get VVP platform deployments status then update taskInstance and taskExecution
+        deployment_status_map = {}
+        try:
+            namespaces = self.vvp_restful_util.get_namespaces()
+            for namespace in namespaces:
+                deployments = self.vvp_restful_util.list_deployments(namespace)
+                for deployment in deployments:
+                    deployment_status_map[(namespace, deployment.id)] = deployment.state
+        except Exception as e:
+            self.log.error(e.__traceback__)
+        if len(deployment_status_map) > 0:
+            with create_session() as session:
+                running_tis = session.query(TaskInstance).filter(TaskInstance.state == State.RUNNING)
+                for ti in running_tis:
+                    dag = self.dagbag.get_dag(ti.dag_id, session)
+                    task = dag.get_task(ti.task_id)
+                    if isinstance(task, VVPOperator):
+                        if (task.namespace, task.deployment_id) in deployment_status_map:
+                            state = deployment_status_map[(task.namespace, task.deployment_id)]
+                            if state == 'SUCCESS':
+                                ti.set_state(State.SUCCESS, session)
+                                ti.update_latest_task_execution()
+                            elif state == 'CANCELLED':
+                                ti.set_state(State.KILLED, session)
+                                ti.update_latest_task_execution()
+                            elif state == 'FAILED':
+                                ti.set_state(State.FAILED, session)
+                                ti.update_latest_task_execution()
+                        else:
+                            ti.set_state(State.KILLED, session)
+                            ti.update_latest_task_execution()
 
     def end(self) -> None:
-        pass
+        self.terminate()
 
     def terminate(self):
-        pass
+        if self.thread is not None:
+            self.queue.put(EndMessage())
+            self.thread.join()
 
-
-
+    def recover_state(self):
+        with create_session() as session:
+            queued_tis = session.query(TaskInstance).filter(TaskInstance.state in {State.QUEUED, State.KILLING})
+            for ti in queued_tis:
+                dag = self.dagbag.get_dag(ti.dag_id, session)
+                task = dag.get_task(ti.task_id)
+                if isinstance(task, VVPOperator):
+                    key = TaskInstanceKey(ti.dag_id, ti.task_id, ti.execution_date, ti.try_number)
+                    if ti.state == State.QUEUED:
+                        self.queue.put((key, SchedulingAction.START))
+                    elif ti.state == State.KILLING:
+                        self.queue.put((key, SchedulingAction.STOP))
