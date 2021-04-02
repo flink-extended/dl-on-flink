@@ -5,6 +5,7 @@ import ai_flow as af
 from ai_flow import FunctionContext
 from ai_flow.common.scheduler_type import SchedulerType
 from python_ai_flow import Executor
+from datetime import datetime
 
 
 class PrintHelloExecutor(Executor):
@@ -37,9 +38,12 @@ def build_workflow():
 def run_workflow():
     build_workflow()
     af.set_project_config_file(project_path + '/project.yaml')
-    # the airflow scheduler do not support waiting until the execution finished
-    # so we just submit the workflow and exit
-    af.deploy_to_airflow(project_path, dag_id='airflow_dag_example')
+
+    # deploy a workflow which should be scheduled every 10 minutes
+    default_args = '{\'schedule_interval\': %s, \'start_date\': \'%s\'}' % ('\'*/10 * * * *\'', datetime.utcnow())
+    af.deploy_to_airflow(project_path, dag_id='airflow_dag_example', default_args=default_args)
+
+    # Force trigger once
     context = af.run(project_path=project_path,
                      dag_id='airflow_dag_example',
                      scheduler_type=SchedulerType.AIRFLOW)
