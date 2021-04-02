@@ -33,7 +33,7 @@ import lazy_object_proxy
 import pendulum
 from airflow.models.taskexecution import TaskExecution
 from jinja2 import TemplateAssertionError, UndefinedError
-from sqlalchemy import Column, Float, Index, Integer, PickleType, String, and_, func, or_
+from sqlalchemy import Column, Float, Index, Integer, PickleType, String, and_, func, or_, desc
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import reconstructor, relationship
 from sqlalchemy.orm.session import Session
@@ -1058,7 +1058,7 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
         ).scalar()
 
     @provide_session
-    def _register_task_execution(self, session=None) -> TaskExecution:
+    def register_task_execution(self, session=None) -> TaskExecution:
         latest_seq_num = self._get_latest_seq_num()
         new_seq_num = 1 if latest_seq_num is None else latest_seq_num + 1
         task_execution = TaskExecution(
@@ -1088,11 +1088,24 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
         return task_execution
 
     @provide_session
-    def _update_task_execution(self, task_execution, test_mode, session=None):
+    def update_task_execution(self, task_execution, test_mode, session=None):
         task_execution.end_date = self.end_date
         task_execution.duration = self.duration
         task_execution.state = self.state
         if not test_mode:
+            session.merge(task_execution)
+
+    @provide_session
+    def update_latest_task_execution(self, session=None):
+        task_execution = session.query(TaskExecution).filter(
+            TaskExecution.dag_id == self.dag_id,
+            TaskExecution.task_id == self.task_id,
+            TaskExecution.execution_date == self.execution_date
+        ).order_by(desc(TaskExecution.seq_num)).first()
+        if task_execution is not None:
+            task_execution.end_date = self.end_date
+            task_execution.duration = self.duration
+            task_execution.state = self.state
             session.merge(task_execution)
 
     @provide_session
@@ -1133,7 +1146,7 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
         try:
             if not mark_success:
                 context = self.get_template_context()
-                te: TaskExecution = self._register_task_execution()
+                te: TaskExecution = self.register_task_execution()
                 self._prepare_and_execute_task_with_callbacks(context, task)
             self.refresh_from_db(lock_for_update=True)
             self.state = State.SUCCESS
@@ -1185,7 +1198,7 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
             raise
         finally:
             Stats.incr(f'ti.finish.{task.dag_id}.{task.task_id}.{self.state}')
-            self._update_task_execution(te, test_mode=test_mode)
+            self.update_task_execution(te, test_mode=test_mode)
 
         self._run_success_callback(context, task)
 
@@ -1201,7 +1214,7 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
             self._date_or_empty('end_date'),
         )
         self.set_duration()
-        self._update_task_execution(te, test_mode=test_mode)
+        self.update_task_execution(te, test_mode=test_mode)
         if not test_mode:
             session.add(Log(self.state, self))
             session.merge(self)

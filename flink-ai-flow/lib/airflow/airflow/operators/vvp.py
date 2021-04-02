@@ -15,26 +15,6 @@
 # specific language governing permissions and limitations
 # under the License.
 
-import os
-import signal
-from subprocess import PIPE, STDOUT, Popen
-from tempfile import TemporaryDirectory, gettempdir
-from typing import Dict, Optional, Any
+from airflow.executors.vvp_executor import VVPOperator
 
-from airflow.executors.scheduling_action import SchedulingAction
-
-from airflow.exceptions import AirflowException
-from airflow.models import BaseOperator
-from airflow.utils.decorators import apply_defaults
-from airflow.utils.operator_helpers import context_to_airflow_vars
-
-
-class VVPOperator(BaseOperator):
-    @apply_defaults
-    def __init__(self, *, deployment_id: str, action: SchedulingAction, **kwargs):
-        super().__init__(**kwargs)
-        self.deployment_id = deployment_id
-        self.action = action
-
-    def execute(self, context: Any):
-        pass
+VVPOperator = VVPOperator

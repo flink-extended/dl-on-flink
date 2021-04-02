@@ -60,6 +60,7 @@ class State:
         SCHEDULED,
         SENSING,
         KILLED,
+        KILLING,
     )
 
     dag_states = (
