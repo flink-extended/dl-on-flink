@@ -6,13 +6,5 @@ mysql_conn=$1
 start-aiflow.sh $mysql_conn
 sleep 3
 
-# create a default Admin user
-airflow users create \
-    --username admin \
-    --password admin \
-    --firstname admin \
-    --lastname admin \
-    --role Admin \
-    --email admin@example.org
 
 exec "/bin/bash"
