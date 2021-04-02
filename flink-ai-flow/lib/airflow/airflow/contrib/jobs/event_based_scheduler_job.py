@@ -215,15 +215,13 @@ class EventBasedScheduler(LoggingMixin):
                         return None
                     next_dagrun = dag_model.next_dagrun
                     dag_hash = self.dagbag.dags_hash.get(dag.dag_id)
-                    run_id = None
                     external_trigger = False
                     if run_type == DagRunType.MANUAL:
+                        next_dagrun = timezone.utcnow()
                         external_trigger = True
-                        run_id = f"{run_type}__{timezone.utcnow().isoformat()}"
                     dag_run = dag.create_dagrun(
                         run_type=run_type,
                         execution_date=next_dagrun,
-                        run_id=run_id,
                         start_date=timezone.utcnow(),
                         state=State.RUNNING,
                         external_trigger=external_trigger,

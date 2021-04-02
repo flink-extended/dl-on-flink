@@ -19,78 +19,59 @@ from ai_flow.common.path_util import get_file_dir
 class ExampleReader(ExampleExecutor):
 
     def execute(self, function_context: FunctionContext, input_list: List) -> List:
-        print("## {} ## is Start".format(self.__class__.__name__))
         f = np.load(function_context.node_spec.example_meta.batch_uri)
         x_train, y_train = f['x_train'], f['y_train']
         f.close()
-        print("## {} ## is Done".format(self.__class__.__name__))
         return [[x_train, y_train]]
 
 
 class ExampleTransformer(Executor):
 
     def execute(self, function_context: FunctionContext, input_list: List) -> List:
-        print("## {} ## is Start".format(self.__class__.__name__))
         x_train, y_train = input_list[0][0], input_list[0][1]
-        # f = np.load('/opt/flink-ai-flow/examples/python_examples/example_data/mnist_train.npz')
-        # x_train, y_train = f['x_train'], f['y_train']
-        # f.close()
         random_state = check_random_state(0)
         permutation = random_state.permutation(x_train.shape[0])
         x_train, y_train = x_train[permutation], y_train[permutation]
         x_train = x_train.reshape((x_train.shape[0], -1))
         res = [[StandardScaler().fit_transform(x_train), y_train]]
-        print("## {} ## is Done".format(self.__class__.__name__))
         return res
 
 
 class ModelTrainer(Executor):
 
     def execute(self, function_context: FunctionContext, input_list: List) -> List:
-        print("## {} ## is Start".format(self.__class__.__name__))
         # https://scikit-learn.org/stable/auto_examples/linear_model/plot_sparse_logistic_regression_mnist.html
         clf = LogisticRegression(C=50. / 5000, penalty='l1', solver='saga', tol=0.1)
-        print("## {} ## is Start2".format(self.__class__.__name__))
         x_train, y_train = input_list[0][0], input_list[0][1]
-        print("## {} ## is Start3".format(self.__class__.__name__))
-        print("Fit Start")
         clf.fit(x_train, y_train)
-        print("Fit Done")
-        model_path = get_file_dir(__file__) + '/' + 'saved_model'
+        model_path = get_file_dir(__file__) + '/saved_model'
         if not os.path.exists(model_path):
             os.makedirs(model_path)
         model_version = time.strftime("%Y%m%d%H%M%S", time.localtime())
         model_path = model_path + '/' + model_version
         dump(clf, model_path)
-        print("$$$$$")
-        print(model_path)
         af.register_model_version(model=function_context.node_spec.output_model, model_path=model_path)
 
-        print("## {} ## is Done".format(self.__class__.__name__))
         return []
 
 
 class EvaluateExampleReader(ExampleExecutor):
 
     def execute(self, function_context: FunctionContext, input_list: List) -> List:
-        print("## {} ## is Start".format(self.__class__.__name__))
         f = np.load(function_context.node_spec.example_meta.batch_uri)
         x_test, y_test = f['x_test'], f['y_test']
         f.close()
-        print("## {} ## is Done".format(self.__class__.__name__))
         return [[x_test, y_test]]
 
 
 class EvaluateTransformer(Executor):
 
     def execute(self, function_context: FunctionContext, input_list: List) -> List:
-        print("## {} ## is Start".format(self.__class__.__name__))
         x_test, y_test = input_list[0][0], input_list[0][1]
         random_state = check_random_state(0)
         permutation = random_state.permutation(x_test.shape[0])
         x_test, y_test = x_test[permutation], y_test[permutation]
         x_test = x_test.reshape((x_test.shape[0], -1))
-        print("## {} ## is Done".format(self.__class__.__name__))
         return [[StandardScaler().fit_transform(x_test), y_test]]
 
 
@@ -108,7 +89,6 @@ class ModelEvaluator(Executor):
         self.model_version = json.loads(notifications[0].value).get('_model_version')
 
     def execute(self, function_context: FunctionContext, input_list: List) -> List:
-        print("## {} ## is Start".format(self.__class__.__name__))
         x_evaluate, y_evaluate = input_list[0][0], input_list[0][1]
         clf = load(self.model_path)
         scores = cross_val_score(clf, x_evaluate, y_evaluate, cv=5)
@@ -116,31 +96,26 @@ class ModelEvaluator(Executor):
         with open(evaluate_artifact, 'a') as f:
             f.write('model version[{}] scores: {}\n'.format(self.model_version, scores))
 
-        print("## {} ## is Done".format(self.__class__.__name__))
         return []
 
 
 class ValidateExampleReader(ExampleExecutor):
 
     def execute(self, function_context: FunctionContext, input_list: List) -> List:
-        print("## {} ## is Start".format(self.__class__.__name__))
         f = np.load(function_context.node_spec.example_meta.batch_uri)
         x_test, y_test = f['x_test'], f['y_test']
         f.close()
-        print("## {} ## is Done".format(self.__class__.__name__))
         return [[x_test, y_test]]
 
 
 class ValidateTransformer(Executor):
 
     def execute(self, function_context: FunctionContext, input_list: List) -> List:
-        print("## {} ## is Start".format(self.__class__.__name__))
         x_test, y_test = input_list[0][0], input_list[0][1]
         random_state = check_random_state(0)
         permutation = random_state.permutation(x_test.shape[0])
         x_test, y_test = x_test[permutation], y_test[permutation]
         x_test = x_test.reshape((x_test.shape[0], -1))
-        print("## {} ## is Done".format(self.__class__.__name__))
         return [[StandardScaler().fit_transform(x_test), y_test]]
 
 
@@ -157,7 +132,6 @@ class ModelValidator(Executor):
         self.model_version = json.loads(notifications[0].value).get('_model_version')
 
     def execute(self, function_context: FunctionContext, input_list: List) -> List:
-        print("## {} ## is Start".format(self.__class__.__name__))
         model_meta: ModelMeta = function_context.node_spec.model
         serving_model_version = af.get_deployed_model_version(model_name=model_meta.name)
         if serving_model_version is None:
@@ -183,14 +157,12 @@ class ModelValidator(Executor):
                 af.update_model_version(model_name=model_meta.name,
                                         model_version=self.model_version,
                                         current_stage=ModelVersionStage.DEPLOYED)
-        print("## {} ## is Done".format(self.__class__.__name__))
         return []
 
 
 class ModelPusher(Executor):
 
     def execute(self, function_context: FunctionContext, input_list: List) -> List:
-        print("## {} ## is Start".format(self.__class__.__name__))
         node_spec = function_context.node_spec
         serving_model_path = af.get_artifact_by_name('push_model_artifact').batch_uri
         if not os.path.exists(serving_model_path):
@@ -205,48 +177,39 @@ class ModelPusher(Executor):
             elif os.path.isdir(file_path):
                 shutil.rmtree(file_path, True)
         shutil.copy(serving_model_version.model_path, serving_model_path)
-        print("## {} ## is Done".format(self.__class__.__name__))
         return []
 
 
 class PredictExampleReader(ExampleExecutor):
 
     def execute(self, function_context: FunctionContext, input_list: List) -> List:
-        print("## {} ## is Start".format(self.__class__.__name__))
         f = np.load(function_context.node_spec.example_meta.batch_uri)
         x_test = f['x_test']
         f.close()
-        print("## {} ## is Done".format(self.__class__.__name__))
         return [[x_test]]
 
 
 class PredictTransformer(Executor):
 
     def execute(self, function_context: FunctionContext, input_list: List) -> List:
-        print("## {} ## is Start".format(self.__class__.__name__))
         x_test = input_list[0][0]
         random_state = check_random_state(0)
         permutation = random_state.permutation(x_test.shape[0])
         x_test = x_test[permutation]
         x_test = x_test.reshape((x_test.shape[0], -1))
-        print("## {} ## is Done".format(self.__class__.__name__))
         return [[StandardScaler().fit_transform(x_test)]]
 
 
 class ModelPredictor(Executor):
 
     def execute(self, function_context: FunctionContext, input_list: List) -> List:
-        print("## {} ## is Start".format(self.__class__.__name__))
         model_artifact = af.get_artifact_by_name('push_model_artifact').batch_uri
         clf = load(os.path.join(model_artifact, os.listdir(model_artifact)[0]))
-        print("## {} ## is Done".format(self.__class__.__name__))
         return [clf.predict(input_list[0][0])]
 
 
 class ExampleWriter(ExampleExecutor):
 
     def execute(self, function_context: FunctionContext, input_list: List) -> List:
-        print("## {} ## is Start".format(self.__class__.__name__))
         np.savetxt(function_context.node_spec.example_meta.batch_uri, input_list[0])
-        print("## {} ## is Done".format(self.__class__.__name__))
         return []

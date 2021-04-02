@@ -25,8 +25,7 @@ def run_job():
     # Set execution mode of this python job to BATCH,
     # which indicates jobs with this config is running in the form of batch.
     python_job_config.exec_mode = af.ExecutionMode.BATCH
-    print("------")
-    print(project_root_path + '/project.yaml')
+
     with af.config(python_job_config):
         # Training of model
         # Register metadata raw training data(example) and read example(i.e. training dataset)
@@ -61,7 +60,7 @@ def run_job():
         # Register disk path used to save evaluate result
         evaluate_artifact = af.register_artifact(name='evaluate_artifact',
                                                  batch_uri=get_file_dir(__file__) + '/evaluate_model')
-        # # Evaluate model
+        # Evaluate model
         evaluate_channel = af.evaluate(input_data_list=[evaluate_transform],
                                        model_info=train_model,
                                        executor=PythonObjectExecutor(python_object=ModelEvaluator()))
@@ -115,8 +114,7 @@ def run_job():
     af.stop_before_control_dependency(validate_channel, evaluate_channel)
     af.stop_before_control_dependency(push_model_channel, validate_channel)
     af.stop_before_control_dependency(predict_channel, push_model_channel)
-    # af.stop_before_control_dependency(train_read_example, cmd_job)
-    # af.stop_before_control_dependency(train_transform, train_read_example)
+
     # Run workflow
     transform_dag = 'batch_train_batch_predict_airflow_kuang'
     af.deploy_to_airflow(project_root_path, dag_id=transform_dag)
