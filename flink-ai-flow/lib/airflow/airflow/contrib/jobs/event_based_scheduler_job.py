@@ -134,8 +134,6 @@ class EventBasedScheduler(LoggingMixin):
                         self.task_event_manager.handle_event(dag_run_id, event)
                 elif isinstance(event, RequestEvent):
                     self._process_request_event(event)
-                elif isinstance(event, ResponseEvent):
-                    continue
                 elif isinstance(event, TaskSchedulingEvent):
                     self._schedule_task(event)
                 elif isinstance(event, TaskStatusChangedEvent):
@@ -153,8 +151,6 @@ class EventBasedScheduler(LoggingMixin):
                     self._send_scheduling_task_event(ti, event.action)
                 elif isinstance(event, StopDagEvent):
                     self._stop_dag(event.dag_id, session)
-                elif isinstance(event, ParseDagRequestEvent) or isinstance(event, ParseDagResponseEvent):
-                    pass
                 elif isinstance(event, StopSchedulerEvent):
                     self.log.info("{} {}".format(self.id, event.job_id))
                     if self.id == event.job_id or 0 == event.job_id:
@@ -162,6 +158,10 @@ class EventBasedScheduler(LoggingMixin):
                         identified_message.remove_handled_message()
                         session.expunge_all()
                         break
+                elif isinstance(event, ParseDagRequestEvent) or isinstance(event, ParseDagResponseEvent):
+                    pass
+                elif isinstance(event, ResponseEvent):
+                    pass
                 else:
                     self.log.error("can not handler the event {}".format(event))
                 identified_message.remove_handled_message()
@@ -216,7 +216,9 @@ class EventBasedScheduler(LoggingMixin):
                     next_dagrun = dag_model.next_dagrun
                     dag_hash = self.dagbag.dags_hash.get(dag.dag_id)
                     run_id = None
+                    external_trigger = False
                     if run_type == DagRunType.MANUAL:
+                        external_trigger = True
                         run_id = f"{run_type}__{timezone.utcnow().isoformat()}"
                     dag_run = dag.create_dagrun(
                         run_type=run_type,
@@ -224,7 +226,7 @@ class EventBasedScheduler(LoggingMixin):
                         run_id=run_id,
                         start_date=timezone.utcnow(),
                         state=State.RUNNING,
-                        external_trigger=False,
+                        external_trigger=external_trigger,
                         session=session,
                         dag_hash=dag_hash,
                         creating_job_id=self.id,
@@ -313,7 +315,7 @@ class EventBasedScheduler(LoggingMixin):
         self,
         dag_run: DagRun,
         session: Session,
-        check_execution_date=True
+        check_execution_date=False
     ) -> Optional[List[TI]]:
         """
         Make scheduling decisions about an individual dag run
@@ -380,9 +382,13 @@ class EventBasedScheduler(LoggingMixin):
         # filter need event tasks
         serialized_dag = session.query(SerializedDagModel).filter(
             SerializedDagModel.dag_id == dag_run.dag_id).first()
-        dep: DagEventDependencies = DagEventDependencies.from_json(serialized_dag.event_relationships)
-        event_task_set = dep.find_event_dependencies_tasks()
         final_scheduled_tis = []
+        event_task_set = []
+        if serialized_dag:
+            dep: DagEventDependencies = DagEventDependencies.from_json(serialized_dag.event_relationships)
+            event_task_set = dep.find_event_dependencies_tasks()
+        else:
+            self.log.error("Failed to get serialized_dag from db, unexpected dag id: %s", dag_run.dag_id)
         for ti in scheduled_tis:
             if ti.task_id not in event_task_set:
                 final_scheduled_tis.append(ti)
