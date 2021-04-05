@@ -116,13 +116,11 @@ def run_job():
     af.stop_before_control_dependency(predict_channel, push_model_channel)
 
     # Run workflow
-    transform_dag = 'batch_train_batch_predict_airflow_kuang'
+    transform_dag = 'batch_train_batch_predict_airflow'
     af.deploy_to_airflow(project_root_path, dag_id=transform_dag)
-    print(example_util.get_root_path())
     context = af.run(project_path=project_root_path,
                      dag_id=transform_dag,
                      scheduler_type=SchedulerType.AIRFLOW)
-    print(context.dagrun_id)
 
 
 if __name__ == '__main__':
