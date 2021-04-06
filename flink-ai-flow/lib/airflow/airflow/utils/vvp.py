@@ -19,10 +19,11 @@ import json
 
 
 class DeploymentSpec(object):
-    def __init__(self, id, name, state):
+    def __init__(self, id, namespace, state, name=None):
         self.id = id
         self.name = name
         self.state = state
+        self.namespace = namespace
 
     def __repr__(self):
         return "[%s(%r)]" % (self.__class__, self.__dict__)
@@ -47,6 +48,7 @@ class VVPRestfulUtil(object):
         result = []
         for item in items:
             result.append(DeploymentSpec(id=item['metadata']['id'],
+                                         namespace=namespace,
                                          name=item['metadata']['name'],
                                          state=item['status']['state']))
         return result
