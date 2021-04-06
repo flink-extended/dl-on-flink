@@ -37,12 +37,13 @@ class EndMessage(object):
 
 
 class VVPOperator(BaseOperator):
+    template_fields = ('namespace', 'deployment_id')
+
     @apply_defaults
-    def __init__(self, *, namespace: str, deployment_id: str, action: str, **kwargs):
+    def __init__(self, *, namespace: str, deployment_id: str, **kwargs):
         super().__init__(**kwargs)
         self.namespace = namespace
         self.deployment_id = deployment_id
-        self.action = action
 
     def execute(self, context: Any):
         pass
@@ -56,9 +57,9 @@ class VVPExecutor(BaseExecutor):
     def __init__(self):
         super().__init__()
         self.queue = queue.Queue()
-        self.threading_pool = ThreadPoolExecutor(conf.get('VVPExecutor', 'parallelism', fallback=3))
+        self.threading_pool = ThreadPoolExecutor(conf.getint('VVPExecutor', 'parallelism', fallback=3))
         self.dagbag = dagbag.DagBag(read_dags_from_db=True)
-        self.vvp_restful_util = VVPRestfulUtil(base_url=conf.get('VVPExecutor', 'base_url'),
+        self.vvp_restful_util = VVPRestfulUtil(base_url=conf.get('VVPExecutor', 'base_url', fallback=None),
                                                namespaces=conf.get('VVPExecutor', 'namespaces', fallback='vvp'),
                                                token=conf.get('VVPExecutor', 'token', fallback=None))
         self.thread = None
@@ -93,11 +94,14 @@ class VVPExecutor(BaseExecutor):
                     with create_session() as session:
                         dag = dagbag.get_dag(key.dag_id, session)
                         task = dag.get_task(key.task_id)
-                        if isinstance(task, VVPOperator):
+                        ti = self.get_task_instance(key)
+                        if isinstance(task, VVPOperator) or task.task_type == "VVPOperator":
                             if SchedulingAction.START == action:
                                 vvp_restful_util.start_deployment(task.namespace, task.deployment_id)
+                                ti.set_state(State.RUNNING)
                             elif SchedulingAction.STOP == action:
                                 vvp_restful_util.stop_deployment(task.namespace, task.deployment_id)
+                                ti.set_state(State.KILLED)
 
         self.thread = threading.Thread(target=_handler, args=(self.queue, self.vvp_restful_util, self.dagbag))
         self.thread.setDaemon(True)
@@ -116,11 +120,11 @@ class VVPExecutor(BaseExecutor):
             self.log.error(e.__traceback__)
         if len(deployment_status_map) > 0:
             with create_session() as session:
-                running_tis = session.query(TaskInstance).filter(TaskInstance.state == State.RUNNING)
+                running_tis = session.query(TaskInstance).filter(TaskInstance.state == State.RUNNING).all()
                 for ti in running_tis:
                     dag = self.dagbag.get_dag(ti.dag_id, session)
                     task = dag.get_task(ti.task_id)
-                    if isinstance(task, VVPOperator):
+                    if isinstance(task, VVPOperator) or task.task_type == "VVPOperator":
                         if (task.namespace, task.deployment_id) in deployment_status_map:
                             state = deployment_status_map[(task.namespace, task.deployment_id)]
                             if state == 'SUCCESS':
@@ -146,11 +150,11 @@ class VVPExecutor(BaseExecutor):
 
     def recover_state(self):
         with create_session() as session:
-            queued_tis = session.query(TaskInstance).filter(TaskInstance.state in {State.QUEUED, State.KILLING})
+            queued_tis = session.query(TaskInstance).filter(TaskInstance.state.in_([State.QUEUED, State.KILLING])).all()
             for ti in queued_tis:
                 dag = self.dagbag.get_dag(ti.dag_id, session)
                 task = dag.get_task(ti.task_id)
-                if isinstance(task, VVPOperator):
+                if isinstance(task, VVPOperator) or task.task_type == "VVPOperator":
                     key = TaskInstanceKey(ti.dag_id, ti.task_id, ti.execution_date, ti.try_number)
                     if ti.state == State.QUEUED:
                         self.queue.put((key, SchedulingAction.START))
