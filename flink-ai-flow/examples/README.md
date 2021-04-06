@@ -20,7 +20,7 @@ If you are in Docker environment, these services should have been started.
 
 2. Configure and Run script
 
-Configure AirFlow Deploy path in `python_examples/project.yaml`. Then run commands:
+Configure AirFlow Deploy path in `python_examples/project.yaml`(If using docker, the path has been already set). Then run commands:
 ```shell
  cd python_examples
  export PYTHONPATH=.
@@ -28,6 +28,34 @@ Configure AirFlow Deploy path in `python_examples/project.yaml`. Then run comman
 ```
 
 When the program finishes, you should be able to view transform result in `sink_data.csv` file under `python_examples/python_codes/simple_transform_airflow` dir.
+
+If you do not get the expected output, check logs in [Web UI](127.0.0.1:8080) or in log dir under the AirFlow Deploy dir.
+
+#### [2. Batch Train and Batch Predict Scheduled by AirFlow](python_examples/python_codes/batch_train_batch_predict_airflow)
+This example will read a mnist data file and follow the procedure "read data -> train -> evaluate -> validate -> push -> predict" to train an LR model and use it for inference.
+
+
+To run this example:
+1. Make sure the AI Flow server, Airflow server and notification server is started on the target machine.
+
+2. Configure and Run script
+
+Configure AirFlow Deploy path in `python_examples/project.yaml`(If using docker, the path has been already set). Then run commands:
+```shell
+ cd python_examples
+ export PYTHONPATH=.
+ python python_codes/batch_train_batch_predict_airflow/sklearn_batch_train_batch_predict.py
+```
+
+
+When the program finishes, from [Web UI](127.0.0.1:8080), you should see it the dag successfully finishes all jobs. 
+And you should be able to view the evaluation result of the model in the file `examples/python_examples/python_codes/batch_train_batch_predict_airflow/evaluate_model`, which should look like:
+
+```shell
+model version[1] scores: [0.8242636  0.83025462 0.83       0.81981982 0.82314629]
+```
+Besides, the prediction result is stored in the file `examples/python_examples/python_codes/batch_train_batch_predict_airflow/predict_model`. 
+The generated model named by it generated date is saved under dir `examples/python_examples/batch_train_batch_predict_airflow/saved_model`.
 
 If you do not get the expected output, check logs in [Web UI](127.0.0.1:8080) or in log dir under the AirFlow Deploy dir.
 
