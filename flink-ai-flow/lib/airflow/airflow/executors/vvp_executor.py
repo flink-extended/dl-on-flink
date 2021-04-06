@@ -17,6 +17,7 @@
 
 import queue
 import threading
+import traceback
 from typing import Any, Dict, List, Optional
 from airflow.models.dagbag import DagBag
 from airflow.utils.state import State
@@ -128,7 +129,7 @@ class VVPExecutor(BaseExecutor):
                 for deployment in deployments:
                     deployment_status_map[(namespace, deployment.id)] = deployment.state
         except Exception as e:
-            self.log.error(e.__traceback__)
+            self.log.error(traceback.format_exc())
         if len(deployment_status_map) > 0:
             with create_session() as session:
                 running_tis = session.query(TaskInstance).filter(TaskInstance.state == State.RUNNING).all()
