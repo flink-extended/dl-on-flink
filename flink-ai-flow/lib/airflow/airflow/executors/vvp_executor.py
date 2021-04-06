@@ -18,7 +18,6 @@
 import queue
 import threading
 from typing import Any, Dict, List, Optional
-from concurrent.futures import ThreadPoolExecutor
 from airflow.models.dagbag import DagBag
 from airflow.utils.state import State
 from airflow.executors.scheduling_action import SchedulingAction
@@ -26,7 +25,7 @@ from airflow.models import dagbag
 from airflow.configuration import conf
 from airflow.executors.base_executor import BaseExecutor, CommandType
 from airflow.models.taskinstance import TaskInstance, TaskInstanceKey
-from airflow.utils.session import create_session, provide_session
+from airflow.utils.session import create_session
 from airflow.utils.vvp import VVPRestfulUtil
 from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
@@ -54,15 +53,18 @@ class VVPExecutor(BaseExecutor):
     This executor handle jobs on vvp platform
     """
 
-    def __init__(self):
+    def __init__(self, parallelism=None):
         super().__init__()
         self.queue = queue.Queue()
-        self.threading_pool = ThreadPoolExecutor(conf.getint('VVPExecutor', 'parallelism', fallback=3))
+        if parallelism is None:
+            self.parallelism = conf.getint('core', 'parallelism', fallback=3)
+        else:
+            self.parallelism  = parallelism
         self.dagbag = dagbag.DagBag(read_dags_from_db=True)
         self.vvp_restful_util = VVPRestfulUtil(base_url=conf.get('VVPExecutor', 'base_url', fallback=None),
                                                namespaces=conf.get('VVPExecutor', 'namespaces', fallback='vvp'),
                                                token=conf.get('VVPExecutor', 'token', fallback=None))
-        self.thread = None
+        self.threads = []
 
     def _start_task_instance(self, key: TaskInstanceKey):
         ti = self.get_task_instance(key)
@@ -88,6 +90,7 @@ class VVPExecutor(BaseExecutor):
             while True:
                 message = queue.get()
                 if isinstance(message, EndMessage):
+                    queue.put(message)
                     break
                 else:
                     key, action = message
@@ -102,10 +105,13 @@ class VVPExecutor(BaseExecutor):
                             elif SchedulingAction.STOP == action:
                                 vvp_restful_util.stop_deployment(task.namespace, task.deployment_id)
                                 ti.set_state(State.KILLED)
-
-        self.thread = threading.Thread(target=_handler, args=(self.queue, self.vvp_restful_util, self.dagbag))
-        self.thread.setDaemon(True)
-        self.thread.start()
+        for i in range(self.parallelism):
+            thread = threading.Thread(target=_handler, args=(self.queue, self.vvp_restful_util, self.dagbag))
+            thread.setName('vvp-executor-{}'.format(i))
+            thread.setDaemon(True)
+            self.threads.append(thread)
+            thread.start()
+            self.log.info('start vvp executor parallelism {}'.format(i))
 
     def sync(self) -> None:
         # Get VVP platform deployments status then update taskInstance and taskExecution
@@ -144,9 +150,10 @@ class VVPExecutor(BaseExecutor):
         self.terminate()
 
     def terminate(self):
-        if self.thread is not None:
+        if self.threads is not None and len(self.threads) > 0:
             self.queue.put(EndMessage())
-            self.thread.join()
+            for t in self.threads:
+                t.join()
 
     def recover_state(self):
         with create_session() as session:

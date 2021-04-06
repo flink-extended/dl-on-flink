@@ -77,7 +77,7 @@ class TestVVPExecutor(unittest.TestCase):
     def test_start_stop_task(self):
         with create_session() as session:
             ti = self.build_dag(session)
-            vvp_executor = VVPExecutor()
+            vvp_executor = VVPExecutor(parallelism=3)
             vvp_executor.vvp_restful_util.start_deployment = mock.Mock(return_value=True)
             vvp_executor.vvp_restful_util.stop_deployment = mock.Mock(return_value=True)
             vvp_executor.start()
@@ -96,7 +96,7 @@ class TestVVPExecutor(unittest.TestCase):
     def test_sync_executor(self):
         with create_session() as session:
             ti = self.build_dag(session)
-            vvp_executor = VVPExecutor()
+            vvp_executor = VVPExecutor(parallelism=3)
             vvp_executor.vvp_restful_util.start_deployment = mock.Mock(return_value=True)
             vvp_executor.vvp_restful_util.stop_deployment = mock.Mock(return_value=True)
             vvp_executor.vvp_restful_util.get_namespaces = mock.Mock(return_value=['ns1'])
@@ -116,7 +116,7 @@ class TestVVPExecutor(unittest.TestCase):
     def test_recover_executor(self):
         with create_session() as session:
             ti = self.build_dag(session)
-            vvp_executor = VVPExecutor()
+            vvp_executor = VVPExecutor(parallelism=3)
             vvp_executor.vvp_restful_util.start_deployment = mock.Mock(return_value=True)
             vvp_executor.vvp_restful_util.stop_deployment = mock.Mock(return_value=True)
             vvp_executor.vvp_restful_util.get_namespaces = mock.Mock(return_value=['ns1'])
