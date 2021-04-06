@@ -36,13 +36,14 @@ class EndMessage(object):
 
 
 class VVPOperator(BaseOperator):
-    template_fields = ('namespace', 'deployment_id')
+    template_fields = ('namespace', 'deployment_id', 'token')
 
     @apply_defaults
-    def __init__(self, *, namespace: str, deployment_id: str, **kwargs):
+    def __init__(self, *, namespace: str, deployment_id: str, token: str = None, **kwargs):
         super().__init__(**kwargs)
         self.namespace = namespace
         self.deployment_id = deployment_id
+        self.token = token
 
     def execute(self, context: Any):
         pass
@@ -59,11 +60,11 @@ class VVPExecutor(BaseExecutor):
         if parallelism is None:
             self.parallelism = conf.getint('core', 'parallelism', fallback=3)
         else:
-            self.parallelism  = parallelism
+            self.parallelism = parallelism
         self.dagbag = dagbag.DagBag(read_dags_from_db=True)
         self.vvp_restful_util = VVPRestfulUtil(base_url=conf.get('VVPExecutor', 'base_url', fallback=None),
                                                namespaces=conf.get('VVPExecutor', 'namespaces', fallback='vvp'),
-                                               token=conf.get('VVPExecutor', 'token', fallback=None))
+                                               tokens=conf.get('VVPExecutor', 'tokens', fallback=None))
         self.threads = []
 
     def _start_task_instance(self, key: TaskInstanceKey):
@@ -100,11 +101,15 @@ class VVPExecutor(BaseExecutor):
                         ti = self.get_task_instance(key)
                         if isinstance(task, VVPOperator) or task.task_type == "VVPOperator":
                             if SchedulingAction.START == action:
-                                vvp_restful_util.start_deployment(task.namespace, task.deployment_id)
+                                vvp_restful_util.start_deployment(task.namespace, task.deployment_id, task.token)
                                 ti.set_state(State.RUNNING)
                             elif SchedulingAction.STOP == action:
-                                vvp_restful_util.stop_deployment(task.namespace, task.deployment_id)
+                                vvp_restful_util.stop_deployment(task.namespace, task.deployment_id, task.token)
                                 ti.set_state(State.KILLED)
+                        else:
+                            self.log.error('VVPExecutor can not execute task {}, which is not VVPOperator(is {})'
+                                           .format(ti.task_id, str(task)))
+
         for i in range(self.parallelism):
             thread = threading.Thread(target=_handler, args=(self.queue, self.vvp_restful_util, self.dagbag))
             thread.setName('vvp-executor-{}'.format(i))

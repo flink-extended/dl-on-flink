@@ -43,12 +43,10 @@ def run_flink_python_job():
 
 def run_flink_spec_job():
     with af.global_config_file(test_util.get_job_config_file()):
-        with af.config('vvp_spec_job'):
+        with af.config('task_1'):
             faf.vvp_job()
-    workflow_id = af.run(test_util.get_project_path(), dag_id='wordcount_vvp_python',
-                         scheduler_type=af.SchedulerType.AIFLOW)
-    res = af.wait_workflow_execution_finished(workflow_id)
-    print(res)
+        result = af.deploy_to_airflow(test_util.get_project_path())
+        print(result)
 
 
 if __name__ == '__main__':
