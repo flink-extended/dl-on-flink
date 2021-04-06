@@ -39,82 +39,109 @@ from ai_flow.common import serialization_utils
 from airflow.operators.bash_operator import BashOperator
 
 
+# class VVPJobConfig(AbstractJobConfig):
+#     @staticmethod
+#     def from_dict(data: Dict, config) -> object:
+#         AbstractJobConfig.from_dict(data, config)
+#         config.base_url = data['base_url']
+#         config.namespace = data['namespace']
+#         config.token = data['token']
+#         config.deployment_name = data['deployment_name']
+#         config.jar_path = data.get('jar_path', None)
+#         config.entry_class = data.get('entry_class', None)
+#         config.main_args = data.get('main_args', None)
+#         config.flink_image_info = data.get('flink_image_info', None)
+#         config.parallelism = data.get('parallelism', 1)
+#         config.resources = data.get('resources', None)
+#         config.logging = data.get('logging', None)
+#         config.flink_config = data.get('flink_config')
+#         config.upgrade_strategy = data.get('upgrade_strategy', default_upgrade_strategy)
+#         config.restore_strategy = data.get('restore_strategy', default_restore_strategy)
+#         config.job_type = data.get('job_type', 'java')
+#         config.addition_dependencies = data.get('addition_dependencies', [])
+#         config.kubernetes = data.get('kubernetes', {})
+#         config.spec = data.get('spec', None)
+#         return config
+#
+#     def __init__(self,
+#                  base_url: Text = None,
+#                  namespace: Text = None,
+#                  jar_path: Text = None,
+#                  deployment_name: Text = None,
+#                  entry_class: Text = "",
+#                  main_args: Text = "",
+#                  token: Text = None,
+#                  flink_image_info=default_flink_image_info,
+#                  parallelism=1,
+#                  resources=default_resources,
+#                  flink_config=default_flink_config,
+#                  logging=default_logging,
+#                  upgrade_strategy=default_upgrade_strategy,
+#                  restore_strategy=default_restore_strategy,
+#                  job_type='java',
+#                  addition_dependencies=list(),
+#                  kubernetes=default_kubernetes,
+#                  spec=None,
+#                  properties: Dict[Text, Jsonable] = None) -> None:
+#         super().__init__('vvp', 'flink', properties)
+#         self.base_url = base_url
+#         self.namespace = namespace
+#         self.jar_path = jar_path
+#         self.deployment_name = deployment_name
+#         self.token = token
+#         self.flink_image_info = flink_image_info
+#         self.parallelism = parallelism
+#         self.resources = resources
+#         self.flink_config = flink_config
+#         self.logging = logging
+#         self.entry_class = entry_class
+#         self.main_args = main_args
+#         self.job_type = job_type
+#         self.restore_strategy = restore_strategy
+#         self.upgrade_strategy = upgrade_strategy,
+#         self.addition_dependencies = addition_dependencies
+#         self.kubernetes = kubernetes
+#         self.spec = spec
+
 class VVPJobConfig(AbstractJobConfig):
     @staticmethod
     def from_dict(data: Dict, config) -> object:
         AbstractJobConfig.from_dict(data, config)
-        config.base_url = data['base_url']
         config.namespace = data['namespace']
-        config.token = data['token']
-        config.deployment_name = data['deployment_name']
-        config.jar_path = data.get('jar_path', None)
-        config.entry_class = data.get('entry_class', None)
-        config.main_args = data.get('main_args', None)
-        config.flink_image_info = data.get('flink_image_info', None)
-        config.parallelism = data.get('parallelism', 1)
-        config.resources = data.get('resources', None)
-        config.logging = data.get('logging', None)
-        config.flink_config = data.get('flink_config')
-        config.upgrade_strategy = data.get('upgrade_strategy', default_upgrade_strategy)
-        config.restore_strategy = data.get('restore_strategy', default_restore_strategy)
-        config.job_type = data.get('job_type', 'java')
-        config.addition_dependencies = data.get('addition_dependencies', [])
-        config.kubernetes = data.get('kubernetes', {})
-        config.spec = data.get('spec', None)
+        config.deployment_id = data['deployment_id']
+        if 'token' not in data:
+            config.token = None
+        else:
+            config.token = data['token']
         return config
 
     def __init__(self,
-                 base_url: Text = None,
                  namespace: Text = None,
-                 jar_path: Text = None,
-                 deployment_name: Text = None,
-                 entry_class: Text = "",
-                 main_args: Text = "",
+                 deployment_id: Text = None,
                  token: Text = None,
-                 flink_image_info=default_flink_image_info,
-                 parallelism=1,
-                 resources=default_resources,
-                 flink_config=default_flink_config,
-                 logging=default_logging,
-                 upgrade_strategy=default_upgrade_strategy,
-                 restore_strategy=default_restore_strategy,
-                 job_type='java',
-                 addition_dependencies=list(),
-                 kubernetes=default_kubernetes,
-                 spec=None,
                  properties: Dict[Text, Jsonable] = None) -> None:
         super().__init__('vvp', 'flink', properties)
-        self.base_url = base_url
         self.namespace = namespace
-        self.jar_path = jar_path
-        self.deployment_name = deployment_name
+        self.deployment_name = deployment_id
         self.token = token
-        self.flink_image_info = flink_image_info
-        self.parallelism = parallelism
-        self.resources = resources
-        self.flink_config = flink_config
-        self.logging = logging
-        self.entry_class = entry_class
-        self.main_args = main_args
-        self.job_type = job_type
-        self.restore_strategy = restore_strategy
-        self.upgrade_strategy = upgrade_strategy,
-        self.addition_dependencies = addition_dependencies
-        self.kubernetes = kubernetes
-        self.spec = spec
 
 
+# class VVPJob(AbstractJob):
+#     def __init__(self,
+#                  job_context: JobContext,
+#                  job_config: VVPJobConfig) -> None:
+#         super().__init__(job_context, job_config)
+#         self.vvp_deployment_id: Text = None
+#         self.vvp_job_id: Text = None
+#         self.vvp_restful: VVPRestful \
+#             = VVPRestful(base_url=job_config.base_url, namespace=job_config.namespace, token=job_config.token)
+#         self.config_file = None
+#         self.exec_cmd = None
 class VVPJob(AbstractJob):
     def __init__(self,
                  job_context: JobContext,
                  job_config: VVPJobConfig) -> None:
         super().__init__(job_context, job_config)
-        self.vvp_deployment_id: Text = None
-        self.vvp_job_id: Text = None
-        self.vvp_restful: VVPRestful \
-            = VVPRestful(base_url=job_config.base_url, namespace=job_config.namespace, token=job_config.token)
-        self.config_file = None
-        self.exec_cmd = None
 
 
 class VVPFlinkJobPlugin(AbstractJobPlugin):
@@ -210,41 +237,22 @@ class VVPFlinkJobPlugin(AbstractJobPlugin):
         return FlinkEngine
 
     def generate_operator_code(self) -> Text:
-        return "from flink_ai_flow.vvp_flink_job import VVPFlinkOperator\n"
+        return "from airflow.operators.vvp import VVPOperator\n"
 
     def generate_code(self, op_index, job):
-        blob_manager = BlobManagerFactory.get_blob_manager(job.job_config.properties)
-        copy_path = sys.path.copy()
-        if job.job_config.project_path is not None:
-            downloaded_blob_path = blob_manager.download_blob(job.instance_id, job.job_config.project_path)
-            python_codes_path = downloaded_blob_path + '/python_codes'
-            copy_path.append(python_codes_path)
-        if job.job_config.project_desc.python_paths is not None:
-            copy_path.extend(job.job_config.project_desc.python_paths)
-        copy_set = set(copy_path)
-        add_path = ':'.join(copy_set)
-
-        VVP_OPERATOR = """env_{0} = {{'PYTHONPATH': '{7}'}}\nop_{0} = VVPFlinkOperator(task_id='{1}', dag=dag, bash_command='{2}', """ \
-                       + """id_file='{3}', base_url='{4}', namespace='{5}', token='{6}', env=env_{0})\n"""
-        id_file = '{}/temp/vvp/{}/{}'.format(
-            job.job_config.project_path, str(job.job_context.workflow_execution_id), job.instance_id)
-        return VVP_OPERATOR.format(op_index, job_name_to_task_id(job.job_name), job.exec_cmd, id_file,
-                                   job.job_config.base_url,
-                                   job.job_config.namespace, job.job_config.token, add_path)
+        if job.job_config.token is None:
+            VVP_OPERATOR = """op_{0} = VVPOperator(task_id='{1}', namespace='{2}', deployment_id='{3}', token=None, dag=dag)\n"""
+            return VVP_OPERATOR.format(op_index,
+                                       job_name_to_task_id(job.job_name),
+                                       job.job_config.namespace,
+                                       job.job_config.deployment_id)
+        else:
+            VVP_OPERATOR = """op_{0} = VVPOperator(task_id='{1}', namespace='{2}', deployment_id='{3}', token='{4}', dag=dag)\n"""
+            return VVP_OPERATOR.format(op_index,
+                                       job_name_to_task_id(job.job_name),
+                                       job.job_config.namespace,
+                                       job.job_config.deployment_id,
+                                       job.job_config.token)
 
     def wait_until_deployment_finished(self, deployment_id, job: VVPJob):
         job.vvp_restful.wait_deployment_state(deployment_id, state=set(['CANCELLED', 'FINISHED']), interval=60)
-
-
-class VVPFlinkOperator(BashOperator):
-    def __init__(self, id_file, base_url, namespace, token, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.id_file = id_file
-        self.vvp_restful: VVPRestful \
-            = VVPRestful(base_url=base_url, namespace=namespace, token=token)
-
-    def on_kill(self):
-        if os.path.exists(self.id_file):
-            with open(self.id_file, 'r') as f:
-                deployment_id = f.read()
-            self.vvp_restful.sync_stop_deployment(deployment_id)
