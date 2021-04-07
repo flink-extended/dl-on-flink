@@ -90,26 +90,29 @@ class VVPExecutor(BaseExecutor):
     def start(self):
         def _handler(queue: queue.Queue, vvp_restful_util: VVPRestfulUtil, dagbag: DagBag):
             while True:
-                message = queue.get()
-                if isinstance(message, EndMessage):
-                    queue.put(message)
-                    break
-                else:
-                    key, action = message
-                    with create_session() as session:
-                        dag = dagbag.get_dag(key.dag_id, session)
-                        task = dag.get_task(key.task_id)
-                        ti = self.get_task_instance(key)
-                        if isinstance(task, VVPOperator) or task.task_type == "VVPOperator":
-                            if SchedulingAction.START == action:
-                                vvp_restful_util.start_deployment(task.namespace, task.deployment_id, task.token)
-                                ti.set_state(State.RUNNING)
-                            elif SchedulingAction.STOP == action:
-                                vvp_restful_util.stop_deployment(task.namespace, task.deployment_id, task.token)
-                                ti.set_state(State.KILLED)
-                        else:
-                            self.log.error('VVPExecutor can not execute task {}, which is not VVPOperator(is {})'
-                                           .format(ti.task_id, str(task)))
+                try:
+                    message = queue.get()
+                    if isinstance(message, EndMessage):
+                        queue.put(message)
+                        break
+                    else:
+                        key, action = message
+                        with create_session() as session:
+                            dag = dagbag.get_dag(key.dag_id, session)
+                            task = dag.get_task(key.task_id)
+                            ti = self.get_task_instance(key)
+                            if isinstance(task, VVPOperator) or task.task_type == "VVPOperator":
+                                if SchedulingAction.START == action:
+                                    vvp_restful_util.start_deployment(task.namespace, task.deployment_id, task.token)
+                                    ti.set_state(State.RUNNING)
+                                elif SchedulingAction.STOP == action:
+                                    vvp_restful_util.stop_deployment(task.namespace, task.deployment_id, task.token)
+                                    ti.set_state(State.KILLED)
+                            else:
+                                self.log.error('VVPExecutor can not execute task {}, which is not VVPOperator(is {})'
+                                               .format(ti.task_id, str(task)))
+                except Exception as e:
+                    self.log.error('VVP job has errors {}'.format(traceback.format_exc()))
 
         for i in range(self.parallelism):
             thread = threading.Thread(target=_handler, args=(self.queue, self.vvp_restful_util, self.dagbag))
