@@ -18,12 +18,11 @@
 ## under the License.
 ##
 set -e
-export AIRFLOW_HOME=${AIRFLOW_HOME:-~/airflow}
+export AIFLOW_PID_DIR=${AIFLOW_PID_DIR:-/tmp}
 AIRFLOW_DEPLOY_PATH="${AIRFLOW_HOME}/airflow_deploy"
 
 set +e
-for((i=1;i<=3;i++));do kill $(cat ${AIRFLOW_HOME}/scheduler.pid) >/dev/null 2>&1 && sleep 1;done
-for((i=1;i<=3;i++));do kill $(cat ${AIRFLOW_HOME}/web.pid) >/dev/null 2>&1 && sleep 1;done
-for((i=1;i<=3;i++));do kill $(cat ${AIRFLOW_HOME}/master_server.pid) >/dev/null 2>&1 && sleep 1;done
-for((i=1;i<=3;i++));do kill $(cat ${AIRFLOW_HOME}/notification_service.pid) >/dev/null 2>&1 && sleep 1;done
-rm -rf ${AIRFLOW_DEPLOY_PATH}
+for((i=1;i<=3;i++));do kill $(cat ${AIFLOW_PID_DIR}/scheduler.pid) >/dev/null 2>&1 && sleep 1;done
+for((i=1;i<=3;i++));do kill $(cat ${AIFLOW_PID_DIR}/web.pid) >/dev/null 2>&1 && sleep 1;done
+for((i=1;i<=3;i++));do kill $(cat ${AIFLOW_PID_DIR}/master_server.pid) >/dev/null 2>&1 && sleep 1;done
+for((i=1;i<=3;i++));do kill $(cat ${AIFLOW_PID_DIR}/notification_service.pid) >/dev/null 2>&1 && sleep 1;done
