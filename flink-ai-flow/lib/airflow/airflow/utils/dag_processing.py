@@ -582,6 +582,8 @@ class DagFileProcessorManager(LoggingMixin):  # pylint: disable=too-many-instanc
         # How often to scan the DAGs directory for new files. Default to 5 minutes.
         self.dag_dir_list_interval = conf.getint('scheduler', 'dag_dir_list_interval')
 
+        self.remove_non_existent_dag: bool = conf.getboolean('scheduler', 'remove_non_existent_dag', fallback=True)
+
         # Mapping file name and callbacks requests
         self._callback_to_execute: Dict[str, List[CallbackRequest]] = defaultdict(list)
 
@@ -633,7 +635,7 @@ class DagFileProcessorManager(LoggingMixin):  # pylint: disable=too-many-instanc
             self.ns_client = NotificationClient(server_uri=self.notification_service_uri,
                                                 default_namespace='scheduler')
             self.ns_client.start_listen_event(key='*',
-                                              event_type='PARSE_DAG_REQUEST', 
+                                              event_type='PARSE_DAG_REQUEST',
                                               namespace='*',
                                               watcher=self.watcher)
 
@@ -801,19 +803,20 @@ class DagFileProcessorManager(LoggingMixin):  # pylint: disable=too-many-instanc
             self.log.info("There are %s files in %s", len(self._file_paths), self._dag_directory)
             self.set_file_paths(self._file_paths)
 
-            try:
-                self.log.debug("Removing old import errors")
-                self.clear_nonexistent_import_errors()  # pylint: disable=no-value-for-parameter
-            except Exception:  # noqa pylint: disable=broad-except
-                self.log.exception("Error removing old import errors")
+            if self.remove_non_existent_dag:
+                try:
+                    self.log.debug("Removing old import errors")
+                    self.clear_nonexistent_import_errors()  # pylint: disable=no-value-for-parameter
+                except Exception:  # noqa pylint: disable=broad-except
+                    self.log.exception("Error removing old import errors")
 
-            SerializedDagModel.remove_deleted_dags(self._file_paths)
-            DagModel.deactivate_deleted_dags(self._file_paths)
+                SerializedDagModel.remove_deleted_dags(self._file_paths)
+                DagModel.deactivate_deleted_dags(self._file_paths)
 
-            if self.store_dag_code:
-                from airflow.models.dagcode import DagCode
+                if self.store_dag_code:
+                    from airflow.models.dagcode import DagCode
 
-                DagCode.remove_deleted_code(self._file_paths)
+                    DagCode.remove_deleted_code(self._file_paths)
 
     def _print_stat(self):
         """Occasionally print out stats about how fast the files are getting processed"""
