@@ -14,12 +14,11 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
+from datetime import datetime, timedelta
+from airflow.operators.vvp import VVPOperator
+from airflow import DAG
 
-LOCAL_EXECUTOR = "LocalExecutor"
-SEQUENTIAL_EXECUTOR = "SequentialExecutor"
-CELERY_EXECUTOR = "CeleryExecutor"
-CELERY_KUBERNETES_EXECUTOR = "CeleryKubernetesExecutor"
-DASK_EXECUTOR = "DaskExecutor"
-KUBERNETES_EXECUTOR = "KubernetesExecutor"
-DEBUG_EXECUTOR = "DebugExecutor"
-VVP_EXECUTOR = "VVPExecutor"
+dag = DAG(dag_id="vvp_dag", start_date=datetime.utcnow()+timedelta(1), schedule_interval='@once')
+
+op1 = VVPOperator(task_id='op_1', namespace='ns1', deployment_id='dp_id', dag=dag)
+

@@ -1,0 +1,8 @@
+workflow_name: test_vvp_dag
+task_1:
+  platform: vvp
+  engine: flink
+  job_name: task_1
+  namespace: ns1
+  deployment_id: dp_id1
+  token: 111

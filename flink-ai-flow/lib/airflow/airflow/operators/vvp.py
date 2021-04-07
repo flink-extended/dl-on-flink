@@ -15,11 +15,6 @@
 # specific language governing permissions and limitations
 # under the License.
 
-LOCAL_EXECUTOR = "LocalExecutor"
-SEQUENTIAL_EXECUTOR = "SequentialExecutor"
-CELERY_EXECUTOR = "CeleryExecutor"
-CELERY_KUBERNETES_EXECUTOR = "CeleryKubernetesExecutor"
-DASK_EXECUTOR = "DaskExecutor"
-KUBERNETES_EXECUTOR = "KubernetesExecutor"
-DEBUG_EXECUTOR = "DebugExecutor"
-VVP_EXECUTOR = "VVPExecutor"
+from airflow.executors.vvp_executor import VVPOperator
+
+VVPOperator = VVPOperator
