@@ -19,6 +19,7 @@
 ##
 set -e
 export AIRFLOW_HOME=${AIRFLOW_HOME:-~/airflow}
+export AIFLOW_PID_DIR=${AIFLOW_PID_DIR:-/tmp}
 
 if [[ ! -f "${AIRFLOW_HOME}/airflow.cfg" ]] ; then
     MYSQL_CONN=$1
@@ -45,22 +46,12 @@ if [[ ! -f "${AIRFLOW_HOME}/airflow.cfg" ]] ; then
         gsub(\"execute_tasks_new_python_interpreter = False\", \"execute_tasks_new_python_interpreter = True\"); \
         gsub(\"min_serialized_dag_update_interval = 30\", \"min_serialized_dag_update_interval = 0\"); \
         print \$0}" airflow.cfg.tmpl > airflow.cfg
-
+    rm airflow.cfg.tmpl >/dev/null 2>&1 || true
     # prepare the database
     airflow db reset -y
 
     cd ${CURRENT_DIR}
 fi
-
-AIRFLOW_DEPLOY_PATH="${AIRFLOW_HOME}/airflow_deploy"
-
-# create the pending directory if not exists
-mkdir ${AIRFLOW_DEPLOY_PATH} >/dev/null 2>&1 || true
-
-# start notification service
-start_notification_service.py > ${AIRFLOW_HOME}/notification_service.log 2>&1 &
-echo $! > ${AIRFLOW_HOME}/notification_service.pid
-
 
 # create a default Admin user for airflow
 airflow users create \
@@ -70,20 +61,39 @@ airflow users create \
     --lastname admin \
     --role Admin \
     --email admin@example.org
+
+AIRFLOW_DEPLOY_PATH="${AIRFLOW_HOME}/airflow_deploy"
+AIFLOW_LOG_DIR="${AIRFLOW_HOME}/logs"
+
+# create the pending directory if not exists
+mkdir ${AIRFLOW_DEPLOY_PATH} >/dev/null 2>&1 || true
+
+if [ -d "${AIFLOW_LOG_DIR}" ]; then
+  time=$(date "+%Y%m%d-%H%M%S")
+  mv "${AIFLOW_LOG_DIR}" "${AIFLOW_LOG_DIR}.${time}"
+fi
+
+mkdir ${AIFLOW_LOG_DIR} >/dev/null 2>&1 || true
+
+# start notification service
+start_notification_service.py > ${AIFLOW_LOG_DIR}/notification_service.log 2>&1 &
+echo $! > ${AIFLOW_PID_DIR}/notification_service.pid
+
 # start airflow scheduler and web server
-airflow event_scheduler --subdir=${AIRFLOW_DEPLOY_PATH} > ${AIRFLOW_HOME}/scheduler.log 2>&1 &
-echo $! > ${AIRFLOW_HOME}/scheduler.pid
-airflow webserver -p 8080 > ${AIRFLOW_HOME}/web.log 2>&1 &
-echo $! > ${AIRFLOW_HOME}/web.pid
-start_aiflow.py > ${AIRFLOW_HOME}/master_server.log 2>&1 &
-echo $! > ${AIRFLOW_HOME}/master_server.pid
-echo "Notification service log: ${AIRFLOW_HOME}/notification_service.log"
-echo "Notification service pid: $(cat ${AIRFLOW_HOME}/notification_service.pid)"
-echo "Scheduler log: ${AIRFLOW_HOME}/scheduler.log"
-echo "Scheduler pid: $(cat ${AIRFLOW_HOME}/scheduler.pid)"
-echo "Web Server log: ${AIRFLOW_HOME}/web.log"
-echo "Web Server pid: $(cat ${AIRFLOW_HOME}/web.pid)"
-echo "Master Server log: ${AIRFLOW_HOME}/master_server.log"
-echo "Master Server pid: $(cat ${AIRFLOW_HOME}/master_server.pid)"
+airflow event_scheduler --subdir=${AIRFLOW_DEPLOY_PATH} > ${AIFLOW_LOG_DIR}/scheduler.log 2>&1 &
+echo $! > ${AIFLOW_PID_DIR}/scheduler.pid
+airflow webserver -p 8080 > ${AIFLOW_LOG_DIR}/web.log 2>&1 &
+echo $! > ${AIFLOW_PID_DIR}/web.pid
+start_aiflow.py > ${AIFLOW_LOG_DIR}/master_server.log 2>&1 &
+echo $! > ${AIFLOW_PID_DIR}/master_server.pid
+
+echo "Notification service log: ${AIFLOW_LOG_DIR}/notification_service.log"
+echo "Notification service pid: $(cat ${AIFLOW_PID_DIR}/notification_service.pid)"
+echo "Scheduler log: ${AIFLOW_LOG_DIR}/scheduler.log"
+echo "Scheduler pid: $(cat ${AIFLOW_PID_DIR}/scheduler.pid)"
+echo "Web Server log: ${AIFLOW_LOG_DIR}/web.log"
+echo "Web Server pid: $(cat ${AIFLOW_PID_DIR}/web.pid)"
+echo "Master Server log: ${AIFLOW_LOG_DIR}/master_server.log"
+echo "Master Server pid: $(cat ${AIFLOW_PID_DIR}/master_server.pid)"
 echo "Airflow deploy path: ${AIRFLOW_DEPLOY_PATH}"
 echo "Visit http://127.0.0.1:8080/ to access the airflow web server."
