@@ -18,12 +18,12 @@ The Quickstart will show you how to install AI Flow and help you get started wit
 
 We strongly recommend using [virtualenv](https://virtualenv.pypa.io/en/latest/index.html) or other similar tools to provide a isolated Python environment, 
 in case of dependencies conflict error.
-
 Please refer to MySQL  [document](https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html) to install mysql server and client.
 
-You need a started MySQL server, and a database with specific character set in case of error when creating Apache Airflow tables, for example: 
+You need a started MySQL server, and a database to store AI Flow meta data.
 ```text
-# As most tables are related to Apache Airflow, we choose 'airflow' to be the default database name
+# If your MySQL server version is 8.0+, please remind to create database with specific character set 
+# in case of primary key length error when creating Apache Airflow tables, like this:
 CREATE DATABASE airflow CHARACTER SET UTF8mb3 COLLATE utf8_general_ci;
 ```
 
