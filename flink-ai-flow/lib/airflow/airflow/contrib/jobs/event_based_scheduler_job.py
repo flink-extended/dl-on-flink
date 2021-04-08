@@ -25,6 +25,7 @@ import faulthandler
 from typing import Callable, List, Optional
 
 from airflow.exceptions import SerializedDagNotFound, AirflowException
+from airflow.models.dagcode import DagCode
 from airflow.models.message import IdentifiedMessage, MessageState
 from sqlalchemy import func, not_, or_, asc
 from sqlalchemy.orm import selectinload
@@ -173,6 +174,9 @@ class EventBasedScheduler(LoggingMixin):
         self.log.info("Send stop event to the scheduler.")
 
     def recover(self, last_scheduling_id):
+        lost_dag_codes = DagCode.recover_lost_dag_code()
+        self.log.info("Found %s dags not exists in DAG folder, recovered from DB. Dags' path: %s",
+                      len(lost_dag_codes), lost_dag_codes)
         self.log.info("Waiting for executor recovery...")
         self.executor.recover_state()
         unprocessed_messages = self.get_unprocessed_message(last_scheduling_id)
