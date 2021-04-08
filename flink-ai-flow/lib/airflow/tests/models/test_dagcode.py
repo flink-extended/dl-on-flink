@@ -165,3 +165,10 @@ class TestDagCode(unittest.TestCase):
                     self.assertEqual(new_result.fileloc, example_dag.fileloc)
                     self.assertEqual(new_result.source_code, "# dummy code")
                     self.assertGreater(new_result.last_updated, result.last_updated)
+
+    @conf_vars({('core', 'store_dag_code'): 'True'})
+    @patch("airflow.models.dag.settings.STORE_DAG_CODE", True)
+    @patch("airflow.models.dagcode.STORE_DAG_CODE", True)
+    def test_write_dag(self):
+        self._write_example_dags()
+        self.assertEquals(len(DagCode.recover_lost_dag_code()), 0)
