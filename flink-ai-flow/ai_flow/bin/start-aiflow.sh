@@ -45,7 +45,6 @@ if [[ ! -f "${AIRFLOW_HOME}/airflow.cfg" ]] ; then
         gsub(\"# mp_start_method =\", \"mp_start_method = forkserver\"); \
         gsub(\"execute_tasks_new_python_interpreter = False\", \"execute_tasks_new_python_interpreter = True\"); \
         gsub(\"min_serialized_dag_update_interval = 30\", \"min_serialized_dag_update_interval = 0\"); \
-        gsub(\"remove_non_existent_dag = True\", \"remove_non_existent_dag = False\"); \
         print \$0}" airflow.cfg.tmpl > airflow.cfg
     rm airflow.cfg.tmpl >/dev/null 2>&1 || true
     # prepare the database
