@@ -198,3 +198,18 @@ class DagCode(Base):
 
         # Only 7 bytes because MySQL BigInteger can hold only 8 bytes (signed).
         return struct.unpack('>Q', hashlib.sha1(full_filepath.encode('utf-8')).digest()[-8:])[0] >> 8
+
+    def write_dag_file_from_db(self):
+        with open(self.fileloc, 'w') as dag_file:
+            dag_file.write(self.source_code)
+
+    @classmethod
+    @provide_session
+    def recover_lost_dag_code(cls, session):
+        lost_dags: List[DagCode] = []
+        dag_codes_from_db = session.query(cls).all()
+        for dag in dag_codes_from_db:
+            if not os.path.exists(dag.fileloc):
+                dag.write_dag_file_from_db()
+                lost_dags.append(dag)
+        return lost_dags
