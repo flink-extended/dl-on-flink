@@ -409,6 +409,12 @@ class DagRun(Base, LoggingMixin):
         self.last_scheduling_decision = start_dttm
         with Stats.timer(f"dagrun.dependency-check.{self.dag_id}"):
             dag = self.get_dag()
+            is_periodic = False
+            for task in dag.tasks:
+                if task.executor_config is not None and 'periodic_config' in task.executor_config:
+                    self.log.debug('{} has periodic task {}'.format(self.run_id, task.task_id))
+                    is_periodic = True
+                    break
             info = self.task_instance_scheduling_decisions(session)
 
             tis = info.tis
@@ -433,8 +439,9 @@ class DagRun(Base, LoggingMixin):
 
         # if all roots finished and at least one failed, the run failed
         if not unfinished_tasks and any(leaf_ti.state in State.failed_states for leaf_ti in leaf_tis):
-            self.log.error('Marking run %s failed', self)
-            self.set_state(State.FAILED)
+            if not is_periodic:
+                self.log.error('Marking run %s failed', self)
+                self.set_state(State.FAILED)
             if execute_callbacks:
                 dag.handle_callback(self, success=False, reason='task_failure', session=session)
             else:
@@ -448,8 +455,9 @@ class DagRun(Base, LoggingMixin):
 
         # if all leafs succeeded and no unfinished tasks, the run succeeded
         elif not unfinished_tasks and all(leaf_ti.state in State.success_states for leaf_ti in leaf_tis):
-            self.log.info('Marking run %s successful', self)
-            self.set_state(State.SUCCESS)
+            if not is_periodic:
+                self.log.info('Marking run %s successful', self)
+                self.set_state(State.SUCCESS)
             if execute_callbacks:
                 dag.handle_callback(self, success=True, reason='success', session=session)
             else:

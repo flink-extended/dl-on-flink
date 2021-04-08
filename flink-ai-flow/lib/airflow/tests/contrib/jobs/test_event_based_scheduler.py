@@ -388,3 +388,22 @@ class TestEventBasedScheduler(unittest.TestCase):
                 self.assertTrue(ti.state in [State.SUCCESS, State.KILLED])
             for te in session.query(TaskExecution).filter(TaskExecution.dag_id == EVENT_BASED_SCHEDULER_DAG):
                 self.assertTrue(te.state in [State.SUCCESS, State.KILLED])
+
+    def run_periodic_task_function(self):
+        while True:
+            with create_session() as session:
+                tes = session.query(TaskExecution).filter(TaskExecution.dag_id == 'single',
+                                                          TaskExecution.task_id == 'task_1').all()
+                if len(tes) > 1:
+                    break
+                else:
+                    time.sleep(1)
+        self.client.send_event(StopSchedulerEvent(job_id=0).to_event())
+
+    def test_run_periodic_task(self):
+        t = threading.Thread(target=self.run_periodic_task_function, args=())
+        t.setDaemon(True)
+        t.start()
+        self.start_scheduler('../../dags/test_periodic_task_dag.py')
+        tes: List[TaskExecution] = self.get_task_execution("single", "task_1")
+        self.assertGreater(len(tes), 1)

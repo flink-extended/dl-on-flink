@@ -24,6 +24,7 @@ import time
 import faulthandler
 from typing import Callable, List, Optional
 
+from airflow.contrib.jobs.periodic_manager import PeriodicManager
 from airflow.exceptions import SerializedDagNotFound, AirflowException
 from airflow.models.dagcode import DagCode
 from airflow.models.message import IdentifiedMessage, MessageState
@@ -35,7 +36,7 @@ from airflow.configuration import conf
 from airflow.executors.base_executor import BaseExecutor
 from airflow.jobs.base_job import BaseJob
 from airflow.models import DagModel
-from airflow.models.dag import DagEventDependencies
+from airflow.models.dag import DagEventDependencies, DAG
 from airflow.models.dagbag import DagBag
 from airflow.models.dagrun import DagRun
 from airflow.models.eventhandler import EventKey
@@ -53,7 +54,7 @@ from airflow.utils.mailbox import Mailbox
 from airflow.events.scheduler_events import (
     StopSchedulerEvent, TaskSchedulingEvent, DagExecutableEvent, TaskStatusChangedEvent, EventHandleEvent, RequestEvent,
     ResponseEvent, StopDagEvent, ParseDagRequestEvent, ParseDagResponseEvent, SchedulerInnerEventUtil,
-    BaseUserDefineMessage, UserDefineMessageType)
+    BaseUserDefineMessage, UserDefineMessageType, SCHEDULER_NAMESPACE, DagRunFinishedEvent, PeriodicEvent)
 
 from notification_service.base_notification import BaseEvent
 from notification_service.client import EventWatcher, NotificationClient
@@ -66,8 +67,6 @@ DR = models.DagRun
 DM = models.DagModel
 MSG = models.Message
 
-SCHEDULER_NAMESPACE = 'scheduler'
-
 
 class EventBasedScheduler(LoggingMixin):
     def __init__(self, id,
@@ -75,7 +74,8 @@ class EventBasedScheduler(LoggingMixin):
                  task_event_manager: DagRunEventManager,
                  executor: BaseExecutor,
                  notification_client: NotificationClient,
-                 context=None):
+                 context=None,
+                 periodic_manager: PeriodicManager = None):
         super().__init__(context)
         self.id = id
         self.mailbox = mailbox
@@ -85,6 +85,7 @@ class EventBasedScheduler(LoggingMixin):
         self.dagbag = DagBag(read_dags_from_db=True)
         self._timer_handler = None
         self.timers = sched.scheduler()
+        self.periodic_manager = periodic_manager
 
     def sync(self):
 
@@ -141,6 +142,8 @@ class EventBasedScheduler(LoggingMixin):
                     dagrun = self._find_dagrun(event.dag_id, event.execution_date, session)
                     tasks = self._find_schedulable_tasks(dagrun, session)
                     self._send_scheduling_task_events(tasks, SchedulingAction.START)
+                    if dagrun.state in State.finished:
+                        self.mailbox.send_message(DagRunFinishedEvent(dagrun.run_id).to_event())
                 elif isinstance(event, DagExecutableEvent):
                     dagrun = self._create_dag_run(event.dag_id, session=session)
                     tasks = self._find_schedulable_tasks(dagrun, session)
@@ -152,6 +155,13 @@ class EventBasedScheduler(LoggingMixin):
                     self._send_scheduling_task_event(ti, event.action)
                 elif isinstance(event, StopDagEvent):
                     self._stop_dag(event.dag_id, session)
+                elif isinstance(event, DagRunFinishedEvent):
+                    self._remove_periodic_events(event.run_id)
+                elif isinstance(event, PeriodicEvent):
+                    dag_runs = DagRun.find(run_id=event.run_id)
+                    assert len(dag_runs) == 1
+                    ti = dag_runs[0].get_task_instance(event.task_id)
+                    self._send_scheduling_task_event(ti, SchedulingAction.RESTART)
                 elif isinstance(event, StopSchedulerEvent):
                     self.log.info("{} {}".format(self.id, event.job_id))
                     if self.id == event.job_id or 0 == event.job_id:
@@ -204,6 +214,23 @@ class EventBasedScheduler(LoggingMixin):
         ).first()
         return dagrun
 
+    def _register_periodic_events(self, run_id, dag):
+        for task in dag.tasks:
+            if task.executor_config is not None and 'periodic_config' in task.executor_config:
+                self.log.debug('register periodic task {} {}'.format(run_id, task.task_id))
+                self.periodic_manager.add_task(run_id=run_id,
+                                               task_id=task.task_id,
+                                               cron_config=task.executor_config['periodic_config'])
+
+    @provide_session
+    def _remove_periodic_events(self, run_id, session=None):
+        dagruns = DagRun.find(run_id=run_id)
+        dag = self.dagbag.get_dag(dag_id=dagruns[0].dag_id, session=session)
+        for task in dag.tasks:
+            if task.executor_config is not None and 'periodic_config' in task.executor_config:
+                self.log.debug('remove periodic task {} {}'.format(run_id, task.task_id))
+                self.periodic_manager.remove_task(run_id, task.task_id)
+
     def _create_dag_run(self, dag_id, session, run_type=DagRunType.SCHEDULED) -> DagRun:
         with prohibit_commit(session) as guard:
             if settings.USE_JOB_SCHEDULE:
@@ -213,6 +240,7 @@ class EventBasedScheduler(LoggingMixin):
                 """
                 try:
                     dag = self.dagbag.get_dag(dag_id, session=session)
+                    print(dag.tasks)
                     dag_model = session \
                         .query(DagModel).filter(DagModel.dag_id == dag_id).first()
                     if dag_model is None:
@@ -220,6 +248,7 @@ class EventBasedScheduler(LoggingMixin):
                     next_dagrun = dag_model.next_dagrun
                     dag_hash = self.dagbag.dags_hash.get(dag.dag_id)
                     external_trigger = False
+                    # register periodic task
                     if run_type == DagRunType.MANUAL:
                         next_dagrun = timezone.utcnow()
                         external_trigger = True
@@ -239,6 +268,7 @@ class EventBasedScheduler(LoggingMixin):
                     # commit the session - Release the write lock on DagModel table.
                     guard.commit()
                     # END: create dagrun
+                    self._register_periodic_events(dag_run.run_id, dag)
                     return dag_run
                 except SerializedDagNotFound:
                     self.log.exception("DAG '%s' not found in serialized_dag table", dag_id)
@@ -511,6 +541,7 @@ class EventBasedScheduler(LoggingMixin):
         for ti in dag_run.get_task_instances():
             if ti.state in State.unfinished:
                 self.executor.schedule_task(ti.key, SchedulingAction.STOP)
+        self.mailbox.send_message(DagRunFinishedEvent(run_id=dag_run.run_id))
 
 
 class SchedulerEventWatcher(EventWatcher):
@@ -550,12 +581,15 @@ class EventBasedSchedulerJob(BaseJob):
         self.executor.set_mailbox(self.mailbox)
         self.notification_client: NotificationClient = NotificationClient(server_uri=server_uri,
                                                                           default_namespace=SCHEDULER_NAMESPACE)
+        self.periodic_manager = PeriodicManager(self.mailbox)
         self.scheduler: EventBasedScheduler = EventBasedScheduler(
             self.id,
             self.mailbox,
             self.task_event_manager,
             self.executor,
-            self.notification_client
+            self.notification_client,
+            None,
+            self.periodic_manager
         )
         self.last_scheduling_id = self._last_scheduler_job_id()
 
@@ -582,6 +616,7 @@ class EventBasedSchedulerJob(BaseJob):
             self.task_event_manager.start()
             self.executor.job_id = self.id
             self.executor.start()
+            self.periodic_manager.start()
 
             self.register_signals()
 
@@ -594,6 +629,7 @@ class EventBasedSchedulerJob(BaseJob):
             self.scheduler.schedule()
 
             self.executor.end()
+            self.periodic_manager.shutdown()
             self.dag_trigger.end()
             self.task_event_manager.end()
             self._stop_listen_events()
