@@ -18,6 +18,8 @@
 #
 import unittest
 
+from ai_flow.workflow.job_config import BaseJobConfig, PeriodicConfig
+
 from ai_flow.airflow.dag_generator import DAGGenerator
 from ai_flow.project.project_description import ProjectDesc
 from ai_flow.meta.job_meta import State
@@ -97,6 +99,11 @@ class TestDAGGenerator(unittest.TestCase):
         job.name = str(index) + "_job"
         job.uuid = index
         job.job_name = job.instance_id
+        job.job_config = BaseJobConfig()
+        if 0 == index:
+            job.job_config.periodic_config = PeriodicConfig(periodic_type='cron', args='* * * * *')
+        elif 1 == index:
+            job.job_config.periodic_config = PeriodicConfig(periodic_type='interval', args={'seconds': 20, 'minutes': 1})
         return job
 
     @staticmethod

@@ -23,7 +23,7 @@ from airflow import DAG
 DEFAULT_DATE = datetime(2016, 1, 1)
 dag = DAG(dag_id="single", start_date=datetime.utcnow(), schedule_interval='@once')
 
-op1 = BashOperator(task_id="task_1", dag=dag,  owner='airflow', bash_command='echo "hello world!"',
-                   executor_config={'periodic_config': '* * * * *'})
+op1 = BashOperator(task_id="task_1", dag=dag,  owner='airflow', bash_command='echo "hello world!"')
+op1.executor_config = {'periodic_config': {'interval': {'seconds': 20}}}
 op1.subscribe_event('UNREACHED_EVENT', 'UNREACHED_EVENT', 'UNREACHED_EVENT')
 op1.set_events_handler(StartEventHandler())

@@ -220,7 +220,7 @@ class EventBasedScheduler(LoggingMixin):
                 self.log.debug('register periodic task {} {}'.format(run_id, task.task_id))
                 self.periodic_manager.add_task(run_id=run_id,
                                                task_id=task.task_id,
-                                               cron_config=task.executor_config['periodic_config'])
+                                               periodic_config=task.executor_config['periodic_config'])
 
     @provide_session
     def _remove_periodic_events(self, run_id, session=None):
