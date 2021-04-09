@@ -104,7 +104,7 @@ class EventBasedScheduler(LoggingMixin):
             self._timer_handler = self.timers.enter(delay, 1, repeat, arguments, kwargs)
 
         call_regular_interval(
-            delay=1.0,
+            delay=conf.getfloat('scheduler', 'scheduler_heartbeat_sec', fallback='5.0'),
             action=self.executor.sync
         )
         self.timers.run()
