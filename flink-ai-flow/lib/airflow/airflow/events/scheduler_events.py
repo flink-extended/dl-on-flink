@@ -21,6 +21,17 @@ from notification_service.base_notification import BaseEvent
 import json
 
 EXECUTION_DATE_FORMAT = '%Y-%m-%dT%H:%M:%S.%fZ'
+SCHEDULER_NAMESPACE = 'scheduler'
+UNREACHED_EVENT = 'UNREACHED_EVENT'
+
+
+# set task trigger only by scheduler inner events
+class UnreachedEvent(BaseEvent):
+    def __init__(self):
+        super().__init__(key=UNREACHED_EVENT, 
+                         value=UNREACHED_EVENT,
+                         event_type=UNREACHED_EVENT, 
+                         namespace=SCHEDULER_NAMESPACE)
 
 
 class SchedulerInnerEventType(Enum):
@@ -28,13 +39,15 @@ class SchedulerInnerEventType(Enum):
     TASK_STATUS_CHANGED = 'TASK_STATUS_CHANGED'
     TASK_SCHEDULING = 'TASK_SCHEDULING'
     DAG_EXECUTABLE = 'DAG_EXECUTABLE'
+    DAG_RUN_FINISHED = 'DAG_RUN_FINISHED'
     EVENT_HANDLE = 'EVENT_HANDLE'
     REQUEST = 'REQUEST'
     RESPONSE = 'RESPONSE'
     STOP_DAG = 'STOP_DAG'
     PARSE_DAG_REQUEST = 'PARSE_DAG_REQUEST'
     PARSE_DAG_RESPONSE = 'PARSE_DAG_RESPONSE'
-
+    PERIODIC_TASK_EVENT = 'PERIODIC_TASK_EVENT'
+    
 
 class SchedulerInnerEvent(object):
 
@@ -50,6 +63,24 @@ class SchedulerInnerEvent(object):
         return self.to_base_event(self)
 
 
+class PeriodicEvent(SchedulerInnerEvent):
+
+    def __init__(self, run_id, task_id):
+        self.run_id = run_id
+        self.task_id = task_id
+    
+    @classmethod
+    def to_base_event(cls, event: 'PeriodicEvent') -> BaseEvent:
+        return BaseEvent(key=event.run_id, 
+                         value=event.task_id, 
+                         event_type=SchedulerInnerEventType.PERIODIC_TASK_EVENT.value,
+                         namespace=SCHEDULER_NAMESPACE)
+
+    @classmethod
+    def from_base_event(cls, event: BaseEvent) -> 'PeriodicEvent':
+        return PeriodicEvent(event.key, event.value)
+        
+        
 class ParseDagRequestEvent(SchedulerInnerEvent):
     def __init__(self, request_id):
         self.request_id = request_id
@@ -234,6 +265,21 @@ class DagExecutableEvent(SchedulerInnerEvent):
         return DagExecutableEvent(dag_id=event.key)
 
 
+class DagRunFinishedEvent(SchedulerInnerEvent):
+    def __init__(self, run_id):
+        super().__init__()
+        self.run_id = run_id
+
+    @classmethod
+    def to_base_event(cls, event: 'DagRunFinishedEvent') -> BaseEvent:
+        return BaseEvent(key=event.run_id, value='', event_type=SchedulerInnerEventType.DAG_RUN_FINISHED.value,
+                         namespace=SCHEDULER_NAMESPACE)
+
+    @classmethod
+    def from_base_event(cls, event: BaseEvent) -> 'DagRunFinishedEvent':
+        return DagRunFinishedEvent(run_id=event.key)
+    
+
 class TaskSchedulingEvent(SchedulerInnerEvent):
     def __init__(self, task_id, dag_id, execution_date, try_number, action: SchedulingAction):
         super().__init__()
@@ -337,5 +383,9 @@ class SchedulerInnerEventUtil(object):
             return ParseDagRequestEvent.from_base_event(event)
         elif SchedulerInnerEventType.PARSE_DAG_RESPONSE == event_type:
             return ParseDagResponseEvent.from_base_event(event)
+        elif SchedulerInnerEventType.DAG_RUN_FINISHED == event_type:
+            return DagRunFinishedEvent.from_base_event(event)
+        elif SchedulerInnerEventType.PERIODIC_TASK_EVENT == event_type:
+            return PeriodicEvent.from_base_event(event)
         else:
             return None
