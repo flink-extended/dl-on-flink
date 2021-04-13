@@ -20,16 +20,15 @@ from ai_flow.meta.job_meta import ExecutionMode
 from ai_flow.common.json_utils import Jsonable
 from ai_flow.project.project_description import ProjectDesc
 from ai_flow.common.registry import BaseRegistry
-from typing import Text, Dict, Optional, Tuple
+from typing import Text, Dict, Optional, Tuple, Union
 
 
 class PeriodicConfig(Jsonable):
     """
     Set period semantics for job. Jobs with periodic semantics will restart at regular intervals.
-
     """
     def __init__(self, periodic_type: Text,
-                 args: Dict[Text, Jsonable] = None) -> None:
+                 args: Union[Text, Dict[Text, Jsonable]] = None) -> None:
         """
         :param periodic_type: ``interval`` or ``cron``
         link apscheduler.schedulers.background.BackgroundScheduler add_job

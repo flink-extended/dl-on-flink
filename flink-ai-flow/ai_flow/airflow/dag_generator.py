@@ -19,6 +19,7 @@
 from datetime import datetime
 from abc import ABC
 from typing import Text, List
+from ai_flow.workflow.job_config import PeriodicConfig
 from ai_flow.common.registry import BaseRegistry
 from ai_flow.common import json_utils
 from ai_flow.graph.edge import MetConfig, MetCondition, EventLife, MetValueCondition, TaskAction
@@ -97,6 +98,9 @@ from airflow.operators.bash import BashOperator\n"""
 
     DAG_DEFINE = """dag = DAG(dag_id='{0}', default_args=default_args)\n"""
 
+    PERIODIC_CONFIG = """op_{0}.executor_config = {{'periodic_config': {1}}}
+op_{0}.subscribe_event('UNREACHED_EVENT', 'UNREACHED_EVENT', 'UNREACHED_EVENT')\n"""
+
     UPSTREAM_OP = """{0}.set_upstream({1})\n"""
 
     EVENT_DEPS = """{0}.subscribe_event('{1}', '{2}', '{3}')\n"""
@@ -152,6 +156,17 @@ class DAGGenerator(object):
             task_id, op_name, code = self.generate_op_code(job)
             task_map[task_id] = op_name
             code_text += code
+            # add periodic
+            if job.job_config.periodic_config is not None:
+                periodic_config: PeriodicConfig = job.job_config.periodic_config
+                if 'interval' == periodic_config.periodic_type:
+                    code_text += DAGTemplate.PERIODIC_CONFIG.format(self.op_count,
+                                                                    str({'interval': periodic_config.args}))
+                elif 'cron' == periodic_config.periodic_type:
+                    code_text += DAGTemplate.PERIODIC_CONFIG.format(self.op_count, str({'cron': periodic_config.args}))
+                else:
+                    raise Exception('periodic_config do not support {} type, only support interval and cron.'
+                                    .format(periodic_config.periodic_type))
 
         for instance_id, edges in workflow.edges.items():
             op_name = task_map[instance_id]
