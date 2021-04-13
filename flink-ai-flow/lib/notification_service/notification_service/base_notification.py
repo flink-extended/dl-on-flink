@@ -23,7 +23,7 @@ from typing import List, Union, Tuple
 
 UNDEFINED_EVENT_TYPE = "UNDEFINED"
 ANY_CONDITION = "*"
-
+DEFAULT_NAMESPACE = "default"
 
 class BaseEvent(object):
     def __init__(self,
