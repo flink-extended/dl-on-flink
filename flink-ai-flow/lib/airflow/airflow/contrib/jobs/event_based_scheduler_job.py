@@ -240,7 +240,6 @@ class EventBasedScheduler(LoggingMixin):
                 """
                 try:
                     dag = self.dagbag.get_dag(dag_id, session=session)
-                    print(dag.tasks)
                     dag_model = session \
                         .query(DagModel).filter(DagModel.dag_id == dag_id).first()
                     if dag_model is None:
