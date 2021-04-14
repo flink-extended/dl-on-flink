@@ -53,7 +53,7 @@ from airflow.utils.mixins import MultiprocessingStartMethodMixin
 from airflow.utils.process_utils import kill_child_processes_by_pids, reap_process_group
 from airflow.utils.session import provide_session
 from airflow.utils.state import State
-
+from airflow.events.scheduler_events import SCHEDULER_NAMESPACE
 
 class AbstractDagFileProcessorProcess(metaclass=ABCMeta):
     """Processes a DAG file. See SchedulerJob.process_file() for more details."""
@@ -633,7 +633,7 @@ class DagFileProcessorManager(LoggingMixin):  # pylint: disable=too-many-instanc
         if self.notification_service_uri is not None:
             self.log.info('start listen PARSE_DAG_REQUEST {}'.format(self.notification_service_uri))
             self.ns_client = NotificationClient(server_uri=self.notification_service_uri,
-                                                default_namespace='scheduler')
+                                                default_namespace=SCHEDULER_NAMESPACE)
             self.ns_client.start_listen_event(key='*',
                                               event_type='PARSE_DAG_REQUEST',
                                               namespace='*',

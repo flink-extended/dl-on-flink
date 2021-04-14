@@ -18,7 +18,7 @@
 #
 import json
 
-from notification_service.base_notification import BaseEvent
+from notification_service.base_notification import BaseEvent, DEFAULT_NAMESPACE
 from notification_service.client import NotificationClient
 
 from ai_flow.model_center.entity.model_version import ModelVersion
@@ -50,9 +50,9 @@ class ModelCenterService(model_center_service_pb2_grpc.ModelCenterServiceService
         else:
             self.model_repo_store = SqlAlchemyStore(store_uri)
         if notification_uri is None:
-            self.notification_client = NotificationClient(server_uri)
+            self.notification_client = NotificationClient(server_uri, default_namespace=DEFAULT_NAMESPACE)
         else:
-            self.notification_client = NotificationClient(notification_uri)
+            self.notification_client = NotificationClient(notification_uri, default_namespace=DEFAULT_NAMESPACE)
 
     @catch_exception
     def createRegisteredModel(self, request, context):
