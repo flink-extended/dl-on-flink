@@ -20,6 +20,8 @@ package com.alibaba.flink.ml.cluster.node.runner.python;
 
 import com.alibaba.flink.ml.cluster.node.runner.AbstractScriptRunner;
 import com.alibaba.flink.ml.cluster.node.MLContext;
+import com.alibaba.flink.ml.cluster.node.runner.python.log.ProcessLogger;
+import com.alibaba.flink.ml.cluster.node.runner.python.log.ProcessOutputConsumerFactory;
 import com.alibaba.flink.ml.util.MLConstants;
 import com.alibaba.flink.ml.util.ShellExec;
 import com.alibaba.flink.ml.util.MLException;
@@ -118,16 +120,9 @@ public class ProcessPythonRunner extends AbstractScriptRunner {
 
 	protected void runProcess(ProcessBuilder builder) throws IOException {
 		child = builder.start();
-		Thread inLogger = new Thread(
-				new ShellExec.ProcessLogger(child.getInputStream(), new ShellExec.StdOutConsumer()));
-		Thread errLogger = new Thread(
-				new ShellExec.ProcessLogger(child.getErrorStream(), new ShellExec.StdOutConsumer()));
-		inLogger.setName(mlContext.getIdentity() + "-in-logger");
-		inLogger.setDaemon(true);
-		errLogger.setName(mlContext.getIdentity() + "-err-logger");
-		errLogger.setDaemon(true);
-		inLogger.start();
-		errLogger.start();
+		ProcessLogger processLogger = new ProcessLogger(mlContext.getIdentity(), child,
+				ProcessOutputConsumerFactory.createMLRunner(mlContext));
+		processLogger.start_logging();
 		try {
 			int r = 0;
 			do {

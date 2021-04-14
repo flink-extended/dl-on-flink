@@ -26,6 +26,8 @@ public class MLConstants {
 	public static final String RECORD_WRITER_CLASS = SYS_PREFIX + "record_writer_class";
 	public static final String DATA_BRIDGE_CLASS = SYS_PREFIX + "data_bridge_class";
 	public static final String ML_RUNNER_CLASS = SYS_PREFIX + "ml_runner_class";
+	public static final String PYTHON_PROCESS_LOGGER_CONSUMER_CLASS =
+			SYS_PREFIX + "python_process_logger_consumer_class";
 
 	public static final int END_STATUS_NORMAL = 0;
 	public static final int END_STATUS_FLINK_ASK_TO_KILL = 1;
