@@ -21,6 +21,7 @@ package com.alibaba.flink.ml.cluster.node.runner.python;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.flink.ml.TestWithNodeService;
 import com.alibaba.flink.ml.cluster.node.MLContext;
+import com.alibaba.flink.ml.cluster.node.runner.python.log.Slf4JProcessOutputConsumer;
 import com.alibaba.flink.ml.coding.impl.ByteArrayCodingImpl;
 import com.alibaba.flink.ml.data.DataExchange;
 import com.alibaba.flink.ml.util.DummyContext;
@@ -51,6 +52,16 @@ public class ProcessPythonRunnerTest extends TestWithNodeService {
 	public void greeterPythonTest() throws Exception {
 		String script = "greeter.py";
 		MLContext mlContext = createMLContext(script);
+		ProcessPythonRunner runner = new ProcessPythonRunner(mlContext);
+		runner.runScript();
+	}
+
+	@Test
+	public void greeterPythonTestToSlf4j() throws Exception {
+		String script = "greeter.py";
+		MLContext mlContext = createMLContext(script);
+		mlContext.getProperties().put(MLConstants.PYTHON_PROCESS_LOGGER_CONSUMER_CLASS,
+				Slf4JProcessOutputConsumer.class.getCanonicalName());
 		ProcessPythonRunner runner = new ProcessPythonRunner(mlContext);
 		runner.runScript();
 	}
