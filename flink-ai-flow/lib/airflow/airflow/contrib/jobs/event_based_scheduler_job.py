@@ -540,7 +540,7 @@ class EventBasedScheduler(LoggingMixin):
         for ti in dag_run.get_task_instances():
             if ti.state in State.unfinished:
                 self.executor.schedule_task(ti.key, SchedulingAction.STOP)
-        self.mailbox.send_message(DagRunFinishedEvent(run_id=dag_run.run_id))
+        self.mailbox.send_message(DagRunFinishedEvent(run_id=dag_run.run_id).to_event())
 
 
 class SchedulerEventWatcher(EventWatcher):
