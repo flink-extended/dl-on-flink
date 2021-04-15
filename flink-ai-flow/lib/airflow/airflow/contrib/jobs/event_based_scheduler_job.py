@@ -397,19 +397,6 @@ class EventBasedScheduler(LoggingMixin):
 
         schedulable_tis, callback_to_run = dag_run.update_state(session=session, execute_callbacks=False)
         dag_run.schedule_tis(schedulable_tis, session)
-
-        query = (session.query(TI)
-                 .outerjoin(TI.dag_run)
-                 .filter(or_(DR.run_id.is_(None), DR.run_type != DagRunType.BACKFILL_JOB))
-                 .join(TI.dag_model)
-                 .filter(not_(DM.is_paused))
-                 .filter(TI.state == State.SCHEDULED)
-                 .options(selectinload('dag_model')))
-        scheduled_tis: List[TI] = with_row_locks(
-            query,
-            of=TI,
-            **skip_locked(session=session),
-        ).all()
         # filter need event tasks
         serialized_dag = session.query(SerializedDagModel).filter(
             SerializedDagModel.dag_id == dag_run.dag_id).first()
@@ -420,7 +407,7 @@ class EventBasedScheduler(LoggingMixin):
             event_task_set = dep.find_event_dependencies_tasks()
         else:
             self.log.error("Failed to get serialized_dag from db, unexpected dag id: %s", dag_run.dag_id)
-        for ti in scheduled_tis:
+        for ti in schedulable_tis:
             if ti.task_id not in event_task_set:
                 final_scheduled_tis.append(ti)
 
