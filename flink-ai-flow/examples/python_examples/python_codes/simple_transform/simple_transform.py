@@ -6,7 +6,7 @@ from ai_flow.plugins.engine import CMDEngine
 from ai_flow.plugins.local_platform import LocalPlatform
 from python_ai_flow import Executor, FunctionContext
 from python_ai_flow.python_engine import PythonEngine
-import example_util
+from examples.example_utils import example_util
 
 
 # Transform Executor class
@@ -20,9 +20,9 @@ class SimpleTransform(Executor):
         return [result]
 
 
-def run_simple_transform_example():
-    project_root_path = example_util.get_root_path()
-    af.set_project_config_file(project_root_path + '/project.yaml')
+def run_project(project_root_path):
+
+    af.set_project_config_file(example_util.get_project_config_file(project_root_path))
     # Config command line job, we set platform to local and engine to cmd_line here
     cmd_job_config = af.BaseJobConfig(platform=LocalPlatform.platform(), engine=CMDEngine().engine())
     with af.config(cmd_job_config):
@@ -39,8 +39,10 @@ def run_simple_transform_example():
     with af.config(python_job_config):
         # Path of Source data(under '..../simple_transform_airflow' dir)
         source_path = os.path.dirname(os.path.abspath(__file__)) + '/source_data.csv'
+        print(source_path)
         # Path of Sink data
         sink_path = os.path.dirname(os.path.abspath(__file__)) + '/sink_data.csv'
+        print(sink_path)
 
         # To make the project replaceable, we register the example in metadata service
         read_example_meta = af.register_example(name='read_example', support_type=ExampleSupportType.EXAMPLE_BATCH,
@@ -65,14 +67,13 @@ def run_simple_transform_example():
     # Add control dependency, which means read_example job will start right after command line job finishes.
     af.stop_before_control_dependency(read_example_channel, cmd_job)
 
-    transform_dag = 'simple_transform_airflow_example'
+    transform_dag = example_util.get_parent_dir_name(__file__)
     af.deploy_to_airflow(project_root_path, dag_id=transform_dag)
-    print(example_util.get_root_path())
     context = af.run(project_path=project_root_path,
                      dag_id=transform_dag,
                      scheduler_type=SchedulerType.AIRFLOW)
-    print(context.dagrun_id)
 
 
 if __name__ == '__main__':
-    run_simple_transform_example()
+    project_path = example_util.init_project_path(".")
+    run_project(project_path)
