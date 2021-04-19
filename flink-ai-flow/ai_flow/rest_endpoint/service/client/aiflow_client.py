@@ -40,6 +40,9 @@ from ai_flow.rest_endpoint.service.client.model_center_client import ModelCenter
 from notification_service.client import NotificationClient
 from ai_flow.rest_endpoint.service.client.metric_client import MetricClient
 
+if not hasattr(time, 'time_ns'):
+    time.time_ns = lambda: int(time.time() * 1e9)
+
 _SERVER_URI = 'localhost:50051'
 
 
@@ -128,7 +131,7 @@ class AIFlowClient(MetadataClient, ModelCenterClient, NotificationClient, Deploy
                                                   for proto in response.members]
             else:
                 logging.error("Exception thrown when updating the living members: %s" %
-                          response.return_msg)
+                              response.return_msg)
 
     def _aiflow_ha_wrapper(self, func, stub_name):
         @wraps(func)

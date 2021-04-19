@@ -17,10 +17,9 @@
 # under the License.
 #
 import logging
-from typing import Optional, Text, List, Union
 import time
+from typing import Optional, Text, List, Union
 
-from numpy import long
 import mongoengine
 
 from ai_flow.common.status import Status
@@ -37,17 +36,19 @@ from ai_flow.metric.utils import table_to_metric_meta, table_to_metric_summary, 
     metric_summary_to_table
 from ai_flow.model_center.entity.model_version_stage import STAGE_DELETED, get_canonical_stage, STAGE_GENERATED, \
     STAGE_DEPLOYED, STAGE_VALIDATED
-from notification_service.base_notification import BaseEvent, UNDEFINED_EVENT_TYPE
 from ai_flow.rest_endpoint.protobuf.message_pb2 import INVALID_PARAMETER_VALUE, RESOURCE_ALREADY_EXISTS
 from ai_flow.rest_endpoint.service.exception import AIFlowException
 from ai_flow.rest_endpoint.service.high_availability import Member
-from ai_flow.store.abstract_store import AbstractStore
 from ai_flow.store import MONGO_DB_ALIAS_META_SERVICE
+from ai_flow.store.abstract_store import AbstractStore
 from ai_flow.store.db.db_model import (MongoProject, MongoExample, MongoModelVersion, MongoJob,
                                        MongoArtifact, MongoRegisteredModel, MongoModelRelation,
                                        MongoWorkflowExecution, MongoMetricSummary, MongoMetricMeta,
-                                       MongoWorkflow, MongoModelVersionRelation, MongoMember)
-from ai_flow.store.db.db_util import extract_db_engine_from_uri, parse_mongo_uri
+                                       MongoModelVersionRelation, MongoMember)
+from ai_flow.store.db.db_util import parse_mongo_uri
+
+if not hasattr(time, 'time_ns'):
+    time.time_ns = lambda: int(time.time() * 1e9)
 
 _logger = logging.getLogger(__name__)
 
@@ -196,7 +197,7 @@ class MongoStore(AbstractStore):
                                catalog_version=catalog_version)
         except mongoengine.OperationError as e:
             raise AIFlowException('Registered Example (name={}) already exists. '
-                                    'Error: {}'.format(example.name, str(e)))
+                                  'Error: {}'.format(example.name, str(e)))
 
     def register_example(self, name: Text, support_type: ExampleSupportType,
                          data_type: Text = None, data_format: Text = None,
@@ -271,7 +272,7 @@ class MongoStore(AbstractStore):
                        catalog_type: Text = None, catalog_database: Text = None,
                        catalog_connection_uri: Text = None, catalog_version: Text = None,
                        catalog_table: Text = None) -> Optional[ExampleMeta]:
-        
+
         try:
             example: MongoExample = MongoExample.objects(name=example_name).first()
             if example is None:
@@ -345,7 +346,8 @@ class MongoStore(AbstractStore):
             example = MongoExample.objects(name=example_name, is_deleted__ne=TRUE).first()
             if example is None:
                 return Status.ERROR
-            deleted_example_counts = MongoExample.objects(name__startswith=deleted_character + example_name + deleted_character, is_deleted=TRUE).count()
+            deleted_example_counts = MongoExample.objects(
+                name__startswith=deleted_character + example_name + deleted_character, is_deleted=TRUE).count()
             example.is_deleted = TRUE
             example.name = deleted_character + example.name + deleted_character + str(deleted_example_counts + 1)
             example.save()
@@ -416,7 +418,7 @@ class MongoStore(AbstractStore):
                 # raise the AIFlowException.
                 raise AIFlowException("You have registered the project with same name: \"{}\" "
                                       "but different fields".format(name))
-        
+
         try:
             project = MetaToTable.project_meta_to_table(name=name, uri=uri, properties=properties,
                                                         user=user, password=password,
@@ -424,11 +426,11 @@ class MongoStore(AbstractStore):
                                                         store_type=type(self).__name__)
             project.save()
             project_meta = ProjectMeta(uuid=project.uuid, name=name, uri=uri, properties=properties, user=user,
-                                        password=password, project_type=project_type)
+                                       password=password, project_type=project_type)
             return project_meta
         except mongoengine.OperationError as e:
             raise AIFlowException('Registered Project (name={}) already exists. '
-                                    'Error: {}'.format(project.name, str(e)))
+                                  'Error: {}'.format(project.name, str(e)))
 
     def list_project(self, page_size, offset) -> Optional[List[ProjectMeta]]:
         """
@@ -439,7 +441,7 @@ class MongoStore(AbstractStore):
         :return: List of :py:class:`ai_flow.meta.project_meta.ProjectMeta` objects,
                  return None if no projects to be listed.
         """
-        
+
         project_result = MongoProject.objects(is_deleted__ne=TRUE).skip(offset).limit(page_size)
         if len(project_result) == 0:
             return None
@@ -515,24 +517,25 @@ class MongoStore(AbstractStore):
                         deleted_job_counts + 1)
                 job_list += per_workflow_execution.job_info
             for per_model in project.model_relation:
-                    deleted_model_relation_counts = MongoModelRelation.objects(
-                        name__startswith=deleted_character + per_model.name + deleted_character,
+                deleted_model_relation_counts = MongoModelRelation.objects(
+                    name__startswith=deleted_character + per_model.name + deleted_character,
+                    is_deleted=TRUE).count()
+                per_model.is_deleted = TRUE
+                per_model.name = deleted_character + per_model.name + deleted_character + str(
+                    deleted_model_relation_counts + 1)
+                for model_version in per_model.model_version_relation:
+                    deleted_model_version_relation_counts = MongoModelVersionRelation.objects(
+                        version__startswith=deleted_character + model_version.version + deleted_character,
                         is_deleted=TRUE).count()
-                    per_model.is_deleted = TRUE
-                    per_model.name = deleted_character + per_model.name + deleted_character + str(
-                        deleted_model_relation_counts + 1)
-                    for model_version in per_model.model_version_relation:
-                        deleted_model_version_relation_counts = MongoModelVersionRelation.objects(
-                            version__startswith=deleted_character + model_version.version + deleted_character,
-                            is_deleted=TRUE).count()
-                        model_version.is_deleted = TRUE
-                        model_version.version = deleted_character + model_version.version + deleted_character + str(
-                            deleted_model_version_relation_counts + 1)
-                        # update for unqine constraint
-                        model_version.version_model_id_unique = f'{model_version.version}-{model_version.model_id}'
-                        model_version.version_workflow_execution_id_unique = f'{model_version.version}-{model_version.workflow_execution_id}'
-                    model_version_list += per_model.model_version_relation
-            self._save_all([project] + project.workflow_execution + project.model_relation + job_list + model_version_list)
+                    model_version.is_deleted = TRUE
+                    model_version.version = deleted_character + model_version.version + deleted_character + str(
+                        deleted_model_version_relation_counts + 1)
+                    # update for unqine constraint
+                    model_version.version_model_id_unique = f'{model_version.version}-{model_version.model_id}'
+                    model_version.version_workflow_execution_id_unique = f'{model_version.version}-{model_version.workflow_execution_id}'
+                model_version_list += per_model.model_version_relation
+            self._save_all(
+                [project] + project.workflow_execution + project.model_relation + job_list + model_version_list)
             return Status.OK
         except mongoengine.OperationError as e:
             raise AIFlowException(str(e))
@@ -602,7 +605,7 @@ class MongoStore(AbstractStore):
             return model_meta
         except mongoengine.OperationError as e:
             raise AIFlowException('Registered Model (name={}) already exists. '
-                                    'Error: {}'.format(model.name, str(e)))
+                                  'Error: {}'.format(model.name, str(e)))
 
     def list_model_relation(self, page_size, offset) -> Optional[List[ModelRelationMeta]]:
         """
@@ -739,7 +742,7 @@ class MongoStore(AbstractStore):
             return execution_meta
         except mongoengine.OperationError as e:
             raise AIFlowException('Registered WorkflowExecution (name={}) already exists. '
-                                    'Error: {}'.format(execution.name, str(e)))
+                                  'Error: {}'.format(execution.name, str(e)))
 
     def list_workflow_execution(self, page_size, offset) -> Optional[List[WorkflowExecutionMeta]]:
         """
@@ -764,7 +767,8 @@ class MongoStore(AbstractStore):
                                   log_uri: Text = None, workflow_json: Text = None, signature: Text = None) -> \
             Optional[WorkflowExecutionMeta]:
         try:
-            workflow_execution: MongoWorkflowExecution = MongoWorkflowExecution.objects(name=execution_name, is_deleted__ne=TRUE).first()
+            workflow_execution: MongoWorkflowExecution = MongoWorkflowExecution.objects(name=execution_name,
+                                                                                        is_deleted__ne=TRUE).first()
             if workflow_execution is None:
                 return None
             if execution_state is not None:
@@ -891,7 +895,8 @@ class MongoStore(AbstractStore):
         :return: A single :py:class:`ai_flow.meta.model_relation_meta.ModelVersionRelationMeta` object
                  if the model version exists, Otherwise, returns None if the model version does not exist.
         """
-        model_version_result = MongoModelVersionRelation.objects(version=version_name, model_id=model_id, is_deleted__ne=TRUE)
+        model_version_result = MongoModelVersionRelation.objects(version=version_name, model_id=model_id,
+                                                                 is_deleted__ne=TRUE)
         if len(model_version_result) == 0:
             return None
         return ResultToMeta.result_to_model_version_relation_meta(model_version_result[0])
@@ -909,9 +914,9 @@ class MongoStore(AbstractStore):
         """
         try:
             model_version_relation = MetaToTable.model_version_relation_to_table(version=version,
-                                                                        model_id=model_id,
-                                                                        workflow_execution_id=workflow_execution_id,
-                                                                        store_type=type(self).__name__)
+                                                                                 model_id=model_id,
+                                                                                 workflow_execution_id=workflow_execution_id,
+                                                                                 store_type=type(self).__name__)
             model_version_relation.save()
             # update reference field
             if model_id is not None:
@@ -921,7 +926,7 @@ class MongoStore(AbstractStore):
                 else:
                     model_relation.model_version_relation.append(model_version_relation)
                 model_relation.save()
-            
+
             if workflow_execution_id is not None:
                 workflow_execution = MongoWorkflowExecution.objects(uuid=workflow_execution_id).first()
                 if workflow_execution.model_version_relation is None:
@@ -929,13 +934,13 @@ class MongoStore(AbstractStore):
                 else:
                     workflow_execution.model_version_relation.append(model_version_relation)
                 workflow_execution.save()
-            
+
             model_version_relation_meta = ModelVersionRelationMeta(version=version, model_id=model_id,
-                                                          workflow_execution_id=workflow_execution_id)
+                                                                   workflow_execution_id=workflow_execution_id)
             return model_version_relation_meta
         except mongoengine.OperationError as e:
             raise AIFlowException('Registered ModelVersion (name={}) already exists. '
-                                    'Error: {}'.format(model_version_relation.version, str(e)))
+                                  'Error: {}'.format(model_version_relation.version, str(e)))
 
     def list_model_version_relation(self, model_id, page_size, offset) -> Optional[List[ModelVersionRelationMeta]]:
         """
@@ -947,7 +952,8 @@ class MongoStore(AbstractStore):
         :return: List of :py:class:`ai_flow.meta.model_relation_meta.ModelRelationMeta` objects,
                  return None if no model version relations to be listed.
         """
-        model_version_result = MongoModelVersionRelation.objects(model_id=model_id, is_deleted__ne=TRUE).skip(offset).limit(page_size)
+        model_version_result = MongoModelVersionRelation.objects(model_id=model_id, is_deleted__ne=TRUE).skip(
+            offset).limit(page_size)
         if len(model_version_result) == 0:
             return None
         model_version_list = []
@@ -965,7 +971,8 @@ class MongoStore(AbstractStore):
                  Status.ERROR if the model version does not exist otherwise.
         """
         try:
-            model_version = MongoModelVersionRelation.objects(version=version, model_id=model_id, is_deleted__ne=TRUE).first()
+            model_version = MongoModelVersionRelation.objects(version=version, model_id=model_id,
+                                                              is_deleted__ne=TRUE).first()
             if model_version is None:
                 return Status.ERROR
             deleted_model_version_counts = MongoModelVersionRelation.objects(
@@ -1048,13 +1055,13 @@ class MongoStore(AbstractStore):
                     workflow_execution.job_info.append(job)
                 workflow_execution.save()
             job_meta = JobMeta(uuid=job.uuid, name=name, workflow_execution_id=workflow_execution_id,
-                                job_state=job_state,
-                                properties=properties, job_id=job_id, start_time=start_time, end_time=end_time,
-                                log_uri=log_uri, signature=signature)
+                               job_state=job_state,
+                               properties=properties, job_id=job_id, start_time=start_time, end_time=end_time,
+                               log_uri=log_uri, signature=signature)
             return job_meta
         except mongoengine.OperationError as e:
             raise AIFlowException('Registered Job (name={}) already exists. '
-                                    'Error: {}'.format(job.name, str(e)))
+                                  'Error: {}'.format(job.name, str(e)))
 
     def update_job(self, job_name: Text, job_state: State = None, properties: Properties = None,
                    job_id: Text = None, workflow_execution_id: int = None,
@@ -1073,7 +1080,7 @@ class MongoStore(AbstractStore):
                 workflow_execution = self.get_workflow_execution_by_id(workflow_execution_id)
                 if workflow_execution is None:
                     raise AIFlowException('The workflow execution related to the workflow execution id={} '
-                                            'does not exist'.format(workflow_execution_id))
+                                          'does not exist'.format(workflow_execution_id))
                 job.workflow_execution_id = workflow_execution_id
             if end_time is not None:
                 job.end_time = end_time
@@ -1235,21 +1242,21 @@ class MongoStore(AbstractStore):
                                       " but different fields".format(name))
         try:
             artifact = MetaToTable.artifact_meta_to_table(name=name, data_format=data_format,
-                                                            description=description,
-                                                            batch_uri=batch_uri, stream_uri=stream_uri,
-                                                            create_time=create_time,
-                                                            update_time=update_time, properties=properties,
-                                                            store_type=type(self).__name__)
+                                                          description=description,
+                                                          batch_uri=batch_uri, stream_uri=stream_uri,
+                                                          create_time=create_time,
+                                                          update_time=update_time, properties=properties,
+                                                          store_type=type(self).__name__)
             artifact.save()
             artifact_meta = ArtifactMeta(uuid=artifact.uuid, name=name, data_format=data_format,
-                                            description=description,
-                                            batch_uri=batch_uri, stream_uri=stream_uri,
-                                            create_time=create_time,
-                                            update_time=update_time, properties=properties)
+                                         description=description,
+                                         batch_uri=batch_uri, stream_uri=stream_uri,
+                                         create_time=create_time,
+                                         update_time=update_time, properties=properties)
             return artifact_meta
         except mongoengine.OperationError as e:
             raise AIFlowException('Registered Artifact (name={}) already exists. '
-                                    'Error: {}'.format(artifact.name, str(e)))
+                                  'Error: {}'.format(artifact.name, str(e)))
 
     def update_artifact(self, artifact_name: Text, data_format: Text = None, description: Text = None,
                         batch_uri: Text = None, stream_uri: Text = None,
@@ -1354,7 +1361,7 @@ class MongoStore(AbstractStore):
         """
         if model_name is None:
             raise AIFlowException('Registered model name cannot be empty.', INVALID_PARAMETER_VALUE)
-        
+
         register_models = MongoRegisteredModel.objects(model_name=model_name)
 
         if len(register_models) == 0:
@@ -1381,20 +1388,20 @@ class MongoStore(AbstractStore):
             if before_model is not None:
                 if _compare_model_fields(model_type, model_desc, before_model):
                     registered_model = MongoRegisteredModel(model_name=model_name,
-                                                                   model_type=model_type,
-                                                                   model_desc=model_desc)
+                                                            model_type=model_type,
+                                                            model_desc=model_desc)
                     return registered_model.to_meta_entity()
                 else:
                     raise AIFlowException("You have registered the model with same name: \"{}\" "
-                                            "but different fields".format(model_name), RESOURCE_ALREADY_EXISTS)
+                                          "but different fields".format(model_name), RESOURCE_ALREADY_EXISTS)
             registered_model = MongoRegisteredModel(model_name=model_name,
-                                                       model_type=model_type,
-                                                       model_desc=model_desc)
+                                                    model_type=model_type,
+                                                    model_desc=model_desc)
             registered_model.save()
             return registered_model.to_meta_entity()
         except mongoengine.OperationError as e:
             raise AIFlowException('Registered Model (name={}) already exists. Error: {}'.format(model_name, str(e)),
-                                    RESOURCE_ALREADY_EXISTS)
+                                  RESOURCE_ALREADY_EXISTS)
 
     def update_registered_model(self, registered_model, model_name=None, model_type=None, model_desc=None):
         """
@@ -1472,8 +1479,9 @@ class MongoStore(AbstractStore):
             raise AIFlowException('Registered model name cannot be empty.', INVALID_PARAMETER_VALUE)
         if model_version is None:
             raise AIFlowException('Registered model version cannot be empty.', INVALID_PARAMETER_VALUE)
-        
-        model_versions = MongoModelVersion.objects(model_name=model_name, model_version=model_version, current_stage__ne=STAGE_DELETED)
+
+        model_versions = MongoModelVersion.objects(model_name=model_name, model_version=model_version,
+                                                   current_stage__ne=STAGE_DELETED)
 
         if len(model_versions) == 0:
             return None
@@ -1487,7 +1495,7 @@ class MongoStore(AbstractStore):
         model_name = registered_model.model_name
         if model_name is None:
             raise AIFlowException('Registered model name cannot be empty.', INVALID_PARAMETER_VALUE)
-        
+
         return MongoModelVersion.objects(model_name=model_name, current_stage__ne=STAGE_DELETED)
 
     @classmethod
@@ -1500,8 +1508,8 @@ class MongoStore(AbstractStore):
             raise AIFlowException('Registered model version cannot be empty.', INVALID_PARAMETER_VALUE)
 
         return MongoModelVersion.objects(model_name=model_name,
-                                            model_version__startswith=deleted_character + model_version + deleted_character,
-                                            current_stage__ne=STAGE_DELETED).count()
+                                         model_version__startswith=deleted_character + model_version + deleted_character,
+                                         current_stage__ne=STAGE_DELETED).count()
 
     def create_model_version(self, model_name, model_path, model_metric, model_flavor=None,
                              version_desc=None, current_stage=STAGE_GENERATED):
@@ -1522,7 +1530,7 @@ class MongoStore(AbstractStore):
             if current_version is None:
                 return "1"
             else:
-                return str(current_version+1)
+                return str(current_version + 1)
 
         for attempt in range(self.CREATE_RETRY_TIMES):
             try:
@@ -1537,12 +1545,12 @@ class MongoStore(AbstractStore):
                         version_num = len(model_versions)
                     model_version = next_version(version_num)
                     doc_model_version = MongoModelVersion(model_name=model_name,
-                                                             model_version=model_version,
-                                                             model_path=model_path,
-                                                             model_metric=model_metric,
-                                                             model_flavor=model_flavor,
-                                                             version_desc=version_desc,
-                                                             current_stage=get_canonical_stage(current_stage))
+                                                          model_version=model_version,
+                                                          model_path=model_path,
+                                                          model_metric=model_metric,
+                                                          model_flavor=model_flavor,
+                                                          version_desc=version_desc,
+                                                          current_stage=get_canonical_stage(current_stage))
                     doc_model_version.save()
                     # update reference field
                     if model_name is not None:
@@ -1581,7 +1589,7 @@ class MongoStore(AbstractStore):
         serving_model_version = self.get_deployed_model_version(model_version.model_name)
         if serving_model_version is not None and current_stage == 'DEPLOYED':
             raise AIFlowException('There is already a serving model version="{}" of model="{}"'.
-                                    format(serving_model_version.model_version, serving_model_version.model_name))
+                                  format(serving_model_version.model_version, serving_model_version.model_name))
         model_version = self._get_model_version(model_version)
         if model_version is None:
             return None
@@ -1602,7 +1610,7 @@ class MongoStore(AbstractStore):
             except mongoengine.OperationError as e:
                 raise AIFlowException(
                     'Update model version error (model_name={}, model_version={}).'.format(model_version.model_name,
-                                                                                            model_version.model_version))
+                                                                                           model_version.model_version))
 
     def delete_model_version(self, model_version):
         """
@@ -1615,7 +1623,7 @@ class MongoStore(AbstractStore):
         doc_model_version = self._get_model_version(model_version)
         if doc_model_version is None:
             return None
-        
+
         doc_model_version.model_path = "REDACTED-SOURCE-PATH"
         doc_model_version.model_metric = "REDACTED-METRIC-ADDRESS"
         doc_model_version.model_flavor = "REDACTED-FLAVOR-FEATURE"
@@ -1664,35 +1672,35 @@ class MongoStore(AbstractStore):
         """
         try:
             metric_meta_table = metric_meta_to_table(name,
-                                                        dataset_id,
-                                                        model_name,
-                                                        model_version,
-                                                        job_id,
-                                                        start_time,
-                                                        end_time,
-                                                        metric_type,
-                                                        uri,
-                                                        tags,
-                                                        metric_description,
-                                                        properties,
-                                                        type(self).__name__)
+                                                     dataset_id,
+                                                     model_name,
+                                                     model_version,
+                                                     job_id,
+                                                     start_time,
+                                                     end_time,
+                                                     metric_type,
+                                                     uri,
+                                                     tags,
+                                                     metric_description,
+                                                     properties,
+                                                     type(self).__name__)
             metric_meta_table.save()
             return MetricMeta(uuid=metric_meta_table.uuid,
-                                name=name,
-                                dataset_id=dataset_id,
-                                model_name=model_name,
-                                model_version=model_version,
-                                job_id=job_id,
-                                start_time=start_time,
-                                end_time=end_time,
-                                metric_type=metric_type,
-                                uri=uri,
-                                tags=tags,
-                                metric_description=metric_description,
-                                properties=properties)
+                              name=name,
+                              dataset_id=dataset_id,
+                              model_name=model_name,
+                              model_version=model_version,
+                              job_id=job_id,
+                              start_time=start_time,
+                              end_time=end_time,
+                              metric_type=metric_type,
+                              uri=uri,
+                              tags=tags,
+                              metric_description=metric_description,
+                              properties=properties)
         except Exception as e:
             raise AIFlowException('Registered metric meta failed!'
-                                    'Error: {}'.format(str(e)))
+                                  'Error: {}'.format(str(e)))
 
     def delete_metric_meta(self, uuid: int):
         try:
@@ -1701,7 +1709,7 @@ class MongoStore(AbstractStore):
             metric_meta_table.save()
         except Exception as e:
             raise AIFlowException('delete metric meta failed!'
-                                    'Error: {}'.format(str(e)))
+                                  'Error: {}'.format(str(e)))
 
     def register_metric_summary(self,
                                 metric_id,
@@ -1723,7 +1731,7 @@ class MongoStore(AbstractStore):
                                  metric_value=metric_value)
         except mongoengine.OperationError as e:
             raise AIFlowException('Registered metric summary failed!'
-                                    'Error: {}'.format(str(e)))
+                                  'Error: {}'.format(str(e)))
 
     def delete_metric_summary(self, uuid: int):
         try:
@@ -1732,7 +1740,7 @@ class MongoStore(AbstractStore):
             metric_summary_table.save()
         except Exception as e:
             raise AIFlowException('delete metric summary failed!'
-                                    'Error: {}'.format(str(e)))
+                                  'Error: {}'.format(str(e)))
 
     def update_metric_meta(self,
                            uuid,
@@ -1795,7 +1803,7 @@ class MongoStore(AbstractStore):
             return table_to_metric_meta(metric_meta_table)
         except Exception as e:
             raise AIFlowException('Registered metric meta failed!'
-                                    'Error: {}'.format(str(e)))
+                                  'Error: {}'.format(str(e)))
 
     def update_metric_summary(self,
                               uuid,
@@ -1822,7 +1830,7 @@ class MongoStore(AbstractStore):
             return table_to_metric_summary(metric_summary_table)
         except Exception as e:
             raise AIFlowException('Registered metric summary failed!'
-                                    'Error: {}'.format(str(e)))
+                                  'Error: {}'.format(str(e)))
 
     def get_metric_meta(self, name) -> Union[None, MetricMeta]:
         """
@@ -1841,7 +1849,7 @@ class MongoStore(AbstractStore):
 
         except Exception as e:
             raise AIFlowException('Get metric meta  '
-                                    'Error: {}'.format(str(e)))
+                                  'Error: {}'.format(str(e)))
 
     def get_dataset_metric_meta(self, dataset_id) -> Union[None, MetricMeta, List[MetricMeta]]:
         """
@@ -1851,8 +1859,8 @@ class MongoStore(AbstractStore):
         """
         try:
             metric_meta_tables = MongoMetricMeta.objects(dataset_id=dataset_id,
-                                                            metric_type=MetricType.DATASET.value,
-                                                            is_deleted__ne=TRUE)
+                                                         metric_type=MetricType.DATASET.value,
+                                                         is_deleted__ne=TRUE)
 
             if len(metric_meta_tables) == 0:
                 return None
@@ -1868,7 +1876,7 @@ class MongoStore(AbstractStore):
                 return res
         except Exception as e:
             raise AIFlowException('Get metric meta  '
-                                    'Error: {}'.format(str(e)))
+                                  'Error: {}'.format(str(e)))
 
     def get_model_metric_meta(self, model_name, model_version) -> Union[None, MetricMeta, List[MetricMeta]]:
         """
@@ -1879,9 +1887,9 @@ class MongoStore(AbstractStore):
         """
         try:
             metric_meta_tables = MongoMetricMeta.objects(model_name=model_name,
-                                                            model_version=model_version,
-                                                            metric_type=MetricType.MODEL.value,
-                                                            is_deleted__ne=TRUE)
+                                                         model_version=model_version,
+                                                         metric_type=MetricType.MODEL.value,
+                                                         is_deleted__ne=TRUE)
 
             if len(metric_meta_tables) == 0:
                 return None
@@ -1895,7 +1903,7 @@ class MongoStore(AbstractStore):
                 return result
         except Exception as e:
             raise AIFlowException('Get metric meta  '
-                                    'Error: {}'.format(str(e)))
+                                  'Error: {}'.format(str(e)))
 
     def get_metric_summary(self, metric_id) -> Optional[List[MetricSummary]]:
         """
@@ -1917,8 +1925,8 @@ class MongoStore(AbstractStore):
                 return res
         except Exception as e:
             raise AIFlowException('Get metric summary  '
-                                    'Error: {}'.format(str(e)))
-    
+                                  'Error: {}'.format(str(e)))
+
     """member api"""
 
     def list_living_members(self, ttl_ms) -> List[Member]:
@@ -2011,24 +2019,24 @@ class MongoStoreConnManager(object):
         if db_uri not in self._conns:
             self._conns[db_uri] = mongoengine.connect(db_name, host=db_uri, alias=db_alias)
             self._connected_uris.add(db_uri)
-    
+
     def disconnect(self, db_uri, db_alias=MONGO_DB_ALIAS_META_SERVICE):
         if db_uri in self._conns:
             mongoengine.disconnect(alias=db_alias)
             self._connected_uris.remove(db_uri)
             self._closed_uris.add(db_uri)
-    
+
     def disconnect_all(self):
         current_connected_uris = self._connected_uris.copy()
         for uri in current_connected_uris:
             self.disconnect(uri)
-    
+
     def drop(self, db_uri_without_auth):
         db_uri = f'{db_uri_without_auth}?authSource=admin'
         if db_uri in self._conns:
             _, _, _, _, db = parse_mongo_uri(db_uri_without_auth)
             self._conns[db_uri].drop_database(db)
-    
+
     def drop_all(self):
         current_connected_uris = self._connected_uris.copy()
         for db_uri in current_connected_uris:
