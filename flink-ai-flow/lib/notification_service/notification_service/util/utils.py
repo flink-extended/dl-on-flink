@@ -21,6 +21,9 @@ import time
 from notification_service.base_notification import BaseEvent, Member
 from notification_service.proto import notification_service_pb2
 
+if not hasattr(time, 'time_ns'):
+    time.time_ns = lambda: int(time.time() * 1e9)
+
 
 def event_to_proto(event: BaseEvent):
     result_event_proto = notification_service_pb2.EventProto(key=event.key,
@@ -53,13 +56,13 @@ def event_proto_to_event(event_proto):
 
 def event_model_to_event(event_model):
     return BaseEvent(
-            key=event_model.key,
-            value=event_model.value,
-            event_type=event_model.event_type,
-            version=event_model.version,
-            create_time=event_model.create_time,
-            context=event_model.context,
-            namespace=event_model.namespace)
+        key=event_model.key,
+        value=event_model.value,
+        event_type=event_model.event_type,
+        version=event_model.version,
+        create_time=event_model.create_time,
+        context=event_model.context,
+        namespace=event_model.namespace)
 
 
 def member_to_proto(member: Member):
@@ -72,10 +75,10 @@ def proto_to_member(member_proto):
 
 
 def sleep_and_detecting_running(interval_ms, is_running_callable, min_interval_ms=500):
-        start_time = time.time_ns() / 1000000
-        while is_running_callable() and time.time_ns() / 1000000 < start_time + interval_ms:
-            remaining = time.time_ns() / 1000000 - start_time
-            if remaining > min_interval_ms:
-                time.sleep(min_interval_ms / 1000)
-            else:
-                time.sleep(remaining / 1000)
+    start_time = time.time_ns() / 1000000
+    while is_running_callable() and time.time_ns() / 1000000 < start_time + interval_ms:
+        remaining = time.time_ns() / 1000000 - start_time
+        if remaining > min_interval_ms:
+            time.sleep(min_interval_ms / 1000)
+        else:
+            time.sleep(remaining / 1000)

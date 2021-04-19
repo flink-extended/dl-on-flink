@@ -35,6 +35,9 @@ from notification_service.proto.notification_service_pb2 \
 from notification_service.proto import notification_service_pb2_grpc
 from notification_service.util.utils import event_proto_to_event, proto_to_member, sleep_and_detecting_running
 
+if not hasattr(time, 'time_ns'):
+    time.time_ns = lambda: int(time.time() * 1e9)
+
 NOTIFICATION_TIMEOUT_SECONDS = os.environ.get("NOTIFICATION_TIMEOUT_SECONDS", 5)
 ALL_EVENTS_KEY = "_*"
 
