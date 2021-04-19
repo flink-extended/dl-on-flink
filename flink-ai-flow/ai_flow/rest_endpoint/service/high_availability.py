@@ -34,6 +34,9 @@ from ai_flow.rest_endpoint.protobuf.high_availability_pb2 import ListMembersResp
 from ai_flow.rest_endpoint.protobuf.high_availability_pb2_grpc import HighAvailabilityManagerServicer, \
     HighAvailabilityManagerStub
 
+if not hasattr(time, 'time_ns'):
+    time.time_ns = lambda: int(time.time() * 1e9)
+
 
 class Member(object):
 
