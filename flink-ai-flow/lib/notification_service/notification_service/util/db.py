@@ -29,6 +29,9 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from notification_service.base_notification import BaseEvent, Member, ANY_CONDITION
 from notification_service.util.utils import event_model_to_event
 
+if not hasattr(time, 'time_ns'):
+    time.time_ns = lambda: int(time.time() * 1e9)
+
 # use sqlite by default for testing
 SQL_ALCHEMY_CONN = "sqlite:///notification_service.db"
 engine = None
@@ -74,13 +77,14 @@ def provide_session(func):
     database transaction, you pass it to the function, if not this wrapper
     will create one and close it for you.
     """
+
     @wraps(func)
     def wrapper(*args, **kwargs):
         arg_session = 'session'
 
         func_params = func.__code__.co_varnames
         session_in_args = arg_session in func_params and \
-            func_params.index(arg_session) < len(args)
+                          func_params.index(arg_session) < len(args)
         session_in_kwargs = arg_session in kwargs
 
         if session_in_kwargs or session_in_args:
@@ -97,7 +101,6 @@ Base = declarative_base()
 
 
 class EventModel(Base):
-
     __tablename__ = "event_model"
     version = Column(BigInteger().with_variant(Integer, "sqlite"), primary_key=True)
     key = Column(String(1024), nullable=False)
@@ -213,7 +216,6 @@ class EventModel(Base):
 
 
 class MemberModel(Base):
-
     __tablename__ = "member_model"
     id = Column(BigInteger().with_variant(Integer, "sqlite"), primary_key=True)
     version = Column(BigInteger(), nullable=False)

@@ -48,6 +48,9 @@ from ai_flow.store.db.db_model import SqlMetricMeta, SqlMetricSummary
 from ai_flow.store.db.db_model import SqlRegisteredModel, SqlModelVersion
 from ai_flow.store.db.db_util import extract_db_engine_from_uri, create_sqlalchemy_engine, _get_managed_session_maker
 
+if not hasattr(time, 'time_ns'):
+    time.time_ns = lambda: int(time.time() * 1e9)
+
 _logger = logging.getLogger(__name__)
 
 sqlalchemy.orm.configure_mappers()
@@ -1419,7 +1422,7 @@ class SqlAlchemyStore(AbstractStore):
             raise AIFlowException('Registered model name cannot be empty.', INVALID_PARAMETER_VALUE)
         with self.ManagedSessionMaker() as session:
             model_version = session.query(SqlModelVersion).filter(
-                and_(SqlModelVersion.model_name == model_name, SqlModelVersion.current_stage == stage))\
+                and_(SqlModelVersion.model_name == model_name, SqlModelVersion.current_stage == stage)) \
                 .order_by(cast(SqlModelVersion.model_version, Integer).desc()).first()
             if model_version is None:
                 return None
@@ -1617,7 +1620,7 @@ class SqlAlchemyStore(AbstractStore):
             if current_version is None:
                 return "1"
             else:
-                return str(current_version+1)
+                return str(current_version + 1)
 
         with self.ManagedSessionMaker() as session:
             for attempt in range(self.CREATE_RETRY_TIMES):
