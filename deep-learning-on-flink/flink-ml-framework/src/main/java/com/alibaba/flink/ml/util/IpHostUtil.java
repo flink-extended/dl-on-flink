@@ -30,6 +30,7 @@ import java.util.Random;
  * machine ip address and port helper function
  */
 public class IpHostUtil {
+	public static final String TF_ON_FLINK_IP = "TF_ON_FLINK_IP";
 	private static Logger LOG = LoggerFactory.getLogger(IpHostUtil.class);
 
 	private static InetAddress getLocalHostLANAddress() throws Exception {
@@ -80,9 +81,15 @@ public class IpHostUtil {
 	}
 
 	private static String getLocalIp() throws Exception {
+		String localIp = System.getenv(TF_ON_FLINK_IP);
+		if (localIp != null) {
+			LOG.info("Got local ip from environment variable {} {}", TF_ON_FLINK_IP, localIp);
+			return localIp;
+		}
 		InetAddress address = InetAddress.getLocalHost();
-		String ip = address.getHostAddress();
-		return ip;
+		localIp = address.getHostAddress();
+		LOG.info("Got local Hostname: {}, local ip: {}", address.getHostName(), localIp);
+		return localIp;
 	}
 
 	/**
