@@ -18,9 +18,9 @@
 
 package com.alibaba.flink.ml.examples.tensorflow.mnist.ops;
 
+import com.alibaba.flink.ml.tensorflow.data.TFRecordReader;
 import com.alibaba.flink.ml.tensorflow.io.TFRExtractRowHelper;
 
-import com.alibaba.flink.ml.tensorflow.util.TFRecordReader;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.ResultTypeQueryable;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
