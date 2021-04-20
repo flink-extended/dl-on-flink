@@ -1,4 +1,3 @@
-import json
 import os
 import shutil
 import time
@@ -6,11 +5,10 @@ from typing import List
 import numpy as np
 from joblib import dump, load
 from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import cross_validate, cross_val_score
+from sklearn.model_selection import cross_val_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.utils import check_random_state
 import ai_flow as af
-from ai_flow import ModelMeta
 from ai_flow.model_center.entity.model_version_stage import ModelVersionStage
 from python_ai_flow import FunctionContext, Executor, ExampleExecutor
 from ai_flow.common.path_util import get_file_dir
@@ -77,22 +75,23 @@ class EvaluateTransformer(Executor):
 
 class ModelEvaluator(Executor):
 
-    def __init__(self):
+    def __init__(self, artifact):
         super().__init__()
         self.model_path = None
         self.model_version = None
+        self.artifact = artifact
 
     def setup(self, function_context: FunctionContext):
-        notifications = af.list_events(key=function_context.node_spec.model.name)
-        print(notifications[0].value)
-        self.model_path = json.loads(notifications[0].value).get('_model_path')
-        self.model_version = json.loads(notifications[0].value).get('_model_version')
+        print(function_context.node_spec.model.name)
+        model = af.get_latest_generated_model_version(function_context.node_spec.model.name)
+        self.model_path = model.model_path
+        self.model_version = model.version
 
     def execute(self, function_context: FunctionContext, input_list: List) -> List:
         x_evaluate, y_evaluate = input_list[0][0], input_list[0][1]
         clf = load(self.model_path)
         scores = cross_val_score(clf, x_evaluate, y_evaluate, cv=5)
-        evaluate_artifact = af.get_artifact_by_name('evaluate_artifact').batch_uri
+        evaluate_artifact = af.get_artifact_by_name(self.artifact).batch_uri
         with open(evaluate_artifact, 'a') as f:
             f.write('model version[{}] scores: {}\n'.format(self.model_version, scores))
 
@@ -121,62 +120,69 @@ class ValidateTransformer(Executor):
 
 class ModelValidator(Executor):
 
-    def __init__(self):
+    def __init__(self, artifact):
         super().__init__()
+        self.model_name = None
         self.model_path = None
         self.model_version = None
+        self.artifact = artifact
 
     def setup(self, function_context: FunctionContext):
-        notifications = af.list_events(key=function_context.node_spec.model.name)
-        self.model_path = json.loads(notifications[0].value).get('_model_path')
-        self.model_version = json.loads(notifications[0].value).get('_model_version')
+        self.model_name = function_context.node_spec.model.name
+        model = af.get_latest_generated_model_version(self.model_name)
+        self.model_path = model.model_path
+        self.model_version = model.version
 
     def execute(self, function_context: FunctionContext, input_list: List) -> List:
-        model_meta: ModelMeta = function_context.node_spec.model
-        serving_model_version = af.get_deployed_model_version(model_name=model_meta.name)
-        if serving_model_version is None:
-            af.update_model_version(model_name=model_meta.name,
+        deployed_model_version = af.get_deployed_model_version(model_name=self.model_name)
+        if deployed_model_version is None:
+            af.update_model_version(model_name=self.model_name,
                                     model_version=self.model_version,
                                     current_stage=ModelVersionStage.DEPLOYED)
 
         else:
+
             x_validate, y_validate = input_list[0][0], input_list[0][1]
-            scoring = ['precision_macro', 'recall_macro']
-            serving_clf = load(serving_model_version.model_path)
-            serving_scores = cross_validate(serving_clf, x_validate, y_validate, scoring=scoring)
             clf = load(self.model_path)
-            scores = cross_validate(clf, x_validate, y_validate, scoring=scoring)
-            batch_uri = af.get_artifact_by_name('validate_artifact').batch_uri
-            with open(batch_uri, 'a') as f:
-                f.write('serving model version[{}] scores: {}\n'.format(serving_model_version.version, serving_scores))
-                f.write('generated model version[{}] scores: {}\n'.format(self.model_version, scores))
-            if scores.mean() > serving_scores.mean():
-                af.update_model_version(model_name=model_meta.name,
-                                        model_version=serving_model_version.version,
+            scores = cross_val_score(clf, x_validate, y_validate, scoring='precision_macro', cv=5)
+            deployed_clf = load(deployed_model_version.model_path)
+            deployed_scores = cross_val_score(deployed_clf, x_validate, y_validate, scoring='precision_macro')
+
+            batch_uri = af.get_artifact_by_name(self.artifact).batch_uri
+            if np.mean(scores) > np.mean(deployed_scores):
+                af.update_model_version(model_name=self.model_name,
+                                        model_version=deployed_model_version.version,
                                         current_stage=ModelVersionStage.VALIDATED)
-                af.update_model_version(model_name=model_meta.name,
+                af.update_model_version(model_name=self.model_name,
                                         model_version=self.model_version,
                                         current_stage=ModelVersionStage.DEPLOYED)
+                with open(batch_uri, 'a') as f:
+                    f.write('deployed model version[{}] scores: {}\n'.format(deployed_model_version.version,
+                                                                             deployed_scores))
+                    f.write('generated model version[{}] scores: {}\n'.format(self.model_version, scores))
         return []
 
 
 class ModelPusher(Executor):
+    def __init__(self, artifact):
+        super().__init__()
+        self.artifact = artifact
 
     def execute(self, function_context: FunctionContext, input_list: List) -> List:
         node_spec = function_context.node_spec
-        serving_model_path = af.get_artifact_by_name('push_model_artifact').batch_uri
-        if not os.path.exists(serving_model_path):
-            os.makedirs(serving_model_path)
-        serving_model_version = None
-        if serving_model_version is None:
-            serving_model_version = af.get_deployed_model_version(model_name=node_spec.model.name)
-        for file in os.listdir(serving_model_path):
-            file_path = os.path.join(serving_model_path, file)
+        deployed_model_path = af.get_artifact_by_name(self.artifact).batch_uri
+        if not os.path.exists(deployed_model_path):
+            os.makedirs(deployed_model_path)
+        deployed_model_version = None
+        if deployed_model_version is None:
+            deployed_model_version = af.get_deployed_model_version(model_name=node_spec.model.name)
+        for file in os.listdir(deployed_model_path):
+            file_path = os.path.join(deployed_model_path, file)
             if os.path.isfile(file_path):
                 os.remove(file_path)
             elif os.path.isdir(file_path):
                 shutil.rmtree(file_path, True)
-        shutil.copy(serving_model_version.model_path, serving_model_path)
+        shutil.copy(deployed_model_version.model_path, deployed_model_path)
         return []
 
 
@@ -201,10 +207,14 @@ class PredictTransformer(Executor):
 
 
 class ModelPredictor(Executor):
+    def __init__(self):
+        super().__init__()
 
     def execute(self, function_context: FunctionContext, input_list: List) -> List:
-        model_artifact = af.get_artifact_by_name('push_model_artifact').batch_uri
-        clf = load(os.path.join(model_artifact, os.listdir(model_artifact)[0]))
+        model_name = function_context.node_spec.model.name
+        model_meta = af.get_deployed_model_version(model_name)
+        model_path = model_meta.model_path
+        clf = load(model_path)
         return [clf.predict(input_list[0][0])]
 
 

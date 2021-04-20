@@ -1,23 +1,16 @@
-from ai_flow import ExampleSupportType, PythonObjectExecutor, ModelType, CmdExecutor
+from ai_flow import ExampleSupportType, PythonObjectExecutor, ModelType
 from ai_flow.common.scheduler_type import SchedulerType
 from batch_train_batch_predict_executor import *
 from ai_flow.plugins.local_platform import LocalPlatform
-from ai_flow.plugins.engine import CMDEngine
 from python_ai_flow.python_engine import PythonEngine
-import example_util
-import example_data_util
+from examples.example_utils import example_util
 
-EXAMPLE_URI = example_data_util.get_example_data() + '/mnist_{}.npz'
+EXAMPLE_URI = os.path.abspath('.') + '/example_data/mnist_{}.npz'
 
 
-def run_job():
-    project_root_path = example_util.get_root_path()
-    af.set_project_config_file(project_root_path + '/project.yaml')
+def run_project(project_root_path):
 
-    cmd_job_config = af.BaseJobConfig(platform=LocalPlatform.platform(), engine=CMDEngine().engine())
-    with af.config(cmd_job_config):
-        # Command line job executor
-        cmd_job = af.user_define_operation(executor=CmdExecutor(cmd_line="echo Start AI flow"))
+    af.set_project_config_file(example_util.get_project_config_file(project_root_path))
 
     # Config python job, we set platform to local and engine to python here
     python_job_config = af.BaseJobConfig(platform=LocalPlatform.platform(), engine=PythonEngine.engine())
@@ -27,9 +20,13 @@ def run_job():
     python_job_config.exec_mode = af.ExecutionMode.BATCH
 
     with af.config(python_job_config):
+        project_name = example_util.get_parent_dir_name(__file__)
+        project_meta = af.register_project(name=project_name,
+                                           uri=project_root_path,
+                                           project_type='local python')
         # Training of model
         # Register metadata raw training data(example) and read example(i.e. training dataset)
-        train_example = af.register_example(name='train_batch_example_7',
+        train_example = af.register_example(name='train_example',
                                             support_type=ExampleSupportType.EXAMPLE_BATCH,
                                             batch_uri=EXAMPLE_URI.format('train'),
                                             data_format='npz')
@@ -58,14 +55,16 @@ def run_job():
         evaluate_transform = af.transform(input_data_list=[evaluate_read_example],
                                           executor=PythonObjectExecutor(python_object=EvaluateTransformer()))
         # Register disk path used to save evaluate result
-        evaluate_artifact = af.register_artifact(name='evaluate_artifact',
+        evaluate_artifact_name = 'evaluate_artifact'
+        evaluate_artifact = af.register_artifact(name=evaluate_artifact_name,
                                                  batch_uri=get_file_dir(__file__) + '/evaluate_model')
         # Evaluate model
         evaluate_channel = af.evaluate(input_data_list=[evaluate_transform],
                                        model_info=train_model,
-                                       executor=PythonObjectExecutor(python_object=ModelEvaluator()))
+                                       executor=PythonObjectExecutor(python_object=ModelEvaluator(evaluate_artifact_name)))
         # Validation of model
         # Read validation dataset and validate model before it is used to predict
+
         validate_example = af.register_example(name='validate_example',
                                                support_type=ExampleSupportType.EXAMPLE_BATCH,
                                                batch_uri=EXAMPLE_URI.format('evaluate'),
@@ -74,18 +73,22 @@ def run_job():
                                                 executor=PythonObjectExecutor(python_object=ValidateExampleReader()))
         validate_transform = af.transform(input_data_list=[validate_read_example],
                                           executor=PythonObjectExecutor(python_object=ValidateTransformer()))
-        validate_artifact = af.register_artifact(name='validate_artifact',
+        validate_artifact_name = 'validate_artifact'
+        validate_artifact = af.register_artifact(name=validate_artifact_name,
                                                  batch_uri=get_file_dir(__file__) + '/validate_model')
         validate_channel = af.model_validate(input_data_list=[validate_transform],
                                              model_info=train_model,
-                                             executor=PythonObjectExecutor(python_object=ModelValidator()))
+                                             executor=PythonObjectExecutor(
+                                                 python_object=ModelValidator(validate_artifact_name)))
 
         # Push model to serving
         # Register metadata of pushed model
-        push_model_artifact = af.register_artifact(name='push_model_artifact',
+        push_model_artifact_name = 'push_model_artifact'
+        push_model_artifact = af.register_artifact(name=push_model_artifact_name,
                                                    batch_uri=get_file_dir(__file__) + '/pushed_model')
         push_model_channel = af.push_model(model_info=train_model,
-                                           executor=PythonObjectExecutor(python_object=ModelPusher()))
+                                           executor=PythonObjectExecutor(
+                                               python_object=ModelPusher(push_model_artifact_name)))
 
         # Prediction(Inference)
         predict_example = af.register_example(name='predict_example',
@@ -116,7 +119,7 @@ def run_job():
     af.stop_before_control_dependency(predict_channel, push_model_channel)
 
     # Run workflow
-    transform_dag = 'batch_train_batch_predict_airflow'
+    transform_dag = 'batch_train_batch_predict'
     af.deploy_to_airflow(project_root_path, dag_id=transform_dag)
     context = af.run(project_path=project_root_path,
                      dag_id=transform_dag,
@@ -124,4 +127,5 @@ def run_job():
 
 
 if __name__ == '__main__':
-    run_job()
+    project_path = example_util.init_project_path(".")
+    run_project(project_path)
