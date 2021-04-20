@@ -50,7 +50,8 @@
     <modules>
         <module>flink-ml-framework</module>
         <module>flink-ml-operator</module>
-        <module>flink-ml-tensorflow</module>
+        <module>flink-ml-tensorflow-2.x</module>
+        <module>flink-ml-tensorflow-common</module>
         <module>flink-ml-pytorch</module>
         <module>flink-ml-examples</module>
         <module>flink-ml-lib</module>
