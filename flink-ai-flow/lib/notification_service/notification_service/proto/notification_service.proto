@@ -20,7 +20,8 @@ syntax = "proto3";
 option java_generic_services = true;
 option java_package = "com.aiflow.notification.proto";
 option py_generic_services = true;
-package notification_service;
+
+import "google/api/annotations.proto";
 
 service NotificationService {
     // AirFlowService provides notification function rest endpoint of NotificationService for Notification Service component.
@@ -30,33 +31,60 @@ service NotificationService {
 
     // Send event.
     rpc sendEvent (SendEventRequest) returns (SendEventsResponse) {
+        option (google.api.http) = {
+            post: "/aiflow/notification-service/send_event"
+            body: "*"
+        };
     }
 
     // List events.
     rpc listEvents (ListEventsRequest) returns (ListEventsResponse) {
+        option (google.api.http) = {
+            post: "/aiflow/notification-service/list_events"
+            body: "*"
+        };
     }
 
     // List all events
     rpc listAllEvents (ListAllEventsRequest) returns (ListEventsResponse) {
+        option (google.api.http) = {
+            post: "/aiflow/notification-service/list_all_events"
+            body: "*"
+        };
     }
 
     // Accepts notifications from other members.
     rpc notify (NotifyRequest) returns (NotifyResponse) {
+        option (google.api.http) = {
+            post: "/aiflow/notification-service/notify"
+            body: "*"
+        };
     }
 
     // List current living members.
     rpc listMembers (ListMembersRequest) returns (ListMembersResponse) {
+        option (google.api.http) = {
+            post: "/aiflow/notification-service/list_members"
+            body: "*"
+        };
     }
 
     // Notify current members that there is a new member added.
     rpc notifyNewMember (NotifyNewMemberRequest) returns (NotifyNewMemberResponse) {
+        option (google.api.http) = {
+            post: "/aiflow/notification-service/notify_new_member"
+            body: "*"
+        };
     }
 
     // Get latest version by key
     rpc getLatestVersionByKey (GetLatestVersionByKeyRequest) returns (GetLatestVersionResponse) {
+        option (google.api.http) = {
+            post: "/aiflow/notification-service/get_latest_version_by_key"
+            body: "*"
+        };
     }
 }
-
 message EventProto {
     string key = 1;
     string value = 2;
