@@ -20,12 +20,14 @@
 set -e
 
 #generate python file
-python3.7 -m grpc.tools.protoc -I. \
+python3 -m grpc.tools.protoc -I. \
   -I/usr/local/include \
+  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
   --python_out=. \
   --grpc_python_out=. \
   notification_service.proto
 
+#generate java file
 protoc -I/usr/local/include -I. \
   -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
   --java_out=../../java/src/main/java \
@@ -39,7 +41,23 @@ protoc -I/usr/local/include -I. \
   --proto_path=. \
   notification_service.proto
 
+#generate go file
+protoc -I/usr/local/include -I. \
+  -I$GOPATH/src \
+  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+  --go_out=Mgoogle/api/annotations.proto=github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api,plugins=grpc:../go \
+  notification_service.proto
+
+protoc -I/usr/local/include -I. \
+  -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+  --grpc-gateway_out=logtostderr=true:../go \
+  notification_service.proto
 
 sed -i -E 's/^import notification_service_pb2 as notification__service__pb2/from \. import notification_service_pb2 as notification__service__pb2/' *pb2*.py
-
 rm -rf *.py-E
+
+cd ..
+
+sed -i -E 's/^package notification_service/package service/' go/*.go
+sed -i '' 's/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/\/\/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/g' go/notification_service.pb.go
+rm -rf go/*.go-E
