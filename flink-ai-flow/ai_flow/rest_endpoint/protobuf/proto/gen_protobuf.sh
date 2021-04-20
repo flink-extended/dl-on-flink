@@ -20,33 +20,55 @@
 set -e
 
 #generate go file
-#protoc -I/usr/local/include -I. \
-#  -I$GOPATH/src \
-#  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-#  --go_out=Mgoogle/api/annotations.proto=github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api,plugins=grpc:../go \
-#  message.proto
-#
-#protoc -I/usr/local/include -I. \
-#  -I$GOPATH/src \
-#  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-#  --go_out=Mgoogle/api/annotations.proto=github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api,plugins=grpc:../go \
-#  metadata_service.proto
-#
-#protoc -I/usr/local/include -I. \
-#  -I$GOPATH/src \
-#  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-#  --go_out=Mgoogle/api/annotations.proto=github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api,plugins=grpc:../go \
-#  model_center_service.proto
+protoc -I/usr/local/include -I. \
+  -I$GOPATH/src \
+  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+  --go_out=Mgoogle/api/annotations.proto=github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api,plugins=grpc:../go \
+  message.proto
 
-#protoc -I/usr/local/include -I. \
-#  -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-#  --grpc-gateway_out=logtostderr=true:../go \
-#  metadata_service.proto
-#
-#protoc -I/usr/local/include -I. \
-#  -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-#  --grpc-gateway_out=logtostderr=true:../go \
-#  model_center_service.proto
+protoc -I/usr/local/include -I. \
+  -I$GOPATH/src \
+  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+  --go_out=Mgoogle/api/annotations.proto=github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api,plugins=grpc:../go \
+  metadata_service.proto
+
+protoc -I/usr/local/include -I. \
+  -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+  --grpc-gateway_out=logtostderr=true:../go \
+  metadata_service.proto
+
+protoc -I/usr/local/include -I. \
+  -I$GOPATH/src \
+  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+  --go_out=Mgoogle/api/annotations.proto=github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api,plugins=grpc:../go \
+  model_center_service.proto
+
+protoc -I/usr/local/include -I. \
+  -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+  --grpc-gateway_out=logtostderr=true:../go \
+  model_center_service.proto
+
+protoc -I/usr/local/include -I. \
+  -I$GOPATH/src \
+  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+  --go_out=Mgoogle/api/annotations.proto=github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api,plugins=grpc:../go \
+  deploy_service.proto
+
+protoc -I/usr/local/include -I. \
+  -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+  --grpc-gateway_out=logtostderr=true:../go \
+  deploy_service.proto
+
+protoc -I/usr/local/include -I. \
+  -I$GOPATH/src \
+  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+  --go_out=Mgoogle/api/annotations.proto=github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api,plugins=grpc:../go \
+  metric_service.proto
+
+protoc -I/usr/local/include -I. \
+  -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+  --grpc-gateway_out=logtostderr=true:../go \
+  metric_service.proto
 
 #generate java file
 protoc -I/usr/local/include -I. \
@@ -80,28 +102,6 @@ protoc -I/usr/local/include -I. \
   --grpc-java_out=../../../java/client/src/main/java \
   --proto_path=. \
   model_center_service.proto
-
-protoc -I/usr/local/include -I. \
-  -I$GOPATH/src \
-  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-  --go_out=Mgoogle/api/annotations.proto=github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api,plugins=grpc:../go \
-  deploy_service.proto
-
-protoc -I/usr/local/include -I. \
-  -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-  --grpc-gateway_out=logtostderr=true:../go \
-  deploy_service.proto
-
-protoc -I/usr/local/include -I. \
-  -I$GOPATH/src \
-  -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-  --go_out=Mgoogle/api/annotations.proto=github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api,plugins=grpc:../go \
-  metric_service.proto
-
-protoc -I/usr/local/include -I. \
-  -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-  --grpc-gateway_out=logtostderr=true:../go \
-  metric_service.proto
 
 #generate python file
 python3 -m grpc.tools.protoc -I. \
@@ -147,20 +147,22 @@ python3 -m grpc.tools.protoc -I. \
 
 cd ..
 
+sed -i -E 's/^package message/package service/' go/*.go
+sed -i -E 's/^package metadata_service/package service/' go/*.go
+sed -i -E 's/^package model_center_service/package service/' go/*.go
+sed -i -E 's/^package deploy_service/package service/' go/*.go
+sed -i -E 's/^package metric_service/package service/' go/*.go
+
 sed -i '' 's/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/\/\/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/g' go/metadata_service.pb.go
 sed -i '' 's/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/\/\/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/g' go/model_center_service.pb.go
-#sed -i '' 's/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/\/\/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/g' go/notification_service.pb.go
 sed -i '' 's/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/\/\/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/g' go/deploy_service.pb.go
 sed -i '' 's/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/\/\/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/g' go/metric_service.pb.go
-sed -i -E 's/^package message/package service/' go/message.pb.go
 rm -rf go/*.go-E
 
 sed -i -E 's/^import message_pb2 as message__pb2/from \. import message_pb2 as message__pb2/' *pb2*.py
 sed -i -E 's/^import metadata_service_pb2 as metadata__service__pb2/from \. import metadata_service_pb2 as metadata__service__pb2/' *pb2*.py
 sed -i -E 's/^import model_center_service_pb2 as model__center__service__pb2/from \. import model_center_service_pb2 as model__center__service__pb2/' *pb2*.py
-#sed -i -E 's/^import notification_service_pb2 as notification__service__pb2/from \. import notification_service_pb2 as notification__service__pb2/' *pb2*.py
 sed -i -E 's/^import deploy_service_pb2 as deploy__service__pb2/from \. import deploy_service_pb2 as deploy__service__pb2/' *pb2*.py
 sed -i -E 's/^import metric_service_pb2 as metric__service__pb2/from \. import metric_service_pb2 as metric__service__pb2/' *pb2*.py
 sed -i -E 's/^import high_availability_pb2 as high__availability__pb2/from \. import high_availability_pb2 as high__availability__pb2/' *pb2*.py
-
 rm -rf *.py-E

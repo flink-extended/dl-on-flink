@@ -48,7 +48,7 @@ public final class NotificationServiceGrpc {
 
   private NotificationServiceGrpc() {}
 
-  public static final String SERVICE_NAME = "notification_service.NotificationService";
+  public static final String SERVICE_NAME = "NotificationService";
 
   // Static method descriptors that strictly reflect the proto.
   private static volatile io.grpc.MethodDescriptor<com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventRequest,

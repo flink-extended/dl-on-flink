@@ -18,14 +18,14 @@ package main
 
 import (
 	"flag"
+	"google.golang.org/grpc"
 	"net/http"
 
 	"github.com/golang/glog"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"golang.org/x/net/context"
-	"google.golang.org/grpc"
 
-	gw "../protobuf/go"
+	gw "./go"
 )
 
 var (
@@ -39,22 +39,7 @@ func run() error {
 
 	mux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithInsecure()}
-	err := gw.RegisterMetadataServiceHandlerFromEndpoint(ctx, mux, *echoEndpoint, opts)
-	if err != nil {
-		return err
-	}
-
-	err = gw.RegisterModelCenterServiceHandlerFromEndpoint(ctx, mux, *echoEndpoint, opts)
-	if err != nil {
-		return err
-	}
-
-	err = gw.RegisterDeployServiceHandlerFromEndpoint(ctx, mux, *echoEndpoint, opts)
-	if err != nil {
-		return err
-	}
-
-	err = gw.RegisterMetadataServiceHandlerFromEndpoint(ctx, mux, *echoEndpoint, opts)
+	err := gw.RegisterNotificationServiceHandlerFromEndpoint(ctx, mux, *echoEndpoint, opts)
 	if err != nil {
 		return err
 	}
