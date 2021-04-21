@@ -45,7 +45,7 @@ import java.util.concurrent.ExecutionException;
 
 public class TFUtilsTest {
 	private static TestingServer server;
-	private static final String pythonPath = TestUtil.getProjectRootPath() + "/flink-ml-tensorflow/src/test/python/";
+	private static final String pythonPath = TestUtil.getProjectRootPath() + "/flink-ml-tensorflow-2.x/src/test/python/";
 	private static final String add = pythonPath + "add.py";
 	private static final String workerZeroFinishScript = pythonPath + "worker_0_finish.py";
 	private static final String addTBScript = pythonPath + "add_withtb.py";
