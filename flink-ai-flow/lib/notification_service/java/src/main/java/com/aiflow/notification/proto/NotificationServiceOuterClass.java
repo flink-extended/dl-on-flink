@@ -33,7 +33,7 @@ public final class NotificationServiceOuterClass {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   /**
-   * Protobuf enum {@code ReturnStatus}
+   * Protobuf enum {@code notification_service.ReturnStatus}
    */
   public enum ReturnStatus
       implements com.google.protobuf.ProtocolMessageEnum {
@@ -137,11 +137,11 @@ public final class NotificationServiceOuterClass {
       this.value = value;
     }
 
-    // @@protoc_insertion_point(enum_scope:ReturnStatus)
+    // @@protoc_insertion_point(enum_scope:notification_service.ReturnStatus)
   }
 
   public interface EventProtoOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:EventProto)
+      // @@protoc_insertion_point(interface_extends:notification_service.EventProto)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -217,11 +217,11 @@ public final class NotificationServiceOuterClass {
     long getCreateTime();
   }
   /**
-   * Protobuf type {@code EventProto}
+   * Protobuf type {@code notification_service.EventProto}
    */
   public static final class EventProto extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:EventProto)
+      // @@protoc_insertion_point(message_implements:notification_service.EventProto)
       EventProtoOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use EventProto.newBuilder() to construct.
@@ -327,13 +327,13 @@ public final class NotificationServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_EventProto_descriptor;
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_EventProto_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_EventProto_fieldAccessorTable
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_EventProto_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto.class, com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto.Builder.class);
     }
@@ -769,21 +769,21 @@ public final class NotificationServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code EventProto}
+     * Protobuf type {@code notification_service.EventProto}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:EventProto)
+        // @@protoc_insertion_point(builder_implements:notification_service.EventProto)
         com.aiflow.notification.proto.NotificationServiceOuterClass.EventProtoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_EventProto_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_EventProto_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_EventProto_fieldAccessorTable
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_EventProto_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto.class, com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto.Builder.class);
       }
@@ -826,7 +826,7 @@ public final class NotificationServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_EventProto_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_EventProto_descriptor;
       }
 
       @java.lang.Override
@@ -1410,10 +1410,10 @@ public final class NotificationServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:EventProto)
+      // @@protoc_insertion_point(builder_scope:notification_service.EventProto)
     }
 
-    // @@protoc_insertion_point(class_scope:EventProto)
+    // @@protoc_insertion_point(class_scope:notification_service.EventProto)
     private static final com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto();
@@ -1451,21 +1451,21 @@ public final class NotificationServiceOuterClass {
   }
 
   public interface SendEventRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:SendEventRequest)
+      // @@protoc_insertion_point(interface_extends:notification_service.SendEventRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.EventProto event = 1;</code>
+     * <code>.notification_service.EventProto event = 1;</code>
      * @return Whether the event field is set.
      */
     boolean hasEvent();
     /**
-     * <code>.EventProto event = 1;</code>
+     * <code>.notification_service.EventProto event = 1;</code>
      * @return The event.
      */
     com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto getEvent();
     /**
-     * <code>.EventProto event = 1;</code>
+     * <code>.notification_service.EventProto event = 1;</code>
      */
     com.aiflow.notification.proto.NotificationServiceOuterClass.EventProtoOrBuilder getEventOrBuilder();
 
@@ -1490,11 +1490,11 @@ public final class NotificationServiceOuterClass {
         getUuidBytes();
   }
   /**
-   * Protobuf type {@code SendEventRequest}
+   * Protobuf type {@code notification_service.SendEventRequest}
    */
   public static final class SendEventRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:SendEventRequest)
+      // @@protoc_insertion_point(message_implements:notification_service.SendEventRequest)
       SendEventRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use SendEventRequest.newBuilder() to construct.
@@ -1575,13 +1575,13 @@ public final class NotificationServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_SendEventRequest_descriptor;
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_SendEventRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_SendEventRequest_fieldAccessorTable
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_SendEventRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventRequest.class, com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventRequest.Builder.class);
     }
@@ -1589,7 +1589,7 @@ public final class NotificationServiceOuterClass {
     public static final int EVENT_FIELD_NUMBER = 1;
     private com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto event_;
     /**
-     * <code>.EventProto event = 1;</code>
+     * <code>.notification_service.EventProto event = 1;</code>
      * @return Whether the event field is set.
      */
     @java.lang.Override
@@ -1597,7 +1597,7 @@ public final class NotificationServiceOuterClass {
       return event_ != null;
     }
     /**
-     * <code>.EventProto event = 1;</code>
+     * <code>.notification_service.EventProto event = 1;</code>
      * @return The event.
      */
     @java.lang.Override
@@ -1605,7 +1605,7 @@ public final class NotificationServiceOuterClass {
       return event_ == null ? com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto.getDefaultInstance() : event_;
     }
     /**
-     * <code>.EventProto event = 1;</code>
+     * <code>.notification_service.EventProto event = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.notification.proto.NotificationServiceOuterClass.EventProtoOrBuilder getEventOrBuilder() {
@@ -1829,21 +1829,21 @@ public final class NotificationServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code SendEventRequest}
+     * Protobuf type {@code notification_service.SendEventRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:SendEventRequest)
+        // @@protoc_insertion_point(builder_implements:notification_service.SendEventRequest)
         com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_SendEventRequest_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_SendEventRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_SendEventRequest_fieldAccessorTable
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_SendEventRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventRequest.class, com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventRequest.Builder.class);
       }
@@ -1880,7 +1880,7 @@ public final class NotificationServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_SendEventRequest_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_SendEventRequest_descriptor;
       }
 
       @java.lang.Override
@@ -1994,14 +1994,14 @@ public final class NotificationServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto, com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto.Builder, com.aiflow.notification.proto.NotificationServiceOuterClass.EventProtoOrBuilder> eventBuilder_;
       /**
-       * <code>.EventProto event = 1;</code>
+       * <code>.notification_service.EventProto event = 1;</code>
        * @return Whether the event field is set.
        */
       public boolean hasEvent() {
         return eventBuilder_ != null || event_ != null;
       }
       /**
-       * <code>.EventProto event = 1;</code>
+       * <code>.notification_service.EventProto event = 1;</code>
        * @return The event.
        */
       public com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto getEvent() {
@@ -2012,7 +2012,7 @@ public final class NotificationServiceOuterClass {
         }
       }
       /**
-       * <code>.EventProto event = 1;</code>
+       * <code>.notification_service.EventProto event = 1;</code>
        */
       public Builder setEvent(com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto value) {
         if (eventBuilder_ == null) {
@@ -2028,7 +2028,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>.EventProto event = 1;</code>
+       * <code>.notification_service.EventProto event = 1;</code>
        */
       public Builder setEvent(
           com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto.Builder builderForValue) {
@@ -2042,7 +2042,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>.EventProto event = 1;</code>
+       * <code>.notification_service.EventProto event = 1;</code>
        */
       public Builder mergeEvent(com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto value) {
         if (eventBuilder_ == null) {
@@ -2060,7 +2060,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>.EventProto event = 1;</code>
+       * <code>.notification_service.EventProto event = 1;</code>
        */
       public Builder clearEvent() {
         if (eventBuilder_ == null) {
@@ -2074,7 +2074,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>.EventProto event = 1;</code>
+       * <code>.notification_service.EventProto event = 1;</code>
        */
       public com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto.Builder getEventBuilder() {
         
@@ -2082,7 +2082,7 @@ public final class NotificationServiceOuterClass {
         return getEventFieldBuilder().getBuilder();
       }
       /**
-       * <code>.EventProto event = 1;</code>
+       * <code>.notification_service.EventProto event = 1;</code>
        */
       public com.aiflow.notification.proto.NotificationServiceOuterClass.EventProtoOrBuilder getEventOrBuilder() {
         if (eventBuilder_ != null) {
@@ -2093,7 +2093,7 @@ public final class NotificationServiceOuterClass {
         }
       }
       /**
-       * <code>.EventProto event = 1;</code>
+       * <code>.notification_service.EventProto event = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto, com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto.Builder, com.aiflow.notification.proto.NotificationServiceOuterClass.EventProtoOrBuilder> 
@@ -2217,10 +2217,10 @@ public final class NotificationServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:SendEventRequest)
+      // @@protoc_insertion_point(builder_scope:notification_service.SendEventRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:SendEventRequest)
+    // @@protoc_insertion_point(class_scope:notification_service.SendEventRequest)
     private static final com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventRequest();
@@ -2258,31 +2258,31 @@ public final class NotificationServiceOuterClass {
   }
 
   public interface SendEventsResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:SendEventsResponse)
+      // @@protoc_insertion_point(interface_extends:notification_service.SendEventsResponse)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.EventProto event = 1;</code>
+     * <code>.notification_service.EventProto event = 1;</code>
      * @return Whether the event field is set.
      */
     boolean hasEvent();
     /**
-     * <code>.EventProto event = 1;</code>
+     * <code>.notification_service.EventProto event = 1;</code>
      * @return The event.
      */
     com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto getEvent();
     /**
-     * <code>.EventProto event = 1;</code>
+     * <code>.notification_service.EventProto event = 1;</code>
      */
     com.aiflow.notification.proto.NotificationServiceOuterClass.EventProtoOrBuilder getEventOrBuilder();
 
     /**
-     * <code>.ReturnStatus return_code = 2;</code>
+     * <code>.notification_service.ReturnStatus return_code = 2;</code>
      * @return The enum numeric value on the wire for returnCode.
      */
     int getReturnCodeValue();
     /**
-     * <code>.ReturnStatus return_code = 2;</code>
+     * <code>.notification_service.ReturnStatus return_code = 2;</code>
      * @return The returnCode.
      */
     com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus getReturnCode();
@@ -2300,11 +2300,11 @@ public final class NotificationServiceOuterClass {
         getReturnMsgBytes();
   }
   /**
-   * Protobuf type {@code SendEventsResponse}
+   * Protobuf type {@code notification_service.SendEventsResponse}
    */
   public static final class SendEventsResponse extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:SendEventsResponse)
+      // @@protoc_insertion_point(message_implements:notification_service.SendEventsResponse)
       SendEventsResponseOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use SendEventsResponse.newBuilder() to construct.
@@ -2392,13 +2392,13 @@ public final class NotificationServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_SendEventsResponse_descriptor;
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_SendEventsResponse_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_SendEventsResponse_fieldAccessorTable
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_SendEventsResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventsResponse.class, com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventsResponse.Builder.class);
     }
@@ -2406,7 +2406,7 @@ public final class NotificationServiceOuterClass {
     public static final int EVENT_FIELD_NUMBER = 1;
     private com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto event_;
     /**
-     * <code>.EventProto event = 1;</code>
+     * <code>.notification_service.EventProto event = 1;</code>
      * @return Whether the event field is set.
      */
     @java.lang.Override
@@ -2414,7 +2414,7 @@ public final class NotificationServiceOuterClass {
       return event_ != null;
     }
     /**
-     * <code>.EventProto event = 1;</code>
+     * <code>.notification_service.EventProto event = 1;</code>
      * @return The event.
      */
     @java.lang.Override
@@ -2422,7 +2422,7 @@ public final class NotificationServiceOuterClass {
       return event_ == null ? com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto.getDefaultInstance() : event_;
     }
     /**
-     * <code>.EventProto event = 1;</code>
+     * <code>.notification_service.EventProto event = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.notification.proto.NotificationServiceOuterClass.EventProtoOrBuilder getEventOrBuilder() {
@@ -2432,14 +2432,14 @@ public final class NotificationServiceOuterClass {
     public static final int RETURN_CODE_FIELD_NUMBER = 2;
     private int returnCode_;
     /**
-     * <code>.ReturnStatus return_code = 2;</code>
+     * <code>.notification_service.ReturnStatus return_code = 2;</code>
      * @return The enum numeric value on the wire for returnCode.
      */
     @java.lang.Override public int getReturnCodeValue() {
       return returnCode_;
     }
     /**
-     * <code>.ReturnStatus return_code = 2;</code>
+     * <code>.notification_service.ReturnStatus return_code = 2;</code>
      * @return The returnCode.
      */
     @java.lang.Override public com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus getReturnCode() {
@@ -2667,21 +2667,21 @@ public final class NotificationServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code SendEventsResponse}
+     * Protobuf type {@code notification_service.SendEventsResponse}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:SendEventsResponse)
+        // @@protoc_insertion_point(builder_implements:notification_service.SendEventsResponse)
         com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventsResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_SendEventsResponse_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_SendEventsResponse_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_SendEventsResponse_fieldAccessorTable
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_SendEventsResponse_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventsResponse.class, com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventsResponse.Builder.class);
       }
@@ -2720,7 +2720,7 @@ public final class NotificationServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_SendEventsResponse_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_SendEventsResponse_descriptor;
       }
 
       @java.lang.Override
@@ -2838,14 +2838,14 @@ public final class NotificationServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto, com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto.Builder, com.aiflow.notification.proto.NotificationServiceOuterClass.EventProtoOrBuilder> eventBuilder_;
       /**
-       * <code>.EventProto event = 1;</code>
+       * <code>.notification_service.EventProto event = 1;</code>
        * @return Whether the event field is set.
        */
       public boolean hasEvent() {
         return eventBuilder_ != null || event_ != null;
       }
       /**
-       * <code>.EventProto event = 1;</code>
+       * <code>.notification_service.EventProto event = 1;</code>
        * @return The event.
        */
       public com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto getEvent() {
@@ -2856,7 +2856,7 @@ public final class NotificationServiceOuterClass {
         }
       }
       /**
-       * <code>.EventProto event = 1;</code>
+       * <code>.notification_service.EventProto event = 1;</code>
        */
       public Builder setEvent(com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto value) {
         if (eventBuilder_ == null) {
@@ -2872,7 +2872,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>.EventProto event = 1;</code>
+       * <code>.notification_service.EventProto event = 1;</code>
        */
       public Builder setEvent(
           com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto.Builder builderForValue) {
@@ -2886,7 +2886,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>.EventProto event = 1;</code>
+       * <code>.notification_service.EventProto event = 1;</code>
        */
       public Builder mergeEvent(com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto value) {
         if (eventBuilder_ == null) {
@@ -2904,7 +2904,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>.EventProto event = 1;</code>
+       * <code>.notification_service.EventProto event = 1;</code>
        */
       public Builder clearEvent() {
         if (eventBuilder_ == null) {
@@ -2918,7 +2918,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>.EventProto event = 1;</code>
+       * <code>.notification_service.EventProto event = 1;</code>
        */
       public com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto.Builder getEventBuilder() {
         
@@ -2926,7 +2926,7 @@ public final class NotificationServiceOuterClass {
         return getEventFieldBuilder().getBuilder();
       }
       /**
-       * <code>.EventProto event = 1;</code>
+       * <code>.notification_service.EventProto event = 1;</code>
        */
       public com.aiflow.notification.proto.NotificationServiceOuterClass.EventProtoOrBuilder getEventOrBuilder() {
         if (eventBuilder_ != null) {
@@ -2937,7 +2937,7 @@ public final class NotificationServiceOuterClass {
         }
       }
       /**
-       * <code>.EventProto event = 1;</code>
+       * <code>.notification_service.EventProto event = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto, com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto.Builder, com.aiflow.notification.proto.NotificationServiceOuterClass.EventProtoOrBuilder> 
@@ -2955,14 +2955,14 @@ public final class NotificationServiceOuterClass {
 
       private int returnCode_ = 0;
       /**
-       * <code>.ReturnStatus return_code = 2;</code>
+       * <code>.notification_service.ReturnStatus return_code = 2;</code>
        * @return The enum numeric value on the wire for returnCode.
        */
       @java.lang.Override public int getReturnCodeValue() {
         return returnCode_;
       }
       /**
-       * <code>.ReturnStatus return_code = 2;</code>
+       * <code>.notification_service.ReturnStatus return_code = 2;</code>
        * @param value The enum numeric value on the wire for returnCode to set.
        * @return This builder for chaining.
        */
@@ -2973,7 +2973,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ReturnStatus return_code = 2;</code>
+       * <code>.notification_service.ReturnStatus return_code = 2;</code>
        * @return The returnCode.
        */
       @java.lang.Override
@@ -2983,7 +2983,7 @@ public final class NotificationServiceOuterClass {
         return result == null ? com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus.UNRECOGNIZED : result;
       }
       /**
-       * <code>.ReturnStatus return_code = 2;</code>
+       * <code>.notification_service.ReturnStatus return_code = 2;</code>
        * @param value The returnCode to set.
        * @return This builder for chaining.
        */
@@ -2997,7 +2997,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ReturnStatus return_code = 2;</code>
+       * <code>.notification_service.ReturnStatus return_code = 2;</code>
        * @return This builder for chaining.
        */
       public Builder clearReturnCode() {
@@ -3095,10 +3095,10 @@ public final class NotificationServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:SendEventsResponse)
+      // @@protoc_insertion_point(builder_scope:notification_service.SendEventsResponse)
     }
 
-    // @@protoc_insertion_point(class_scope:SendEventsResponse)
+    // @@protoc_insertion_point(class_scope:notification_service.SendEventsResponse)
     private static final com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventsResponse DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventsResponse();
@@ -3136,7 +3136,7 @@ public final class NotificationServiceOuterClass {
   }
 
   public interface ListEventsRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ListEventsRequest)
+      // @@protoc_insertion_point(interface_extends:notification_service.ListEventsRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -3207,11 +3207,11 @@ public final class NotificationServiceOuterClass {
         getNamespaceBytes();
   }
   /**
-   * Protobuf type {@code ListEventsRequest}
+   * Protobuf type {@code notification_service.ListEventsRequest}
    */
   public static final class ListEventsRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:ListEventsRequest)
+      // @@protoc_insertion_point(message_implements:notification_service.ListEventsRequest)
       ListEventsRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use ListEventsRequest.newBuilder() to construct.
@@ -3315,13 +3315,13 @@ public final class NotificationServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_ListEventsRequest_descriptor;
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_ListEventsRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_ListEventsRequest_fieldAccessorTable
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_ListEventsRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsRequest.class, com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsRequest.Builder.class);
     }
@@ -3687,21 +3687,21 @@ public final class NotificationServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code ListEventsRequest}
+     * Protobuf type {@code notification_service.ListEventsRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ListEventsRequest)
+        // @@protoc_insertion_point(builder_implements:notification_service.ListEventsRequest)
         com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_ListEventsRequest_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_ListEventsRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_ListEventsRequest_fieldAccessorTable
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_ListEventsRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsRequest.class, com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsRequest.Builder.class);
       }
@@ -3742,7 +3742,7 @@ public final class NotificationServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_ListEventsRequest_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_ListEventsRequest_descriptor;
       }
 
       @java.lang.Override
@@ -4245,10 +4245,10 @@ public final class NotificationServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:ListEventsRequest)
+      // @@protoc_insertion_point(builder_scope:notification_service.ListEventsRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:ListEventsRequest)
+    // @@protoc_insertion_point(class_scope:notification_service.ListEventsRequest)
     private static final com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsRequest();
@@ -4286,7 +4286,7 @@ public final class NotificationServiceOuterClass {
   }
 
   public interface ListAllEventsRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ListAllEventsRequest)
+      // @@protoc_insertion_point(interface_extends:notification_service.ListAllEventsRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -4314,11 +4314,11 @@ public final class NotificationServiceOuterClass {
     long getEndVersion();
   }
   /**
-   * Protobuf type {@code ListAllEventsRequest}
+   * Protobuf type {@code notification_service.ListAllEventsRequest}
    */
   public static final class ListAllEventsRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:ListAllEventsRequest)
+      // @@protoc_insertion_point(message_implements:notification_service.ListAllEventsRequest)
       ListAllEventsRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use ListAllEventsRequest.newBuilder() to construct.
@@ -4399,13 +4399,13 @@ public final class NotificationServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_ListAllEventsRequest_descriptor;
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_ListAllEventsRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_ListAllEventsRequest_fieldAccessorTable
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_ListAllEventsRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.notification.proto.NotificationServiceOuterClass.ListAllEventsRequest.class, com.aiflow.notification.proto.NotificationServiceOuterClass.ListAllEventsRequest.Builder.class);
     }
@@ -4646,21 +4646,21 @@ public final class NotificationServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code ListAllEventsRequest}
+     * Protobuf type {@code notification_service.ListAllEventsRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ListAllEventsRequest)
+        // @@protoc_insertion_point(builder_implements:notification_service.ListAllEventsRequest)
         com.aiflow.notification.proto.NotificationServiceOuterClass.ListAllEventsRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_ListAllEventsRequest_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_ListAllEventsRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_ListAllEventsRequest_fieldAccessorTable
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_ListAllEventsRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.notification.proto.NotificationServiceOuterClass.ListAllEventsRequest.class, com.aiflow.notification.proto.NotificationServiceOuterClass.ListAllEventsRequest.Builder.class);
       }
@@ -4697,7 +4697,7 @@ public final class NotificationServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_ListAllEventsRequest_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_ListAllEventsRequest_descriptor;
       }
 
       @java.lang.Override
@@ -4946,10 +4946,10 @@ public final class NotificationServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:ListAllEventsRequest)
+      // @@protoc_insertion_point(builder_scope:notification_service.ListAllEventsRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:ListAllEventsRequest)
+    // @@protoc_insertion_point(class_scope:notification_service.ListAllEventsRequest)
     private static final com.aiflow.notification.proto.NotificationServiceOuterClass.ListAllEventsRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.notification.proto.NotificationServiceOuterClass.ListAllEventsRequest();
@@ -4987,16 +4987,16 @@ public final class NotificationServiceOuterClass {
   }
 
   public interface ListEventsResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ListEventsResponse)
+      // @@protoc_insertion_point(interface_extends:notification_service.ListEventsResponse)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.ReturnStatus return_code = 1;</code>
+     * <code>.notification_service.ReturnStatus return_code = 1;</code>
      * @return The enum numeric value on the wire for returnCode.
      */
     int getReturnCodeValue();
     /**
-     * <code>.ReturnStatus return_code = 1;</code>
+     * <code>.notification_service.ReturnStatus return_code = 1;</code>
      * @return The returnCode.
      */
     com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus getReturnCode();
@@ -5014,35 +5014,35 @@ public final class NotificationServiceOuterClass {
         getReturnMsgBytes();
 
     /**
-     * <code>repeated .EventProto events = 3;</code>
+     * <code>repeated .notification_service.EventProto events = 3;</code>
      */
     java.util.List<com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto> 
         getEventsList();
     /**
-     * <code>repeated .EventProto events = 3;</code>
+     * <code>repeated .notification_service.EventProto events = 3;</code>
      */
     com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto getEvents(int index);
     /**
-     * <code>repeated .EventProto events = 3;</code>
+     * <code>repeated .notification_service.EventProto events = 3;</code>
      */
     int getEventsCount();
     /**
-     * <code>repeated .EventProto events = 3;</code>
+     * <code>repeated .notification_service.EventProto events = 3;</code>
      */
     java.util.List<? extends com.aiflow.notification.proto.NotificationServiceOuterClass.EventProtoOrBuilder> 
         getEventsOrBuilderList();
     /**
-     * <code>repeated .EventProto events = 3;</code>
+     * <code>repeated .notification_service.EventProto events = 3;</code>
      */
     com.aiflow.notification.proto.NotificationServiceOuterClass.EventProtoOrBuilder getEventsOrBuilder(
         int index);
   }
   /**
-   * Protobuf type {@code ListEventsResponse}
+   * Protobuf type {@code notification_service.ListEventsResponse}
    */
   public static final class ListEventsResponse extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:ListEventsResponse)
+      // @@protoc_insertion_point(message_implements:notification_service.ListEventsResponse)
       ListEventsResponseOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use ListEventsResponse.newBuilder() to construct.
@@ -5131,13 +5131,13 @@ public final class NotificationServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_ListEventsResponse_descriptor;
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_ListEventsResponse_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_ListEventsResponse_fieldAccessorTable
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_ListEventsResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse.class, com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse.Builder.class);
     }
@@ -5145,14 +5145,14 @@ public final class NotificationServiceOuterClass {
     public static final int RETURN_CODE_FIELD_NUMBER = 1;
     private int returnCode_;
     /**
-     * <code>.ReturnStatus return_code = 1;</code>
+     * <code>.notification_service.ReturnStatus return_code = 1;</code>
      * @return The enum numeric value on the wire for returnCode.
      */
     @java.lang.Override public int getReturnCodeValue() {
       return returnCode_;
     }
     /**
-     * <code>.ReturnStatus return_code = 1;</code>
+     * <code>.notification_service.ReturnStatus return_code = 1;</code>
      * @return The returnCode.
      */
     @java.lang.Override public com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus getReturnCode() {
@@ -5202,14 +5202,14 @@ public final class NotificationServiceOuterClass {
     public static final int EVENTS_FIELD_NUMBER = 3;
     private java.util.List<com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto> events_;
     /**
-     * <code>repeated .EventProto events = 3;</code>
+     * <code>repeated .notification_service.EventProto events = 3;</code>
      */
     @java.lang.Override
     public java.util.List<com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto> getEventsList() {
       return events_;
     }
     /**
-     * <code>repeated .EventProto events = 3;</code>
+     * <code>repeated .notification_service.EventProto events = 3;</code>
      */
     @java.lang.Override
     public java.util.List<? extends com.aiflow.notification.proto.NotificationServiceOuterClass.EventProtoOrBuilder> 
@@ -5217,21 +5217,21 @@ public final class NotificationServiceOuterClass {
       return events_;
     }
     /**
-     * <code>repeated .EventProto events = 3;</code>
+     * <code>repeated .notification_service.EventProto events = 3;</code>
      */
     @java.lang.Override
     public int getEventsCount() {
       return events_.size();
     }
     /**
-     * <code>repeated .EventProto events = 3;</code>
+     * <code>repeated .notification_service.EventProto events = 3;</code>
      */
     @java.lang.Override
     public com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto getEvents(int index) {
       return events_.get(index);
     }
     /**
-     * <code>repeated .EventProto events = 3;</code>
+     * <code>repeated .notification_service.EventProto events = 3;</code>
      */
     @java.lang.Override
     public com.aiflow.notification.proto.NotificationServiceOuterClass.EventProtoOrBuilder getEventsOrBuilder(
@@ -5417,21 +5417,21 @@ public final class NotificationServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code ListEventsResponse}
+     * Protobuf type {@code notification_service.ListEventsResponse}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ListEventsResponse)
+        // @@protoc_insertion_point(builder_implements:notification_service.ListEventsResponse)
         com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_ListEventsResponse_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_ListEventsResponse_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_ListEventsResponse_fieldAccessorTable
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_ListEventsResponse_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse.class, com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse.Builder.class);
       }
@@ -5471,7 +5471,7 @@ public final class NotificationServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_ListEventsResponse_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_ListEventsResponse_descriptor;
       }
 
       @java.lang.Override
@@ -5616,14 +5616,14 @@ public final class NotificationServiceOuterClass {
 
       private int returnCode_ = 0;
       /**
-       * <code>.ReturnStatus return_code = 1;</code>
+       * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @return The enum numeric value on the wire for returnCode.
        */
       @java.lang.Override public int getReturnCodeValue() {
         return returnCode_;
       }
       /**
-       * <code>.ReturnStatus return_code = 1;</code>
+       * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @param value The enum numeric value on the wire for returnCode to set.
        * @return This builder for chaining.
        */
@@ -5634,7 +5634,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ReturnStatus return_code = 1;</code>
+       * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @return The returnCode.
        */
       @java.lang.Override
@@ -5644,7 +5644,7 @@ public final class NotificationServiceOuterClass {
         return result == null ? com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus.UNRECOGNIZED : result;
       }
       /**
-       * <code>.ReturnStatus return_code = 1;</code>
+       * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @param value The returnCode to set.
        * @return This builder for chaining.
        */
@@ -5658,7 +5658,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ReturnStatus return_code = 1;</code>
+       * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearReturnCode() {
@@ -5757,7 +5757,7 @@ public final class NotificationServiceOuterClass {
           com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto, com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto.Builder, com.aiflow.notification.proto.NotificationServiceOuterClass.EventProtoOrBuilder> eventsBuilder_;
 
       /**
-       * <code>repeated .EventProto events = 3;</code>
+       * <code>repeated .notification_service.EventProto events = 3;</code>
        */
       public java.util.List<com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto> getEventsList() {
         if (eventsBuilder_ == null) {
@@ -5767,7 +5767,7 @@ public final class NotificationServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .EventProto events = 3;</code>
+       * <code>repeated .notification_service.EventProto events = 3;</code>
        */
       public int getEventsCount() {
         if (eventsBuilder_ == null) {
@@ -5777,7 +5777,7 @@ public final class NotificationServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .EventProto events = 3;</code>
+       * <code>repeated .notification_service.EventProto events = 3;</code>
        */
       public com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto getEvents(int index) {
         if (eventsBuilder_ == null) {
@@ -5787,7 +5787,7 @@ public final class NotificationServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .EventProto events = 3;</code>
+       * <code>repeated .notification_service.EventProto events = 3;</code>
        */
       public Builder setEvents(
           int index, com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto value) {
@@ -5804,7 +5804,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .EventProto events = 3;</code>
+       * <code>repeated .notification_service.EventProto events = 3;</code>
        */
       public Builder setEvents(
           int index, com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto.Builder builderForValue) {
@@ -5818,7 +5818,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .EventProto events = 3;</code>
+       * <code>repeated .notification_service.EventProto events = 3;</code>
        */
       public Builder addEvents(com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto value) {
         if (eventsBuilder_ == null) {
@@ -5834,7 +5834,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .EventProto events = 3;</code>
+       * <code>repeated .notification_service.EventProto events = 3;</code>
        */
       public Builder addEvents(
           int index, com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto value) {
@@ -5851,7 +5851,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .EventProto events = 3;</code>
+       * <code>repeated .notification_service.EventProto events = 3;</code>
        */
       public Builder addEvents(
           com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto.Builder builderForValue) {
@@ -5865,7 +5865,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .EventProto events = 3;</code>
+       * <code>repeated .notification_service.EventProto events = 3;</code>
        */
       public Builder addEvents(
           int index, com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto.Builder builderForValue) {
@@ -5879,7 +5879,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .EventProto events = 3;</code>
+       * <code>repeated .notification_service.EventProto events = 3;</code>
        */
       public Builder addAllEvents(
           java.lang.Iterable<? extends com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto> values) {
@@ -5894,7 +5894,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .EventProto events = 3;</code>
+       * <code>repeated .notification_service.EventProto events = 3;</code>
        */
       public Builder clearEvents() {
         if (eventsBuilder_ == null) {
@@ -5907,7 +5907,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .EventProto events = 3;</code>
+       * <code>repeated .notification_service.EventProto events = 3;</code>
        */
       public Builder removeEvents(int index) {
         if (eventsBuilder_ == null) {
@@ -5920,14 +5920,14 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .EventProto events = 3;</code>
+       * <code>repeated .notification_service.EventProto events = 3;</code>
        */
       public com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto.Builder getEventsBuilder(
           int index) {
         return getEventsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .EventProto events = 3;</code>
+       * <code>repeated .notification_service.EventProto events = 3;</code>
        */
       public com.aiflow.notification.proto.NotificationServiceOuterClass.EventProtoOrBuilder getEventsOrBuilder(
           int index) {
@@ -5937,7 +5937,7 @@ public final class NotificationServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .EventProto events = 3;</code>
+       * <code>repeated .notification_service.EventProto events = 3;</code>
        */
       public java.util.List<? extends com.aiflow.notification.proto.NotificationServiceOuterClass.EventProtoOrBuilder> 
            getEventsOrBuilderList() {
@@ -5948,14 +5948,14 @@ public final class NotificationServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .EventProto events = 3;</code>
+       * <code>repeated .notification_service.EventProto events = 3;</code>
        */
       public com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto.Builder addEventsBuilder() {
         return getEventsFieldBuilder().addBuilder(
             com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto.getDefaultInstance());
       }
       /**
-       * <code>repeated .EventProto events = 3;</code>
+       * <code>repeated .notification_service.EventProto events = 3;</code>
        */
       public com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto.Builder addEventsBuilder(
           int index) {
@@ -5963,7 +5963,7 @@ public final class NotificationServiceOuterClass {
             index, com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto.getDefaultInstance());
       }
       /**
-       * <code>repeated .EventProto events = 3;</code>
+       * <code>repeated .notification_service.EventProto events = 3;</code>
        */
       public java.util.List<com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto.Builder> 
            getEventsBuilderList() {
@@ -5996,10 +5996,10 @@ public final class NotificationServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:ListEventsResponse)
+      // @@protoc_insertion_point(builder_scope:notification_service.ListEventsResponse)
     }
 
-    // @@protoc_insertion_point(class_scope:ListEventsResponse)
+    // @@protoc_insertion_point(class_scope:notification_service.ListEventsResponse)
     private static final com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse();
@@ -6037,7 +6037,7 @@ public final class NotificationServiceOuterClass {
   }
 
   public interface GetLatestVersionByKeyRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:GetLatestVersionByKeyRequest)
+      // @@protoc_insertion_point(interface_extends:notification_service.GetLatestVersionByKeyRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -6071,11 +6071,11 @@ public final class NotificationServiceOuterClass {
     int getTimeoutSeconds();
   }
   /**
-   * Protobuf type {@code GetLatestVersionByKeyRequest}
+   * Protobuf type {@code notification_service.GetLatestVersionByKeyRequest}
    */
   public static final class GetLatestVersionByKeyRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:GetLatestVersionByKeyRequest)
+      // @@protoc_insertion_point(message_implements:notification_service.GetLatestVersionByKeyRequest)
       GetLatestVersionByKeyRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use GetLatestVersionByKeyRequest.newBuilder() to construct.
@@ -6155,13 +6155,13 @@ public final class NotificationServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_GetLatestVersionByKeyRequest_descriptor;
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_GetLatestVersionByKeyRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_GetLatestVersionByKeyRequest_fieldAccessorTable
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_GetLatestVersionByKeyRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest.class, com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest.Builder.class);
     }
@@ -6429,21 +6429,21 @@ public final class NotificationServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code GetLatestVersionByKeyRequest}
+     * Protobuf type {@code notification_service.GetLatestVersionByKeyRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:GetLatestVersionByKeyRequest)
+        // @@protoc_insertion_point(builder_implements:notification_service.GetLatestVersionByKeyRequest)
         com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_GetLatestVersionByKeyRequest_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_GetLatestVersionByKeyRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_GetLatestVersionByKeyRequest_fieldAccessorTable
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_GetLatestVersionByKeyRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest.class, com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest.Builder.class);
       }
@@ -6478,7 +6478,7 @@ public final class NotificationServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_GetLatestVersionByKeyRequest_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_GetLatestVersionByKeyRequest_descriptor;
       }
 
       @java.lang.Override
@@ -6784,10 +6784,10 @@ public final class NotificationServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:GetLatestVersionByKeyRequest)
+      // @@protoc_insertion_point(builder_scope:notification_service.GetLatestVersionByKeyRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:GetLatestVersionByKeyRequest)
+    // @@protoc_insertion_point(class_scope:notification_service.GetLatestVersionByKeyRequest)
     private static final com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest();
@@ -6825,7 +6825,7 @@ public final class NotificationServiceOuterClass {
   }
 
   public interface GetLatestVersionResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:GetLatestVersionResponse)
+      // @@protoc_insertion_point(interface_extends:notification_service.GetLatestVersionResponse)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -6859,11 +6859,11 @@ public final class NotificationServiceOuterClass {
     long getVersion();
   }
   /**
-   * Protobuf type {@code GetLatestVersionResponse}
+   * Protobuf type {@code notification_service.GetLatestVersionResponse}
    */
   public static final class GetLatestVersionResponse extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:GetLatestVersionResponse)
+      // @@protoc_insertion_point(message_implements:notification_service.GetLatestVersionResponse)
       GetLatestVersionResponseOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use GetLatestVersionResponse.newBuilder() to construct.
@@ -6943,13 +6943,13 @@ public final class NotificationServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_GetLatestVersionResponse_descriptor;
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_GetLatestVersionResponse_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_GetLatestVersionResponse_fieldAccessorTable
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_GetLatestVersionResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse.class, com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse.Builder.class);
     }
@@ -7218,21 +7218,21 @@ public final class NotificationServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code GetLatestVersionResponse}
+     * Protobuf type {@code notification_service.GetLatestVersionResponse}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:GetLatestVersionResponse)
+        // @@protoc_insertion_point(builder_implements:notification_service.GetLatestVersionResponse)
         com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_GetLatestVersionResponse_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_GetLatestVersionResponse_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_GetLatestVersionResponse_fieldAccessorTable
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_GetLatestVersionResponse_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse.class, com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse.Builder.class);
       }
@@ -7267,7 +7267,7 @@ public final class NotificationServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_GetLatestVersionResponse_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_GetLatestVersionResponse_descriptor;
       }
 
       @java.lang.Override
@@ -7573,10 +7573,10 @@ public final class NotificationServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:GetLatestVersionResponse)
+      // @@protoc_insertion_point(builder_scope:notification_service.GetLatestVersionResponse)
     }
 
-    // @@protoc_insertion_point(class_scope:GetLatestVersionResponse)
+    // @@protoc_insertion_point(class_scope:notification_service.GetLatestVersionResponse)
     private static final com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse();
@@ -7614,7 +7614,7 @@ public final class NotificationServiceOuterClass {
   }
 
   public interface MemberProtoOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:MemberProto)
+      // @@protoc_insertion_point(interface_extends:notification_service.MemberProto)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -7642,11 +7642,11 @@ public final class NotificationServiceOuterClass {
     long getUpdateTime();
   }
   /**
-   * Protobuf type {@code MemberProto}
+   * Protobuf type {@code notification_service.MemberProto}
    */
   public static final class MemberProto extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:MemberProto)
+      // @@protoc_insertion_point(message_implements:notification_service.MemberProto)
       MemberProtoOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use MemberProto.newBuilder() to construct.
@@ -7724,13 +7724,13 @@ public final class NotificationServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_MemberProto_descriptor;
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_MemberProto_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_MemberProto_fieldAccessorTable
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_MemberProto_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto.class, com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto.Builder.class);
     }
@@ -7974,21 +7974,21 @@ public final class NotificationServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code MemberProto}
+     * Protobuf type {@code notification_service.MemberProto}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:MemberProto)
+        // @@protoc_insertion_point(builder_implements:notification_service.MemberProto)
         com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProtoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_MemberProto_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_MemberProto_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_MemberProto_fieldAccessorTable
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_MemberProto_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto.class, com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto.Builder.class);
       }
@@ -8023,7 +8023,7 @@ public final class NotificationServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_MemberProto_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_MemberProto_descriptor;
       }
 
       @java.lang.Override
@@ -8283,10 +8283,10 @@ public final class NotificationServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:MemberProto)
+      // @@protoc_insertion_point(builder_scope:notification_service.MemberProto)
     }
 
-    // @@protoc_insertion_point(class_scope:MemberProto)
+    // @@protoc_insertion_point(class_scope:notification_service.MemberProto)
     private static final com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto();
@@ -8324,7 +8324,7 @@ public final class NotificationServiceOuterClass {
   }
 
   public interface NotifyOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:Notify)
+      // @@protoc_insertion_point(interface_extends:notification_service.Notify)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -8352,11 +8352,11 @@ public final class NotificationServiceOuterClass {
         getNamespaceBytes();
   }
   /**
-   * Protobuf type {@code Notify}
+   * Protobuf type {@code notification_service.Notify}
    */
   public static final class Notify extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:Notify)
+      // @@protoc_insertion_point(message_implements:notification_service.Notify)
       NotifyOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use Notify.newBuilder() to construct.
@@ -8431,13 +8431,13 @@ public final class NotificationServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_Notify_descriptor;
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_Notify_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_Notify_fieldAccessorTable
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_Notify_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.notification.proto.NotificationServiceOuterClass.Notify.class, com.aiflow.notification.proto.NotificationServiceOuterClass.Notify.Builder.class);
     }
@@ -8683,21 +8683,21 @@ public final class NotificationServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code Notify}
+     * Protobuf type {@code notification_service.Notify}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:Notify)
+        // @@protoc_insertion_point(builder_implements:notification_service.Notify)
         com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_Notify_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_Notify_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_Notify_fieldAccessorTable
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_Notify_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.notification.proto.NotificationServiceOuterClass.Notify.class, com.aiflow.notification.proto.NotificationServiceOuterClass.Notify.Builder.class);
       }
@@ -8730,7 +8730,7 @@ public final class NotificationServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_Notify_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_Notify_descriptor;
       }
 
       @java.lang.Override
@@ -9001,10 +9001,10 @@ public final class NotificationServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:Notify)
+      // @@protoc_insertion_point(builder_scope:notification_service.Notify)
     }
 
-    // @@protoc_insertion_point(class_scope:Notify)
+    // @@protoc_insertion_point(class_scope:notification_service.Notify)
     private static final com.aiflow.notification.proto.NotificationServiceOuterClass.Notify DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.notification.proto.NotificationServiceOuterClass.Notify();
@@ -9042,39 +9042,39 @@ public final class NotificationServiceOuterClass {
   }
 
   public interface NotifyRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:NotifyRequest)
+      // @@protoc_insertion_point(interface_extends:notification_service.NotifyRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .Notify notifies = 1;</code>
+     * <code>repeated .notification_service.Notify notifies = 1;</code>
      */
     java.util.List<com.aiflow.notification.proto.NotificationServiceOuterClass.Notify> 
         getNotifiesList();
     /**
-     * <code>repeated .Notify notifies = 1;</code>
+     * <code>repeated .notification_service.Notify notifies = 1;</code>
      */
     com.aiflow.notification.proto.NotificationServiceOuterClass.Notify getNotifies(int index);
     /**
-     * <code>repeated .Notify notifies = 1;</code>
+     * <code>repeated .notification_service.Notify notifies = 1;</code>
      */
     int getNotifiesCount();
     /**
-     * <code>repeated .Notify notifies = 1;</code>
+     * <code>repeated .notification_service.Notify notifies = 1;</code>
      */
     java.util.List<? extends com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyOrBuilder> 
         getNotifiesOrBuilderList();
     /**
-     * <code>repeated .Notify notifies = 1;</code>
+     * <code>repeated .notification_service.Notify notifies = 1;</code>
      */
     com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyOrBuilder getNotifiesOrBuilder(
         int index);
   }
   /**
-   * Protobuf type {@code NotifyRequest}
+   * Protobuf type {@code notification_service.NotifyRequest}
    */
   public static final class NotifyRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:NotifyRequest)
+      // @@protoc_insertion_point(message_implements:notification_service.NotifyRequest)
       NotifyRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use NotifyRequest.newBuilder() to construct.
@@ -9149,13 +9149,13 @@ public final class NotificationServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_NotifyRequest_descriptor;
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_NotifyRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_NotifyRequest_fieldAccessorTable
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_NotifyRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest.class, com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest.Builder.class);
     }
@@ -9163,14 +9163,14 @@ public final class NotificationServiceOuterClass {
     public static final int NOTIFIES_FIELD_NUMBER = 1;
     private java.util.List<com.aiflow.notification.proto.NotificationServiceOuterClass.Notify> notifies_;
     /**
-     * <code>repeated .Notify notifies = 1;</code>
+     * <code>repeated .notification_service.Notify notifies = 1;</code>
      */
     @java.lang.Override
     public java.util.List<com.aiflow.notification.proto.NotificationServiceOuterClass.Notify> getNotifiesList() {
       return notifies_;
     }
     /**
-     * <code>repeated .Notify notifies = 1;</code>
+     * <code>repeated .notification_service.Notify notifies = 1;</code>
      */
     @java.lang.Override
     public java.util.List<? extends com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyOrBuilder> 
@@ -9178,21 +9178,21 @@ public final class NotificationServiceOuterClass {
       return notifies_;
     }
     /**
-     * <code>repeated .Notify notifies = 1;</code>
+     * <code>repeated .notification_service.Notify notifies = 1;</code>
      */
     @java.lang.Override
     public int getNotifiesCount() {
       return notifies_.size();
     }
     /**
-     * <code>repeated .Notify notifies = 1;</code>
+     * <code>repeated .notification_service.Notify notifies = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.notification.proto.NotificationServiceOuterClass.Notify getNotifies(int index) {
       return notifies_.get(index);
     }
     /**
-     * <code>repeated .Notify notifies = 1;</code>
+     * <code>repeated .notification_service.Notify notifies = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyOrBuilder getNotifiesOrBuilder(
@@ -9358,21 +9358,21 @@ public final class NotificationServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code NotifyRequest}
+     * Protobuf type {@code notification_service.NotifyRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:NotifyRequest)
+        // @@protoc_insertion_point(builder_implements:notification_service.NotifyRequest)
         com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_NotifyRequest_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_NotifyRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_NotifyRequest_fieldAccessorTable
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_NotifyRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest.class, com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest.Builder.class);
       }
@@ -9408,7 +9408,7 @@ public final class NotificationServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_NotifyRequest_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_NotifyRequest_descriptor;
       }
 
       @java.lang.Override
@@ -9555,7 +9555,7 @@ public final class NotificationServiceOuterClass {
           com.aiflow.notification.proto.NotificationServiceOuterClass.Notify, com.aiflow.notification.proto.NotificationServiceOuterClass.Notify.Builder, com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyOrBuilder> notifiesBuilder_;
 
       /**
-       * <code>repeated .Notify notifies = 1;</code>
+       * <code>repeated .notification_service.Notify notifies = 1;</code>
        */
       public java.util.List<com.aiflow.notification.proto.NotificationServiceOuterClass.Notify> getNotifiesList() {
         if (notifiesBuilder_ == null) {
@@ -9565,7 +9565,7 @@ public final class NotificationServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .Notify notifies = 1;</code>
+       * <code>repeated .notification_service.Notify notifies = 1;</code>
        */
       public int getNotifiesCount() {
         if (notifiesBuilder_ == null) {
@@ -9575,7 +9575,7 @@ public final class NotificationServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .Notify notifies = 1;</code>
+       * <code>repeated .notification_service.Notify notifies = 1;</code>
        */
       public com.aiflow.notification.proto.NotificationServiceOuterClass.Notify getNotifies(int index) {
         if (notifiesBuilder_ == null) {
@@ -9585,7 +9585,7 @@ public final class NotificationServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .Notify notifies = 1;</code>
+       * <code>repeated .notification_service.Notify notifies = 1;</code>
        */
       public Builder setNotifies(
           int index, com.aiflow.notification.proto.NotificationServiceOuterClass.Notify value) {
@@ -9602,7 +9602,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .Notify notifies = 1;</code>
+       * <code>repeated .notification_service.Notify notifies = 1;</code>
        */
       public Builder setNotifies(
           int index, com.aiflow.notification.proto.NotificationServiceOuterClass.Notify.Builder builderForValue) {
@@ -9616,7 +9616,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .Notify notifies = 1;</code>
+       * <code>repeated .notification_service.Notify notifies = 1;</code>
        */
       public Builder addNotifies(com.aiflow.notification.proto.NotificationServiceOuterClass.Notify value) {
         if (notifiesBuilder_ == null) {
@@ -9632,7 +9632,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .Notify notifies = 1;</code>
+       * <code>repeated .notification_service.Notify notifies = 1;</code>
        */
       public Builder addNotifies(
           int index, com.aiflow.notification.proto.NotificationServiceOuterClass.Notify value) {
@@ -9649,7 +9649,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .Notify notifies = 1;</code>
+       * <code>repeated .notification_service.Notify notifies = 1;</code>
        */
       public Builder addNotifies(
           com.aiflow.notification.proto.NotificationServiceOuterClass.Notify.Builder builderForValue) {
@@ -9663,7 +9663,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .Notify notifies = 1;</code>
+       * <code>repeated .notification_service.Notify notifies = 1;</code>
        */
       public Builder addNotifies(
           int index, com.aiflow.notification.proto.NotificationServiceOuterClass.Notify.Builder builderForValue) {
@@ -9677,7 +9677,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .Notify notifies = 1;</code>
+       * <code>repeated .notification_service.Notify notifies = 1;</code>
        */
       public Builder addAllNotifies(
           java.lang.Iterable<? extends com.aiflow.notification.proto.NotificationServiceOuterClass.Notify> values) {
@@ -9692,7 +9692,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .Notify notifies = 1;</code>
+       * <code>repeated .notification_service.Notify notifies = 1;</code>
        */
       public Builder clearNotifies() {
         if (notifiesBuilder_ == null) {
@@ -9705,7 +9705,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .Notify notifies = 1;</code>
+       * <code>repeated .notification_service.Notify notifies = 1;</code>
        */
       public Builder removeNotifies(int index) {
         if (notifiesBuilder_ == null) {
@@ -9718,14 +9718,14 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .Notify notifies = 1;</code>
+       * <code>repeated .notification_service.Notify notifies = 1;</code>
        */
       public com.aiflow.notification.proto.NotificationServiceOuterClass.Notify.Builder getNotifiesBuilder(
           int index) {
         return getNotifiesFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .Notify notifies = 1;</code>
+       * <code>repeated .notification_service.Notify notifies = 1;</code>
        */
       public com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyOrBuilder getNotifiesOrBuilder(
           int index) {
@@ -9735,7 +9735,7 @@ public final class NotificationServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .Notify notifies = 1;</code>
+       * <code>repeated .notification_service.Notify notifies = 1;</code>
        */
       public java.util.List<? extends com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyOrBuilder> 
            getNotifiesOrBuilderList() {
@@ -9746,14 +9746,14 @@ public final class NotificationServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .Notify notifies = 1;</code>
+       * <code>repeated .notification_service.Notify notifies = 1;</code>
        */
       public com.aiflow.notification.proto.NotificationServiceOuterClass.Notify.Builder addNotifiesBuilder() {
         return getNotifiesFieldBuilder().addBuilder(
             com.aiflow.notification.proto.NotificationServiceOuterClass.Notify.getDefaultInstance());
       }
       /**
-       * <code>repeated .Notify notifies = 1;</code>
+       * <code>repeated .notification_service.Notify notifies = 1;</code>
        */
       public com.aiflow.notification.proto.NotificationServiceOuterClass.Notify.Builder addNotifiesBuilder(
           int index) {
@@ -9761,7 +9761,7 @@ public final class NotificationServiceOuterClass {
             index, com.aiflow.notification.proto.NotificationServiceOuterClass.Notify.getDefaultInstance());
       }
       /**
-       * <code>repeated .Notify notifies = 1;</code>
+       * <code>repeated .notification_service.Notify notifies = 1;</code>
        */
       public java.util.List<com.aiflow.notification.proto.NotificationServiceOuterClass.Notify.Builder> 
            getNotifiesBuilderList() {
@@ -9794,10 +9794,10 @@ public final class NotificationServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:NotifyRequest)
+      // @@protoc_insertion_point(builder_scope:notification_service.NotifyRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:NotifyRequest)
+    // @@protoc_insertion_point(class_scope:notification_service.NotifyRequest)
     private static final com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest();
@@ -9835,16 +9835,16 @@ public final class NotificationServiceOuterClass {
   }
 
   public interface NotifyResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:NotifyResponse)
+      // @@protoc_insertion_point(interface_extends:notification_service.NotifyResponse)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.ReturnStatus return_code = 1;</code>
+     * <code>.notification_service.ReturnStatus return_code = 1;</code>
      * @return The enum numeric value on the wire for returnCode.
      */
     int getReturnCodeValue();
     /**
-     * <code>.ReturnStatus return_code = 1;</code>
+     * <code>.notification_service.ReturnStatus return_code = 1;</code>
      * @return The returnCode.
      */
     com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus getReturnCode();
@@ -9862,11 +9862,11 @@ public final class NotificationServiceOuterClass {
         getReturnMsgBytes();
   }
   /**
-   * Protobuf type {@code NotifyResponse}
+   * Protobuf type {@code notification_service.NotifyResponse}
    */
   public static final class NotifyResponse extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:NotifyResponse)
+      // @@protoc_insertion_point(message_implements:notification_service.NotifyResponse)
       NotifyResponseOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use NotifyResponse.newBuilder() to construct.
@@ -9941,13 +9941,13 @@ public final class NotificationServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_NotifyResponse_descriptor;
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_NotifyResponse_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_NotifyResponse_fieldAccessorTable
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_NotifyResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse.class, com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse.Builder.class);
     }
@@ -9955,14 +9955,14 @@ public final class NotificationServiceOuterClass {
     public static final int RETURN_CODE_FIELD_NUMBER = 1;
     private int returnCode_;
     /**
-     * <code>.ReturnStatus return_code = 1;</code>
+     * <code>.notification_service.ReturnStatus return_code = 1;</code>
      * @return The enum numeric value on the wire for returnCode.
      */
     @java.lang.Override public int getReturnCodeValue() {
       return returnCode_;
     }
     /**
-     * <code>.ReturnStatus return_code = 1;</code>
+     * <code>.notification_service.ReturnStatus return_code = 1;</code>
      * @return The returnCode.
      */
     @java.lang.Override public com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus getReturnCode() {
@@ -10174,21 +10174,21 @@ public final class NotificationServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code NotifyResponse}
+     * Protobuf type {@code notification_service.NotifyResponse}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:NotifyResponse)
+        // @@protoc_insertion_point(builder_implements:notification_service.NotifyResponse)
         com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_NotifyResponse_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_NotifyResponse_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_NotifyResponse_fieldAccessorTable
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_NotifyResponse_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse.class, com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse.Builder.class);
       }
@@ -10221,7 +10221,7 @@ public final class NotificationServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_NotifyResponse_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_NotifyResponse_descriptor;
       }
 
       @java.lang.Override
@@ -10329,14 +10329,14 @@ public final class NotificationServiceOuterClass {
 
       private int returnCode_ = 0;
       /**
-       * <code>.ReturnStatus return_code = 1;</code>
+       * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @return The enum numeric value on the wire for returnCode.
        */
       @java.lang.Override public int getReturnCodeValue() {
         return returnCode_;
       }
       /**
-       * <code>.ReturnStatus return_code = 1;</code>
+       * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @param value The enum numeric value on the wire for returnCode to set.
        * @return This builder for chaining.
        */
@@ -10347,7 +10347,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ReturnStatus return_code = 1;</code>
+       * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @return The returnCode.
        */
       @java.lang.Override
@@ -10357,7 +10357,7 @@ public final class NotificationServiceOuterClass {
         return result == null ? com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus.UNRECOGNIZED : result;
       }
       /**
-       * <code>.ReturnStatus return_code = 1;</code>
+       * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @param value The returnCode to set.
        * @return This builder for chaining.
        */
@@ -10371,7 +10371,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ReturnStatus return_code = 1;</code>
+       * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearReturnCode() {
@@ -10469,10 +10469,10 @@ public final class NotificationServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:NotifyResponse)
+      // @@protoc_insertion_point(builder_scope:notification_service.NotifyResponse)
     }
 
-    // @@protoc_insertion_point(class_scope:NotifyResponse)
+    // @@protoc_insertion_point(class_scope:notification_service.NotifyResponse)
     private static final com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse();
@@ -10510,7 +10510,7 @@ public final class NotificationServiceOuterClass {
   }
 
   public interface ListMembersRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ListMembersRequest)
+      // @@protoc_insertion_point(interface_extends:notification_service.ListMembersRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -10520,11 +10520,11 @@ public final class NotificationServiceOuterClass {
     int getTimeoutSeconds();
   }
   /**
-   * Protobuf type {@code ListMembersRequest}
+   * Protobuf type {@code notification_service.ListMembersRequest}
    */
   public static final class ListMembersRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:ListMembersRequest)
+      // @@protoc_insertion_point(message_implements:notification_service.ListMembersRequest)
       ListMembersRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use ListMembersRequest.newBuilder() to construct.
@@ -10590,13 +10590,13 @@ public final class NotificationServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_ListMembersRequest_descriptor;
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_ListMembersRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_ListMembersRequest_fieldAccessorTable
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_ListMembersRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersRequest.class, com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersRequest.Builder.class);
     }
@@ -10768,21 +10768,21 @@ public final class NotificationServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code ListMembersRequest}
+     * Protobuf type {@code notification_service.ListMembersRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ListMembersRequest)
+        // @@protoc_insertion_point(builder_implements:notification_service.ListMembersRequest)
         com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_ListMembersRequest_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_ListMembersRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_ListMembersRequest_fieldAccessorTable
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_ListMembersRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersRequest.class, com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersRequest.Builder.class);
       }
@@ -10813,7 +10813,7 @@ public final class NotificationServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_ListMembersRequest_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_ListMembersRequest_descriptor;
       }
 
       @java.lang.Override
@@ -10957,10 +10957,10 @@ public final class NotificationServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:ListMembersRequest)
+      // @@protoc_insertion_point(builder_scope:notification_service.ListMembersRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:ListMembersRequest)
+    // @@protoc_insertion_point(class_scope:notification_service.ListMembersRequest)
     private static final com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersRequest();
@@ -10998,16 +10998,16 @@ public final class NotificationServiceOuterClass {
   }
 
   public interface ListMembersResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ListMembersResponse)
+      // @@protoc_insertion_point(interface_extends:notification_service.ListMembersResponse)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.ReturnStatus return_code = 1;</code>
+     * <code>.notification_service.ReturnStatus return_code = 1;</code>
      * @return The enum numeric value on the wire for returnCode.
      */
     int getReturnCodeValue();
     /**
-     * <code>.ReturnStatus return_code = 1;</code>
+     * <code>.notification_service.ReturnStatus return_code = 1;</code>
      * @return The returnCode.
      */
     com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus getReturnCode();
@@ -11025,35 +11025,35 @@ public final class NotificationServiceOuterClass {
         getReturnMsgBytes();
 
     /**
-     * <code>repeated .MemberProto members = 3;</code>
+     * <code>repeated .notification_service.MemberProto members = 3;</code>
      */
     java.util.List<com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto> 
         getMembersList();
     /**
-     * <code>repeated .MemberProto members = 3;</code>
+     * <code>repeated .notification_service.MemberProto members = 3;</code>
      */
     com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto getMembers(int index);
     /**
-     * <code>repeated .MemberProto members = 3;</code>
+     * <code>repeated .notification_service.MemberProto members = 3;</code>
      */
     int getMembersCount();
     /**
-     * <code>repeated .MemberProto members = 3;</code>
+     * <code>repeated .notification_service.MemberProto members = 3;</code>
      */
     java.util.List<? extends com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProtoOrBuilder> 
         getMembersOrBuilderList();
     /**
-     * <code>repeated .MemberProto members = 3;</code>
+     * <code>repeated .notification_service.MemberProto members = 3;</code>
      */
     com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProtoOrBuilder getMembersOrBuilder(
         int index);
   }
   /**
-   * Protobuf type {@code ListMembersResponse}
+   * Protobuf type {@code notification_service.ListMembersResponse}
    */
   public static final class ListMembersResponse extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:ListMembersResponse)
+      // @@protoc_insertion_point(message_implements:notification_service.ListMembersResponse)
       ListMembersResponseOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use ListMembersResponse.newBuilder() to construct.
@@ -11142,13 +11142,13 @@ public final class NotificationServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_ListMembersResponse_descriptor;
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_ListMembersResponse_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_ListMembersResponse_fieldAccessorTable
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_ListMembersResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersResponse.class, com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersResponse.Builder.class);
     }
@@ -11156,14 +11156,14 @@ public final class NotificationServiceOuterClass {
     public static final int RETURN_CODE_FIELD_NUMBER = 1;
     private int returnCode_;
     /**
-     * <code>.ReturnStatus return_code = 1;</code>
+     * <code>.notification_service.ReturnStatus return_code = 1;</code>
      * @return The enum numeric value on the wire for returnCode.
      */
     @java.lang.Override public int getReturnCodeValue() {
       return returnCode_;
     }
     /**
-     * <code>.ReturnStatus return_code = 1;</code>
+     * <code>.notification_service.ReturnStatus return_code = 1;</code>
      * @return The returnCode.
      */
     @java.lang.Override public com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus getReturnCode() {
@@ -11213,14 +11213,14 @@ public final class NotificationServiceOuterClass {
     public static final int MEMBERS_FIELD_NUMBER = 3;
     private java.util.List<com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto> members_;
     /**
-     * <code>repeated .MemberProto members = 3;</code>
+     * <code>repeated .notification_service.MemberProto members = 3;</code>
      */
     @java.lang.Override
     public java.util.List<com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto> getMembersList() {
       return members_;
     }
     /**
-     * <code>repeated .MemberProto members = 3;</code>
+     * <code>repeated .notification_service.MemberProto members = 3;</code>
      */
     @java.lang.Override
     public java.util.List<? extends com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProtoOrBuilder> 
@@ -11228,21 +11228,21 @@ public final class NotificationServiceOuterClass {
       return members_;
     }
     /**
-     * <code>repeated .MemberProto members = 3;</code>
+     * <code>repeated .notification_service.MemberProto members = 3;</code>
      */
     @java.lang.Override
     public int getMembersCount() {
       return members_.size();
     }
     /**
-     * <code>repeated .MemberProto members = 3;</code>
+     * <code>repeated .notification_service.MemberProto members = 3;</code>
      */
     @java.lang.Override
     public com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto getMembers(int index) {
       return members_.get(index);
     }
     /**
-     * <code>repeated .MemberProto members = 3;</code>
+     * <code>repeated .notification_service.MemberProto members = 3;</code>
      */
     @java.lang.Override
     public com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProtoOrBuilder getMembersOrBuilder(
@@ -11428,21 +11428,21 @@ public final class NotificationServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code ListMembersResponse}
+     * Protobuf type {@code notification_service.ListMembersResponse}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ListMembersResponse)
+        // @@protoc_insertion_point(builder_implements:notification_service.ListMembersResponse)
         com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_ListMembersResponse_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_ListMembersResponse_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_ListMembersResponse_fieldAccessorTable
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_ListMembersResponse_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersResponse.class, com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersResponse.Builder.class);
       }
@@ -11482,7 +11482,7 @@ public final class NotificationServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_ListMembersResponse_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_ListMembersResponse_descriptor;
       }
 
       @java.lang.Override
@@ -11627,14 +11627,14 @@ public final class NotificationServiceOuterClass {
 
       private int returnCode_ = 0;
       /**
-       * <code>.ReturnStatus return_code = 1;</code>
+       * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @return The enum numeric value on the wire for returnCode.
        */
       @java.lang.Override public int getReturnCodeValue() {
         return returnCode_;
       }
       /**
-       * <code>.ReturnStatus return_code = 1;</code>
+       * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @param value The enum numeric value on the wire for returnCode to set.
        * @return This builder for chaining.
        */
@@ -11645,7 +11645,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ReturnStatus return_code = 1;</code>
+       * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @return The returnCode.
        */
       @java.lang.Override
@@ -11655,7 +11655,7 @@ public final class NotificationServiceOuterClass {
         return result == null ? com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus.UNRECOGNIZED : result;
       }
       /**
-       * <code>.ReturnStatus return_code = 1;</code>
+       * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @param value The returnCode to set.
        * @return This builder for chaining.
        */
@@ -11669,7 +11669,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ReturnStatus return_code = 1;</code>
+       * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearReturnCode() {
@@ -11768,7 +11768,7 @@ public final class NotificationServiceOuterClass {
           com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto, com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto.Builder, com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProtoOrBuilder> membersBuilder_;
 
       /**
-       * <code>repeated .MemberProto members = 3;</code>
+       * <code>repeated .notification_service.MemberProto members = 3;</code>
        */
       public java.util.List<com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto> getMembersList() {
         if (membersBuilder_ == null) {
@@ -11778,7 +11778,7 @@ public final class NotificationServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .MemberProto members = 3;</code>
+       * <code>repeated .notification_service.MemberProto members = 3;</code>
        */
       public int getMembersCount() {
         if (membersBuilder_ == null) {
@@ -11788,7 +11788,7 @@ public final class NotificationServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .MemberProto members = 3;</code>
+       * <code>repeated .notification_service.MemberProto members = 3;</code>
        */
       public com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto getMembers(int index) {
         if (membersBuilder_ == null) {
@@ -11798,7 +11798,7 @@ public final class NotificationServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .MemberProto members = 3;</code>
+       * <code>repeated .notification_service.MemberProto members = 3;</code>
        */
       public Builder setMembers(
           int index, com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto value) {
@@ -11815,7 +11815,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .MemberProto members = 3;</code>
+       * <code>repeated .notification_service.MemberProto members = 3;</code>
        */
       public Builder setMembers(
           int index, com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto.Builder builderForValue) {
@@ -11829,7 +11829,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .MemberProto members = 3;</code>
+       * <code>repeated .notification_service.MemberProto members = 3;</code>
        */
       public Builder addMembers(com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto value) {
         if (membersBuilder_ == null) {
@@ -11845,7 +11845,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .MemberProto members = 3;</code>
+       * <code>repeated .notification_service.MemberProto members = 3;</code>
        */
       public Builder addMembers(
           int index, com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto value) {
@@ -11862,7 +11862,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .MemberProto members = 3;</code>
+       * <code>repeated .notification_service.MemberProto members = 3;</code>
        */
       public Builder addMembers(
           com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto.Builder builderForValue) {
@@ -11876,7 +11876,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .MemberProto members = 3;</code>
+       * <code>repeated .notification_service.MemberProto members = 3;</code>
        */
       public Builder addMembers(
           int index, com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto.Builder builderForValue) {
@@ -11890,7 +11890,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .MemberProto members = 3;</code>
+       * <code>repeated .notification_service.MemberProto members = 3;</code>
        */
       public Builder addAllMembers(
           java.lang.Iterable<? extends com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto> values) {
@@ -11905,7 +11905,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .MemberProto members = 3;</code>
+       * <code>repeated .notification_service.MemberProto members = 3;</code>
        */
       public Builder clearMembers() {
         if (membersBuilder_ == null) {
@@ -11918,7 +11918,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .MemberProto members = 3;</code>
+       * <code>repeated .notification_service.MemberProto members = 3;</code>
        */
       public Builder removeMembers(int index) {
         if (membersBuilder_ == null) {
@@ -11931,14 +11931,14 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .MemberProto members = 3;</code>
+       * <code>repeated .notification_service.MemberProto members = 3;</code>
        */
       public com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto.Builder getMembersBuilder(
           int index) {
         return getMembersFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .MemberProto members = 3;</code>
+       * <code>repeated .notification_service.MemberProto members = 3;</code>
        */
       public com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProtoOrBuilder getMembersOrBuilder(
           int index) {
@@ -11948,7 +11948,7 @@ public final class NotificationServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .MemberProto members = 3;</code>
+       * <code>repeated .notification_service.MemberProto members = 3;</code>
        */
       public java.util.List<? extends com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProtoOrBuilder> 
            getMembersOrBuilderList() {
@@ -11959,14 +11959,14 @@ public final class NotificationServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .MemberProto members = 3;</code>
+       * <code>repeated .notification_service.MemberProto members = 3;</code>
        */
       public com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto.Builder addMembersBuilder() {
         return getMembersFieldBuilder().addBuilder(
             com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto.getDefaultInstance());
       }
       /**
-       * <code>repeated .MemberProto members = 3;</code>
+       * <code>repeated .notification_service.MemberProto members = 3;</code>
        */
       public com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto.Builder addMembersBuilder(
           int index) {
@@ -11974,7 +11974,7 @@ public final class NotificationServiceOuterClass {
             index, com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto.getDefaultInstance());
       }
       /**
-       * <code>repeated .MemberProto members = 3;</code>
+       * <code>repeated .notification_service.MemberProto members = 3;</code>
        */
       public java.util.List<com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto.Builder> 
            getMembersBuilderList() {
@@ -12007,10 +12007,10 @@ public final class NotificationServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:ListMembersResponse)
+      // @@protoc_insertion_point(builder_scope:notification_service.ListMembersResponse)
     }
 
-    // @@protoc_insertion_point(class_scope:ListMembersResponse)
+    // @@protoc_insertion_point(class_scope:notification_service.ListMembersResponse)
     private static final com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersResponse DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersResponse();
@@ -12048,30 +12048,30 @@ public final class NotificationServiceOuterClass {
   }
 
   public interface NotifyNewMemberRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:NotifyNewMemberRequest)
+      // @@protoc_insertion_point(interface_extends:notification_service.NotifyNewMemberRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.MemberProto member = 1;</code>
+     * <code>.notification_service.MemberProto member = 1;</code>
      * @return Whether the member field is set.
      */
     boolean hasMember();
     /**
-     * <code>.MemberProto member = 1;</code>
+     * <code>.notification_service.MemberProto member = 1;</code>
      * @return The member.
      */
     com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto getMember();
     /**
-     * <code>.MemberProto member = 1;</code>
+     * <code>.notification_service.MemberProto member = 1;</code>
      */
     com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProtoOrBuilder getMemberOrBuilder();
   }
   /**
-   * Protobuf type {@code NotifyNewMemberRequest}
+   * Protobuf type {@code notification_service.NotifyNewMemberRequest}
    */
   public static final class NotifyNewMemberRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:NotifyNewMemberRequest)
+      // @@protoc_insertion_point(message_implements:notification_service.NotifyNewMemberRequest)
       NotifyNewMemberRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use NotifyNewMemberRequest.newBuilder() to construct.
@@ -12145,13 +12145,13 @@ public final class NotificationServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_NotifyNewMemberRequest_descriptor;
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_NotifyNewMemberRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_NotifyNewMemberRequest_fieldAccessorTable
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_NotifyNewMemberRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest.class, com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest.Builder.class);
     }
@@ -12159,7 +12159,7 @@ public final class NotificationServiceOuterClass {
     public static final int MEMBER_FIELD_NUMBER = 1;
     private com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto member_;
     /**
-     * <code>.MemberProto member = 1;</code>
+     * <code>.notification_service.MemberProto member = 1;</code>
      * @return Whether the member field is set.
      */
     @java.lang.Override
@@ -12167,7 +12167,7 @@ public final class NotificationServiceOuterClass {
       return member_ != null;
     }
     /**
-     * <code>.MemberProto member = 1;</code>
+     * <code>.notification_service.MemberProto member = 1;</code>
      * @return The member.
      */
     @java.lang.Override
@@ -12175,7 +12175,7 @@ public final class NotificationServiceOuterClass {
       return member_ == null ? com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto.getDefaultInstance() : member_;
     }
     /**
-     * <code>.MemberProto member = 1;</code>
+     * <code>.notification_service.MemberProto member = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProtoOrBuilder getMemberOrBuilder() {
@@ -12343,21 +12343,21 @@ public final class NotificationServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code NotifyNewMemberRequest}
+     * Protobuf type {@code notification_service.NotifyNewMemberRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:NotifyNewMemberRequest)
+        // @@protoc_insertion_point(builder_implements:notification_service.NotifyNewMemberRequest)
         com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_NotifyNewMemberRequest_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_NotifyNewMemberRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_NotifyNewMemberRequest_fieldAccessorTable
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_NotifyNewMemberRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest.class, com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest.Builder.class);
       }
@@ -12392,7 +12392,7 @@ public final class NotificationServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_NotifyNewMemberRequest_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_NotifyNewMemberRequest_descriptor;
       }
 
       @java.lang.Override
@@ -12501,14 +12501,14 @@ public final class NotificationServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto, com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto.Builder, com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProtoOrBuilder> memberBuilder_;
       /**
-       * <code>.MemberProto member = 1;</code>
+       * <code>.notification_service.MemberProto member = 1;</code>
        * @return Whether the member field is set.
        */
       public boolean hasMember() {
         return memberBuilder_ != null || member_ != null;
       }
       /**
-       * <code>.MemberProto member = 1;</code>
+       * <code>.notification_service.MemberProto member = 1;</code>
        * @return The member.
        */
       public com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto getMember() {
@@ -12519,7 +12519,7 @@ public final class NotificationServiceOuterClass {
         }
       }
       /**
-       * <code>.MemberProto member = 1;</code>
+       * <code>.notification_service.MemberProto member = 1;</code>
        */
       public Builder setMember(com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto value) {
         if (memberBuilder_ == null) {
@@ -12535,7 +12535,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>.MemberProto member = 1;</code>
+       * <code>.notification_service.MemberProto member = 1;</code>
        */
       public Builder setMember(
           com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto.Builder builderForValue) {
@@ -12549,7 +12549,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>.MemberProto member = 1;</code>
+       * <code>.notification_service.MemberProto member = 1;</code>
        */
       public Builder mergeMember(com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto value) {
         if (memberBuilder_ == null) {
@@ -12567,7 +12567,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>.MemberProto member = 1;</code>
+       * <code>.notification_service.MemberProto member = 1;</code>
        */
       public Builder clearMember() {
         if (memberBuilder_ == null) {
@@ -12581,7 +12581,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>.MemberProto member = 1;</code>
+       * <code>.notification_service.MemberProto member = 1;</code>
        */
       public com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto.Builder getMemberBuilder() {
         
@@ -12589,7 +12589,7 @@ public final class NotificationServiceOuterClass {
         return getMemberFieldBuilder().getBuilder();
       }
       /**
-       * <code>.MemberProto member = 1;</code>
+       * <code>.notification_service.MemberProto member = 1;</code>
        */
       public com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProtoOrBuilder getMemberOrBuilder() {
         if (memberBuilder_ != null) {
@@ -12600,7 +12600,7 @@ public final class NotificationServiceOuterClass {
         }
       }
       /**
-       * <code>.MemberProto member = 1;</code>
+       * <code>.notification_service.MemberProto member = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto, com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto.Builder, com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProtoOrBuilder> 
@@ -12628,10 +12628,10 @@ public final class NotificationServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:NotifyNewMemberRequest)
+      // @@protoc_insertion_point(builder_scope:notification_service.NotifyNewMemberRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:NotifyNewMemberRequest)
+    // @@protoc_insertion_point(class_scope:notification_service.NotifyNewMemberRequest)
     private static final com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest();
@@ -12669,16 +12669,16 @@ public final class NotificationServiceOuterClass {
   }
 
   public interface NotifyNewMemberResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:NotifyNewMemberResponse)
+      // @@protoc_insertion_point(interface_extends:notification_service.NotifyNewMemberResponse)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.ReturnStatus return_code = 1;</code>
+     * <code>.notification_service.ReturnStatus return_code = 1;</code>
      * @return The enum numeric value on the wire for returnCode.
      */
     int getReturnCodeValue();
     /**
-     * <code>.ReturnStatus return_code = 1;</code>
+     * <code>.notification_service.ReturnStatus return_code = 1;</code>
      * @return The returnCode.
      */
     com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus getReturnCode();
@@ -12696,11 +12696,11 @@ public final class NotificationServiceOuterClass {
         getReturnMsgBytes();
   }
   /**
-   * Protobuf type {@code NotifyNewMemberResponse}
+   * Protobuf type {@code notification_service.NotifyNewMemberResponse}
    */
   public static final class NotifyNewMemberResponse extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:NotifyNewMemberResponse)
+      // @@protoc_insertion_point(message_implements:notification_service.NotifyNewMemberResponse)
       NotifyNewMemberResponseOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use NotifyNewMemberResponse.newBuilder() to construct.
@@ -12775,13 +12775,13 @@ public final class NotificationServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_NotifyNewMemberResponse_descriptor;
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_NotifyNewMemberResponse_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_NotifyNewMemberResponse_fieldAccessorTable
+      return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_NotifyNewMemberResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse.class, com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse.Builder.class);
     }
@@ -12789,14 +12789,14 @@ public final class NotificationServiceOuterClass {
     public static final int RETURN_CODE_FIELD_NUMBER = 1;
     private int returnCode_;
     /**
-     * <code>.ReturnStatus return_code = 1;</code>
+     * <code>.notification_service.ReturnStatus return_code = 1;</code>
      * @return The enum numeric value on the wire for returnCode.
      */
     @java.lang.Override public int getReturnCodeValue() {
       return returnCode_;
     }
     /**
-     * <code>.ReturnStatus return_code = 1;</code>
+     * <code>.notification_service.ReturnStatus return_code = 1;</code>
      * @return The returnCode.
      */
     @java.lang.Override public com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus getReturnCode() {
@@ -13008,21 +13008,21 @@ public final class NotificationServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code NotifyNewMemberResponse}
+     * Protobuf type {@code notification_service.NotifyNewMemberResponse}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:NotifyNewMemberResponse)
+        // @@protoc_insertion_point(builder_implements:notification_service.NotifyNewMemberResponse)
         com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_NotifyNewMemberResponse_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_NotifyNewMemberResponse_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_NotifyNewMemberResponse_fieldAccessorTable
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_NotifyNewMemberResponse_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse.class, com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse.Builder.class);
       }
@@ -13055,7 +13055,7 @@ public final class NotificationServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_NotifyNewMemberResponse_descriptor;
+        return com.aiflow.notification.proto.NotificationServiceOuterClass.internal_static_notification_service_NotifyNewMemberResponse_descriptor;
       }
 
       @java.lang.Override
@@ -13163,14 +13163,14 @@ public final class NotificationServiceOuterClass {
 
       private int returnCode_ = 0;
       /**
-       * <code>.ReturnStatus return_code = 1;</code>
+       * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @return The enum numeric value on the wire for returnCode.
        */
       @java.lang.Override public int getReturnCodeValue() {
         return returnCode_;
       }
       /**
-       * <code>.ReturnStatus return_code = 1;</code>
+       * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @param value The enum numeric value on the wire for returnCode to set.
        * @return This builder for chaining.
        */
@@ -13181,7 +13181,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ReturnStatus return_code = 1;</code>
+       * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @return The returnCode.
        */
       @java.lang.Override
@@ -13191,7 +13191,7 @@ public final class NotificationServiceOuterClass {
         return result == null ? com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus.UNRECOGNIZED : result;
       }
       /**
-       * <code>.ReturnStatus return_code = 1;</code>
+       * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @param value The returnCode to set.
        * @return This builder for chaining.
        */
@@ -13205,7 +13205,7 @@ public final class NotificationServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ReturnStatus return_code = 1;</code>
+       * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearReturnCode() {
@@ -13303,10 +13303,10 @@ public final class NotificationServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:NotifyNewMemberResponse)
+      // @@protoc_insertion_point(builder_scope:notification_service.NotifyNewMemberResponse)
     }
 
-    // @@protoc_insertion_point(class_scope:NotifyNewMemberResponse)
+    // @@protoc_insertion_point(class_scope:notification_service.NotifyNewMemberResponse)
     private static final com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse();
@@ -13351,7 +13351,7 @@ public final class NotificationServiceOuterClass {
    *  2.List events.
    * </pre>
    *
-   * Protobuf service {@code NotificationService}
+   * Protobuf service {@code notification_service.NotificationService}
    */
   public static abstract class NotificationService
       implements com.google.protobuf.Service {
@@ -13363,7 +13363,7 @@ public final class NotificationServiceOuterClass {
        * Send event.
        * </pre>
        *
-       * <code>rpc sendEvent(.SendEventRequest) returns (.SendEventsResponse) { ... }</code>
+       * <code>rpc sendEvent(.notification_service.SendEventRequest) returns (.notification_service.SendEventsResponse) { ... }</code>
        */
       public abstract void sendEvent(
           com.google.protobuf.RpcController controller,
@@ -13375,7 +13375,7 @@ public final class NotificationServiceOuterClass {
        * List events.
        * </pre>
        *
-       * <code>rpc listEvents(.ListEventsRequest) returns (.ListEventsResponse) { ... }</code>
+       * <code>rpc listEvents(.notification_service.ListEventsRequest) returns (.notification_service.ListEventsResponse) { ... }</code>
        */
       public abstract void listEvents(
           com.google.protobuf.RpcController controller,
@@ -13387,7 +13387,7 @@ public final class NotificationServiceOuterClass {
        * List all events
        * </pre>
        *
-       * <code>rpc listAllEvents(.ListAllEventsRequest) returns (.ListEventsResponse) { ... }</code>
+       * <code>rpc listAllEvents(.notification_service.ListAllEventsRequest) returns (.notification_service.ListEventsResponse) { ... }</code>
        */
       public abstract void listAllEvents(
           com.google.protobuf.RpcController controller,
@@ -13399,7 +13399,7 @@ public final class NotificationServiceOuterClass {
        * Accepts notifications from other members.
        * </pre>
        *
-       * <code>rpc notify(.NotifyRequest) returns (.NotifyResponse) { ... }</code>
+       * <code>rpc notify(.notification_service.NotifyRequest) returns (.notification_service.NotifyResponse) { ... }</code>
        */
       public abstract void notify(
           com.google.protobuf.RpcController controller,
@@ -13411,7 +13411,7 @@ public final class NotificationServiceOuterClass {
        * List current living members.
        * </pre>
        *
-       * <code>rpc listMembers(.ListMembersRequest) returns (.ListMembersResponse) { ... }</code>
+       * <code>rpc listMembers(.notification_service.ListMembersRequest) returns (.notification_service.ListMembersResponse) { ... }</code>
        */
       public abstract void listMembers(
           com.google.protobuf.RpcController controller,
@@ -13423,7 +13423,7 @@ public final class NotificationServiceOuterClass {
        * Notify current members that there is a new member added.
        * </pre>
        *
-       * <code>rpc notifyNewMember(.NotifyNewMemberRequest) returns (.NotifyNewMemberResponse) { ... }</code>
+       * <code>rpc notifyNewMember(.notification_service.NotifyNewMemberRequest) returns (.notification_service.NotifyNewMemberResponse) { ... }</code>
        */
       public abstract void notifyNewMember(
           com.google.protobuf.RpcController controller,
@@ -13435,7 +13435,7 @@ public final class NotificationServiceOuterClass {
        * Get latest version by key
        * </pre>
        *
-       * <code>rpc getLatestVersionByKey(.GetLatestVersionByKeyRequest) returns (.GetLatestVersionResponse) { ... }</code>
+       * <code>rpc getLatestVersionByKey(.notification_service.GetLatestVersionByKeyRequest) returns (.notification_service.GetLatestVersionResponse) { ... }</code>
        */
       public abstract void getLatestVersionByKey(
           com.google.protobuf.RpcController controller,
@@ -13608,7 +13608,7 @@ public final class NotificationServiceOuterClass {
      * Send event.
      * </pre>
      *
-     * <code>rpc sendEvent(.SendEventRequest) returns (.SendEventsResponse) { ... }</code>
+     * <code>rpc sendEvent(.notification_service.SendEventRequest) returns (.notification_service.SendEventsResponse) { ... }</code>
      */
     public abstract void sendEvent(
         com.google.protobuf.RpcController controller,
@@ -13620,7 +13620,7 @@ public final class NotificationServiceOuterClass {
      * List events.
      * </pre>
      *
-     * <code>rpc listEvents(.ListEventsRequest) returns (.ListEventsResponse) { ... }</code>
+     * <code>rpc listEvents(.notification_service.ListEventsRequest) returns (.notification_service.ListEventsResponse) { ... }</code>
      */
     public abstract void listEvents(
         com.google.protobuf.RpcController controller,
@@ -13632,7 +13632,7 @@ public final class NotificationServiceOuterClass {
      * List all events
      * </pre>
      *
-     * <code>rpc listAllEvents(.ListAllEventsRequest) returns (.ListEventsResponse) { ... }</code>
+     * <code>rpc listAllEvents(.notification_service.ListAllEventsRequest) returns (.notification_service.ListEventsResponse) { ... }</code>
      */
     public abstract void listAllEvents(
         com.google.protobuf.RpcController controller,
@@ -13644,7 +13644,7 @@ public final class NotificationServiceOuterClass {
      * Accepts notifications from other members.
      * </pre>
      *
-     * <code>rpc notify(.NotifyRequest) returns (.NotifyResponse) { ... }</code>
+     * <code>rpc notify(.notification_service.NotifyRequest) returns (.notification_service.NotifyResponse) { ... }</code>
      */
     public abstract void notify(
         com.google.protobuf.RpcController controller,
@@ -13656,7 +13656,7 @@ public final class NotificationServiceOuterClass {
      * List current living members.
      * </pre>
      *
-     * <code>rpc listMembers(.ListMembersRequest) returns (.ListMembersResponse) { ... }</code>
+     * <code>rpc listMembers(.notification_service.ListMembersRequest) returns (.notification_service.ListMembersResponse) { ... }</code>
      */
     public abstract void listMembers(
         com.google.protobuf.RpcController controller,
@@ -13668,7 +13668,7 @@ public final class NotificationServiceOuterClass {
      * Notify current members that there is a new member added.
      * </pre>
      *
-     * <code>rpc notifyNewMember(.NotifyNewMemberRequest) returns (.NotifyNewMemberResponse) { ... }</code>
+     * <code>rpc notifyNewMember(.notification_service.NotifyNewMemberRequest) returns (.notification_service.NotifyNewMemberResponse) { ... }</code>
      */
     public abstract void notifyNewMember(
         com.google.protobuf.RpcController controller,
@@ -13680,7 +13680,7 @@ public final class NotificationServiceOuterClass {
      * Get latest version by key
      * </pre>
      *
-     * <code>rpc getLatestVersionByKey(.GetLatestVersionByKeyRequest) returns (.GetLatestVersionResponse) { ... }</code>
+     * <code>rpc getLatestVersionByKey(.notification_service.GetLatestVersionByKeyRequest) returns (.notification_service.GetLatestVersionResponse) { ... }</code>
      */
     public abstract void getLatestVersionByKey(
         com.google.protobuf.RpcController controller,
@@ -14061,89 +14061,89 @@ public final class NotificationServiceOuterClass {
 
     }
 
-    // @@protoc_insertion_point(class_scope:NotificationService)
+    // @@protoc_insertion_point(class_scope:notification_service.NotificationService)
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_EventProto_descriptor;
+    internal_static_notification_service_EventProto_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_EventProto_fieldAccessorTable;
+      internal_static_notification_service_EventProto_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_SendEventRequest_descriptor;
+    internal_static_notification_service_SendEventRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_SendEventRequest_fieldAccessorTable;
+      internal_static_notification_service_SendEventRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_SendEventsResponse_descriptor;
+    internal_static_notification_service_SendEventsResponse_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_SendEventsResponse_fieldAccessorTable;
+      internal_static_notification_service_SendEventsResponse_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ListEventsRequest_descriptor;
+    internal_static_notification_service_ListEventsRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_ListEventsRequest_fieldAccessorTable;
+      internal_static_notification_service_ListEventsRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ListAllEventsRequest_descriptor;
+    internal_static_notification_service_ListAllEventsRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_ListAllEventsRequest_fieldAccessorTable;
+      internal_static_notification_service_ListAllEventsRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ListEventsResponse_descriptor;
+    internal_static_notification_service_ListEventsResponse_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_ListEventsResponse_fieldAccessorTable;
+      internal_static_notification_service_ListEventsResponse_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_GetLatestVersionByKeyRequest_descriptor;
+    internal_static_notification_service_GetLatestVersionByKeyRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_GetLatestVersionByKeyRequest_fieldAccessorTable;
+      internal_static_notification_service_GetLatestVersionByKeyRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_GetLatestVersionResponse_descriptor;
+    internal_static_notification_service_GetLatestVersionResponse_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_GetLatestVersionResponse_fieldAccessorTable;
+      internal_static_notification_service_GetLatestVersionResponse_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_MemberProto_descriptor;
+    internal_static_notification_service_MemberProto_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_MemberProto_fieldAccessorTable;
+      internal_static_notification_service_MemberProto_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_Notify_descriptor;
+    internal_static_notification_service_Notify_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_Notify_fieldAccessorTable;
+      internal_static_notification_service_Notify_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_NotifyRequest_descriptor;
+    internal_static_notification_service_NotifyRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_NotifyRequest_fieldAccessorTable;
+      internal_static_notification_service_NotifyRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_NotifyResponse_descriptor;
+    internal_static_notification_service_NotifyResponse_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_NotifyResponse_fieldAccessorTable;
+      internal_static_notification_service_NotifyResponse_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ListMembersRequest_descriptor;
+    internal_static_notification_service_ListMembersRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_ListMembersRequest_fieldAccessorTable;
+      internal_static_notification_service_ListMembersRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ListMembersResponse_descriptor;
+    internal_static_notification_service_ListMembersResponse_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_ListMembersResponse_fieldAccessorTable;
+      internal_static_notification_service_ListMembersResponse_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_NotifyNewMemberRequest_descriptor;
+    internal_static_notification_service_NotifyNewMemberRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_NotifyNewMemberRequest_fieldAccessorTable;
+      internal_static_notification_service_NotifyNewMemberRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_NotifyNewMemberResponse_descriptor;
+    internal_static_notification_service_NotifyNewMemberResponse_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_NotifyNewMemberResponse_fieldAccessorTable;
+      internal_static_notification_service_NotifyNewMemberResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -14153,166 +14153,180 @@ public final class NotificationServiceOuterClass {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\032notification_service.proto\032\034google/api" +
-      "/annotations.proto\"\206\001\n\nEventProto\022\013\n\003key" +
-      "\030\001 \001(\t\022\r\n\005value\030\002 \001(\t\022\022\n\nevent_type\030\003 \001(" +
-      "\t\022\017\n\007context\030\004 \001(\t\022\021\n\tnamespace\030\005 \001(\t\022\017\n" +
-      "\007version\030\006 \001(\003\022\023\n\013create_time\030\007 \001(\003\"<\n\020S" +
-      "endEventRequest\022\032\n\005event\030\001 \001(\0132\013.EventPr" +
-      "oto\022\014\n\004uuid\030\002 \001(\t\"h\n\022SendEventsResponse\022" +
-      "\032\n\005event\030\001 \001(\0132\013.EventProto\022\"\n\013return_co" +
-      "de\030\002 \001(\0162\r.ReturnStatus\022\022\n\nreturn_msg\030\003 " +
-      "\001(\t\"\214\001\n\021ListEventsRequest\022\014\n\004keys\030\001 \003(\t\022" +
-      "\022\n\nevent_type\030\002 \001(\t\022\022\n\nstart_time\030\003 \001(\003\022" +
-      "\025\n\rstart_version\030\004 \001(\003\022\027\n\017timeout_second" +
-      "s\030\005 \001(\005\022\021\n\tnamespace\030\006 \001(\t\"o\n\024ListAllEve" +
-      "ntsRequest\022\027\n\017timeout_seconds\030\001 \001(\005\022\022\n\ns" +
-      "tart_time\030\002 \001(\003\022\025\n\rstart_version\030\003 \001(\003\022\023" +
-      "\n\013end_version\030\004 \001(\003\"i\n\022ListEventsRespons" +
-      "e\022\"\n\013return_code\030\001 \001(\0162\r.ReturnStatus\022\022\n" +
-      "\nreturn_msg\030\002 \001(\t\022\033\n\006events\030\003 \003(\0132\013.Even" +
-      "tProto\"W\n\034GetLatestVersionByKeyRequest\022\013" +
-      "\n\003key\030\001 \001(\t\022\021\n\tnamespace\030\002 \001(\t\022\027\n\017timeou" +
-      "t_seconds\030\003 \001(\005\"T\n\030GetLatestVersionRespo" +
-      "nse\022\023\n\013return_code\030\001 \001(\t\022\022\n\nreturn_msg\030\002" +
-      " \001(\t\022\017\n\007version\030\003 \001(\003\"G\n\013MemberProto\022\017\n\007" +
-      "version\030\001 \001(\003\022\022\n\nserver_uri\030\002 \001(\t\022\023\n\013upd" +
-      "ate_time\030\003 \001(\003\"(\n\006Notify\022\013\n\003key\030\001 \001(\t\022\021\n" +
-      "\tnamespace\030\002 \001(\t\"*\n\rNotifyRequest\022\031\n\010not" +
-      "ifies\030\001 \003(\0132\007.Notify\"H\n\016NotifyResponse\022\"" +
-      "\n\013return_code\030\001 \001(\0162\r.ReturnStatus\022\022\n\nre" +
-      "turn_msg\030\002 \001(\t\"-\n\022ListMembersRequest\022\027\n\017" +
-      "timeout_seconds\030\001 \001(\005\"l\n\023ListMembersResp" +
-      "onse\022\"\n\013return_code\030\001 \001(\0162\r.ReturnStatus" +
-      "\022\022\n\nreturn_msg\030\002 \001(\t\022\035\n\007members\030\003 \003(\0132\014." +
-      "MemberProto\"6\n\026NotifyNewMemberRequest\022\034\n" +
-      "\006member\030\001 \001(\0132\014.MemberProto\"Q\n\027NotifyNew" +
-      "MemberResponse\022\"\n\013return_code\030\001 \001(\0162\r.Re" +
-      "turnStatus\022\022\n\nreturn_msg\030\002 \001(\t*&\n\014Return" +
-      "Status\022\013\n\007SUCCESS\020\000\022\t\n\005ERROR\020\0012\303\006\n\023Notif" +
-      "icationService\022g\n\tsendEvent\022\021.SendEventR" +
-      "equest\032\023.SendEventsResponse\"2\202\323\344\223\002,\"\'/ai" +
-      "flow/notification-service/send_event:\001*\022" +
-      "j\n\nlistEvents\022\022.ListEventsRequest\032\023.List" +
-      "EventsResponse\"3\202\323\344\223\002-\"(/aiflow/notifica" +
-      "tion-service/list_events:\001*\022t\n\rlistAllEv" +
-      "ents\022\025.ListAllEventsRequest\032\023.ListEvents" +
-      "Response\"7\202\323\344\223\0021\",/aiflow/notification-s" +
-      "ervice/list_all_events:\001*\022Y\n\006notify\022\016.No" +
-      "tifyRequest\032\017.NotifyResponse\".\202\323\344\223\002(\"#/a" +
-      "iflow/notification-service/notify:\001*\022n\n\013" +
-      "listMembers\022\023.ListMembersRequest\032\024.ListM" +
-      "embersResponse\"4\202\323\344\223\002.\")/aiflow/notifica" +
-      "tion-service/list_members:\001*\022\177\n\017notifyNe" +
-      "wMember\022\027.NotifyNewMemberRequest\032\030.Notif" +
-      "yNewMemberResponse\"9\202\323\344\223\0023\"./aiflow/noti" +
-      "fication-service/notify_new_member:\001*\022\224\001" +
-      "\n\025getLatestVersionByKey\022\035.GetLatestVersi" +
-      "onByKeyRequest\032\031.GetLatestVersionRespons" +
-      "e\"A\202\323\344\223\002;\"6/aiflow/notification-service/" +
-      "get_latest_version_by_key:\001*B%\n\035com.aifl" +
-      "ow.notification.proto\210\001\001\220\001\001b\006proto3"
+      "\n\032notification_service.proto\022\024notificati" +
+      "on_service\032\034google/api/annotations.proto" +
+      "\"\206\001\n\nEventProto\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 " +
+      "\001(\t\022\022\n\nevent_type\030\003 \001(\t\022\017\n\007context\030\004 \001(\t" +
+      "\022\021\n\tnamespace\030\005 \001(\t\022\017\n\007version\030\006 \001(\003\022\023\n\013" +
+      "create_time\030\007 \001(\003\"Q\n\020SendEventRequest\022/\n" +
+      "\005event\030\001 \001(\0132 .notification_service.Even" +
+      "tProto\022\014\n\004uuid\030\002 \001(\t\"\222\001\n\022SendEventsRespo" +
+      "nse\022/\n\005event\030\001 \001(\0132 .notification_servic" +
+      "e.EventProto\0227\n\013return_code\030\002 \001(\0162\".noti" +
+      "fication_service.ReturnStatus\022\022\n\nreturn_" +
+      "msg\030\003 \001(\t\"\214\001\n\021ListEventsRequest\022\014\n\004keys\030" +
+      "\001 \003(\t\022\022\n\nevent_type\030\002 \001(\t\022\022\n\nstart_time\030" +
+      "\003 \001(\003\022\025\n\rstart_version\030\004 \001(\003\022\027\n\017timeout_" +
+      "seconds\030\005 \001(\005\022\021\n\tnamespace\030\006 \001(\t\"o\n\024List" +
+      "AllEventsRequest\022\027\n\017timeout_seconds\030\001 \001(" +
+      "\005\022\022\n\nstart_time\030\002 \001(\003\022\025\n\rstart_version\030\003" +
+      " \001(\003\022\023\n\013end_version\030\004 \001(\003\"\223\001\n\022ListEvents" +
+      "Response\0227\n\013return_code\030\001 \001(\0162\".notifica" +
+      "tion_service.ReturnStatus\022\022\n\nreturn_msg\030" +
+      "\002 \001(\t\0220\n\006events\030\003 \003(\0132 .notification_ser" +
+      "vice.EventProto\"W\n\034GetLatestVersionByKey" +
+      "Request\022\013\n\003key\030\001 \001(\t\022\021\n\tnamespace\030\002 \001(\t\022" +
+      "\027\n\017timeout_seconds\030\003 \001(\005\"T\n\030GetLatestVer" +
+      "sionResponse\022\023\n\013return_code\030\001 \001(\t\022\022\n\nret" +
+      "urn_msg\030\002 \001(\t\022\017\n\007version\030\003 \001(\003\"G\n\013Member" +
+      "Proto\022\017\n\007version\030\001 \001(\003\022\022\n\nserver_uri\030\002 \001" +
+      "(\t\022\023\n\013update_time\030\003 \001(\003\"(\n\006Notify\022\013\n\003key" +
+      "\030\001 \001(\t\022\021\n\tnamespace\030\002 \001(\t\"?\n\rNotifyReque" +
+      "st\022.\n\010notifies\030\001 \003(\0132\034.notification_serv" +
+      "ice.Notify\"]\n\016NotifyResponse\0227\n\013return_c" +
+      "ode\030\001 \001(\0162\".notification_service.ReturnS" +
+      "tatus\022\022\n\nreturn_msg\030\002 \001(\t\"-\n\022ListMembers" +
+      "Request\022\027\n\017timeout_seconds\030\001 \001(\005\"\226\001\n\023Lis" +
+      "tMembersResponse\0227\n\013return_code\030\001 \001(\0162\"." +
+      "notification_service.ReturnStatus\022\022\n\nret" +
+      "urn_msg\030\002 \001(\t\0222\n\007members\030\003 \003(\0132!.notific" +
+      "ation_service.MemberProto\"K\n\026NotifyNewMe" +
+      "mberRequest\0221\n\006member\030\001 \001(\0132!.notificati" +
+      "on_service.MemberProto\"f\n\027NotifyNewMembe" +
+      "rResponse\0227\n\013return_code\030\001 \001(\0162\".notific" +
+      "ation_service.ReturnStatus\022\022\n\nreturn_msg" +
+      "\030\002 \001(\t*&\n\014ReturnStatus\022\013\n\007SUCCESS\020\000\022\t\n\005E" +
+      "RROR\020\0012\357\010\n\023NotificationService\022\221\001\n\tsendE" +
+      "vent\022&.notification_service.SendEventReq" +
+      "uest\032(.notification_service.SendEventsRe" +
+      "sponse\"2\202\323\344\223\002,\"\'/aiflow/notification-ser" +
+      "vice/send_event:\001*\022\224\001\n\nlistEvents\022\'.noti" +
+      "fication_service.ListEventsRequest\032(.not" +
+      "ification_service.ListEventsResponse\"3\202\323" +
+      "\344\223\002-\"(/aiflow/notification-service/list_" +
+      "events:\001*\022\236\001\n\rlistAllEvents\022*.notificati" +
+      "on_service.ListAllEventsRequest\032(.notifi" +
+      "cation_service.ListEventsResponse\"7\202\323\344\223\002" +
+      "1\",/aiflow/notification-service/list_all" +
+      "_events:\001*\022\203\001\n\006notify\022#.notification_ser" +
+      "vice.NotifyRequest\032$.notification_servic" +
+      "e.NotifyResponse\".\202\323\344\223\002(\"#/aiflow/notifi" +
+      "cation-service/notify:\001*\022\230\001\n\013listMembers" +
+      "\022(.notification_service.ListMembersReque" +
+      "st\032).notification_service.ListMembersRes" +
+      "ponse\"4\202\323\344\223\002.\")/aiflow/notification-serv" +
+      "ice/list_members:\001*\022\251\001\n\017notifyNewMember\022" +
+      ",.notification_service.NotifyNewMemberRe" +
+      "quest\032-.notification_service.NotifyNewMe" +
+      "mberResponse\"9\202\323\344\223\0023\"./aiflow/notificati" +
+      "on-service/notify_new_member:\001*\022\276\001\n\025getL" +
+      "atestVersionByKey\0222.notification_service" +
+      ".GetLatestVersionByKeyRequest\032..notifica" +
+      "tion_service.GetLatestVersionResponse\"A\202" +
+      "\323\344\223\002;\"6/aiflow/notification-service/get_" +
+      "latest_version_by_key:\001*B%\n\035com.aiflow.n" +
+      "otification.proto\210\001\001\220\001\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.google.api.AnnotationsProto.getDescriptor(),
         });
-    internal_static_EventProto_descriptor =
+    internal_static_notification_service_EventProto_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_EventProto_fieldAccessorTable = new
+    internal_static_notification_service_EventProto_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_EventProto_descriptor,
+        internal_static_notification_service_EventProto_descriptor,
         new java.lang.String[] { "Key", "Value", "EventType", "Context", "Namespace", "Version", "CreateTime", });
-    internal_static_SendEventRequest_descriptor =
+    internal_static_notification_service_SendEventRequest_descriptor =
       getDescriptor().getMessageTypes().get(1);
-    internal_static_SendEventRequest_fieldAccessorTable = new
+    internal_static_notification_service_SendEventRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_SendEventRequest_descriptor,
+        internal_static_notification_service_SendEventRequest_descriptor,
         new java.lang.String[] { "Event", "Uuid", });
-    internal_static_SendEventsResponse_descriptor =
+    internal_static_notification_service_SendEventsResponse_descriptor =
       getDescriptor().getMessageTypes().get(2);
-    internal_static_SendEventsResponse_fieldAccessorTable = new
+    internal_static_notification_service_SendEventsResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_SendEventsResponse_descriptor,
+        internal_static_notification_service_SendEventsResponse_descriptor,
         new java.lang.String[] { "Event", "ReturnCode", "ReturnMsg", });
-    internal_static_ListEventsRequest_descriptor =
+    internal_static_notification_service_ListEventsRequest_descriptor =
       getDescriptor().getMessageTypes().get(3);
-    internal_static_ListEventsRequest_fieldAccessorTable = new
+    internal_static_notification_service_ListEventsRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_ListEventsRequest_descriptor,
+        internal_static_notification_service_ListEventsRequest_descriptor,
         new java.lang.String[] { "Keys", "EventType", "StartTime", "StartVersion", "TimeoutSeconds", "Namespace", });
-    internal_static_ListAllEventsRequest_descriptor =
+    internal_static_notification_service_ListAllEventsRequest_descriptor =
       getDescriptor().getMessageTypes().get(4);
-    internal_static_ListAllEventsRequest_fieldAccessorTable = new
+    internal_static_notification_service_ListAllEventsRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_ListAllEventsRequest_descriptor,
+        internal_static_notification_service_ListAllEventsRequest_descriptor,
         new java.lang.String[] { "TimeoutSeconds", "StartTime", "StartVersion", "EndVersion", });
-    internal_static_ListEventsResponse_descriptor =
+    internal_static_notification_service_ListEventsResponse_descriptor =
       getDescriptor().getMessageTypes().get(5);
-    internal_static_ListEventsResponse_fieldAccessorTable = new
+    internal_static_notification_service_ListEventsResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_ListEventsResponse_descriptor,
+        internal_static_notification_service_ListEventsResponse_descriptor,
         new java.lang.String[] { "ReturnCode", "ReturnMsg", "Events", });
-    internal_static_GetLatestVersionByKeyRequest_descriptor =
+    internal_static_notification_service_GetLatestVersionByKeyRequest_descriptor =
       getDescriptor().getMessageTypes().get(6);
-    internal_static_GetLatestVersionByKeyRequest_fieldAccessorTable = new
+    internal_static_notification_service_GetLatestVersionByKeyRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_GetLatestVersionByKeyRequest_descriptor,
+        internal_static_notification_service_GetLatestVersionByKeyRequest_descriptor,
         new java.lang.String[] { "Key", "Namespace", "TimeoutSeconds", });
-    internal_static_GetLatestVersionResponse_descriptor =
+    internal_static_notification_service_GetLatestVersionResponse_descriptor =
       getDescriptor().getMessageTypes().get(7);
-    internal_static_GetLatestVersionResponse_fieldAccessorTable = new
+    internal_static_notification_service_GetLatestVersionResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_GetLatestVersionResponse_descriptor,
+        internal_static_notification_service_GetLatestVersionResponse_descriptor,
         new java.lang.String[] { "ReturnCode", "ReturnMsg", "Version", });
-    internal_static_MemberProto_descriptor =
+    internal_static_notification_service_MemberProto_descriptor =
       getDescriptor().getMessageTypes().get(8);
-    internal_static_MemberProto_fieldAccessorTable = new
+    internal_static_notification_service_MemberProto_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_MemberProto_descriptor,
+        internal_static_notification_service_MemberProto_descriptor,
         new java.lang.String[] { "Version", "ServerUri", "UpdateTime", });
-    internal_static_Notify_descriptor =
+    internal_static_notification_service_Notify_descriptor =
       getDescriptor().getMessageTypes().get(9);
-    internal_static_Notify_fieldAccessorTable = new
+    internal_static_notification_service_Notify_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_Notify_descriptor,
+        internal_static_notification_service_Notify_descriptor,
         new java.lang.String[] { "Key", "Namespace", });
-    internal_static_NotifyRequest_descriptor =
+    internal_static_notification_service_NotifyRequest_descriptor =
       getDescriptor().getMessageTypes().get(10);
-    internal_static_NotifyRequest_fieldAccessorTable = new
+    internal_static_notification_service_NotifyRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_NotifyRequest_descriptor,
+        internal_static_notification_service_NotifyRequest_descriptor,
         new java.lang.String[] { "Notifies", });
-    internal_static_NotifyResponse_descriptor =
+    internal_static_notification_service_NotifyResponse_descriptor =
       getDescriptor().getMessageTypes().get(11);
-    internal_static_NotifyResponse_fieldAccessorTable = new
+    internal_static_notification_service_NotifyResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_NotifyResponse_descriptor,
+        internal_static_notification_service_NotifyResponse_descriptor,
         new java.lang.String[] { "ReturnCode", "ReturnMsg", });
-    internal_static_ListMembersRequest_descriptor =
+    internal_static_notification_service_ListMembersRequest_descriptor =
       getDescriptor().getMessageTypes().get(12);
-    internal_static_ListMembersRequest_fieldAccessorTable = new
+    internal_static_notification_service_ListMembersRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_ListMembersRequest_descriptor,
+        internal_static_notification_service_ListMembersRequest_descriptor,
         new java.lang.String[] { "TimeoutSeconds", });
-    internal_static_ListMembersResponse_descriptor =
+    internal_static_notification_service_ListMembersResponse_descriptor =
       getDescriptor().getMessageTypes().get(13);
-    internal_static_ListMembersResponse_fieldAccessorTable = new
+    internal_static_notification_service_ListMembersResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_ListMembersResponse_descriptor,
+        internal_static_notification_service_ListMembersResponse_descriptor,
         new java.lang.String[] { "ReturnCode", "ReturnMsg", "Members", });
-    internal_static_NotifyNewMemberRequest_descriptor =
+    internal_static_notification_service_NotifyNewMemberRequest_descriptor =
       getDescriptor().getMessageTypes().get(14);
-    internal_static_NotifyNewMemberRequest_fieldAccessorTable = new
+    internal_static_notification_service_NotifyNewMemberRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_NotifyNewMemberRequest_descriptor,
+        internal_static_notification_service_NotifyNewMemberRequest_descriptor,
         new java.lang.String[] { "Member", });
-    internal_static_NotifyNewMemberResponse_descriptor =
+    internal_static_notification_service_NotifyNewMemberResponse_descriptor =
       getDescriptor().getMessageTypes().get(15);
-    internal_static_NotifyNewMemberResponse_fieldAccessorTable = new
+    internal_static_notification_service_NotifyNewMemberResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_NotifyNewMemberResponse_descriptor,
+        internal_static_notification_service_NotifyNewMemberResponse_descriptor,
         new java.lang.String[] { "ReturnCode", "ReturnMsg", });
     com.google.protobuf.ExtensionRegistry registry =
         com.google.protobuf.ExtensionRegistry.newInstance();

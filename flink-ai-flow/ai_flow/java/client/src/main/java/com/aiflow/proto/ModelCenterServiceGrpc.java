@@ -55,7 +55,7 @@ public final class ModelCenterServiceGrpc {
 
   private ModelCenterServiceGrpc() {}
 
-  public static final String SERVICE_NAME = "ModelCenterService";
+  public static final String SERVICE_NAME = "ai_flow.ModelCenterService";
 
   // Static method descriptors that strictly reflect the proto.
   private static volatile io.grpc.MethodDescriptor<com.aiflow.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest,

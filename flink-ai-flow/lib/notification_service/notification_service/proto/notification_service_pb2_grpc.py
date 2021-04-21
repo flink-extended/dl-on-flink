@@ -37,37 +37,37 @@ class NotificationServiceStub(object):
             channel: A grpc.Channel.
         """
         self.sendEvent = channel.unary_unary(
-                '/NotificationService/sendEvent',
+                '/notification_service.NotificationService/sendEvent',
                 request_serializer=notification__service__pb2.SendEventRequest.SerializeToString,
                 response_deserializer=notification__service__pb2.SendEventsResponse.FromString,
                 )
         self.listEvents = channel.unary_unary(
-                '/NotificationService/listEvents',
+                '/notification_service.NotificationService/listEvents',
                 request_serializer=notification__service__pb2.ListEventsRequest.SerializeToString,
                 response_deserializer=notification__service__pb2.ListEventsResponse.FromString,
                 )
         self.listAllEvents = channel.unary_unary(
-                '/NotificationService/listAllEvents',
+                '/notification_service.NotificationService/listAllEvents',
                 request_serializer=notification__service__pb2.ListAllEventsRequest.SerializeToString,
                 response_deserializer=notification__service__pb2.ListEventsResponse.FromString,
                 )
         self.notify = channel.unary_unary(
-                '/NotificationService/notify',
+                '/notification_service.NotificationService/notify',
                 request_serializer=notification__service__pb2.NotifyRequest.SerializeToString,
                 response_deserializer=notification__service__pb2.NotifyResponse.FromString,
                 )
         self.listMembers = channel.unary_unary(
-                '/NotificationService/listMembers',
+                '/notification_service.NotificationService/listMembers',
                 request_serializer=notification__service__pb2.ListMembersRequest.SerializeToString,
                 response_deserializer=notification__service__pb2.ListMembersResponse.FromString,
                 )
         self.notifyNewMember = channel.unary_unary(
-                '/NotificationService/notifyNewMember',
+                '/notification_service.NotificationService/notifyNewMember',
                 request_serializer=notification__service__pb2.NotifyNewMemberRequest.SerializeToString,
                 response_deserializer=notification__service__pb2.NotifyNewMemberResponse.FromString,
                 )
         self.getLatestVersionByKey = channel.unary_unary(
-                '/NotificationService/getLatestVersionByKey',
+                '/notification_service.NotificationService/getLatestVersionByKey',
                 request_serializer=notification__service__pb2.GetLatestVersionByKeyRequest.SerializeToString,
                 response_deserializer=notification__service__pb2.GetLatestVersionResponse.FromString,
                 )
@@ -169,7 +169,7 @@ def add_NotificationServiceServicer_to_server(servicer, server):
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'NotificationService', rpc_method_handlers)
+            'notification_service.NotificationService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
@@ -192,7 +192,7 @@ class NotificationService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/NotificationService/sendEvent',
+        return grpc.experimental.unary_unary(request, target, '/notification_service.NotificationService/sendEvent',
             notification__service__pb2.SendEventRequest.SerializeToString,
             notification__service__pb2.SendEventsResponse.FromString,
             options, channel_credentials,
@@ -209,7 +209,7 @@ class NotificationService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/NotificationService/listEvents',
+        return grpc.experimental.unary_unary(request, target, '/notification_service.NotificationService/listEvents',
             notification__service__pb2.ListEventsRequest.SerializeToString,
             notification__service__pb2.ListEventsResponse.FromString,
             options, channel_credentials,
@@ -226,7 +226,7 @@ class NotificationService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/NotificationService/listAllEvents',
+        return grpc.experimental.unary_unary(request, target, '/notification_service.NotificationService/listAllEvents',
             notification__service__pb2.ListAllEventsRequest.SerializeToString,
             notification__service__pb2.ListEventsResponse.FromString,
             options, channel_credentials,
@@ -243,7 +243,7 @@ class NotificationService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/NotificationService/notify',
+        return grpc.experimental.unary_unary(request, target, '/notification_service.NotificationService/notify',
             notification__service__pb2.NotifyRequest.SerializeToString,
             notification__service__pb2.NotifyResponse.FromString,
             options, channel_credentials,
@@ -260,7 +260,7 @@ class NotificationService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/NotificationService/listMembers',
+        return grpc.experimental.unary_unary(request, target, '/notification_service.NotificationService/listMembers',
             notification__service__pb2.ListMembersRequest.SerializeToString,
             notification__service__pb2.ListMembersResponse.FromString,
             options, channel_credentials,
@@ -277,7 +277,7 @@ class NotificationService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/NotificationService/notifyNewMember',
+        return grpc.experimental.unary_unary(request, target, '/notification_service.NotificationService/notifyNewMember',
             notification__service__pb2.NotifyNewMemberRequest.SerializeToString,
             notification__service__pb2.NotifyNewMemberResponse.FromString,
             options, channel_credentials,
@@ -294,7 +294,7 @@ class NotificationService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/NotificationService/getLatestVersionByKey',
+        return grpc.experimental.unary_unary(request, target, '/notification_service.NotificationService/getLatestVersionByKey',
             notification__service__pb2.GetLatestVersionByKeyRequest.SerializeToString,
             notification__service__pb2.GetLatestVersionResponse.FromString,
             options, channel_credentials,

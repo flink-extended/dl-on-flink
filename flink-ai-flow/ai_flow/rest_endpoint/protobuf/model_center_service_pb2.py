@@ -37,11 +37,11 @@ from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='model_center_service.proto',
-  package='',
+  package='ai_flow',
   syntax='proto3',
   serialized_options=b'\n\020com.aiflow.proto\210\001\001\220\001\001',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x1amodel_center_service.proto\x1a\rmessage.proto\x1a\x1cgoogle/api/annotations.proto\"O\n\x1c\x43reateRegisteredModelRequest\x12/\n\x10registered_model\x18\x01 \x01(\x0b\x32\x15.RegisteredModelParam\"t\n\x1cUpdateRegisteredModelRequest\x12#\n\nmodel_meta\x18\x01 \x01(\x0b\x32\x0f.ModelMetaParam\x12/\n\x10registered_model\x18\x02 \x01(\x0b\x32\x15.RegisteredModelParam\"C\n\x1c\x44\x65leteRegisteredModelRequest\x12#\n\nmodel_meta\x18\x01 \x01(\x0b\x32\x0f.ModelMetaParam\"\x1d\n\x1bListRegisteredModelsRequest\"F\n\x1fGetRegisteredModelDetailRequest\x12#\n\nmodel_meta\x18\x01 \x01(\x0b\x32\x0f.ModelMetaParam\"k\n\x19\x43reateModelVersionRequest\x12#\n\nmodel_meta\x18\x01 \x01(\x0b\x32\x0f.ModelMetaParam\x12)\n\rmodel_version\x18\x02 \x01(\x0b\x32\x12.ModelVersionParam\"k\n\x19UpdateModelVersionRequest\x12#\n\nmodel_meta\x18\x01 \x01(\x0b\x32\x0f.ModelMetaParam\x12)\n\rmodel_version\x18\x02 \x01(\x0b\x32\x12.ModelVersionParam\"@\n\x19\x44\x65leteModelVersionRequest\x12#\n\nmodel_meta\x18\x01 \x01(\x0b\x32\x0f.ModelMetaParam\"C\n\x1cGetModelVersionDetailRequest\x12#\n\nmodel_meta\x18\x01 \x01(\x0b\x32\x0f.ModelMetaParam2\xbb\x08\n\x12ModelCenterService\x12x\n\x15\x63reateRegisteredModel\x12\x1d.CreateRegisteredModelRequest\x1a\t.Response\"5\x82\xd3\xe4\x93\x02/\"*/aiflow/model-center/register-model/create:\x01*\x12x\n\x15updateRegisteredModel\x12\x1d.UpdateRegisteredModelRequest\x1a\t.Response\"5\x82\xd3\xe4\x93\x02/2*/aiflow/model-center/register-model/update:\x01*\x12x\n\x15\x64\x65leteRegisteredModel\x12\x1d.DeleteRegisteredModelRequest\x1a\t.Response\"5\x82\xd3\xe4\x93\x02/2*/aiflow/model-center/register-model/update:\x01*\x12q\n\x14listRegisteredModels\x12\x1c.ListRegisteredModelsRequest\x1a\t.Response\"0\x82\xd3\xe4\x93\x02*\x12(/aiflow/model-center/register-model/list\x12x\n\x18getRegisteredModelDetail\x12 .GetRegisteredModelDetailRequest\x1a\t.Response\"/\x82\xd3\xe4\x93\x02)\x12\'/aiflow/model-center/register-model/get\x12q\n\x12\x63reateModelVersion\x12\x1a.CreateModelVersionRequest\x1a\t.Response\"4\x82\xd3\xe4\x93\x02.\")/aiflow/model-center/model-version/create:\x01*\x12q\n\x12updateModelVersion\x12\x1a.UpdateModelVersionRequest\x1a\t.Response\"4\x82\xd3\xe4\x93\x02.2)/aiflow/model-center/model-version/update:\x01*\x12q\n\x12\x64\x65leteModelVersion\x12\x1a.DeleteModelVersionRequest\x1a\t.Response\"4\x82\xd3\xe4\x93\x02.2)/aiflow/model-center/model-version/delete:\x01*\x12q\n\x15getModelVersionDetail\x12\x1d.GetModelVersionDetailRequest\x1a\t.Response\".\x82\xd3\xe4\x93\x02(\x12&/aiflow/model-center/model-version/getB\x18\n\x10\x63om.aiflow.proto\x88\x01\x01\x90\x01\x01\x62\x06proto3'
+  serialized_pb=b'\n\x1amodel_center_service.proto\x12\x07\x61i_flow\x1a\rmessage.proto\x1a\x1cgoogle/api/annotations.proto\"W\n\x1c\x43reateRegisteredModelRequest\x12\x37\n\x10registered_model\x18\x01 \x01(\x0b\x32\x1d.ai_flow.RegisteredModelParam\"\x84\x01\n\x1cUpdateRegisteredModelRequest\x12+\n\nmodel_meta\x18\x01 \x01(\x0b\x32\x17.ai_flow.ModelMetaParam\x12\x37\n\x10registered_model\x18\x02 \x01(\x0b\x32\x1d.ai_flow.RegisteredModelParam\"K\n\x1c\x44\x65leteRegisteredModelRequest\x12+\n\nmodel_meta\x18\x01 \x01(\x0b\x32\x17.ai_flow.ModelMetaParam\"\x1d\n\x1bListRegisteredModelsRequest\"N\n\x1fGetRegisteredModelDetailRequest\x12+\n\nmodel_meta\x18\x01 \x01(\x0b\x32\x17.ai_flow.ModelMetaParam\"{\n\x19\x43reateModelVersionRequest\x12+\n\nmodel_meta\x18\x01 \x01(\x0b\x32\x17.ai_flow.ModelMetaParam\x12\x31\n\rmodel_version\x18\x02 \x01(\x0b\x32\x1a.ai_flow.ModelVersionParam\"{\n\x19UpdateModelVersionRequest\x12+\n\nmodel_meta\x18\x01 \x01(\x0b\x32\x17.ai_flow.ModelMetaParam\x12\x31\n\rmodel_version\x18\x02 \x01(\x0b\x32\x1a.ai_flow.ModelVersionParam\"H\n\x19\x44\x65leteModelVersionRequest\x12+\n\nmodel_meta\x18\x01 \x01(\x0b\x32\x17.ai_flow.ModelMetaParam\"K\n\x1cGetModelVersionDetailRequest\x12+\n\nmodel_meta\x18\x01 \x01(\x0b\x32\x17.ai_flow.ModelMetaParam2\xd4\t\n\x12ModelCenterService\x12\x88\x01\n\x15\x63reateRegisteredModel\x12%.ai_flow.CreateRegisteredModelRequest\x1a\x11.ai_flow.Response\"5\x82\xd3\xe4\x93\x02/\"*/aiflow/model-center/register-model/create:\x01*\x12\x88\x01\n\x15updateRegisteredModel\x12%.ai_flow.UpdateRegisteredModelRequest\x1a\x11.ai_flow.Response\"5\x82\xd3\xe4\x93\x02/2*/aiflow/model-center/register-model/update:\x01*\x12\x88\x01\n\x15\x64\x65leteRegisteredModel\x12%.ai_flow.DeleteRegisteredModelRequest\x1a\x11.ai_flow.Response\"5\x82\xd3\xe4\x93\x02/2*/aiflow/model-center/register-model/update:\x01*\x12\x81\x01\n\x14listRegisteredModels\x12$.ai_flow.ListRegisteredModelsRequest\x1a\x11.ai_flow.Response\"0\x82\xd3\xe4\x93\x02*\x12(/aiflow/model-center/register-model/list\x12\x88\x01\n\x18getRegisteredModelDetail\x12(.ai_flow.GetRegisteredModelDetailRequest\x1a\x11.ai_flow.Response\"/\x82\xd3\xe4\x93\x02)\x12\'/aiflow/model-center/register-model/get\x12\x81\x01\n\x12\x63reateModelVersion\x12\".ai_flow.CreateModelVersionRequest\x1a\x11.ai_flow.Response\"4\x82\xd3\xe4\x93\x02.\")/aiflow/model-center/model-version/create:\x01*\x12\x81\x01\n\x12updateModelVersion\x12\".ai_flow.UpdateModelVersionRequest\x1a\x11.ai_flow.Response\"4\x82\xd3\xe4\x93\x02.2)/aiflow/model-center/model-version/update:\x01*\x12\x81\x01\n\x12\x64\x65leteModelVersion\x12\".ai_flow.DeleteModelVersionRequest\x1a\x11.ai_flow.Response\"4\x82\xd3\xe4\x93\x02.2)/aiflow/model-center/model-version/delete:\x01*\x12\x81\x01\n\x15getModelVersionDetail\x12%.ai_flow.GetModelVersionDetailRequest\x1a\x11.ai_flow.Response\".\x82\xd3\xe4\x93\x02(\x12&/aiflow/model-center/model-version/getB\x18\n\x10\x63om.aiflow.proto\x88\x01\x01\x90\x01\x01\x62\x06proto3'
   ,
   dependencies=[message__pb2.DESCRIPTOR,google_dot_api_dot_annotations__pb2.DESCRIPTOR,])
 
@@ -50,14 +50,14 @@ DESCRIPTOR = _descriptor.FileDescriptor(
 
 _CREATEREGISTEREDMODELREQUEST = _descriptor.Descriptor(
   name='CreateRegisteredModelRequest',
-  full_name='CreateRegisteredModelRequest',
+  full_name='ai_flow.CreateRegisteredModelRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='registered_model', full_name='CreateRegisteredModelRequest.registered_model', index=0,
+      name='registered_model', full_name='ai_flow.CreateRegisteredModelRequest.registered_model', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -75,28 +75,28 @@ _CREATEREGISTEREDMODELREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=75,
-  serialized_end=154,
+  serialized_start=84,
+  serialized_end=171,
 )
 
 
 _UPDATEREGISTEREDMODELREQUEST = _descriptor.Descriptor(
   name='UpdateRegisteredModelRequest',
-  full_name='UpdateRegisteredModelRequest',
+  full_name='ai_flow.UpdateRegisteredModelRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='model_meta', full_name='UpdateRegisteredModelRequest.model_meta', index=0,
+      name='model_meta', full_name='ai_flow.UpdateRegisteredModelRequest.model_meta', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='registered_model', full_name='UpdateRegisteredModelRequest.registered_model', index=1,
+      name='registered_model', full_name='ai_flow.UpdateRegisteredModelRequest.registered_model', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -114,21 +114,21 @@ _UPDATEREGISTEREDMODELREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=156,
-  serialized_end=272,
+  serialized_start=174,
+  serialized_end=306,
 )
 
 
 _DELETEREGISTEREDMODELREQUEST = _descriptor.Descriptor(
   name='DeleteRegisteredModelRequest',
-  full_name='DeleteRegisteredModelRequest',
+  full_name='ai_flow.DeleteRegisteredModelRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='model_meta', full_name='DeleteRegisteredModelRequest.model_meta', index=0,
+      name='model_meta', full_name='ai_flow.DeleteRegisteredModelRequest.model_meta', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -146,14 +146,14 @@ _DELETEREGISTEREDMODELREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=274,
-  serialized_end=341,
+  serialized_start=308,
+  serialized_end=383,
 )
 
 
 _LISTREGISTEREDMODELSREQUEST = _descriptor.Descriptor(
   name='ListRegisteredModelsRequest',
-  full_name='ListRegisteredModelsRequest',
+  full_name='ai_flow.ListRegisteredModelsRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
@@ -171,21 +171,21 @@ _LISTREGISTEREDMODELSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=343,
-  serialized_end=372,
+  serialized_start=385,
+  serialized_end=414,
 )
 
 
 _GETREGISTEREDMODELDETAILREQUEST = _descriptor.Descriptor(
   name='GetRegisteredModelDetailRequest',
-  full_name='GetRegisteredModelDetailRequest',
+  full_name='ai_flow.GetRegisteredModelDetailRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='model_meta', full_name='GetRegisteredModelDetailRequest.model_meta', index=0,
+      name='model_meta', full_name='ai_flow.GetRegisteredModelDetailRequest.model_meta', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -203,28 +203,28 @@ _GETREGISTEREDMODELDETAILREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=374,
-  serialized_end=444,
+  serialized_start=416,
+  serialized_end=494,
 )
 
 
 _CREATEMODELVERSIONREQUEST = _descriptor.Descriptor(
   name='CreateModelVersionRequest',
-  full_name='CreateModelVersionRequest',
+  full_name='ai_flow.CreateModelVersionRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='model_meta', full_name='CreateModelVersionRequest.model_meta', index=0,
+      name='model_meta', full_name='ai_flow.CreateModelVersionRequest.model_meta', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model_version', full_name='CreateModelVersionRequest.model_version', index=1,
+      name='model_version', full_name='ai_flow.CreateModelVersionRequest.model_version', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -242,28 +242,28 @@ _CREATEMODELVERSIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=446,
-  serialized_end=553,
+  serialized_start=496,
+  serialized_end=619,
 )
 
 
 _UPDATEMODELVERSIONREQUEST = _descriptor.Descriptor(
   name='UpdateModelVersionRequest',
-  full_name='UpdateModelVersionRequest',
+  full_name='ai_flow.UpdateModelVersionRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='model_meta', full_name='UpdateModelVersionRequest.model_meta', index=0,
+      name='model_meta', full_name='ai_flow.UpdateModelVersionRequest.model_meta', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model_version', full_name='UpdateModelVersionRequest.model_version', index=1,
+      name='model_version', full_name='ai_flow.UpdateModelVersionRequest.model_version', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -281,21 +281,21 @@ _UPDATEMODELVERSIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=555,
-  serialized_end=662,
+  serialized_start=621,
+  serialized_end=744,
 )
 
 
 _DELETEMODELVERSIONREQUEST = _descriptor.Descriptor(
   name='DeleteModelVersionRequest',
-  full_name='DeleteModelVersionRequest',
+  full_name='ai_flow.DeleteModelVersionRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='model_meta', full_name='DeleteModelVersionRequest.model_meta', index=0,
+      name='model_meta', full_name='ai_flow.DeleteModelVersionRequest.model_meta', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -313,21 +313,21 @@ _DELETEMODELVERSIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=664,
-  serialized_end=728,
+  serialized_start=746,
+  serialized_end=818,
 )
 
 
 _GETMODELVERSIONDETAILREQUEST = _descriptor.Descriptor(
   name='GetModelVersionDetailRequest',
-  full_name='GetModelVersionDetailRequest',
+  full_name='ai_flow.GetModelVersionDetailRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='model_meta', full_name='GetModelVersionDetailRequest.model_meta', index=0,
+      name='model_meta', full_name='ai_flow.GetModelVersionDetailRequest.model_meta', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -345,8 +345,8 @@ _GETMODELVERSIONDETAILREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=730,
-  serialized_end=797,
+  serialized_start=820,
+  serialized_end=895,
 )
 
 _CREATEREGISTEREDMODELREQUEST.fields_by_name['registered_model'].message_type = message__pb2._REGISTEREDMODELPARAM
@@ -374,63 +374,63 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 CreateRegisteredModelRequest = _reflection.GeneratedProtocolMessageType('CreateRegisteredModelRequest', (_message.Message,), {
   'DESCRIPTOR' : _CREATEREGISTEREDMODELREQUEST,
   '__module__' : 'model_center_service_pb2'
-  # @@protoc_insertion_point(class_scope:CreateRegisteredModelRequest)
+  # @@protoc_insertion_point(class_scope:ai_flow.CreateRegisteredModelRequest)
   })
 _sym_db.RegisterMessage(CreateRegisteredModelRequest)
 
 UpdateRegisteredModelRequest = _reflection.GeneratedProtocolMessageType('UpdateRegisteredModelRequest', (_message.Message,), {
   'DESCRIPTOR' : _UPDATEREGISTEREDMODELREQUEST,
   '__module__' : 'model_center_service_pb2'
-  # @@protoc_insertion_point(class_scope:UpdateRegisteredModelRequest)
+  # @@protoc_insertion_point(class_scope:ai_flow.UpdateRegisteredModelRequest)
   })
 _sym_db.RegisterMessage(UpdateRegisteredModelRequest)
 
 DeleteRegisteredModelRequest = _reflection.GeneratedProtocolMessageType('DeleteRegisteredModelRequest', (_message.Message,), {
   'DESCRIPTOR' : _DELETEREGISTEREDMODELREQUEST,
   '__module__' : 'model_center_service_pb2'
-  # @@protoc_insertion_point(class_scope:DeleteRegisteredModelRequest)
+  # @@protoc_insertion_point(class_scope:ai_flow.DeleteRegisteredModelRequest)
   })
 _sym_db.RegisterMessage(DeleteRegisteredModelRequest)
 
 ListRegisteredModelsRequest = _reflection.GeneratedProtocolMessageType('ListRegisteredModelsRequest', (_message.Message,), {
   'DESCRIPTOR' : _LISTREGISTEREDMODELSREQUEST,
   '__module__' : 'model_center_service_pb2'
-  # @@protoc_insertion_point(class_scope:ListRegisteredModelsRequest)
+  # @@protoc_insertion_point(class_scope:ai_flow.ListRegisteredModelsRequest)
   })
 _sym_db.RegisterMessage(ListRegisteredModelsRequest)
 
 GetRegisteredModelDetailRequest = _reflection.GeneratedProtocolMessageType('GetRegisteredModelDetailRequest', (_message.Message,), {
   'DESCRIPTOR' : _GETREGISTEREDMODELDETAILREQUEST,
   '__module__' : 'model_center_service_pb2'
-  # @@protoc_insertion_point(class_scope:GetRegisteredModelDetailRequest)
+  # @@protoc_insertion_point(class_scope:ai_flow.GetRegisteredModelDetailRequest)
   })
 _sym_db.RegisterMessage(GetRegisteredModelDetailRequest)
 
 CreateModelVersionRequest = _reflection.GeneratedProtocolMessageType('CreateModelVersionRequest', (_message.Message,), {
   'DESCRIPTOR' : _CREATEMODELVERSIONREQUEST,
   '__module__' : 'model_center_service_pb2'
-  # @@protoc_insertion_point(class_scope:CreateModelVersionRequest)
+  # @@protoc_insertion_point(class_scope:ai_flow.CreateModelVersionRequest)
   })
 _sym_db.RegisterMessage(CreateModelVersionRequest)
 
 UpdateModelVersionRequest = _reflection.GeneratedProtocolMessageType('UpdateModelVersionRequest', (_message.Message,), {
   'DESCRIPTOR' : _UPDATEMODELVERSIONREQUEST,
   '__module__' : 'model_center_service_pb2'
-  # @@protoc_insertion_point(class_scope:UpdateModelVersionRequest)
+  # @@protoc_insertion_point(class_scope:ai_flow.UpdateModelVersionRequest)
   })
 _sym_db.RegisterMessage(UpdateModelVersionRequest)
 
 DeleteModelVersionRequest = _reflection.GeneratedProtocolMessageType('DeleteModelVersionRequest', (_message.Message,), {
   'DESCRIPTOR' : _DELETEMODELVERSIONREQUEST,
   '__module__' : 'model_center_service_pb2'
-  # @@protoc_insertion_point(class_scope:DeleteModelVersionRequest)
+  # @@protoc_insertion_point(class_scope:ai_flow.DeleteModelVersionRequest)
   })
 _sym_db.RegisterMessage(DeleteModelVersionRequest)
 
 GetModelVersionDetailRequest = _reflection.GeneratedProtocolMessageType('GetModelVersionDetailRequest', (_message.Message,), {
   'DESCRIPTOR' : _GETMODELVERSIONDETAILREQUEST,
   '__module__' : 'model_center_service_pb2'
-  # @@protoc_insertion_point(class_scope:GetModelVersionDetailRequest)
+  # @@protoc_insertion_point(class_scope:ai_flow.GetModelVersionDetailRequest)
   })
 _sym_db.RegisterMessage(GetModelVersionDetailRequest)
 
@@ -439,17 +439,17 @@ DESCRIPTOR._options = None
 
 _MODELCENTERSERVICE = _descriptor.ServiceDescriptor(
   name='ModelCenterService',
-  full_name='ModelCenterService',
+  full_name='ai_flow.ModelCenterService',
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=800,
-  serialized_end=1883,
+  serialized_start=898,
+  serialized_end=2134,
   methods=[
   _descriptor.MethodDescriptor(
     name='createRegisteredModel',
-    full_name='ModelCenterService.createRegisteredModel',
+    full_name='ai_flow.ModelCenterService.createRegisteredModel',
     index=0,
     containing_service=None,
     input_type=_CREATEREGISTEREDMODELREQUEST,
@@ -459,7 +459,7 @@ _MODELCENTERSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='updateRegisteredModel',
-    full_name='ModelCenterService.updateRegisteredModel',
+    full_name='ai_flow.ModelCenterService.updateRegisteredModel',
     index=1,
     containing_service=None,
     input_type=_UPDATEREGISTEREDMODELREQUEST,
@@ -469,7 +469,7 @@ _MODELCENTERSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='deleteRegisteredModel',
-    full_name='ModelCenterService.deleteRegisteredModel',
+    full_name='ai_flow.ModelCenterService.deleteRegisteredModel',
     index=2,
     containing_service=None,
     input_type=_DELETEREGISTEREDMODELREQUEST,
@@ -479,7 +479,7 @@ _MODELCENTERSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='listRegisteredModels',
-    full_name='ModelCenterService.listRegisteredModels',
+    full_name='ai_flow.ModelCenterService.listRegisteredModels',
     index=3,
     containing_service=None,
     input_type=_LISTREGISTEREDMODELSREQUEST,
@@ -489,7 +489,7 @@ _MODELCENTERSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='getRegisteredModelDetail',
-    full_name='ModelCenterService.getRegisteredModelDetail',
+    full_name='ai_flow.ModelCenterService.getRegisteredModelDetail',
     index=4,
     containing_service=None,
     input_type=_GETREGISTEREDMODELDETAILREQUEST,
@@ -499,7 +499,7 @@ _MODELCENTERSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='createModelVersion',
-    full_name='ModelCenterService.createModelVersion',
+    full_name='ai_flow.ModelCenterService.createModelVersion',
     index=5,
     containing_service=None,
     input_type=_CREATEMODELVERSIONREQUEST,
@@ -509,7 +509,7 @@ _MODELCENTERSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='updateModelVersion',
-    full_name='ModelCenterService.updateModelVersion',
+    full_name='ai_flow.ModelCenterService.updateModelVersion',
     index=6,
     containing_service=None,
     input_type=_UPDATEMODELVERSIONREQUEST,
@@ -519,7 +519,7 @@ _MODELCENTERSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='deleteModelVersion',
-    full_name='ModelCenterService.deleteModelVersion',
+    full_name='ai_flow.ModelCenterService.deleteModelVersion',
     index=7,
     containing_service=None,
     input_type=_DELETEMODELVERSIONREQUEST,
@@ -529,7 +529,7 @@ _MODELCENTERSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='getModelVersionDetail',
-    full_name='ModelCenterService.getModelVersionDetail',
+    full_name='ai_flow.ModelCenterService.getModelVersionDetail',
     index=8,
     containing_service=None,
     input_type=_GETMODELVERSIONDETAILREQUEST,
