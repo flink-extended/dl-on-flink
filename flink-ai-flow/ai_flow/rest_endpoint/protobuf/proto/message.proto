@@ -23,6 +23,8 @@ option java_generic_services = true;
 option java_package = "com.aiflow.proto";
 option py_generic_services = true;
 
+package service;
+
 message SchemaProto {
     repeated string name_list = 1;
     repeated DataTypeProto type_list = 2;

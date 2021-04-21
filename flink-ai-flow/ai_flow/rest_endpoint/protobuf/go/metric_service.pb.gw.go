@@ -20,7 +20,7 @@
 // source: metric_service.proto
 
 /*
-Package metric_service is a reverse proxy.
+Package service is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */

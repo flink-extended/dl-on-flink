@@ -24,6 +24,8 @@ option py_generic_services = true;
 import "message.proto";
 import "google/api/annotations.proto";
 
+package service;
+
 service ModelCenterService {
     // AIFlowService provides model registry service rest endpoint of ModelCenterService for Model Center component.
     // Functions of ModelCenterService include:

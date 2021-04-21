@@ -33,27 +33,27 @@ class DeployServiceStub(object):
             channel: A grpc.Channel.
         """
         self.startScheduleWorkflow = channel.unary_unary(
-                '/DeployService/startScheduleWorkflow',
+                '/service.DeployService/startScheduleWorkflow',
                 request_serializer=deploy__service__pb2.WorkflowRequest.SerializeToString,
                 response_deserializer=deploy__service__pb2.ScheduleResponse.FromString,
                 )
         self.stopScheduleWorkflow = channel.unary_unary(
-                '/DeployService/stopScheduleWorkflow',
+                '/service.DeployService/stopScheduleWorkflow',
                 request_serializer=deploy__service__pb2.WorkflowRequest.SerializeToString,
                 response_deserializer=deploy__service__pb2.ScheduleResponse.FromString,
                 )
         self.getWorkflowExecutionResult = channel.unary_unary(
-                '/DeployService/getWorkflowExecutionResult',
+                '/service.DeployService/getWorkflowExecutionResult',
                 request_serializer=deploy__service__pb2.WorkflowRequest.SerializeToString,
                 response_deserializer=deploy__service__pb2.ScheduleResponse.FromString,
                 )
         self.isWorkflowExecutionAlive = channel.unary_unary(
-                '/DeployService/isWorkflowExecutionAlive',
+                '/service.DeployService/isWorkflowExecutionAlive',
                 request_serializer=deploy__service__pb2.WorkflowRequest.SerializeToString,
                 response_deserializer=deploy__service__pb2.ScheduleResponse.FromString,
                 )
         self.getMasterConfig = channel.unary_unary(
-                '/DeployService/getMasterConfig',
+                '/service.DeployService/getMasterConfig',
                 request_serializer=deploy__service__pb2.MasterConfigRequest.SerializeToString,
                 response_deserializer=deploy__service__pb2.MasterConfigResponse.FromString,
                 )
@@ -122,7 +122,7 @@ def add_DeployServiceServicer_to_server(servicer, server):
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'DeployService', rpc_method_handlers)
+            'service.DeployService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
@@ -141,7 +141,7 @@ class DeployService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/DeployService/startScheduleWorkflow',
+        return grpc.experimental.unary_unary(request, target, '/service.DeployService/startScheduleWorkflow',
             deploy__service__pb2.WorkflowRequest.SerializeToString,
             deploy__service__pb2.ScheduleResponse.FromString,
             options, channel_credentials,
@@ -158,7 +158,7 @@ class DeployService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/DeployService/stopScheduleWorkflow',
+        return grpc.experimental.unary_unary(request, target, '/service.DeployService/stopScheduleWorkflow',
             deploy__service__pb2.WorkflowRequest.SerializeToString,
             deploy__service__pb2.ScheduleResponse.FromString,
             options, channel_credentials,
@@ -175,7 +175,7 @@ class DeployService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/DeployService/getWorkflowExecutionResult',
+        return grpc.experimental.unary_unary(request, target, '/service.DeployService/getWorkflowExecutionResult',
             deploy__service__pb2.WorkflowRequest.SerializeToString,
             deploy__service__pb2.ScheduleResponse.FromString,
             options, channel_credentials,
@@ -192,7 +192,7 @@ class DeployService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/DeployService/isWorkflowExecutionAlive',
+        return grpc.experimental.unary_unary(request, target, '/service.DeployService/isWorkflowExecutionAlive',
             deploy__service__pb2.WorkflowRequest.SerializeToString,
             deploy__service__pb2.ScheduleResponse.FromString,
             options, channel_credentials,
@@ -209,7 +209,7 @@ class DeployService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/DeployService/getMasterConfig',
+        return grpc.experimental.unary_unary(request, target, '/service.DeployService/getMasterConfig',
             deploy__service__pb2.MasterConfigRequest.SerializeToString,
             deploy__service__pb2.MasterConfigResponse.FromString,
             options, channel_credentials,

@@ -24,6 +24,7 @@ import "message.proto";
 
 import "google/api/annotations.proto";
 
+package service;
 
 message UuidRequest {
     int64 uuid = 1;

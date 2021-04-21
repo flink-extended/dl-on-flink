@@ -26,6 +26,8 @@ option py_generic_services = true;
 import "message.proto";
 import "google/api/annotations.proto";
 
+package service;
+
 service MetadataService {
     //example api
     rpc getExampleById (IdRequest) returns (Response) {

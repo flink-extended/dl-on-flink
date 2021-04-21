@@ -33,30 +33,30 @@ public final class ModelCenterServiceOuterClass {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   public interface CreateRegisteredModelRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:CreateRegisteredModelRequest)
+      // @@protoc_insertion_point(interface_extends:service.CreateRegisteredModelRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.RegisteredModelParam registered_model = 1;</code>
+     * <code>.service.RegisteredModelParam registered_model = 1;</code>
      * @return Whether the registeredModel field is set.
      */
     boolean hasRegisteredModel();
     /**
-     * <code>.RegisteredModelParam registered_model = 1;</code>
+     * <code>.service.RegisteredModelParam registered_model = 1;</code>
      * @return The registeredModel.
      */
     com.aiflow.proto.Message.RegisteredModelParam getRegisteredModel();
     /**
-     * <code>.RegisteredModelParam registered_model = 1;</code>
+     * <code>.service.RegisteredModelParam registered_model = 1;</code>
      */
     com.aiflow.proto.Message.RegisteredModelParamOrBuilder getRegisteredModelOrBuilder();
   }
   /**
-   * Protobuf type {@code CreateRegisteredModelRequest}
+   * Protobuf type {@code service.CreateRegisteredModelRequest}
    */
   public static final class CreateRegisteredModelRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:CreateRegisteredModelRequest)
+      // @@protoc_insertion_point(message_implements:service.CreateRegisteredModelRequest)
       CreateRegisteredModelRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use CreateRegisteredModelRequest.newBuilder() to construct.
@@ -130,13 +130,13 @@ public final class ModelCenterServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_CreateRegisteredModelRequest_descriptor;
+      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_CreateRegisteredModelRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_CreateRegisteredModelRequest_fieldAccessorTable
+      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_CreateRegisteredModelRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest.class, com.aiflow.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest.Builder.class);
     }
@@ -144,7 +144,7 @@ public final class ModelCenterServiceOuterClass {
     public static final int REGISTERED_MODEL_FIELD_NUMBER = 1;
     private com.aiflow.proto.Message.RegisteredModelParam registeredModel_;
     /**
-     * <code>.RegisteredModelParam registered_model = 1;</code>
+     * <code>.service.RegisteredModelParam registered_model = 1;</code>
      * @return Whether the registeredModel field is set.
      */
     @java.lang.Override
@@ -152,7 +152,7 @@ public final class ModelCenterServiceOuterClass {
       return registeredModel_ != null;
     }
     /**
-     * <code>.RegisteredModelParam registered_model = 1;</code>
+     * <code>.service.RegisteredModelParam registered_model = 1;</code>
      * @return The registeredModel.
      */
     @java.lang.Override
@@ -160,7 +160,7 @@ public final class ModelCenterServiceOuterClass {
       return registeredModel_ == null ? com.aiflow.proto.Message.RegisteredModelParam.getDefaultInstance() : registeredModel_;
     }
     /**
-     * <code>.RegisteredModelParam registered_model = 1;</code>
+     * <code>.service.RegisteredModelParam registered_model = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.RegisteredModelParamOrBuilder getRegisteredModelOrBuilder() {
@@ -328,21 +328,21 @@ public final class ModelCenterServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code CreateRegisteredModelRequest}
+     * Protobuf type {@code service.CreateRegisteredModelRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:CreateRegisteredModelRequest)
+        // @@protoc_insertion_point(builder_implements:service.CreateRegisteredModelRequest)
         com.aiflow.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_CreateRegisteredModelRequest_descriptor;
+        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_CreateRegisteredModelRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_CreateRegisteredModelRequest_fieldAccessorTable
+        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_CreateRegisteredModelRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest.class, com.aiflow.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest.Builder.class);
       }
@@ -377,7 +377,7 @@ public final class ModelCenterServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_CreateRegisteredModelRequest_descriptor;
+        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_CreateRegisteredModelRequest_descriptor;
       }
 
       @java.lang.Override
@@ -486,14 +486,14 @@ public final class ModelCenterServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.RegisteredModelParam, com.aiflow.proto.Message.RegisteredModelParam.Builder, com.aiflow.proto.Message.RegisteredModelParamOrBuilder> registeredModelBuilder_;
       /**
-       * <code>.RegisteredModelParam registered_model = 1;</code>
+       * <code>.service.RegisteredModelParam registered_model = 1;</code>
        * @return Whether the registeredModel field is set.
        */
       public boolean hasRegisteredModel() {
         return registeredModelBuilder_ != null || registeredModel_ != null;
       }
       /**
-       * <code>.RegisteredModelParam registered_model = 1;</code>
+       * <code>.service.RegisteredModelParam registered_model = 1;</code>
        * @return The registeredModel.
        */
       public com.aiflow.proto.Message.RegisteredModelParam getRegisteredModel() {
@@ -504,7 +504,7 @@ public final class ModelCenterServiceOuterClass {
         }
       }
       /**
-       * <code>.RegisteredModelParam registered_model = 1;</code>
+       * <code>.service.RegisteredModelParam registered_model = 1;</code>
        */
       public Builder setRegisteredModel(com.aiflow.proto.Message.RegisteredModelParam value) {
         if (registeredModelBuilder_ == null) {
@@ -520,7 +520,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.RegisteredModelParam registered_model = 1;</code>
+       * <code>.service.RegisteredModelParam registered_model = 1;</code>
        */
       public Builder setRegisteredModel(
           com.aiflow.proto.Message.RegisteredModelParam.Builder builderForValue) {
@@ -534,7 +534,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.RegisteredModelParam registered_model = 1;</code>
+       * <code>.service.RegisteredModelParam registered_model = 1;</code>
        */
       public Builder mergeRegisteredModel(com.aiflow.proto.Message.RegisteredModelParam value) {
         if (registeredModelBuilder_ == null) {
@@ -552,7 +552,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.RegisteredModelParam registered_model = 1;</code>
+       * <code>.service.RegisteredModelParam registered_model = 1;</code>
        */
       public Builder clearRegisteredModel() {
         if (registeredModelBuilder_ == null) {
@@ -566,7 +566,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.RegisteredModelParam registered_model = 1;</code>
+       * <code>.service.RegisteredModelParam registered_model = 1;</code>
        */
       public com.aiflow.proto.Message.RegisteredModelParam.Builder getRegisteredModelBuilder() {
         
@@ -574,7 +574,7 @@ public final class ModelCenterServiceOuterClass {
         return getRegisteredModelFieldBuilder().getBuilder();
       }
       /**
-       * <code>.RegisteredModelParam registered_model = 1;</code>
+       * <code>.service.RegisteredModelParam registered_model = 1;</code>
        */
       public com.aiflow.proto.Message.RegisteredModelParamOrBuilder getRegisteredModelOrBuilder() {
         if (registeredModelBuilder_ != null) {
@@ -585,7 +585,7 @@ public final class ModelCenterServiceOuterClass {
         }
       }
       /**
-       * <code>.RegisteredModelParam registered_model = 1;</code>
+       * <code>.service.RegisteredModelParam registered_model = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.RegisteredModelParam, com.aiflow.proto.Message.RegisteredModelParam.Builder, com.aiflow.proto.Message.RegisteredModelParamOrBuilder> 
@@ -613,10 +613,10 @@ public final class ModelCenterServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:CreateRegisteredModelRequest)
+      // @@protoc_insertion_point(builder_scope:service.CreateRegisteredModelRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:CreateRegisteredModelRequest)
+    // @@protoc_insertion_point(class_scope:service.CreateRegisteredModelRequest)
     private static final com.aiflow.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest();
@@ -654,45 +654,45 @@ public final class ModelCenterServiceOuterClass {
   }
 
   public interface UpdateRegisteredModelRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:UpdateRegisteredModelRequest)
+      // @@protoc_insertion_point(interface_extends:service.UpdateRegisteredModelRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return Whether the modelMeta field is set.
      */
     boolean hasModelMeta();
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return The modelMeta.
      */
     com.aiflow.proto.Message.ModelMetaParam getModelMeta();
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      */
     com.aiflow.proto.Message.ModelMetaParamOrBuilder getModelMetaOrBuilder();
 
     /**
-     * <code>.RegisteredModelParam registered_model = 2;</code>
+     * <code>.service.RegisteredModelParam registered_model = 2;</code>
      * @return Whether the registeredModel field is set.
      */
     boolean hasRegisteredModel();
     /**
-     * <code>.RegisteredModelParam registered_model = 2;</code>
+     * <code>.service.RegisteredModelParam registered_model = 2;</code>
      * @return The registeredModel.
      */
     com.aiflow.proto.Message.RegisteredModelParam getRegisteredModel();
     /**
-     * <code>.RegisteredModelParam registered_model = 2;</code>
+     * <code>.service.RegisteredModelParam registered_model = 2;</code>
      */
     com.aiflow.proto.Message.RegisteredModelParamOrBuilder getRegisteredModelOrBuilder();
   }
   /**
-   * Protobuf type {@code UpdateRegisteredModelRequest}
+   * Protobuf type {@code service.UpdateRegisteredModelRequest}
    */
   public static final class UpdateRegisteredModelRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:UpdateRegisteredModelRequest)
+      // @@protoc_insertion_point(message_implements:service.UpdateRegisteredModelRequest)
       UpdateRegisteredModelRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use UpdateRegisteredModelRequest.newBuilder() to construct.
@@ -779,13 +779,13 @@ public final class ModelCenterServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_UpdateRegisteredModelRequest_descriptor;
+      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_UpdateRegisteredModelRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_UpdateRegisteredModelRequest_fieldAccessorTable
+      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_UpdateRegisteredModelRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest.class, com.aiflow.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest.Builder.class);
     }
@@ -793,7 +793,7 @@ public final class ModelCenterServiceOuterClass {
     public static final int MODEL_META_FIELD_NUMBER = 1;
     private com.aiflow.proto.Message.ModelMetaParam modelMeta_;
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return Whether the modelMeta field is set.
      */
     @java.lang.Override
@@ -801,7 +801,7 @@ public final class ModelCenterServiceOuterClass {
       return modelMeta_ != null;
     }
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return The modelMeta.
      */
     @java.lang.Override
@@ -809,7 +809,7 @@ public final class ModelCenterServiceOuterClass {
       return modelMeta_ == null ? com.aiflow.proto.Message.ModelMetaParam.getDefaultInstance() : modelMeta_;
     }
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ModelMetaParamOrBuilder getModelMetaOrBuilder() {
@@ -819,7 +819,7 @@ public final class ModelCenterServiceOuterClass {
     public static final int REGISTERED_MODEL_FIELD_NUMBER = 2;
     private com.aiflow.proto.Message.RegisteredModelParam registeredModel_;
     /**
-     * <code>.RegisteredModelParam registered_model = 2;</code>
+     * <code>.service.RegisteredModelParam registered_model = 2;</code>
      * @return Whether the registeredModel field is set.
      */
     @java.lang.Override
@@ -827,7 +827,7 @@ public final class ModelCenterServiceOuterClass {
       return registeredModel_ != null;
     }
     /**
-     * <code>.RegisteredModelParam registered_model = 2;</code>
+     * <code>.service.RegisteredModelParam registered_model = 2;</code>
      * @return The registeredModel.
      */
     @java.lang.Override
@@ -835,7 +835,7 @@ public final class ModelCenterServiceOuterClass {
       return registeredModel_ == null ? com.aiflow.proto.Message.RegisteredModelParam.getDefaultInstance() : registeredModel_;
     }
     /**
-     * <code>.RegisteredModelParam registered_model = 2;</code>
+     * <code>.service.RegisteredModelParam registered_model = 2;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.RegisteredModelParamOrBuilder getRegisteredModelOrBuilder() {
@@ -1019,21 +1019,21 @@ public final class ModelCenterServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code UpdateRegisteredModelRequest}
+     * Protobuf type {@code service.UpdateRegisteredModelRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:UpdateRegisteredModelRequest)
+        // @@protoc_insertion_point(builder_implements:service.UpdateRegisteredModelRequest)
         com.aiflow.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_UpdateRegisteredModelRequest_descriptor;
+        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_UpdateRegisteredModelRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_UpdateRegisteredModelRequest_fieldAccessorTable
+        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_UpdateRegisteredModelRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest.class, com.aiflow.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest.Builder.class);
       }
@@ -1074,7 +1074,7 @@ public final class ModelCenterServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_UpdateRegisteredModelRequest_descriptor;
+        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_UpdateRegisteredModelRequest_descriptor;
       }
 
       @java.lang.Override
@@ -1191,14 +1191,14 @@ public final class ModelCenterServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ModelMetaParam, com.aiflow.proto.Message.ModelMetaParam.Builder, com.aiflow.proto.Message.ModelMetaParamOrBuilder> modelMetaBuilder_;
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        * @return Whether the modelMeta field is set.
        */
       public boolean hasModelMeta() {
         return modelMetaBuilder_ != null || modelMeta_ != null;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        * @return The modelMeta.
        */
       public com.aiflow.proto.Message.ModelMetaParam getModelMeta() {
@@ -1209,7 +1209,7 @@ public final class ModelCenterServiceOuterClass {
         }
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder setModelMeta(com.aiflow.proto.Message.ModelMetaParam value) {
         if (modelMetaBuilder_ == null) {
@@ -1225,7 +1225,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder setModelMeta(
           com.aiflow.proto.Message.ModelMetaParam.Builder builderForValue) {
@@ -1239,7 +1239,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder mergeModelMeta(com.aiflow.proto.Message.ModelMetaParam value) {
         if (modelMetaBuilder_ == null) {
@@ -1257,7 +1257,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder clearModelMeta() {
         if (modelMetaBuilder_ == null) {
@@ -1271,7 +1271,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public com.aiflow.proto.Message.ModelMetaParam.Builder getModelMetaBuilder() {
         
@@ -1279,7 +1279,7 @@ public final class ModelCenterServiceOuterClass {
         return getModelMetaFieldBuilder().getBuilder();
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public com.aiflow.proto.Message.ModelMetaParamOrBuilder getModelMetaOrBuilder() {
         if (modelMetaBuilder_ != null) {
@@ -1290,7 +1290,7 @@ public final class ModelCenterServiceOuterClass {
         }
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ModelMetaParam, com.aiflow.proto.Message.ModelMetaParam.Builder, com.aiflow.proto.Message.ModelMetaParamOrBuilder> 
@@ -1310,14 +1310,14 @@ public final class ModelCenterServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.RegisteredModelParam, com.aiflow.proto.Message.RegisteredModelParam.Builder, com.aiflow.proto.Message.RegisteredModelParamOrBuilder> registeredModelBuilder_;
       /**
-       * <code>.RegisteredModelParam registered_model = 2;</code>
+       * <code>.service.RegisteredModelParam registered_model = 2;</code>
        * @return Whether the registeredModel field is set.
        */
       public boolean hasRegisteredModel() {
         return registeredModelBuilder_ != null || registeredModel_ != null;
       }
       /**
-       * <code>.RegisteredModelParam registered_model = 2;</code>
+       * <code>.service.RegisteredModelParam registered_model = 2;</code>
        * @return The registeredModel.
        */
       public com.aiflow.proto.Message.RegisteredModelParam getRegisteredModel() {
@@ -1328,7 +1328,7 @@ public final class ModelCenterServiceOuterClass {
         }
       }
       /**
-       * <code>.RegisteredModelParam registered_model = 2;</code>
+       * <code>.service.RegisteredModelParam registered_model = 2;</code>
        */
       public Builder setRegisteredModel(com.aiflow.proto.Message.RegisteredModelParam value) {
         if (registeredModelBuilder_ == null) {
@@ -1344,7 +1344,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.RegisteredModelParam registered_model = 2;</code>
+       * <code>.service.RegisteredModelParam registered_model = 2;</code>
        */
       public Builder setRegisteredModel(
           com.aiflow.proto.Message.RegisteredModelParam.Builder builderForValue) {
@@ -1358,7 +1358,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.RegisteredModelParam registered_model = 2;</code>
+       * <code>.service.RegisteredModelParam registered_model = 2;</code>
        */
       public Builder mergeRegisteredModel(com.aiflow.proto.Message.RegisteredModelParam value) {
         if (registeredModelBuilder_ == null) {
@@ -1376,7 +1376,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.RegisteredModelParam registered_model = 2;</code>
+       * <code>.service.RegisteredModelParam registered_model = 2;</code>
        */
       public Builder clearRegisteredModel() {
         if (registeredModelBuilder_ == null) {
@@ -1390,7 +1390,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.RegisteredModelParam registered_model = 2;</code>
+       * <code>.service.RegisteredModelParam registered_model = 2;</code>
        */
       public com.aiflow.proto.Message.RegisteredModelParam.Builder getRegisteredModelBuilder() {
         
@@ -1398,7 +1398,7 @@ public final class ModelCenterServiceOuterClass {
         return getRegisteredModelFieldBuilder().getBuilder();
       }
       /**
-       * <code>.RegisteredModelParam registered_model = 2;</code>
+       * <code>.service.RegisteredModelParam registered_model = 2;</code>
        */
       public com.aiflow.proto.Message.RegisteredModelParamOrBuilder getRegisteredModelOrBuilder() {
         if (registeredModelBuilder_ != null) {
@@ -1409,7 +1409,7 @@ public final class ModelCenterServiceOuterClass {
         }
       }
       /**
-       * <code>.RegisteredModelParam registered_model = 2;</code>
+       * <code>.service.RegisteredModelParam registered_model = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.RegisteredModelParam, com.aiflow.proto.Message.RegisteredModelParam.Builder, com.aiflow.proto.Message.RegisteredModelParamOrBuilder> 
@@ -1437,10 +1437,10 @@ public final class ModelCenterServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:UpdateRegisteredModelRequest)
+      // @@protoc_insertion_point(builder_scope:service.UpdateRegisteredModelRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:UpdateRegisteredModelRequest)
+    // @@protoc_insertion_point(class_scope:service.UpdateRegisteredModelRequest)
     private static final com.aiflow.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest();
@@ -1478,30 +1478,30 @@ public final class ModelCenterServiceOuterClass {
   }
 
   public interface DeleteRegisteredModelRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:DeleteRegisteredModelRequest)
+      // @@protoc_insertion_point(interface_extends:service.DeleteRegisteredModelRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return Whether the modelMeta field is set.
      */
     boolean hasModelMeta();
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return The modelMeta.
      */
     com.aiflow.proto.Message.ModelMetaParam getModelMeta();
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      */
     com.aiflow.proto.Message.ModelMetaParamOrBuilder getModelMetaOrBuilder();
   }
   /**
-   * Protobuf type {@code DeleteRegisteredModelRequest}
+   * Protobuf type {@code service.DeleteRegisteredModelRequest}
    */
   public static final class DeleteRegisteredModelRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:DeleteRegisteredModelRequest)
+      // @@protoc_insertion_point(message_implements:service.DeleteRegisteredModelRequest)
       DeleteRegisteredModelRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use DeleteRegisteredModelRequest.newBuilder() to construct.
@@ -1575,13 +1575,13 @@ public final class ModelCenterServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_DeleteRegisteredModelRequest_descriptor;
+      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_DeleteRegisteredModelRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_DeleteRegisteredModelRequest_fieldAccessorTable
+      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_DeleteRegisteredModelRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest.class, com.aiflow.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest.Builder.class);
     }
@@ -1589,7 +1589,7 @@ public final class ModelCenterServiceOuterClass {
     public static final int MODEL_META_FIELD_NUMBER = 1;
     private com.aiflow.proto.Message.ModelMetaParam modelMeta_;
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return Whether the modelMeta field is set.
      */
     @java.lang.Override
@@ -1597,7 +1597,7 @@ public final class ModelCenterServiceOuterClass {
       return modelMeta_ != null;
     }
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return The modelMeta.
      */
     @java.lang.Override
@@ -1605,7 +1605,7 @@ public final class ModelCenterServiceOuterClass {
       return modelMeta_ == null ? com.aiflow.proto.Message.ModelMetaParam.getDefaultInstance() : modelMeta_;
     }
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ModelMetaParamOrBuilder getModelMetaOrBuilder() {
@@ -1773,21 +1773,21 @@ public final class ModelCenterServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code DeleteRegisteredModelRequest}
+     * Protobuf type {@code service.DeleteRegisteredModelRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:DeleteRegisteredModelRequest)
+        // @@protoc_insertion_point(builder_implements:service.DeleteRegisteredModelRequest)
         com.aiflow.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_DeleteRegisteredModelRequest_descriptor;
+        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_DeleteRegisteredModelRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_DeleteRegisteredModelRequest_fieldAccessorTable
+        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_DeleteRegisteredModelRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest.class, com.aiflow.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest.Builder.class);
       }
@@ -1822,7 +1822,7 @@ public final class ModelCenterServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_DeleteRegisteredModelRequest_descriptor;
+        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_DeleteRegisteredModelRequest_descriptor;
       }
 
       @java.lang.Override
@@ -1931,14 +1931,14 @@ public final class ModelCenterServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ModelMetaParam, com.aiflow.proto.Message.ModelMetaParam.Builder, com.aiflow.proto.Message.ModelMetaParamOrBuilder> modelMetaBuilder_;
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        * @return Whether the modelMeta field is set.
        */
       public boolean hasModelMeta() {
         return modelMetaBuilder_ != null || modelMeta_ != null;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        * @return The modelMeta.
        */
       public com.aiflow.proto.Message.ModelMetaParam getModelMeta() {
@@ -1949,7 +1949,7 @@ public final class ModelCenterServiceOuterClass {
         }
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder setModelMeta(com.aiflow.proto.Message.ModelMetaParam value) {
         if (modelMetaBuilder_ == null) {
@@ -1965,7 +1965,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder setModelMeta(
           com.aiflow.proto.Message.ModelMetaParam.Builder builderForValue) {
@@ -1979,7 +1979,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder mergeModelMeta(com.aiflow.proto.Message.ModelMetaParam value) {
         if (modelMetaBuilder_ == null) {
@@ -1997,7 +1997,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder clearModelMeta() {
         if (modelMetaBuilder_ == null) {
@@ -2011,7 +2011,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public com.aiflow.proto.Message.ModelMetaParam.Builder getModelMetaBuilder() {
         
@@ -2019,7 +2019,7 @@ public final class ModelCenterServiceOuterClass {
         return getModelMetaFieldBuilder().getBuilder();
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public com.aiflow.proto.Message.ModelMetaParamOrBuilder getModelMetaOrBuilder() {
         if (modelMetaBuilder_ != null) {
@@ -2030,7 +2030,7 @@ public final class ModelCenterServiceOuterClass {
         }
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ModelMetaParam, com.aiflow.proto.Message.ModelMetaParam.Builder, com.aiflow.proto.Message.ModelMetaParamOrBuilder> 
@@ -2058,10 +2058,10 @@ public final class ModelCenterServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:DeleteRegisteredModelRequest)
+      // @@protoc_insertion_point(builder_scope:service.DeleteRegisteredModelRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:DeleteRegisteredModelRequest)
+    // @@protoc_insertion_point(class_scope:service.DeleteRegisteredModelRequest)
     private static final com.aiflow.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest();
@@ -2099,15 +2099,15 @@ public final class ModelCenterServiceOuterClass {
   }
 
   public interface ListRegisteredModelsRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ListRegisteredModelsRequest)
+      // @@protoc_insertion_point(interface_extends:service.ListRegisteredModelsRequest)
       com.google.protobuf.MessageOrBuilder {
   }
   /**
-   * Protobuf type {@code ListRegisteredModelsRequest}
+   * Protobuf type {@code service.ListRegisteredModelsRequest}
    */
   public static final class ListRegisteredModelsRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:ListRegisteredModelsRequest)
+      // @@protoc_insertion_point(message_implements:service.ListRegisteredModelsRequest)
       ListRegisteredModelsRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use ListRegisteredModelsRequest.newBuilder() to construct.
@@ -2168,13 +2168,13 @@ public final class ModelCenterServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_ListRegisteredModelsRequest_descriptor;
+      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_ListRegisteredModelsRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_ListRegisteredModelsRequest_fieldAccessorTable
+      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_ListRegisteredModelsRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest.class, com.aiflow.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest.Builder.class);
     }
@@ -2324,21 +2324,21 @@ public final class ModelCenterServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code ListRegisteredModelsRequest}
+     * Protobuf type {@code service.ListRegisteredModelsRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ListRegisteredModelsRequest)
+        // @@protoc_insertion_point(builder_implements:service.ListRegisteredModelsRequest)
         com.aiflow.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_ListRegisteredModelsRequest_descriptor;
+        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_ListRegisteredModelsRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_ListRegisteredModelsRequest_fieldAccessorTable
+        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_ListRegisteredModelsRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest.class, com.aiflow.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest.Builder.class);
       }
@@ -2367,7 +2367,7 @@ public final class ModelCenterServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_ListRegisteredModelsRequest_descriptor;
+        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_ListRegisteredModelsRequest_descriptor;
       }
 
       @java.lang.Override
@@ -2476,10 +2476,10 @@ public final class ModelCenterServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:ListRegisteredModelsRequest)
+      // @@protoc_insertion_point(builder_scope:service.ListRegisteredModelsRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:ListRegisteredModelsRequest)
+    // @@protoc_insertion_point(class_scope:service.ListRegisteredModelsRequest)
     private static final com.aiflow.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest();
@@ -2517,30 +2517,30 @@ public final class ModelCenterServiceOuterClass {
   }
 
   public interface GetRegisteredModelDetailRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:GetRegisteredModelDetailRequest)
+      // @@protoc_insertion_point(interface_extends:service.GetRegisteredModelDetailRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return Whether the modelMeta field is set.
      */
     boolean hasModelMeta();
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return The modelMeta.
      */
     com.aiflow.proto.Message.ModelMetaParam getModelMeta();
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      */
     com.aiflow.proto.Message.ModelMetaParamOrBuilder getModelMetaOrBuilder();
   }
   /**
-   * Protobuf type {@code GetRegisteredModelDetailRequest}
+   * Protobuf type {@code service.GetRegisteredModelDetailRequest}
    */
   public static final class GetRegisteredModelDetailRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:GetRegisteredModelDetailRequest)
+      // @@protoc_insertion_point(message_implements:service.GetRegisteredModelDetailRequest)
       GetRegisteredModelDetailRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use GetRegisteredModelDetailRequest.newBuilder() to construct.
@@ -2614,13 +2614,13 @@ public final class ModelCenterServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_GetRegisteredModelDetailRequest_descriptor;
+      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_GetRegisteredModelDetailRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_GetRegisteredModelDetailRequest_fieldAccessorTable
+      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_GetRegisteredModelDetailRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest.class, com.aiflow.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest.Builder.class);
     }
@@ -2628,7 +2628,7 @@ public final class ModelCenterServiceOuterClass {
     public static final int MODEL_META_FIELD_NUMBER = 1;
     private com.aiflow.proto.Message.ModelMetaParam modelMeta_;
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return Whether the modelMeta field is set.
      */
     @java.lang.Override
@@ -2636,7 +2636,7 @@ public final class ModelCenterServiceOuterClass {
       return modelMeta_ != null;
     }
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return The modelMeta.
      */
     @java.lang.Override
@@ -2644,7 +2644,7 @@ public final class ModelCenterServiceOuterClass {
       return modelMeta_ == null ? com.aiflow.proto.Message.ModelMetaParam.getDefaultInstance() : modelMeta_;
     }
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ModelMetaParamOrBuilder getModelMetaOrBuilder() {
@@ -2812,21 +2812,21 @@ public final class ModelCenterServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code GetRegisteredModelDetailRequest}
+     * Protobuf type {@code service.GetRegisteredModelDetailRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:GetRegisteredModelDetailRequest)
+        // @@protoc_insertion_point(builder_implements:service.GetRegisteredModelDetailRequest)
         com.aiflow.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_GetRegisteredModelDetailRequest_descriptor;
+        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_GetRegisteredModelDetailRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_GetRegisteredModelDetailRequest_fieldAccessorTable
+        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_GetRegisteredModelDetailRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest.class, com.aiflow.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest.Builder.class);
       }
@@ -2861,7 +2861,7 @@ public final class ModelCenterServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_GetRegisteredModelDetailRequest_descriptor;
+        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_GetRegisteredModelDetailRequest_descriptor;
       }
 
       @java.lang.Override
@@ -2970,14 +2970,14 @@ public final class ModelCenterServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ModelMetaParam, com.aiflow.proto.Message.ModelMetaParam.Builder, com.aiflow.proto.Message.ModelMetaParamOrBuilder> modelMetaBuilder_;
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        * @return Whether the modelMeta field is set.
        */
       public boolean hasModelMeta() {
         return modelMetaBuilder_ != null || modelMeta_ != null;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        * @return The modelMeta.
        */
       public com.aiflow.proto.Message.ModelMetaParam getModelMeta() {
@@ -2988,7 +2988,7 @@ public final class ModelCenterServiceOuterClass {
         }
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder setModelMeta(com.aiflow.proto.Message.ModelMetaParam value) {
         if (modelMetaBuilder_ == null) {
@@ -3004,7 +3004,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder setModelMeta(
           com.aiflow.proto.Message.ModelMetaParam.Builder builderForValue) {
@@ -3018,7 +3018,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder mergeModelMeta(com.aiflow.proto.Message.ModelMetaParam value) {
         if (modelMetaBuilder_ == null) {
@@ -3036,7 +3036,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder clearModelMeta() {
         if (modelMetaBuilder_ == null) {
@@ -3050,7 +3050,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public com.aiflow.proto.Message.ModelMetaParam.Builder getModelMetaBuilder() {
         
@@ -3058,7 +3058,7 @@ public final class ModelCenterServiceOuterClass {
         return getModelMetaFieldBuilder().getBuilder();
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public com.aiflow.proto.Message.ModelMetaParamOrBuilder getModelMetaOrBuilder() {
         if (modelMetaBuilder_ != null) {
@@ -3069,7 +3069,7 @@ public final class ModelCenterServiceOuterClass {
         }
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ModelMetaParam, com.aiflow.proto.Message.ModelMetaParam.Builder, com.aiflow.proto.Message.ModelMetaParamOrBuilder> 
@@ -3097,10 +3097,10 @@ public final class ModelCenterServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:GetRegisteredModelDetailRequest)
+      // @@protoc_insertion_point(builder_scope:service.GetRegisteredModelDetailRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:GetRegisteredModelDetailRequest)
+    // @@protoc_insertion_point(class_scope:service.GetRegisteredModelDetailRequest)
     private static final com.aiflow.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest();
@@ -3138,45 +3138,45 @@ public final class ModelCenterServiceOuterClass {
   }
 
   public interface CreateModelVersionRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:CreateModelVersionRequest)
+      // @@protoc_insertion_point(interface_extends:service.CreateModelVersionRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return Whether the modelMeta field is set.
      */
     boolean hasModelMeta();
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return The modelMeta.
      */
     com.aiflow.proto.Message.ModelMetaParam getModelMeta();
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      */
     com.aiflow.proto.Message.ModelMetaParamOrBuilder getModelMetaOrBuilder();
 
     /**
-     * <code>.ModelVersionParam model_version = 2;</code>
+     * <code>.service.ModelVersionParam model_version = 2;</code>
      * @return Whether the modelVersion field is set.
      */
     boolean hasModelVersion();
     /**
-     * <code>.ModelVersionParam model_version = 2;</code>
+     * <code>.service.ModelVersionParam model_version = 2;</code>
      * @return The modelVersion.
      */
     com.aiflow.proto.Message.ModelVersionParam getModelVersion();
     /**
-     * <code>.ModelVersionParam model_version = 2;</code>
+     * <code>.service.ModelVersionParam model_version = 2;</code>
      */
     com.aiflow.proto.Message.ModelVersionParamOrBuilder getModelVersionOrBuilder();
   }
   /**
-   * Protobuf type {@code CreateModelVersionRequest}
+   * Protobuf type {@code service.CreateModelVersionRequest}
    */
   public static final class CreateModelVersionRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:CreateModelVersionRequest)
+      // @@protoc_insertion_point(message_implements:service.CreateModelVersionRequest)
       CreateModelVersionRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use CreateModelVersionRequest.newBuilder() to construct.
@@ -3263,13 +3263,13 @@ public final class ModelCenterServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_CreateModelVersionRequest_descriptor;
+      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_CreateModelVersionRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_CreateModelVersionRequest_fieldAccessorTable
+      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_CreateModelVersionRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest.class, com.aiflow.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest.Builder.class);
     }
@@ -3277,7 +3277,7 @@ public final class ModelCenterServiceOuterClass {
     public static final int MODEL_META_FIELD_NUMBER = 1;
     private com.aiflow.proto.Message.ModelMetaParam modelMeta_;
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return Whether the modelMeta field is set.
      */
     @java.lang.Override
@@ -3285,7 +3285,7 @@ public final class ModelCenterServiceOuterClass {
       return modelMeta_ != null;
     }
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return The modelMeta.
      */
     @java.lang.Override
@@ -3293,7 +3293,7 @@ public final class ModelCenterServiceOuterClass {
       return modelMeta_ == null ? com.aiflow.proto.Message.ModelMetaParam.getDefaultInstance() : modelMeta_;
     }
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ModelMetaParamOrBuilder getModelMetaOrBuilder() {
@@ -3303,7 +3303,7 @@ public final class ModelCenterServiceOuterClass {
     public static final int MODEL_VERSION_FIELD_NUMBER = 2;
     private com.aiflow.proto.Message.ModelVersionParam modelVersion_;
     /**
-     * <code>.ModelVersionParam model_version = 2;</code>
+     * <code>.service.ModelVersionParam model_version = 2;</code>
      * @return Whether the modelVersion field is set.
      */
     @java.lang.Override
@@ -3311,7 +3311,7 @@ public final class ModelCenterServiceOuterClass {
       return modelVersion_ != null;
     }
     /**
-     * <code>.ModelVersionParam model_version = 2;</code>
+     * <code>.service.ModelVersionParam model_version = 2;</code>
      * @return The modelVersion.
      */
     @java.lang.Override
@@ -3319,7 +3319,7 @@ public final class ModelCenterServiceOuterClass {
       return modelVersion_ == null ? com.aiflow.proto.Message.ModelVersionParam.getDefaultInstance() : modelVersion_;
     }
     /**
-     * <code>.ModelVersionParam model_version = 2;</code>
+     * <code>.service.ModelVersionParam model_version = 2;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ModelVersionParamOrBuilder getModelVersionOrBuilder() {
@@ -3503,21 +3503,21 @@ public final class ModelCenterServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code CreateModelVersionRequest}
+     * Protobuf type {@code service.CreateModelVersionRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:CreateModelVersionRequest)
+        // @@protoc_insertion_point(builder_implements:service.CreateModelVersionRequest)
         com.aiflow.proto.ModelCenterServiceOuterClass.CreateModelVersionRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_CreateModelVersionRequest_descriptor;
+        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_CreateModelVersionRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_CreateModelVersionRequest_fieldAccessorTable
+        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_CreateModelVersionRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest.class, com.aiflow.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest.Builder.class);
       }
@@ -3558,7 +3558,7 @@ public final class ModelCenterServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_CreateModelVersionRequest_descriptor;
+        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_CreateModelVersionRequest_descriptor;
       }
 
       @java.lang.Override
@@ -3675,14 +3675,14 @@ public final class ModelCenterServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ModelMetaParam, com.aiflow.proto.Message.ModelMetaParam.Builder, com.aiflow.proto.Message.ModelMetaParamOrBuilder> modelMetaBuilder_;
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        * @return Whether the modelMeta field is set.
        */
       public boolean hasModelMeta() {
         return modelMetaBuilder_ != null || modelMeta_ != null;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        * @return The modelMeta.
        */
       public com.aiflow.proto.Message.ModelMetaParam getModelMeta() {
@@ -3693,7 +3693,7 @@ public final class ModelCenterServiceOuterClass {
         }
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder setModelMeta(com.aiflow.proto.Message.ModelMetaParam value) {
         if (modelMetaBuilder_ == null) {
@@ -3709,7 +3709,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder setModelMeta(
           com.aiflow.proto.Message.ModelMetaParam.Builder builderForValue) {
@@ -3723,7 +3723,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder mergeModelMeta(com.aiflow.proto.Message.ModelMetaParam value) {
         if (modelMetaBuilder_ == null) {
@@ -3741,7 +3741,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder clearModelMeta() {
         if (modelMetaBuilder_ == null) {
@@ -3755,7 +3755,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public com.aiflow.proto.Message.ModelMetaParam.Builder getModelMetaBuilder() {
         
@@ -3763,7 +3763,7 @@ public final class ModelCenterServiceOuterClass {
         return getModelMetaFieldBuilder().getBuilder();
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public com.aiflow.proto.Message.ModelMetaParamOrBuilder getModelMetaOrBuilder() {
         if (modelMetaBuilder_ != null) {
@@ -3774,7 +3774,7 @@ public final class ModelCenterServiceOuterClass {
         }
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ModelMetaParam, com.aiflow.proto.Message.ModelMetaParam.Builder, com.aiflow.proto.Message.ModelMetaParamOrBuilder> 
@@ -3794,14 +3794,14 @@ public final class ModelCenterServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ModelVersionParam, com.aiflow.proto.Message.ModelVersionParam.Builder, com.aiflow.proto.Message.ModelVersionParamOrBuilder> modelVersionBuilder_;
       /**
-       * <code>.ModelVersionParam model_version = 2;</code>
+       * <code>.service.ModelVersionParam model_version = 2;</code>
        * @return Whether the modelVersion field is set.
        */
       public boolean hasModelVersion() {
         return modelVersionBuilder_ != null || modelVersion_ != null;
       }
       /**
-       * <code>.ModelVersionParam model_version = 2;</code>
+       * <code>.service.ModelVersionParam model_version = 2;</code>
        * @return The modelVersion.
        */
       public com.aiflow.proto.Message.ModelVersionParam getModelVersion() {
@@ -3812,7 +3812,7 @@ public final class ModelCenterServiceOuterClass {
         }
       }
       /**
-       * <code>.ModelVersionParam model_version = 2;</code>
+       * <code>.service.ModelVersionParam model_version = 2;</code>
        */
       public Builder setModelVersion(com.aiflow.proto.Message.ModelVersionParam value) {
         if (modelVersionBuilder_ == null) {
@@ -3828,7 +3828,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelVersionParam model_version = 2;</code>
+       * <code>.service.ModelVersionParam model_version = 2;</code>
        */
       public Builder setModelVersion(
           com.aiflow.proto.Message.ModelVersionParam.Builder builderForValue) {
@@ -3842,7 +3842,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelVersionParam model_version = 2;</code>
+       * <code>.service.ModelVersionParam model_version = 2;</code>
        */
       public Builder mergeModelVersion(com.aiflow.proto.Message.ModelVersionParam value) {
         if (modelVersionBuilder_ == null) {
@@ -3860,7 +3860,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelVersionParam model_version = 2;</code>
+       * <code>.service.ModelVersionParam model_version = 2;</code>
        */
       public Builder clearModelVersion() {
         if (modelVersionBuilder_ == null) {
@@ -3874,7 +3874,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelVersionParam model_version = 2;</code>
+       * <code>.service.ModelVersionParam model_version = 2;</code>
        */
       public com.aiflow.proto.Message.ModelVersionParam.Builder getModelVersionBuilder() {
         
@@ -3882,7 +3882,7 @@ public final class ModelCenterServiceOuterClass {
         return getModelVersionFieldBuilder().getBuilder();
       }
       /**
-       * <code>.ModelVersionParam model_version = 2;</code>
+       * <code>.service.ModelVersionParam model_version = 2;</code>
        */
       public com.aiflow.proto.Message.ModelVersionParamOrBuilder getModelVersionOrBuilder() {
         if (modelVersionBuilder_ != null) {
@@ -3893,7 +3893,7 @@ public final class ModelCenterServiceOuterClass {
         }
       }
       /**
-       * <code>.ModelVersionParam model_version = 2;</code>
+       * <code>.service.ModelVersionParam model_version = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ModelVersionParam, com.aiflow.proto.Message.ModelVersionParam.Builder, com.aiflow.proto.Message.ModelVersionParamOrBuilder> 
@@ -3921,10 +3921,10 @@ public final class ModelCenterServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:CreateModelVersionRequest)
+      // @@protoc_insertion_point(builder_scope:service.CreateModelVersionRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:CreateModelVersionRequest)
+    // @@protoc_insertion_point(class_scope:service.CreateModelVersionRequest)
     private static final com.aiflow.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest();
@@ -3962,45 +3962,45 @@ public final class ModelCenterServiceOuterClass {
   }
 
   public interface UpdateModelVersionRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:UpdateModelVersionRequest)
+      // @@protoc_insertion_point(interface_extends:service.UpdateModelVersionRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return Whether the modelMeta field is set.
      */
     boolean hasModelMeta();
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return The modelMeta.
      */
     com.aiflow.proto.Message.ModelMetaParam getModelMeta();
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      */
     com.aiflow.proto.Message.ModelMetaParamOrBuilder getModelMetaOrBuilder();
 
     /**
-     * <code>.ModelVersionParam model_version = 2;</code>
+     * <code>.service.ModelVersionParam model_version = 2;</code>
      * @return Whether the modelVersion field is set.
      */
     boolean hasModelVersion();
     /**
-     * <code>.ModelVersionParam model_version = 2;</code>
+     * <code>.service.ModelVersionParam model_version = 2;</code>
      * @return The modelVersion.
      */
     com.aiflow.proto.Message.ModelVersionParam getModelVersion();
     /**
-     * <code>.ModelVersionParam model_version = 2;</code>
+     * <code>.service.ModelVersionParam model_version = 2;</code>
      */
     com.aiflow.proto.Message.ModelVersionParamOrBuilder getModelVersionOrBuilder();
   }
   /**
-   * Protobuf type {@code UpdateModelVersionRequest}
+   * Protobuf type {@code service.UpdateModelVersionRequest}
    */
   public static final class UpdateModelVersionRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:UpdateModelVersionRequest)
+      // @@protoc_insertion_point(message_implements:service.UpdateModelVersionRequest)
       UpdateModelVersionRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use UpdateModelVersionRequest.newBuilder() to construct.
@@ -4087,13 +4087,13 @@ public final class ModelCenterServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_UpdateModelVersionRequest_descriptor;
+      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_UpdateModelVersionRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_UpdateModelVersionRequest_fieldAccessorTable
+      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_UpdateModelVersionRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest.class, com.aiflow.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest.Builder.class);
     }
@@ -4101,7 +4101,7 @@ public final class ModelCenterServiceOuterClass {
     public static final int MODEL_META_FIELD_NUMBER = 1;
     private com.aiflow.proto.Message.ModelMetaParam modelMeta_;
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return Whether the modelMeta field is set.
      */
     @java.lang.Override
@@ -4109,7 +4109,7 @@ public final class ModelCenterServiceOuterClass {
       return modelMeta_ != null;
     }
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return The modelMeta.
      */
     @java.lang.Override
@@ -4117,7 +4117,7 @@ public final class ModelCenterServiceOuterClass {
       return modelMeta_ == null ? com.aiflow.proto.Message.ModelMetaParam.getDefaultInstance() : modelMeta_;
     }
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ModelMetaParamOrBuilder getModelMetaOrBuilder() {
@@ -4127,7 +4127,7 @@ public final class ModelCenterServiceOuterClass {
     public static final int MODEL_VERSION_FIELD_NUMBER = 2;
     private com.aiflow.proto.Message.ModelVersionParam modelVersion_;
     /**
-     * <code>.ModelVersionParam model_version = 2;</code>
+     * <code>.service.ModelVersionParam model_version = 2;</code>
      * @return Whether the modelVersion field is set.
      */
     @java.lang.Override
@@ -4135,7 +4135,7 @@ public final class ModelCenterServiceOuterClass {
       return modelVersion_ != null;
     }
     /**
-     * <code>.ModelVersionParam model_version = 2;</code>
+     * <code>.service.ModelVersionParam model_version = 2;</code>
      * @return The modelVersion.
      */
     @java.lang.Override
@@ -4143,7 +4143,7 @@ public final class ModelCenterServiceOuterClass {
       return modelVersion_ == null ? com.aiflow.proto.Message.ModelVersionParam.getDefaultInstance() : modelVersion_;
     }
     /**
-     * <code>.ModelVersionParam model_version = 2;</code>
+     * <code>.service.ModelVersionParam model_version = 2;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ModelVersionParamOrBuilder getModelVersionOrBuilder() {
@@ -4327,21 +4327,21 @@ public final class ModelCenterServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code UpdateModelVersionRequest}
+     * Protobuf type {@code service.UpdateModelVersionRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:UpdateModelVersionRequest)
+        // @@protoc_insertion_point(builder_implements:service.UpdateModelVersionRequest)
         com.aiflow.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_UpdateModelVersionRequest_descriptor;
+        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_UpdateModelVersionRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_UpdateModelVersionRequest_fieldAccessorTable
+        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_UpdateModelVersionRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest.class, com.aiflow.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest.Builder.class);
       }
@@ -4382,7 +4382,7 @@ public final class ModelCenterServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_UpdateModelVersionRequest_descriptor;
+        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_UpdateModelVersionRequest_descriptor;
       }
 
       @java.lang.Override
@@ -4499,14 +4499,14 @@ public final class ModelCenterServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ModelMetaParam, com.aiflow.proto.Message.ModelMetaParam.Builder, com.aiflow.proto.Message.ModelMetaParamOrBuilder> modelMetaBuilder_;
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        * @return Whether the modelMeta field is set.
        */
       public boolean hasModelMeta() {
         return modelMetaBuilder_ != null || modelMeta_ != null;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        * @return The modelMeta.
        */
       public com.aiflow.proto.Message.ModelMetaParam getModelMeta() {
@@ -4517,7 +4517,7 @@ public final class ModelCenterServiceOuterClass {
         }
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder setModelMeta(com.aiflow.proto.Message.ModelMetaParam value) {
         if (modelMetaBuilder_ == null) {
@@ -4533,7 +4533,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder setModelMeta(
           com.aiflow.proto.Message.ModelMetaParam.Builder builderForValue) {
@@ -4547,7 +4547,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder mergeModelMeta(com.aiflow.proto.Message.ModelMetaParam value) {
         if (modelMetaBuilder_ == null) {
@@ -4565,7 +4565,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder clearModelMeta() {
         if (modelMetaBuilder_ == null) {
@@ -4579,7 +4579,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public com.aiflow.proto.Message.ModelMetaParam.Builder getModelMetaBuilder() {
         
@@ -4587,7 +4587,7 @@ public final class ModelCenterServiceOuterClass {
         return getModelMetaFieldBuilder().getBuilder();
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public com.aiflow.proto.Message.ModelMetaParamOrBuilder getModelMetaOrBuilder() {
         if (modelMetaBuilder_ != null) {
@@ -4598,7 +4598,7 @@ public final class ModelCenterServiceOuterClass {
         }
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ModelMetaParam, com.aiflow.proto.Message.ModelMetaParam.Builder, com.aiflow.proto.Message.ModelMetaParamOrBuilder> 
@@ -4618,14 +4618,14 @@ public final class ModelCenterServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ModelVersionParam, com.aiflow.proto.Message.ModelVersionParam.Builder, com.aiflow.proto.Message.ModelVersionParamOrBuilder> modelVersionBuilder_;
       /**
-       * <code>.ModelVersionParam model_version = 2;</code>
+       * <code>.service.ModelVersionParam model_version = 2;</code>
        * @return Whether the modelVersion field is set.
        */
       public boolean hasModelVersion() {
         return modelVersionBuilder_ != null || modelVersion_ != null;
       }
       /**
-       * <code>.ModelVersionParam model_version = 2;</code>
+       * <code>.service.ModelVersionParam model_version = 2;</code>
        * @return The modelVersion.
        */
       public com.aiflow.proto.Message.ModelVersionParam getModelVersion() {
@@ -4636,7 +4636,7 @@ public final class ModelCenterServiceOuterClass {
         }
       }
       /**
-       * <code>.ModelVersionParam model_version = 2;</code>
+       * <code>.service.ModelVersionParam model_version = 2;</code>
        */
       public Builder setModelVersion(com.aiflow.proto.Message.ModelVersionParam value) {
         if (modelVersionBuilder_ == null) {
@@ -4652,7 +4652,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelVersionParam model_version = 2;</code>
+       * <code>.service.ModelVersionParam model_version = 2;</code>
        */
       public Builder setModelVersion(
           com.aiflow.proto.Message.ModelVersionParam.Builder builderForValue) {
@@ -4666,7 +4666,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelVersionParam model_version = 2;</code>
+       * <code>.service.ModelVersionParam model_version = 2;</code>
        */
       public Builder mergeModelVersion(com.aiflow.proto.Message.ModelVersionParam value) {
         if (modelVersionBuilder_ == null) {
@@ -4684,7 +4684,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelVersionParam model_version = 2;</code>
+       * <code>.service.ModelVersionParam model_version = 2;</code>
        */
       public Builder clearModelVersion() {
         if (modelVersionBuilder_ == null) {
@@ -4698,7 +4698,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelVersionParam model_version = 2;</code>
+       * <code>.service.ModelVersionParam model_version = 2;</code>
        */
       public com.aiflow.proto.Message.ModelVersionParam.Builder getModelVersionBuilder() {
         
@@ -4706,7 +4706,7 @@ public final class ModelCenterServiceOuterClass {
         return getModelVersionFieldBuilder().getBuilder();
       }
       /**
-       * <code>.ModelVersionParam model_version = 2;</code>
+       * <code>.service.ModelVersionParam model_version = 2;</code>
        */
       public com.aiflow.proto.Message.ModelVersionParamOrBuilder getModelVersionOrBuilder() {
         if (modelVersionBuilder_ != null) {
@@ -4717,7 +4717,7 @@ public final class ModelCenterServiceOuterClass {
         }
       }
       /**
-       * <code>.ModelVersionParam model_version = 2;</code>
+       * <code>.service.ModelVersionParam model_version = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ModelVersionParam, com.aiflow.proto.Message.ModelVersionParam.Builder, com.aiflow.proto.Message.ModelVersionParamOrBuilder> 
@@ -4745,10 +4745,10 @@ public final class ModelCenterServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:UpdateModelVersionRequest)
+      // @@protoc_insertion_point(builder_scope:service.UpdateModelVersionRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:UpdateModelVersionRequest)
+    // @@protoc_insertion_point(class_scope:service.UpdateModelVersionRequest)
     private static final com.aiflow.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest();
@@ -4786,30 +4786,30 @@ public final class ModelCenterServiceOuterClass {
   }
 
   public interface DeleteModelVersionRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:DeleteModelVersionRequest)
+      // @@protoc_insertion_point(interface_extends:service.DeleteModelVersionRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return Whether the modelMeta field is set.
      */
     boolean hasModelMeta();
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return The modelMeta.
      */
     com.aiflow.proto.Message.ModelMetaParam getModelMeta();
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      */
     com.aiflow.proto.Message.ModelMetaParamOrBuilder getModelMetaOrBuilder();
   }
   /**
-   * Protobuf type {@code DeleteModelVersionRequest}
+   * Protobuf type {@code service.DeleteModelVersionRequest}
    */
   public static final class DeleteModelVersionRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:DeleteModelVersionRequest)
+      // @@protoc_insertion_point(message_implements:service.DeleteModelVersionRequest)
       DeleteModelVersionRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use DeleteModelVersionRequest.newBuilder() to construct.
@@ -4883,13 +4883,13 @@ public final class ModelCenterServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_DeleteModelVersionRequest_descriptor;
+      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_DeleteModelVersionRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_DeleteModelVersionRequest_fieldAccessorTable
+      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_DeleteModelVersionRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest.class, com.aiflow.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest.Builder.class);
     }
@@ -4897,7 +4897,7 @@ public final class ModelCenterServiceOuterClass {
     public static final int MODEL_META_FIELD_NUMBER = 1;
     private com.aiflow.proto.Message.ModelMetaParam modelMeta_;
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return Whether the modelMeta field is set.
      */
     @java.lang.Override
@@ -4905,7 +4905,7 @@ public final class ModelCenterServiceOuterClass {
       return modelMeta_ != null;
     }
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return The modelMeta.
      */
     @java.lang.Override
@@ -4913,7 +4913,7 @@ public final class ModelCenterServiceOuterClass {
       return modelMeta_ == null ? com.aiflow.proto.Message.ModelMetaParam.getDefaultInstance() : modelMeta_;
     }
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ModelMetaParamOrBuilder getModelMetaOrBuilder() {
@@ -5081,21 +5081,21 @@ public final class ModelCenterServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code DeleteModelVersionRequest}
+     * Protobuf type {@code service.DeleteModelVersionRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:DeleteModelVersionRequest)
+        // @@protoc_insertion_point(builder_implements:service.DeleteModelVersionRequest)
         com.aiflow.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_DeleteModelVersionRequest_descriptor;
+        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_DeleteModelVersionRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_DeleteModelVersionRequest_fieldAccessorTable
+        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_DeleteModelVersionRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest.class, com.aiflow.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest.Builder.class);
       }
@@ -5130,7 +5130,7 @@ public final class ModelCenterServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_DeleteModelVersionRequest_descriptor;
+        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_DeleteModelVersionRequest_descriptor;
       }
 
       @java.lang.Override
@@ -5239,14 +5239,14 @@ public final class ModelCenterServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ModelMetaParam, com.aiflow.proto.Message.ModelMetaParam.Builder, com.aiflow.proto.Message.ModelMetaParamOrBuilder> modelMetaBuilder_;
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        * @return Whether the modelMeta field is set.
        */
       public boolean hasModelMeta() {
         return modelMetaBuilder_ != null || modelMeta_ != null;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        * @return The modelMeta.
        */
       public com.aiflow.proto.Message.ModelMetaParam getModelMeta() {
@@ -5257,7 +5257,7 @@ public final class ModelCenterServiceOuterClass {
         }
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder setModelMeta(com.aiflow.proto.Message.ModelMetaParam value) {
         if (modelMetaBuilder_ == null) {
@@ -5273,7 +5273,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder setModelMeta(
           com.aiflow.proto.Message.ModelMetaParam.Builder builderForValue) {
@@ -5287,7 +5287,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder mergeModelMeta(com.aiflow.proto.Message.ModelMetaParam value) {
         if (modelMetaBuilder_ == null) {
@@ -5305,7 +5305,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder clearModelMeta() {
         if (modelMetaBuilder_ == null) {
@@ -5319,7 +5319,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public com.aiflow.proto.Message.ModelMetaParam.Builder getModelMetaBuilder() {
         
@@ -5327,7 +5327,7 @@ public final class ModelCenterServiceOuterClass {
         return getModelMetaFieldBuilder().getBuilder();
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public com.aiflow.proto.Message.ModelMetaParamOrBuilder getModelMetaOrBuilder() {
         if (modelMetaBuilder_ != null) {
@@ -5338,7 +5338,7 @@ public final class ModelCenterServiceOuterClass {
         }
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ModelMetaParam, com.aiflow.proto.Message.ModelMetaParam.Builder, com.aiflow.proto.Message.ModelMetaParamOrBuilder> 
@@ -5366,10 +5366,10 @@ public final class ModelCenterServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:DeleteModelVersionRequest)
+      // @@protoc_insertion_point(builder_scope:service.DeleteModelVersionRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:DeleteModelVersionRequest)
+    // @@protoc_insertion_point(class_scope:service.DeleteModelVersionRequest)
     private static final com.aiflow.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest();
@@ -5407,30 +5407,30 @@ public final class ModelCenterServiceOuterClass {
   }
 
   public interface GetModelVersionDetailRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:GetModelVersionDetailRequest)
+      // @@protoc_insertion_point(interface_extends:service.GetModelVersionDetailRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return Whether the modelMeta field is set.
      */
     boolean hasModelMeta();
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return The modelMeta.
      */
     com.aiflow.proto.Message.ModelMetaParam getModelMeta();
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      */
     com.aiflow.proto.Message.ModelMetaParamOrBuilder getModelMetaOrBuilder();
   }
   /**
-   * Protobuf type {@code GetModelVersionDetailRequest}
+   * Protobuf type {@code service.GetModelVersionDetailRequest}
    */
   public static final class GetModelVersionDetailRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:GetModelVersionDetailRequest)
+      // @@protoc_insertion_point(message_implements:service.GetModelVersionDetailRequest)
       GetModelVersionDetailRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use GetModelVersionDetailRequest.newBuilder() to construct.
@@ -5504,13 +5504,13 @@ public final class ModelCenterServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_GetModelVersionDetailRequest_descriptor;
+      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_GetModelVersionDetailRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_GetModelVersionDetailRequest_fieldAccessorTable
+      return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_GetModelVersionDetailRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest.class, com.aiflow.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest.Builder.class);
     }
@@ -5518,7 +5518,7 @@ public final class ModelCenterServiceOuterClass {
     public static final int MODEL_META_FIELD_NUMBER = 1;
     private com.aiflow.proto.Message.ModelMetaParam modelMeta_;
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return Whether the modelMeta field is set.
      */
     @java.lang.Override
@@ -5526,7 +5526,7 @@ public final class ModelCenterServiceOuterClass {
       return modelMeta_ != null;
     }
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      * @return The modelMeta.
      */
     @java.lang.Override
@@ -5534,7 +5534,7 @@ public final class ModelCenterServiceOuterClass {
       return modelMeta_ == null ? com.aiflow.proto.Message.ModelMetaParam.getDefaultInstance() : modelMeta_;
     }
     /**
-     * <code>.ModelMetaParam model_meta = 1;</code>
+     * <code>.service.ModelMetaParam model_meta = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ModelMetaParamOrBuilder getModelMetaOrBuilder() {
@@ -5702,21 +5702,21 @@ public final class ModelCenterServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code GetModelVersionDetailRequest}
+     * Protobuf type {@code service.GetModelVersionDetailRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:GetModelVersionDetailRequest)
+        // @@protoc_insertion_point(builder_implements:service.GetModelVersionDetailRequest)
         com.aiflow.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_GetModelVersionDetailRequest_descriptor;
+        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_GetModelVersionDetailRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_GetModelVersionDetailRequest_fieldAccessorTable
+        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_GetModelVersionDetailRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest.class, com.aiflow.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest.Builder.class);
       }
@@ -5751,7 +5751,7 @@ public final class ModelCenterServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_GetModelVersionDetailRequest_descriptor;
+        return com.aiflow.proto.ModelCenterServiceOuterClass.internal_static_service_GetModelVersionDetailRequest_descriptor;
       }
 
       @java.lang.Override
@@ -5860,14 +5860,14 @@ public final class ModelCenterServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ModelMetaParam, com.aiflow.proto.Message.ModelMetaParam.Builder, com.aiflow.proto.Message.ModelMetaParamOrBuilder> modelMetaBuilder_;
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        * @return Whether the modelMeta field is set.
        */
       public boolean hasModelMeta() {
         return modelMetaBuilder_ != null || modelMeta_ != null;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        * @return The modelMeta.
        */
       public com.aiflow.proto.Message.ModelMetaParam getModelMeta() {
@@ -5878,7 +5878,7 @@ public final class ModelCenterServiceOuterClass {
         }
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder setModelMeta(com.aiflow.proto.Message.ModelMetaParam value) {
         if (modelMetaBuilder_ == null) {
@@ -5894,7 +5894,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder setModelMeta(
           com.aiflow.proto.Message.ModelMetaParam.Builder builderForValue) {
@@ -5908,7 +5908,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder mergeModelMeta(com.aiflow.proto.Message.ModelMetaParam value) {
         if (modelMetaBuilder_ == null) {
@@ -5926,7 +5926,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public Builder clearModelMeta() {
         if (modelMetaBuilder_ == null) {
@@ -5940,7 +5940,7 @@ public final class ModelCenterServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public com.aiflow.proto.Message.ModelMetaParam.Builder getModelMetaBuilder() {
         
@@ -5948,7 +5948,7 @@ public final class ModelCenterServiceOuterClass {
         return getModelMetaFieldBuilder().getBuilder();
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       public com.aiflow.proto.Message.ModelMetaParamOrBuilder getModelMetaOrBuilder() {
         if (modelMetaBuilder_ != null) {
@@ -5959,7 +5959,7 @@ public final class ModelCenterServiceOuterClass {
         }
       }
       /**
-       * <code>.ModelMetaParam model_meta = 1;</code>
+       * <code>.service.ModelMetaParam model_meta = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ModelMetaParam, com.aiflow.proto.Message.ModelMetaParam.Builder, com.aiflow.proto.Message.ModelMetaParamOrBuilder> 
@@ -5987,10 +5987,10 @@ public final class ModelCenterServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:GetModelVersionDetailRequest)
+      // @@protoc_insertion_point(builder_scope:service.GetModelVersionDetailRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:GetModelVersionDetailRequest)
+    // @@protoc_insertion_point(class_scope:service.GetModelVersionDetailRequest)
     private static final com.aiflow.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest();
@@ -6042,7 +6042,7 @@ public final class ModelCenterServiceOuterClass {
    *  9.Get model version detail
    * </pre>
    *
-   * Protobuf service {@code ModelCenterService}
+   * Protobuf service {@code service.ModelCenterService}
    */
   public static abstract class ModelCenterService
       implements com.google.protobuf.Service {
@@ -6054,7 +6054,7 @@ public final class ModelCenterServiceOuterClass {
        * Create registered model with metadata of RegisteredModel.
        * </pre>
        *
-       * <code>rpc createRegisteredModel(.CreateRegisteredModelRequest) returns (.Response) { ... }</code>
+       * <code>rpc createRegisteredModel(.service.CreateRegisteredModelRequest) returns (.service.Response) { ... }</code>
        */
       public abstract void createRegisteredModel(
           com.google.protobuf.RpcController controller,
@@ -6066,7 +6066,7 @@ public final class ModelCenterServiceOuterClass {
        * Update registered model with metadata of RegisteredModel.
        * </pre>
        *
-       * <code>rpc updateRegisteredModel(.UpdateRegisteredModelRequest) returns (.Response) { ... }</code>
+       * <code>rpc updateRegisteredModel(.service.UpdateRegisteredModelRequest) returns (.service.Response) { ... }</code>
        */
       public abstract void updateRegisteredModel(
           com.google.protobuf.RpcController controller,
@@ -6078,7 +6078,7 @@ public final class ModelCenterServiceOuterClass {
        * Delete registered model with metadata of RegisteredModel.
        * </pre>
        *
-       * <code>rpc deleteRegisteredModel(.DeleteRegisteredModelRequest) returns (.Response) { ... }</code>
+       * <code>rpc deleteRegisteredModel(.service.DeleteRegisteredModelRequest) returns (.service.Response) { ... }</code>
        */
       public abstract void deleteRegisteredModel(
           com.google.protobuf.RpcController controller,
@@ -6090,7 +6090,7 @@ public final class ModelCenterServiceOuterClass {
        * List registered models about metadata of RegisteredModel.
        * </pre>
        *
-       * <code>rpc listRegisteredModels(.ListRegisteredModelsRequest) returns (.Response) { ... }</code>
+       * <code>rpc listRegisteredModels(.service.ListRegisteredModelsRequest) returns (.service.Response) { ... }</code>
        */
       public abstract void listRegisteredModels(
           com.google.protobuf.RpcController controller,
@@ -6102,7 +6102,7 @@ public final class ModelCenterServiceOuterClass {
        * Get registered model detail including metadata of RegisteredModel.
        * </pre>
        *
-       * <code>rpc getRegisteredModelDetail(.GetRegisteredModelDetailRequest) returns (.Response) { ... }</code>
+       * <code>rpc getRegisteredModelDetail(.service.GetRegisteredModelDetailRequest) returns (.service.Response) { ... }</code>
        */
       public abstract void getRegisteredModelDetail(
           com.google.protobuf.RpcController controller,
@@ -6114,7 +6114,7 @@ public final class ModelCenterServiceOuterClass {
        * Create model version with metadata of ModelVersion.
        * </pre>
        *
-       * <code>rpc createModelVersion(.CreateModelVersionRequest) returns (.Response) { ... }</code>
+       * <code>rpc createModelVersion(.service.CreateModelVersionRequest) returns (.service.Response) { ... }</code>
        */
       public abstract void createModelVersion(
           com.google.protobuf.RpcController controller,
@@ -6126,7 +6126,7 @@ public final class ModelCenterServiceOuterClass {
        * Update model version with metadata of ModelVersion.
        * </pre>
        *
-       * <code>rpc updateModelVersion(.UpdateModelVersionRequest) returns (.Response) { ... }</code>
+       * <code>rpc updateModelVersion(.service.UpdateModelVersionRequest) returns (.service.Response) { ... }</code>
        */
       public abstract void updateModelVersion(
           com.google.protobuf.RpcController controller,
@@ -6138,7 +6138,7 @@ public final class ModelCenterServiceOuterClass {
        * Delete model version with metadata of ModelVersion.
        * </pre>
        *
-       * <code>rpc deleteModelVersion(.DeleteModelVersionRequest) returns (.Response) { ... }</code>
+       * <code>rpc deleteModelVersion(.service.DeleteModelVersionRequest) returns (.service.Response) { ... }</code>
        */
       public abstract void deleteModelVersion(
           com.google.protobuf.RpcController controller,
@@ -6150,7 +6150,7 @@ public final class ModelCenterServiceOuterClass {
        * Get model version detail with metadata of ModelVersion.
        * </pre>
        *
-       * <code>rpc getModelVersionDetail(.GetModelVersionDetailRequest) returns (.Response) { ... }</code>
+       * <code>rpc getModelVersionDetail(.service.GetModelVersionDetailRequest) returns (.service.Response) { ... }</code>
        */
       public abstract void getModelVersionDetail(
           com.google.protobuf.RpcController controller,
@@ -6351,7 +6351,7 @@ public final class ModelCenterServiceOuterClass {
      * Create registered model with metadata of RegisteredModel.
      * </pre>
      *
-     * <code>rpc createRegisteredModel(.CreateRegisteredModelRequest) returns (.Response) { ... }</code>
+     * <code>rpc createRegisteredModel(.service.CreateRegisteredModelRequest) returns (.service.Response) { ... }</code>
      */
     public abstract void createRegisteredModel(
         com.google.protobuf.RpcController controller,
@@ -6363,7 +6363,7 @@ public final class ModelCenterServiceOuterClass {
      * Update registered model with metadata of RegisteredModel.
      * </pre>
      *
-     * <code>rpc updateRegisteredModel(.UpdateRegisteredModelRequest) returns (.Response) { ... }</code>
+     * <code>rpc updateRegisteredModel(.service.UpdateRegisteredModelRequest) returns (.service.Response) { ... }</code>
      */
     public abstract void updateRegisteredModel(
         com.google.protobuf.RpcController controller,
@@ -6375,7 +6375,7 @@ public final class ModelCenterServiceOuterClass {
      * Delete registered model with metadata of RegisteredModel.
      * </pre>
      *
-     * <code>rpc deleteRegisteredModel(.DeleteRegisteredModelRequest) returns (.Response) { ... }</code>
+     * <code>rpc deleteRegisteredModel(.service.DeleteRegisteredModelRequest) returns (.service.Response) { ... }</code>
      */
     public abstract void deleteRegisteredModel(
         com.google.protobuf.RpcController controller,
@@ -6387,7 +6387,7 @@ public final class ModelCenterServiceOuterClass {
      * List registered models about metadata of RegisteredModel.
      * </pre>
      *
-     * <code>rpc listRegisteredModels(.ListRegisteredModelsRequest) returns (.Response) { ... }</code>
+     * <code>rpc listRegisteredModels(.service.ListRegisteredModelsRequest) returns (.service.Response) { ... }</code>
      */
     public abstract void listRegisteredModels(
         com.google.protobuf.RpcController controller,
@@ -6399,7 +6399,7 @@ public final class ModelCenterServiceOuterClass {
      * Get registered model detail including metadata of RegisteredModel.
      * </pre>
      *
-     * <code>rpc getRegisteredModelDetail(.GetRegisteredModelDetailRequest) returns (.Response) { ... }</code>
+     * <code>rpc getRegisteredModelDetail(.service.GetRegisteredModelDetailRequest) returns (.service.Response) { ... }</code>
      */
     public abstract void getRegisteredModelDetail(
         com.google.protobuf.RpcController controller,
@@ -6411,7 +6411,7 @@ public final class ModelCenterServiceOuterClass {
      * Create model version with metadata of ModelVersion.
      * </pre>
      *
-     * <code>rpc createModelVersion(.CreateModelVersionRequest) returns (.Response) { ... }</code>
+     * <code>rpc createModelVersion(.service.CreateModelVersionRequest) returns (.service.Response) { ... }</code>
      */
     public abstract void createModelVersion(
         com.google.protobuf.RpcController controller,
@@ -6423,7 +6423,7 @@ public final class ModelCenterServiceOuterClass {
      * Update model version with metadata of ModelVersion.
      * </pre>
      *
-     * <code>rpc updateModelVersion(.UpdateModelVersionRequest) returns (.Response) { ... }</code>
+     * <code>rpc updateModelVersion(.service.UpdateModelVersionRequest) returns (.service.Response) { ... }</code>
      */
     public abstract void updateModelVersion(
         com.google.protobuf.RpcController controller,
@@ -6435,7 +6435,7 @@ public final class ModelCenterServiceOuterClass {
      * Delete model version with metadata of ModelVersion.
      * </pre>
      *
-     * <code>rpc deleteModelVersion(.DeleteModelVersionRequest) returns (.Response) { ... }</code>
+     * <code>rpc deleteModelVersion(.service.DeleteModelVersionRequest) returns (.service.Response) { ... }</code>
      */
     public abstract void deleteModelVersion(
         com.google.protobuf.RpcController controller,
@@ -6447,7 +6447,7 @@ public final class ModelCenterServiceOuterClass {
      * Get model version detail with metadata of ModelVersion.
      * </pre>
      *
-     * <code>rpc getModelVersionDetail(.GetModelVersionDetailRequest) returns (.Response) { ... }</code>
+     * <code>rpc getModelVersionDetail(.service.GetModelVersionDetailRequest) returns (.service.Response) { ... }</code>
      */
     public abstract void getModelVersionDetail(
         com.google.protobuf.RpcController controller,
@@ -6910,54 +6910,54 @@ public final class ModelCenterServiceOuterClass {
 
     }
 
-    // @@protoc_insertion_point(class_scope:ModelCenterService)
+    // @@protoc_insertion_point(class_scope:service.ModelCenterService)
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_CreateRegisteredModelRequest_descriptor;
+    internal_static_service_CreateRegisteredModelRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_CreateRegisteredModelRequest_fieldAccessorTable;
+      internal_static_service_CreateRegisteredModelRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_UpdateRegisteredModelRequest_descriptor;
+    internal_static_service_UpdateRegisteredModelRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_UpdateRegisteredModelRequest_fieldAccessorTable;
+      internal_static_service_UpdateRegisteredModelRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_DeleteRegisteredModelRequest_descriptor;
+    internal_static_service_DeleteRegisteredModelRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_DeleteRegisteredModelRequest_fieldAccessorTable;
+      internal_static_service_DeleteRegisteredModelRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ListRegisteredModelsRequest_descriptor;
+    internal_static_service_ListRegisteredModelsRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_ListRegisteredModelsRequest_fieldAccessorTable;
+      internal_static_service_ListRegisteredModelsRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_GetRegisteredModelDetailRequest_descriptor;
+    internal_static_service_GetRegisteredModelDetailRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_GetRegisteredModelDetailRequest_fieldAccessorTable;
+      internal_static_service_GetRegisteredModelDetailRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_CreateModelVersionRequest_descriptor;
+    internal_static_service_CreateModelVersionRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_CreateModelVersionRequest_fieldAccessorTable;
+      internal_static_service_CreateModelVersionRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_UpdateModelVersionRequest_descriptor;
+    internal_static_service_UpdateModelVersionRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_UpdateModelVersionRequest_fieldAccessorTable;
+      internal_static_service_UpdateModelVersionRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_DeleteModelVersionRequest_descriptor;
+    internal_static_service_DeleteModelVersionRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_DeleteModelVersionRequest_fieldAccessorTable;
+      internal_static_service_DeleteModelVersionRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_GetModelVersionDetailRequest_descriptor;
+    internal_static_service_GetModelVersionDetailRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_GetModelVersionDetailRequest_fieldAccessorTable;
+      internal_static_service_GetModelVersionDetailRequest_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -6967,54 +6967,61 @@ public final class ModelCenterServiceOuterClass {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\032model_center_service.proto\032\rmessage.pr" +
-      "oto\032\034google/api/annotations.proto\"O\n\034Cre" +
-      "ateRegisteredModelRequest\022/\n\020registered_" +
-      "model\030\001 \001(\0132\025.RegisteredModelParam\"t\n\034Up" +
-      "dateRegisteredModelRequest\022#\n\nmodel_meta" +
-      "\030\001 \001(\0132\017.ModelMetaParam\022/\n\020registered_mo" +
-      "del\030\002 \001(\0132\025.RegisteredModelParam\"C\n\034Dele" +
-      "teRegisteredModelRequest\022#\n\nmodel_meta\030\001" +
-      " \001(\0132\017.ModelMetaParam\"\035\n\033ListRegisteredM" +
-      "odelsRequest\"F\n\037GetRegisteredModelDetail" +
-      "Request\022#\n\nmodel_meta\030\001 \001(\0132\017.ModelMetaP" +
-      "aram\"k\n\031CreateModelVersionRequest\022#\n\nmod" +
-      "el_meta\030\001 \001(\0132\017.ModelMetaParam\022)\n\rmodel_" +
-      "version\030\002 \001(\0132\022.ModelVersionParam\"k\n\031Upd" +
-      "ateModelVersionRequest\022#\n\nmodel_meta\030\001 \001" +
-      "(\0132\017.ModelMetaParam\022)\n\rmodel_version\030\002 \001" +
-      "(\0132\022.ModelVersionParam\"@\n\031DeleteModelVer" +
-      "sionRequest\022#\n\nmodel_meta\030\001 \001(\0132\017.ModelM" +
-      "etaParam\"C\n\034GetModelVersionDetailRequest" +
-      "\022#\n\nmodel_meta\030\001 \001(\0132\017.ModelMetaParam2\273\010" +
-      "\n\022ModelCenterService\022x\n\025createRegistered" +
-      "Model\022\035.CreateRegisteredModelRequest\032\t.R" +
-      "esponse\"5\202\323\344\223\002/\"*/aiflow/model-center/re" +
-      "gister-model/create:\001*\022x\n\025updateRegister" +
-      "edModel\022\035.UpdateRegisteredModelRequest\032\t" +
-      ".Response\"5\202\323\344\223\002/2*/aiflow/model-center/" +
-      "register-model/update:\001*\022x\n\025deleteRegist" +
-      "eredModel\022\035.DeleteRegisteredModelRequest" +
-      "\032\t.Response\"5\202\323\344\223\002/2*/aiflow/model-cente" +
-      "r/register-model/update:\001*\022q\n\024listRegist" +
-      "eredModels\022\034.ListRegisteredModelsRequest" +
-      "\032\t.Response\"0\202\323\344\223\002*\022(/aiflow/model-cente" +
-      "r/register-model/list\022x\n\030getRegisteredMo" +
-      "delDetail\022 .GetRegisteredModelDetailRequ" +
-      "est\032\t.Response\"/\202\323\344\223\002)\022\'/aiflow/model-ce" +
-      "nter/register-model/get\022q\n\022createModelVe" +
-      "rsion\022\032.CreateModelVersionRequest\032\t.Resp" +
+      "\n\032model_center_service.proto\022\007service\032\rm" +
+      "essage.proto\032\034google/api/annotations.pro" +
+      "to\"W\n\034CreateRegisteredModelRequest\0227\n\020re" +
+      "gistered_model\030\001 \001(\0132\035.service.Registere" +
+      "dModelParam\"\204\001\n\034UpdateRegisteredModelReq" +
+      "uest\022+\n\nmodel_meta\030\001 \001(\0132\027.service.Model" +
+      "MetaParam\0227\n\020registered_model\030\002 \001(\0132\035.se" +
+      "rvice.RegisteredModelParam\"K\n\034DeleteRegi" +
+      "steredModelRequest\022+\n\nmodel_meta\030\001 \001(\0132\027" +
+      ".service.ModelMetaParam\"\035\n\033ListRegistere" +
+      "dModelsRequest\"N\n\037GetRegisteredModelDeta" +
+      "ilRequest\022+\n\nmodel_meta\030\001 \001(\0132\027.service." +
+      "ModelMetaParam\"{\n\031CreateModelVersionRequ" +
+      "est\022+\n\nmodel_meta\030\001 \001(\0132\027.service.ModelM" +
+      "etaParam\0221\n\rmodel_version\030\002 \001(\0132\032.servic" +
+      "e.ModelVersionParam\"{\n\031UpdateModelVersio" +
+      "nRequest\022+\n\nmodel_meta\030\001 \001(\0132\027.service.M" +
+      "odelMetaParam\0221\n\rmodel_version\030\002 \001(\0132\032.s" +
+      "ervice.ModelVersionParam\"H\n\031DeleteModelV" +
+      "ersionRequest\022+\n\nmodel_meta\030\001 \001(\0132\027.serv" +
+      "ice.ModelMetaParam\"K\n\034GetModelVersionDet" +
+      "ailRequest\022+\n\nmodel_meta\030\001 \001(\0132\027.service" +
+      ".ModelMetaParam2\324\t\n\022ModelCenterService\022\210" +
+      "\001\n\025createRegisteredModel\022%.service.Creat" +
+      "eRegisteredModelRequest\032\021.service.Respon" +
+      "se\"5\202\323\344\223\002/\"*/aiflow/model-center/registe" +
+      "r-model/create:\001*\022\210\001\n\025updateRegisteredMo" +
+      "del\022%.service.UpdateRegisteredModelReque" +
+      "st\032\021.service.Response\"5\202\323\344\223\002/2*/aiflow/m" +
+      "odel-center/register-model/update:\001*\022\210\001\n" +
+      "\025deleteRegisteredModel\022%.service.DeleteR" +
+      "egisteredModelRequest\032\021.service.Response" +
+      "\"5\202\323\344\223\002/2*/aiflow/model-center/register-" +
+      "model/update:\001*\022\201\001\n\024listRegisteredModels" +
+      "\022$.service.ListRegisteredModelsRequest\032\021" +
+      ".service.Response\"0\202\323\344\223\002*\022(/aiflow/model" +
+      "-center/register-model/list\022\210\001\n\030getRegis" +
+      "teredModelDetail\022(.service.GetRegistered" +
+      "ModelDetailRequest\032\021.service.Response\"/\202" +
+      "\323\344\223\002)\022\'/aiflow/model-center/register-mod" +
+      "el/get\022\201\001\n\022createModelVersion\022\".service." +
+      "CreateModelVersionRequest\032\021.service.Resp" +
       "onse\"4\202\323\344\223\002.\")/aiflow/model-center/model" +
-      "-version/create:\001*\022q\n\022updateModelVersion" +
-      "\022\032.UpdateModelVersionRequest\032\t.Response\"" +
-      "4\202\323\344\223\002.2)/aiflow/model-center/model-vers" +
-      "ion/update:\001*\022q\n\022deleteModelVersion\022\032.De" +
-      "leteModelVersionRequest\032\t.Response\"4\202\323\344\223" +
-      "\002.2)/aiflow/model-center/model-version/d" +
-      "elete:\001*\022q\n\025getModelVersionDetail\022\035.GetM" +
-      "odelVersionDetailRequest\032\t.Response\".\202\323\344" +
-      "\223\002(\022&/aiflow/model-center/model-version/" +
-      "getB\030\n\020com.aiflow.proto\210\001\001\220\001\001b\006proto3"
+      "-version/create:\001*\022\201\001\n\022updateModelVersio" +
+      "n\022\".service.UpdateModelVersionRequest\032\021." +
+      "service.Response\"4\202\323\344\223\002.2)/aiflow/model-" +
+      "center/model-version/update:\001*\022\201\001\n\022delet" +
+      "eModelVersion\022\".service.DeleteModelVersi" +
+      "onRequest\032\021.service.Response\"4\202\323\344\223\002.2)/a" +
+      "iflow/model-center/model-version/delete:" +
+      "\001*\022\201\001\n\025getModelVersionDetail\022%.service.G" +
+      "etModelVersionDetailRequest\032\021.service.Re" +
+      "sponse\".\202\323\344\223\002(\022&/aiflow/model-center/mod" +
+      "el-version/getB\030\n\020com.aiflow.proto\210\001\001\220\001\001" +
+      "b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -7022,59 +7029,59 @@ public final class ModelCenterServiceOuterClass {
           com.aiflow.proto.Message.getDescriptor(),
           com.google.api.AnnotationsProto.getDescriptor(),
         });
-    internal_static_CreateRegisteredModelRequest_descriptor =
+    internal_static_service_CreateRegisteredModelRequest_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_CreateRegisteredModelRequest_fieldAccessorTable = new
+    internal_static_service_CreateRegisteredModelRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_CreateRegisteredModelRequest_descriptor,
+        internal_static_service_CreateRegisteredModelRequest_descriptor,
         new java.lang.String[] { "RegisteredModel", });
-    internal_static_UpdateRegisteredModelRequest_descriptor =
+    internal_static_service_UpdateRegisteredModelRequest_descriptor =
       getDescriptor().getMessageTypes().get(1);
-    internal_static_UpdateRegisteredModelRequest_fieldAccessorTable = new
+    internal_static_service_UpdateRegisteredModelRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_UpdateRegisteredModelRequest_descriptor,
+        internal_static_service_UpdateRegisteredModelRequest_descriptor,
         new java.lang.String[] { "ModelMeta", "RegisteredModel", });
-    internal_static_DeleteRegisteredModelRequest_descriptor =
+    internal_static_service_DeleteRegisteredModelRequest_descriptor =
       getDescriptor().getMessageTypes().get(2);
-    internal_static_DeleteRegisteredModelRequest_fieldAccessorTable = new
+    internal_static_service_DeleteRegisteredModelRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_DeleteRegisteredModelRequest_descriptor,
+        internal_static_service_DeleteRegisteredModelRequest_descriptor,
         new java.lang.String[] { "ModelMeta", });
-    internal_static_ListRegisteredModelsRequest_descriptor =
+    internal_static_service_ListRegisteredModelsRequest_descriptor =
       getDescriptor().getMessageTypes().get(3);
-    internal_static_ListRegisteredModelsRequest_fieldAccessorTable = new
+    internal_static_service_ListRegisteredModelsRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_ListRegisteredModelsRequest_descriptor,
+        internal_static_service_ListRegisteredModelsRequest_descriptor,
         new java.lang.String[] { });
-    internal_static_GetRegisteredModelDetailRequest_descriptor =
+    internal_static_service_GetRegisteredModelDetailRequest_descriptor =
       getDescriptor().getMessageTypes().get(4);
-    internal_static_GetRegisteredModelDetailRequest_fieldAccessorTable = new
+    internal_static_service_GetRegisteredModelDetailRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_GetRegisteredModelDetailRequest_descriptor,
+        internal_static_service_GetRegisteredModelDetailRequest_descriptor,
         new java.lang.String[] { "ModelMeta", });
-    internal_static_CreateModelVersionRequest_descriptor =
+    internal_static_service_CreateModelVersionRequest_descriptor =
       getDescriptor().getMessageTypes().get(5);
-    internal_static_CreateModelVersionRequest_fieldAccessorTable = new
+    internal_static_service_CreateModelVersionRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_CreateModelVersionRequest_descriptor,
+        internal_static_service_CreateModelVersionRequest_descriptor,
         new java.lang.String[] { "ModelMeta", "ModelVersion", });
-    internal_static_UpdateModelVersionRequest_descriptor =
+    internal_static_service_UpdateModelVersionRequest_descriptor =
       getDescriptor().getMessageTypes().get(6);
-    internal_static_UpdateModelVersionRequest_fieldAccessorTable = new
+    internal_static_service_UpdateModelVersionRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_UpdateModelVersionRequest_descriptor,
+        internal_static_service_UpdateModelVersionRequest_descriptor,
         new java.lang.String[] { "ModelMeta", "ModelVersion", });
-    internal_static_DeleteModelVersionRequest_descriptor =
+    internal_static_service_DeleteModelVersionRequest_descriptor =
       getDescriptor().getMessageTypes().get(7);
-    internal_static_DeleteModelVersionRequest_fieldAccessorTable = new
+    internal_static_service_DeleteModelVersionRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_DeleteModelVersionRequest_descriptor,
+        internal_static_service_DeleteModelVersionRequest_descriptor,
         new java.lang.String[] { "ModelMeta", });
-    internal_static_GetModelVersionDetailRequest_descriptor =
+    internal_static_service_GetModelVersionDetailRequest_descriptor =
       getDescriptor().getMessageTypes().get(8);
-    internal_static_GetModelVersionDetailRequest_fieldAccessorTable = new
+    internal_static_service_GetModelVersionDetailRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_GetModelVersionDetailRequest_descriptor,
+        internal_static_service_GetModelVersionDetailRequest_descriptor,
         new java.lang.String[] { "ModelMeta", });
     com.google.protobuf.ExtensionRegistry registry =
         com.google.protobuf.ExtensionRegistry.newInstance();

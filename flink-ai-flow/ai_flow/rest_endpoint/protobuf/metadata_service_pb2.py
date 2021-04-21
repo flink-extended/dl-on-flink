@@ -38,11 +38,11 @@ from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='metadata_service.proto',
-  package='',
+  package='service',
   syntax='proto3',
   serialized_options=b'\n\020com.aiflow.proto\210\001\001\220\001\001',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x16metadata_service.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\rmessage.proto\x1a\x1cgoogle/api/annotations.proto\"\x17\n\tIdRequest\x12\n\n\x02id\x18\x01 \x01(\x03\"\x1b\n\x0bNameRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"0\n\x0bListRequest\x12\x11\n\tpage_size\x18\x01 \x01(\x03\x12\x0e\n\x06offset\x18\x02 \x01(\x03\"E\n\x0cMetaResponse\x12\x13\n\x0breturn_code\x18\x01 \x01(\t\x12\x12\n\nreturn_msg\x18\x02 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x03 \x01(\t\"8\n\x16RegisterExampleRequest\x12\x1e\n\x07\x65xample\x18\x01 \x01(\x0b\x32\r.ExampleProto\":\n\x17RegisterExamplesRequest\x12\x1f\n\x08\x65xamples\x18\x01 \x03(\x0b\x32\r.ExampleProto\"3\n\x10\x45xampleListProto\x12\x1f\n\x08\x65xamples\x18\x01 \x03(\x0b\x32\r.ExampleProto\"\xee\x06\n\x14UpdateExampleRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x39\n\nproperties\x18\x02 \x03(\x0b\x32%.UpdateExampleRequest.PropertiesEntry\x12.\n\x0csupport_type\x18\x03 \x01(\x0e\x32\x18.ExampleSupportTypeProto\x12\x11\n\tname_list\x18\x04 \x03(\t\x12!\n\ttype_list\x18\x05 \x03(\x0e\x32\x0e.DataTypeProto\x12/\n\tdata_type\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\x0b\x64\x61ta_format\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tbatch_uri\x18\x08 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x30\n\nstream_uri\x18\t \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\x0b\x64\x65scription\x18\n \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x30\n\x0bupdate_time\x18\x0b \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x32\n\x0c\x63\x61talog_name\x18\x0c \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0c\x63\x61talog_type\x18\r \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x36\n\x10\x63\x61talog_database\x18\x0e \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12<\n\x16\x63\x61talog_connection_uri\x18\x0f \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x35\n\x0f\x63\x61talog_version\x18\x10 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x33\n\rcatalog_table\x18\x11 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"K\n\x1cRegisterModelRelationRequest\x12+\n\x0emodel_relation\x18\x01 \x01(\x0b\x32\x13.ModelRelationProto\"2\n\x14RegisterModelRequest\x12\x1a\n\x05model\x18\x01 \x01(\x0b\x32\x0b.ModelProto\"F\n\x16ModelRelationListProto\x12,\n\x0fmodel_relations\x18\x01 \x03(\x0b\x32\x13.ModelRelationProto\"9\n\x17ModelVersionNameRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08model_id\x18\x02 \x01(\x03\"a\n#RegisterModelVersionRelationRequest\x12:\n\x16model_version_relation\x18\x01 \x01(\x0b\x32\x1a.ModelVersionRelationProto\"H\n\x1bRegisterModelVersionRequest\x12)\n\rmodel_version\x18\x01 \x01(\x0b\x32\x12.ModelVersionProto\"V\n\x1fListModelVersionRelationRequest\x12\x10\n\x08model_id\x18\x01 \x01(\x03\x12\x11\n\tpage_size\x18\x02 \x01(\x03\x12\x0e\n\x06offset\x18\x03 \x01(\x03\"S\n\x1dModelVersionRelationListProto\x12\x32\n\x0emodel_versions\x18\x01 \x03(\x0b\x32\x1a.ModelVersionRelationProto\"C\n\x15ModelVersionListProto\x12*\n\x0emodel_versions\x18\x01 \x03(\x0b\x32\x12.ModelVersionProto\" \n\x10ModelNameRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\",\n\x12RegisterJobRequest\x12\x16\n\x03job\x18\x01 \x01(\x0b\x32\t.JobProto\"\xa3\x03\n\x10UpdateJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12:\n\x15workflow_execution_id\x18\x02 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x1e\n\tjob_state\x18\x03 \x01(\x0e\x32\x0b.StateProto\x12\x35\n\nproperties\x18\x04 \x03(\x0b\x32!.UpdateJobRequest.PropertiesEntry\x12,\n\x06job_id\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12-\n\x08\x65nd_time\x18\x06 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x07log_uri\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tsignature\x18\x08 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"A\n\x15UpdateJobStateRequest\x12\x1a\n\x05state\x18\x01 \x01(\x0e\x32\x0b.StateProto\x12\x0c\n\x04name\x18\x02 \x01(\t\"9\n\x17UpdateJobEndTimeRequest\x12\x10\n\x08\x65nd_time\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\"\'\n\x0cJobListProto\x12\x17\n\x04jobs\x18\x01 \x03(\x0b\x32\t.JobProto\"W\n RegisterWorkFlowExecutionRequest\x12\x33\n\x12workflow_execution\x18\x01 \x01(\x0b\x32\x17.WorkflowExecutionProto\"\xc1\x03\n\x1eUpdateWorkflowExecutionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\nproject_id\x18\x02 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12$\n\x0f\x65xecution_state\x18\x04 \x01(\x0e\x32\x0b.StateProto\x12\x43\n\nproperties\x18\x05 \x03(\x0b\x32/.UpdateWorkflowExecutionRequest.PropertiesEntry\x12-\n\x08\x65nd_time\x18\x06 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x07log_uri\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x33\n\rworkflow_json\x18\x08 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tsignature\x18\t \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"R\n\x1aWorkFlowExecutionListProto\x12\x34\n\x13workflow_executions\x18\x01 \x03(\x0b\x32\x17.WorkflowExecutionProto\"G\n%UpdateWorkflowExecutionEndTimeRequest\x12\x10\n\x08\x65nd_time\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\"O\n#UpdateWorkflowExecutionStateRequest\x12\x1a\n\x05state\x18\x01 \x01(\x0e\x32\x0b.StateProto\x12\x0c\n\x04name\x18\x02 \x01(\t\"8\n\x16RegisterProjectRequest\x12\x1e\n\x07project\x18\x01 \x01(\x0b\x32\r.ProjectProto\"\xcd\x02\n\x14UpdateProjectRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x39\n\nproperties\x18\x02 \x03(\x0b\x32%.UpdateProjectRequest.PropertiesEntry\x12\x32\n\x0cproject_type\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12)\n\x03uri\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12*\n\x04user\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12.\n\x08password\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"3\n\x10ProjectListProto\x12\x1f\n\x08projects\x18\x01 \x03(\x0b\x32\r.ProjectProto\";\n\x17RegisterArtifactRequest\x12 \n\x08\x61rtifact\x18\x01 \x01(\x0b\x32\x0e.ArtifactProto\"\x8f\x03\n\x15UpdateArtifactRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12:\n\nproperties\x18\x02 \x03(\x0b\x32&.UpdateArtifactRequest.PropertiesEntry\x12\x31\n\x0b\x64\x61ta_format\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tbatch_uri\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x30\n\nstream_uri\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\x0b\x64\x65scription\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x30\n\x0bupdate_time\x18\x07 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"6\n\x11\x41rtifactListProto\x12!\n\tartifacts\x18\x01 \x03(\x0b\x32\x0e.ArtifactProto2\x80\x35\n\x0fMetadataService\x12Y\n\x0egetExampleById\x12\n.IdRequest\x1a\t.Response\"0\x82\xd3\xe4\x93\x02*\"%/aiflow/metadata_store/example/get/id:\x01*\x12_\n\x10getExampleByName\x12\x0c.NameRequest\x1a\t.Response\"2\x82\xd3\xe4\x93\x02,\"\'/aiflow/metadata_store/example/get/name:\x01*\x12V\n\x0blistExample\x12\x0c.ListRequest\x1a\t.Response\".\x82\xd3\xe4\x93\x02(\"#/aiflow/metadata_store/example/list:\x01*\x12\x65\n\x0fregisterExample\x12\x17.RegisterExampleRequest\x1a\t.Response\".\x82\xd3\xe4\x93\x02(\"#/aiflow/metadata_store/example/save:\x01*\x12}\n\x1aregisterExampleWithCatalog\x12\x17.RegisterExampleRequest\x1a\t.Response\";\x82\xd3\xe4\x93\x02\x35\"0/aiflow/metadata_store/example/save_with_catalog:\x01*\x12h\n\x10registerExamples\x12\x18.RegisterExamplesRequest\x1a\t.Response\"/\x82\xd3\xe4\x93\x02)\"$/aiflow/metadata_store/examples/save:\x01*\x12\x63\n\rupdateExample\x12\x15.UpdateExampleRequest\x1a\t.Response\"0\x82\xd3\xe4\x93\x02*\"%/aiflow/metadata_store/example/update:\x01*\x12_\n\x11\x64\x65leteExampleById\x12\n.IdRequest\x1a\t.Response\"3\x82\xd3\xe4\x93\x02-\"(/aiflow/metadata_store/example/delete/id:\x01*\x12\x65\n\x13\x64\x65leteExampleByName\x12\x0c.NameRequest\x1a\t.Response\"5\x82\xd3\xe4\x93\x02/\"*/aiflow/metadata_store/example/delete/name:\x01*\x12\x66\n\x14getModelRelationById\x12\n.IdRequest\x1a\t.Response\"7\x82\xd3\xe4\x93\x02\x31\",/aiflow/metadata_store/model_relation/get/id:\x01*\x12l\n\x16getModelRelationByName\x12\x0c.NameRequest\x1a\t.Response\"9\x82\xd3\xe4\x93\x02\x33\"./aiflow/metadata_store/model_relation/get/name:\x01*\x12\x63\n\x11listModelRelation\x12\x0c.ListRequest\x1a\t.Response\"5\x82\xd3\xe4\x93\x02/\"*/aiflow/metadata_store/model_relation/list:\x01*\x12x\n\x15registerModelRelation\x12\x1d.RegisterModelRelationRequest\x1a\t.Response\"5\x82\xd3\xe4\x93\x02/\"*/aiflow/metadata_store/model_relation/save:\x01*\x12l\n\x17\x64\x65leteModelRelationById\x12\n.IdRequest\x1a\t.Response\":\x82\xd3\xe4\x93\x02\x34\"//aiflow/metadata_store/model_relation/delete/id:\x01*\x12r\n\x19\x64\x65leteModelRelationByName\x12\x0c.NameRequest\x1a\t.Response\"<\x82\xd3\xe4\x93\x02\x36\"1/aiflow/metadata_store/model_relation/delete/name:\x01*\x12U\n\x0cgetModelById\x12\n.IdRequest\x1a\t.Response\".\x82\xd3\xe4\x93\x02(\"#/aiflow/metadata_store/model/get/id:\x01*\x12[\n\x0egetModelByName\x12\x0c.NameRequest\x1a\t.Response\"0\x82\xd3\xe4\x93\x02*\"%/aiflow/metadata_store/model/get/name:\x01*\x12_\n\rregisterModel\x12\x15.RegisterModelRequest\x1a\t.Response\",\x82\xd3\xe4\x93\x02&\"!/aiflow/metadata_store/model/save:\x01*\x12[\n\x0f\x64\x65leteModelById\x12\n.IdRequest\x1a\t.Response\"1\x82\xd3\xe4\x93\x02+\"&/aiflow/metadata_store/model/delete/id:\x01*\x12\x61\n\x11\x64\x65leteModelByName\x12\x0c.NameRequest\x1a\t.Response\"3\x82\xd3\xe4\x93\x02-\"(/aiflow/metadata_store/model/delete/name:\x01*\x12\x8c\x01\n getModelVersionRelationByVersion\x12\x18.ModelVersionNameRequest\x1a\t.Response\"C\x82\xd3\xe4\x93\x02=\"8/aiflow/metadata_store/modelVersion_relation/get/version:\x01*\x12\x85\x01\n\x18listModelVersionRelation\x12 .ListModelVersionRelationRequest\x1a\t.Response\"<\x82\xd3\xe4\x93\x02\x36\"1/aiflow/metadata_store/modelVersion_relation/list:\x01*\x12\x8d\x01\n\x1cregisterModelVersionRelation\x12$.RegisterModelVersionRelationRequest\x1a\t.Response\"<\x82\xd3\xe4\x93\x02\x36\"1/aiflow/metadata_store/modelVersion_relation/save:\x01*\x12\x92\x01\n#deleteModelVersionRelationByVersion\x12\x18.ModelVersionNameRequest\x1a\t.Response\"F\x82\xd3\xe4\x93\x02@\";/aiflow/metadata_store/modelVersion_relation/delete/version:\x01*\x12{\n\x18getModelVersionByVersion\x12\x18.ModelVersionNameRequest\x1a\t.Response\":\x82\xd3\xe4\x93\x02\x34\"//aiflow/metadata_store/modelVersion/get/version:\x01*\x12t\n\x14registerModelVersion\x12\x1c.RegisterModelVersionRequest\x1a\t.Response\"3\x82\xd3\xe4\x93\x02-\"(/aiflow/metadata_store/modelVersion/save:\x01*\x12\x81\x01\n\x1b\x64\x65leteModelVersionByVersion\x12\x18.ModelVersionNameRequest\x1a\t.Response\"=\x82\xd3\xe4\x93\x02\x37\"2/aiflow/metadata_store/modelVersion/delete/version:\x01*\x12{\n\x17getDeployedModelVersion\x12\x11.ModelNameRequest\x1a\t.Response\"B\x82\xd3\xe4\x93\x02<\"7/aiflow/metadata_store/modelVersion/get_serving_version:\x01*\x12\x91\x01\n\x1egetLatestValidatedModelVersion\x12\x11.ModelNameRequest\x1a\t.Response\"Q\x82\xd3\xe4\x93\x02K\"F/aiflow/metadata_store/modelVersion/get_latest_validated_model_version:\x01*\x12\x91\x01\n\x1egetLatestGeneratedModelVersion\x12\x11.ModelNameRequest\x1a\t.Response\"Q\x82\xd3\xe4\x93\x02K\"F/aiflow/metadata_store/modelVersion/get_latest_generated_model_version:\x01*\x12m\n\x18getWorkFlowExecutionById\x12\n.IdRequest\x1a\t.Response\":\x82\xd3\xe4\x93\x02\x34\"//aiflow/metadata_store/workflowExecution/get/id:\x01*\x12s\n\x1agetWorkFlowExecutionByName\x12\x0c.NameRequest\x1a\t.Response\"<\x82\xd3\xe4\x93\x02\x36\"1/aiflow/metadata_store/workflowExecution/get/name:\x01*\x12j\n\x15listWorkFlowExecution\x12\x0c.ListRequest\x1a\t.Response\"8\x82\xd3\xe4\x93\x02\x32\"-/aiflow/metadata_store/workflowExecution/list:\x01*\x12\x83\x01\n\x19registerWorkFlowExecution\x12!.RegisterWorkFlowExecutionRequest\x1a\t.Response\"8\x82\xd3\xe4\x93\x02\x32\"-/aiflow/metadata_store/workflowExecution/save:\x01*\x12\x81\x01\n\x17updateWorkflowExecution\x12\x1f.UpdateWorkflowExecutionRequest\x1a\t.Response\":\x82\xd3\xe4\x93\x02\x34\"//aiflow/metadata_store/workflowExecution/update:\x01*\x12s\n\x1b\x64\x65leteWorkflowExecutionById\x12\n.IdRequest\x1a\t.Response\"=\x82\xd3\xe4\x93\x02\x37\"2/aiflow/metadata_store/workflowExecution/delete/id:\x01*\x12y\n\x1d\x64\x65leteWorkflowExecutionByName\x12\x0c.NameRequest\x1a\t.Response\"?\x82\xd3\xe4\x93\x02\x39\"4/aiflow/metadata_store/workflowExecution/delete/name:\x01*\x12\x98\x01\n\x1eupdateWorkflowExecutionEndTime\x12&.UpdateWorkflowExecutionEndTimeRequest\x1a\t.Response\"C\x82\xd3\xe4\x93\x02=\"8/aiflow/metadata_store/workflowExecution/update/end_time:\x01*\x12\x91\x01\n\x1cupdateWorkflowExecutionState\x12$.UpdateWorkflowExecutionStateRequest\x1a\t.Response\"@\x82\xd3\xe4\x93\x02:\"5/aiflow/metadata_store/workflowExecution/update/state:\x01*\x12Q\n\ngetJobById\x12\n.IdRequest\x1a\t.Response\",\x82\xd3\xe4\x93\x02&\"!/aiflow/metadata_store/job/get/id:\x01*\x12W\n\x0cgetJobByName\x12\x0c.NameRequest\x1a\t.Response\".\x82\xd3\xe4\x93\x02(\"#/aiflow/metadata_store/job/get/name:\x01*\x12N\n\x07listJob\x12\x0c.ListRequest\x1a\t.Response\"*\x82\xd3\xe4\x93\x02$\"\x1f/aiflow/metadata_store/job/list:\x01*\x12Y\n\x0bregisterJob\x12\x13.RegisterJobRequest\x1a\t.Response\"*\x82\xd3\xe4\x93\x02$\"\x1f/aiflow/metadata_store/job/save:\x01*\x12W\n\tupdateJob\x12\x11.UpdateJobRequest\x1a\t.Response\",\x82\xd3\xe4\x93\x02&\"!/aiflow/metadata_store/job/update:\x01*\x12g\n\x0eupdateJobState\x12\x16.UpdateJobStateRequest\x1a\t.Response\"2\x82\xd3\xe4\x93\x02,\"\'/aiflow/metadata_store/job/update/state:\x01*\x12n\n\x10updateJobEndTime\x12\x18.UpdateJobEndTimeRequest\x1a\t.Response\"5\x82\xd3\xe4\x93\x02/\"*/aiflow/metadata_store/job/update/end_time:\x01*\x12W\n\rdeleteJobById\x12\n.IdRequest\x1a\t.Response\"/\x82\xd3\xe4\x93\x02)\"$/aiflow/metadata_store/job/delete/id:\x01*\x12]\n\x0f\x64\x65leteJobByName\x12\x0c.NameRequest\x1a\t.Response\"1\x82\xd3\xe4\x93\x02+\"&/aiflow/metadata_store/job/delete/name:\x01*\x12Y\n\x0egetProjectById\x12\n.IdRequest\x1a\t.Response\"0\x82\xd3\xe4\x93\x02*\"%/aiflow/metadata_store/project/get/id:\x01*\x12_\n\x10getProjectByName\x12\x0c.NameRequest\x1a\t.Response\"2\x82\xd3\xe4\x93\x02,\"\'/aiflow/metadata_store/project/get/name:\x01*\x12\x65\n\x0fregisterProject\x12\x17.RegisterProjectRequest\x1a\t.Response\".\x82\xd3\xe4\x93\x02(\"#/aiflow/metadata_store/project/save:\x01*\x12\x63\n\rupdateProject\x12\x15.UpdateProjectRequest\x1a\t.Response\"0\x82\xd3\xe4\x93\x02*\"%/aiflow/metadata_store/project/update:\x01*\x12V\n\x0blistProject\x12\x0c.ListRequest\x1a\t.Response\".\x82\xd3\xe4\x93\x02(\"#/aiflow/metadata_store/project/list:\x01*\x12_\n\x11\x64\x65leteProjectById\x12\n.IdRequest\x1a\t.Response\"3\x82\xd3\xe4\x93\x02-\"(/aiflow/metadata_store/project/delete/id:\x01*\x12\x65\n\x13\x64\x65leteProjectByName\x12\x0c.NameRequest\x1a\t.Response\"5\x82\xd3\xe4\x93\x02/\"*/aiflow/metadata_store/project/delete/name:\x01*\x12[\n\x0fgetArtifactById\x12\n.IdRequest\x1a\t.Response\"1\x82\xd3\xe4\x93\x02+\"&/aiflow/metadata_store/artifact/get/id:\x01*\x12\x61\n\x11getArtifactByName\x12\x0c.NameRequest\x1a\t.Response\"3\x82\xd3\xe4\x93\x02-\"(/aiflow/metadata_store/artifact/get/name:\x01*\x12\x66\n\x0eupdateArtifact\x12\x16.UpdateArtifactRequest\x1a\t.Response\"1\x82\xd3\xe4\x93\x02+\"&/aiflow/metadata_store/artifact/update:\x01*\x12h\n\x10registerArtifact\x12\x18.RegisterArtifactRequest\x1a\t.Response\"/\x82\xd3\xe4\x93\x02)\"$/aiflow/metadata_store/artifact/save:\x01*\x12X\n\x0clistArtifact\x12\x0c.ListRequest\x1a\t.Response\"/\x82\xd3\xe4\x93\x02)\"$/aiflow/metadata_store/artifact/list:\x01*\x12\x61\n\x12\x64\x65leteArtifactById\x12\n.IdRequest\x1a\t.Response\"4\x82\xd3\xe4\x93\x02.\")/aiflow/metadata_store/artifact/delete/id:\x01*\x12g\n\x14\x64\x65leteArtifactByName\x12\x0c.NameRequest\x1a\t.Response\"6\x82\xd3\xe4\x93\x02\x30\"+/aiflow/metadata_store/artifact/delete/name:\x01*B\x18\n\x10\x63om.aiflow.proto\x88\x01\x01\x90\x01\x01\x62\x06proto3'
+  serialized_pb=b'\n\x16metadata_service.proto\x12\x07service\x1a\x1egoogle/protobuf/wrappers.proto\x1a\rmessage.proto\x1a\x1cgoogle/api/annotations.proto\"\x17\n\tIdRequest\x12\n\n\x02id\x18\x01 \x01(\x03\"\x1b\n\x0bNameRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"0\n\x0bListRequest\x12\x11\n\tpage_size\x18\x01 \x01(\x03\x12\x0e\n\x06offset\x18\x02 \x01(\x03\"E\n\x0cMetaResponse\x12\x13\n\x0breturn_code\x18\x01 \x01(\t\x12\x12\n\nreturn_msg\x18\x02 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x03 \x01(\t\"@\n\x16RegisterExampleRequest\x12&\n\x07\x65xample\x18\x01 \x01(\x0b\x32\x15.service.ExampleProto\"B\n\x17RegisterExamplesRequest\x12\'\n\x08\x65xamples\x18\x01 \x03(\x0b\x32\x15.service.ExampleProto\";\n\x10\x45xampleListProto\x12\'\n\x08\x65xamples\x18\x01 \x03(\x0b\x32\x15.service.ExampleProto\"\x86\x07\n\x14UpdateExampleRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x41\n\nproperties\x18\x02 \x03(\x0b\x32-.service.UpdateExampleRequest.PropertiesEntry\x12\x36\n\x0csupport_type\x18\x03 \x01(\x0e\x32 .service.ExampleSupportTypeProto\x12\x11\n\tname_list\x18\x04 \x03(\t\x12)\n\ttype_list\x18\x05 \x03(\x0e\x32\x16.service.DataTypeProto\x12/\n\tdata_type\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\x0b\x64\x61ta_format\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tbatch_uri\x18\x08 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x30\n\nstream_uri\x18\t \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\x0b\x64\x65scription\x18\n \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x30\n\x0bupdate_time\x18\x0b \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x32\n\x0c\x63\x61talog_name\x18\x0c \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0c\x63\x61talog_type\x18\r \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x36\n\x10\x63\x61talog_database\x18\x0e \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12<\n\x16\x63\x61talog_connection_uri\x18\x0f \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x35\n\x0f\x63\x61talog_version\x18\x10 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x33\n\rcatalog_table\x18\x11 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"S\n\x1cRegisterModelRelationRequest\x12\x33\n\x0emodel_relation\x18\x01 \x01(\x0b\x32\x1b.service.ModelRelationProto\":\n\x14RegisterModelRequest\x12\"\n\x05model\x18\x01 \x01(\x0b\x32\x13.service.ModelProto\"N\n\x16ModelRelationListProto\x12\x34\n\x0fmodel_relations\x18\x01 \x03(\x0b\x32\x1b.service.ModelRelationProto\"9\n\x17ModelVersionNameRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08model_id\x18\x02 \x01(\x03\"i\n#RegisterModelVersionRelationRequest\x12\x42\n\x16model_version_relation\x18\x01 \x01(\x0b\x32\".service.ModelVersionRelationProto\"P\n\x1bRegisterModelVersionRequest\x12\x31\n\rmodel_version\x18\x01 \x01(\x0b\x32\x1a.service.ModelVersionProto\"V\n\x1fListModelVersionRelationRequest\x12\x10\n\x08model_id\x18\x01 \x01(\x03\x12\x11\n\tpage_size\x18\x02 \x01(\x03\x12\x0e\n\x06offset\x18\x03 \x01(\x03\"[\n\x1dModelVersionRelationListProto\x12:\n\x0emodel_versions\x18\x01 \x03(\x0b\x32\".service.ModelVersionRelationProto\"K\n\x15ModelVersionListProto\x12\x32\n\x0emodel_versions\x18\x01 \x03(\x0b\x32\x1a.service.ModelVersionProto\" \n\x10ModelNameRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"4\n\x12RegisterJobRequest\x12\x1e\n\x03job\x18\x01 \x01(\x0b\x32\x11.service.JobProto\"\xb3\x03\n\x10UpdateJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12:\n\x15workflow_execution_id\x18\x02 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12&\n\tjob_state\x18\x03 \x01(\x0e\x32\x13.service.StateProto\x12=\n\nproperties\x18\x04 \x03(\x0b\x32).service.UpdateJobRequest.PropertiesEntry\x12,\n\x06job_id\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12-\n\x08\x65nd_time\x18\x06 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x07log_uri\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tsignature\x18\x08 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"I\n\x15UpdateJobStateRequest\x12\"\n\x05state\x18\x01 \x01(\x0e\x32\x13.service.StateProto\x12\x0c\n\x04name\x18\x02 \x01(\t\"9\n\x17UpdateJobEndTimeRequest\x12\x10\n\x08\x65nd_time\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\"/\n\x0cJobListProto\x12\x1f\n\x04jobs\x18\x01 \x03(\x0b\x32\x11.service.JobProto\"_\n RegisterWorkFlowExecutionRequest\x12;\n\x12workflow_execution\x18\x01 \x01(\x0b\x32\x1f.service.WorkflowExecutionProto\"\xd1\x03\n\x1eUpdateWorkflowExecutionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\nproject_id\x18\x02 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12,\n\x0f\x65xecution_state\x18\x04 \x01(\x0e\x32\x13.service.StateProto\x12K\n\nproperties\x18\x05 \x03(\x0b\x32\x37.service.UpdateWorkflowExecutionRequest.PropertiesEntry\x12-\n\x08\x65nd_time\x18\x06 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x07log_uri\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x33\n\rworkflow_json\x18\x08 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tsignature\x18\t \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"Z\n\x1aWorkFlowExecutionListProto\x12<\n\x13workflow_executions\x18\x01 \x03(\x0b\x32\x1f.service.WorkflowExecutionProto\"G\n%UpdateWorkflowExecutionEndTimeRequest\x12\x10\n\x08\x65nd_time\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\"W\n#UpdateWorkflowExecutionStateRequest\x12\"\n\x05state\x18\x01 \x01(\x0e\x32\x13.service.StateProto\x12\x0c\n\x04name\x18\x02 \x01(\t\"@\n\x16RegisterProjectRequest\x12&\n\x07project\x18\x01 \x01(\x0b\x32\x15.service.ProjectProto\"\xd5\x02\n\x14UpdateProjectRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x41\n\nproperties\x18\x02 \x03(\x0b\x32-.service.UpdateProjectRequest.PropertiesEntry\x12\x32\n\x0cproject_type\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12)\n\x03uri\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12*\n\x04user\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12.\n\x08password\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\";\n\x10ProjectListProto\x12\'\n\x08projects\x18\x01 \x03(\x0b\x32\x15.service.ProjectProto\"C\n\x17RegisterArtifactRequest\x12(\n\x08\x61rtifact\x18\x01 \x01(\x0b\x32\x16.service.ArtifactProto\"\x97\x03\n\x15UpdateArtifactRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x42\n\nproperties\x18\x02 \x03(\x0b\x32..service.UpdateArtifactRequest.PropertiesEntry\x12\x31\n\x0b\x64\x61ta_format\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tbatch_uri\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x30\n\nstream_uri\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\x0b\x64\x65scription\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x30\n\x0bupdate_time\x18\x07 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\">\n\x11\x41rtifactListProto\x12)\n\tartifacts\x18\x01 \x03(\x0b\x32\x16.service.ArtifactProto2\xe9<\n\x0fMetadataService\x12i\n\x0egetExampleById\x12\x12.service.IdRequest\x1a\x11.service.Response\"0\x82\xd3\xe4\x93\x02*\"%/aiflow/metadata_store/example/get/id:\x01*\x12o\n\x10getExampleByName\x12\x14.service.NameRequest\x1a\x11.service.Response\"2\x82\xd3\xe4\x93\x02,\"\'/aiflow/metadata_store/example/get/name:\x01*\x12\x66\n\x0blistExample\x12\x14.service.ListRequest\x1a\x11.service.Response\".\x82\xd3\xe4\x93\x02(\"#/aiflow/metadata_store/example/list:\x01*\x12u\n\x0fregisterExample\x12\x1f.service.RegisterExampleRequest\x1a\x11.service.Response\".\x82\xd3\xe4\x93\x02(\"#/aiflow/metadata_store/example/save:\x01*\x12\x8d\x01\n\x1aregisterExampleWithCatalog\x12\x1f.service.RegisterExampleRequest\x1a\x11.service.Response\";\x82\xd3\xe4\x93\x02\x35\"0/aiflow/metadata_store/example/save_with_catalog:\x01*\x12x\n\x10registerExamples\x12 .service.RegisterExamplesRequest\x1a\x11.service.Response\"/\x82\xd3\xe4\x93\x02)\"$/aiflow/metadata_store/examples/save:\x01*\x12s\n\rupdateExample\x12\x1d.service.UpdateExampleRequest\x1a\x11.service.Response\"0\x82\xd3\xe4\x93\x02*\"%/aiflow/metadata_store/example/update:\x01*\x12o\n\x11\x64\x65leteExampleById\x12\x12.service.IdRequest\x1a\x11.service.Response\"3\x82\xd3\xe4\x93\x02-\"(/aiflow/metadata_store/example/delete/id:\x01*\x12u\n\x13\x64\x65leteExampleByName\x12\x14.service.NameRequest\x1a\x11.service.Response\"5\x82\xd3\xe4\x93\x02/\"*/aiflow/metadata_store/example/delete/name:\x01*\x12v\n\x14getModelRelationById\x12\x12.service.IdRequest\x1a\x11.service.Response\"7\x82\xd3\xe4\x93\x02\x31\",/aiflow/metadata_store/model_relation/get/id:\x01*\x12|\n\x16getModelRelationByName\x12\x14.service.NameRequest\x1a\x11.service.Response\"9\x82\xd3\xe4\x93\x02\x33\"./aiflow/metadata_store/model_relation/get/name:\x01*\x12s\n\x11listModelRelation\x12\x14.service.ListRequest\x1a\x11.service.Response\"5\x82\xd3\xe4\x93\x02/\"*/aiflow/metadata_store/model_relation/list:\x01*\x12\x88\x01\n\x15registerModelRelation\x12%.service.RegisterModelRelationRequest\x1a\x11.service.Response\"5\x82\xd3\xe4\x93\x02/\"*/aiflow/metadata_store/model_relation/save:\x01*\x12|\n\x17\x64\x65leteModelRelationById\x12\x12.service.IdRequest\x1a\x11.service.Response\":\x82\xd3\xe4\x93\x02\x34\"//aiflow/metadata_store/model_relation/delete/id:\x01*\x12\x82\x01\n\x19\x64\x65leteModelRelationByName\x12\x14.service.NameRequest\x1a\x11.service.Response\"<\x82\xd3\xe4\x93\x02\x36\"1/aiflow/metadata_store/model_relation/delete/name:\x01*\x12\x65\n\x0cgetModelById\x12\x12.service.IdRequest\x1a\x11.service.Response\".\x82\xd3\xe4\x93\x02(\"#/aiflow/metadata_store/model/get/id:\x01*\x12k\n\x0egetModelByName\x12\x14.service.NameRequest\x1a\x11.service.Response\"0\x82\xd3\xe4\x93\x02*\"%/aiflow/metadata_store/model/get/name:\x01*\x12o\n\rregisterModel\x12\x1d.service.RegisterModelRequest\x1a\x11.service.Response\",\x82\xd3\xe4\x93\x02&\"!/aiflow/metadata_store/model/save:\x01*\x12k\n\x0f\x64\x65leteModelById\x12\x12.service.IdRequest\x1a\x11.service.Response\"1\x82\xd3\xe4\x93\x02+\"&/aiflow/metadata_store/model/delete/id:\x01*\x12q\n\x11\x64\x65leteModelByName\x12\x14.service.NameRequest\x1a\x11.service.Response\"3\x82\xd3\xe4\x93\x02-\"(/aiflow/metadata_store/model/delete/name:\x01*\x12\x9c\x01\n getModelVersionRelationByVersion\x12 .service.ModelVersionNameRequest\x1a\x11.service.Response\"C\x82\xd3\xe4\x93\x02=\"8/aiflow/metadata_store/modelVersion_relation/get/version:\x01*\x12\x95\x01\n\x18listModelVersionRelation\x12(.service.ListModelVersionRelationRequest\x1a\x11.service.Response\"<\x82\xd3\xe4\x93\x02\x36\"1/aiflow/metadata_store/modelVersion_relation/list:\x01*\x12\x9d\x01\n\x1cregisterModelVersionRelation\x12,.service.RegisterModelVersionRelationRequest\x1a\x11.service.Response\"<\x82\xd3\xe4\x93\x02\x36\"1/aiflow/metadata_store/modelVersion_relation/save:\x01*\x12\xa2\x01\n#deleteModelVersionRelationByVersion\x12 .service.ModelVersionNameRequest\x1a\x11.service.Response\"F\x82\xd3\xe4\x93\x02@\";/aiflow/metadata_store/modelVersion_relation/delete/version:\x01*\x12\x8b\x01\n\x18getModelVersionByVersion\x12 .service.ModelVersionNameRequest\x1a\x11.service.Response\":\x82\xd3\xe4\x93\x02\x34\"//aiflow/metadata_store/modelVersion/get/version:\x01*\x12\x84\x01\n\x14registerModelVersion\x12$.service.RegisterModelVersionRequest\x1a\x11.service.Response\"3\x82\xd3\xe4\x93\x02-\"(/aiflow/metadata_store/modelVersion/save:\x01*\x12\x91\x01\n\x1b\x64\x65leteModelVersionByVersion\x12 .service.ModelVersionNameRequest\x1a\x11.service.Response\"=\x82\xd3\xe4\x93\x02\x37\"2/aiflow/metadata_store/modelVersion/delete/version:\x01*\x12\x8b\x01\n\x17getDeployedModelVersion\x12\x19.service.ModelNameRequest\x1a\x11.service.Response\"B\x82\xd3\xe4\x93\x02<\"7/aiflow/metadata_store/modelVersion/get_serving_version:\x01*\x12\xa1\x01\n\x1egetLatestValidatedModelVersion\x12\x19.service.ModelNameRequest\x1a\x11.service.Response\"Q\x82\xd3\xe4\x93\x02K\"F/aiflow/metadata_store/modelVersion/get_latest_validated_model_version:\x01*\x12\xa1\x01\n\x1egetLatestGeneratedModelVersion\x12\x19.service.ModelNameRequest\x1a\x11.service.Response\"Q\x82\xd3\xe4\x93\x02K\"F/aiflow/metadata_store/modelVersion/get_latest_generated_model_version:\x01*\x12}\n\x18getWorkFlowExecutionById\x12\x12.service.IdRequest\x1a\x11.service.Response\":\x82\xd3\xe4\x93\x02\x34\"//aiflow/metadata_store/workflowExecution/get/id:\x01*\x12\x83\x01\n\x1agetWorkFlowExecutionByName\x12\x14.service.NameRequest\x1a\x11.service.Response\"<\x82\xd3\xe4\x93\x02\x36\"1/aiflow/metadata_store/workflowExecution/get/name:\x01*\x12z\n\x15listWorkFlowExecution\x12\x14.service.ListRequest\x1a\x11.service.Response\"8\x82\xd3\xe4\x93\x02\x32\"-/aiflow/metadata_store/workflowExecution/list:\x01*\x12\x93\x01\n\x19registerWorkFlowExecution\x12).service.RegisterWorkFlowExecutionRequest\x1a\x11.service.Response\"8\x82\xd3\xe4\x93\x02\x32\"-/aiflow/metadata_store/workflowExecution/save:\x01*\x12\x91\x01\n\x17updateWorkflowExecution\x12\'.service.UpdateWorkflowExecutionRequest\x1a\x11.service.Response\":\x82\xd3\xe4\x93\x02\x34\"//aiflow/metadata_store/workflowExecution/update:\x01*\x12\x83\x01\n\x1b\x64\x65leteWorkflowExecutionById\x12\x12.service.IdRequest\x1a\x11.service.Response\"=\x82\xd3\xe4\x93\x02\x37\"2/aiflow/metadata_store/workflowExecution/delete/id:\x01*\x12\x89\x01\n\x1d\x64\x65leteWorkflowExecutionByName\x12\x14.service.NameRequest\x1a\x11.service.Response\"?\x82\xd3\xe4\x93\x02\x39\"4/aiflow/metadata_store/workflowExecution/delete/name:\x01*\x12\xa8\x01\n\x1eupdateWorkflowExecutionEndTime\x12..service.UpdateWorkflowExecutionEndTimeRequest\x1a\x11.service.Response\"C\x82\xd3\xe4\x93\x02=\"8/aiflow/metadata_store/workflowExecution/update/end_time:\x01*\x12\xa1\x01\n\x1cupdateWorkflowExecutionState\x12,.service.UpdateWorkflowExecutionStateRequest\x1a\x11.service.Response\"@\x82\xd3\xe4\x93\x02:\"5/aiflow/metadata_store/workflowExecution/update/state:\x01*\x12\x61\n\ngetJobById\x12\x12.service.IdRequest\x1a\x11.service.Response\",\x82\xd3\xe4\x93\x02&\"!/aiflow/metadata_store/job/get/id:\x01*\x12g\n\x0cgetJobByName\x12\x14.service.NameRequest\x1a\x11.service.Response\".\x82\xd3\xe4\x93\x02(\"#/aiflow/metadata_store/job/get/name:\x01*\x12^\n\x07listJob\x12\x14.service.ListRequest\x1a\x11.service.Response\"*\x82\xd3\xe4\x93\x02$\"\x1f/aiflow/metadata_store/job/list:\x01*\x12i\n\x0bregisterJob\x12\x1b.service.RegisterJobRequest\x1a\x11.service.Response\"*\x82\xd3\xe4\x93\x02$\"\x1f/aiflow/metadata_store/job/save:\x01*\x12g\n\tupdateJob\x12\x19.service.UpdateJobRequest\x1a\x11.service.Response\",\x82\xd3\xe4\x93\x02&\"!/aiflow/metadata_store/job/update:\x01*\x12w\n\x0eupdateJobState\x12\x1e.service.UpdateJobStateRequest\x1a\x11.service.Response\"2\x82\xd3\xe4\x93\x02,\"\'/aiflow/metadata_store/job/update/state:\x01*\x12~\n\x10updateJobEndTime\x12 .service.UpdateJobEndTimeRequest\x1a\x11.service.Response\"5\x82\xd3\xe4\x93\x02/\"*/aiflow/metadata_store/job/update/end_time:\x01*\x12g\n\rdeleteJobById\x12\x12.service.IdRequest\x1a\x11.service.Response\"/\x82\xd3\xe4\x93\x02)\"$/aiflow/metadata_store/job/delete/id:\x01*\x12m\n\x0f\x64\x65leteJobByName\x12\x14.service.NameRequest\x1a\x11.service.Response\"1\x82\xd3\xe4\x93\x02+\"&/aiflow/metadata_store/job/delete/name:\x01*\x12i\n\x0egetProjectById\x12\x12.service.IdRequest\x1a\x11.service.Response\"0\x82\xd3\xe4\x93\x02*\"%/aiflow/metadata_store/project/get/id:\x01*\x12o\n\x10getProjectByName\x12\x14.service.NameRequest\x1a\x11.service.Response\"2\x82\xd3\xe4\x93\x02,\"\'/aiflow/metadata_store/project/get/name:\x01*\x12u\n\x0fregisterProject\x12\x1f.service.RegisterProjectRequest\x1a\x11.service.Response\".\x82\xd3\xe4\x93\x02(\"#/aiflow/metadata_store/project/save:\x01*\x12s\n\rupdateProject\x12\x1d.service.UpdateProjectRequest\x1a\x11.service.Response\"0\x82\xd3\xe4\x93\x02*\"%/aiflow/metadata_store/project/update:\x01*\x12\x66\n\x0blistProject\x12\x14.service.ListRequest\x1a\x11.service.Response\".\x82\xd3\xe4\x93\x02(\"#/aiflow/metadata_store/project/list:\x01*\x12o\n\x11\x64\x65leteProjectById\x12\x12.service.IdRequest\x1a\x11.service.Response\"3\x82\xd3\xe4\x93\x02-\"(/aiflow/metadata_store/project/delete/id:\x01*\x12u\n\x13\x64\x65leteProjectByName\x12\x14.service.NameRequest\x1a\x11.service.Response\"5\x82\xd3\xe4\x93\x02/\"*/aiflow/metadata_store/project/delete/name:\x01*\x12k\n\x0fgetArtifactById\x12\x12.service.IdRequest\x1a\x11.service.Response\"1\x82\xd3\xe4\x93\x02+\"&/aiflow/metadata_store/artifact/get/id:\x01*\x12q\n\x11getArtifactByName\x12\x14.service.NameRequest\x1a\x11.service.Response\"3\x82\xd3\xe4\x93\x02-\"(/aiflow/metadata_store/artifact/get/name:\x01*\x12v\n\x0eupdateArtifact\x12\x1e.service.UpdateArtifactRequest\x1a\x11.service.Response\"1\x82\xd3\xe4\x93\x02+\"&/aiflow/metadata_store/artifact/update:\x01*\x12x\n\x10registerArtifact\x12 .service.RegisterArtifactRequest\x1a\x11.service.Response\"/\x82\xd3\xe4\x93\x02)\"$/aiflow/metadata_store/artifact/save:\x01*\x12h\n\x0clistArtifact\x12\x14.service.ListRequest\x1a\x11.service.Response\"/\x82\xd3\xe4\x93\x02)\"$/aiflow/metadata_store/artifact/list:\x01*\x12q\n\x12\x64\x65leteArtifactById\x12\x12.service.IdRequest\x1a\x11.service.Response\"4\x82\xd3\xe4\x93\x02.\")/aiflow/metadata_store/artifact/delete/id:\x01*\x12w\n\x14\x64\x65leteArtifactByName\x12\x14.service.NameRequest\x1a\x11.service.Response\"6\x82\xd3\xe4\x93\x02\x30\"+/aiflow/metadata_store/artifact/delete/name:\x01*B\x18\n\x10\x63om.aiflow.proto\x88\x01\x01\x90\x01\x01\x62\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,message__pb2.DESCRIPTOR,google_dot_api_dot_annotations__pb2.DESCRIPTOR,])
 
@@ -51,14 +51,14 @@ DESCRIPTOR = _descriptor.FileDescriptor(
 
 _IDREQUEST = _descriptor.Descriptor(
   name='IdRequest',
-  full_name='IdRequest',
+  full_name='service.IdRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='id', full_name='IdRequest.id', index=0,
+      name='id', full_name='service.IdRequest.id', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -76,21 +76,21 @@ _IDREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=103,
-  serialized_end=126,
+  serialized_start=112,
+  serialized_end=135,
 )
 
 
 _NAMEREQUEST = _descriptor.Descriptor(
   name='NameRequest',
-  full_name='NameRequest',
+  full_name='service.NameRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='NameRequest.name', index=0,
+      name='name', full_name='service.NameRequest.name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -108,28 +108,28 @@ _NAMEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=128,
-  serialized_end=155,
+  serialized_start=137,
+  serialized_end=164,
 )
 
 
 _LISTREQUEST = _descriptor.Descriptor(
   name='ListRequest',
-  full_name='ListRequest',
+  full_name='service.ListRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='page_size', full_name='ListRequest.page_size', index=0,
+      name='page_size', full_name='service.ListRequest.page_size', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='offset', full_name='ListRequest.offset', index=1,
+      name='offset', full_name='service.ListRequest.offset', index=1,
       number=2, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -147,35 +147,35 @@ _LISTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=157,
-  serialized_end=205,
+  serialized_start=166,
+  serialized_end=214,
 )
 
 
 _METARESPONSE = _descriptor.Descriptor(
   name='MetaResponse',
-  full_name='MetaResponse',
+  full_name='service.MetaResponse',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='return_code', full_name='MetaResponse.return_code', index=0,
+      name='return_code', full_name='service.MetaResponse.return_code', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='return_msg', full_name='MetaResponse.return_msg', index=1,
+      name='return_msg', full_name='service.MetaResponse.return_msg', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='data', full_name='MetaResponse.data', index=2,
+      name='data', full_name='service.MetaResponse.data', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -193,21 +193,21 @@ _METARESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=207,
-  serialized_end=276,
+  serialized_start=216,
+  serialized_end=285,
 )
 
 
 _REGISTEREXAMPLEREQUEST = _descriptor.Descriptor(
   name='RegisterExampleRequest',
-  full_name='RegisterExampleRequest',
+  full_name='service.RegisterExampleRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='example', full_name='RegisterExampleRequest.example', index=0,
+      name='example', full_name='service.RegisterExampleRequest.example', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -225,21 +225,21 @@ _REGISTEREXAMPLEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=278,
-  serialized_end=334,
+  serialized_start=287,
+  serialized_end=351,
 )
 
 
 _REGISTEREXAMPLESREQUEST = _descriptor.Descriptor(
   name='RegisterExamplesRequest',
-  full_name='RegisterExamplesRequest',
+  full_name='service.RegisterExamplesRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='examples', full_name='RegisterExamplesRequest.examples', index=0,
+      name='examples', full_name='service.RegisterExamplesRequest.examples', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -257,21 +257,21 @@ _REGISTEREXAMPLESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=336,
-  serialized_end=394,
+  serialized_start=353,
+  serialized_end=419,
 )
 
 
 _EXAMPLELISTPROTO = _descriptor.Descriptor(
   name='ExampleListProto',
-  full_name='ExampleListProto',
+  full_name='service.ExampleListProto',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='examples', full_name='ExampleListProto.examples', index=0,
+      name='examples', full_name='service.ExampleListProto.examples', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -289,28 +289,28 @@ _EXAMPLELISTPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=396,
-  serialized_end=447,
+  serialized_start=421,
+  serialized_end=480,
 )
 
 
 _UPDATEEXAMPLEREQUEST_PROPERTIESENTRY = _descriptor.Descriptor(
   name='PropertiesEntry',
-  full_name='UpdateExampleRequest.PropertiesEntry',
+  full_name='service.UpdateExampleRequest.PropertiesEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='UpdateExampleRequest.PropertiesEntry.key', index=0,
+      name='key', full_name='service.UpdateExampleRequest.PropertiesEntry.key', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='value', full_name='UpdateExampleRequest.PropertiesEntry.value', index=1,
+      name='value', full_name='service.UpdateExampleRequest.PropertiesEntry.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -328,132 +328,132 @@ _UPDATEEXAMPLEREQUEST_PROPERTIESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1279,
-  serialized_end=1328,
+  serialized_start=1336,
+  serialized_end=1385,
 )
 
 _UPDATEEXAMPLEREQUEST = _descriptor.Descriptor(
   name='UpdateExampleRequest',
-  full_name='UpdateExampleRequest',
+  full_name='service.UpdateExampleRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='UpdateExampleRequest.name', index=0,
+      name='name', full_name='service.UpdateExampleRequest.name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='properties', full_name='UpdateExampleRequest.properties', index=1,
+      name='properties', full_name='service.UpdateExampleRequest.properties', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='support_type', full_name='UpdateExampleRequest.support_type', index=2,
+      name='support_type', full_name='service.UpdateExampleRequest.support_type', index=2,
       number=3, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='name_list', full_name='UpdateExampleRequest.name_list', index=3,
+      name='name_list', full_name='service.UpdateExampleRequest.name_list', index=3,
       number=4, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='type_list', full_name='UpdateExampleRequest.type_list', index=4,
+      name='type_list', full_name='service.UpdateExampleRequest.type_list', index=4,
       number=5, type=14, cpp_type=8, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='data_type', full_name='UpdateExampleRequest.data_type', index=5,
+      name='data_type', full_name='service.UpdateExampleRequest.data_type', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='data_format', full_name='UpdateExampleRequest.data_format', index=6,
+      name='data_format', full_name='service.UpdateExampleRequest.data_format', index=6,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='batch_uri', full_name='UpdateExampleRequest.batch_uri', index=7,
+      name='batch_uri', full_name='service.UpdateExampleRequest.batch_uri', index=7,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='stream_uri', full_name='UpdateExampleRequest.stream_uri', index=8,
+      name='stream_uri', full_name='service.UpdateExampleRequest.stream_uri', index=8,
       number=9, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='description', full_name='UpdateExampleRequest.description', index=9,
+      name='description', full_name='service.UpdateExampleRequest.description', index=9,
       number=10, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='update_time', full_name='UpdateExampleRequest.update_time', index=10,
+      name='update_time', full_name='service.UpdateExampleRequest.update_time', index=10,
       number=11, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='catalog_name', full_name='UpdateExampleRequest.catalog_name', index=11,
+      name='catalog_name', full_name='service.UpdateExampleRequest.catalog_name', index=11,
       number=12, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='catalog_type', full_name='UpdateExampleRequest.catalog_type', index=12,
+      name='catalog_type', full_name='service.UpdateExampleRequest.catalog_type', index=12,
       number=13, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='catalog_database', full_name='UpdateExampleRequest.catalog_database', index=13,
+      name='catalog_database', full_name='service.UpdateExampleRequest.catalog_database', index=13,
       number=14, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='catalog_connection_uri', full_name='UpdateExampleRequest.catalog_connection_uri', index=14,
+      name='catalog_connection_uri', full_name='service.UpdateExampleRequest.catalog_connection_uri', index=14,
       number=15, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='catalog_version', full_name='UpdateExampleRequest.catalog_version', index=15,
+      name='catalog_version', full_name='service.UpdateExampleRequest.catalog_version', index=15,
       number=16, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='catalog_table', full_name='UpdateExampleRequest.catalog_table', index=16,
+      name='catalog_table', full_name='service.UpdateExampleRequest.catalog_table', index=16,
       number=17, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -471,21 +471,21 @@ _UPDATEEXAMPLEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=450,
-  serialized_end=1328,
+  serialized_start=483,
+  serialized_end=1385,
 )
 
 
 _REGISTERMODELRELATIONREQUEST = _descriptor.Descriptor(
   name='RegisterModelRelationRequest',
-  full_name='RegisterModelRelationRequest',
+  full_name='service.RegisterModelRelationRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='model_relation', full_name='RegisterModelRelationRequest.model_relation', index=0,
+      name='model_relation', full_name='service.RegisterModelRelationRequest.model_relation', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -503,21 +503,21 @@ _REGISTERMODELRELATIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1330,
-  serialized_end=1405,
+  serialized_start=1387,
+  serialized_end=1470,
 )
 
 
 _REGISTERMODELREQUEST = _descriptor.Descriptor(
   name='RegisterModelRequest',
-  full_name='RegisterModelRequest',
+  full_name='service.RegisterModelRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='model', full_name='RegisterModelRequest.model', index=0,
+      name='model', full_name='service.RegisterModelRequest.model', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -535,21 +535,21 @@ _REGISTERMODELREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1407,
-  serialized_end=1457,
+  serialized_start=1472,
+  serialized_end=1530,
 )
 
 
 _MODELRELATIONLISTPROTO = _descriptor.Descriptor(
   name='ModelRelationListProto',
-  full_name='ModelRelationListProto',
+  full_name='service.ModelRelationListProto',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='model_relations', full_name='ModelRelationListProto.model_relations', index=0,
+      name='model_relations', full_name='service.ModelRelationListProto.model_relations', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -567,28 +567,28 @@ _MODELRELATIONLISTPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1459,
-  serialized_end=1529,
+  serialized_start=1532,
+  serialized_end=1610,
 )
 
 
 _MODELVERSIONNAMEREQUEST = _descriptor.Descriptor(
   name='ModelVersionNameRequest',
-  full_name='ModelVersionNameRequest',
+  full_name='service.ModelVersionNameRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='ModelVersionNameRequest.name', index=0,
+      name='name', full_name='service.ModelVersionNameRequest.name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model_id', full_name='ModelVersionNameRequest.model_id', index=1,
+      name='model_id', full_name='service.ModelVersionNameRequest.model_id', index=1,
       number=2, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -606,21 +606,21 @@ _MODELVERSIONNAMEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1531,
-  serialized_end=1588,
+  serialized_start=1612,
+  serialized_end=1669,
 )
 
 
 _REGISTERMODELVERSIONRELATIONREQUEST = _descriptor.Descriptor(
   name='RegisterModelVersionRelationRequest',
-  full_name='RegisterModelVersionRelationRequest',
+  full_name='service.RegisterModelVersionRelationRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='model_version_relation', full_name='RegisterModelVersionRelationRequest.model_version_relation', index=0,
+      name='model_version_relation', full_name='service.RegisterModelVersionRelationRequest.model_version_relation', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -638,21 +638,21 @@ _REGISTERMODELVERSIONRELATIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1590,
-  serialized_end=1687,
+  serialized_start=1671,
+  serialized_end=1776,
 )
 
 
 _REGISTERMODELVERSIONREQUEST = _descriptor.Descriptor(
   name='RegisterModelVersionRequest',
-  full_name='RegisterModelVersionRequest',
+  full_name='service.RegisterModelVersionRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='model_version', full_name='RegisterModelVersionRequest.model_version', index=0,
+      name='model_version', full_name='service.RegisterModelVersionRequest.model_version', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -670,35 +670,35 @@ _REGISTERMODELVERSIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1689,
-  serialized_end=1761,
+  serialized_start=1778,
+  serialized_end=1858,
 )
 
 
 _LISTMODELVERSIONRELATIONREQUEST = _descriptor.Descriptor(
   name='ListModelVersionRelationRequest',
-  full_name='ListModelVersionRelationRequest',
+  full_name='service.ListModelVersionRelationRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='model_id', full_name='ListModelVersionRelationRequest.model_id', index=0,
+      name='model_id', full_name='service.ListModelVersionRelationRequest.model_id', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='page_size', full_name='ListModelVersionRelationRequest.page_size', index=1,
+      name='page_size', full_name='service.ListModelVersionRelationRequest.page_size', index=1,
       number=2, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='offset', full_name='ListModelVersionRelationRequest.offset', index=2,
+      name='offset', full_name='service.ListModelVersionRelationRequest.offset', index=2,
       number=3, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -716,21 +716,21 @@ _LISTMODELVERSIONRELATIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1763,
-  serialized_end=1849,
+  serialized_start=1860,
+  serialized_end=1946,
 )
 
 
 _MODELVERSIONRELATIONLISTPROTO = _descriptor.Descriptor(
   name='ModelVersionRelationListProto',
-  full_name='ModelVersionRelationListProto',
+  full_name='service.ModelVersionRelationListProto',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='model_versions', full_name='ModelVersionRelationListProto.model_versions', index=0,
+      name='model_versions', full_name='service.ModelVersionRelationListProto.model_versions', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -748,21 +748,21 @@ _MODELVERSIONRELATIONLISTPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1851,
-  serialized_end=1934,
+  serialized_start=1948,
+  serialized_end=2039,
 )
 
 
 _MODELVERSIONLISTPROTO = _descriptor.Descriptor(
   name='ModelVersionListProto',
-  full_name='ModelVersionListProto',
+  full_name='service.ModelVersionListProto',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='model_versions', full_name='ModelVersionListProto.model_versions', index=0,
+      name='model_versions', full_name='service.ModelVersionListProto.model_versions', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -780,21 +780,21 @@ _MODELVERSIONLISTPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1936,
-  serialized_end=2003,
+  serialized_start=2041,
+  serialized_end=2116,
 )
 
 
 _MODELNAMEREQUEST = _descriptor.Descriptor(
   name='ModelNameRequest',
-  full_name='ModelNameRequest',
+  full_name='service.ModelNameRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='ModelNameRequest.name', index=0,
+      name='name', full_name='service.ModelNameRequest.name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -812,21 +812,21 @@ _MODELNAMEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2005,
-  serialized_end=2037,
+  serialized_start=2118,
+  serialized_end=2150,
 )
 
 
 _REGISTERJOBREQUEST = _descriptor.Descriptor(
   name='RegisterJobRequest',
-  full_name='RegisterJobRequest',
+  full_name='service.RegisterJobRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='job', full_name='RegisterJobRequest.job', index=0,
+      name='job', full_name='service.RegisterJobRequest.job', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -844,28 +844,28 @@ _REGISTERJOBREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2039,
-  serialized_end=2083,
+  serialized_start=2152,
+  serialized_end=2204,
 )
 
 
 _UPDATEJOBREQUEST_PROPERTIESENTRY = _descriptor.Descriptor(
   name='PropertiesEntry',
-  full_name='UpdateJobRequest.PropertiesEntry',
+  full_name='service.UpdateJobRequest.PropertiesEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='UpdateJobRequest.PropertiesEntry.key', index=0,
+      name='key', full_name='service.UpdateJobRequest.PropertiesEntry.key', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='value', full_name='UpdateJobRequest.PropertiesEntry.value', index=1,
+      name='value', full_name='service.UpdateJobRequest.PropertiesEntry.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -883,69 +883,69 @@ _UPDATEJOBREQUEST_PROPERTIESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1279,
-  serialized_end=1328,
+  serialized_start=1336,
+  serialized_end=1385,
 )
 
 _UPDATEJOBREQUEST = _descriptor.Descriptor(
   name='UpdateJobRequest',
-  full_name='UpdateJobRequest',
+  full_name='service.UpdateJobRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='UpdateJobRequest.name', index=0,
+      name='name', full_name='service.UpdateJobRequest.name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='workflow_execution_id', full_name='UpdateJobRequest.workflow_execution_id', index=1,
+      name='workflow_execution_id', full_name='service.UpdateJobRequest.workflow_execution_id', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='job_state', full_name='UpdateJobRequest.job_state', index=2,
+      name='job_state', full_name='service.UpdateJobRequest.job_state', index=2,
       number=3, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='properties', full_name='UpdateJobRequest.properties', index=3,
+      name='properties', full_name='service.UpdateJobRequest.properties', index=3,
       number=4, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='job_id', full_name='UpdateJobRequest.job_id', index=4,
+      name='job_id', full_name='service.UpdateJobRequest.job_id', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='end_time', full_name='UpdateJobRequest.end_time', index=5,
+      name='end_time', full_name='service.UpdateJobRequest.end_time', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='log_uri', full_name='UpdateJobRequest.log_uri', index=6,
+      name='log_uri', full_name='service.UpdateJobRequest.log_uri', index=6,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='signature', full_name='UpdateJobRequest.signature', index=7,
+      name='signature', full_name='service.UpdateJobRequest.signature', index=7,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -963,28 +963,28 @@ _UPDATEJOBREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2086,
-  serialized_end=2505,
+  serialized_start=2207,
+  serialized_end=2642,
 )
 
 
 _UPDATEJOBSTATEREQUEST = _descriptor.Descriptor(
   name='UpdateJobStateRequest',
-  full_name='UpdateJobStateRequest',
+  full_name='service.UpdateJobStateRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='state', full_name='UpdateJobStateRequest.state', index=0,
+      name='state', full_name='service.UpdateJobStateRequest.state', index=0,
       number=1, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='name', full_name='UpdateJobStateRequest.name', index=1,
+      name='name', full_name='service.UpdateJobStateRequest.name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -1002,28 +1002,28 @@ _UPDATEJOBSTATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2507,
-  serialized_end=2572,
+  serialized_start=2644,
+  serialized_end=2717,
 )
 
 
 _UPDATEJOBENDTIMEREQUEST = _descriptor.Descriptor(
   name='UpdateJobEndTimeRequest',
-  full_name='UpdateJobEndTimeRequest',
+  full_name='service.UpdateJobEndTimeRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='end_time', full_name='UpdateJobEndTimeRequest.end_time', index=0,
+      name='end_time', full_name='service.UpdateJobEndTimeRequest.end_time', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='name', full_name='UpdateJobEndTimeRequest.name', index=1,
+      name='name', full_name='service.UpdateJobEndTimeRequest.name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -1041,21 +1041,21 @@ _UPDATEJOBENDTIMEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2574,
-  serialized_end=2631,
+  serialized_start=2719,
+  serialized_end=2776,
 )
 
 
 _JOBLISTPROTO = _descriptor.Descriptor(
   name='JobListProto',
-  full_name='JobListProto',
+  full_name='service.JobListProto',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='jobs', full_name='JobListProto.jobs', index=0,
+      name='jobs', full_name='service.JobListProto.jobs', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -1073,21 +1073,21 @@ _JOBLISTPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2633,
-  serialized_end=2672,
+  serialized_start=2778,
+  serialized_end=2825,
 )
 
 
 _REGISTERWORKFLOWEXECUTIONREQUEST = _descriptor.Descriptor(
   name='RegisterWorkFlowExecutionRequest',
-  full_name='RegisterWorkFlowExecutionRequest',
+  full_name='service.RegisterWorkFlowExecutionRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='workflow_execution', full_name='RegisterWorkFlowExecutionRequest.workflow_execution', index=0,
+      name='workflow_execution', full_name='service.RegisterWorkFlowExecutionRequest.workflow_execution', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -1105,28 +1105,28 @@ _REGISTERWORKFLOWEXECUTIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2674,
-  serialized_end=2761,
+  serialized_start=2827,
+  serialized_end=2922,
 )
 
 
 _UPDATEWORKFLOWEXECUTIONREQUEST_PROPERTIESENTRY = _descriptor.Descriptor(
   name='PropertiesEntry',
-  full_name='UpdateWorkflowExecutionRequest.PropertiesEntry',
+  full_name='service.UpdateWorkflowExecutionRequest.PropertiesEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='UpdateWorkflowExecutionRequest.PropertiesEntry.key', index=0,
+      name='key', full_name='service.UpdateWorkflowExecutionRequest.PropertiesEntry.key', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='value', full_name='UpdateWorkflowExecutionRequest.PropertiesEntry.value', index=1,
+      name='value', full_name='service.UpdateWorkflowExecutionRequest.PropertiesEntry.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -1144,69 +1144,69 @@ _UPDATEWORKFLOWEXECUTIONREQUEST_PROPERTIESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1279,
-  serialized_end=1328,
+  serialized_start=1336,
+  serialized_end=1385,
 )
 
 _UPDATEWORKFLOWEXECUTIONREQUEST = _descriptor.Descriptor(
   name='UpdateWorkflowExecutionRequest',
-  full_name='UpdateWorkflowExecutionRequest',
+  full_name='service.UpdateWorkflowExecutionRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='UpdateWorkflowExecutionRequest.name', index=0,
+      name='name', full_name='service.UpdateWorkflowExecutionRequest.name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='project_id', full_name='UpdateWorkflowExecutionRequest.project_id', index=1,
+      name='project_id', full_name='service.UpdateWorkflowExecutionRequest.project_id', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='execution_state', full_name='UpdateWorkflowExecutionRequest.execution_state', index=2,
+      name='execution_state', full_name='service.UpdateWorkflowExecutionRequest.execution_state', index=2,
       number=4, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='properties', full_name='UpdateWorkflowExecutionRequest.properties', index=3,
+      name='properties', full_name='service.UpdateWorkflowExecutionRequest.properties', index=3,
       number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='end_time', full_name='UpdateWorkflowExecutionRequest.end_time', index=4,
+      name='end_time', full_name='service.UpdateWorkflowExecutionRequest.end_time', index=4,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='log_uri', full_name='UpdateWorkflowExecutionRequest.log_uri', index=5,
+      name='log_uri', full_name='service.UpdateWorkflowExecutionRequest.log_uri', index=5,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='workflow_json', full_name='UpdateWorkflowExecutionRequest.workflow_json', index=6,
+      name='workflow_json', full_name='service.UpdateWorkflowExecutionRequest.workflow_json', index=6,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='signature', full_name='UpdateWorkflowExecutionRequest.signature', index=7,
+      name='signature', full_name='service.UpdateWorkflowExecutionRequest.signature', index=7,
       number=9, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -1224,21 +1224,21 @@ _UPDATEWORKFLOWEXECUTIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2764,
-  serialized_end=3213,
+  serialized_start=2925,
+  serialized_end=3390,
 )
 
 
 _WORKFLOWEXECUTIONLISTPROTO = _descriptor.Descriptor(
   name='WorkFlowExecutionListProto',
-  full_name='WorkFlowExecutionListProto',
+  full_name='service.WorkFlowExecutionListProto',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='workflow_executions', full_name='WorkFlowExecutionListProto.workflow_executions', index=0,
+      name='workflow_executions', full_name='service.WorkFlowExecutionListProto.workflow_executions', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -1256,28 +1256,28 @@ _WORKFLOWEXECUTIONLISTPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3215,
-  serialized_end=3297,
+  serialized_start=3392,
+  serialized_end=3482,
 )
 
 
 _UPDATEWORKFLOWEXECUTIONENDTIMEREQUEST = _descriptor.Descriptor(
   name='UpdateWorkflowExecutionEndTimeRequest',
-  full_name='UpdateWorkflowExecutionEndTimeRequest',
+  full_name='service.UpdateWorkflowExecutionEndTimeRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='end_time', full_name='UpdateWorkflowExecutionEndTimeRequest.end_time', index=0,
+      name='end_time', full_name='service.UpdateWorkflowExecutionEndTimeRequest.end_time', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='name', full_name='UpdateWorkflowExecutionEndTimeRequest.name', index=1,
+      name='name', full_name='service.UpdateWorkflowExecutionEndTimeRequest.name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -1295,28 +1295,28 @@ _UPDATEWORKFLOWEXECUTIONENDTIMEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3299,
-  serialized_end=3370,
+  serialized_start=3484,
+  serialized_end=3555,
 )
 
 
 _UPDATEWORKFLOWEXECUTIONSTATEREQUEST = _descriptor.Descriptor(
   name='UpdateWorkflowExecutionStateRequest',
-  full_name='UpdateWorkflowExecutionStateRequest',
+  full_name='service.UpdateWorkflowExecutionStateRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='state', full_name='UpdateWorkflowExecutionStateRequest.state', index=0,
+      name='state', full_name='service.UpdateWorkflowExecutionStateRequest.state', index=0,
       number=1, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='name', full_name='UpdateWorkflowExecutionStateRequest.name', index=1,
+      name='name', full_name='service.UpdateWorkflowExecutionStateRequest.name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -1334,21 +1334,21 @@ _UPDATEWORKFLOWEXECUTIONSTATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3372,
-  serialized_end=3451,
+  serialized_start=3557,
+  serialized_end=3644,
 )
 
 
 _REGISTERPROJECTREQUEST = _descriptor.Descriptor(
   name='RegisterProjectRequest',
-  full_name='RegisterProjectRequest',
+  full_name='service.RegisterProjectRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='project', full_name='RegisterProjectRequest.project', index=0,
+      name='project', full_name='service.RegisterProjectRequest.project', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -1366,28 +1366,28 @@ _REGISTERPROJECTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3453,
-  serialized_end=3509,
+  serialized_start=3646,
+  serialized_end=3710,
 )
 
 
 _UPDATEPROJECTREQUEST_PROPERTIESENTRY = _descriptor.Descriptor(
   name='PropertiesEntry',
-  full_name='UpdateProjectRequest.PropertiesEntry',
+  full_name='service.UpdateProjectRequest.PropertiesEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='UpdateProjectRequest.PropertiesEntry.key', index=0,
+      name='key', full_name='service.UpdateProjectRequest.PropertiesEntry.key', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='value', full_name='UpdateProjectRequest.PropertiesEntry.value', index=1,
+      name='value', full_name='service.UpdateProjectRequest.PropertiesEntry.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -1405,55 +1405,55 @@ _UPDATEPROJECTREQUEST_PROPERTIESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1279,
-  serialized_end=1328,
+  serialized_start=1336,
+  serialized_end=1385,
 )
 
 _UPDATEPROJECTREQUEST = _descriptor.Descriptor(
   name='UpdateProjectRequest',
-  full_name='UpdateProjectRequest',
+  full_name='service.UpdateProjectRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='UpdateProjectRequest.name', index=0,
+      name='name', full_name='service.UpdateProjectRequest.name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='properties', full_name='UpdateProjectRequest.properties', index=1,
+      name='properties', full_name='service.UpdateProjectRequest.properties', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='project_type', full_name='UpdateProjectRequest.project_type', index=2,
+      name='project_type', full_name='service.UpdateProjectRequest.project_type', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='uri', full_name='UpdateProjectRequest.uri', index=3,
+      name='uri', full_name='service.UpdateProjectRequest.uri', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='user', full_name='UpdateProjectRequest.user', index=4,
+      name='user', full_name='service.UpdateProjectRequest.user', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='password', full_name='UpdateProjectRequest.password', index=5,
+      name='password', full_name='service.UpdateProjectRequest.password', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -1471,21 +1471,21 @@ _UPDATEPROJECTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3512,
-  serialized_end=3845,
+  serialized_start=3713,
+  serialized_end=4054,
 )
 
 
 _PROJECTLISTPROTO = _descriptor.Descriptor(
   name='ProjectListProto',
-  full_name='ProjectListProto',
+  full_name='service.ProjectListProto',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='projects', full_name='ProjectListProto.projects', index=0,
+      name='projects', full_name='service.ProjectListProto.projects', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -1503,21 +1503,21 @@ _PROJECTLISTPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3847,
-  serialized_end=3898,
+  serialized_start=4056,
+  serialized_end=4115,
 )
 
 
 _REGISTERARTIFACTREQUEST = _descriptor.Descriptor(
   name='RegisterArtifactRequest',
-  full_name='RegisterArtifactRequest',
+  full_name='service.RegisterArtifactRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='artifact', full_name='RegisterArtifactRequest.artifact', index=0,
+      name='artifact', full_name='service.RegisterArtifactRequest.artifact', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -1535,28 +1535,28 @@ _REGISTERARTIFACTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3900,
-  serialized_end=3959,
+  serialized_start=4117,
+  serialized_end=4184,
 )
 
 
 _UPDATEARTIFACTREQUEST_PROPERTIESENTRY = _descriptor.Descriptor(
   name='PropertiesEntry',
-  full_name='UpdateArtifactRequest.PropertiesEntry',
+  full_name='service.UpdateArtifactRequest.PropertiesEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='UpdateArtifactRequest.PropertiesEntry.key', index=0,
+      name='key', full_name='service.UpdateArtifactRequest.PropertiesEntry.key', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='value', full_name='UpdateArtifactRequest.PropertiesEntry.value', index=1,
+      name='value', full_name='service.UpdateArtifactRequest.PropertiesEntry.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -1574,62 +1574,62 @@ _UPDATEARTIFACTREQUEST_PROPERTIESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1279,
-  serialized_end=1328,
+  serialized_start=1336,
+  serialized_end=1385,
 )
 
 _UPDATEARTIFACTREQUEST = _descriptor.Descriptor(
   name='UpdateArtifactRequest',
-  full_name='UpdateArtifactRequest',
+  full_name='service.UpdateArtifactRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='UpdateArtifactRequest.name', index=0,
+      name='name', full_name='service.UpdateArtifactRequest.name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='properties', full_name='UpdateArtifactRequest.properties', index=1,
+      name='properties', full_name='service.UpdateArtifactRequest.properties', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='data_format', full_name='UpdateArtifactRequest.data_format', index=2,
+      name='data_format', full_name='service.UpdateArtifactRequest.data_format', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='batch_uri', full_name='UpdateArtifactRequest.batch_uri', index=3,
+      name='batch_uri', full_name='service.UpdateArtifactRequest.batch_uri', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='stream_uri', full_name='UpdateArtifactRequest.stream_uri', index=4,
+      name='stream_uri', full_name='service.UpdateArtifactRequest.stream_uri', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='description', full_name='UpdateArtifactRequest.description', index=5,
+      name='description', full_name='service.UpdateArtifactRequest.description', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='update_time', full_name='UpdateArtifactRequest.update_time', index=6,
+      name='update_time', full_name='service.UpdateArtifactRequest.update_time', index=6,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -1647,21 +1647,21 @@ _UPDATEARTIFACTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3962,
-  serialized_end=4361,
+  serialized_start=4187,
+  serialized_end=4594,
 )
 
 
 _ARTIFACTLISTPROTO = _descriptor.Descriptor(
   name='ArtifactListProto',
-  full_name='ArtifactListProto',
+  full_name='service.ArtifactListProto',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='artifacts', full_name='ArtifactListProto.artifacts', index=0,
+      name='artifacts', full_name='service.ArtifactListProto.artifacts', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -1679,8 +1679,8 @@ _ARTIFACTLISTPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4363,
-  serialized_end=4417,
+  serialized_start=4596,
+  serialized_end=4658,
 )
 
 _REGISTEREXAMPLEREQUEST.fields_by_name['example'].message_type = message__pb2._EXAMPLEPROTO
@@ -1787,49 +1787,49 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 IdRequest = _reflection.GeneratedProtocolMessageType('IdRequest', (_message.Message,), {
   'DESCRIPTOR' : _IDREQUEST,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:IdRequest)
+  # @@protoc_insertion_point(class_scope:service.IdRequest)
   })
 _sym_db.RegisterMessage(IdRequest)
 
 NameRequest = _reflection.GeneratedProtocolMessageType('NameRequest', (_message.Message,), {
   'DESCRIPTOR' : _NAMEREQUEST,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:NameRequest)
+  # @@protoc_insertion_point(class_scope:service.NameRequest)
   })
 _sym_db.RegisterMessage(NameRequest)
 
 ListRequest = _reflection.GeneratedProtocolMessageType('ListRequest', (_message.Message,), {
   'DESCRIPTOR' : _LISTREQUEST,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:ListRequest)
+  # @@protoc_insertion_point(class_scope:service.ListRequest)
   })
 _sym_db.RegisterMessage(ListRequest)
 
 MetaResponse = _reflection.GeneratedProtocolMessageType('MetaResponse', (_message.Message,), {
   'DESCRIPTOR' : _METARESPONSE,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:MetaResponse)
+  # @@protoc_insertion_point(class_scope:service.MetaResponse)
   })
 _sym_db.RegisterMessage(MetaResponse)
 
 RegisterExampleRequest = _reflection.GeneratedProtocolMessageType('RegisterExampleRequest', (_message.Message,), {
   'DESCRIPTOR' : _REGISTEREXAMPLEREQUEST,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:RegisterExampleRequest)
+  # @@protoc_insertion_point(class_scope:service.RegisterExampleRequest)
   })
 _sym_db.RegisterMessage(RegisterExampleRequest)
 
 RegisterExamplesRequest = _reflection.GeneratedProtocolMessageType('RegisterExamplesRequest', (_message.Message,), {
   'DESCRIPTOR' : _REGISTEREXAMPLESREQUEST,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:RegisterExamplesRequest)
+  # @@protoc_insertion_point(class_scope:service.RegisterExamplesRequest)
   })
 _sym_db.RegisterMessage(RegisterExamplesRequest)
 
 ExampleListProto = _reflection.GeneratedProtocolMessageType('ExampleListProto', (_message.Message,), {
   'DESCRIPTOR' : _EXAMPLELISTPROTO,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:ExampleListProto)
+  # @@protoc_insertion_point(class_scope:service.ExampleListProto)
   })
 _sym_db.RegisterMessage(ExampleListProto)
 
@@ -1838,12 +1838,12 @@ UpdateExampleRequest = _reflection.GeneratedProtocolMessageType('UpdateExampleRe
   'PropertiesEntry' : _reflection.GeneratedProtocolMessageType('PropertiesEntry', (_message.Message,), {
     'DESCRIPTOR' : _UPDATEEXAMPLEREQUEST_PROPERTIESENTRY,
     '__module__' : 'metadata_service_pb2'
-    # @@protoc_insertion_point(class_scope:UpdateExampleRequest.PropertiesEntry)
+    # @@protoc_insertion_point(class_scope:service.UpdateExampleRequest.PropertiesEntry)
     })
   ,
   'DESCRIPTOR' : _UPDATEEXAMPLEREQUEST,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:UpdateExampleRequest)
+  # @@protoc_insertion_point(class_scope:service.UpdateExampleRequest)
   })
 _sym_db.RegisterMessage(UpdateExampleRequest)
 _sym_db.RegisterMessage(UpdateExampleRequest.PropertiesEntry)
@@ -1851,77 +1851,77 @@ _sym_db.RegisterMessage(UpdateExampleRequest.PropertiesEntry)
 RegisterModelRelationRequest = _reflection.GeneratedProtocolMessageType('RegisterModelRelationRequest', (_message.Message,), {
   'DESCRIPTOR' : _REGISTERMODELRELATIONREQUEST,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:RegisterModelRelationRequest)
+  # @@protoc_insertion_point(class_scope:service.RegisterModelRelationRequest)
   })
 _sym_db.RegisterMessage(RegisterModelRelationRequest)
 
 RegisterModelRequest = _reflection.GeneratedProtocolMessageType('RegisterModelRequest', (_message.Message,), {
   'DESCRIPTOR' : _REGISTERMODELREQUEST,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:RegisterModelRequest)
+  # @@protoc_insertion_point(class_scope:service.RegisterModelRequest)
   })
 _sym_db.RegisterMessage(RegisterModelRequest)
 
 ModelRelationListProto = _reflection.GeneratedProtocolMessageType('ModelRelationListProto', (_message.Message,), {
   'DESCRIPTOR' : _MODELRELATIONLISTPROTO,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:ModelRelationListProto)
+  # @@protoc_insertion_point(class_scope:service.ModelRelationListProto)
   })
 _sym_db.RegisterMessage(ModelRelationListProto)
 
 ModelVersionNameRequest = _reflection.GeneratedProtocolMessageType('ModelVersionNameRequest', (_message.Message,), {
   'DESCRIPTOR' : _MODELVERSIONNAMEREQUEST,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:ModelVersionNameRequest)
+  # @@protoc_insertion_point(class_scope:service.ModelVersionNameRequest)
   })
 _sym_db.RegisterMessage(ModelVersionNameRequest)
 
 RegisterModelVersionRelationRequest = _reflection.GeneratedProtocolMessageType('RegisterModelVersionRelationRequest', (_message.Message,), {
   'DESCRIPTOR' : _REGISTERMODELVERSIONRELATIONREQUEST,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:RegisterModelVersionRelationRequest)
+  # @@protoc_insertion_point(class_scope:service.RegisterModelVersionRelationRequest)
   })
 _sym_db.RegisterMessage(RegisterModelVersionRelationRequest)
 
 RegisterModelVersionRequest = _reflection.GeneratedProtocolMessageType('RegisterModelVersionRequest', (_message.Message,), {
   'DESCRIPTOR' : _REGISTERMODELVERSIONREQUEST,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:RegisterModelVersionRequest)
+  # @@protoc_insertion_point(class_scope:service.RegisterModelVersionRequest)
   })
 _sym_db.RegisterMessage(RegisterModelVersionRequest)
 
 ListModelVersionRelationRequest = _reflection.GeneratedProtocolMessageType('ListModelVersionRelationRequest', (_message.Message,), {
   'DESCRIPTOR' : _LISTMODELVERSIONRELATIONREQUEST,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:ListModelVersionRelationRequest)
+  # @@protoc_insertion_point(class_scope:service.ListModelVersionRelationRequest)
   })
 _sym_db.RegisterMessage(ListModelVersionRelationRequest)
 
 ModelVersionRelationListProto = _reflection.GeneratedProtocolMessageType('ModelVersionRelationListProto', (_message.Message,), {
   'DESCRIPTOR' : _MODELVERSIONRELATIONLISTPROTO,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:ModelVersionRelationListProto)
+  # @@protoc_insertion_point(class_scope:service.ModelVersionRelationListProto)
   })
 _sym_db.RegisterMessage(ModelVersionRelationListProto)
 
 ModelVersionListProto = _reflection.GeneratedProtocolMessageType('ModelVersionListProto', (_message.Message,), {
   'DESCRIPTOR' : _MODELVERSIONLISTPROTO,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:ModelVersionListProto)
+  # @@protoc_insertion_point(class_scope:service.ModelVersionListProto)
   })
 _sym_db.RegisterMessage(ModelVersionListProto)
 
 ModelNameRequest = _reflection.GeneratedProtocolMessageType('ModelNameRequest', (_message.Message,), {
   'DESCRIPTOR' : _MODELNAMEREQUEST,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:ModelNameRequest)
+  # @@protoc_insertion_point(class_scope:service.ModelNameRequest)
   })
 _sym_db.RegisterMessage(ModelNameRequest)
 
 RegisterJobRequest = _reflection.GeneratedProtocolMessageType('RegisterJobRequest', (_message.Message,), {
   'DESCRIPTOR' : _REGISTERJOBREQUEST,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:RegisterJobRequest)
+  # @@protoc_insertion_point(class_scope:service.RegisterJobRequest)
   })
 _sym_db.RegisterMessage(RegisterJobRequest)
 
@@ -1930,12 +1930,12 @@ UpdateJobRequest = _reflection.GeneratedProtocolMessageType('UpdateJobRequest', 
   'PropertiesEntry' : _reflection.GeneratedProtocolMessageType('PropertiesEntry', (_message.Message,), {
     'DESCRIPTOR' : _UPDATEJOBREQUEST_PROPERTIESENTRY,
     '__module__' : 'metadata_service_pb2'
-    # @@protoc_insertion_point(class_scope:UpdateJobRequest.PropertiesEntry)
+    # @@protoc_insertion_point(class_scope:service.UpdateJobRequest.PropertiesEntry)
     })
   ,
   'DESCRIPTOR' : _UPDATEJOBREQUEST,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:UpdateJobRequest)
+  # @@protoc_insertion_point(class_scope:service.UpdateJobRequest)
   })
 _sym_db.RegisterMessage(UpdateJobRequest)
 _sym_db.RegisterMessage(UpdateJobRequest.PropertiesEntry)
@@ -1943,28 +1943,28 @@ _sym_db.RegisterMessage(UpdateJobRequest.PropertiesEntry)
 UpdateJobStateRequest = _reflection.GeneratedProtocolMessageType('UpdateJobStateRequest', (_message.Message,), {
   'DESCRIPTOR' : _UPDATEJOBSTATEREQUEST,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:UpdateJobStateRequest)
+  # @@protoc_insertion_point(class_scope:service.UpdateJobStateRequest)
   })
 _sym_db.RegisterMessage(UpdateJobStateRequest)
 
 UpdateJobEndTimeRequest = _reflection.GeneratedProtocolMessageType('UpdateJobEndTimeRequest', (_message.Message,), {
   'DESCRIPTOR' : _UPDATEJOBENDTIMEREQUEST,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:UpdateJobEndTimeRequest)
+  # @@protoc_insertion_point(class_scope:service.UpdateJobEndTimeRequest)
   })
 _sym_db.RegisterMessage(UpdateJobEndTimeRequest)
 
 JobListProto = _reflection.GeneratedProtocolMessageType('JobListProto', (_message.Message,), {
   'DESCRIPTOR' : _JOBLISTPROTO,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:JobListProto)
+  # @@protoc_insertion_point(class_scope:service.JobListProto)
   })
 _sym_db.RegisterMessage(JobListProto)
 
 RegisterWorkFlowExecutionRequest = _reflection.GeneratedProtocolMessageType('RegisterWorkFlowExecutionRequest', (_message.Message,), {
   'DESCRIPTOR' : _REGISTERWORKFLOWEXECUTIONREQUEST,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:RegisterWorkFlowExecutionRequest)
+  # @@protoc_insertion_point(class_scope:service.RegisterWorkFlowExecutionRequest)
   })
 _sym_db.RegisterMessage(RegisterWorkFlowExecutionRequest)
 
@@ -1973,12 +1973,12 @@ UpdateWorkflowExecutionRequest = _reflection.GeneratedProtocolMessageType('Updat
   'PropertiesEntry' : _reflection.GeneratedProtocolMessageType('PropertiesEntry', (_message.Message,), {
     'DESCRIPTOR' : _UPDATEWORKFLOWEXECUTIONREQUEST_PROPERTIESENTRY,
     '__module__' : 'metadata_service_pb2'
-    # @@protoc_insertion_point(class_scope:UpdateWorkflowExecutionRequest.PropertiesEntry)
+    # @@protoc_insertion_point(class_scope:service.UpdateWorkflowExecutionRequest.PropertiesEntry)
     })
   ,
   'DESCRIPTOR' : _UPDATEWORKFLOWEXECUTIONREQUEST,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:UpdateWorkflowExecutionRequest)
+  # @@protoc_insertion_point(class_scope:service.UpdateWorkflowExecutionRequest)
   })
 _sym_db.RegisterMessage(UpdateWorkflowExecutionRequest)
 _sym_db.RegisterMessage(UpdateWorkflowExecutionRequest.PropertiesEntry)
@@ -1986,28 +1986,28 @@ _sym_db.RegisterMessage(UpdateWorkflowExecutionRequest.PropertiesEntry)
 WorkFlowExecutionListProto = _reflection.GeneratedProtocolMessageType('WorkFlowExecutionListProto', (_message.Message,), {
   'DESCRIPTOR' : _WORKFLOWEXECUTIONLISTPROTO,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:WorkFlowExecutionListProto)
+  # @@protoc_insertion_point(class_scope:service.WorkFlowExecutionListProto)
   })
 _sym_db.RegisterMessage(WorkFlowExecutionListProto)
 
 UpdateWorkflowExecutionEndTimeRequest = _reflection.GeneratedProtocolMessageType('UpdateWorkflowExecutionEndTimeRequest', (_message.Message,), {
   'DESCRIPTOR' : _UPDATEWORKFLOWEXECUTIONENDTIMEREQUEST,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:UpdateWorkflowExecutionEndTimeRequest)
+  # @@protoc_insertion_point(class_scope:service.UpdateWorkflowExecutionEndTimeRequest)
   })
 _sym_db.RegisterMessage(UpdateWorkflowExecutionEndTimeRequest)
 
 UpdateWorkflowExecutionStateRequest = _reflection.GeneratedProtocolMessageType('UpdateWorkflowExecutionStateRequest', (_message.Message,), {
   'DESCRIPTOR' : _UPDATEWORKFLOWEXECUTIONSTATEREQUEST,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:UpdateWorkflowExecutionStateRequest)
+  # @@protoc_insertion_point(class_scope:service.UpdateWorkflowExecutionStateRequest)
   })
 _sym_db.RegisterMessage(UpdateWorkflowExecutionStateRequest)
 
 RegisterProjectRequest = _reflection.GeneratedProtocolMessageType('RegisterProjectRequest', (_message.Message,), {
   'DESCRIPTOR' : _REGISTERPROJECTREQUEST,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:RegisterProjectRequest)
+  # @@protoc_insertion_point(class_scope:service.RegisterProjectRequest)
   })
 _sym_db.RegisterMessage(RegisterProjectRequest)
 
@@ -2016,12 +2016,12 @@ UpdateProjectRequest = _reflection.GeneratedProtocolMessageType('UpdateProjectRe
   'PropertiesEntry' : _reflection.GeneratedProtocolMessageType('PropertiesEntry', (_message.Message,), {
     'DESCRIPTOR' : _UPDATEPROJECTREQUEST_PROPERTIESENTRY,
     '__module__' : 'metadata_service_pb2'
-    # @@protoc_insertion_point(class_scope:UpdateProjectRequest.PropertiesEntry)
+    # @@protoc_insertion_point(class_scope:service.UpdateProjectRequest.PropertiesEntry)
     })
   ,
   'DESCRIPTOR' : _UPDATEPROJECTREQUEST,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:UpdateProjectRequest)
+  # @@protoc_insertion_point(class_scope:service.UpdateProjectRequest)
   })
 _sym_db.RegisterMessage(UpdateProjectRequest)
 _sym_db.RegisterMessage(UpdateProjectRequest.PropertiesEntry)
@@ -2029,14 +2029,14 @@ _sym_db.RegisterMessage(UpdateProjectRequest.PropertiesEntry)
 ProjectListProto = _reflection.GeneratedProtocolMessageType('ProjectListProto', (_message.Message,), {
   'DESCRIPTOR' : _PROJECTLISTPROTO,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:ProjectListProto)
+  # @@protoc_insertion_point(class_scope:service.ProjectListProto)
   })
 _sym_db.RegisterMessage(ProjectListProto)
 
 RegisterArtifactRequest = _reflection.GeneratedProtocolMessageType('RegisterArtifactRequest', (_message.Message,), {
   'DESCRIPTOR' : _REGISTERARTIFACTREQUEST,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:RegisterArtifactRequest)
+  # @@protoc_insertion_point(class_scope:service.RegisterArtifactRequest)
   })
 _sym_db.RegisterMessage(RegisterArtifactRequest)
 
@@ -2045,12 +2045,12 @@ UpdateArtifactRequest = _reflection.GeneratedProtocolMessageType('UpdateArtifact
   'PropertiesEntry' : _reflection.GeneratedProtocolMessageType('PropertiesEntry', (_message.Message,), {
     'DESCRIPTOR' : _UPDATEARTIFACTREQUEST_PROPERTIESENTRY,
     '__module__' : 'metadata_service_pb2'
-    # @@protoc_insertion_point(class_scope:UpdateArtifactRequest.PropertiesEntry)
+    # @@protoc_insertion_point(class_scope:service.UpdateArtifactRequest.PropertiesEntry)
     })
   ,
   'DESCRIPTOR' : _UPDATEARTIFACTREQUEST,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:UpdateArtifactRequest)
+  # @@protoc_insertion_point(class_scope:service.UpdateArtifactRequest)
   })
 _sym_db.RegisterMessage(UpdateArtifactRequest)
 _sym_db.RegisterMessage(UpdateArtifactRequest.PropertiesEntry)
@@ -2058,7 +2058,7 @@ _sym_db.RegisterMessage(UpdateArtifactRequest.PropertiesEntry)
 ArtifactListProto = _reflection.GeneratedProtocolMessageType('ArtifactListProto', (_message.Message,), {
   'DESCRIPTOR' : _ARTIFACTLISTPROTO,
   '__module__' : 'metadata_service_pb2'
-  # @@protoc_insertion_point(class_scope:ArtifactListProto)
+  # @@protoc_insertion_point(class_scope:service.ArtifactListProto)
   })
 _sym_db.RegisterMessage(ArtifactListProto)
 
@@ -2072,17 +2072,17 @@ _UPDATEARTIFACTREQUEST_PROPERTIESENTRY._options = None
 
 _METADATASERVICE = _descriptor.ServiceDescriptor(
   name='MetadataService',
-  full_name='MetadataService',
+  full_name='service.MetadataService',
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=4420,
-  serialized_end=11204,
+  serialized_start=4661,
+  serialized_end=12446,
   methods=[
   _descriptor.MethodDescriptor(
     name='getExampleById',
-    full_name='MetadataService.getExampleById',
+    full_name='service.MetadataService.getExampleById',
     index=0,
     containing_service=None,
     input_type=_IDREQUEST,
@@ -2092,7 +2092,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='getExampleByName',
-    full_name='MetadataService.getExampleByName',
+    full_name='service.MetadataService.getExampleByName',
     index=1,
     containing_service=None,
     input_type=_NAMEREQUEST,
@@ -2102,7 +2102,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='listExample',
-    full_name='MetadataService.listExample',
+    full_name='service.MetadataService.listExample',
     index=2,
     containing_service=None,
     input_type=_LISTREQUEST,
@@ -2112,7 +2112,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='registerExample',
-    full_name='MetadataService.registerExample',
+    full_name='service.MetadataService.registerExample',
     index=3,
     containing_service=None,
     input_type=_REGISTEREXAMPLEREQUEST,
@@ -2122,7 +2122,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='registerExampleWithCatalog',
-    full_name='MetadataService.registerExampleWithCatalog',
+    full_name='service.MetadataService.registerExampleWithCatalog',
     index=4,
     containing_service=None,
     input_type=_REGISTEREXAMPLEREQUEST,
@@ -2132,7 +2132,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='registerExamples',
-    full_name='MetadataService.registerExamples',
+    full_name='service.MetadataService.registerExamples',
     index=5,
     containing_service=None,
     input_type=_REGISTEREXAMPLESREQUEST,
@@ -2142,7 +2142,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='updateExample',
-    full_name='MetadataService.updateExample',
+    full_name='service.MetadataService.updateExample',
     index=6,
     containing_service=None,
     input_type=_UPDATEEXAMPLEREQUEST,
@@ -2152,7 +2152,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='deleteExampleById',
-    full_name='MetadataService.deleteExampleById',
+    full_name='service.MetadataService.deleteExampleById',
     index=7,
     containing_service=None,
     input_type=_IDREQUEST,
@@ -2162,7 +2162,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='deleteExampleByName',
-    full_name='MetadataService.deleteExampleByName',
+    full_name='service.MetadataService.deleteExampleByName',
     index=8,
     containing_service=None,
     input_type=_NAMEREQUEST,
@@ -2172,7 +2172,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='getModelRelationById',
-    full_name='MetadataService.getModelRelationById',
+    full_name='service.MetadataService.getModelRelationById',
     index=9,
     containing_service=None,
     input_type=_IDREQUEST,
@@ -2182,7 +2182,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='getModelRelationByName',
-    full_name='MetadataService.getModelRelationByName',
+    full_name='service.MetadataService.getModelRelationByName',
     index=10,
     containing_service=None,
     input_type=_NAMEREQUEST,
@@ -2192,7 +2192,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='listModelRelation',
-    full_name='MetadataService.listModelRelation',
+    full_name='service.MetadataService.listModelRelation',
     index=11,
     containing_service=None,
     input_type=_LISTREQUEST,
@@ -2202,7 +2202,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='registerModelRelation',
-    full_name='MetadataService.registerModelRelation',
+    full_name='service.MetadataService.registerModelRelation',
     index=12,
     containing_service=None,
     input_type=_REGISTERMODELRELATIONREQUEST,
@@ -2212,7 +2212,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='deleteModelRelationById',
-    full_name='MetadataService.deleteModelRelationById',
+    full_name='service.MetadataService.deleteModelRelationById',
     index=13,
     containing_service=None,
     input_type=_IDREQUEST,
@@ -2222,7 +2222,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='deleteModelRelationByName',
-    full_name='MetadataService.deleteModelRelationByName',
+    full_name='service.MetadataService.deleteModelRelationByName',
     index=14,
     containing_service=None,
     input_type=_NAMEREQUEST,
@@ -2232,7 +2232,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='getModelById',
-    full_name='MetadataService.getModelById',
+    full_name='service.MetadataService.getModelById',
     index=15,
     containing_service=None,
     input_type=_IDREQUEST,
@@ -2242,7 +2242,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='getModelByName',
-    full_name='MetadataService.getModelByName',
+    full_name='service.MetadataService.getModelByName',
     index=16,
     containing_service=None,
     input_type=_NAMEREQUEST,
@@ -2252,7 +2252,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='registerModel',
-    full_name='MetadataService.registerModel',
+    full_name='service.MetadataService.registerModel',
     index=17,
     containing_service=None,
     input_type=_REGISTERMODELREQUEST,
@@ -2262,7 +2262,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='deleteModelById',
-    full_name='MetadataService.deleteModelById',
+    full_name='service.MetadataService.deleteModelById',
     index=18,
     containing_service=None,
     input_type=_IDREQUEST,
@@ -2272,7 +2272,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='deleteModelByName',
-    full_name='MetadataService.deleteModelByName',
+    full_name='service.MetadataService.deleteModelByName',
     index=19,
     containing_service=None,
     input_type=_NAMEREQUEST,
@@ -2282,7 +2282,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='getModelVersionRelationByVersion',
-    full_name='MetadataService.getModelVersionRelationByVersion',
+    full_name='service.MetadataService.getModelVersionRelationByVersion',
     index=20,
     containing_service=None,
     input_type=_MODELVERSIONNAMEREQUEST,
@@ -2292,7 +2292,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='listModelVersionRelation',
-    full_name='MetadataService.listModelVersionRelation',
+    full_name='service.MetadataService.listModelVersionRelation',
     index=21,
     containing_service=None,
     input_type=_LISTMODELVERSIONRELATIONREQUEST,
@@ -2302,7 +2302,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='registerModelVersionRelation',
-    full_name='MetadataService.registerModelVersionRelation',
+    full_name='service.MetadataService.registerModelVersionRelation',
     index=22,
     containing_service=None,
     input_type=_REGISTERMODELVERSIONRELATIONREQUEST,
@@ -2312,7 +2312,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='deleteModelVersionRelationByVersion',
-    full_name='MetadataService.deleteModelVersionRelationByVersion',
+    full_name='service.MetadataService.deleteModelVersionRelationByVersion',
     index=23,
     containing_service=None,
     input_type=_MODELVERSIONNAMEREQUEST,
@@ -2322,7 +2322,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='getModelVersionByVersion',
-    full_name='MetadataService.getModelVersionByVersion',
+    full_name='service.MetadataService.getModelVersionByVersion',
     index=24,
     containing_service=None,
     input_type=_MODELVERSIONNAMEREQUEST,
@@ -2332,7 +2332,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='registerModelVersion',
-    full_name='MetadataService.registerModelVersion',
+    full_name='service.MetadataService.registerModelVersion',
     index=25,
     containing_service=None,
     input_type=_REGISTERMODELVERSIONREQUEST,
@@ -2342,7 +2342,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='deleteModelVersionByVersion',
-    full_name='MetadataService.deleteModelVersionByVersion',
+    full_name='service.MetadataService.deleteModelVersionByVersion',
     index=26,
     containing_service=None,
     input_type=_MODELVERSIONNAMEREQUEST,
@@ -2352,7 +2352,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='getDeployedModelVersion',
-    full_name='MetadataService.getDeployedModelVersion',
+    full_name='service.MetadataService.getDeployedModelVersion',
     index=27,
     containing_service=None,
     input_type=_MODELNAMEREQUEST,
@@ -2362,7 +2362,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='getLatestValidatedModelVersion',
-    full_name='MetadataService.getLatestValidatedModelVersion',
+    full_name='service.MetadataService.getLatestValidatedModelVersion',
     index=28,
     containing_service=None,
     input_type=_MODELNAMEREQUEST,
@@ -2372,7 +2372,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='getLatestGeneratedModelVersion',
-    full_name='MetadataService.getLatestGeneratedModelVersion',
+    full_name='service.MetadataService.getLatestGeneratedModelVersion',
     index=29,
     containing_service=None,
     input_type=_MODELNAMEREQUEST,
@@ -2382,7 +2382,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='getWorkFlowExecutionById',
-    full_name='MetadataService.getWorkFlowExecutionById',
+    full_name='service.MetadataService.getWorkFlowExecutionById',
     index=30,
     containing_service=None,
     input_type=_IDREQUEST,
@@ -2392,7 +2392,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='getWorkFlowExecutionByName',
-    full_name='MetadataService.getWorkFlowExecutionByName',
+    full_name='service.MetadataService.getWorkFlowExecutionByName',
     index=31,
     containing_service=None,
     input_type=_NAMEREQUEST,
@@ -2402,7 +2402,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='listWorkFlowExecution',
-    full_name='MetadataService.listWorkFlowExecution',
+    full_name='service.MetadataService.listWorkFlowExecution',
     index=32,
     containing_service=None,
     input_type=_LISTREQUEST,
@@ -2412,7 +2412,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='registerWorkFlowExecution',
-    full_name='MetadataService.registerWorkFlowExecution',
+    full_name='service.MetadataService.registerWorkFlowExecution',
     index=33,
     containing_service=None,
     input_type=_REGISTERWORKFLOWEXECUTIONREQUEST,
@@ -2422,7 +2422,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='updateWorkflowExecution',
-    full_name='MetadataService.updateWorkflowExecution',
+    full_name='service.MetadataService.updateWorkflowExecution',
     index=34,
     containing_service=None,
     input_type=_UPDATEWORKFLOWEXECUTIONREQUEST,
@@ -2432,7 +2432,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='deleteWorkflowExecutionById',
-    full_name='MetadataService.deleteWorkflowExecutionById',
+    full_name='service.MetadataService.deleteWorkflowExecutionById',
     index=35,
     containing_service=None,
     input_type=_IDREQUEST,
@@ -2442,7 +2442,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='deleteWorkflowExecutionByName',
-    full_name='MetadataService.deleteWorkflowExecutionByName',
+    full_name='service.MetadataService.deleteWorkflowExecutionByName',
     index=36,
     containing_service=None,
     input_type=_NAMEREQUEST,
@@ -2452,7 +2452,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='updateWorkflowExecutionEndTime',
-    full_name='MetadataService.updateWorkflowExecutionEndTime',
+    full_name='service.MetadataService.updateWorkflowExecutionEndTime',
     index=37,
     containing_service=None,
     input_type=_UPDATEWORKFLOWEXECUTIONENDTIMEREQUEST,
@@ -2462,7 +2462,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='updateWorkflowExecutionState',
-    full_name='MetadataService.updateWorkflowExecutionState',
+    full_name='service.MetadataService.updateWorkflowExecutionState',
     index=38,
     containing_service=None,
     input_type=_UPDATEWORKFLOWEXECUTIONSTATEREQUEST,
@@ -2472,7 +2472,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='getJobById',
-    full_name='MetadataService.getJobById',
+    full_name='service.MetadataService.getJobById',
     index=39,
     containing_service=None,
     input_type=_IDREQUEST,
@@ -2482,7 +2482,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='getJobByName',
-    full_name='MetadataService.getJobByName',
+    full_name='service.MetadataService.getJobByName',
     index=40,
     containing_service=None,
     input_type=_NAMEREQUEST,
@@ -2492,7 +2492,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='listJob',
-    full_name='MetadataService.listJob',
+    full_name='service.MetadataService.listJob',
     index=41,
     containing_service=None,
     input_type=_LISTREQUEST,
@@ -2502,7 +2502,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='registerJob',
-    full_name='MetadataService.registerJob',
+    full_name='service.MetadataService.registerJob',
     index=42,
     containing_service=None,
     input_type=_REGISTERJOBREQUEST,
@@ -2512,7 +2512,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='updateJob',
-    full_name='MetadataService.updateJob',
+    full_name='service.MetadataService.updateJob',
     index=43,
     containing_service=None,
     input_type=_UPDATEJOBREQUEST,
@@ -2522,7 +2522,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='updateJobState',
-    full_name='MetadataService.updateJobState',
+    full_name='service.MetadataService.updateJobState',
     index=44,
     containing_service=None,
     input_type=_UPDATEJOBSTATEREQUEST,
@@ -2532,7 +2532,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='updateJobEndTime',
-    full_name='MetadataService.updateJobEndTime',
+    full_name='service.MetadataService.updateJobEndTime',
     index=45,
     containing_service=None,
     input_type=_UPDATEJOBENDTIMEREQUEST,
@@ -2542,7 +2542,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='deleteJobById',
-    full_name='MetadataService.deleteJobById',
+    full_name='service.MetadataService.deleteJobById',
     index=46,
     containing_service=None,
     input_type=_IDREQUEST,
@@ -2552,7 +2552,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='deleteJobByName',
-    full_name='MetadataService.deleteJobByName',
+    full_name='service.MetadataService.deleteJobByName',
     index=47,
     containing_service=None,
     input_type=_NAMEREQUEST,
@@ -2562,7 +2562,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='getProjectById',
-    full_name='MetadataService.getProjectById',
+    full_name='service.MetadataService.getProjectById',
     index=48,
     containing_service=None,
     input_type=_IDREQUEST,
@@ -2572,7 +2572,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='getProjectByName',
-    full_name='MetadataService.getProjectByName',
+    full_name='service.MetadataService.getProjectByName',
     index=49,
     containing_service=None,
     input_type=_NAMEREQUEST,
@@ -2582,7 +2582,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='registerProject',
-    full_name='MetadataService.registerProject',
+    full_name='service.MetadataService.registerProject',
     index=50,
     containing_service=None,
     input_type=_REGISTERPROJECTREQUEST,
@@ -2592,7 +2592,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='updateProject',
-    full_name='MetadataService.updateProject',
+    full_name='service.MetadataService.updateProject',
     index=51,
     containing_service=None,
     input_type=_UPDATEPROJECTREQUEST,
@@ -2602,7 +2602,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='listProject',
-    full_name='MetadataService.listProject',
+    full_name='service.MetadataService.listProject',
     index=52,
     containing_service=None,
     input_type=_LISTREQUEST,
@@ -2612,7 +2612,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='deleteProjectById',
-    full_name='MetadataService.deleteProjectById',
+    full_name='service.MetadataService.deleteProjectById',
     index=53,
     containing_service=None,
     input_type=_IDREQUEST,
@@ -2622,7 +2622,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='deleteProjectByName',
-    full_name='MetadataService.deleteProjectByName',
+    full_name='service.MetadataService.deleteProjectByName',
     index=54,
     containing_service=None,
     input_type=_NAMEREQUEST,
@@ -2632,7 +2632,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='getArtifactById',
-    full_name='MetadataService.getArtifactById',
+    full_name='service.MetadataService.getArtifactById',
     index=55,
     containing_service=None,
     input_type=_IDREQUEST,
@@ -2642,7 +2642,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='getArtifactByName',
-    full_name='MetadataService.getArtifactByName',
+    full_name='service.MetadataService.getArtifactByName',
     index=56,
     containing_service=None,
     input_type=_NAMEREQUEST,
@@ -2652,7 +2652,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='updateArtifact',
-    full_name='MetadataService.updateArtifact',
+    full_name='service.MetadataService.updateArtifact',
     index=57,
     containing_service=None,
     input_type=_UPDATEARTIFACTREQUEST,
@@ -2662,7 +2662,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='registerArtifact',
-    full_name='MetadataService.registerArtifact',
+    full_name='service.MetadataService.registerArtifact',
     index=58,
     containing_service=None,
     input_type=_REGISTERARTIFACTREQUEST,
@@ -2672,7 +2672,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='listArtifact',
-    full_name='MetadataService.listArtifact',
+    full_name='service.MetadataService.listArtifact',
     index=59,
     containing_service=None,
     input_type=_LISTREQUEST,
@@ -2682,7 +2682,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='deleteArtifactById',
-    full_name='MetadataService.deleteArtifactById',
+    full_name='service.MetadataService.deleteArtifactById',
     index=60,
     containing_service=None,
     input_type=_IDREQUEST,
@@ -2692,7 +2692,7 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='deleteArtifactByName',
-    full_name='MetadataService.deleteArtifactByName',
+    full_name='service.MetadataService.deleteArtifactByName',
     index=61,
     containing_service=None,
     input_type=_NAMEREQUEST,

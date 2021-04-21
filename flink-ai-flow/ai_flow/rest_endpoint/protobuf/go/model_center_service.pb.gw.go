@@ -20,7 +20,7 @@
 // source: model_center_service.proto
 
 /*
-Package model_center_service is a reverse proxy.
+Package service is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
