@@ -140,13 +140,13 @@ class EventBasedScheduler(LoggingMixin):
                     self._schedule_task(event)
                 elif isinstance(event, TaskStatusChangedEvent):
                     dagrun = self._find_dagrun(event.dag_id, event.execution_date, session)
-                    tasks = self._find_schedulable_tasks(dagrun, session)
+                    tasks = self._find_scheduled_tasks(dagrun, session)
                     self._send_scheduling_task_events(tasks, SchedulingAction.START)
                     if dagrun.state in State.finished:
                         self.mailbox.send_message(DagRunFinishedEvent(dagrun.run_id).to_event())
                 elif isinstance(event, DagExecutableEvent):
                     dagrun = self._create_dag_run(event.dag_id, session=session)
-                    tasks = self._find_schedulable_tasks(dagrun, session)
+                    tasks = self._find_scheduled_tasks(dagrun, session)
                     self._send_scheduling_task_events(tasks, SchedulingAction.START)
                 elif isinstance(event, EventHandleEvent):
                     dag_runs = DagRun.find(dag_id=event.dag_id, run_id=event.dag_run_id)
@@ -342,7 +342,7 @@ class EventBasedScheduler(LoggingMixin):
                 affect_dag_runs.append(dag_run)
         return affect_dag_runs
 
-    def _find_schedulable_tasks(
+    def _find_scheduled_tasks(
         self,
         dag_run: DagRun,
         session: Session,
@@ -397,6 +397,20 @@ class EventBasedScheduler(LoggingMixin):
 
         schedulable_tis, callback_to_run = dag_run.update_state(session=session, execute_callbacks=False)
         dag_run.schedule_tis(schedulable_tis, session)
+        session.commit()
+
+        query = (session.query(TI)
+                 .outerjoin(TI.dag_run)
+                 .filter(or_(DR.run_id.is_(None), DR.run_type != DagRunType.BACKFILL_JOB))
+                 .join(TI.dag_model)
+                 .filter(not_(DM.is_paused))
+                 .filter(TI.state == State.SCHEDULED)
+                 .options(selectinload('dag_model')))
+        scheduled_tis: List[TI] = with_row_locks(
+            query,
+            of=TI,
+            **skip_locked(session=session),
+        ).all()
         # filter need event tasks
         serialized_dag = session.query(SerializedDagModel).filter(
             SerializedDagModel.dag_id == dag_run.dag_id).first()
@@ -407,7 +421,7 @@ class EventBasedScheduler(LoggingMixin):
             event_task_set = dep.find_event_dependencies_tasks()
         else:
             self.log.error("Failed to get serialized_dag from db, unexpected dag id: %s", dag_run.dag_id)
-        for ti in schedulable_tis:
+        for ti in scheduled_tis:
             if ti.task_id not in event_task_set:
                 final_scheduled_tis.append(ti)
 
@@ -471,7 +485,7 @@ class EventBasedScheduler(LoggingMixin):
             return
         for dag_run in dag_runs:
             self._reset_unfinished_task_state(dag_run)
-            tasks = self._find_schedulable_tasks(dag_run, session)
+            tasks = self._find_scheduled_tasks(dag_run, session)
             self._send_scheduling_task_events(tasks, SchedulingAction.START)
 
     @provide_session
@@ -491,7 +505,7 @@ class EventBasedScheduler(LoggingMixin):
                     # TODO Need to add ret_code and errro_msg in ExecutionContext in case of exception
                     self.notification_client.send_event(ResponseEvent(event.request_id, None).to_event())
                     return
-                tasks = self._find_schedulable_tasks(dagrun, session, False)
+                tasks = self._find_scheduled_tasks(dagrun, session, False)
                 self._send_scheduling_task_events(tasks, SchedulingAction.START)
                 self.notification_client.send_event(ResponseEvent(event.request_id, dagrun.run_id).to_event())
             elif message.message_type == UserDefineMessageType.STOP_DAG_RUN:
