@@ -159,6 +159,9 @@
           <a id="btn_ti" class="btn btn-sm" data-base-url="{{ url_for('TaskInstanceModelView.list') }}">
             All Instances
           </a>
+          <a id="btn_te" class="btn btn-sm" data-base-url="{{ url_for('TaskExecutionModelView.list') }}">
+            All Executions
+          </a>
           <button id="btn_filter" type="button" class="btn btn-sm" title="Filter on this task and upstream ">
             Filter Upstream
           </button>
@@ -448,6 +451,12 @@
         flt1_dag_id_equals: dag_id,
         _flt_3_task_id: task_id,
         _oc_TaskInstanceModelView: execution_date,
+      });
+
+      updateButtonUrl(buttons.te, {
+        flt1_dag_id_equals: dag_id,
+        _flt_3_task_id: task_id,
+        _oc_TaskExecutionModelView: execution_date,
       });
 
       updateButtonUrl(buttons.log, {
