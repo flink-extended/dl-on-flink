@@ -40,6 +40,7 @@ mapping = {
     ],
     ("Airflow", "can_clear"): [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+        (permissions.ACTION_CAN_DELETE, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_DELETE, permissions.RESOURCE_TASK_INSTANCE),
     ],
     ("Airflow", "can_code"): [
@@ -57,6 +58,7 @@ mapping = {
     ("Airflow", "can_dagrun_clear"): [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
         (permissions.ACTION_CAN_DELETE, permissions.RESOURCE_DAG_RUN),
+        (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
     ],
     ("Airflow", "can_dagrun_failed"): [
@@ -72,37 +74,45 @@ mapping = {
     ],
     ("Airflow", "can_duration"): [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+        (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
     ],
     ("Airflow", "can_extra_links"): [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+        (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
     ],
     ("Airflow", "can_failed"): [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+        (permissions.ACTION_CAN_EDIT, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_EDIT, permissions.RESOURCE_TASK_INSTANCE),
     ],
     ("Airflow", "can_gantt"): [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+        (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
     ],
     ("Airflow", "can_get_logs_with_metadata"): [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+        (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_LOG),
     ],
     ("Airflow", "can_graph"): [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+        (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_LOG),
     ],
     ("Airflow", "can_index"): [(permissions.ACTION_CAN_READ, "Website")],
     ("Airflow", "can_landing_times"): [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+        (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
     ],
     ("Airflow", "can_log"): [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+        (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_LOG),
     ],
@@ -111,6 +121,7 @@ mapping = {
     ],
     ("Airflow", "can_redirect_to_external_log"): [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+        (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_LOG),
     ],
@@ -122,27 +133,33 @@ mapping = {
     ],
     ("Airflow", "can_rendered"): [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+        (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
     ],
     ("Airflow", "can_run"): [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+        (permissions.ACTION_CAN_CREATE, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_CREATE, permissions.RESOURCE_TASK_INSTANCE),
     ],
     ("Airflow", "can_success"): [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+        (permissions.ACTION_CAN_EDIT, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_EDIT, permissions.RESOURCE_TASK_INSTANCE),
     ],
     ("Airflow", "can_task"): [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+        (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
     ],
     ("Airflow", "can_task_instances"): [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+        (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
     ],
     ("Airflow", "can_task_stats"): [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG_RUN),
+        (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
     ],
     ("Airflow", "can_last_dagruns"): [
@@ -151,11 +168,13 @@ mapping = {
     ],
     ("Airflow", "can_tree"): [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+        (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_LOG),
     ],
     ("Airflow", "can_tries"): [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+        (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
     ],
     ("Airflow", "can_trigger"): [
@@ -164,6 +183,7 @@ mapping = {
     ],
     ("Airflow", "can_xcom"): [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+        (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_XCOM),
     ],
@@ -177,6 +197,7 @@ mapping = {
     ("Dags", "can_edit"): [(permissions.ACTION_CAN_EDIT, permissions.RESOURCE_DAG)],
     ("DagRunModelView", "clear"): [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+        (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_DELETE, permissions.RESOURCE_TASK_INSTANCE),
     ],
     ("DagRunModelView", "can_add"): [(permissions.ACTION_CAN_CREATE, permissions.RESOURCE_DAG_RUN)],
@@ -214,20 +235,40 @@ mapping = {
     ("TaskInstanceModelView", "set_success"): [
         (permissions.ACTION_CAN_EDIT, permissions.RESOURCE_TASK_INSTANCE)
     ],
+    ("TaskExecutionModelView", "can_list"): [
+        (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION)
+    ],
+    ("TaskExecutionModelView", "clear"): [(permissions.ACTION_CAN_EDIT, permissions.RESOURCE_TASK_EXECUTION)],
+    ("TaskExecutionModelView", "set_failed"): [
+        (permissions.ACTION_CAN_EDIT, permissions.RESOURCE_TASK_EXECUTION)
+    ],
+    ("TaskExecutionModelView", "set_retry"): [
+        (permissions.ACTION_CAN_EDIT, permissions.RESOURCE_TASK_EXECUTION)
+    ],
+    ("TaskExecutionModelView", "set_running"): [
+        (permissions.ACTION_CAN_EDIT, permissions.RESOURCE_TASK_EXECUTION)
+    ],
+    ("TaskExecutionModelView", "set_success"): [
+        (permissions.ACTION_CAN_EDIT, permissions.RESOURCE_TASK_EXECUTION)
+    ],
     ("TaskRescheduleModelView", "can_list"): [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_RESCHEDULE)
     ],
     ("TaskInstance", "can_read"): [(permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE)],
     ("Tasks", permissions.ACTION_CAN_CREATE): [
+        (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_CREATE, permissions.RESOURCE_TASK_INSTANCE)
     ],
     ("Tasks", permissions.ACTION_CAN_READ): [
+        (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE)
     ],
     ("Tasks", permissions.ACTION_CAN_EDIT): [
+        (permissions.ACTION_CAN_EDIT, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_EDIT, permissions.RESOURCE_TASK_INSTANCE)
     ],
     ("Tasks", permissions.ACTION_CAN_DELETE): [
+        (permissions.ACTION_CAN_DELETE, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_DELETE, permissions.RESOURCE_TASK_INSTANCE)
     ],
     ("ConnectionModelView", "can_add"): [(permissions.ACTION_CAN_CREATE, permissions.RESOURCE_CONNECTION)],

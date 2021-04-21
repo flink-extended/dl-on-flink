@@ -47,6 +47,7 @@ from airflow.utils.state import State
     [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG_RUN),
+        (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
     ]
 )
@@ -105,6 +106,7 @@ def _apply_range_filter(query, key, value_range: Tuple[Any, Any]):
     [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG_RUN),
+        (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
     ]
 )
@@ -173,6 +175,7 @@ def get_task_instances(
     [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG_RUN),
+        (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
     ]
 )
@@ -231,6 +234,7 @@ def get_task_instances_batch(session=None):
     [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG_RUN),
+        (permissions.ACTION_CAN_EDIT, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_EDIT, permissions.RESOURCE_TASK_INSTANCE),
     ]
 )
