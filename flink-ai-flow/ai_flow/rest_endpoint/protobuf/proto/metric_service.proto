@@ -24,7 +24,7 @@ import "message.proto";
 
 import "google/api/annotations.proto";
 
-package service;
+package ai_flow;
 
 message UuidRequest {
     int64 uuid = 1;
