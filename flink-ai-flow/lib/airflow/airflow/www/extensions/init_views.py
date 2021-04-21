@@ -72,6 +72,11 @@ def init_appbuilder_views(app):
         category=permissions.RESOURCE_BROWSE_MENU,
     )
     appbuilder.add_view(
+        views.TaskExecutionModelView,
+        permissions.RESOURCE_TASK_EXECUTION,
+        category=permissions.RESOURCE_BROWSE_MENU,
+    )
+    appbuilder.add_view(
         views.TaskRescheduleModelView,
         permissions.RESOURCE_TASK_RESCHEDULE,
         category=permissions.RESOURCE_BROWSE_MENU,
