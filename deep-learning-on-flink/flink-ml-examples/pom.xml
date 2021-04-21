@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>com.alibaba.flink.ml</groupId>
-            <artifactId>flink-ml-tensorflow</artifactId>
+            <artifactId>flink-ml-tensorflow-2.x</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
