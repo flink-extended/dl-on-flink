@@ -35,17 +35,17 @@ from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='message.proto',
-  package='',
+  package='service',
   syntax='proto3',
   serialized_options=b'\n\020com.aiflow.proto\210\001\001\220\001\001',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\rmessage.proto\x1a\x1egoogle/protobuf/wrappers.proto\"C\n\x0bSchemaProto\x12\x11\n\tname_list\x18\x01 \x03(\t\x12!\n\ttype_list\x18\x02 \x03(\x0e\x32\x0e.DataTypeProto\"\x86\x07\n\x0c\x45xampleProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x31\n\nproperties\x18\x03 \x03(\x0b\x32\x1d.ExampleProto.PropertiesEntry\x12.\n\x0csupport_type\x18\x04 \x01(\x0e\x32\x18.ExampleSupportTypeProto\x12\x1c\n\x06schema\x18\x05 \x01(\x0b\x32\x0c.SchemaProto\x12/\n\tdata_type\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\x0b\x64\x61ta_format\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tbatch_uri\x18\x08 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x30\n\nstream_uri\x18\t \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\x0b\x64\x65scription\x18\n \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x30\n\x0b\x63reate_time\x18\x0b \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x30\n\x0bupdate_time\x18\x0c \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x32\n\x0c\x63\x61talog_name\x18\r \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0c\x63\x61talog_type\x18\x0e \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x36\n\x10\x63\x61talog_database\x18\x0f \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12<\n\x16\x63\x61talog_connection_uri\x18\x10 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x35\n\x0f\x63\x61talog_version\x18\x11 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x33\n\rcatalog_table\x18\x12 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"a\n\x12ModelRelationProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12/\n\nproject_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\"\xab\x01\n\nModelProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12/\n\nproject_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x1e\n\nmodel_type\x18\x04 \x01(\x0e\x32\n.ModelType\x12\x30\n\nmodel_desc\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\"\xb5\x01\n\x19ModelVersionRelationProto\x12-\n\x07version\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12-\n\x08model_id\x18\x02 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12:\n\x15workflow_execution_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\"\xa6\x03\n\x11ModelVersionProto\x12-\n\x07version\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12-\n\x08model_id\x18\x02 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12:\n\x15workflow_execution_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x30\n\nmodel_path\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmodel_metric\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmodel_flavor\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cversion_desc\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12)\n\rcurrent_stage\x18\x08 \x01(\x0e\x32\x12.ModelVersionStage\"\xd2\x03\n\x08JobProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12:\n\x15workflow_execution_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x1e\n\tjob_state\x18\x04 \x01(\x0e\x32\x0b.StateProto\x12-\n\nproperties\x18\x05 \x03(\x0b\x32\x19.JobProto.PropertiesEntry\x12,\n\x06job_id\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\nstart_time\x18\x07 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x08\x65nd_time\x18\x08 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x07log_uri\x18\t \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tsignature\x18\n \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xf0\x03\n\x16WorkflowExecutionProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12/\n\nproject_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12$\n\x0f\x65xecution_state\x18\x04 \x01(\x0e\x32\x0b.StateProto\x12;\n\nproperties\x18\x05 \x03(\x0b\x32\'.WorkflowExecutionProto.PropertiesEntry\x12/\n\nstart_time\x18\x06 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x08\x65nd_time\x18\x07 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x07log_uri\x18\x08 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x33\n\rworkflow_json\x18\t \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tsignature\x18\n \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xcb\x02\n\x0cProjectProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x31\n\nproperties\x18\x03 \x03(\x0b\x32\x1d.ProjectProto.PropertiesEntry\x12\x32\n\x0cproject_type\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12)\n\x03uri\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12*\n\x04user\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12.\n\x08password\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xbf\x03\n\rArtifactProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x32\n\nproperties\x18\x03 \x03(\x0b\x32\x1e.ArtifactProto.PropertiesEntry\x12\x31\n\x0b\x64\x61ta_format\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tbatch_uri\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x30\n\nstream_uri\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\x0b\x64\x65scription\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x30\n\x0b\x63reate_time\x18\x08 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x30\n\x0bupdate_time\x18\t \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\x9a\x01\n\x14RegisteredModelParam\x12\x30\n\nmodel_name\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x1e\n\nmodel_type\x18\x02 \x01(\x0e\x32\n.ModelType\x12\x30\n\nmodel_desc\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\"\x8c\x02\n\x11ModelVersionParam\x12\x30\n\nmodel_path\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmodel_metric\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmodel_flavor\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cversion_desc\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12)\n\rcurrent_stage\x18\x05 \x01(\x0e\x32\x12.ModelVersionStage\"w\n\x0eModelMetaParam\x12\x30\n\nmodel_name\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x33\n\rmodel_version\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.StringValue\"A\n\x08Response\x12\x13\n\x0breturn_code\x18\x01 \x01(\t\x12\x12\n\nreturn_msg\x18\x02 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x03 \x01(\t\"{\n\x13RegisteredModelMeta\x12\x12\n\nmodel_name\x18\x01 \x01(\t\x12\x1e\n\nmodel_type\x18\x02 \x01(\x0e\x32\n.ModelType\x12\x30\n\nmodel_desc\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\"\xe3\x02\n\x10ModelVersionMeta\x12\x12\n\nmodel_name\x18\x01 \x01(\t\x12\x15\n\rmodel_version\x18\x02 \x01(\t\x12\x30\n\nmodel_path\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmodel_metric\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmodel_flavor\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cversion_desc\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12+\n\x0eversion_status\x18\x07 \x01(\x0e\x32\x13.ModelVersionStatus\x12)\n\rcurrent_stage\x18\x08 \x01(\x0e\x32\x12.ModelVersionStage\"q\n\x15RegisteredModelDetail\x12.\n\x10registered_model\x18\x01 \x01(\x0b\x32\x14.RegisteredModelMeta\x12(\n\rmodel_version\x18\x02 \x01(\x0b\x32\x11.ModelVersionMeta\"G\n\x14RegisteredModelMetas\x12/\n\x11registered_models\x18\x01 \x03(\x0b\x32\x14.RegisteredModelMeta\"\x91\x05\n\x0fMetricMetaProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12*\n\x04name\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\ndataset_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x30\n\nmodel_name\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x33\n\rmodel_version\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12+\n\x06job_id\x18\x06 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12/\n\nstart_time\x18\x07 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x08\x65nd_time\x18\x08 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12%\n\x0bmetric_type\x18\t \x01(\x0e\x32\x10.MetricTypeProto\x12)\n\x03uri\x18\n \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12*\n\x04tags\x18\x0b \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x38\n\x12metric_description\x18\x0c \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x34\n\nproperties\x18\r \x03(\x0b\x32 .MetricMetaProto.PropertiesEntry\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xb8\x01\n\x12MetricSummaryProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12.\n\tmetric_id\x18\x02 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x30\n\nmetric_key\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmetric_value\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue*\xc0\x03\n\nReturnCode\x12\x0b\n\x07SUCCESS\x10\x00\x12\x12\n\x0eINTERNAL_ERROR\x10\x01\x12\x1b\n\x17TEMPORARILY_UNAVAILABLE\x10\x02\x12\x0c\n\x08IO_ERROR\x10\x03\x12\x0f\n\x0b\x42\x41\x44_REQUEST\x10\x04\x12\x1c\n\x17INVALID_PARAMETER_VALUE\x10\xe8\x07\x12\x17\n\x12\x45NDPOINT_NOT_FOUND\x10\xe9\x07\x12\x16\n\x11MALFORMED_REQUEST\x10\xea\x07\x12\x12\n\rINVALID_STATE\x10\xeb\x07\x12\x16\n\x11PERMISSION_DENIED\x10\xec\x07\x12\x15\n\x10\x46\x45\x41TURE_DISABLED\x10\xed\x07\x12\x1a\n\x15\x43USTOMER_UNAUTHORIZED\x10\xee\x07\x12\x1b\n\x16REQUEST_LIMIT_EXCEEDED\x10\xef\x07\x12\x1c\n\x17RESOURCE_ALREADY_EXISTS\x10\xd1\x0f\x12\x1c\n\x17RESOURCE_DOES_NOT_EXIST\x10\xd2\x0f\x12\x13\n\x0eQUOTA_EXCEEDED\x10\xb9\x17\x12\x1c\n\x17MAX_BLOCK_SIZE_EXCEEDED\x10\xba\x17\x12\x1b\n\x16MAX_READ_SIZE_EXCEEDED\x10\xbb\x17*\xd6\x01\n\rDataTypeProto\x12\x19\n\x15\x44\x41TA_TYPE_UNSPECIFIED\x10\x00\x12\t\n\x05INT32\x10\x01\x12\t\n\x05INT64\x10\x02\x12\x0b\n\x07\x46LOAT32\x10\x03\x12\x0b\n\x07\x46LOAT64\x10\x04\x12\n\n\x06STRING\x10\x05\x12\x0e\n\nINT32ARRAY\x10\x06\x12\x0e\n\nINT64ARRAY\x10\x07\x12\x10\n\x0c\x46lOAT32ARRAY\x10\x08\x12\x10\n\x0c\x46LOAT64ARRAY\x10\t\x12\x0f\n\x0bSTRINGARRAY\x10\n\x12\t\n\x05\x42YTES\x10\x0b\x12\x0e\n\nBYTESARRAY\x10\x0c*x\n\x17\x45xampleSupportTypeProto\x12$\n EXAMPLE_SUPPORT_TYPE_UNSPECIFIED\x10\x00\x12\x12\n\x0e\x45XAMPLE_STREAM\x10\x01\x12\x11\n\rEXAMPLE_BATCH\x10\x02\x12\x10\n\x0c\x45XAMPLE_BOTH\x10\x03*b\n\nStateProto\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x08\n\x04INIT\x10\x01\x12\x0c\n\x08STARTING\x10\x02\x12\x0b\n\x07RUNNING\x10\x03\x12\x0c\n\x08\x46INISHED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05*F\n\rExecutionMode\x12\x1e\n\x1a\x45XECUTION_MODE_UNSPECIFIED\x10\x00\x12\t\n\x05\x42\x41TCH\x10\x01\x12\n\n\x06STREAM\x10\x02*C\n\tModelType\x12\r\n\tNONE_TYPE\x10\x00\x12\x0e\n\nCHECKPOINT\x10\x01\x12\x0f\n\x0bSAVED_MODEL\x10\x02\x12\x06\n\x02H5\x10\x03*}\n\x12ModelVersionStatus\x12\x18\n\x14PENDING_REGISTRATION\x10\x00\x12\x17\n\x13\x46\x41ILED_REGISTRATION\x10\x01\x12\t\n\x05READY\x10\x03\x12\x14\n\x10PENDING_DELETION\x10\x04\x12\x13\n\x0f\x46\x41ILED_DELETION\x10\x05*\\\n\x11ModelVersionStage\x12\r\n\tGENERATED\x10\x00\x12\r\n\tVALIDATED\x10\x01\x12\x0c\n\x08\x44\x45PLOYED\x10\x02\x12\x0e\n\nDEPRECATED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04*)\n\x0fMetricTypeProto\x12\x0b\n\x07\x44\x41TASET\x10\x00\x12\t\n\x05MODEL\x10\x01\x42\x18\n\x10\x63om.aiflow.proto\x88\x01\x01\x90\x01\x01\x62\x06proto3'
+  serialized_pb=b'\n\rmessage.proto\x12\x07service\x1a\x1egoogle/protobuf/wrappers.proto\"K\n\x0bSchemaProto\x12\x11\n\tname_list\x18\x01 \x03(\t\x12)\n\ttype_list\x18\x02 \x03(\x0e\x32\x16.service.DataTypeProto\"\x9e\x07\n\x0c\x45xampleProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x39\n\nproperties\x18\x03 \x03(\x0b\x32%.service.ExampleProto.PropertiesEntry\x12\x36\n\x0csupport_type\x18\x04 \x01(\x0e\x32 .service.ExampleSupportTypeProto\x12$\n\x06schema\x18\x05 \x01(\x0b\x32\x14.service.SchemaProto\x12/\n\tdata_type\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\x0b\x64\x61ta_format\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tbatch_uri\x18\x08 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x30\n\nstream_uri\x18\t \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\x0b\x64\x65scription\x18\n \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x30\n\x0b\x63reate_time\x18\x0b \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x30\n\x0bupdate_time\x18\x0c \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x32\n\x0c\x63\x61talog_name\x18\r \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0c\x63\x61talog_type\x18\x0e \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x36\n\x10\x63\x61talog_database\x18\x0f \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12<\n\x16\x63\x61talog_connection_uri\x18\x10 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x35\n\x0f\x63\x61talog_version\x18\x11 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x33\n\rcatalog_table\x18\x12 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"a\n\x12ModelRelationProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12/\n\nproject_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\"\xb3\x01\n\nModelProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12/\n\nproject_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12&\n\nmodel_type\x18\x04 \x01(\x0e\x32\x12.service.ModelType\x12\x30\n\nmodel_desc\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\"\xb5\x01\n\x19ModelVersionRelationProto\x12-\n\x07version\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12-\n\x08model_id\x18\x02 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12:\n\x15workflow_execution_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\"\xae\x03\n\x11ModelVersionProto\x12-\n\x07version\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12-\n\x08model_id\x18\x02 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12:\n\x15workflow_execution_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x30\n\nmodel_path\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmodel_metric\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmodel_flavor\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cversion_desc\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\rcurrent_stage\x18\x08 \x01(\x0e\x32\x1a.service.ModelVersionStage\"\xe2\x03\n\x08JobProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12:\n\x15workflow_execution_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12&\n\tjob_state\x18\x04 \x01(\x0e\x32\x13.service.StateProto\x12\x35\n\nproperties\x18\x05 \x03(\x0b\x32!.service.JobProto.PropertiesEntry\x12,\n\x06job_id\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\nstart_time\x18\x07 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x08\x65nd_time\x18\x08 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x07log_uri\x18\t \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tsignature\x18\n \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\x80\x04\n\x16WorkflowExecutionProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12/\n\nproject_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12,\n\x0f\x65xecution_state\x18\x04 \x01(\x0e\x32\x13.service.StateProto\x12\x43\n\nproperties\x18\x05 \x03(\x0b\x32/.service.WorkflowExecutionProto.PropertiesEntry\x12/\n\nstart_time\x18\x06 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x08\x65nd_time\x18\x07 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x07log_uri\x18\x08 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x33\n\rworkflow_json\x18\t \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tsignature\x18\n \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xd3\x02\n\x0cProjectProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x39\n\nproperties\x18\x03 \x03(\x0b\x32%.service.ProjectProto.PropertiesEntry\x12\x32\n\x0cproject_type\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12)\n\x03uri\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12*\n\x04user\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12.\n\x08password\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xc7\x03\n\rArtifactProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12:\n\nproperties\x18\x03 \x03(\x0b\x32&.service.ArtifactProto.PropertiesEntry\x12\x31\n\x0b\x64\x61ta_format\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tbatch_uri\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x30\n\nstream_uri\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\x0b\x64\x65scription\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x30\n\x0b\x63reate_time\x18\x08 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x30\n\x0bupdate_time\x18\t \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xa2\x01\n\x14RegisteredModelParam\x12\x30\n\nmodel_name\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12&\n\nmodel_type\x18\x02 \x01(\x0e\x32\x12.service.ModelType\x12\x30\n\nmodel_desc\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\"\x94\x02\n\x11ModelVersionParam\x12\x30\n\nmodel_path\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmodel_metric\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmodel_flavor\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cversion_desc\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\rcurrent_stage\x18\x05 \x01(\x0e\x32\x1a.service.ModelVersionStage\"w\n\x0eModelMetaParam\x12\x30\n\nmodel_name\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x33\n\rmodel_version\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.StringValue\"A\n\x08Response\x12\x13\n\x0breturn_code\x18\x01 \x01(\t\x12\x12\n\nreturn_msg\x18\x02 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x03 \x01(\t\"\x83\x01\n\x13RegisteredModelMeta\x12\x12\n\nmodel_name\x18\x01 \x01(\t\x12&\n\nmodel_type\x18\x02 \x01(\x0e\x32\x12.service.ModelType\x12\x30\n\nmodel_desc\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\"\xf3\x02\n\x10ModelVersionMeta\x12\x12\n\nmodel_name\x18\x01 \x01(\t\x12\x15\n\rmodel_version\x18\x02 \x01(\t\x12\x30\n\nmodel_path\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmodel_metric\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmodel_flavor\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cversion_desc\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x33\n\x0eversion_status\x18\x07 \x01(\x0e\x32\x1b.service.ModelVersionStatus\x12\x31\n\rcurrent_stage\x18\x08 \x01(\x0e\x32\x1a.service.ModelVersionStage\"\x81\x01\n\x15RegisteredModelDetail\x12\x36\n\x10registered_model\x18\x01 \x01(\x0b\x32\x1c.service.RegisteredModelMeta\x12\x30\n\rmodel_version\x18\x02 \x01(\x0b\x32\x19.service.ModelVersionMeta\"O\n\x14RegisteredModelMetas\x12\x37\n\x11registered_models\x18\x01 \x03(\x0b\x32\x1c.service.RegisteredModelMeta\"\xa1\x05\n\x0fMetricMetaProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12*\n\x04name\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\ndataset_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x30\n\nmodel_name\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x33\n\rmodel_version\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12+\n\x06job_id\x18\x06 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12/\n\nstart_time\x18\x07 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x08\x65nd_time\x18\x08 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x0bmetric_type\x18\t \x01(\x0e\x32\x18.service.MetricTypeProto\x12)\n\x03uri\x18\n \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12*\n\x04tags\x18\x0b \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x38\n\x12metric_description\x18\x0c \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12<\n\nproperties\x18\r \x03(\x0b\x32(.service.MetricMetaProto.PropertiesEntry\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xb8\x01\n\x12MetricSummaryProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12.\n\tmetric_id\x18\x02 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x30\n\nmetric_key\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmetric_value\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue*\xc0\x03\n\nReturnCode\x12\x0b\n\x07SUCCESS\x10\x00\x12\x12\n\x0eINTERNAL_ERROR\x10\x01\x12\x1b\n\x17TEMPORARILY_UNAVAILABLE\x10\x02\x12\x0c\n\x08IO_ERROR\x10\x03\x12\x0f\n\x0b\x42\x41\x44_REQUEST\x10\x04\x12\x1c\n\x17INVALID_PARAMETER_VALUE\x10\xe8\x07\x12\x17\n\x12\x45NDPOINT_NOT_FOUND\x10\xe9\x07\x12\x16\n\x11MALFORMED_REQUEST\x10\xea\x07\x12\x12\n\rINVALID_STATE\x10\xeb\x07\x12\x16\n\x11PERMISSION_DENIED\x10\xec\x07\x12\x15\n\x10\x46\x45\x41TURE_DISABLED\x10\xed\x07\x12\x1a\n\x15\x43USTOMER_UNAUTHORIZED\x10\xee\x07\x12\x1b\n\x16REQUEST_LIMIT_EXCEEDED\x10\xef\x07\x12\x1c\n\x17RESOURCE_ALREADY_EXISTS\x10\xd1\x0f\x12\x1c\n\x17RESOURCE_DOES_NOT_EXIST\x10\xd2\x0f\x12\x13\n\x0eQUOTA_EXCEEDED\x10\xb9\x17\x12\x1c\n\x17MAX_BLOCK_SIZE_EXCEEDED\x10\xba\x17\x12\x1b\n\x16MAX_READ_SIZE_EXCEEDED\x10\xbb\x17*\xd6\x01\n\rDataTypeProto\x12\x19\n\x15\x44\x41TA_TYPE_UNSPECIFIED\x10\x00\x12\t\n\x05INT32\x10\x01\x12\t\n\x05INT64\x10\x02\x12\x0b\n\x07\x46LOAT32\x10\x03\x12\x0b\n\x07\x46LOAT64\x10\x04\x12\n\n\x06STRING\x10\x05\x12\x0e\n\nINT32ARRAY\x10\x06\x12\x0e\n\nINT64ARRAY\x10\x07\x12\x10\n\x0c\x46lOAT32ARRAY\x10\x08\x12\x10\n\x0c\x46LOAT64ARRAY\x10\t\x12\x0f\n\x0bSTRINGARRAY\x10\n\x12\t\n\x05\x42YTES\x10\x0b\x12\x0e\n\nBYTESARRAY\x10\x0c*x\n\x17\x45xampleSupportTypeProto\x12$\n EXAMPLE_SUPPORT_TYPE_UNSPECIFIED\x10\x00\x12\x12\n\x0e\x45XAMPLE_STREAM\x10\x01\x12\x11\n\rEXAMPLE_BATCH\x10\x02\x12\x10\n\x0c\x45XAMPLE_BOTH\x10\x03*b\n\nStateProto\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x08\n\x04INIT\x10\x01\x12\x0c\n\x08STARTING\x10\x02\x12\x0b\n\x07RUNNING\x10\x03\x12\x0c\n\x08\x46INISHED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05*F\n\rExecutionMode\x12\x1e\n\x1a\x45XECUTION_MODE_UNSPECIFIED\x10\x00\x12\t\n\x05\x42\x41TCH\x10\x01\x12\n\n\x06STREAM\x10\x02*C\n\tModelType\x12\r\n\tNONE_TYPE\x10\x00\x12\x0e\n\nCHECKPOINT\x10\x01\x12\x0f\n\x0bSAVED_MODEL\x10\x02\x12\x06\n\x02H5\x10\x03*}\n\x12ModelVersionStatus\x12\x18\n\x14PENDING_REGISTRATION\x10\x00\x12\x17\n\x13\x46\x41ILED_REGISTRATION\x10\x01\x12\t\n\x05READY\x10\x03\x12\x14\n\x10PENDING_DELETION\x10\x04\x12\x13\n\x0f\x46\x41ILED_DELETION\x10\x05*\\\n\x11ModelVersionStage\x12\r\n\tGENERATED\x10\x00\x12\r\n\tVALIDATED\x10\x01\x12\x0c\n\x08\x44\x45PLOYED\x10\x02\x12\x0e\n\nDEPRECATED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04*)\n\x0fMetricTypeProto\x12\x0b\n\x07\x44\x41TASET\x10\x00\x12\t\n\x05MODEL\x10\x01\x42\x18\n\x10\x63om.aiflow.proto\x88\x01\x01\x90\x01\x01\x62\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,])
 
 _RETURNCODE = _descriptor.EnumDescriptor(
   name='ReturnCode',
-  full_name='ReturnCode',
+  full_name='service.ReturnCode',
   filename=None,
   file=DESCRIPTOR,
   create_key=_descriptor._internal_create_key,
@@ -143,15 +143,15 @@ _RETURNCODE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=5792,
-  serialized_end=6240,
+  serialized_start=5979,
+  serialized_end=6427,
 )
 _sym_db.RegisterEnumDescriptor(_RETURNCODE)
 
 ReturnCode = enum_type_wrapper.EnumTypeWrapper(_RETURNCODE)
 _DATATYPEPROTO = _descriptor.EnumDescriptor(
   name='DataTypeProto',
-  full_name='DataTypeProto',
+  full_name='service.DataTypeProto',
   filename=None,
   file=DESCRIPTOR,
   create_key=_descriptor._internal_create_key,
@@ -224,15 +224,15 @@ _DATATYPEPROTO = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=6243,
-  serialized_end=6457,
+  serialized_start=6430,
+  serialized_end=6644,
 )
 _sym_db.RegisterEnumDescriptor(_DATATYPEPROTO)
 
 DataTypeProto = enum_type_wrapper.EnumTypeWrapper(_DATATYPEPROTO)
 _EXAMPLESUPPORTTYPEPROTO = _descriptor.EnumDescriptor(
   name='ExampleSupportTypeProto',
-  full_name='ExampleSupportTypeProto',
+  full_name='service.ExampleSupportTypeProto',
   filename=None,
   file=DESCRIPTOR,
   create_key=_descriptor._internal_create_key,
@@ -260,15 +260,15 @@ _EXAMPLESUPPORTTYPEPROTO = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=6459,
-  serialized_end=6579,
+  serialized_start=6646,
+  serialized_end=6766,
 )
 _sym_db.RegisterEnumDescriptor(_EXAMPLESUPPORTTYPEPROTO)
 
 ExampleSupportTypeProto = enum_type_wrapper.EnumTypeWrapper(_EXAMPLESUPPORTTYPEPROTO)
 _STATEPROTO = _descriptor.EnumDescriptor(
   name='StateProto',
-  full_name='StateProto',
+  full_name='service.StateProto',
   filename=None,
   file=DESCRIPTOR,
   create_key=_descriptor._internal_create_key,
@@ -306,15 +306,15 @@ _STATEPROTO = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=6581,
-  serialized_end=6679,
+  serialized_start=6768,
+  serialized_end=6866,
 )
 _sym_db.RegisterEnumDescriptor(_STATEPROTO)
 
 StateProto = enum_type_wrapper.EnumTypeWrapper(_STATEPROTO)
 _EXECUTIONMODE = _descriptor.EnumDescriptor(
   name='ExecutionMode',
-  full_name='ExecutionMode',
+  full_name='service.ExecutionMode',
   filename=None,
   file=DESCRIPTOR,
   create_key=_descriptor._internal_create_key,
@@ -337,15 +337,15 @@ _EXECUTIONMODE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=6681,
-  serialized_end=6751,
+  serialized_start=6868,
+  serialized_end=6938,
 )
 _sym_db.RegisterEnumDescriptor(_EXECUTIONMODE)
 
 ExecutionMode = enum_type_wrapper.EnumTypeWrapper(_EXECUTIONMODE)
 _MODELTYPE = _descriptor.EnumDescriptor(
   name='ModelType',
-  full_name='ModelType',
+  full_name='service.ModelType',
   filename=None,
   file=DESCRIPTOR,
   create_key=_descriptor._internal_create_key,
@@ -373,15 +373,15 @@ _MODELTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=6753,
-  serialized_end=6820,
+  serialized_start=6940,
+  serialized_end=7007,
 )
 _sym_db.RegisterEnumDescriptor(_MODELTYPE)
 
 ModelType = enum_type_wrapper.EnumTypeWrapper(_MODELTYPE)
 _MODELVERSIONSTATUS = _descriptor.EnumDescriptor(
   name='ModelVersionStatus',
-  full_name='ModelVersionStatus',
+  full_name='service.ModelVersionStatus',
   filename=None,
   file=DESCRIPTOR,
   create_key=_descriptor._internal_create_key,
@@ -414,15 +414,15 @@ _MODELVERSIONSTATUS = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=6822,
-  serialized_end=6947,
+  serialized_start=7009,
+  serialized_end=7134,
 )
 _sym_db.RegisterEnumDescriptor(_MODELVERSIONSTATUS)
 
 ModelVersionStatus = enum_type_wrapper.EnumTypeWrapper(_MODELVERSIONSTATUS)
 _MODELVERSIONSTAGE = _descriptor.EnumDescriptor(
   name='ModelVersionStage',
-  full_name='ModelVersionStage',
+  full_name='service.ModelVersionStage',
   filename=None,
   file=DESCRIPTOR,
   create_key=_descriptor._internal_create_key,
@@ -455,15 +455,15 @@ _MODELVERSIONSTAGE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=6949,
-  serialized_end=7041,
+  serialized_start=7136,
+  serialized_end=7228,
 )
 _sym_db.RegisterEnumDescriptor(_MODELVERSIONSTAGE)
 
 ModelVersionStage = enum_type_wrapper.EnumTypeWrapper(_MODELVERSIONSTAGE)
 _METRICTYPEPROTO = _descriptor.EnumDescriptor(
   name='MetricTypeProto',
-  full_name='MetricTypeProto',
+  full_name='service.MetricTypeProto',
   filename=None,
   file=DESCRIPTOR,
   create_key=_descriptor._internal_create_key,
@@ -481,8 +481,8 @@ _METRICTYPEPROTO = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=7043,
-  serialized_end=7084,
+  serialized_start=7230,
+  serialized_end=7271,
 )
 _sym_db.RegisterEnumDescriptor(_METRICTYPEPROTO)
 
@@ -552,21 +552,21 @@ MODEL = 1
 
 _SCHEMAPROTO = _descriptor.Descriptor(
   name='SchemaProto',
-  full_name='SchemaProto',
+  full_name='service.SchemaProto',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name_list', full_name='SchemaProto.name_list', index=0,
+      name='name_list', full_name='service.SchemaProto.name_list', index=0,
       number=1, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='type_list', full_name='SchemaProto.type_list', index=1,
+      name='type_list', full_name='service.SchemaProto.type_list', index=1,
       number=2, type=14, cpp_type=8, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -584,28 +584,28 @@ _SCHEMAPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=49,
-  serialized_end=116,
+  serialized_start=58,
+  serialized_end=133,
 )
 
 
 _EXAMPLEPROTO_PROPERTIESENTRY = _descriptor.Descriptor(
   name='PropertiesEntry',
-  full_name='ExampleProto.PropertiesEntry',
+  full_name='service.ExampleProto.PropertiesEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='ExampleProto.PropertiesEntry.key', index=0,
+      name='key', full_name='service.ExampleProto.PropertiesEntry.key', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='value', full_name='ExampleProto.PropertiesEntry.value', index=1,
+      name='value', full_name='service.ExampleProto.PropertiesEntry.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -623,139 +623,139 @@ _EXAMPLEPROTO_PROPERTIESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=972,
-  serialized_end=1021,
+  serialized_start=1013,
+  serialized_end=1062,
 )
 
 _EXAMPLEPROTO = _descriptor.Descriptor(
   name='ExampleProto',
-  full_name='ExampleProto',
+  full_name='service.ExampleProto',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='uuid', full_name='ExampleProto.uuid', index=0,
+      name='uuid', full_name='service.ExampleProto.uuid', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='name', full_name='ExampleProto.name', index=1,
+      name='name', full_name='service.ExampleProto.name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='properties', full_name='ExampleProto.properties', index=2,
+      name='properties', full_name='service.ExampleProto.properties', index=2,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='support_type', full_name='ExampleProto.support_type', index=3,
+      name='support_type', full_name='service.ExampleProto.support_type', index=3,
       number=4, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='schema', full_name='ExampleProto.schema', index=4,
+      name='schema', full_name='service.ExampleProto.schema', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='data_type', full_name='ExampleProto.data_type', index=5,
+      name='data_type', full_name='service.ExampleProto.data_type', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='data_format', full_name='ExampleProto.data_format', index=6,
+      name='data_format', full_name='service.ExampleProto.data_format', index=6,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='batch_uri', full_name='ExampleProto.batch_uri', index=7,
+      name='batch_uri', full_name='service.ExampleProto.batch_uri', index=7,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='stream_uri', full_name='ExampleProto.stream_uri', index=8,
+      name='stream_uri', full_name='service.ExampleProto.stream_uri', index=8,
       number=9, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='description', full_name='ExampleProto.description', index=9,
+      name='description', full_name='service.ExampleProto.description', index=9,
       number=10, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='create_time', full_name='ExampleProto.create_time', index=10,
+      name='create_time', full_name='service.ExampleProto.create_time', index=10,
       number=11, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='update_time', full_name='ExampleProto.update_time', index=11,
+      name='update_time', full_name='service.ExampleProto.update_time', index=11,
       number=12, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='catalog_name', full_name='ExampleProto.catalog_name', index=12,
+      name='catalog_name', full_name='service.ExampleProto.catalog_name', index=12,
       number=13, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='catalog_type', full_name='ExampleProto.catalog_type', index=13,
+      name='catalog_type', full_name='service.ExampleProto.catalog_type', index=13,
       number=14, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='catalog_database', full_name='ExampleProto.catalog_database', index=14,
+      name='catalog_database', full_name='service.ExampleProto.catalog_database', index=14,
       number=15, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='catalog_connection_uri', full_name='ExampleProto.catalog_connection_uri', index=15,
+      name='catalog_connection_uri', full_name='service.ExampleProto.catalog_connection_uri', index=15,
       number=16, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='catalog_version', full_name='ExampleProto.catalog_version', index=16,
+      name='catalog_version', full_name='service.ExampleProto.catalog_version', index=16,
       number=17, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='catalog_table', full_name='ExampleProto.catalog_table', index=17,
+      name='catalog_table', full_name='service.ExampleProto.catalog_table', index=17,
       number=18, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -773,35 +773,35 @@ _EXAMPLEPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=119,
-  serialized_end=1021,
+  serialized_start=136,
+  serialized_end=1062,
 )
 
 
 _MODELRELATIONPROTO = _descriptor.Descriptor(
   name='ModelRelationProto',
-  full_name='ModelRelationProto',
+  full_name='service.ModelRelationProto',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='uuid', full_name='ModelRelationProto.uuid', index=0,
+      name='uuid', full_name='service.ModelRelationProto.uuid', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='name', full_name='ModelRelationProto.name', index=1,
+      name='name', full_name='service.ModelRelationProto.name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='project_id', full_name='ModelRelationProto.project_id', index=2,
+      name='project_id', full_name='service.ModelRelationProto.project_id', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -819,49 +819,49 @@ _MODELRELATIONPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1023,
-  serialized_end=1120,
+  serialized_start=1064,
+  serialized_end=1161,
 )
 
 
 _MODELPROTO = _descriptor.Descriptor(
   name='ModelProto',
-  full_name='ModelProto',
+  full_name='service.ModelProto',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='uuid', full_name='ModelProto.uuid', index=0,
+      name='uuid', full_name='service.ModelProto.uuid', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='name', full_name='ModelProto.name', index=1,
+      name='name', full_name='service.ModelProto.name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='project_id', full_name='ModelProto.project_id', index=2,
+      name='project_id', full_name='service.ModelProto.project_id', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model_type', full_name='ModelProto.model_type', index=3,
+      name='model_type', full_name='service.ModelProto.model_type', index=3,
       number=4, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model_desc', full_name='ModelProto.model_desc', index=4,
+      name='model_desc', full_name='service.ModelProto.model_desc', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -879,35 +879,35 @@ _MODELPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1123,
-  serialized_end=1294,
+  serialized_start=1164,
+  serialized_end=1343,
 )
 
 
 _MODELVERSIONRELATIONPROTO = _descriptor.Descriptor(
   name='ModelVersionRelationProto',
-  full_name='ModelVersionRelationProto',
+  full_name='service.ModelVersionRelationProto',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='version', full_name='ModelVersionRelationProto.version', index=0,
+      name='version', full_name='service.ModelVersionRelationProto.version', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model_id', full_name='ModelVersionRelationProto.model_id', index=1,
+      name='model_id', full_name='service.ModelVersionRelationProto.model_id', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='workflow_execution_id', full_name='ModelVersionRelationProto.workflow_execution_id', index=2,
+      name='workflow_execution_id', full_name='service.ModelVersionRelationProto.workflow_execution_id', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -925,70 +925,70 @@ _MODELVERSIONRELATIONPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1297,
-  serialized_end=1478,
+  serialized_start=1346,
+  serialized_end=1527,
 )
 
 
 _MODELVERSIONPROTO = _descriptor.Descriptor(
   name='ModelVersionProto',
-  full_name='ModelVersionProto',
+  full_name='service.ModelVersionProto',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='version', full_name='ModelVersionProto.version', index=0,
+      name='version', full_name='service.ModelVersionProto.version', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model_id', full_name='ModelVersionProto.model_id', index=1,
+      name='model_id', full_name='service.ModelVersionProto.model_id', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='workflow_execution_id', full_name='ModelVersionProto.workflow_execution_id', index=2,
+      name='workflow_execution_id', full_name='service.ModelVersionProto.workflow_execution_id', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model_path', full_name='ModelVersionProto.model_path', index=3,
+      name='model_path', full_name='service.ModelVersionProto.model_path', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model_metric', full_name='ModelVersionProto.model_metric', index=4,
+      name='model_metric', full_name='service.ModelVersionProto.model_metric', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model_flavor', full_name='ModelVersionProto.model_flavor', index=5,
+      name='model_flavor', full_name='service.ModelVersionProto.model_flavor', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='version_desc', full_name='ModelVersionProto.version_desc', index=6,
+      name='version_desc', full_name='service.ModelVersionProto.version_desc', index=6,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='current_stage', full_name='ModelVersionProto.current_stage', index=7,
+      name='current_stage', full_name='service.ModelVersionProto.current_stage', index=7,
       number=8, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -1006,28 +1006,28 @@ _MODELVERSIONPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1481,
-  serialized_end=1903,
+  serialized_start=1530,
+  serialized_end=1960,
 )
 
 
 _JOBPROTO_PROPERTIESENTRY = _descriptor.Descriptor(
   name='PropertiesEntry',
-  full_name='JobProto.PropertiesEntry',
+  full_name='service.JobProto.PropertiesEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='JobProto.PropertiesEntry.key', index=0,
+      name='key', full_name='service.JobProto.PropertiesEntry.key', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='value', full_name='JobProto.PropertiesEntry.value', index=1,
+      name='value', full_name='service.JobProto.PropertiesEntry.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -1045,83 +1045,83 @@ _JOBPROTO_PROPERTIESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=972,
-  serialized_end=1021,
+  serialized_start=1013,
+  serialized_end=1062,
 )
 
 _JOBPROTO = _descriptor.Descriptor(
   name='JobProto',
-  full_name='JobProto',
+  full_name='service.JobProto',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='uuid', full_name='JobProto.uuid', index=0,
+      name='uuid', full_name='service.JobProto.uuid', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='name', full_name='JobProto.name', index=1,
+      name='name', full_name='service.JobProto.name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='workflow_execution_id', full_name='JobProto.workflow_execution_id', index=2,
+      name='workflow_execution_id', full_name='service.JobProto.workflow_execution_id', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='job_state', full_name='JobProto.job_state', index=3,
+      name='job_state', full_name='service.JobProto.job_state', index=3,
       number=4, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='properties', full_name='JobProto.properties', index=4,
+      name='properties', full_name='service.JobProto.properties', index=4,
       number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='job_id', full_name='JobProto.job_id', index=5,
+      name='job_id', full_name='service.JobProto.job_id', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='start_time', full_name='JobProto.start_time', index=6,
+      name='start_time', full_name='service.JobProto.start_time', index=6,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='end_time', full_name='JobProto.end_time', index=7,
+      name='end_time', full_name='service.JobProto.end_time', index=7,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='log_uri', full_name='JobProto.log_uri', index=8,
+      name='log_uri', full_name='service.JobProto.log_uri', index=8,
       number=9, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='signature', full_name='JobProto.signature', index=9,
+      name='signature', full_name='service.JobProto.signature', index=9,
       number=10, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -1139,28 +1139,28 @@ _JOBPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1906,
-  serialized_end=2372,
+  serialized_start=1963,
+  serialized_end=2445,
 )
 
 
 _WORKFLOWEXECUTIONPROTO_PROPERTIESENTRY = _descriptor.Descriptor(
   name='PropertiesEntry',
-  full_name='WorkflowExecutionProto.PropertiesEntry',
+  full_name='service.WorkflowExecutionProto.PropertiesEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='WorkflowExecutionProto.PropertiesEntry.key', index=0,
+      name='key', full_name='service.WorkflowExecutionProto.PropertiesEntry.key', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='value', full_name='WorkflowExecutionProto.PropertiesEntry.value', index=1,
+      name='value', full_name='service.WorkflowExecutionProto.PropertiesEntry.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -1178,83 +1178,83 @@ _WORKFLOWEXECUTIONPROTO_PROPERTIESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=972,
-  serialized_end=1021,
+  serialized_start=1013,
+  serialized_end=1062,
 )
 
 _WORKFLOWEXECUTIONPROTO = _descriptor.Descriptor(
   name='WorkflowExecutionProto',
-  full_name='WorkflowExecutionProto',
+  full_name='service.WorkflowExecutionProto',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='uuid', full_name='WorkflowExecutionProto.uuid', index=0,
+      name='uuid', full_name='service.WorkflowExecutionProto.uuid', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='name', full_name='WorkflowExecutionProto.name', index=1,
+      name='name', full_name='service.WorkflowExecutionProto.name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='project_id', full_name='WorkflowExecutionProto.project_id', index=2,
+      name='project_id', full_name='service.WorkflowExecutionProto.project_id', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='execution_state', full_name='WorkflowExecutionProto.execution_state', index=3,
+      name='execution_state', full_name='service.WorkflowExecutionProto.execution_state', index=3,
       number=4, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='properties', full_name='WorkflowExecutionProto.properties', index=4,
+      name='properties', full_name='service.WorkflowExecutionProto.properties', index=4,
       number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='start_time', full_name='WorkflowExecutionProto.start_time', index=5,
+      name='start_time', full_name='service.WorkflowExecutionProto.start_time', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='end_time', full_name='WorkflowExecutionProto.end_time', index=6,
+      name='end_time', full_name='service.WorkflowExecutionProto.end_time', index=6,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='log_uri', full_name='WorkflowExecutionProto.log_uri', index=7,
+      name='log_uri', full_name='service.WorkflowExecutionProto.log_uri', index=7,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='workflow_json', full_name='WorkflowExecutionProto.workflow_json', index=8,
+      name='workflow_json', full_name='service.WorkflowExecutionProto.workflow_json', index=8,
       number=9, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='signature', full_name='WorkflowExecutionProto.signature', index=9,
+      name='signature', full_name='service.WorkflowExecutionProto.signature', index=9,
       number=10, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -1272,28 +1272,28 @@ _WORKFLOWEXECUTIONPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2375,
-  serialized_end=2871,
+  serialized_start=2448,
+  serialized_end=2960,
 )
 
 
 _PROJECTPROTO_PROPERTIESENTRY = _descriptor.Descriptor(
   name='PropertiesEntry',
-  full_name='ProjectProto.PropertiesEntry',
+  full_name='service.ProjectProto.PropertiesEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='ProjectProto.PropertiesEntry.key', index=0,
+      name='key', full_name='service.ProjectProto.PropertiesEntry.key', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='value', full_name='ProjectProto.PropertiesEntry.value', index=1,
+      name='value', full_name='service.ProjectProto.PropertiesEntry.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -1311,62 +1311,62 @@ _PROJECTPROTO_PROPERTIESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=972,
-  serialized_end=1021,
+  serialized_start=1013,
+  serialized_end=1062,
 )
 
 _PROJECTPROTO = _descriptor.Descriptor(
   name='ProjectProto',
-  full_name='ProjectProto',
+  full_name='service.ProjectProto',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='uuid', full_name='ProjectProto.uuid', index=0,
+      name='uuid', full_name='service.ProjectProto.uuid', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='name', full_name='ProjectProto.name', index=1,
+      name='name', full_name='service.ProjectProto.name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='properties', full_name='ProjectProto.properties', index=2,
+      name='properties', full_name='service.ProjectProto.properties', index=2,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='project_type', full_name='ProjectProto.project_type', index=3,
+      name='project_type', full_name='service.ProjectProto.project_type', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='uri', full_name='ProjectProto.uri', index=4,
+      name='uri', full_name='service.ProjectProto.uri', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='user', full_name='ProjectProto.user', index=5,
+      name='user', full_name='service.ProjectProto.user', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='password', full_name='ProjectProto.password', index=6,
+      name='password', full_name='service.ProjectProto.password', index=6,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -1384,28 +1384,28 @@ _PROJECTPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2874,
-  serialized_end=3205,
+  serialized_start=2963,
+  serialized_end=3302,
 )
 
 
 _ARTIFACTPROTO_PROPERTIESENTRY = _descriptor.Descriptor(
   name='PropertiesEntry',
-  full_name='ArtifactProto.PropertiesEntry',
+  full_name='service.ArtifactProto.PropertiesEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='ArtifactProto.PropertiesEntry.key', index=0,
+      name='key', full_name='service.ArtifactProto.PropertiesEntry.key', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='value', full_name='ArtifactProto.PropertiesEntry.value', index=1,
+      name='value', full_name='service.ArtifactProto.PropertiesEntry.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -1423,76 +1423,76 @@ _ARTIFACTPROTO_PROPERTIESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=972,
-  serialized_end=1021,
+  serialized_start=1013,
+  serialized_end=1062,
 )
 
 _ARTIFACTPROTO = _descriptor.Descriptor(
   name='ArtifactProto',
-  full_name='ArtifactProto',
+  full_name='service.ArtifactProto',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='uuid', full_name='ArtifactProto.uuid', index=0,
+      name='uuid', full_name='service.ArtifactProto.uuid', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='name', full_name='ArtifactProto.name', index=1,
+      name='name', full_name='service.ArtifactProto.name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='properties', full_name='ArtifactProto.properties', index=2,
+      name='properties', full_name='service.ArtifactProto.properties', index=2,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='data_format', full_name='ArtifactProto.data_format', index=3,
+      name='data_format', full_name='service.ArtifactProto.data_format', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='batch_uri', full_name='ArtifactProto.batch_uri', index=4,
+      name='batch_uri', full_name='service.ArtifactProto.batch_uri', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='stream_uri', full_name='ArtifactProto.stream_uri', index=5,
+      name='stream_uri', full_name='service.ArtifactProto.stream_uri', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='description', full_name='ArtifactProto.description', index=6,
+      name='description', full_name='service.ArtifactProto.description', index=6,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='create_time', full_name='ArtifactProto.create_time', index=7,
+      name='create_time', full_name='service.ArtifactProto.create_time', index=7,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='update_time', full_name='ArtifactProto.update_time', index=8,
+      name='update_time', full_name='service.ArtifactProto.update_time', index=8,
       number=9, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -1510,35 +1510,35 @@ _ARTIFACTPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3208,
-  serialized_end=3655,
+  serialized_start=3305,
+  serialized_end=3760,
 )
 
 
 _REGISTEREDMODELPARAM = _descriptor.Descriptor(
   name='RegisteredModelParam',
-  full_name='RegisteredModelParam',
+  full_name='service.RegisteredModelParam',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='model_name', full_name='RegisteredModelParam.model_name', index=0,
+      name='model_name', full_name='service.RegisteredModelParam.model_name', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model_type', full_name='RegisteredModelParam.model_type', index=1,
+      name='model_type', full_name='service.RegisteredModelParam.model_type', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model_desc', full_name='RegisteredModelParam.model_desc', index=2,
+      name='model_desc', full_name='service.RegisteredModelParam.model_desc', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -1556,49 +1556,49 @@ _REGISTEREDMODELPARAM = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3658,
-  serialized_end=3812,
+  serialized_start=3763,
+  serialized_end=3925,
 )
 
 
 _MODELVERSIONPARAM = _descriptor.Descriptor(
   name='ModelVersionParam',
-  full_name='ModelVersionParam',
+  full_name='service.ModelVersionParam',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='model_path', full_name='ModelVersionParam.model_path', index=0,
+      name='model_path', full_name='service.ModelVersionParam.model_path', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model_metric', full_name='ModelVersionParam.model_metric', index=1,
+      name='model_metric', full_name='service.ModelVersionParam.model_metric', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model_flavor', full_name='ModelVersionParam.model_flavor', index=2,
+      name='model_flavor', full_name='service.ModelVersionParam.model_flavor', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='version_desc', full_name='ModelVersionParam.version_desc', index=3,
+      name='version_desc', full_name='service.ModelVersionParam.version_desc', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='current_stage', full_name='ModelVersionParam.current_stage', index=4,
+      name='current_stage', full_name='service.ModelVersionParam.current_stage', index=4,
       number=5, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -1616,28 +1616,28 @@ _MODELVERSIONPARAM = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3815,
-  serialized_end=4083,
+  serialized_start=3928,
+  serialized_end=4204,
 )
 
 
 _MODELMETAPARAM = _descriptor.Descriptor(
   name='ModelMetaParam',
-  full_name='ModelMetaParam',
+  full_name='service.ModelMetaParam',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='model_name', full_name='ModelMetaParam.model_name', index=0,
+      name='model_name', full_name='service.ModelMetaParam.model_name', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model_version', full_name='ModelMetaParam.model_version', index=1,
+      name='model_version', full_name='service.ModelMetaParam.model_version', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -1655,35 +1655,35 @@ _MODELMETAPARAM = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4085,
-  serialized_end=4204,
+  serialized_start=4206,
+  serialized_end=4325,
 )
 
 
 _RESPONSE = _descriptor.Descriptor(
   name='Response',
-  full_name='Response',
+  full_name='service.Response',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='return_code', full_name='Response.return_code', index=0,
+      name='return_code', full_name='service.Response.return_code', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='return_msg', full_name='Response.return_msg', index=1,
+      name='return_msg', full_name='service.Response.return_msg', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='data', full_name='Response.data', index=2,
+      name='data', full_name='service.Response.data', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -1701,35 +1701,35 @@ _RESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4206,
-  serialized_end=4271,
+  serialized_start=4327,
+  serialized_end=4392,
 )
 
 
 _REGISTEREDMODELMETA = _descriptor.Descriptor(
   name='RegisteredModelMeta',
-  full_name='RegisteredModelMeta',
+  full_name='service.RegisteredModelMeta',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='model_name', full_name='RegisteredModelMeta.model_name', index=0,
+      name='model_name', full_name='service.RegisteredModelMeta.model_name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model_type', full_name='RegisteredModelMeta.model_type', index=1,
+      name='model_type', full_name='service.RegisteredModelMeta.model_type', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model_desc', full_name='RegisteredModelMeta.model_desc', index=2,
+      name='model_desc', full_name='service.RegisteredModelMeta.model_desc', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -1747,70 +1747,70 @@ _REGISTEREDMODELMETA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4273,
-  serialized_end=4396,
+  serialized_start=4395,
+  serialized_end=4526,
 )
 
 
 _MODELVERSIONMETA = _descriptor.Descriptor(
   name='ModelVersionMeta',
-  full_name='ModelVersionMeta',
+  full_name='service.ModelVersionMeta',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='model_name', full_name='ModelVersionMeta.model_name', index=0,
+      name='model_name', full_name='service.ModelVersionMeta.model_name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model_version', full_name='ModelVersionMeta.model_version', index=1,
+      name='model_version', full_name='service.ModelVersionMeta.model_version', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model_path', full_name='ModelVersionMeta.model_path', index=2,
+      name='model_path', full_name='service.ModelVersionMeta.model_path', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model_metric', full_name='ModelVersionMeta.model_metric', index=3,
+      name='model_metric', full_name='service.ModelVersionMeta.model_metric', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model_flavor', full_name='ModelVersionMeta.model_flavor', index=4,
+      name='model_flavor', full_name='service.ModelVersionMeta.model_flavor', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='version_desc', full_name='ModelVersionMeta.version_desc', index=5,
+      name='version_desc', full_name='service.ModelVersionMeta.version_desc', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='version_status', full_name='ModelVersionMeta.version_status', index=6,
+      name='version_status', full_name='service.ModelVersionMeta.version_status', index=6,
       number=7, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='current_stage', full_name='ModelVersionMeta.current_stage', index=7,
+      name='current_stage', full_name='service.ModelVersionMeta.current_stage', index=7,
       number=8, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -1828,28 +1828,28 @@ _MODELVERSIONMETA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4399,
-  serialized_end=4754,
+  serialized_start=4529,
+  serialized_end=4900,
 )
 
 
 _REGISTEREDMODELDETAIL = _descriptor.Descriptor(
   name='RegisteredModelDetail',
-  full_name='RegisteredModelDetail',
+  full_name='service.RegisteredModelDetail',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='registered_model', full_name='RegisteredModelDetail.registered_model', index=0,
+      name='registered_model', full_name='service.RegisteredModelDetail.registered_model', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model_version', full_name='RegisteredModelDetail.model_version', index=1,
+      name='model_version', full_name='service.RegisteredModelDetail.model_version', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -1867,21 +1867,21 @@ _REGISTEREDMODELDETAIL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4756,
-  serialized_end=4869,
+  serialized_start=4903,
+  serialized_end=5032,
 )
 
 
 _REGISTEREDMODELMETAS = _descriptor.Descriptor(
   name='RegisteredModelMetas',
-  full_name='RegisteredModelMetas',
+  full_name='service.RegisteredModelMetas',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='registered_models', full_name='RegisteredModelMetas.registered_models', index=0,
+      name='registered_models', full_name='service.RegisteredModelMetas.registered_models', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -1899,28 +1899,28 @@ _REGISTEREDMODELMETAS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4871,
-  serialized_end=4942,
+  serialized_start=5034,
+  serialized_end=5113,
 )
 
 
 _METRICMETAPROTO_PROPERTIESENTRY = _descriptor.Descriptor(
   name='PropertiesEntry',
-  full_name='MetricMetaProto.PropertiesEntry',
+  full_name='service.MetricMetaProto.PropertiesEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='MetricMetaProto.PropertiesEntry.key', index=0,
+      name='key', full_name='service.MetricMetaProto.PropertiesEntry.key', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='value', full_name='MetricMetaProto.PropertiesEntry.value', index=1,
+      name='value', full_name='service.MetricMetaProto.PropertiesEntry.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -1938,104 +1938,104 @@ _METRICMETAPROTO_PROPERTIESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=972,
-  serialized_end=1021,
+  serialized_start=1013,
+  serialized_end=1062,
 )
 
 _METRICMETAPROTO = _descriptor.Descriptor(
   name='MetricMetaProto',
-  full_name='MetricMetaProto',
+  full_name='service.MetricMetaProto',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='uuid', full_name='MetricMetaProto.uuid', index=0,
+      name='uuid', full_name='service.MetricMetaProto.uuid', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='name', full_name='MetricMetaProto.name', index=1,
+      name='name', full_name='service.MetricMetaProto.name', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='dataset_id', full_name='MetricMetaProto.dataset_id', index=2,
+      name='dataset_id', full_name='service.MetricMetaProto.dataset_id', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model_name', full_name='MetricMetaProto.model_name', index=3,
+      name='model_name', full_name='service.MetricMetaProto.model_name', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model_version', full_name='MetricMetaProto.model_version', index=4,
+      name='model_version', full_name='service.MetricMetaProto.model_version', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='job_id', full_name='MetricMetaProto.job_id', index=5,
+      name='job_id', full_name='service.MetricMetaProto.job_id', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='start_time', full_name='MetricMetaProto.start_time', index=6,
+      name='start_time', full_name='service.MetricMetaProto.start_time', index=6,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='end_time', full_name='MetricMetaProto.end_time', index=7,
+      name='end_time', full_name='service.MetricMetaProto.end_time', index=7,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='metric_type', full_name='MetricMetaProto.metric_type', index=8,
+      name='metric_type', full_name='service.MetricMetaProto.metric_type', index=8,
       number=9, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='uri', full_name='MetricMetaProto.uri', index=9,
+      name='uri', full_name='service.MetricMetaProto.uri', index=9,
       number=10, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='tags', full_name='MetricMetaProto.tags', index=10,
+      name='tags', full_name='service.MetricMetaProto.tags', index=10,
       number=11, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='metric_description', full_name='MetricMetaProto.metric_description', index=11,
+      name='metric_description', full_name='service.MetricMetaProto.metric_description', index=11,
       number=12, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='properties', full_name='MetricMetaProto.properties', index=12,
+      name='properties', full_name='service.MetricMetaProto.properties', index=12,
       number=13, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -2053,42 +2053,42 @@ _METRICMETAPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4945,
-  serialized_end=5602,
+  serialized_start=5116,
+  serialized_end=5789,
 )
 
 
 _METRICSUMMARYPROTO = _descriptor.Descriptor(
   name='MetricSummaryProto',
-  full_name='MetricSummaryProto',
+  full_name='service.MetricSummaryProto',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='uuid', full_name='MetricSummaryProto.uuid', index=0,
+      name='uuid', full_name='service.MetricSummaryProto.uuid', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='metric_id', full_name='MetricSummaryProto.metric_id', index=1,
+      name='metric_id', full_name='service.MetricSummaryProto.metric_id', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='metric_key', full_name='MetricSummaryProto.metric_key', index=2,
+      name='metric_key', full_name='service.MetricSummaryProto.metric_key', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='metric_value', full_name='MetricSummaryProto.metric_value', index=3,
+      name='metric_value', full_name='service.MetricSummaryProto.metric_value', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -2106,8 +2106,8 @@ _METRICSUMMARYPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5605,
-  serialized_end=5789,
+  serialized_start=5792,
+  serialized_end=5976,
 )
 
 _SCHEMAPROTO.fields_by_name['type_list'].enum_type = _DATATYPEPROTO
@@ -2246,7 +2246,7 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 SchemaProto = _reflection.GeneratedProtocolMessageType('SchemaProto', (_message.Message,), {
   'DESCRIPTOR' : _SCHEMAPROTO,
   '__module__' : 'message_pb2'
-  # @@protoc_insertion_point(class_scope:SchemaProto)
+  # @@protoc_insertion_point(class_scope:service.SchemaProto)
   })
 _sym_db.RegisterMessage(SchemaProto)
 
@@ -2255,12 +2255,12 @@ ExampleProto = _reflection.GeneratedProtocolMessageType('ExampleProto', (_messag
   'PropertiesEntry' : _reflection.GeneratedProtocolMessageType('PropertiesEntry', (_message.Message,), {
     'DESCRIPTOR' : _EXAMPLEPROTO_PROPERTIESENTRY,
     '__module__' : 'message_pb2'
-    # @@protoc_insertion_point(class_scope:ExampleProto.PropertiesEntry)
+    # @@protoc_insertion_point(class_scope:service.ExampleProto.PropertiesEntry)
     })
   ,
   'DESCRIPTOR' : _EXAMPLEPROTO,
   '__module__' : 'message_pb2'
-  # @@protoc_insertion_point(class_scope:ExampleProto)
+  # @@protoc_insertion_point(class_scope:service.ExampleProto)
   })
 _sym_db.RegisterMessage(ExampleProto)
 _sym_db.RegisterMessage(ExampleProto.PropertiesEntry)
@@ -2268,28 +2268,28 @@ _sym_db.RegisterMessage(ExampleProto.PropertiesEntry)
 ModelRelationProto = _reflection.GeneratedProtocolMessageType('ModelRelationProto', (_message.Message,), {
   'DESCRIPTOR' : _MODELRELATIONPROTO,
   '__module__' : 'message_pb2'
-  # @@protoc_insertion_point(class_scope:ModelRelationProto)
+  # @@protoc_insertion_point(class_scope:service.ModelRelationProto)
   })
 _sym_db.RegisterMessage(ModelRelationProto)
 
 ModelProto = _reflection.GeneratedProtocolMessageType('ModelProto', (_message.Message,), {
   'DESCRIPTOR' : _MODELPROTO,
   '__module__' : 'message_pb2'
-  # @@protoc_insertion_point(class_scope:ModelProto)
+  # @@protoc_insertion_point(class_scope:service.ModelProto)
   })
 _sym_db.RegisterMessage(ModelProto)
 
 ModelVersionRelationProto = _reflection.GeneratedProtocolMessageType('ModelVersionRelationProto', (_message.Message,), {
   'DESCRIPTOR' : _MODELVERSIONRELATIONPROTO,
   '__module__' : 'message_pb2'
-  # @@protoc_insertion_point(class_scope:ModelVersionRelationProto)
+  # @@protoc_insertion_point(class_scope:service.ModelVersionRelationProto)
   })
 _sym_db.RegisterMessage(ModelVersionRelationProto)
 
 ModelVersionProto = _reflection.GeneratedProtocolMessageType('ModelVersionProto', (_message.Message,), {
   'DESCRIPTOR' : _MODELVERSIONPROTO,
   '__module__' : 'message_pb2'
-  # @@protoc_insertion_point(class_scope:ModelVersionProto)
+  # @@protoc_insertion_point(class_scope:service.ModelVersionProto)
   })
 _sym_db.RegisterMessage(ModelVersionProto)
 
@@ -2298,12 +2298,12 @@ JobProto = _reflection.GeneratedProtocolMessageType('JobProto', (_message.Messag
   'PropertiesEntry' : _reflection.GeneratedProtocolMessageType('PropertiesEntry', (_message.Message,), {
     'DESCRIPTOR' : _JOBPROTO_PROPERTIESENTRY,
     '__module__' : 'message_pb2'
-    # @@protoc_insertion_point(class_scope:JobProto.PropertiesEntry)
+    # @@protoc_insertion_point(class_scope:service.JobProto.PropertiesEntry)
     })
   ,
   'DESCRIPTOR' : _JOBPROTO,
   '__module__' : 'message_pb2'
-  # @@protoc_insertion_point(class_scope:JobProto)
+  # @@protoc_insertion_point(class_scope:service.JobProto)
   })
 _sym_db.RegisterMessage(JobProto)
 _sym_db.RegisterMessage(JobProto.PropertiesEntry)
@@ -2313,12 +2313,12 @@ WorkflowExecutionProto = _reflection.GeneratedProtocolMessageType('WorkflowExecu
   'PropertiesEntry' : _reflection.GeneratedProtocolMessageType('PropertiesEntry', (_message.Message,), {
     'DESCRIPTOR' : _WORKFLOWEXECUTIONPROTO_PROPERTIESENTRY,
     '__module__' : 'message_pb2'
-    # @@protoc_insertion_point(class_scope:WorkflowExecutionProto.PropertiesEntry)
+    # @@protoc_insertion_point(class_scope:service.WorkflowExecutionProto.PropertiesEntry)
     })
   ,
   'DESCRIPTOR' : _WORKFLOWEXECUTIONPROTO,
   '__module__' : 'message_pb2'
-  # @@protoc_insertion_point(class_scope:WorkflowExecutionProto)
+  # @@protoc_insertion_point(class_scope:service.WorkflowExecutionProto)
   })
 _sym_db.RegisterMessage(WorkflowExecutionProto)
 _sym_db.RegisterMessage(WorkflowExecutionProto.PropertiesEntry)
@@ -2328,12 +2328,12 @@ ProjectProto = _reflection.GeneratedProtocolMessageType('ProjectProto', (_messag
   'PropertiesEntry' : _reflection.GeneratedProtocolMessageType('PropertiesEntry', (_message.Message,), {
     'DESCRIPTOR' : _PROJECTPROTO_PROPERTIESENTRY,
     '__module__' : 'message_pb2'
-    # @@protoc_insertion_point(class_scope:ProjectProto.PropertiesEntry)
+    # @@protoc_insertion_point(class_scope:service.ProjectProto.PropertiesEntry)
     })
   ,
   'DESCRIPTOR' : _PROJECTPROTO,
   '__module__' : 'message_pb2'
-  # @@protoc_insertion_point(class_scope:ProjectProto)
+  # @@protoc_insertion_point(class_scope:service.ProjectProto)
   })
 _sym_db.RegisterMessage(ProjectProto)
 _sym_db.RegisterMessage(ProjectProto.PropertiesEntry)
@@ -2343,12 +2343,12 @@ ArtifactProto = _reflection.GeneratedProtocolMessageType('ArtifactProto', (_mess
   'PropertiesEntry' : _reflection.GeneratedProtocolMessageType('PropertiesEntry', (_message.Message,), {
     'DESCRIPTOR' : _ARTIFACTPROTO_PROPERTIESENTRY,
     '__module__' : 'message_pb2'
-    # @@protoc_insertion_point(class_scope:ArtifactProto.PropertiesEntry)
+    # @@protoc_insertion_point(class_scope:service.ArtifactProto.PropertiesEntry)
     })
   ,
   'DESCRIPTOR' : _ARTIFACTPROTO,
   '__module__' : 'message_pb2'
-  # @@protoc_insertion_point(class_scope:ArtifactProto)
+  # @@protoc_insertion_point(class_scope:service.ArtifactProto)
   })
 _sym_db.RegisterMessage(ArtifactProto)
 _sym_db.RegisterMessage(ArtifactProto.PropertiesEntry)
@@ -2356,56 +2356,56 @@ _sym_db.RegisterMessage(ArtifactProto.PropertiesEntry)
 RegisteredModelParam = _reflection.GeneratedProtocolMessageType('RegisteredModelParam', (_message.Message,), {
   'DESCRIPTOR' : _REGISTEREDMODELPARAM,
   '__module__' : 'message_pb2'
-  # @@protoc_insertion_point(class_scope:RegisteredModelParam)
+  # @@protoc_insertion_point(class_scope:service.RegisteredModelParam)
   })
 _sym_db.RegisterMessage(RegisteredModelParam)
 
 ModelVersionParam = _reflection.GeneratedProtocolMessageType('ModelVersionParam', (_message.Message,), {
   'DESCRIPTOR' : _MODELVERSIONPARAM,
   '__module__' : 'message_pb2'
-  # @@protoc_insertion_point(class_scope:ModelVersionParam)
+  # @@protoc_insertion_point(class_scope:service.ModelVersionParam)
   })
 _sym_db.RegisterMessage(ModelVersionParam)
 
 ModelMetaParam = _reflection.GeneratedProtocolMessageType('ModelMetaParam', (_message.Message,), {
   'DESCRIPTOR' : _MODELMETAPARAM,
   '__module__' : 'message_pb2'
-  # @@protoc_insertion_point(class_scope:ModelMetaParam)
+  # @@protoc_insertion_point(class_scope:service.ModelMetaParam)
   })
 _sym_db.RegisterMessage(ModelMetaParam)
 
 Response = _reflection.GeneratedProtocolMessageType('Response', (_message.Message,), {
   'DESCRIPTOR' : _RESPONSE,
   '__module__' : 'message_pb2'
-  # @@protoc_insertion_point(class_scope:Response)
+  # @@protoc_insertion_point(class_scope:service.Response)
   })
 _sym_db.RegisterMessage(Response)
 
 RegisteredModelMeta = _reflection.GeneratedProtocolMessageType('RegisteredModelMeta', (_message.Message,), {
   'DESCRIPTOR' : _REGISTEREDMODELMETA,
   '__module__' : 'message_pb2'
-  # @@protoc_insertion_point(class_scope:RegisteredModelMeta)
+  # @@protoc_insertion_point(class_scope:service.RegisteredModelMeta)
   })
 _sym_db.RegisterMessage(RegisteredModelMeta)
 
 ModelVersionMeta = _reflection.GeneratedProtocolMessageType('ModelVersionMeta', (_message.Message,), {
   'DESCRIPTOR' : _MODELVERSIONMETA,
   '__module__' : 'message_pb2'
-  # @@protoc_insertion_point(class_scope:ModelVersionMeta)
+  # @@protoc_insertion_point(class_scope:service.ModelVersionMeta)
   })
 _sym_db.RegisterMessage(ModelVersionMeta)
 
 RegisteredModelDetail = _reflection.GeneratedProtocolMessageType('RegisteredModelDetail', (_message.Message,), {
   'DESCRIPTOR' : _REGISTEREDMODELDETAIL,
   '__module__' : 'message_pb2'
-  # @@protoc_insertion_point(class_scope:RegisteredModelDetail)
+  # @@protoc_insertion_point(class_scope:service.RegisteredModelDetail)
   })
 _sym_db.RegisterMessage(RegisteredModelDetail)
 
 RegisteredModelMetas = _reflection.GeneratedProtocolMessageType('RegisteredModelMetas', (_message.Message,), {
   'DESCRIPTOR' : _REGISTEREDMODELMETAS,
   '__module__' : 'message_pb2'
-  # @@protoc_insertion_point(class_scope:RegisteredModelMetas)
+  # @@protoc_insertion_point(class_scope:service.RegisteredModelMetas)
   })
 _sym_db.RegisterMessage(RegisteredModelMetas)
 
@@ -2414,12 +2414,12 @@ MetricMetaProto = _reflection.GeneratedProtocolMessageType('MetricMetaProto', (_
   'PropertiesEntry' : _reflection.GeneratedProtocolMessageType('PropertiesEntry', (_message.Message,), {
     'DESCRIPTOR' : _METRICMETAPROTO_PROPERTIESENTRY,
     '__module__' : 'message_pb2'
-    # @@protoc_insertion_point(class_scope:MetricMetaProto.PropertiesEntry)
+    # @@protoc_insertion_point(class_scope:service.MetricMetaProto.PropertiesEntry)
     })
   ,
   'DESCRIPTOR' : _METRICMETAPROTO,
   '__module__' : 'message_pb2'
-  # @@protoc_insertion_point(class_scope:MetricMetaProto)
+  # @@protoc_insertion_point(class_scope:service.MetricMetaProto)
   })
 _sym_db.RegisterMessage(MetricMetaProto)
 _sym_db.RegisterMessage(MetricMetaProto.PropertiesEntry)
@@ -2427,7 +2427,7 @@ _sym_db.RegisterMessage(MetricMetaProto.PropertiesEntry)
 MetricSummaryProto = _reflection.GeneratedProtocolMessageType('MetricSummaryProto', (_message.Message,), {
   'DESCRIPTOR' : _METRICSUMMARYPROTO,
   '__module__' : 'message_pb2'
-  # @@protoc_insertion_point(class_scope:MetricSummaryProto)
+  # @@protoc_insertion_point(class_scope:service.MetricSummaryProto)
   })
 _sym_db.RegisterMessage(MetricSummaryProto)
 

@@ -37,11 +37,11 @@ from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='metric_service.proto',
-  package='',
+  package='service',
   syntax='proto3',
   serialized_options=b'\n\020com.aiflow.proto\210\001\001\220\001\001',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x14metric_service.proto\x1a\rmessage.proto\x1a\x1cgoogle/api/annotations.proto\"\x1b\n\x0bUuidRequest\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\":\n\x11MetricMetaRequest\x12%\n\x0bmetric_meta\x18\x01 \x01(\x0b\x32\x10.MetricMetaProto\"d\n\x12MetricMetaResponse\x12\x13\n\x0breturn_code\x18\x01 \x01(\x03\x12\x12\n\nreturn_msg\x18\x02 \x01(\t\x12%\n\x0bmetric_meta\x18\x03 \x01(\x0b\x32\x10.MetricMetaProto\"C\n\x14MetricSummaryRequest\x12+\n\x0emetric_summary\x18\x01 \x01(\x0b\x32\x13.MetricSummaryProto\"m\n\x15MetricSummaryResponse\x12\x13\n\x0breturn_code\x18\x01 \x01(\x03\x12\x12\n\nreturn_msg\x18\x02 \x01(\t\x12+\n\x0emetric_summary\x18\x03 \x01(\x0b\x32\x13.MetricSummaryProto\"+\n\x14GetMetricMetaRequest\x12\x13\n\x0bmetric_name\x18\x01 \x01(\t\"1\n\x1bGetDataSetMetricMetaRequest\x12\x12\n\ndataset_id\x18\x01 \x01(\x03\"F\n\x19GetModelMetricMetaRequest\x12\x12\n\nmodel_name\x18\x01 \x01(\t\x12\x15\n\rmodel_version\x18\x02 \x01(\t\"h\n\x16ListMetricMetaResponse\x12\x13\n\x0breturn_code\x18\x01 \x01(\x03\x12\x12\n\nreturn_msg\x18\x02 \x01(\t\x12%\n\x0bmetric_meta\x18\x03 \x03(\x0b\x32\x10.MetricMetaProto\",\n\x17GetMetricSummaryRequest\x12\x11\n\tmetric_id\x18\x01 \x01(\x03\"q\n\x19ListMetricSummaryResponse\x12\x13\n\x0breturn_code\x18\x01 \x01(\x03\x12\x12\n\nreturn_msg\x18\x02 \x01(\t\x12+\n\x0emetric_summary\x18\x03 \x03(\x0b\x32\x13.MetricSummaryProto2\xf2\x08\n\rMetricService\x12k\n\x12registerMetricMeta\x12\x12.MetricMetaRequest\x1a\x13.MetricMetaResponse\",\x82\xd3\xe4\x93\x02&\"!/aiflow/metric/metric_meta/create:\x01*\x12w\n\x15registerMetricSummary\x12\x15.MetricSummaryRequest\x1a\x16.MetricSummaryResponse\"/\x82\xd3\xe4\x93\x02)\"$/aiflow/metric/metric_summary/create:\x01*\x12i\n\x10updateMetricMeta\x12\x12.MetricMetaRequest\x1a\x13.MetricMetaResponse\",\x82\xd3\xe4\x93\x02&\"!/aiflow/metric/metric_meta/update:\x01*\x12\x66\n\rgetMetricMeta\x12\x15.GetMetricMetaRequest\x1a\x13.MetricMetaResponse\")\x82\xd3\xe4\x93\x02#\"\x1e/aiflow/metric/metric_meta/get:\x01*\x12u\n\x13updateMetricSummary\x12\x15.MetricSummaryRequest\x1a\x16.MetricSummaryResponse\"/\x82\xd3\xe4\x93\x02)\"$/aiflow/metric/metric_summary/update:\x01*\x12\x80\x01\n\x14getDatasetMetricMeta\x12\x1c.GetDataSetMetricMetaRequest\x1a\x17.ListMetricMetaResponse\"1\x82\xd3\xe4\x93\x02+\"&/aiflow/metric/metric_meta/dataset/get:\x01*\x12z\n\x12getModelMetricMeta\x12\x1a.GetModelMetricMetaRequest\x1a\x17.ListMetricMetaResponse\"/\x82\xd3\xe4\x93\x02)\"$/aiflow/metric/metric_meta/model/get:\x01*\x12v\n\x10getMetricSummary\x12\x18.GetMetricSummaryRequest\x1a\x1a.ListMetricSummaryResponse\",\x82\xd3\xe4\x93\x02&\"!/aiflow/metric/metric_summary/get:\x01*\x12Y\n\x10\x64\x65leteMetricMeta\x12\x0c.UuidRequest\x1a\t.Response\",\x82\xd3\xe4\x93\x02&\"!/aiflow/metric/metric_meta/delete:\x01*\x12_\n\x13\x64\x65leteMetricSummary\x12\x0c.UuidRequest\x1a\t.Response\"/\x82\xd3\xe4\x93\x02)\"$/aiflow/metric/metric_summary/delete:\x01*B\x18\n\x10\x63om.aiflow.proto\x88\x01\x01\x90\x01\x01\x62\x06proto3'
+  serialized_pb=b'\n\x14metric_service.proto\x12\x07service\x1a\rmessage.proto\x1a\x1cgoogle/api/annotations.proto\"\x1b\n\x0bUuidRequest\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\"B\n\x11MetricMetaRequest\x12-\n\x0bmetric_meta\x18\x01 \x01(\x0b\x32\x18.service.MetricMetaProto\"l\n\x12MetricMetaResponse\x12\x13\n\x0breturn_code\x18\x01 \x01(\x03\x12\x12\n\nreturn_msg\x18\x02 \x01(\t\x12-\n\x0bmetric_meta\x18\x03 \x01(\x0b\x32\x18.service.MetricMetaProto\"K\n\x14MetricSummaryRequest\x12\x33\n\x0emetric_summary\x18\x01 \x01(\x0b\x32\x1b.service.MetricSummaryProto\"u\n\x15MetricSummaryResponse\x12\x13\n\x0breturn_code\x18\x01 \x01(\x03\x12\x12\n\nreturn_msg\x18\x02 \x01(\t\x12\x33\n\x0emetric_summary\x18\x03 \x01(\x0b\x32\x1b.service.MetricSummaryProto\"+\n\x14GetMetricMetaRequest\x12\x13\n\x0bmetric_name\x18\x01 \x01(\t\"1\n\x1bGetDataSetMetricMetaRequest\x12\x12\n\ndataset_id\x18\x01 \x01(\x03\"F\n\x19GetModelMetricMetaRequest\x12\x12\n\nmodel_name\x18\x01 \x01(\t\x12\x15\n\rmodel_version\x18\x02 \x01(\t\"p\n\x16ListMetricMetaResponse\x12\x13\n\x0breturn_code\x18\x01 \x01(\x03\x12\x12\n\nreturn_msg\x18\x02 \x01(\t\x12-\n\x0bmetric_meta\x18\x03 \x03(\x0b\x32\x18.service.MetricMetaProto\",\n\x17GetMetricSummaryRequest\x12\x11\n\tmetric_id\x18\x01 \x01(\x03\"y\n\x19ListMetricSummaryResponse\x12\x13\n\x0breturn_code\x18\x01 \x01(\x03\x12\x12\n\nreturn_msg\x18\x02 \x01(\t\x12\x33\n\x0emetric_summary\x18\x03 \x03(\x0b\x32\x1b.service.MetricSummaryProto2\x96\n\n\rMetricService\x12{\n\x12registerMetricMeta\x12\x1a.service.MetricMetaRequest\x1a\x1b.service.MetricMetaResponse\",\x82\xd3\xe4\x93\x02&\"!/aiflow/metric/metric_meta/create:\x01*\x12\x87\x01\n\x15registerMetricSummary\x12\x1d.service.MetricSummaryRequest\x1a\x1e.service.MetricSummaryResponse\"/\x82\xd3\xe4\x93\x02)\"$/aiflow/metric/metric_summary/create:\x01*\x12y\n\x10updateMetricMeta\x12\x1a.service.MetricMetaRequest\x1a\x1b.service.MetricMetaResponse\",\x82\xd3\xe4\x93\x02&\"!/aiflow/metric/metric_meta/update:\x01*\x12v\n\rgetMetricMeta\x12\x1d.service.GetMetricMetaRequest\x1a\x1b.service.MetricMetaResponse\")\x82\xd3\xe4\x93\x02#\"\x1e/aiflow/metric/metric_meta/get:\x01*\x12\x85\x01\n\x13updateMetricSummary\x12\x1d.service.MetricSummaryRequest\x1a\x1e.service.MetricSummaryResponse\"/\x82\xd3\xe4\x93\x02)\"$/aiflow/metric/metric_summary/update:\x01*\x12\x90\x01\n\x14getDatasetMetricMeta\x12$.service.GetDataSetMetricMetaRequest\x1a\x1f.service.ListMetricMetaResponse\"1\x82\xd3\xe4\x93\x02+\"&/aiflow/metric/metric_meta/dataset/get:\x01*\x12\x8a\x01\n\x12getModelMetricMeta\x12\".service.GetModelMetricMetaRequest\x1a\x1f.service.ListMetricMetaResponse\"/\x82\xd3\xe4\x93\x02)\"$/aiflow/metric/metric_meta/model/get:\x01*\x12\x86\x01\n\x10getMetricSummary\x12 .service.GetMetricSummaryRequest\x1a\".service.ListMetricSummaryResponse\",\x82\xd3\xe4\x93\x02&\"!/aiflow/metric/metric_summary/get:\x01*\x12i\n\x10\x64\x65leteMetricMeta\x12\x14.service.UuidRequest\x1a\x11.service.Response\",\x82\xd3\xe4\x93\x02&\"!/aiflow/metric/metric_meta/delete:\x01*\x12o\n\x13\x64\x65leteMetricSummary\x12\x14.service.UuidRequest\x1a\x11.service.Response\"/\x82\xd3\xe4\x93\x02)\"$/aiflow/metric/metric_summary/delete:\x01*B\x18\n\x10\x63om.aiflow.proto\x88\x01\x01\x90\x01\x01\x62\x06proto3'
   ,
   dependencies=[message__pb2.DESCRIPTOR,google_dot_api_dot_annotations__pb2.DESCRIPTOR,])
 
@@ -50,14 +50,14 @@ DESCRIPTOR = _descriptor.FileDescriptor(
 
 _UUIDREQUEST = _descriptor.Descriptor(
   name='UuidRequest',
-  full_name='UuidRequest',
+  full_name='service.UuidRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='uuid', full_name='UuidRequest.uuid', index=0,
+      name='uuid', full_name='service.UuidRequest.uuid', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -75,21 +75,21 @@ _UUIDREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=69,
-  serialized_end=96,
+  serialized_start=78,
+  serialized_end=105,
 )
 
 
 _METRICMETAREQUEST = _descriptor.Descriptor(
   name='MetricMetaRequest',
-  full_name='MetricMetaRequest',
+  full_name='service.MetricMetaRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='metric_meta', full_name='MetricMetaRequest.metric_meta', index=0,
+      name='metric_meta', full_name='service.MetricMetaRequest.metric_meta', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -107,35 +107,35 @@ _METRICMETAREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=98,
-  serialized_end=156,
+  serialized_start=107,
+  serialized_end=173,
 )
 
 
 _METRICMETARESPONSE = _descriptor.Descriptor(
   name='MetricMetaResponse',
-  full_name='MetricMetaResponse',
+  full_name='service.MetricMetaResponse',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='return_code', full_name='MetricMetaResponse.return_code', index=0,
+      name='return_code', full_name='service.MetricMetaResponse.return_code', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='return_msg', full_name='MetricMetaResponse.return_msg', index=1,
+      name='return_msg', full_name='service.MetricMetaResponse.return_msg', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='metric_meta', full_name='MetricMetaResponse.metric_meta', index=2,
+      name='metric_meta', full_name='service.MetricMetaResponse.metric_meta', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -153,21 +153,21 @@ _METRICMETARESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=158,
-  serialized_end=258,
+  serialized_start=175,
+  serialized_end=283,
 )
 
 
 _METRICSUMMARYREQUEST = _descriptor.Descriptor(
   name='MetricSummaryRequest',
-  full_name='MetricSummaryRequest',
+  full_name='service.MetricSummaryRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='metric_summary', full_name='MetricSummaryRequest.metric_summary', index=0,
+      name='metric_summary', full_name='service.MetricSummaryRequest.metric_summary', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -185,35 +185,35 @@ _METRICSUMMARYREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=260,
-  serialized_end=327,
+  serialized_start=285,
+  serialized_end=360,
 )
 
 
 _METRICSUMMARYRESPONSE = _descriptor.Descriptor(
   name='MetricSummaryResponse',
-  full_name='MetricSummaryResponse',
+  full_name='service.MetricSummaryResponse',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='return_code', full_name='MetricSummaryResponse.return_code', index=0,
+      name='return_code', full_name='service.MetricSummaryResponse.return_code', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='return_msg', full_name='MetricSummaryResponse.return_msg', index=1,
+      name='return_msg', full_name='service.MetricSummaryResponse.return_msg', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='metric_summary', full_name='MetricSummaryResponse.metric_summary', index=2,
+      name='metric_summary', full_name='service.MetricSummaryResponse.metric_summary', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -231,21 +231,21 @@ _METRICSUMMARYRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=329,
-  serialized_end=438,
+  serialized_start=362,
+  serialized_end=479,
 )
 
 
 _GETMETRICMETAREQUEST = _descriptor.Descriptor(
   name='GetMetricMetaRequest',
-  full_name='GetMetricMetaRequest',
+  full_name='service.GetMetricMetaRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='metric_name', full_name='GetMetricMetaRequest.metric_name', index=0,
+      name='metric_name', full_name='service.GetMetricMetaRequest.metric_name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -263,21 +263,21 @@ _GETMETRICMETAREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=440,
-  serialized_end=483,
+  serialized_start=481,
+  serialized_end=524,
 )
 
 
 _GETDATASETMETRICMETAREQUEST = _descriptor.Descriptor(
   name='GetDataSetMetricMetaRequest',
-  full_name='GetDataSetMetricMetaRequest',
+  full_name='service.GetDataSetMetricMetaRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='dataset_id', full_name='GetDataSetMetricMetaRequest.dataset_id', index=0,
+      name='dataset_id', full_name='service.GetDataSetMetricMetaRequest.dataset_id', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -295,28 +295,28 @@ _GETDATASETMETRICMETAREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=485,
-  serialized_end=534,
+  serialized_start=526,
+  serialized_end=575,
 )
 
 
 _GETMODELMETRICMETAREQUEST = _descriptor.Descriptor(
   name='GetModelMetricMetaRequest',
-  full_name='GetModelMetricMetaRequest',
+  full_name='service.GetModelMetricMetaRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='model_name', full_name='GetModelMetricMetaRequest.model_name', index=0,
+      name='model_name', full_name='service.GetModelMetricMetaRequest.model_name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model_version', full_name='GetModelMetricMetaRequest.model_version', index=1,
+      name='model_version', full_name='service.GetModelMetricMetaRequest.model_version', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -334,35 +334,35 @@ _GETMODELMETRICMETAREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=536,
-  serialized_end=606,
+  serialized_start=577,
+  serialized_end=647,
 )
 
 
 _LISTMETRICMETARESPONSE = _descriptor.Descriptor(
   name='ListMetricMetaResponse',
-  full_name='ListMetricMetaResponse',
+  full_name='service.ListMetricMetaResponse',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='return_code', full_name='ListMetricMetaResponse.return_code', index=0,
+      name='return_code', full_name='service.ListMetricMetaResponse.return_code', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='return_msg', full_name='ListMetricMetaResponse.return_msg', index=1,
+      name='return_msg', full_name='service.ListMetricMetaResponse.return_msg', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='metric_meta', full_name='ListMetricMetaResponse.metric_meta', index=2,
+      name='metric_meta', full_name='service.ListMetricMetaResponse.metric_meta', index=2,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -380,21 +380,21 @@ _LISTMETRICMETARESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=608,
-  serialized_end=712,
+  serialized_start=649,
+  serialized_end=761,
 )
 
 
 _GETMETRICSUMMARYREQUEST = _descriptor.Descriptor(
   name='GetMetricSummaryRequest',
-  full_name='GetMetricSummaryRequest',
+  full_name='service.GetMetricSummaryRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='metric_id', full_name='GetMetricSummaryRequest.metric_id', index=0,
+      name='metric_id', full_name='service.GetMetricSummaryRequest.metric_id', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -412,35 +412,35 @@ _GETMETRICSUMMARYREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=714,
-  serialized_end=758,
+  serialized_start=763,
+  serialized_end=807,
 )
 
 
 _LISTMETRICSUMMARYRESPONSE = _descriptor.Descriptor(
   name='ListMetricSummaryResponse',
-  full_name='ListMetricSummaryResponse',
+  full_name='service.ListMetricSummaryResponse',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='return_code', full_name='ListMetricSummaryResponse.return_code', index=0,
+      name='return_code', full_name='service.ListMetricSummaryResponse.return_code', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='return_msg', full_name='ListMetricSummaryResponse.return_msg', index=1,
+      name='return_msg', full_name='service.ListMetricSummaryResponse.return_msg', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='metric_summary', full_name='ListMetricSummaryResponse.metric_summary', index=2,
+      name='metric_summary', full_name='service.ListMetricSummaryResponse.metric_summary', index=2,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -458,8 +458,8 @@ _LISTMETRICSUMMARYRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=760,
-  serialized_end=873,
+  serialized_start=809,
+  serialized_end=930,
 )
 
 _METRICMETAREQUEST.fields_by_name['metric_meta'].message_type = message__pb2._METRICMETAPROTO
@@ -484,77 +484,77 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 UuidRequest = _reflection.GeneratedProtocolMessageType('UuidRequest', (_message.Message,), {
   'DESCRIPTOR' : _UUIDREQUEST,
   '__module__' : 'metric_service_pb2'
-  # @@protoc_insertion_point(class_scope:UuidRequest)
+  # @@protoc_insertion_point(class_scope:service.UuidRequest)
   })
 _sym_db.RegisterMessage(UuidRequest)
 
 MetricMetaRequest = _reflection.GeneratedProtocolMessageType('MetricMetaRequest', (_message.Message,), {
   'DESCRIPTOR' : _METRICMETAREQUEST,
   '__module__' : 'metric_service_pb2'
-  # @@protoc_insertion_point(class_scope:MetricMetaRequest)
+  # @@protoc_insertion_point(class_scope:service.MetricMetaRequest)
   })
 _sym_db.RegisterMessage(MetricMetaRequest)
 
 MetricMetaResponse = _reflection.GeneratedProtocolMessageType('MetricMetaResponse', (_message.Message,), {
   'DESCRIPTOR' : _METRICMETARESPONSE,
   '__module__' : 'metric_service_pb2'
-  # @@protoc_insertion_point(class_scope:MetricMetaResponse)
+  # @@protoc_insertion_point(class_scope:service.MetricMetaResponse)
   })
 _sym_db.RegisterMessage(MetricMetaResponse)
 
 MetricSummaryRequest = _reflection.GeneratedProtocolMessageType('MetricSummaryRequest', (_message.Message,), {
   'DESCRIPTOR' : _METRICSUMMARYREQUEST,
   '__module__' : 'metric_service_pb2'
-  # @@protoc_insertion_point(class_scope:MetricSummaryRequest)
+  # @@protoc_insertion_point(class_scope:service.MetricSummaryRequest)
   })
 _sym_db.RegisterMessage(MetricSummaryRequest)
 
 MetricSummaryResponse = _reflection.GeneratedProtocolMessageType('MetricSummaryResponse', (_message.Message,), {
   'DESCRIPTOR' : _METRICSUMMARYRESPONSE,
   '__module__' : 'metric_service_pb2'
-  # @@protoc_insertion_point(class_scope:MetricSummaryResponse)
+  # @@protoc_insertion_point(class_scope:service.MetricSummaryResponse)
   })
 _sym_db.RegisterMessage(MetricSummaryResponse)
 
 GetMetricMetaRequest = _reflection.GeneratedProtocolMessageType('GetMetricMetaRequest', (_message.Message,), {
   'DESCRIPTOR' : _GETMETRICMETAREQUEST,
   '__module__' : 'metric_service_pb2'
-  # @@protoc_insertion_point(class_scope:GetMetricMetaRequest)
+  # @@protoc_insertion_point(class_scope:service.GetMetricMetaRequest)
   })
 _sym_db.RegisterMessage(GetMetricMetaRequest)
 
 GetDataSetMetricMetaRequest = _reflection.GeneratedProtocolMessageType('GetDataSetMetricMetaRequest', (_message.Message,), {
   'DESCRIPTOR' : _GETDATASETMETRICMETAREQUEST,
   '__module__' : 'metric_service_pb2'
-  # @@protoc_insertion_point(class_scope:GetDataSetMetricMetaRequest)
+  # @@protoc_insertion_point(class_scope:service.GetDataSetMetricMetaRequest)
   })
 _sym_db.RegisterMessage(GetDataSetMetricMetaRequest)
 
 GetModelMetricMetaRequest = _reflection.GeneratedProtocolMessageType('GetModelMetricMetaRequest', (_message.Message,), {
   'DESCRIPTOR' : _GETMODELMETRICMETAREQUEST,
   '__module__' : 'metric_service_pb2'
-  # @@protoc_insertion_point(class_scope:GetModelMetricMetaRequest)
+  # @@protoc_insertion_point(class_scope:service.GetModelMetricMetaRequest)
   })
 _sym_db.RegisterMessage(GetModelMetricMetaRequest)
 
 ListMetricMetaResponse = _reflection.GeneratedProtocolMessageType('ListMetricMetaResponse', (_message.Message,), {
   'DESCRIPTOR' : _LISTMETRICMETARESPONSE,
   '__module__' : 'metric_service_pb2'
-  # @@protoc_insertion_point(class_scope:ListMetricMetaResponse)
+  # @@protoc_insertion_point(class_scope:service.ListMetricMetaResponse)
   })
 _sym_db.RegisterMessage(ListMetricMetaResponse)
 
 GetMetricSummaryRequest = _reflection.GeneratedProtocolMessageType('GetMetricSummaryRequest', (_message.Message,), {
   'DESCRIPTOR' : _GETMETRICSUMMARYREQUEST,
   '__module__' : 'metric_service_pb2'
-  # @@protoc_insertion_point(class_scope:GetMetricSummaryRequest)
+  # @@protoc_insertion_point(class_scope:service.GetMetricSummaryRequest)
   })
 _sym_db.RegisterMessage(GetMetricSummaryRequest)
 
 ListMetricSummaryResponse = _reflection.GeneratedProtocolMessageType('ListMetricSummaryResponse', (_message.Message,), {
   'DESCRIPTOR' : _LISTMETRICSUMMARYRESPONSE,
   '__module__' : 'metric_service_pb2'
-  # @@protoc_insertion_point(class_scope:ListMetricSummaryResponse)
+  # @@protoc_insertion_point(class_scope:service.ListMetricSummaryResponse)
   })
 _sym_db.RegisterMessage(ListMetricSummaryResponse)
 
@@ -563,17 +563,17 @@ DESCRIPTOR._options = None
 
 _METRICSERVICE = _descriptor.ServiceDescriptor(
   name='MetricService',
-  full_name='MetricService',
+  full_name='service.MetricService',
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=876,
-  serialized_end=2014,
+  serialized_start=933,
+  serialized_end=2235,
   methods=[
   _descriptor.MethodDescriptor(
     name='registerMetricMeta',
-    full_name='MetricService.registerMetricMeta',
+    full_name='service.MetricService.registerMetricMeta',
     index=0,
     containing_service=None,
     input_type=_METRICMETAREQUEST,
@@ -583,7 +583,7 @@ _METRICSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='registerMetricSummary',
-    full_name='MetricService.registerMetricSummary',
+    full_name='service.MetricService.registerMetricSummary',
     index=1,
     containing_service=None,
     input_type=_METRICSUMMARYREQUEST,
@@ -593,7 +593,7 @@ _METRICSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='updateMetricMeta',
-    full_name='MetricService.updateMetricMeta',
+    full_name='service.MetricService.updateMetricMeta',
     index=2,
     containing_service=None,
     input_type=_METRICMETAREQUEST,
@@ -603,7 +603,7 @@ _METRICSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='getMetricMeta',
-    full_name='MetricService.getMetricMeta',
+    full_name='service.MetricService.getMetricMeta',
     index=3,
     containing_service=None,
     input_type=_GETMETRICMETAREQUEST,
@@ -613,7 +613,7 @@ _METRICSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='updateMetricSummary',
-    full_name='MetricService.updateMetricSummary',
+    full_name='service.MetricService.updateMetricSummary',
     index=4,
     containing_service=None,
     input_type=_METRICSUMMARYREQUEST,
@@ -623,7 +623,7 @@ _METRICSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='getDatasetMetricMeta',
-    full_name='MetricService.getDatasetMetricMeta',
+    full_name='service.MetricService.getDatasetMetricMeta',
     index=5,
     containing_service=None,
     input_type=_GETDATASETMETRICMETAREQUEST,
@@ -633,7 +633,7 @@ _METRICSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='getModelMetricMeta',
-    full_name='MetricService.getModelMetricMeta',
+    full_name='service.MetricService.getModelMetricMeta',
     index=6,
     containing_service=None,
     input_type=_GETMODELMETRICMETAREQUEST,
@@ -643,7 +643,7 @@ _METRICSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='getMetricSummary',
-    full_name='MetricService.getMetricSummary',
+    full_name='service.MetricService.getMetricSummary',
     index=7,
     containing_service=None,
     input_type=_GETMETRICSUMMARYREQUEST,
@@ -653,7 +653,7 @@ _METRICSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='deleteMetricMeta',
-    full_name='MetricService.deleteMetricMeta',
+    full_name='service.MetricService.deleteMetricMeta',
     index=8,
     containing_service=None,
     input_type=_UUIDREQUEST,
@@ -663,7 +663,7 @@ _METRICSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='deleteMetricSummary',
-    full_name='MetricService.deleteMetricSummary',
+    full_name='service.MetricService.deleteMetricSummary',
     index=9,
     containing_service=None,
     input_type=_UUIDREQUEST,

@@ -33,12 +33,12 @@ class HighAvailabilityManagerStub(object):
             channel: A grpc.Channel.
         """
         self.listMembers = channel.unary_unary(
-                '/HighAvailabilityManager/listMembers',
+                '/service.HighAvailabilityManager/listMembers',
                 request_serializer=high__availability__pb2.ListMembersRequest.SerializeToString,
                 response_deserializer=high__availability__pb2.ListMembersResponse.FromString,
                 )
         self.notifyNewMember = channel.unary_unary(
-                '/HighAvailabilityManager/notifyNewMember',
+                '/service.HighAvailabilityManager/notifyNewMember',
                 request_serializer=high__availability__pb2.NotifyNewMemberRequest.SerializeToString,
                 response_deserializer=high__availability__pb2.NotifyNewMemberResponse.FromString,
                 )
@@ -76,7 +76,7 @@ def add_HighAvailabilityManagerServicer_to_server(servicer, server):
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'HighAvailabilityManager', rpc_method_handlers)
+            'service.HighAvailabilityManager', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
@@ -95,7 +95,7 @@ class HighAvailabilityManager(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/HighAvailabilityManager/listMembers',
+        return grpc.experimental.unary_unary(request, target, '/service.HighAvailabilityManager/listMembers',
             high__availability__pb2.ListMembersRequest.SerializeToString,
             high__availability__pb2.ListMembersResponse.FromString,
             options, channel_credentials,
@@ -112,7 +112,7 @@ class HighAvailabilityManager(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/HighAvailabilityManager/notifyNewMember',
+        return grpc.experimental.unary_unary(request, target, '/service.HighAvailabilityManager/notifyNewMember',
             high__availability__pb2.NotifyNewMemberRequest.SerializeToString,
             high__availability__pb2.NotifyNewMemberResponse.FromString,
             options, channel_credentials,

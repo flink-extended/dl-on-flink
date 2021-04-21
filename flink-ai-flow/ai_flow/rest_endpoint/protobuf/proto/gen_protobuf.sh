@@ -147,12 +147,6 @@ python3 -m grpc.tools.protoc -I. \
 
 cd ..
 
-sed -i -E 's/^package message/package service/' go/*.go
-sed -i -E 's/^package metadata_service/package service/' go/*.go
-sed -i -E 's/^package model_center_service/package service/' go/*.go
-sed -i -E 's/^package deploy_service/package service/' go/*.go
-sed -i -E 's/^package metric_service/package service/' go/*.go
-
 sed -i '' 's/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/\/\/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/g' go/metadata_service.pb.go
 sed -i '' 's/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/\/\/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/g' go/model_center_service.pb.go
 sed -i '' 's/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/\/\/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/g' go/deploy_service.pb.go
