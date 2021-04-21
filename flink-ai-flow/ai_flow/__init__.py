@@ -29,7 +29,7 @@ from ai_flow.api.ops import read_example, write_example, transform, train, predi
     stop_before_control_dependency, restart_before_control_dependency, model_version_control_dependency, \
     example_control_dependency, user_define_control_dependency
 from ai_flow.api.project import run, submit_ai_flow, stop_execution_by_id, wait_workflow_execution_finished, \
-    compile_workflow, deploy_to_airflow, generate_airflow_file_text
+    compile_workflow, deploy_to_airflow, generate_airflow_file_text, submit
 # ai_flow.application_master.master
 from ai_flow.application_master.master import AIFlowMaster, set_master_config
 # ai_flow.common
