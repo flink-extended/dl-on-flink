@@ -150,6 +150,12 @@ def run(project_path: Text = None, dag_id: Text = None,
         return submit_ai_flow(ai_graph=default_graph(), project_desc=project_desc)
 
 
+def submit(project_path: Text = None,
+           dag_id: Text = None,
+           default_args=None):
+    return deploy_to_airflow(project_path, dag_id, default_args)
+
+
 def generate_airflow_file_text(project_path: Text,
                                dag_id=None
                                ) -> Optional[str]:
@@ -212,7 +218,7 @@ def deploy_to_airflow(project_path: Text = None,
     with NamedTemporaryFile(mode='w+t', prefix=dag_id, suffix='.py', dir='/tmp', delete=False) as f:
         f.write(generated_code)
     os.rename(f.name, airflow_file_path)
-    return airflow_file_path, generated_code
+    return airflow_file_path
 
 
 def _submit_to_airflow(project_desc: ProjectDesc = ProjectDesc(), dag_id: Text = None):
