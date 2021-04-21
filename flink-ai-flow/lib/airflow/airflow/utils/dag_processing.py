@@ -637,7 +637,8 @@ class DagFileProcessorManager(LoggingMixin):  # pylint: disable=too-many-instanc
             self.ns_client.start_listen_event(key='*',
                                               event_type='PARSE_DAG_REQUEST',
                                               namespace='*',
-                                              watcher=self.watcher)
+                                              watcher=self.watcher,
+                                              start_time=int(time.time() * 1000))
 
     def _stop_listen_events(self):
         if self.ns_client is not None:

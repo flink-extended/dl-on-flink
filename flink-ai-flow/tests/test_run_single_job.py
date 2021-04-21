@@ -17,8 +17,13 @@
 
 import time
 
+from typing import List
+
+from ai_flow.udf.function_context import FunctionContext
 from airflow.models import DagRun
 from airflow.utils.state import State
+from python_ai_flow.user_define_funcs import Executor
+
 from ai_flow.common.scheduler_type import SchedulerType
 from airflow.models.taskexecution import TaskExecution
 from airflow.utils.session import create_session
@@ -56,4 +61,33 @@ class TestRunAIFlowJobs(BaseETETest):
                                                       TaskExecution.task_id == 'task_1').all()
             self.assertEqual(1, len(tes))
 
+    def test_run_python_job(self):
 
+        def build_and_submit_ai_flow():
+            with af.global_config_file(workflow_config_file()):
+                with af.config('task_2'):
+                    executor = af.user_define_operation(af.PythonObjectExecutor(SimpleExecutor()))
+                dag_file = af.submit(project_path())
+            return dag_file
+
+        def run_task_function(client: NotificationClient):
+            af.run(project_path(), 'test_workflow', SchedulerType.AIRFLOW)
+            while True:
+                with create_session() as session:
+                    dag_run = session.query(DagRun).filter(DagRun.dag_id == 'test_workflow').first()
+                    if dag_run is not None and dag_run.state in State.finished:
+                        break
+                    else:
+                        time.sleep(1)
+
+        self.run_ai_flow(build_and_submit_ai_flow, run_task_function)
+        with create_session() as session:
+            tes = session.query(TaskExecution).filter(TaskExecution.dag_id == 'test_workflow',
+                                                      TaskExecution.task_id == 'task_2').all()
+            self.assertEqual(1, len(tes))
+
+
+class SimpleExecutor(Executor):
+    def execute(self, function_context: FunctionContext, input_list: List) -> List:
+        print("hello world!")
+        return []
