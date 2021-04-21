@@ -33,7 +33,7 @@ public final class MetadataServiceOuterClass {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   public interface IdRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:IdRequest)
+      // @@protoc_insertion_point(interface_extends:ai_flow.IdRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -43,11 +43,11 @@ public final class MetadataServiceOuterClass {
     long getId();
   }
   /**
-   * Protobuf type {@code IdRequest}
+   * Protobuf type {@code ai_flow.IdRequest}
    */
   public static final class IdRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:IdRequest)
+      // @@protoc_insertion_point(message_implements:ai_flow.IdRequest)
       IdRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use IdRequest.newBuilder() to construct.
@@ -113,13 +113,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_IdRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_IdRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_IdRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_IdRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.IdRequest.class, com.aiflow.proto.MetadataServiceOuterClass.IdRequest.Builder.class);
     }
@@ -292,21 +292,21 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code IdRequest}
+     * Protobuf type {@code ai_flow.IdRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:IdRequest)
+        // @@protoc_insertion_point(builder_implements:ai_flow.IdRequest)
         com.aiflow.proto.MetadataServiceOuterClass.IdRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_IdRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_IdRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_IdRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_IdRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.IdRequest.class, com.aiflow.proto.MetadataServiceOuterClass.IdRequest.Builder.class);
       }
@@ -337,7 +337,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_IdRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_IdRequest_descriptor;
       }
 
       @java.lang.Override
@@ -481,10 +481,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:IdRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.IdRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:IdRequest)
+    // @@protoc_insertion_point(class_scope:ai_flow.IdRequest)
     private static final com.aiflow.proto.MetadataServiceOuterClass.IdRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.IdRequest();
@@ -522,7 +522,7 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface NameRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:NameRequest)
+      // @@protoc_insertion_point(interface_extends:ai_flow.NameRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -538,11 +538,11 @@ public final class MetadataServiceOuterClass {
         getNameBytes();
   }
   /**
-   * Protobuf type {@code NameRequest}
+   * Protobuf type {@code ai_flow.NameRequest}
    */
   public static final class NameRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:NameRequest)
+      // @@protoc_insertion_point(message_implements:ai_flow.NameRequest)
       NameRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use NameRequest.newBuilder() to construct.
@@ -610,13 +610,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_NameRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_NameRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_NameRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_NameRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.NameRequest.class, com.aiflow.proto.MetadataServiceOuterClass.NameRequest.Builder.class);
     }
@@ -814,21 +814,21 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code NameRequest}
+     * Protobuf type {@code ai_flow.NameRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:NameRequest)
+        // @@protoc_insertion_point(builder_implements:ai_flow.NameRequest)
         com.aiflow.proto.MetadataServiceOuterClass.NameRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_NameRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_NameRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_NameRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_NameRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.NameRequest.class, com.aiflow.proto.MetadataServiceOuterClass.NameRequest.Builder.class);
       }
@@ -859,7 +859,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_NameRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_NameRequest_descriptor;
       }
 
       @java.lang.Override
@@ -1049,10 +1049,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:NameRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.NameRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:NameRequest)
+    // @@protoc_insertion_point(class_scope:ai_flow.NameRequest)
     private static final com.aiflow.proto.MetadataServiceOuterClass.NameRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.NameRequest();
@@ -1090,7 +1090,7 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface ListRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ListRequest)
+      // @@protoc_insertion_point(interface_extends:ai_flow.ListRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -1106,11 +1106,11 @@ public final class MetadataServiceOuterClass {
     long getOffset();
   }
   /**
-   * Protobuf type {@code ListRequest}
+   * Protobuf type {@code ai_flow.ListRequest}
    */
   public static final class ListRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:ListRequest)
+      // @@protoc_insertion_point(message_implements:ai_flow.ListRequest)
       ListRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use ListRequest.newBuilder() to construct.
@@ -1181,13 +1181,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ListRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ListRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ListRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ListRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.ListRequest.class, com.aiflow.proto.MetadataServiceOuterClass.ListRequest.Builder.class);
     }
@@ -1383,21 +1383,21 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code ListRequest}
+     * Protobuf type {@code ai_flow.ListRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ListRequest)
+        // @@protoc_insertion_point(builder_implements:ai_flow.ListRequest)
         com.aiflow.proto.MetadataServiceOuterClass.ListRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ListRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ListRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ListRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ListRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.ListRequest.class, com.aiflow.proto.MetadataServiceOuterClass.ListRequest.Builder.class);
       }
@@ -1430,7 +1430,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ListRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ListRequest_descriptor;
       }
 
       @java.lang.Override
@@ -1609,10 +1609,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:ListRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.ListRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:ListRequest)
+    // @@protoc_insertion_point(class_scope:ai_flow.ListRequest)
     private static final com.aiflow.proto.MetadataServiceOuterClass.ListRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.ListRequest();
@@ -1650,7 +1650,7 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface MetaResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:MetaResponse)
+      // @@protoc_insertion_point(interface_extends:ai_flow.MetaResponse)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -1690,11 +1690,11 @@ public final class MetadataServiceOuterClass {
         getDataBytes();
   }
   /**
-   * Protobuf type {@code MetaResponse}
+   * Protobuf type {@code ai_flow.MetaResponse}
    */
   public static final class MetaResponse extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:MetaResponse)
+      // @@protoc_insertion_point(message_implements:ai_flow.MetaResponse)
       MetaResponseOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use MetaResponse.newBuilder() to construct.
@@ -1776,13 +1776,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_MetaResponse_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_MetaResponse_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_MetaResponse_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_MetaResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.MetaResponse.class, com.aiflow.proto.MetadataServiceOuterClass.MetaResponse.Builder.class);
     }
@@ -2076,21 +2076,21 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code MetaResponse}
+     * Protobuf type {@code ai_flow.MetaResponse}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:MetaResponse)
+        // @@protoc_insertion_point(builder_implements:ai_flow.MetaResponse)
         com.aiflow.proto.MetadataServiceOuterClass.MetaResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_MetaResponse_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_MetaResponse_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_MetaResponse_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_MetaResponse_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.MetaResponse.class, com.aiflow.proto.MetadataServiceOuterClass.MetaResponse.Builder.class);
       }
@@ -2125,7 +2125,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_MetaResponse_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_MetaResponse_descriptor;
       }
 
       @java.lang.Override
@@ -2477,10 +2477,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:MetaResponse)
+      // @@protoc_insertion_point(builder_scope:ai_flow.MetaResponse)
     }
 
-    // @@protoc_insertion_point(class_scope:MetaResponse)
+    // @@protoc_insertion_point(class_scope:ai_flow.MetaResponse)
     private static final com.aiflow.proto.MetadataServiceOuterClass.MetaResponse DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.MetaResponse();
@@ -2518,21 +2518,21 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface RegisterExampleRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RegisterExampleRequest)
+      // @@protoc_insertion_point(interface_extends:ai_flow.RegisterExampleRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.ExampleProto example = 1;</code>
+     * <code>.ai_flow.ExampleProto example = 1;</code>
      * @return Whether the example field is set.
      */
     boolean hasExample();
     /**
-     * <code>.ExampleProto example = 1;</code>
+     * <code>.ai_flow.ExampleProto example = 1;</code>
      * @return The example.
      */
     com.aiflow.proto.Message.ExampleProto getExample();
     /**
-     * <code>.ExampleProto example = 1;</code>
+     * <code>.ai_flow.ExampleProto example = 1;</code>
      */
     com.aiflow.proto.Message.ExampleProtoOrBuilder getExampleOrBuilder();
   }
@@ -2541,11 +2541,11 @@ public final class MetadataServiceOuterClass {
    *example
    * </pre>
    *
-   * Protobuf type {@code RegisterExampleRequest}
+   * Protobuf type {@code ai_flow.RegisterExampleRequest}
    */
   public static final class RegisterExampleRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:RegisterExampleRequest)
+      // @@protoc_insertion_point(message_implements:ai_flow.RegisterExampleRequest)
       RegisterExampleRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use RegisterExampleRequest.newBuilder() to construct.
@@ -2619,13 +2619,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterExampleRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterExampleRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterExampleRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterExampleRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest.Builder.class);
     }
@@ -2633,7 +2633,7 @@ public final class MetadataServiceOuterClass {
     public static final int EXAMPLE_FIELD_NUMBER = 1;
     private com.aiflow.proto.Message.ExampleProto example_;
     /**
-     * <code>.ExampleProto example = 1;</code>
+     * <code>.ai_flow.ExampleProto example = 1;</code>
      * @return Whether the example field is set.
      */
     @java.lang.Override
@@ -2641,7 +2641,7 @@ public final class MetadataServiceOuterClass {
       return example_ != null;
     }
     /**
-     * <code>.ExampleProto example = 1;</code>
+     * <code>.ai_flow.ExampleProto example = 1;</code>
      * @return The example.
      */
     @java.lang.Override
@@ -2649,7 +2649,7 @@ public final class MetadataServiceOuterClass {
       return example_ == null ? com.aiflow.proto.Message.ExampleProto.getDefaultInstance() : example_;
     }
     /**
-     * <code>.ExampleProto example = 1;</code>
+     * <code>.ai_flow.ExampleProto example = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ExampleProtoOrBuilder getExampleOrBuilder() {
@@ -2821,21 +2821,21 @@ public final class MetadataServiceOuterClass {
      *example
      * </pre>
      *
-     * Protobuf type {@code RegisterExampleRequest}
+     * Protobuf type {@code ai_flow.RegisterExampleRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RegisterExampleRequest)
+        // @@protoc_insertion_point(builder_implements:ai_flow.RegisterExampleRequest)
         com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterExampleRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterExampleRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterExampleRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterExampleRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest.Builder.class);
       }
@@ -2870,7 +2870,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterExampleRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterExampleRequest_descriptor;
       }
 
       @java.lang.Override
@@ -2979,14 +2979,14 @@ public final class MetadataServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ExampleProto, com.aiflow.proto.Message.ExampleProto.Builder, com.aiflow.proto.Message.ExampleProtoOrBuilder> exampleBuilder_;
       /**
-       * <code>.ExampleProto example = 1;</code>
+       * <code>.ai_flow.ExampleProto example = 1;</code>
        * @return Whether the example field is set.
        */
       public boolean hasExample() {
         return exampleBuilder_ != null || example_ != null;
       }
       /**
-       * <code>.ExampleProto example = 1;</code>
+       * <code>.ai_flow.ExampleProto example = 1;</code>
        * @return The example.
        */
       public com.aiflow.proto.Message.ExampleProto getExample() {
@@ -2997,7 +2997,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.ExampleProto example = 1;</code>
+       * <code>.ai_flow.ExampleProto example = 1;</code>
        */
       public Builder setExample(com.aiflow.proto.Message.ExampleProto value) {
         if (exampleBuilder_ == null) {
@@ -3013,7 +3013,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ExampleProto example = 1;</code>
+       * <code>.ai_flow.ExampleProto example = 1;</code>
        */
       public Builder setExample(
           com.aiflow.proto.Message.ExampleProto.Builder builderForValue) {
@@ -3027,7 +3027,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ExampleProto example = 1;</code>
+       * <code>.ai_flow.ExampleProto example = 1;</code>
        */
       public Builder mergeExample(com.aiflow.proto.Message.ExampleProto value) {
         if (exampleBuilder_ == null) {
@@ -3045,7 +3045,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ExampleProto example = 1;</code>
+       * <code>.ai_flow.ExampleProto example = 1;</code>
        */
       public Builder clearExample() {
         if (exampleBuilder_ == null) {
@@ -3059,7 +3059,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ExampleProto example = 1;</code>
+       * <code>.ai_flow.ExampleProto example = 1;</code>
        */
       public com.aiflow.proto.Message.ExampleProto.Builder getExampleBuilder() {
         
@@ -3067,7 +3067,7 @@ public final class MetadataServiceOuterClass {
         return getExampleFieldBuilder().getBuilder();
       }
       /**
-       * <code>.ExampleProto example = 1;</code>
+       * <code>.ai_flow.ExampleProto example = 1;</code>
        */
       public com.aiflow.proto.Message.ExampleProtoOrBuilder getExampleOrBuilder() {
         if (exampleBuilder_ != null) {
@@ -3078,7 +3078,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.ExampleProto example = 1;</code>
+       * <code>.ai_flow.ExampleProto example = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ExampleProto, com.aiflow.proto.Message.ExampleProto.Builder, com.aiflow.proto.Message.ExampleProtoOrBuilder> 
@@ -3106,10 +3106,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:RegisterExampleRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.RegisterExampleRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:RegisterExampleRequest)
+    // @@protoc_insertion_point(class_scope:ai_flow.RegisterExampleRequest)
     private static final com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest();
@@ -3147,39 +3147,39 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface RegisterExamplesRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RegisterExamplesRequest)
+      // @@protoc_insertion_point(interface_extends:ai_flow.RegisterExamplesRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
     java.util.List<com.aiflow.proto.Message.ExampleProto> 
         getExamplesList();
     /**
-     * <code>repeated .ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
     com.aiflow.proto.Message.ExampleProto getExamples(int index);
     /**
-     * <code>repeated .ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
     int getExamplesCount();
     /**
-     * <code>repeated .ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
     java.util.List<? extends com.aiflow.proto.Message.ExampleProtoOrBuilder> 
         getExamplesOrBuilderList();
     /**
-     * <code>repeated .ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
     com.aiflow.proto.Message.ExampleProtoOrBuilder getExamplesOrBuilder(
         int index);
   }
   /**
-   * Protobuf type {@code RegisterExamplesRequest}
+   * Protobuf type {@code ai_flow.RegisterExamplesRequest}
    */
   public static final class RegisterExamplesRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:RegisterExamplesRequest)
+      // @@protoc_insertion_point(message_implements:ai_flow.RegisterExamplesRequest)
       RegisterExamplesRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use RegisterExamplesRequest.newBuilder() to construct.
@@ -3254,13 +3254,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterExamplesRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterExamplesRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterExamplesRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterExamplesRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest.Builder.class);
     }
@@ -3268,14 +3268,14 @@ public final class MetadataServiceOuterClass {
     public static final int EXAMPLES_FIELD_NUMBER = 1;
     private java.util.List<com.aiflow.proto.Message.ExampleProto> examples_;
     /**
-     * <code>repeated .ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
     @java.lang.Override
     public java.util.List<com.aiflow.proto.Message.ExampleProto> getExamplesList() {
       return examples_;
     }
     /**
-     * <code>repeated .ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
     @java.lang.Override
     public java.util.List<? extends com.aiflow.proto.Message.ExampleProtoOrBuilder> 
@@ -3283,21 +3283,21 @@ public final class MetadataServiceOuterClass {
       return examples_;
     }
     /**
-     * <code>repeated .ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
     @java.lang.Override
     public int getExamplesCount() {
       return examples_.size();
     }
     /**
-     * <code>repeated .ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ExampleProto getExamples(int index) {
       return examples_.get(index);
     }
     /**
-     * <code>repeated .ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ExampleProtoOrBuilder getExamplesOrBuilder(
@@ -3463,21 +3463,21 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code RegisterExamplesRequest}
+     * Protobuf type {@code ai_flow.RegisterExamplesRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RegisterExamplesRequest)
+        // @@protoc_insertion_point(builder_implements:ai_flow.RegisterExamplesRequest)
         com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterExamplesRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterExamplesRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterExamplesRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterExamplesRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest.Builder.class);
       }
@@ -3513,7 +3513,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterExamplesRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterExamplesRequest_descriptor;
       }
 
       @java.lang.Override
@@ -3660,7 +3660,7 @@ public final class MetadataServiceOuterClass {
           com.aiflow.proto.Message.ExampleProto, com.aiflow.proto.Message.ExampleProto.Builder, com.aiflow.proto.Message.ExampleProtoOrBuilder> examplesBuilder_;
 
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public java.util.List<com.aiflow.proto.Message.ExampleProto> getExamplesList() {
         if (examplesBuilder_ == null) {
@@ -3670,7 +3670,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public int getExamplesCount() {
         if (examplesBuilder_ == null) {
@@ -3680,7 +3680,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public com.aiflow.proto.Message.ExampleProto getExamples(int index) {
         if (examplesBuilder_ == null) {
@@ -3690,7 +3690,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public Builder setExamples(
           int index, com.aiflow.proto.Message.ExampleProto value) {
@@ -3707,7 +3707,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public Builder setExamples(
           int index, com.aiflow.proto.Message.ExampleProto.Builder builderForValue) {
@@ -3721,7 +3721,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public Builder addExamples(com.aiflow.proto.Message.ExampleProto value) {
         if (examplesBuilder_ == null) {
@@ -3737,7 +3737,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public Builder addExamples(
           int index, com.aiflow.proto.Message.ExampleProto value) {
@@ -3754,7 +3754,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public Builder addExamples(
           com.aiflow.proto.Message.ExampleProto.Builder builderForValue) {
@@ -3768,7 +3768,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public Builder addExamples(
           int index, com.aiflow.proto.Message.ExampleProto.Builder builderForValue) {
@@ -3782,7 +3782,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public Builder addAllExamples(
           java.lang.Iterable<? extends com.aiflow.proto.Message.ExampleProto> values) {
@@ -3797,7 +3797,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public Builder clearExamples() {
         if (examplesBuilder_ == null) {
@@ -3810,7 +3810,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public Builder removeExamples(int index) {
         if (examplesBuilder_ == null) {
@@ -3823,14 +3823,14 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public com.aiflow.proto.Message.ExampleProto.Builder getExamplesBuilder(
           int index) {
         return getExamplesFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public com.aiflow.proto.Message.ExampleProtoOrBuilder getExamplesOrBuilder(
           int index) {
@@ -3840,7 +3840,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public java.util.List<? extends com.aiflow.proto.Message.ExampleProtoOrBuilder> 
            getExamplesOrBuilderList() {
@@ -3851,14 +3851,14 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public com.aiflow.proto.Message.ExampleProto.Builder addExamplesBuilder() {
         return getExamplesFieldBuilder().addBuilder(
             com.aiflow.proto.Message.ExampleProto.getDefaultInstance());
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public com.aiflow.proto.Message.ExampleProto.Builder addExamplesBuilder(
           int index) {
@@ -3866,7 +3866,7 @@ public final class MetadataServiceOuterClass {
             index, com.aiflow.proto.Message.ExampleProto.getDefaultInstance());
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public java.util.List<com.aiflow.proto.Message.ExampleProto.Builder> 
            getExamplesBuilderList() {
@@ -3899,10 +3899,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:RegisterExamplesRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.RegisterExamplesRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:RegisterExamplesRequest)
+    // @@protoc_insertion_point(class_scope:ai_flow.RegisterExamplesRequest)
     private static final com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest();
@@ -3940,39 +3940,39 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface ExampleListProtoOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ExampleListProto)
+      // @@protoc_insertion_point(interface_extends:ai_flow.ExampleListProto)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
     java.util.List<com.aiflow.proto.Message.ExampleProto> 
         getExamplesList();
     /**
-     * <code>repeated .ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
     com.aiflow.proto.Message.ExampleProto getExamples(int index);
     /**
-     * <code>repeated .ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
     int getExamplesCount();
     /**
-     * <code>repeated .ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
     java.util.List<? extends com.aiflow.proto.Message.ExampleProtoOrBuilder> 
         getExamplesOrBuilderList();
     /**
-     * <code>repeated .ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
     com.aiflow.proto.Message.ExampleProtoOrBuilder getExamplesOrBuilder(
         int index);
   }
   /**
-   * Protobuf type {@code ExampleListProto}
+   * Protobuf type {@code ai_flow.ExampleListProto}
    */
   public static final class ExampleListProto extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:ExampleListProto)
+      // @@protoc_insertion_point(message_implements:ai_flow.ExampleListProto)
       ExampleListProtoOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use ExampleListProto.newBuilder() to construct.
@@ -4047,13 +4047,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ExampleListProto_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ExampleListProto_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ExampleListProto_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ExampleListProto_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto.class, com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto.Builder.class);
     }
@@ -4061,14 +4061,14 @@ public final class MetadataServiceOuterClass {
     public static final int EXAMPLES_FIELD_NUMBER = 1;
     private java.util.List<com.aiflow.proto.Message.ExampleProto> examples_;
     /**
-     * <code>repeated .ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
     @java.lang.Override
     public java.util.List<com.aiflow.proto.Message.ExampleProto> getExamplesList() {
       return examples_;
     }
     /**
-     * <code>repeated .ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
     @java.lang.Override
     public java.util.List<? extends com.aiflow.proto.Message.ExampleProtoOrBuilder> 
@@ -4076,21 +4076,21 @@ public final class MetadataServiceOuterClass {
       return examples_;
     }
     /**
-     * <code>repeated .ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
     @java.lang.Override
     public int getExamplesCount() {
       return examples_.size();
     }
     /**
-     * <code>repeated .ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ExampleProto getExamples(int index) {
       return examples_.get(index);
     }
     /**
-     * <code>repeated .ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ExampleProtoOrBuilder getExamplesOrBuilder(
@@ -4256,21 +4256,21 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code ExampleListProto}
+     * Protobuf type {@code ai_flow.ExampleListProto}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ExampleListProto)
+        // @@protoc_insertion_point(builder_implements:ai_flow.ExampleListProto)
         com.aiflow.proto.MetadataServiceOuterClass.ExampleListProtoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ExampleListProto_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ExampleListProto_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ExampleListProto_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ExampleListProto_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto.class, com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto.Builder.class);
       }
@@ -4306,7 +4306,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ExampleListProto_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ExampleListProto_descriptor;
       }
 
       @java.lang.Override
@@ -4453,7 +4453,7 @@ public final class MetadataServiceOuterClass {
           com.aiflow.proto.Message.ExampleProto, com.aiflow.proto.Message.ExampleProto.Builder, com.aiflow.proto.Message.ExampleProtoOrBuilder> examplesBuilder_;
 
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public java.util.List<com.aiflow.proto.Message.ExampleProto> getExamplesList() {
         if (examplesBuilder_ == null) {
@@ -4463,7 +4463,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public int getExamplesCount() {
         if (examplesBuilder_ == null) {
@@ -4473,7 +4473,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public com.aiflow.proto.Message.ExampleProto getExamples(int index) {
         if (examplesBuilder_ == null) {
@@ -4483,7 +4483,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public Builder setExamples(
           int index, com.aiflow.proto.Message.ExampleProto value) {
@@ -4500,7 +4500,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public Builder setExamples(
           int index, com.aiflow.proto.Message.ExampleProto.Builder builderForValue) {
@@ -4514,7 +4514,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public Builder addExamples(com.aiflow.proto.Message.ExampleProto value) {
         if (examplesBuilder_ == null) {
@@ -4530,7 +4530,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public Builder addExamples(
           int index, com.aiflow.proto.Message.ExampleProto value) {
@@ -4547,7 +4547,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public Builder addExamples(
           com.aiflow.proto.Message.ExampleProto.Builder builderForValue) {
@@ -4561,7 +4561,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public Builder addExamples(
           int index, com.aiflow.proto.Message.ExampleProto.Builder builderForValue) {
@@ -4575,7 +4575,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public Builder addAllExamples(
           java.lang.Iterable<? extends com.aiflow.proto.Message.ExampleProto> values) {
@@ -4590,7 +4590,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public Builder clearExamples() {
         if (examplesBuilder_ == null) {
@@ -4603,7 +4603,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public Builder removeExamples(int index) {
         if (examplesBuilder_ == null) {
@@ -4616,14 +4616,14 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public com.aiflow.proto.Message.ExampleProto.Builder getExamplesBuilder(
           int index) {
         return getExamplesFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public com.aiflow.proto.Message.ExampleProtoOrBuilder getExamplesOrBuilder(
           int index) {
@@ -4633,7 +4633,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public java.util.List<? extends com.aiflow.proto.Message.ExampleProtoOrBuilder> 
            getExamplesOrBuilderList() {
@@ -4644,14 +4644,14 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public com.aiflow.proto.Message.ExampleProto.Builder addExamplesBuilder() {
         return getExamplesFieldBuilder().addBuilder(
             com.aiflow.proto.Message.ExampleProto.getDefaultInstance());
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public com.aiflow.proto.Message.ExampleProto.Builder addExamplesBuilder(
           int index) {
@@ -4659,7 +4659,7 @@ public final class MetadataServiceOuterClass {
             index, com.aiflow.proto.Message.ExampleProto.getDefaultInstance());
       }
       /**
-       * <code>repeated .ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
        */
       public java.util.List<com.aiflow.proto.Message.ExampleProto.Builder> 
            getExamplesBuilderList() {
@@ -4692,10 +4692,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:ExampleListProto)
+      // @@protoc_insertion_point(builder_scope:ai_flow.ExampleListProto)
     }
 
-    // @@protoc_insertion_point(class_scope:ExampleListProto)
+    // @@protoc_insertion_point(class_scope:ai_flow.ExampleListProto)
     private static final com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto();
@@ -4733,7 +4733,7 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface UpdateExampleRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:UpdateExampleRequest)
+      // @@protoc_insertion_point(interface_extends:ai_flow.UpdateExampleRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -4783,12 +4783,12 @@ public final class MetadataServiceOuterClass {
         java.lang.String key);
 
     /**
-     * <code>.ExampleSupportTypeProto support_type = 3;</code>
+     * <code>.ai_flow.ExampleSupportTypeProto support_type = 3;</code>
      * @return The enum numeric value on the wire for supportType.
      */
     int getSupportTypeValue();
     /**
-     * <code>.ExampleSupportTypeProto support_type = 3;</code>
+     * <code>.ai_flow.ExampleSupportTypeProto support_type = 3;</code>
      * @return The supportType.
      */
     com.aiflow.proto.Message.ExampleSupportTypeProto getSupportType();
@@ -4819,29 +4819,29 @@ public final class MetadataServiceOuterClass {
         getNameListBytes(int index);
 
     /**
-     * <code>repeated .DataTypeProto type_list = 5;</code>
+     * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
      * @return A list containing the typeList.
      */
     java.util.List<com.aiflow.proto.Message.DataTypeProto> getTypeListList();
     /**
-     * <code>repeated .DataTypeProto type_list = 5;</code>
+     * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
      * @return The count of typeList.
      */
     int getTypeListCount();
     /**
-     * <code>repeated .DataTypeProto type_list = 5;</code>
+     * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
      * @param index The index of the element to return.
      * @return The typeList at the given index.
      */
     com.aiflow.proto.Message.DataTypeProto getTypeList(int index);
     /**
-     * <code>repeated .DataTypeProto type_list = 5;</code>
+     * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
      * @return A list containing the enum numeric values on the wire for typeList.
      */
     java.util.List<java.lang.Integer>
     getTypeListValueList();
     /**
-     * <code>repeated .DataTypeProto type_list = 5;</code>
+     * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
      * @param index The index of the value to return.
      * @return The enum numeric value on the wire of typeList at the given index.
      */
@@ -5028,11 +5028,11 @@ public final class MetadataServiceOuterClass {
     com.google.protobuf.StringValueOrBuilder getCatalogTableOrBuilder();
   }
   /**
-   * Protobuf type {@code UpdateExampleRequest}
+   * Protobuf type {@code ai_flow.UpdateExampleRequest}
    */
   public static final class UpdateExampleRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:UpdateExampleRequest)
+      // @@protoc_insertion_point(message_implements:ai_flow.UpdateExampleRequest)
       UpdateExampleRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use UpdateExampleRequest.newBuilder() to construct.
@@ -5317,7 +5317,7 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateExampleRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateExampleRequest_descriptor;
     }
 
     @SuppressWarnings({"rawtypes"})
@@ -5335,7 +5335,7 @@ public final class MetadataServiceOuterClass {
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateExampleRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateExampleRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest.class, com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest.Builder.class);
     }
@@ -5384,7 +5384,7 @@ public final class MetadataServiceOuterClass {
           java.lang.String, java.lang.String> defaultEntry =
               com.google.protobuf.MapEntry
               .<java.lang.String, java.lang.String>newDefaultInstance(
-                  com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateExampleRequest_PropertiesEntry_descriptor, 
+                  com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateExampleRequest_PropertiesEntry_descriptor, 
                   com.google.protobuf.WireFormat.FieldType.STRING,
                   "",
                   com.google.protobuf.WireFormat.FieldType.STRING,
@@ -5462,14 +5462,14 @@ public final class MetadataServiceOuterClass {
     public static final int SUPPORT_TYPE_FIELD_NUMBER = 3;
     private int supportType_;
     /**
-     * <code>.ExampleSupportTypeProto support_type = 3;</code>
+     * <code>.ai_flow.ExampleSupportTypeProto support_type = 3;</code>
      * @return The enum numeric value on the wire for supportType.
      */
     @java.lang.Override public int getSupportTypeValue() {
       return supportType_;
     }
     /**
-     * <code>.ExampleSupportTypeProto support_type = 3;</code>
+     * <code>.ai_flow.ExampleSupportTypeProto support_type = 3;</code>
      * @return The supportType.
      */
     @java.lang.Override public com.aiflow.proto.Message.ExampleSupportTypeProto getSupportType() {
@@ -5526,7 +5526,7 @@ public final class MetadataServiceOuterClass {
               }
             };
     /**
-     * <code>repeated .DataTypeProto type_list = 5;</code>
+     * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
      * @return A list containing the typeList.
      */
     @java.lang.Override
@@ -5535,7 +5535,7 @@ public final class MetadataServiceOuterClass {
           java.lang.Integer, com.aiflow.proto.Message.DataTypeProto>(typeList_, typeList_converter_);
     }
     /**
-     * <code>repeated .DataTypeProto type_list = 5;</code>
+     * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
      * @return The count of typeList.
      */
     @java.lang.Override
@@ -5543,7 +5543,7 @@ public final class MetadataServiceOuterClass {
       return typeList_.size();
     }
     /**
-     * <code>repeated .DataTypeProto type_list = 5;</code>
+     * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
      * @param index The index of the element to return.
      * @return The typeList at the given index.
      */
@@ -5552,7 +5552,7 @@ public final class MetadataServiceOuterClass {
       return typeList_converter_.convert(typeList_.get(index));
     }
     /**
-     * <code>repeated .DataTypeProto type_list = 5;</code>
+     * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
      * @return A list containing the enum numeric values on the wire for typeList.
      */
     @java.lang.Override
@@ -5561,7 +5561,7 @@ public final class MetadataServiceOuterClass {
       return typeList_;
     }
     /**
-     * <code>repeated .DataTypeProto type_list = 5;</code>
+     * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
      * @param index The index of the value to return.
      * @return The enum numeric value on the wire of typeList at the given index.
      */
@@ -6304,15 +6304,15 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code UpdateExampleRequest}
+     * Protobuf type {@code ai_flow.UpdateExampleRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:UpdateExampleRequest)
+        // @@protoc_insertion_point(builder_implements:ai_flow.UpdateExampleRequest)
         com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateExampleRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateExampleRequest_descriptor;
       }
 
       @SuppressWarnings({"rawtypes"})
@@ -6340,7 +6340,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateExampleRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateExampleRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest.class, com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest.Builder.class);
       }
@@ -6450,7 +6450,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateExampleRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateExampleRequest_descriptor;
       }
 
       @java.lang.Override
@@ -6894,14 +6894,14 @@ public final class MetadataServiceOuterClass {
 
       private int supportType_ = 0;
       /**
-       * <code>.ExampleSupportTypeProto support_type = 3;</code>
+       * <code>.ai_flow.ExampleSupportTypeProto support_type = 3;</code>
        * @return The enum numeric value on the wire for supportType.
        */
       @java.lang.Override public int getSupportTypeValue() {
         return supportType_;
       }
       /**
-       * <code>.ExampleSupportTypeProto support_type = 3;</code>
+       * <code>.ai_flow.ExampleSupportTypeProto support_type = 3;</code>
        * @param value The enum numeric value on the wire for supportType to set.
        * @return This builder for chaining.
        */
@@ -6912,7 +6912,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ExampleSupportTypeProto support_type = 3;</code>
+       * <code>.ai_flow.ExampleSupportTypeProto support_type = 3;</code>
        * @return The supportType.
        */
       @java.lang.Override
@@ -6922,7 +6922,7 @@ public final class MetadataServiceOuterClass {
         return result == null ? com.aiflow.proto.Message.ExampleSupportTypeProto.UNRECOGNIZED : result;
       }
       /**
-       * <code>.ExampleSupportTypeProto support_type = 3;</code>
+       * <code>.ai_flow.ExampleSupportTypeProto support_type = 3;</code>
        * @param value The supportType to set.
        * @return This builder for chaining.
        */
@@ -6936,7 +6936,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ExampleSupportTypeProto support_type = 3;</code>
+       * <code>.ai_flow.ExampleSupportTypeProto support_type = 3;</code>
        * @return This builder for chaining.
        */
       public Builder clearSupportType() {
@@ -7065,7 +7065,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .DataTypeProto type_list = 5;</code>
+       * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
        * @return A list containing the typeList.
        */
       public java.util.List<com.aiflow.proto.Message.DataTypeProto> getTypeListList() {
@@ -7073,14 +7073,14 @@ public final class MetadataServiceOuterClass {
             java.lang.Integer, com.aiflow.proto.Message.DataTypeProto>(typeList_, typeList_converter_);
       }
       /**
-       * <code>repeated .DataTypeProto type_list = 5;</code>
+       * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
        * @return The count of typeList.
        */
       public int getTypeListCount() {
         return typeList_.size();
       }
       /**
-       * <code>repeated .DataTypeProto type_list = 5;</code>
+       * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
        * @param index The index of the element to return.
        * @return The typeList at the given index.
        */
@@ -7088,7 +7088,7 @@ public final class MetadataServiceOuterClass {
         return typeList_converter_.convert(typeList_.get(index));
       }
       /**
-       * <code>repeated .DataTypeProto type_list = 5;</code>
+       * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
        * @param index The index to set the value at.
        * @param value The typeList to set.
        * @return This builder for chaining.
@@ -7104,7 +7104,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .DataTypeProto type_list = 5;</code>
+       * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
        * @param value The typeList to add.
        * @return This builder for chaining.
        */
@@ -7118,7 +7118,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .DataTypeProto type_list = 5;</code>
+       * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
        * @param values The typeList to add.
        * @return This builder for chaining.
        */
@@ -7132,7 +7132,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .DataTypeProto type_list = 5;</code>
+       * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
        * @return This builder for chaining.
        */
       public Builder clearTypeList() {
@@ -7142,7 +7142,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .DataTypeProto type_list = 5;</code>
+       * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
        * @return A list containing the enum numeric values on the wire for typeList.
        */
       public java.util.List<java.lang.Integer>
@@ -7150,7 +7150,7 @@ public final class MetadataServiceOuterClass {
         return java.util.Collections.unmodifiableList(typeList_);
       }
       /**
-       * <code>repeated .DataTypeProto type_list = 5;</code>
+       * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
        * @param index The index of the value to return.
        * @return The enum numeric value on the wire of typeList at the given index.
        */
@@ -7158,7 +7158,7 @@ public final class MetadataServiceOuterClass {
         return typeList_.get(index);
       }
       /**
-       * <code>repeated .DataTypeProto type_list = 5;</code>
+       * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
        * @param index The index of the value to return.
        * @return The enum numeric value on the wire of typeList at the given index.
        * @return This builder for chaining.
@@ -7171,7 +7171,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .DataTypeProto type_list = 5;</code>
+       * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
        * @param value The enum numeric value on the wire for typeList to add.
        * @return This builder for chaining.
        */
@@ -7182,7 +7182,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .DataTypeProto type_list = 5;</code>
+       * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
        * @param values The enum numeric values on the wire for typeList to add.
        * @return This builder for chaining.
        */
@@ -8636,10 +8636,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:UpdateExampleRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.UpdateExampleRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:UpdateExampleRequest)
+    // @@protoc_insertion_point(class_scope:ai_flow.UpdateExampleRequest)
     private static final com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest();
@@ -8677,21 +8677,21 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface RegisterModelRelationRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RegisterModelRelationRequest)
+      // @@protoc_insertion_point(interface_extends:ai_flow.RegisterModelRelationRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.ModelRelationProto model_relation = 1;</code>
+     * <code>.ai_flow.ModelRelationProto model_relation = 1;</code>
      * @return Whether the modelRelation field is set.
      */
     boolean hasModelRelation();
     /**
-     * <code>.ModelRelationProto model_relation = 1;</code>
+     * <code>.ai_flow.ModelRelationProto model_relation = 1;</code>
      * @return The modelRelation.
      */
     com.aiflow.proto.Message.ModelRelationProto getModelRelation();
     /**
-     * <code>.ModelRelationProto model_relation = 1;</code>
+     * <code>.ai_flow.ModelRelationProto model_relation = 1;</code>
      */
     com.aiflow.proto.Message.ModelRelationProtoOrBuilder getModelRelationOrBuilder();
   }
@@ -8700,11 +8700,11 @@ public final class MetadataServiceOuterClass {
    *model
    * </pre>
    *
-   * Protobuf type {@code RegisterModelRelationRequest}
+   * Protobuf type {@code ai_flow.RegisterModelRelationRequest}
    */
   public static final class RegisterModelRelationRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:RegisterModelRelationRequest)
+      // @@protoc_insertion_point(message_implements:ai_flow.RegisterModelRelationRequest)
       RegisterModelRelationRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use RegisterModelRelationRequest.newBuilder() to construct.
@@ -8778,13 +8778,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterModelRelationRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterModelRelationRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterModelRelationRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterModelRelationRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.RegisterModelRelationRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterModelRelationRequest.Builder.class);
     }
@@ -8792,7 +8792,7 @@ public final class MetadataServiceOuterClass {
     public static final int MODEL_RELATION_FIELD_NUMBER = 1;
     private com.aiflow.proto.Message.ModelRelationProto modelRelation_;
     /**
-     * <code>.ModelRelationProto model_relation = 1;</code>
+     * <code>.ai_flow.ModelRelationProto model_relation = 1;</code>
      * @return Whether the modelRelation field is set.
      */
     @java.lang.Override
@@ -8800,7 +8800,7 @@ public final class MetadataServiceOuterClass {
       return modelRelation_ != null;
     }
     /**
-     * <code>.ModelRelationProto model_relation = 1;</code>
+     * <code>.ai_flow.ModelRelationProto model_relation = 1;</code>
      * @return The modelRelation.
      */
     @java.lang.Override
@@ -8808,7 +8808,7 @@ public final class MetadataServiceOuterClass {
       return modelRelation_ == null ? com.aiflow.proto.Message.ModelRelationProto.getDefaultInstance() : modelRelation_;
     }
     /**
-     * <code>.ModelRelationProto model_relation = 1;</code>
+     * <code>.ai_flow.ModelRelationProto model_relation = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ModelRelationProtoOrBuilder getModelRelationOrBuilder() {
@@ -8980,21 +8980,21 @@ public final class MetadataServiceOuterClass {
      *model
      * </pre>
      *
-     * Protobuf type {@code RegisterModelRelationRequest}
+     * Protobuf type {@code ai_flow.RegisterModelRelationRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RegisterModelRelationRequest)
+        // @@protoc_insertion_point(builder_implements:ai_flow.RegisterModelRelationRequest)
         com.aiflow.proto.MetadataServiceOuterClass.RegisterModelRelationRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterModelRelationRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterModelRelationRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterModelRelationRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterModelRelationRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.RegisterModelRelationRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterModelRelationRequest.Builder.class);
       }
@@ -9029,7 +9029,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterModelRelationRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterModelRelationRequest_descriptor;
       }
 
       @java.lang.Override
@@ -9138,14 +9138,14 @@ public final class MetadataServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ModelRelationProto, com.aiflow.proto.Message.ModelRelationProto.Builder, com.aiflow.proto.Message.ModelRelationProtoOrBuilder> modelRelationBuilder_;
       /**
-       * <code>.ModelRelationProto model_relation = 1;</code>
+       * <code>.ai_flow.ModelRelationProto model_relation = 1;</code>
        * @return Whether the modelRelation field is set.
        */
       public boolean hasModelRelation() {
         return modelRelationBuilder_ != null || modelRelation_ != null;
       }
       /**
-       * <code>.ModelRelationProto model_relation = 1;</code>
+       * <code>.ai_flow.ModelRelationProto model_relation = 1;</code>
        * @return The modelRelation.
        */
       public com.aiflow.proto.Message.ModelRelationProto getModelRelation() {
@@ -9156,7 +9156,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.ModelRelationProto model_relation = 1;</code>
+       * <code>.ai_flow.ModelRelationProto model_relation = 1;</code>
        */
       public Builder setModelRelation(com.aiflow.proto.Message.ModelRelationProto value) {
         if (modelRelationBuilder_ == null) {
@@ -9172,7 +9172,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelRelationProto model_relation = 1;</code>
+       * <code>.ai_flow.ModelRelationProto model_relation = 1;</code>
        */
       public Builder setModelRelation(
           com.aiflow.proto.Message.ModelRelationProto.Builder builderForValue) {
@@ -9186,7 +9186,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelRelationProto model_relation = 1;</code>
+       * <code>.ai_flow.ModelRelationProto model_relation = 1;</code>
        */
       public Builder mergeModelRelation(com.aiflow.proto.Message.ModelRelationProto value) {
         if (modelRelationBuilder_ == null) {
@@ -9204,7 +9204,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelRelationProto model_relation = 1;</code>
+       * <code>.ai_flow.ModelRelationProto model_relation = 1;</code>
        */
       public Builder clearModelRelation() {
         if (modelRelationBuilder_ == null) {
@@ -9218,7 +9218,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelRelationProto model_relation = 1;</code>
+       * <code>.ai_flow.ModelRelationProto model_relation = 1;</code>
        */
       public com.aiflow.proto.Message.ModelRelationProto.Builder getModelRelationBuilder() {
         
@@ -9226,7 +9226,7 @@ public final class MetadataServiceOuterClass {
         return getModelRelationFieldBuilder().getBuilder();
       }
       /**
-       * <code>.ModelRelationProto model_relation = 1;</code>
+       * <code>.ai_flow.ModelRelationProto model_relation = 1;</code>
        */
       public com.aiflow.proto.Message.ModelRelationProtoOrBuilder getModelRelationOrBuilder() {
         if (modelRelationBuilder_ != null) {
@@ -9237,7 +9237,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.ModelRelationProto model_relation = 1;</code>
+       * <code>.ai_flow.ModelRelationProto model_relation = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ModelRelationProto, com.aiflow.proto.Message.ModelRelationProto.Builder, com.aiflow.proto.Message.ModelRelationProtoOrBuilder> 
@@ -9265,10 +9265,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:RegisterModelRelationRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.RegisterModelRelationRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:RegisterModelRelationRequest)
+    // @@protoc_insertion_point(class_scope:ai_flow.RegisterModelRelationRequest)
     private static final com.aiflow.proto.MetadataServiceOuterClass.RegisterModelRelationRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.RegisterModelRelationRequest();
@@ -9306,30 +9306,30 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface RegisterModelRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RegisterModelRequest)
+      // @@protoc_insertion_point(interface_extends:ai_flow.RegisterModelRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.ModelProto model = 1;</code>
+     * <code>.ai_flow.ModelProto model = 1;</code>
      * @return Whether the model field is set.
      */
     boolean hasModel();
     /**
-     * <code>.ModelProto model = 1;</code>
+     * <code>.ai_flow.ModelProto model = 1;</code>
      * @return The model.
      */
     com.aiflow.proto.Message.ModelProto getModel();
     /**
-     * <code>.ModelProto model = 1;</code>
+     * <code>.ai_flow.ModelProto model = 1;</code>
      */
     com.aiflow.proto.Message.ModelProtoOrBuilder getModelOrBuilder();
   }
   /**
-   * Protobuf type {@code RegisterModelRequest}
+   * Protobuf type {@code ai_flow.RegisterModelRequest}
    */
   public static final class RegisterModelRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:RegisterModelRequest)
+      // @@protoc_insertion_point(message_implements:ai_flow.RegisterModelRequest)
       RegisterModelRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use RegisterModelRequest.newBuilder() to construct.
@@ -9403,13 +9403,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterModelRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterModelRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterModelRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterModelRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.RegisterModelRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterModelRequest.Builder.class);
     }
@@ -9417,7 +9417,7 @@ public final class MetadataServiceOuterClass {
     public static final int MODEL_FIELD_NUMBER = 1;
     private com.aiflow.proto.Message.ModelProto model_;
     /**
-     * <code>.ModelProto model = 1;</code>
+     * <code>.ai_flow.ModelProto model = 1;</code>
      * @return Whether the model field is set.
      */
     @java.lang.Override
@@ -9425,7 +9425,7 @@ public final class MetadataServiceOuterClass {
       return model_ != null;
     }
     /**
-     * <code>.ModelProto model = 1;</code>
+     * <code>.ai_flow.ModelProto model = 1;</code>
      * @return The model.
      */
     @java.lang.Override
@@ -9433,7 +9433,7 @@ public final class MetadataServiceOuterClass {
       return model_ == null ? com.aiflow.proto.Message.ModelProto.getDefaultInstance() : model_;
     }
     /**
-     * <code>.ModelProto model = 1;</code>
+     * <code>.ai_flow.ModelProto model = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ModelProtoOrBuilder getModelOrBuilder() {
@@ -9601,21 +9601,21 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code RegisterModelRequest}
+     * Protobuf type {@code ai_flow.RegisterModelRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RegisterModelRequest)
+        // @@protoc_insertion_point(builder_implements:ai_flow.RegisterModelRequest)
         com.aiflow.proto.MetadataServiceOuterClass.RegisterModelRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterModelRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterModelRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterModelRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterModelRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.RegisterModelRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterModelRequest.Builder.class);
       }
@@ -9650,7 +9650,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterModelRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterModelRequest_descriptor;
       }
 
       @java.lang.Override
@@ -9759,14 +9759,14 @@ public final class MetadataServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ModelProto, com.aiflow.proto.Message.ModelProto.Builder, com.aiflow.proto.Message.ModelProtoOrBuilder> modelBuilder_;
       /**
-       * <code>.ModelProto model = 1;</code>
+       * <code>.ai_flow.ModelProto model = 1;</code>
        * @return Whether the model field is set.
        */
       public boolean hasModel() {
         return modelBuilder_ != null || model_ != null;
       }
       /**
-       * <code>.ModelProto model = 1;</code>
+       * <code>.ai_flow.ModelProto model = 1;</code>
        * @return The model.
        */
       public com.aiflow.proto.Message.ModelProto getModel() {
@@ -9777,7 +9777,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.ModelProto model = 1;</code>
+       * <code>.ai_flow.ModelProto model = 1;</code>
        */
       public Builder setModel(com.aiflow.proto.Message.ModelProto value) {
         if (modelBuilder_ == null) {
@@ -9793,7 +9793,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelProto model = 1;</code>
+       * <code>.ai_flow.ModelProto model = 1;</code>
        */
       public Builder setModel(
           com.aiflow.proto.Message.ModelProto.Builder builderForValue) {
@@ -9807,7 +9807,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelProto model = 1;</code>
+       * <code>.ai_flow.ModelProto model = 1;</code>
        */
       public Builder mergeModel(com.aiflow.proto.Message.ModelProto value) {
         if (modelBuilder_ == null) {
@@ -9825,7 +9825,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelProto model = 1;</code>
+       * <code>.ai_flow.ModelProto model = 1;</code>
        */
       public Builder clearModel() {
         if (modelBuilder_ == null) {
@@ -9839,7 +9839,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelProto model = 1;</code>
+       * <code>.ai_flow.ModelProto model = 1;</code>
        */
       public com.aiflow.proto.Message.ModelProto.Builder getModelBuilder() {
         
@@ -9847,7 +9847,7 @@ public final class MetadataServiceOuterClass {
         return getModelFieldBuilder().getBuilder();
       }
       /**
-       * <code>.ModelProto model = 1;</code>
+       * <code>.ai_flow.ModelProto model = 1;</code>
        */
       public com.aiflow.proto.Message.ModelProtoOrBuilder getModelOrBuilder() {
         if (modelBuilder_ != null) {
@@ -9858,7 +9858,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.ModelProto model = 1;</code>
+       * <code>.ai_flow.ModelProto model = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ModelProto, com.aiflow.proto.Message.ModelProto.Builder, com.aiflow.proto.Message.ModelProtoOrBuilder> 
@@ -9886,10 +9886,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:RegisterModelRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.RegisterModelRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:RegisterModelRequest)
+    // @@protoc_insertion_point(class_scope:ai_flow.RegisterModelRequest)
     private static final com.aiflow.proto.MetadataServiceOuterClass.RegisterModelRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.RegisterModelRequest();
@@ -9927,39 +9927,39 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface ModelRelationListProtoOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ModelRelationListProto)
+      // @@protoc_insertion_point(interface_extends:ai_flow.ModelRelationListProto)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .ModelRelationProto model_relations = 1;</code>
+     * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
      */
     java.util.List<com.aiflow.proto.Message.ModelRelationProto> 
         getModelRelationsList();
     /**
-     * <code>repeated .ModelRelationProto model_relations = 1;</code>
+     * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
      */
     com.aiflow.proto.Message.ModelRelationProto getModelRelations(int index);
     /**
-     * <code>repeated .ModelRelationProto model_relations = 1;</code>
+     * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
      */
     int getModelRelationsCount();
     /**
-     * <code>repeated .ModelRelationProto model_relations = 1;</code>
+     * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
      */
     java.util.List<? extends com.aiflow.proto.Message.ModelRelationProtoOrBuilder> 
         getModelRelationsOrBuilderList();
     /**
-     * <code>repeated .ModelRelationProto model_relations = 1;</code>
+     * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
      */
     com.aiflow.proto.Message.ModelRelationProtoOrBuilder getModelRelationsOrBuilder(
         int index);
   }
   /**
-   * Protobuf type {@code ModelRelationListProto}
+   * Protobuf type {@code ai_flow.ModelRelationListProto}
    */
   public static final class ModelRelationListProto extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:ModelRelationListProto)
+      // @@protoc_insertion_point(message_implements:ai_flow.ModelRelationListProto)
       ModelRelationListProtoOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use ModelRelationListProto.newBuilder() to construct.
@@ -10034,13 +10034,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ModelRelationListProto_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ModelRelationListProto_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ModelRelationListProto_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ModelRelationListProto_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.ModelRelationListProto.class, com.aiflow.proto.MetadataServiceOuterClass.ModelRelationListProto.Builder.class);
     }
@@ -10048,14 +10048,14 @@ public final class MetadataServiceOuterClass {
     public static final int MODEL_RELATIONS_FIELD_NUMBER = 1;
     private java.util.List<com.aiflow.proto.Message.ModelRelationProto> modelRelations_;
     /**
-     * <code>repeated .ModelRelationProto model_relations = 1;</code>
+     * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
      */
     @java.lang.Override
     public java.util.List<com.aiflow.proto.Message.ModelRelationProto> getModelRelationsList() {
       return modelRelations_;
     }
     /**
-     * <code>repeated .ModelRelationProto model_relations = 1;</code>
+     * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
      */
     @java.lang.Override
     public java.util.List<? extends com.aiflow.proto.Message.ModelRelationProtoOrBuilder> 
@@ -10063,21 +10063,21 @@ public final class MetadataServiceOuterClass {
       return modelRelations_;
     }
     /**
-     * <code>repeated .ModelRelationProto model_relations = 1;</code>
+     * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
      */
     @java.lang.Override
     public int getModelRelationsCount() {
       return modelRelations_.size();
     }
     /**
-     * <code>repeated .ModelRelationProto model_relations = 1;</code>
+     * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ModelRelationProto getModelRelations(int index) {
       return modelRelations_.get(index);
     }
     /**
-     * <code>repeated .ModelRelationProto model_relations = 1;</code>
+     * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ModelRelationProtoOrBuilder getModelRelationsOrBuilder(
@@ -10243,21 +10243,21 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code ModelRelationListProto}
+     * Protobuf type {@code ai_flow.ModelRelationListProto}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ModelRelationListProto)
+        // @@protoc_insertion_point(builder_implements:ai_flow.ModelRelationListProto)
         com.aiflow.proto.MetadataServiceOuterClass.ModelRelationListProtoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ModelRelationListProto_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ModelRelationListProto_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ModelRelationListProto_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ModelRelationListProto_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.ModelRelationListProto.class, com.aiflow.proto.MetadataServiceOuterClass.ModelRelationListProto.Builder.class);
       }
@@ -10293,7 +10293,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ModelRelationListProto_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ModelRelationListProto_descriptor;
       }
 
       @java.lang.Override
@@ -10440,7 +10440,7 @@ public final class MetadataServiceOuterClass {
           com.aiflow.proto.Message.ModelRelationProto, com.aiflow.proto.Message.ModelRelationProto.Builder, com.aiflow.proto.Message.ModelRelationProtoOrBuilder> modelRelationsBuilder_;
 
       /**
-       * <code>repeated .ModelRelationProto model_relations = 1;</code>
+       * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
        */
       public java.util.List<com.aiflow.proto.Message.ModelRelationProto> getModelRelationsList() {
         if (modelRelationsBuilder_ == null) {
@@ -10450,7 +10450,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ModelRelationProto model_relations = 1;</code>
+       * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
        */
       public int getModelRelationsCount() {
         if (modelRelationsBuilder_ == null) {
@@ -10460,7 +10460,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ModelRelationProto model_relations = 1;</code>
+       * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
        */
       public com.aiflow.proto.Message.ModelRelationProto getModelRelations(int index) {
         if (modelRelationsBuilder_ == null) {
@@ -10470,7 +10470,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ModelRelationProto model_relations = 1;</code>
+       * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
        */
       public Builder setModelRelations(
           int index, com.aiflow.proto.Message.ModelRelationProto value) {
@@ -10487,7 +10487,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ModelRelationProto model_relations = 1;</code>
+       * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
        */
       public Builder setModelRelations(
           int index, com.aiflow.proto.Message.ModelRelationProto.Builder builderForValue) {
@@ -10501,7 +10501,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ModelRelationProto model_relations = 1;</code>
+       * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
        */
       public Builder addModelRelations(com.aiflow.proto.Message.ModelRelationProto value) {
         if (modelRelationsBuilder_ == null) {
@@ -10517,7 +10517,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ModelRelationProto model_relations = 1;</code>
+       * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
        */
       public Builder addModelRelations(
           int index, com.aiflow.proto.Message.ModelRelationProto value) {
@@ -10534,7 +10534,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ModelRelationProto model_relations = 1;</code>
+       * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
        */
       public Builder addModelRelations(
           com.aiflow.proto.Message.ModelRelationProto.Builder builderForValue) {
@@ -10548,7 +10548,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ModelRelationProto model_relations = 1;</code>
+       * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
        */
       public Builder addModelRelations(
           int index, com.aiflow.proto.Message.ModelRelationProto.Builder builderForValue) {
@@ -10562,7 +10562,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ModelRelationProto model_relations = 1;</code>
+       * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
        */
       public Builder addAllModelRelations(
           java.lang.Iterable<? extends com.aiflow.proto.Message.ModelRelationProto> values) {
@@ -10577,7 +10577,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ModelRelationProto model_relations = 1;</code>
+       * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
        */
       public Builder clearModelRelations() {
         if (modelRelationsBuilder_ == null) {
@@ -10590,7 +10590,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ModelRelationProto model_relations = 1;</code>
+       * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
        */
       public Builder removeModelRelations(int index) {
         if (modelRelationsBuilder_ == null) {
@@ -10603,14 +10603,14 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ModelRelationProto model_relations = 1;</code>
+       * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
        */
       public com.aiflow.proto.Message.ModelRelationProto.Builder getModelRelationsBuilder(
           int index) {
         return getModelRelationsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .ModelRelationProto model_relations = 1;</code>
+       * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
        */
       public com.aiflow.proto.Message.ModelRelationProtoOrBuilder getModelRelationsOrBuilder(
           int index) {
@@ -10620,7 +10620,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ModelRelationProto model_relations = 1;</code>
+       * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
        */
       public java.util.List<? extends com.aiflow.proto.Message.ModelRelationProtoOrBuilder> 
            getModelRelationsOrBuilderList() {
@@ -10631,14 +10631,14 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ModelRelationProto model_relations = 1;</code>
+       * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
        */
       public com.aiflow.proto.Message.ModelRelationProto.Builder addModelRelationsBuilder() {
         return getModelRelationsFieldBuilder().addBuilder(
             com.aiflow.proto.Message.ModelRelationProto.getDefaultInstance());
       }
       /**
-       * <code>repeated .ModelRelationProto model_relations = 1;</code>
+       * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
        */
       public com.aiflow.proto.Message.ModelRelationProto.Builder addModelRelationsBuilder(
           int index) {
@@ -10646,7 +10646,7 @@ public final class MetadataServiceOuterClass {
             index, com.aiflow.proto.Message.ModelRelationProto.getDefaultInstance());
       }
       /**
-       * <code>repeated .ModelRelationProto model_relations = 1;</code>
+       * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
        */
       public java.util.List<com.aiflow.proto.Message.ModelRelationProto.Builder> 
            getModelRelationsBuilderList() {
@@ -10679,10 +10679,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:ModelRelationListProto)
+      // @@protoc_insertion_point(builder_scope:ai_flow.ModelRelationListProto)
     }
 
-    // @@protoc_insertion_point(class_scope:ModelRelationListProto)
+    // @@protoc_insertion_point(class_scope:ai_flow.ModelRelationListProto)
     private static final com.aiflow.proto.MetadataServiceOuterClass.ModelRelationListProto DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.ModelRelationListProto();
@@ -10720,7 +10720,7 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface ModelVersionNameRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ModelVersionNameRequest)
+      // @@protoc_insertion_point(interface_extends:ai_flow.ModelVersionNameRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -10746,11 +10746,11 @@ public final class MetadataServiceOuterClass {
    *model version
    * </pre>
    *
-   * Protobuf type {@code ModelVersionNameRequest}
+   * Protobuf type {@code ai_flow.ModelVersionNameRequest}
    */
   public static final class ModelVersionNameRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:ModelVersionNameRequest)
+      // @@protoc_insertion_point(message_implements:ai_flow.ModelVersionNameRequest)
       ModelVersionNameRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use ModelVersionNameRequest.newBuilder() to construct.
@@ -10823,13 +10823,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ModelVersionNameRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ModelVersionNameRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ModelVersionNameRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ModelVersionNameRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.ModelVersionNameRequest.class, com.aiflow.proto.MetadataServiceOuterClass.ModelVersionNameRequest.Builder.class);
     }
@@ -11054,21 +11054,21 @@ public final class MetadataServiceOuterClass {
      *model version
      * </pre>
      *
-     * Protobuf type {@code ModelVersionNameRequest}
+     * Protobuf type {@code ai_flow.ModelVersionNameRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ModelVersionNameRequest)
+        // @@protoc_insertion_point(builder_implements:ai_flow.ModelVersionNameRequest)
         com.aiflow.proto.MetadataServiceOuterClass.ModelVersionNameRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ModelVersionNameRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ModelVersionNameRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ModelVersionNameRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ModelVersionNameRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.ModelVersionNameRequest.class, com.aiflow.proto.MetadataServiceOuterClass.ModelVersionNameRequest.Builder.class);
       }
@@ -11101,7 +11101,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ModelVersionNameRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ModelVersionNameRequest_descriptor;
       }
 
       @java.lang.Override
@@ -11326,10 +11326,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:ModelVersionNameRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.ModelVersionNameRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:ModelVersionNameRequest)
+    // @@protoc_insertion_point(class_scope:ai_flow.ModelVersionNameRequest)
     private static final com.aiflow.proto.MetadataServiceOuterClass.ModelVersionNameRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.ModelVersionNameRequest();
@@ -11367,30 +11367,30 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface RegisterModelVersionRelationRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RegisterModelVersionRelationRequest)
+      // @@protoc_insertion_point(interface_extends:ai_flow.RegisterModelVersionRelationRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.ModelVersionRelationProto model_version_relation = 1;</code>
+     * <code>.ai_flow.ModelVersionRelationProto model_version_relation = 1;</code>
      * @return Whether the modelVersionRelation field is set.
      */
     boolean hasModelVersionRelation();
     /**
-     * <code>.ModelVersionRelationProto model_version_relation = 1;</code>
+     * <code>.ai_flow.ModelVersionRelationProto model_version_relation = 1;</code>
      * @return The modelVersionRelation.
      */
     com.aiflow.proto.Message.ModelVersionRelationProto getModelVersionRelation();
     /**
-     * <code>.ModelVersionRelationProto model_version_relation = 1;</code>
+     * <code>.ai_flow.ModelVersionRelationProto model_version_relation = 1;</code>
      */
     com.aiflow.proto.Message.ModelVersionRelationProtoOrBuilder getModelVersionRelationOrBuilder();
   }
   /**
-   * Protobuf type {@code RegisterModelVersionRelationRequest}
+   * Protobuf type {@code ai_flow.RegisterModelVersionRelationRequest}
    */
   public static final class RegisterModelVersionRelationRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:RegisterModelVersionRelationRequest)
+      // @@protoc_insertion_point(message_implements:ai_flow.RegisterModelVersionRelationRequest)
       RegisterModelVersionRelationRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use RegisterModelVersionRelationRequest.newBuilder() to construct.
@@ -11464,13 +11464,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterModelVersionRelationRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterModelVersionRelationRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterModelVersionRelationRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterModelVersionRelationRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.RegisterModelVersionRelationRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterModelVersionRelationRequest.Builder.class);
     }
@@ -11478,7 +11478,7 @@ public final class MetadataServiceOuterClass {
     public static final int MODEL_VERSION_RELATION_FIELD_NUMBER = 1;
     private com.aiflow.proto.Message.ModelVersionRelationProto modelVersionRelation_;
     /**
-     * <code>.ModelVersionRelationProto model_version_relation = 1;</code>
+     * <code>.ai_flow.ModelVersionRelationProto model_version_relation = 1;</code>
      * @return Whether the modelVersionRelation field is set.
      */
     @java.lang.Override
@@ -11486,7 +11486,7 @@ public final class MetadataServiceOuterClass {
       return modelVersionRelation_ != null;
     }
     /**
-     * <code>.ModelVersionRelationProto model_version_relation = 1;</code>
+     * <code>.ai_flow.ModelVersionRelationProto model_version_relation = 1;</code>
      * @return The modelVersionRelation.
      */
     @java.lang.Override
@@ -11494,7 +11494,7 @@ public final class MetadataServiceOuterClass {
       return modelVersionRelation_ == null ? com.aiflow.proto.Message.ModelVersionRelationProto.getDefaultInstance() : modelVersionRelation_;
     }
     /**
-     * <code>.ModelVersionRelationProto model_version_relation = 1;</code>
+     * <code>.ai_flow.ModelVersionRelationProto model_version_relation = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ModelVersionRelationProtoOrBuilder getModelVersionRelationOrBuilder() {
@@ -11662,21 +11662,21 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code RegisterModelVersionRelationRequest}
+     * Protobuf type {@code ai_flow.RegisterModelVersionRelationRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RegisterModelVersionRelationRequest)
+        // @@protoc_insertion_point(builder_implements:ai_flow.RegisterModelVersionRelationRequest)
         com.aiflow.proto.MetadataServiceOuterClass.RegisterModelVersionRelationRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterModelVersionRelationRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterModelVersionRelationRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterModelVersionRelationRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterModelVersionRelationRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.RegisterModelVersionRelationRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterModelVersionRelationRequest.Builder.class);
       }
@@ -11711,7 +11711,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterModelVersionRelationRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterModelVersionRelationRequest_descriptor;
       }
 
       @java.lang.Override
@@ -11820,14 +11820,14 @@ public final class MetadataServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ModelVersionRelationProto, com.aiflow.proto.Message.ModelVersionRelationProto.Builder, com.aiflow.proto.Message.ModelVersionRelationProtoOrBuilder> modelVersionRelationBuilder_;
       /**
-       * <code>.ModelVersionRelationProto model_version_relation = 1;</code>
+       * <code>.ai_flow.ModelVersionRelationProto model_version_relation = 1;</code>
        * @return Whether the modelVersionRelation field is set.
        */
       public boolean hasModelVersionRelation() {
         return modelVersionRelationBuilder_ != null || modelVersionRelation_ != null;
       }
       /**
-       * <code>.ModelVersionRelationProto model_version_relation = 1;</code>
+       * <code>.ai_flow.ModelVersionRelationProto model_version_relation = 1;</code>
        * @return The modelVersionRelation.
        */
       public com.aiflow.proto.Message.ModelVersionRelationProto getModelVersionRelation() {
@@ -11838,7 +11838,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.ModelVersionRelationProto model_version_relation = 1;</code>
+       * <code>.ai_flow.ModelVersionRelationProto model_version_relation = 1;</code>
        */
       public Builder setModelVersionRelation(com.aiflow.proto.Message.ModelVersionRelationProto value) {
         if (modelVersionRelationBuilder_ == null) {
@@ -11854,7 +11854,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelVersionRelationProto model_version_relation = 1;</code>
+       * <code>.ai_flow.ModelVersionRelationProto model_version_relation = 1;</code>
        */
       public Builder setModelVersionRelation(
           com.aiflow.proto.Message.ModelVersionRelationProto.Builder builderForValue) {
@@ -11868,7 +11868,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelVersionRelationProto model_version_relation = 1;</code>
+       * <code>.ai_flow.ModelVersionRelationProto model_version_relation = 1;</code>
        */
       public Builder mergeModelVersionRelation(com.aiflow.proto.Message.ModelVersionRelationProto value) {
         if (modelVersionRelationBuilder_ == null) {
@@ -11886,7 +11886,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelVersionRelationProto model_version_relation = 1;</code>
+       * <code>.ai_flow.ModelVersionRelationProto model_version_relation = 1;</code>
        */
       public Builder clearModelVersionRelation() {
         if (modelVersionRelationBuilder_ == null) {
@@ -11900,7 +11900,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelVersionRelationProto model_version_relation = 1;</code>
+       * <code>.ai_flow.ModelVersionRelationProto model_version_relation = 1;</code>
        */
       public com.aiflow.proto.Message.ModelVersionRelationProto.Builder getModelVersionRelationBuilder() {
         
@@ -11908,7 +11908,7 @@ public final class MetadataServiceOuterClass {
         return getModelVersionRelationFieldBuilder().getBuilder();
       }
       /**
-       * <code>.ModelVersionRelationProto model_version_relation = 1;</code>
+       * <code>.ai_flow.ModelVersionRelationProto model_version_relation = 1;</code>
        */
       public com.aiflow.proto.Message.ModelVersionRelationProtoOrBuilder getModelVersionRelationOrBuilder() {
         if (modelVersionRelationBuilder_ != null) {
@@ -11919,7 +11919,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.ModelVersionRelationProto model_version_relation = 1;</code>
+       * <code>.ai_flow.ModelVersionRelationProto model_version_relation = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ModelVersionRelationProto, com.aiflow.proto.Message.ModelVersionRelationProto.Builder, com.aiflow.proto.Message.ModelVersionRelationProtoOrBuilder> 
@@ -11947,10 +11947,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:RegisterModelVersionRelationRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.RegisterModelVersionRelationRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:RegisterModelVersionRelationRequest)
+    // @@protoc_insertion_point(class_scope:ai_flow.RegisterModelVersionRelationRequest)
     private static final com.aiflow.proto.MetadataServiceOuterClass.RegisterModelVersionRelationRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.RegisterModelVersionRelationRequest();
@@ -11988,30 +11988,30 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface RegisterModelVersionRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RegisterModelVersionRequest)
+      // @@protoc_insertion_point(interface_extends:ai_flow.RegisterModelVersionRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.ModelVersionProto model_version = 1;</code>
+     * <code>.ai_flow.ModelVersionProto model_version = 1;</code>
      * @return Whether the modelVersion field is set.
      */
     boolean hasModelVersion();
     /**
-     * <code>.ModelVersionProto model_version = 1;</code>
+     * <code>.ai_flow.ModelVersionProto model_version = 1;</code>
      * @return The modelVersion.
      */
     com.aiflow.proto.Message.ModelVersionProto getModelVersion();
     /**
-     * <code>.ModelVersionProto model_version = 1;</code>
+     * <code>.ai_flow.ModelVersionProto model_version = 1;</code>
      */
     com.aiflow.proto.Message.ModelVersionProtoOrBuilder getModelVersionOrBuilder();
   }
   /**
-   * Protobuf type {@code RegisterModelVersionRequest}
+   * Protobuf type {@code ai_flow.RegisterModelVersionRequest}
    */
   public static final class RegisterModelVersionRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:RegisterModelVersionRequest)
+      // @@protoc_insertion_point(message_implements:ai_flow.RegisterModelVersionRequest)
       RegisterModelVersionRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use RegisterModelVersionRequest.newBuilder() to construct.
@@ -12085,13 +12085,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterModelVersionRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterModelVersionRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterModelVersionRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterModelVersionRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.RegisterModelVersionRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterModelVersionRequest.Builder.class);
     }
@@ -12099,7 +12099,7 @@ public final class MetadataServiceOuterClass {
     public static final int MODEL_VERSION_FIELD_NUMBER = 1;
     private com.aiflow.proto.Message.ModelVersionProto modelVersion_;
     /**
-     * <code>.ModelVersionProto model_version = 1;</code>
+     * <code>.ai_flow.ModelVersionProto model_version = 1;</code>
      * @return Whether the modelVersion field is set.
      */
     @java.lang.Override
@@ -12107,7 +12107,7 @@ public final class MetadataServiceOuterClass {
       return modelVersion_ != null;
     }
     /**
-     * <code>.ModelVersionProto model_version = 1;</code>
+     * <code>.ai_flow.ModelVersionProto model_version = 1;</code>
      * @return The modelVersion.
      */
     @java.lang.Override
@@ -12115,7 +12115,7 @@ public final class MetadataServiceOuterClass {
       return modelVersion_ == null ? com.aiflow.proto.Message.ModelVersionProto.getDefaultInstance() : modelVersion_;
     }
     /**
-     * <code>.ModelVersionProto model_version = 1;</code>
+     * <code>.ai_flow.ModelVersionProto model_version = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ModelVersionProtoOrBuilder getModelVersionOrBuilder() {
@@ -12283,21 +12283,21 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code RegisterModelVersionRequest}
+     * Protobuf type {@code ai_flow.RegisterModelVersionRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RegisterModelVersionRequest)
+        // @@protoc_insertion_point(builder_implements:ai_flow.RegisterModelVersionRequest)
         com.aiflow.proto.MetadataServiceOuterClass.RegisterModelVersionRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterModelVersionRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterModelVersionRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterModelVersionRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterModelVersionRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.RegisterModelVersionRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterModelVersionRequest.Builder.class);
       }
@@ -12332,7 +12332,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterModelVersionRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterModelVersionRequest_descriptor;
       }
 
       @java.lang.Override
@@ -12441,14 +12441,14 @@ public final class MetadataServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ModelVersionProto, com.aiflow.proto.Message.ModelVersionProto.Builder, com.aiflow.proto.Message.ModelVersionProtoOrBuilder> modelVersionBuilder_;
       /**
-       * <code>.ModelVersionProto model_version = 1;</code>
+       * <code>.ai_flow.ModelVersionProto model_version = 1;</code>
        * @return Whether the modelVersion field is set.
        */
       public boolean hasModelVersion() {
         return modelVersionBuilder_ != null || modelVersion_ != null;
       }
       /**
-       * <code>.ModelVersionProto model_version = 1;</code>
+       * <code>.ai_flow.ModelVersionProto model_version = 1;</code>
        * @return The modelVersion.
        */
       public com.aiflow.proto.Message.ModelVersionProto getModelVersion() {
@@ -12459,7 +12459,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.ModelVersionProto model_version = 1;</code>
+       * <code>.ai_flow.ModelVersionProto model_version = 1;</code>
        */
       public Builder setModelVersion(com.aiflow.proto.Message.ModelVersionProto value) {
         if (modelVersionBuilder_ == null) {
@@ -12475,7 +12475,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelVersionProto model_version = 1;</code>
+       * <code>.ai_flow.ModelVersionProto model_version = 1;</code>
        */
       public Builder setModelVersion(
           com.aiflow.proto.Message.ModelVersionProto.Builder builderForValue) {
@@ -12489,7 +12489,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelVersionProto model_version = 1;</code>
+       * <code>.ai_flow.ModelVersionProto model_version = 1;</code>
        */
       public Builder mergeModelVersion(com.aiflow.proto.Message.ModelVersionProto value) {
         if (modelVersionBuilder_ == null) {
@@ -12507,7 +12507,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelVersionProto model_version = 1;</code>
+       * <code>.ai_flow.ModelVersionProto model_version = 1;</code>
        */
       public Builder clearModelVersion() {
         if (modelVersionBuilder_ == null) {
@@ -12521,7 +12521,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ModelVersionProto model_version = 1;</code>
+       * <code>.ai_flow.ModelVersionProto model_version = 1;</code>
        */
       public com.aiflow.proto.Message.ModelVersionProto.Builder getModelVersionBuilder() {
         
@@ -12529,7 +12529,7 @@ public final class MetadataServiceOuterClass {
         return getModelVersionFieldBuilder().getBuilder();
       }
       /**
-       * <code>.ModelVersionProto model_version = 1;</code>
+       * <code>.ai_flow.ModelVersionProto model_version = 1;</code>
        */
       public com.aiflow.proto.Message.ModelVersionProtoOrBuilder getModelVersionOrBuilder() {
         if (modelVersionBuilder_ != null) {
@@ -12540,7 +12540,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.ModelVersionProto model_version = 1;</code>
+       * <code>.ai_flow.ModelVersionProto model_version = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ModelVersionProto, com.aiflow.proto.Message.ModelVersionProto.Builder, com.aiflow.proto.Message.ModelVersionProtoOrBuilder> 
@@ -12568,10 +12568,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:RegisterModelVersionRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.RegisterModelVersionRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:RegisterModelVersionRequest)
+    // @@protoc_insertion_point(class_scope:ai_flow.RegisterModelVersionRequest)
     private static final com.aiflow.proto.MetadataServiceOuterClass.RegisterModelVersionRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.RegisterModelVersionRequest();
@@ -12609,7 +12609,7 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface ListModelVersionRelationRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ListModelVersionRelationRequest)
+      // @@protoc_insertion_point(interface_extends:ai_flow.ListModelVersionRelationRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -12631,11 +12631,11 @@ public final class MetadataServiceOuterClass {
     long getOffset();
   }
   /**
-   * Protobuf type {@code ListModelVersionRelationRequest}
+   * Protobuf type {@code ai_flow.ListModelVersionRelationRequest}
    */
   public static final class ListModelVersionRelationRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:ListModelVersionRelationRequest)
+      // @@protoc_insertion_point(message_implements:ai_flow.ListModelVersionRelationRequest)
       ListModelVersionRelationRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use ListModelVersionRelationRequest.newBuilder() to construct.
@@ -12711,13 +12711,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ListModelVersionRelationRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ListModelVersionRelationRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ListModelVersionRelationRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ListModelVersionRelationRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.ListModelVersionRelationRequest.class, com.aiflow.proto.MetadataServiceOuterClass.ListModelVersionRelationRequest.Builder.class);
     }
@@ -12936,21 +12936,21 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code ListModelVersionRelationRequest}
+     * Protobuf type {@code ai_flow.ListModelVersionRelationRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ListModelVersionRelationRequest)
+        // @@protoc_insertion_point(builder_implements:ai_flow.ListModelVersionRelationRequest)
         com.aiflow.proto.MetadataServiceOuterClass.ListModelVersionRelationRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ListModelVersionRelationRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ListModelVersionRelationRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ListModelVersionRelationRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ListModelVersionRelationRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.ListModelVersionRelationRequest.class, com.aiflow.proto.MetadataServiceOuterClass.ListModelVersionRelationRequest.Builder.class);
       }
@@ -12985,7 +12985,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ListModelVersionRelationRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ListModelVersionRelationRequest_descriptor;
       }
 
       @java.lang.Override
@@ -13199,10 +13199,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:ListModelVersionRelationRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.ListModelVersionRelationRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:ListModelVersionRelationRequest)
+    // @@protoc_insertion_point(class_scope:ai_flow.ListModelVersionRelationRequest)
     private static final com.aiflow.proto.MetadataServiceOuterClass.ListModelVersionRelationRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.ListModelVersionRelationRequest();
@@ -13240,39 +13240,39 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface ModelVersionRelationListProtoOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ModelVersionRelationListProto)
+      // @@protoc_insertion_point(interface_extends:ai_flow.ModelVersionRelationListProto)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+     * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
      */
     java.util.List<com.aiflow.proto.Message.ModelVersionRelationProto> 
         getModelVersionsList();
     /**
-     * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+     * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
      */
     com.aiflow.proto.Message.ModelVersionRelationProto getModelVersions(int index);
     /**
-     * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+     * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
      */
     int getModelVersionsCount();
     /**
-     * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+     * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
      */
     java.util.List<? extends com.aiflow.proto.Message.ModelVersionRelationProtoOrBuilder> 
         getModelVersionsOrBuilderList();
     /**
-     * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+     * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
      */
     com.aiflow.proto.Message.ModelVersionRelationProtoOrBuilder getModelVersionsOrBuilder(
         int index);
   }
   /**
-   * Protobuf type {@code ModelVersionRelationListProto}
+   * Protobuf type {@code ai_flow.ModelVersionRelationListProto}
    */
   public static final class ModelVersionRelationListProto extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:ModelVersionRelationListProto)
+      // @@protoc_insertion_point(message_implements:ai_flow.ModelVersionRelationListProto)
       ModelVersionRelationListProtoOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use ModelVersionRelationListProto.newBuilder() to construct.
@@ -13347,13 +13347,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ModelVersionRelationListProto_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ModelVersionRelationListProto_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ModelVersionRelationListProto_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ModelVersionRelationListProto_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.ModelVersionRelationListProto.class, com.aiflow.proto.MetadataServiceOuterClass.ModelVersionRelationListProto.Builder.class);
     }
@@ -13361,14 +13361,14 @@ public final class MetadataServiceOuterClass {
     public static final int MODEL_VERSIONS_FIELD_NUMBER = 1;
     private java.util.List<com.aiflow.proto.Message.ModelVersionRelationProto> modelVersions_;
     /**
-     * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+     * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
      */
     @java.lang.Override
     public java.util.List<com.aiflow.proto.Message.ModelVersionRelationProto> getModelVersionsList() {
       return modelVersions_;
     }
     /**
-     * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+     * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
      */
     @java.lang.Override
     public java.util.List<? extends com.aiflow.proto.Message.ModelVersionRelationProtoOrBuilder> 
@@ -13376,21 +13376,21 @@ public final class MetadataServiceOuterClass {
       return modelVersions_;
     }
     /**
-     * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+     * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
      */
     @java.lang.Override
     public int getModelVersionsCount() {
       return modelVersions_.size();
     }
     /**
-     * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+     * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ModelVersionRelationProto getModelVersions(int index) {
       return modelVersions_.get(index);
     }
     /**
-     * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+     * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ModelVersionRelationProtoOrBuilder getModelVersionsOrBuilder(
@@ -13556,21 +13556,21 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code ModelVersionRelationListProto}
+     * Protobuf type {@code ai_flow.ModelVersionRelationListProto}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ModelVersionRelationListProto)
+        // @@protoc_insertion_point(builder_implements:ai_flow.ModelVersionRelationListProto)
         com.aiflow.proto.MetadataServiceOuterClass.ModelVersionRelationListProtoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ModelVersionRelationListProto_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ModelVersionRelationListProto_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ModelVersionRelationListProto_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ModelVersionRelationListProto_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.ModelVersionRelationListProto.class, com.aiflow.proto.MetadataServiceOuterClass.ModelVersionRelationListProto.Builder.class);
       }
@@ -13606,7 +13606,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ModelVersionRelationListProto_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ModelVersionRelationListProto_descriptor;
       }
 
       @java.lang.Override
@@ -13753,7 +13753,7 @@ public final class MetadataServiceOuterClass {
           com.aiflow.proto.Message.ModelVersionRelationProto, com.aiflow.proto.Message.ModelVersionRelationProto.Builder, com.aiflow.proto.Message.ModelVersionRelationProtoOrBuilder> modelVersionsBuilder_;
 
       /**
-       * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
        */
       public java.util.List<com.aiflow.proto.Message.ModelVersionRelationProto> getModelVersionsList() {
         if (modelVersionsBuilder_ == null) {
@@ -13763,7 +13763,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
        */
       public int getModelVersionsCount() {
         if (modelVersionsBuilder_ == null) {
@@ -13773,7 +13773,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
        */
       public com.aiflow.proto.Message.ModelVersionRelationProto getModelVersions(int index) {
         if (modelVersionsBuilder_ == null) {
@@ -13783,7 +13783,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
        */
       public Builder setModelVersions(
           int index, com.aiflow.proto.Message.ModelVersionRelationProto value) {
@@ -13800,7 +13800,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
        */
       public Builder setModelVersions(
           int index, com.aiflow.proto.Message.ModelVersionRelationProto.Builder builderForValue) {
@@ -13814,7 +13814,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
        */
       public Builder addModelVersions(com.aiflow.proto.Message.ModelVersionRelationProto value) {
         if (modelVersionsBuilder_ == null) {
@@ -13830,7 +13830,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
        */
       public Builder addModelVersions(
           int index, com.aiflow.proto.Message.ModelVersionRelationProto value) {
@@ -13847,7 +13847,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
        */
       public Builder addModelVersions(
           com.aiflow.proto.Message.ModelVersionRelationProto.Builder builderForValue) {
@@ -13861,7 +13861,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
        */
       public Builder addModelVersions(
           int index, com.aiflow.proto.Message.ModelVersionRelationProto.Builder builderForValue) {
@@ -13875,7 +13875,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
        */
       public Builder addAllModelVersions(
           java.lang.Iterable<? extends com.aiflow.proto.Message.ModelVersionRelationProto> values) {
@@ -13890,7 +13890,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
        */
       public Builder clearModelVersions() {
         if (modelVersionsBuilder_ == null) {
@@ -13903,7 +13903,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
        */
       public Builder removeModelVersions(int index) {
         if (modelVersionsBuilder_ == null) {
@@ -13916,14 +13916,14 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
        */
       public com.aiflow.proto.Message.ModelVersionRelationProto.Builder getModelVersionsBuilder(
           int index) {
         return getModelVersionsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
        */
       public com.aiflow.proto.Message.ModelVersionRelationProtoOrBuilder getModelVersionsOrBuilder(
           int index) {
@@ -13933,7 +13933,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
        */
       public java.util.List<? extends com.aiflow.proto.Message.ModelVersionRelationProtoOrBuilder> 
            getModelVersionsOrBuilderList() {
@@ -13944,14 +13944,14 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
        */
       public com.aiflow.proto.Message.ModelVersionRelationProto.Builder addModelVersionsBuilder() {
         return getModelVersionsFieldBuilder().addBuilder(
             com.aiflow.proto.Message.ModelVersionRelationProto.getDefaultInstance());
       }
       /**
-       * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
        */
       public com.aiflow.proto.Message.ModelVersionRelationProto.Builder addModelVersionsBuilder(
           int index) {
@@ -13959,7 +13959,7 @@ public final class MetadataServiceOuterClass {
             index, com.aiflow.proto.Message.ModelVersionRelationProto.getDefaultInstance());
       }
       /**
-       * <code>repeated .ModelVersionRelationProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
        */
       public java.util.List<com.aiflow.proto.Message.ModelVersionRelationProto.Builder> 
            getModelVersionsBuilderList() {
@@ -13992,10 +13992,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:ModelVersionRelationListProto)
+      // @@protoc_insertion_point(builder_scope:ai_flow.ModelVersionRelationListProto)
     }
 
-    // @@protoc_insertion_point(class_scope:ModelVersionRelationListProto)
+    // @@protoc_insertion_point(class_scope:ai_flow.ModelVersionRelationListProto)
     private static final com.aiflow.proto.MetadataServiceOuterClass.ModelVersionRelationListProto DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.ModelVersionRelationListProto();
@@ -14033,39 +14033,39 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface ModelVersionListProtoOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ModelVersionListProto)
+      // @@protoc_insertion_point(interface_extends:ai_flow.ModelVersionListProto)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .ModelVersionProto model_versions = 1;</code>
+     * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
      */
     java.util.List<com.aiflow.proto.Message.ModelVersionProto> 
         getModelVersionsList();
     /**
-     * <code>repeated .ModelVersionProto model_versions = 1;</code>
+     * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
      */
     com.aiflow.proto.Message.ModelVersionProto getModelVersions(int index);
     /**
-     * <code>repeated .ModelVersionProto model_versions = 1;</code>
+     * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
      */
     int getModelVersionsCount();
     /**
-     * <code>repeated .ModelVersionProto model_versions = 1;</code>
+     * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
      */
     java.util.List<? extends com.aiflow.proto.Message.ModelVersionProtoOrBuilder> 
         getModelVersionsOrBuilderList();
     /**
-     * <code>repeated .ModelVersionProto model_versions = 1;</code>
+     * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
      */
     com.aiflow.proto.Message.ModelVersionProtoOrBuilder getModelVersionsOrBuilder(
         int index);
   }
   /**
-   * Protobuf type {@code ModelVersionListProto}
+   * Protobuf type {@code ai_flow.ModelVersionListProto}
    */
   public static final class ModelVersionListProto extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:ModelVersionListProto)
+      // @@protoc_insertion_point(message_implements:ai_flow.ModelVersionListProto)
       ModelVersionListProtoOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use ModelVersionListProto.newBuilder() to construct.
@@ -14140,13 +14140,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ModelVersionListProto_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ModelVersionListProto_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ModelVersionListProto_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ModelVersionListProto_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.ModelVersionListProto.class, com.aiflow.proto.MetadataServiceOuterClass.ModelVersionListProto.Builder.class);
     }
@@ -14154,14 +14154,14 @@ public final class MetadataServiceOuterClass {
     public static final int MODEL_VERSIONS_FIELD_NUMBER = 1;
     private java.util.List<com.aiflow.proto.Message.ModelVersionProto> modelVersions_;
     /**
-     * <code>repeated .ModelVersionProto model_versions = 1;</code>
+     * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
      */
     @java.lang.Override
     public java.util.List<com.aiflow.proto.Message.ModelVersionProto> getModelVersionsList() {
       return modelVersions_;
     }
     /**
-     * <code>repeated .ModelVersionProto model_versions = 1;</code>
+     * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
      */
     @java.lang.Override
     public java.util.List<? extends com.aiflow.proto.Message.ModelVersionProtoOrBuilder> 
@@ -14169,21 +14169,21 @@ public final class MetadataServiceOuterClass {
       return modelVersions_;
     }
     /**
-     * <code>repeated .ModelVersionProto model_versions = 1;</code>
+     * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
      */
     @java.lang.Override
     public int getModelVersionsCount() {
       return modelVersions_.size();
     }
     /**
-     * <code>repeated .ModelVersionProto model_versions = 1;</code>
+     * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ModelVersionProto getModelVersions(int index) {
       return modelVersions_.get(index);
     }
     /**
-     * <code>repeated .ModelVersionProto model_versions = 1;</code>
+     * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ModelVersionProtoOrBuilder getModelVersionsOrBuilder(
@@ -14349,21 +14349,21 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code ModelVersionListProto}
+     * Protobuf type {@code ai_flow.ModelVersionListProto}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ModelVersionListProto)
+        // @@protoc_insertion_point(builder_implements:ai_flow.ModelVersionListProto)
         com.aiflow.proto.MetadataServiceOuterClass.ModelVersionListProtoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ModelVersionListProto_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ModelVersionListProto_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ModelVersionListProto_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ModelVersionListProto_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.ModelVersionListProto.class, com.aiflow.proto.MetadataServiceOuterClass.ModelVersionListProto.Builder.class);
       }
@@ -14399,7 +14399,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ModelVersionListProto_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ModelVersionListProto_descriptor;
       }
 
       @java.lang.Override
@@ -14546,7 +14546,7 @@ public final class MetadataServiceOuterClass {
           com.aiflow.proto.Message.ModelVersionProto, com.aiflow.proto.Message.ModelVersionProto.Builder, com.aiflow.proto.Message.ModelVersionProtoOrBuilder> modelVersionsBuilder_;
 
       /**
-       * <code>repeated .ModelVersionProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
        */
       public java.util.List<com.aiflow.proto.Message.ModelVersionProto> getModelVersionsList() {
         if (modelVersionsBuilder_ == null) {
@@ -14556,7 +14556,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ModelVersionProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
        */
       public int getModelVersionsCount() {
         if (modelVersionsBuilder_ == null) {
@@ -14566,7 +14566,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ModelVersionProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
        */
       public com.aiflow.proto.Message.ModelVersionProto getModelVersions(int index) {
         if (modelVersionsBuilder_ == null) {
@@ -14576,7 +14576,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ModelVersionProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
        */
       public Builder setModelVersions(
           int index, com.aiflow.proto.Message.ModelVersionProto value) {
@@ -14593,7 +14593,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ModelVersionProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
        */
       public Builder setModelVersions(
           int index, com.aiflow.proto.Message.ModelVersionProto.Builder builderForValue) {
@@ -14607,7 +14607,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ModelVersionProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
        */
       public Builder addModelVersions(com.aiflow.proto.Message.ModelVersionProto value) {
         if (modelVersionsBuilder_ == null) {
@@ -14623,7 +14623,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ModelVersionProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
        */
       public Builder addModelVersions(
           int index, com.aiflow.proto.Message.ModelVersionProto value) {
@@ -14640,7 +14640,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ModelVersionProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
        */
       public Builder addModelVersions(
           com.aiflow.proto.Message.ModelVersionProto.Builder builderForValue) {
@@ -14654,7 +14654,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ModelVersionProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
        */
       public Builder addModelVersions(
           int index, com.aiflow.proto.Message.ModelVersionProto.Builder builderForValue) {
@@ -14668,7 +14668,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ModelVersionProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
        */
       public Builder addAllModelVersions(
           java.lang.Iterable<? extends com.aiflow.proto.Message.ModelVersionProto> values) {
@@ -14683,7 +14683,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ModelVersionProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
        */
       public Builder clearModelVersions() {
         if (modelVersionsBuilder_ == null) {
@@ -14696,7 +14696,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ModelVersionProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
        */
       public Builder removeModelVersions(int index) {
         if (modelVersionsBuilder_ == null) {
@@ -14709,14 +14709,14 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ModelVersionProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
        */
       public com.aiflow.proto.Message.ModelVersionProto.Builder getModelVersionsBuilder(
           int index) {
         return getModelVersionsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .ModelVersionProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
        */
       public com.aiflow.proto.Message.ModelVersionProtoOrBuilder getModelVersionsOrBuilder(
           int index) {
@@ -14726,7 +14726,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ModelVersionProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
        */
       public java.util.List<? extends com.aiflow.proto.Message.ModelVersionProtoOrBuilder> 
            getModelVersionsOrBuilderList() {
@@ -14737,14 +14737,14 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ModelVersionProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
        */
       public com.aiflow.proto.Message.ModelVersionProto.Builder addModelVersionsBuilder() {
         return getModelVersionsFieldBuilder().addBuilder(
             com.aiflow.proto.Message.ModelVersionProto.getDefaultInstance());
       }
       /**
-       * <code>repeated .ModelVersionProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
        */
       public com.aiflow.proto.Message.ModelVersionProto.Builder addModelVersionsBuilder(
           int index) {
@@ -14752,7 +14752,7 @@ public final class MetadataServiceOuterClass {
             index, com.aiflow.proto.Message.ModelVersionProto.getDefaultInstance());
       }
       /**
-       * <code>repeated .ModelVersionProto model_versions = 1;</code>
+       * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
        */
       public java.util.List<com.aiflow.proto.Message.ModelVersionProto.Builder> 
            getModelVersionsBuilderList() {
@@ -14785,10 +14785,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:ModelVersionListProto)
+      // @@protoc_insertion_point(builder_scope:ai_flow.ModelVersionListProto)
     }
 
-    // @@protoc_insertion_point(class_scope:ModelVersionListProto)
+    // @@protoc_insertion_point(class_scope:ai_flow.ModelVersionListProto)
     private static final com.aiflow.proto.MetadataServiceOuterClass.ModelVersionListProto DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.ModelVersionListProto();
@@ -14826,7 +14826,7 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface ModelNameRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ModelNameRequest)
+      // @@protoc_insertion_point(interface_extends:ai_flow.ModelNameRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -14842,11 +14842,11 @@ public final class MetadataServiceOuterClass {
         getNameBytes();
   }
   /**
-   * Protobuf type {@code ModelNameRequest}
+   * Protobuf type {@code ai_flow.ModelNameRequest}
    */
   public static final class ModelNameRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:ModelNameRequest)
+      // @@protoc_insertion_point(message_implements:ai_flow.ModelNameRequest)
       ModelNameRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use ModelNameRequest.newBuilder() to construct.
@@ -14914,13 +14914,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ModelNameRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ModelNameRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ModelNameRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ModelNameRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.ModelNameRequest.class, com.aiflow.proto.MetadataServiceOuterClass.ModelNameRequest.Builder.class);
     }
@@ -15118,21 +15118,21 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code ModelNameRequest}
+     * Protobuf type {@code ai_flow.ModelNameRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ModelNameRequest)
+        // @@protoc_insertion_point(builder_implements:ai_flow.ModelNameRequest)
         com.aiflow.proto.MetadataServiceOuterClass.ModelNameRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ModelNameRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ModelNameRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ModelNameRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ModelNameRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.ModelNameRequest.class, com.aiflow.proto.MetadataServiceOuterClass.ModelNameRequest.Builder.class);
       }
@@ -15163,7 +15163,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ModelNameRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ModelNameRequest_descriptor;
       }
 
       @java.lang.Override
@@ -15353,10 +15353,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:ModelNameRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.ModelNameRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:ModelNameRequest)
+    // @@protoc_insertion_point(class_scope:ai_flow.ModelNameRequest)
     private static final com.aiflow.proto.MetadataServiceOuterClass.ModelNameRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.ModelNameRequest();
@@ -15394,21 +15394,21 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface RegisterJobRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RegisterJobRequest)
+      // @@protoc_insertion_point(interface_extends:ai_flow.RegisterJobRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.JobProto job = 1;</code>
+     * <code>.ai_flow.JobProto job = 1;</code>
      * @return Whether the job field is set.
      */
     boolean hasJob();
     /**
-     * <code>.JobProto job = 1;</code>
+     * <code>.ai_flow.JobProto job = 1;</code>
      * @return The job.
      */
     com.aiflow.proto.Message.JobProto getJob();
     /**
-     * <code>.JobProto job = 1;</code>
+     * <code>.ai_flow.JobProto job = 1;</code>
      */
     com.aiflow.proto.Message.JobProtoOrBuilder getJobOrBuilder();
   }
@@ -15417,11 +15417,11 @@ public final class MetadataServiceOuterClass {
    *job
    * </pre>
    *
-   * Protobuf type {@code RegisterJobRequest}
+   * Protobuf type {@code ai_flow.RegisterJobRequest}
    */
   public static final class RegisterJobRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:RegisterJobRequest)
+      // @@protoc_insertion_point(message_implements:ai_flow.RegisterJobRequest)
       RegisterJobRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use RegisterJobRequest.newBuilder() to construct.
@@ -15495,13 +15495,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterJobRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterJobRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterJobRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterJobRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.RegisterJobRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterJobRequest.Builder.class);
     }
@@ -15509,7 +15509,7 @@ public final class MetadataServiceOuterClass {
     public static final int JOB_FIELD_NUMBER = 1;
     private com.aiflow.proto.Message.JobProto job_;
     /**
-     * <code>.JobProto job = 1;</code>
+     * <code>.ai_flow.JobProto job = 1;</code>
      * @return Whether the job field is set.
      */
     @java.lang.Override
@@ -15517,7 +15517,7 @@ public final class MetadataServiceOuterClass {
       return job_ != null;
     }
     /**
-     * <code>.JobProto job = 1;</code>
+     * <code>.ai_flow.JobProto job = 1;</code>
      * @return The job.
      */
     @java.lang.Override
@@ -15525,7 +15525,7 @@ public final class MetadataServiceOuterClass {
       return job_ == null ? com.aiflow.proto.Message.JobProto.getDefaultInstance() : job_;
     }
     /**
-     * <code>.JobProto job = 1;</code>
+     * <code>.ai_flow.JobProto job = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.JobProtoOrBuilder getJobOrBuilder() {
@@ -15697,21 +15697,21 @@ public final class MetadataServiceOuterClass {
      *job
      * </pre>
      *
-     * Protobuf type {@code RegisterJobRequest}
+     * Protobuf type {@code ai_flow.RegisterJobRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RegisterJobRequest)
+        // @@protoc_insertion_point(builder_implements:ai_flow.RegisterJobRequest)
         com.aiflow.proto.MetadataServiceOuterClass.RegisterJobRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterJobRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterJobRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterJobRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterJobRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.RegisterJobRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterJobRequest.Builder.class);
       }
@@ -15746,7 +15746,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterJobRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterJobRequest_descriptor;
       }
 
       @java.lang.Override
@@ -15855,14 +15855,14 @@ public final class MetadataServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.JobProto, com.aiflow.proto.Message.JobProto.Builder, com.aiflow.proto.Message.JobProtoOrBuilder> jobBuilder_;
       /**
-       * <code>.JobProto job = 1;</code>
+       * <code>.ai_flow.JobProto job = 1;</code>
        * @return Whether the job field is set.
        */
       public boolean hasJob() {
         return jobBuilder_ != null || job_ != null;
       }
       /**
-       * <code>.JobProto job = 1;</code>
+       * <code>.ai_flow.JobProto job = 1;</code>
        * @return The job.
        */
       public com.aiflow.proto.Message.JobProto getJob() {
@@ -15873,7 +15873,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.JobProto job = 1;</code>
+       * <code>.ai_flow.JobProto job = 1;</code>
        */
       public Builder setJob(com.aiflow.proto.Message.JobProto value) {
         if (jobBuilder_ == null) {
@@ -15889,7 +15889,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.JobProto job = 1;</code>
+       * <code>.ai_flow.JobProto job = 1;</code>
        */
       public Builder setJob(
           com.aiflow.proto.Message.JobProto.Builder builderForValue) {
@@ -15903,7 +15903,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.JobProto job = 1;</code>
+       * <code>.ai_flow.JobProto job = 1;</code>
        */
       public Builder mergeJob(com.aiflow.proto.Message.JobProto value) {
         if (jobBuilder_ == null) {
@@ -15921,7 +15921,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.JobProto job = 1;</code>
+       * <code>.ai_flow.JobProto job = 1;</code>
        */
       public Builder clearJob() {
         if (jobBuilder_ == null) {
@@ -15935,7 +15935,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.JobProto job = 1;</code>
+       * <code>.ai_flow.JobProto job = 1;</code>
        */
       public com.aiflow.proto.Message.JobProto.Builder getJobBuilder() {
         
@@ -15943,7 +15943,7 @@ public final class MetadataServiceOuterClass {
         return getJobFieldBuilder().getBuilder();
       }
       /**
-       * <code>.JobProto job = 1;</code>
+       * <code>.ai_flow.JobProto job = 1;</code>
        */
       public com.aiflow.proto.Message.JobProtoOrBuilder getJobOrBuilder() {
         if (jobBuilder_ != null) {
@@ -15954,7 +15954,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.JobProto job = 1;</code>
+       * <code>.ai_flow.JobProto job = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.JobProto, com.aiflow.proto.Message.JobProto.Builder, com.aiflow.proto.Message.JobProtoOrBuilder> 
@@ -15982,10 +15982,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:RegisterJobRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.RegisterJobRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:RegisterJobRequest)
+    // @@protoc_insertion_point(class_scope:ai_flow.RegisterJobRequest)
     private static final com.aiflow.proto.MetadataServiceOuterClass.RegisterJobRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.RegisterJobRequest();
@@ -16023,7 +16023,7 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface UpdateJobRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:UpdateJobRequest)
+      // @@protoc_insertion_point(interface_extends:ai_flow.UpdateJobRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -16054,12 +16054,12 @@ public final class MetadataServiceOuterClass {
     com.google.protobuf.Int64ValueOrBuilder getWorkflowExecutionIdOrBuilder();
 
     /**
-     * <code>.StateProto job_state = 3;</code>
+     * <code>.ai_flow.StateProto job_state = 3;</code>
      * @return The enum numeric value on the wire for jobState.
      */
     int getJobStateValue();
     /**
-     * <code>.StateProto job_state = 3;</code>
+     * <code>.ai_flow.StateProto job_state = 3;</code>
      * @return The jobState.
      */
     com.aiflow.proto.Message.StateProto getJobState();
@@ -16159,11 +16159,11 @@ public final class MetadataServiceOuterClass {
     com.google.protobuf.StringValueOrBuilder getSignatureOrBuilder();
   }
   /**
-   * Protobuf type {@code UpdateJobRequest}
+   * Protobuf type {@code ai_flow.UpdateJobRequest}
    */
   public static final class UpdateJobRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:UpdateJobRequest)
+      // @@protoc_insertion_point(message_implements:ai_flow.UpdateJobRequest)
       UpdateJobRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use UpdateJobRequest.newBuilder() to construct.
@@ -16317,7 +16317,7 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateJobRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateJobRequest_descriptor;
     }
 
     @SuppressWarnings({"rawtypes"})
@@ -16335,7 +16335,7 @@ public final class MetadataServiceOuterClass {
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateJobRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateJobRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.UpdateJobRequest.class, com.aiflow.proto.MetadataServiceOuterClass.UpdateJobRequest.Builder.class);
     }
@@ -16407,14 +16407,14 @@ public final class MetadataServiceOuterClass {
     public static final int JOB_STATE_FIELD_NUMBER = 3;
     private int jobState_;
     /**
-     * <code>.StateProto job_state = 3;</code>
+     * <code>.ai_flow.StateProto job_state = 3;</code>
      * @return The enum numeric value on the wire for jobState.
      */
     @java.lang.Override public int getJobStateValue() {
       return jobState_;
     }
     /**
-     * <code>.StateProto job_state = 3;</code>
+     * <code>.ai_flow.StateProto job_state = 3;</code>
      * @return The jobState.
      */
     @java.lang.Override public com.aiflow.proto.Message.StateProto getJobState() {
@@ -16429,7 +16429,7 @@ public final class MetadataServiceOuterClass {
           java.lang.String, java.lang.String> defaultEntry =
               com.google.protobuf.MapEntry
               .<java.lang.String, java.lang.String>newDefaultInstance(
-                  com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateJobRequest_PropertiesEntry_descriptor, 
+                  com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateJobRequest_PropertiesEntry_descriptor, 
                   com.google.protobuf.WireFormat.FieldType.STRING,
                   "",
                   com.google.protobuf.WireFormat.FieldType.STRING,
@@ -16875,15 +16875,15 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code UpdateJobRequest}
+     * Protobuf type {@code ai_flow.UpdateJobRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:UpdateJobRequest)
+        // @@protoc_insertion_point(builder_implements:ai_flow.UpdateJobRequest)
         com.aiflow.proto.MetadataServiceOuterClass.UpdateJobRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateJobRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateJobRequest_descriptor;
       }
 
       @SuppressWarnings({"rawtypes"})
@@ -16911,7 +16911,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateJobRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateJobRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.UpdateJobRequest.class, com.aiflow.proto.MetadataServiceOuterClass.UpdateJobRequest.Builder.class);
       }
@@ -16975,7 +16975,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateJobRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateJobRequest_descriptor;
       }
 
       @java.lang.Override
@@ -17324,14 +17324,14 @@ public final class MetadataServiceOuterClass {
 
       private int jobState_ = 0;
       /**
-       * <code>.StateProto job_state = 3;</code>
+       * <code>.ai_flow.StateProto job_state = 3;</code>
        * @return The enum numeric value on the wire for jobState.
        */
       @java.lang.Override public int getJobStateValue() {
         return jobState_;
       }
       /**
-       * <code>.StateProto job_state = 3;</code>
+       * <code>.ai_flow.StateProto job_state = 3;</code>
        * @param value The enum numeric value on the wire for jobState to set.
        * @return This builder for chaining.
        */
@@ -17342,7 +17342,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.StateProto job_state = 3;</code>
+       * <code>.ai_flow.StateProto job_state = 3;</code>
        * @return The jobState.
        */
       @java.lang.Override
@@ -17352,7 +17352,7 @@ public final class MetadataServiceOuterClass {
         return result == null ? com.aiflow.proto.Message.StateProto.UNRECOGNIZED : result;
       }
       /**
-       * <code>.StateProto job_state = 3;</code>
+       * <code>.ai_flow.StateProto job_state = 3;</code>
        * @param value The jobState to set.
        * @return This builder for chaining.
        */
@@ -17366,7 +17366,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.StateProto job_state = 3;</code>
+       * <code>.ai_flow.StateProto job_state = 3;</code>
        * @return This builder for chaining.
        */
       public Builder clearJobState() {
@@ -17992,10 +17992,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:UpdateJobRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.UpdateJobRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:UpdateJobRequest)
+    // @@protoc_insertion_point(class_scope:ai_flow.UpdateJobRequest)
     private static final com.aiflow.proto.MetadataServiceOuterClass.UpdateJobRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.UpdateJobRequest();
@@ -18033,16 +18033,16 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface UpdateJobStateRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:UpdateJobStateRequest)
+      // @@protoc_insertion_point(interface_extends:ai_flow.UpdateJobStateRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.StateProto state = 1;</code>
+     * <code>.ai_flow.StateProto state = 1;</code>
      * @return The enum numeric value on the wire for state.
      */
     int getStateValue();
     /**
-     * <code>.StateProto state = 1;</code>
+     * <code>.ai_flow.StateProto state = 1;</code>
      * @return The state.
      */
     com.aiflow.proto.Message.StateProto getState();
@@ -18060,11 +18060,11 @@ public final class MetadataServiceOuterClass {
         getNameBytes();
   }
   /**
-   * Protobuf type {@code UpdateJobStateRequest}
+   * Protobuf type {@code ai_flow.UpdateJobStateRequest}
    */
   public static final class UpdateJobStateRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:UpdateJobStateRequest)
+      // @@protoc_insertion_point(message_implements:ai_flow.UpdateJobStateRequest)
       UpdateJobStateRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use UpdateJobStateRequest.newBuilder() to construct.
@@ -18139,13 +18139,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateJobStateRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateJobStateRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateJobStateRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateJobStateRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.UpdateJobStateRequest.class, com.aiflow.proto.MetadataServiceOuterClass.UpdateJobStateRequest.Builder.class);
     }
@@ -18153,14 +18153,14 @@ public final class MetadataServiceOuterClass {
     public static final int STATE_FIELD_NUMBER = 1;
     private int state_;
     /**
-     * <code>.StateProto state = 1;</code>
+     * <code>.ai_flow.StateProto state = 1;</code>
      * @return The enum numeric value on the wire for state.
      */
     @java.lang.Override public int getStateValue() {
       return state_;
     }
     /**
-     * <code>.StateProto state = 1;</code>
+     * <code>.ai_flow.StateProto state = 1;</code>
      * @return The state.
      */
     @java.lang.Override public com.aiflow.proto.Message.StateProto getState() {
@@ -18372,21 +18372,21 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code UpdateJobStateRequest}
+     * Protobuf type {@code ai_flow.UpdateJobStateRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:UpdateJobStateRequest)
+        // @@protoc_insertion_point(builder_implements:ai_flow.UpdateJobStateRequest)
         com.aiflow.proto.MetadataServiceOuterClass.UpdateJobStateRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateJobStateRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateJobStateRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateJobStateRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateJobStateRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.UpdateJobStateRequest.class, com.aiflow.proto.MetadataServiceOuterClass.UpdateJobStateRequest.Builder.class);
       }
@@ -18419,7 +18419,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateJobStateRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateJobStateRequest_descriptor;
       }
 
       @java.lang.Override
@@ -18527,14 +18527,14 @@ public final class MetadataServiceOuterClass {
 
       private int state_ = 0;
       /**
-       * <code>.StateProto state = 1;</code>
+       * <code>.ai_flow.StateProto state = 1;</code>
        * @return The enum numeric value on the wire for state.
        */
       @java.lang.Override public int getStateValue() {
         return state_;
       }
       /**
-       * <code>.StateProto state = 1;</code>
+       * <code>.ai_flow.StateProto state = 1;</code>
        * @param value The enum numeric value on the wire for state to set.
        * @return This builder for chaining.
        */
@@ -18545,7 +18545,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.StateProto state = 1;</code>
+       * <code>.ai_flow.StateProto state = 1;</code>
        * @return The state.
        */
       @java.lang.Override
@@ -18555,7 +18555,7 @@ public final class MetadataServiceOuterClass {
         return result == null ? com.aiflow.proto.Message.StateProto.UNRECOGNIZED : result;
       }
       /**
-       * <code>.StateProto state = 1;</code>
+       * <code>.ai_flow.StateProto state = 1;</code>
        * @param value The state to set.
        * @return This builder for chaining.
        */
@@ -18569,7 +18569,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.StateProto state = 1;</code>
+       * <code>.ai_flow.StateProto state = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearState() {
@@ -18667,10 +18667,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:UpdateJobStateRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.UpdateJobStateRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:UpdateJobStateRequest)
+    // @@protoc_insertion_point(class_scope:ai_flow.UpdateJobStateRequest)
     private static final com.aiflow.proto.MetadataServiceOuterClass.UpdateJobStateRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.UpdateJobStateRequest();
@@ -18708,7 +18708,7 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface UpdateJobEndTimeRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:UpdateJobEndTimeRequest)
+      // @@protoc_insertion_point(interface_extends:ai_flow.UpdateJobEndTimeRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -18730,11 +18730,11 @@ public final class MetadataServiceOuterClass {
         getNameBytes();
   }
   /**
-   * Protobuf type {@code UpdateJobEndTimeRequest}
+   * Protobuf type {@code ai_flow.UpdateJobEndTimeRequest}
    */
   public static final class UpdateJobEndTimeRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:UpdateJobEndTimeRequest)
+      // @@protoc_insertion_point(message_implements:ai_flow.UpdateJobEndTimeRequest)
       UpdateJobEndTimeRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use UpdateJobEndTimeRequest.newBuilder() to construct.
@@ -18807,13 +18807,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateJobEndTimeRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateJobEndTimeRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateJobEndTimeRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateJobEndTimeRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.UpdateJobEndTimeRequest.class, com.aiflow.proto.MetadataServiceOuterClass.UpdateJobEndTimeRequest.Builder.class);
     }
@@ -19034,21 +19034,21 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code UpdateJobEndTimeRequest}
+     * Protobuf type {@code ai_flow.UpdateJobEndTimeRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:UpdateJobEndTimeRequest)
+        // @@protoc_insertion_point(builder_implements:ai_flow.UpdateJobEndTimeRequest)
         com.aiflow.proto.MetadataServiceOuterClass.UpdateJobEndTimeRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateJobEndTimeRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateJobEndTimeRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateJobEndTimeRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateJobEndTimeRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.UpdateJobEndTimeRequest.class, com.aiflow.proto.MetadataServiceOuterClass.UpdateJobEndTimeRequest.Builder.class);
       }
@@ -19081,7 +19081,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateJobEndTimeRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateJobEndTimeRequest_descriptor;
       }
 
       @java.lang.Override
@@ -19306,10 +19306,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:UpdateJobEndTimeRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.UpdateJobEndTimeRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:UpdateJobEndTimeRequest)
+    // @@protoc_insertion_point(class_scope:ai_flow.UpdateJobEndTimeRequest)
     private static final com.aiflow.proto.MetadataServiceOuterClass.UpdateJobEndTimeRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.UpdateJobEndTimeRequest();
@@ -19347,39 +19347,39 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface JobListProtoOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:JobListProto)
+      // @@protoc_insertion_point(interface_extends:ai_flow.JobListProto)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .JobProto jobs = 1;</code>
+     * <code>repeated .ai_flow.JobProto jobs = 1;</code>
      */
     java.util.List<com.aiflow.proto.Message.JobProto> 
         getJobsList();
     /**
-     * <code>repeated .JobProto jobs = 1;</code>
+     * <code>repeated .ai_flow.JobProto jobs = 1;</code>
      */
     com.aiflow.proto.Message.JobProto getJobs(int index);
     /**
-     * <code>repeated .JobProto jobs = 1;</code>
+     * <code>repeated .ai_flow.JobProto jobs = 1;</code>
      */
     int getJobsCount();
     /**
-     * <code>repeated .JobProto jobs = 1;</code>
+     * <code>repeated .ai_flow.JobProto jobs = 1;</code>
      */
     java.util.List<? extends com.aiflow.proto.Message.JobProtoOrBuilder> 
         getJobsOrBuilderList();
     /**
-     * <code>repeated .JobProto jobs = 1;</code>
+     * <code>repeated .ai_flow.JobProto jobs = 1;</code>
      */
     com.aiflow.proto.Message.JobProtoOrBuilder getJobsOrBuilder(
         int index);
   }
   /**
-   * Protobuf type {@code JobListProto}
+   * Protobuf type {@code ai_flow.JobListProto}
    */
   public static final class JobListProto extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:JobListProto)
+      // @@protoc_insertion_point(message_implements:ai_flow.JobListProto)
       JobListProtoOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use JobListProto.newBuilder() to construct.
@@ -19454,13 +19454,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_JobListProto_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_JobListProto_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_JobListProto_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_JobListProto_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.JobListProto.class, com.aiflow.proto.MetadataServiceOuterClass.JobListProto.Builder.class);
     }
@@ -19468,14 +19468,14 @@ public final class MetadataServiceOuterClass {
     public static final int JOBS_FIELD_NUMBER = 1;
     private java.util.List<com.aiflow.proto.Message.JobProto> jobs_;
     /**
-     * <code>repeated .JobProto jobs = 1;</code>
+     * <code>repeated .ai_flow.JobProto jobs = 1;</code>
      */
     @java.lang.Override
     public java.util.List<com.aiflow.proto.Message.JobProto> getJobsList() {
       return jobs_;
     }
     /**
-     * <code>repeated .JobProto jobs = 1;</code>
+     * <code>repeated .ai_flow.JobProto jobs = 1;</code>
      */
     @java.lang.Override
     public java.util.List<? extends com.aiflow.proto.Message.JobProtoOrBuilder> 
@@ -19483,21 +19483,21 @@ public final class MetadataServiceOuterClass {
       return jobs_;
     }
     /**
-     * <code>repeated .JobProto jobs = 1;</code>
+     * <code>repeated .ai_flow.JobProto jobs = 1;</code>
      */
     @java.lang.Override
     public int getJobsCount() {
       return jobs_.size();
     }
     /**
-     * <code>repeated .JobProto jobs = 1;</code>
+     * <code>repeated .ai_flow.JobProto jobs = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.JobProto getJobs(int index) {
       return jobs_.get(index);
     }
     /**
-     * <code>repeated .JobProto jobs = 1;</code>
+     * <code>repeated .ai_flow.JobProto jobs = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.JobProtoOrBuilder getJobsOrBuilder(
@@ -19663,21 +19663,21 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code JobListProto}
+     * Protobuf type {@code ai_flow.JobListProto}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:JobListProto)
+        // @@protoc_insertion_point(builder_implements:ai_flow.JobListProto)
         com.aiflow.proto.MetadataServiceOuterClass.JobListProtoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_JobListProto_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_JobListProto_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_JobListProto_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_JobListProto_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.JobListProto.class, com.aiflow.proto.MetadataServiceOuterClass.JobListProto.Builder.class);
       }
@@ -19713,7 +19713,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_JobListProto_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_JobListProto_descriptor;
       }
 
       @java.lang.Override
@@ -19860,7 +19860,7 @@ public final class MetadataServiceOuterClass {
           com.aiflow.proto.Message.JobProto, com.aiflow.proto.Message.JobProto.Builder, com.aiflow.proto.Message.JobProtoOrBuilder> jobsBuilder_;
 
       /**
-       * <code>repeated .JobProto jobs = 1;</code>
+       * <code>repeated .ai_flow.JobProto jobs = 1;</code>
        */
       public java.util.List<com.aiflow.proto.Message.JobProto> getJobsList() {
         if (jobsBuilder_ == null) {
@@ -19870,7 +19870,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .JobProto jobs = 1;</code>
+       * <code>repeated .ai_flow.JobProto jobs = 1;</code>
        */
       public int getJobsCount() {
         if (jobsBuilder_ == null) {
@@ -19880,7 +19880,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .JobProto jobs = 1;</code>
+       * <code>repeated .ai_flow.JobProto jobs = 1;</code>
        */
       public com.aiflow.proto.Message.JobProto getJobs(int index) {
         if (jobsBuilder_ == null) {
@@ -19890,7 +19890,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .JobProto jobs = 1;</code>
+       * <code>repeated .ai_flow.JobProto jobs = 1;</code>
        */
       public Builder setJobs(
           int index, com.aiflow.proto.Message.JobProto value) {
@@ -19907,7 +19907,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .JobProto jobs = 1;</code>
+       * <code>repeated .ai_flow.JobProto jobs = 1;</code>
        */
       public Builder setJobs(
           int index, com.aiflow.proto.Message.JobProto.Builder builderForValue) {
@@ -19921,7 +19921,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .JobProto jobs = 1;</code>
+       * <code>repeated .ai_flow.JobProto jobs = 1;</code>
        */
       public Builder addJobs(com.aiflow.proto.Message.JobProto value) {
         if (jobsBuilder_ == null) {
@@ -19937,7 +19937,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .JobProto jobs = 1;</code>
+       * <code>repeated .ai_flow.JobProto jobs = 1;</code>
        */
       public Builder addJobs(
           int index, com.aiflow.proto.Message.JobProto value) {
@@ -19954,7 +19954,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .JobProto jobs = 1;</code>
+       * <code>repeated .ai_flow.JobProto jobs = 1;</code>
        */
       public Builder addJobs(
           com.aiflow.proto.Message.JobProto.Builder builderForValue) {
@@ -19968,7 +19968,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .JobProto jobs = 1;</code>
+       * <code>repeated .ai_flow.JobProto jobs = 1;</code>
        */
       public Builder addJobs(
           int index, com.aiflow.proto.Message.JobProto.Builder builderForValue) {
@@ -19982,7 +19982,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .JobProto jobs = 1;</code>
+       * <code>repeated .ai_flow.JobProto jobs = 1;</code>
        */
       public Builder addAllJobs(
           java.lang.Iterable<? extends com.aiflow.proto.Message.JobProto> values) {
@@ -19997,7 +19997,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .JobProto jobs = 1;</code>
+       * <code>repeated .ai_flow.JobProto jobs = 1;</code>
        */
       public Builder clearJobs() {
         if (jobsBuilder_ == null) {
@@ -20010,7 +20010,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .JobProto jobs = 1;</code>
+       * <code>repeated .ai_flow.JobProto jobs = 1;</code>
        */
       public Builder removeJobs(int index) {
         if (jobsBuilder_ == null) {
@@ -20023,14 +20023,14 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .JobProto jobs = 1;</code>
+       * <code>repeated .ai_flow.JobProto jobs = 1;</code>
        */
       public com.aiflow.proto.Message.JobProto.Builder getJobsBuilder(
           int index) {
         return getJobsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .JobProto jobs = 1;</code>
+       * <code>repeated .ai_flow.JobProto jobs = 1;</code>
        */
       public com.aiflow.proto.Message.JobProtoOrBuilder getJobsOrBuilder(
           int index) {
@@ -20040,7 +20040,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .JobProto jobs = 1;</code>
+       * <code>repeated .ai_flow.JobProto jobs = 1;</code>
        */
       public java.util.List<? extends com.aiflow.proto.Message.JobProtoOrBuilder> 
            getJobsOrBuilderList() {
@@ -20051,14 +20051,14 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .JobProto jobs = 1;</code>
+       * <code>repeated .ai_flow.JobProto jobs = 1;</code>
        */
       public com.aiflow.proto.Message.JobProto.Builder addJobsBuilder() {
         return getJobsFieldBuilder().addBuilder(
             com.aiflow.proto.Message.JobProto.getDefaultInstance());
       }
       /**
-       * <code>repeated .JobProto jobs = 1;</code>
+       * <code>repeated .ai_flow.JobProto jobs = 1;</code>
        */
       public com.aiflow.proto.Message.JobProto.Builder addJobsBuilder(
           int index) {
@@ -20066,7 +20066,7 @@ public final class MetadataServiceOuterClass {
             index, com.aiflow.proto.Message.JobProto.getDefaultInstance());
       }
       /**
-       * <code>repeated .JobProto jobs = 1;</code>
+       * <code>repeated .ai_flow.JobProto jobs = 1;</code>
        */
       public java.util.List<com.aiflow.proto.Message.JobProto.Builder> 
            getJobsBuilderList() {
@@ -20099,10 +20099,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:JobListProto)
+      // @@protoc_insertion_point(builder_scope:ai_flow.JobListProto)
     }
 
-    // @@protoc_insertion_point(class_scope:JobListProto)
+    // @@protoc_insertion_point(class_scope:ai_flow.JobListProto)
     private static final com.aiflow.proto.MetadataServiceOuterClass.JobListProto DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.JobListProto();
@@ -20140,21 +20140,21 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface RegisterWorkFlowExecutionRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RegisterWorkFlowExecutionRequest)
+      // @@protoc_insertion_point(interface_extends:ai_flow.RegisterWorkFlowExecutionRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.WorkflowExecutionProto workflow_execution = 1;</code>
+     * <code>.ai_flow.WorkflowExecutionProto workflow_execution = 1;</code>
      * @return Whether the workflowExecution field is set.
      */
     boolean hasWorkflowExecution();
     /**
-     * <code>.WorkflowExecutionProto workflow_execution = 1;</code>
+     * <code>.ai_flow.WorkflowExecutionProto workflow_execution = 1;</code>
      * @return The workflowExecution.
      */
     com.aiflow.proto.Message.WorkflowExecutionProto getWorkflowExecution();
     /**
-     * <code>.WorkflowExecutionProto workflow_execution = 1;</code>
+     * <code>.ai_flow.WorkflowExecutionProto workflow_execution = 1;</code>
      */
     com.aiflow.proto.Message.WorkflowExecutionProtoOrBuilder getWorkflowExecutionOrBuilder();
   }
@@ -20163,11 +20163,11 @@ public final class MetadataServiceOuterClass {
    *workflow execution
    * </pre>
    *
-   * Protobuf type {@code RegisterWorkFlowExecutionRequest}
+   * Protobuf type {@code ai_flow.RegisterWorkFlowExecutionRequest}
    */
   public static final class RegisterWorkFlowExecutionRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:RegisterWorkFlowExecutionRequest)
+      // @@protoc_insertion_point(message_implements:ai_flow.RegisterWorkFlowExecutionRequest)
       RegisterWorkFlowExecutionRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use RegisterWorkFlowExecutionRequest.newBuilder() to construct.
@@ -20241,13 +20241,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterWorkFlowExecutionRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterWorkFlowExecutionRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterWorkFlowExecutionRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterWorkFlowExecutionRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.RegisterWorkFlowExecutionRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterWorkFlowExecutionRequest.Builder.class);
     }
@@ -20255,7 +20255,7 @@ public final class MetadataServiceOuterClass {
     public static final int WORKFLOW_EXECUTION_FIELD_NUMBER = 1;
     private com.aiflow.proto.Message.WorkflowExecutionProto workflowExecution_;
     /**
-     * <code>.WorkflowExecutionProto workflow_execution = 1;</code>
+     * <code>.ai_flow.WorkflowExecutionProto workflow_execution = 1;</code>
      * @return Whether the workflowExecution field is set.
      */
     @java.lang.Override
@@ -20263,7 +20263,7 @@ public final class MetadataServiceOuterClass {
       return workflowExecution_ != null;
     }
     /**
-     * <code>.WorkflowExecutionProto workflow_execution = 1;</code>
+     * <code>.ai_flow.WorkflowExecutionProto workflow_execution = 1;</code>
      * @return The workflowExecution.
      */
     @java.lang.Override
@@ -20271,7 +20271,7 @@ public final class MetadataServiceOuterClass {
       return workflowExecution_ == null ? com.aiflow.proto.Message.WorkflowExecutionProto.getDefaultInstance() : workflowExecution_;
     }
     /**
-     * <code>.WorkflowExecutionProto workflow_execution = 1;</code>
+     * <code>.ai_flow.WorkflowExecutionProto workflow_execution = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.WorkflowExecutionProtoOrBuilder getWorkflowExecutionOrBuilder() {
@@ -20443,21 +20443,21 @@ public final class MetadataServiceOuterClass {
      *workflow execution
      * </pre>
      *
-     * Protobuf type {@code RegisterWorkFlowExecutionRequest}
+     * Protobuf type {@code ai_flow.RegisterWorkFlowExecutionRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RegisterWorkFlowExecutionRequest)
+        // @@protoc_insertion_point(builder_implements:ai_flow.RegisterWorkFlowExecutionRequest)
         com.aiflow.proto.MetadataServiceOuterClass.RegisterWorkFlowExecutionRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterWorkFlowExecutionRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterWorkFlowExecutionRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterWorkFlowExecutionRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterWorkFlowExecutionRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.RegisterWorkFlowExecutionRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterWorkFlowExecutionRequest.Builder.class);
       }
@@ -20492,7 +20492,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterWorkFlowExecutionRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterWorkFlowExecutionRequest_descriptor;
       }
 
       @java.lang.Override
@@ -20601,14 +20601,14 @@ public final class MetadataServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.WorkflowExecutionProto, com.aiflow.proto.Message.WorkflowExecutionProto.Builder, com.aiflow.proto.Message.WorkflowExecutionProtoOrBuilder> workflowExecutionBuilder_;
       /**
-       * <code>.WorkflowExecutionProto workflow_execution = 1;</code>
+       * <code>.ai_flow.WorkflowExecutionProto workflow_execution = 1;</code>
        * @return Whether the workflowExecution field is set.
        */
       public boolean hasWorkflowExecution() {
         return workflowExecutionBuilder_ != null || workflowExecution_ != null;
       }
       /**
-       * <code>.WorkflowExecutionProto workflow_execution = 1;</code>
+       * <code>.ai_flow.WorkflowExecutionProto workflow_execution = 1;</code>
        * @return The workflowExecution.
        */
       public com.aiflow.proto.Message.WorkflowExecutionProto getWorkflowExecution() {
@@ -20619,7 +20619,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.WorkflowExecutionProto workflow_execution = 1;</code>
+       * <code>.ai_flow.WorkflowExecutionProto workflow_execution = 1;</code>
        */
       public Builder setWorkflowExecution(com.aiflow.proto.Message.WorkflowExecutionProto value) {
         if (workflowExecutionBuilder_ == null) {
@@ -20635,7 +20635,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.WorkflowExecutionProto workflow_execution = 1;</code>
+       * <code>.ai_flow.WorkflowExecutionProto workflow_execution = 1;</code>
        */
       public Builder setWorkflowExecution(
           com.aiflow.proto.Message.WorkflowExecutionProto.Builder builderForValue) {
@@ -20649,7 +20649,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.WorkflowExecutionProto workflow_execution = 1;</code>
+       * <code>.ai_flow.WorkflowExecutionProto workflow_execution = 1;</code>
        */
       public Builder mergeWorkflowExecution(com.aiflow.proto.Message.WorkflowExecutionProto value) {
         if (workflowExecutionBuilder_ == null) {
@@ -20667,7 +20667,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.WorkflowExecutionProto workflow_execution = 1;</code>
+       * <code>.ai_flow.WorkflowExecutionProto workflow_execution = 1;</code>
        */
       public Builder clearWorkflowExecution() {
         if (workflowExecutionBuilder_ == null) {
@@ -20681,7 +20681,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.WorkflowExecutionProto workflow_execution = 1;</code>
+       * <code>.ai_flow.WorkflowExecutionProto workflow_execution = 1;</code>
        */
       public com.aiflow.proto.Message.WorkflowExecutionProto.Builder getWorkflowExecutionBuilder() {
         
@@ -20689,7 +20689,7 @@ public final class MetadataServiceOuterClass {
         return getWorkflowExecutionFieldBuilder().getBuilder();
       }
       /**
-       * <code>.WorkflowExecutionProto workflow_execution = 1;</code>
+       * <code>.ai_flow.WorkflowExecutionProto workflow_execution = 1;</code>
        */
       public com.aiflow.proto.Message.WorkflowExecutionProtoOrBuilder getWorkflowExecutionOrBuilder() {
         if (workflowExecutionBuilder_ != null) {
@@ -20700,7 +20700,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.WorkflowExecutionProto workflow_execution = 1;</code>
+       * <code>.ai_flow.WorkflowExecutionProto workflow_execution = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.WorkflowExecutionProto, com.aiflow.proto.Message.WorkflowExecutionProto.Builder, com.aiflow.proto.Message.WorkflowExecutionProtoOrBuilder> 
@@ -20728,10 +20728,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:RegisterWorkFlowExecutionRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.RegisterWorkFlowExecutionRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:RegisterWorkFlowExecutionRequest)
+    // @@protoc_insertion_point(class_scope:ai_flow.RegisterWorkFlowExecutionRequest)
     private static final com.aiflow.proto.MetadataServiceOuterClass.RegisterWorkFlowExecutionRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.RegisterWorkFlowExecutionRequest();
@@ -20769,7 +20769,7 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface UpdateWorkflowExecutionRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:UpdateWorkflowExecutionRequest)
+      // @@protoc_insertion_point(interface_extends:ai_flow.UpdateWorkflowExecutionRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -20800,12 +20800,12 @@ public final class MetadataServiceOuterClass {
     com.google.protobuf.Int64ValueOrBuilder getProjectIdOrBuilder();
 
     /**
-     * <code>.StateProto execution_state = 4;</code>
+     * <code>.ai_flow.StateProto execution_state = 4;</code>
      * @return The enum numeric value on the wire for executionState.
      */
     int getExecutionStateValue();
     /**
-     * <code>.StateProto execution_state = 4;</code>
+     * <code>.ai_flow.StateProto execution_state = 4;</code>
      * @return The executionState.
      */
     com.aiflow.proto.Message.StateProto getExecutionState();
@@ -20905,11 +20905,11 @@ public final class MetadataServiceOuterClass {
     com.google.protobuf.StringValueOrBuilder getSignatureOrBuilder();
   }
   /**
-   * Protobuf type {@code UpdateWorkflowExecutionRequest}
+   * Protobuf type {@code ai_flow.UpdateWorkflowExecutionRequest}
    */
   public static final class UpdateWorkflowExecutionRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:UpdateWorkflowExecutionRequest)
+      // @@protoc_insertion_point(message_implements:ai_flow.UpdateWorkflowExecutionRequest)
       UpdateWorkflowExecutionRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use UpdateWorkflowExecutionRequest.newBuilder() to construct.
@@ -21063,7 +21063,7 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateWorkflowExecutionRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateWorkflowExecutionRequest_descriptor;
     }
 
     @SuppressWarnings({"rawtypes"})
@@ -21081,7 +21081,7 @@ public final class MetadataServiceOuterClass {
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateWorkflowExecutionRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateWorkflowExecutionRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.UpdateWorkflowExecutionRequest.class, com.aiflow.proto.MetadataServiceOuterClass.UpdateWorkflowExecutionRequest.Builder.class);
     }
@@ -21153,14 +21153,14 @@ public final class MetadataServiceOuterClass {
     public static final int EXECUTION_STATE_FIELD_NUMBER = 4;
     private int executionState_;
     /**
-     * <code>.StateProto execution_state = 4;</code>
+     * <code>.ai_flow.StateProto execution_state = 4;</code>
      * @return The enum numeric value on the wire for executionState.
      */
     @java.lang.Override public int getExecutionStateValue() {
       return executionState_;
     }
     /**
-     * <code>.StateProto execution_state = 4;</code>
+     * <code>.ai_flow.StateProto execution_state = 4;</code>
      * @return The executionState.
      */
     @java.lang.Override public com.aiflow.proto.Message.StateProto getExecutionState() {
@@ -21175,7 +21175,7 @@ public final class MetadataServiceOuterClass {
           java.lang.String, java.lang.String> defaultEntry =
               com.google.protobuf.MapEntry
               .<java.lang.String, java.lang.String>newDefaultInstance(
-                  com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateWorkflowExecutionRequest_PropertiesEntry_descriptor, 
+                  com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateWorkflowExecutionRequest_PropertiesEntry_descriptor, 
                   com.google.protobuf.WireFormat.FieldType.STRING,
                   "",
                   com.google.protobuf.WireFormat.FieldType.STRING,
@@ -21621,15 +21621,15 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code UpdateWorkflowExecutionRequest}
+     * Protobuf type {@code ai_flow.UpdateWorkflowExecutionRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:UpdateWorkflowExecutionRequest)
+        // @@protoc_insertion_point(builder_implements:ai_flow.UpdateWorkflowExecutionRequest)
         com.aiflow.proto.MetadataServiceOuterClass.UpdateWorkflowExecutionRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateWorkflowExecutionRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateWorkflowExecutionRequest_descriptor;
       }
 
       @SuppressWarnings({"rawtypes"})
@@ -21657,7 +21657,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateWorkflowExecutionRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateWorkflowExecutionRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.UpdateWorkflowExecutionRequest.class, com.aiflow.proto.MetadataServiceOuterClass.UpdateWorkflowExecutionRequest.Builder.class);
       }
@@ -21721,7 +21721,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateWorkflowExecutionRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateWorkflowExecutionRequest_descriptor;
       }
 
       @java.lang.Override
@@ -22070,14 +22070,14 @@ public final class MetadataServiceOuterClass {
 
       private int executionState_ = 0;
       /**
-       * <code>.StateProto execution_state = 4;</code>
+       * <code>.ai_flow.StateProto execution_state = 4;</code>
        * @return The enum numeric value on the wire for executionState.
        */
       @java.lang.Override public int getExecutionStateValue() {
         return executionState_;
       }
       /**
-       * <code>.StateProto execution_state = 4;</code>
+       * <code>.ai_flow.StateProto execution_state = 4;</code>
        * @param value The enum numeric value on the wire for executionState to set.
        * @return This builder for chaining.
        */
@@ -22088,7 +22088,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.StateProto execution_state = 4;</code>
+       * <code>.ai_flow.StateProto execution_state = 4;</code>
        * @return The executionState.
        */
       @java.lang.Override
@@ -22098,7 +22098,7 @@ public final class MetadataServiceOuterClass {
         return result == null ? com.aiflow.proto.Message.StateProto.UNRECOGNIZED : result;
       }
       /**
-       * <code>.StateProto execution_state = 4;</code>
+       * <code>.ai_flow.StateProto execution_state = 4;</code>
        * @param value The executionState to set.
        * @return This builder for chaining.
        */
@@ -22112,7 +22112,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.StateProto execution_state = 4;</code>
+       * <code>.ai_flow.StateProto execution_state = 4;</code>
        * @return This builder for chaining.
        */
       public Builder clearExecutionState() {
@@ -22738,10 +22738,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:UpdateWorkflowExecutionRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.UpdateWorkflowExecutionRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:UpdateWorkflowExecutionRequest)
+    // @@protoc_insertion_point(class_scope:ai_flow.UpdateWorkflowExecutionRequest)
     private static final com.aiflow.proto.MetadataServiceOuterClass.UpdateWorkflowExecutionRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.UpdateWorkflowExecutionRequest();
@@ -22779,39 +22779,39 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface WorkFlowExecutionListProtoOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:WorkFlowExecutionListProto)
+      // @@protoc_insertion_point(interface_extends:ai_flow.WorkFlowExecutionListProto)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+     * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
      */
     java.util.List<com.aiflow.proto.Message.WorkflowExecutionProto> 
         getWorkflowExecutionsList();
     /**
-     * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+     * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
      */
     com.aiflow.proto.Message.WorkflowExecutionProto getWorkflowExecutions(int index);
     /**
-     * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+     * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
      */
     int getWorkflowExecutionsCount();
     /**
-     * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+     * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
      */
     java.util.List<? extends com.aiflow.proto.Message.WorkflowExecutionProtoOrBuilder> 
         getWorkflowExecutionsOrBuilderList();
     /**
-     * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+     * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
      */
     com.aiflow.proto.Message.WorkflowExecutionProtoOrBuilder getWorkflowExecutionsOrBuilder(
         int index);
   }
   /**
-   * Protobuf type {@code WorkFlowExecutionListProto}
+   * Protobuf type {@code ai_flow.WorkFlowExecutionListProto}
    */
   public static final class WorkFlowExecutionListProto extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:WorkFlowExecutionListProto)
+      // @@protoc_insertion_point(message_implements:ai_flow.WorkFlowExecutionListProto)
       WorkFlowExecutionListProtoOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use WorkFlowExecutionListProto.newBuilder() to construct.
@@ -22886,13 +22886,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_WorkFlowExecutionListProto_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_WorkFlowExecutionListProto_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_WorkFlowExecutionListProto_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_WorkFlowExecutionListProto_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.WorkFlowExecutionListProto.class, com.aiflow.proto.MetadataServiceOuterClass.WorkFlowExecutionListProto.Builder.class);
     }
@@ -22900,14 +22900,14 @@ public final class MetadataServiceOuterClass {
     public static final int WORKFLOW_EXECUTIONS_FIELD_NUMBER = 1;
     private java.util.List<com.aiflow.proto.Message.WorkflowExecutionProto> workflowExecutions_;
     /**
-     * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+     * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
      */
     @java.lang.Override
     public java.util.List<com.aiflow.proto.Message.WorkflowExecutionProto> getWorkflowExecutionsList() {
       return workflowExecutions_;
     }
     /**
-     * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+     * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
      */
     @java.lang.Override
     public java.util.List<? extends com.aiflow.proto.Message.WorkflowExecutionProtoOrBuilder> 
@@ -22915,21 +22915,21 @@ public final class MetadataServiceOuterClass {
       return workflowExecutions_;
     }
     /**
-     * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+     * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
      */
     @java.lang.Override
     public int getWorkflowExecutionsCount() {
       return workflowExecutions_.size();
     }
     /**
-     * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+     * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.WorkflowExecutionProto getWorkflowExecutions(int index) {
       return workflowExecutions_.get(index);
     }
     /**
-     * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+     * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.WorkflowExecutionProtoOrBuilder getWorkflowExecutionsOrBuilder(
@@ -23095,21 +23095,21 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code WorkFlowExecutionListProto}
+     * Protobuf type {@code ai_flow.WorkFlowExecutionListProto}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:WorkFlowExecutionListProto)
+        // @@protoc_insertion_point(builder_implements:ai_flow.WorkFlowExecutionListProto)
         com.aiflow.proto.MetadataServiceOuterClass.WorkFlowExecutionListProtoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_WorkFlowExecutionListProto_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_WorkFlowExecutionListProto_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_WorkFlowExecutionListProto_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_WorkFlowExecutionListProto_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.WorkFlowExecutionListProto.class, com.aiflow.proto.MetadataServiceOuterClass.WorkFlowExecutionListProto.Builder.class);
       }
@@ -23145,7 +23145,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_WorkFlowExecutionListProto_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_WorkFlowExecutionListProto_descriptor;
       }
 
       @java.lang.Override
@@ -23292,7 +23292,7 @@ public final class MetadataServiceOuterClass {
           com.aiflow.proto.Message.WorkflowExecutionProto, com.aiflow.proto.Message.WorkflowExecutionProto.Builder, com.aiflow.proto.Message.WorkflowExecutionProtoOrBuilder> workflowExecutionsBuilder_;
 
       /**
-       * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+       * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
        */
       public java.util.List<com.aiflow.proto.Message.WorkflowExecutionProto> getWorkflowExecutionsList() {
         if (workflowExecutionsBuilder_ == null) {
@@ -23302,7 +23302,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+       * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
        */
       public int getWorkflowExecutionsCount() {
         if (workflowExecutionsBuilder_ == null) {
@@ -23312,7 +23312,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+       * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
        */
       public com.aiflow.proto.Message.WorkflowExecutionProto getWorkflowExecutions(int index) {
         if (workflowExecutionsBuilder_ == null) {
@@ -23322,7 +23322,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+       * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
        */
       public Builder setWorkflowExecutions(
           int index, com.aiflow.proto.Message.WorkflowExecutionProto value) {
@@ -23339,7 +23339,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+       * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
        */
       public Builder setWorkflowExecutions(
           int index, com.aiflow.proto.Message.WorkflowExecutionProto.Builder builderForValue) {
@@ -23353,7 +23353,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+       * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
        */
       public Builder addWorkflowExecutions(com.aiflow.proto.Message.WorkflowExecutionProto value) {
         if (workflowExecutionsBuilder_ == null) {
@@ -23369,7 +23369,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+       * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
        */
       public Builder addWorkflowExecutions(
           int index, com.aiflow.proto.Message.WorkflowExecutionProto value) {
@@ -23386,7 +23386,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+       * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
        */
       public Builder addWorkflowExecutions(
           com.aiflow.proto.Message.WorkflowExecutionProto.Builder builderForValue) {
@@ -23400,7 +23400,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+       * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
        */
       public Builder addWorkflowExecutions(
           int index, com.aiflow.proto.Message.WorkflowExecutionProto.Builder builderForValue) {
@@ -23414,7 +23414,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+       * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
        */
       public Builder addAllWorkflowExecutions(
           java.lang.Iterable<? extends com.aiflow.proto.Message.WorkflowExecutionProto> values) {
@@ -23429,7 +23429,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+       * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
        */
       public Builder clearWorkflowExecutions() {
         if (workflowExecutionsBuilder_ == null) {
@@ -23442,7 +23442,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+       * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
        */
       public Builder removeWorkflowExecutions(int index) {
         if (workflowExecutionsBuilder_ == null) {
@@ -23455,14 +23455,14 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+       * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
        */
       public com.aiflow.proto.Message.WorkflowExecutionProto.Builder getWorkflowExecutionsBuilder(
           int index) {
         return getWorkflowExecutionsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+       * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
        */
       public com.aiflow.proto.Message.WorkflowExecutionProtoOrBuilder getWorkflowExecutionsOrBuilder(
           int index) {
@@ -23472,7 +23472,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+       * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
        */
       public java.util.List<? extends com.aiflow.proto.Message.WorkflowExecutionProtoOrBuilder> 
            getWorkflowExecutionsOrBuilderList() {
@@ -23483,14 +23483,14 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+       * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
        */
       public com.aiflow.proto.Message.WorkflowExecutionProto.Builder addWorkflowExecutionsBuilder() {
         return getWorkflowExecutionsFieldBuilder().addBuilder(
             com.aiflow.proto.Message.WorkflowExecutionProto.getDefaultInstance());
       }
       /**
-       * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+       * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
        */
       public com.aiflow.proto.Message.WorkflowExecutionProto.Builder addWorkflowExecutionsBuilder(
           int index) {
@@ -23498,7 +23498,7 @@ public final class MetadataServiceOuterClass {
             index, com.aiflow.proto.Message.WorkflowExecutionProto.getDefaultInstance());
       }
       /**
-       * <code>repeated .WorkflowExecutionProto workflow_executions = 1;</code>
+       * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
        */
       public java.util.List<com.aiflow.proto.Message.WorkflowExecutionProto.Builder> 
            getWorkflowExecutionsBuilderList() {
@@ -23531,10 +23531,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:WorkFlowExecutionListProto)
+      // @@protoc_insertion_point(builder_scope:ai_flow.WorkFlowExecutionListProto)
     }
 
-    // @@protoc_insertion_point(class_scope:WorkFlowExecutionListProto)
+    // @@protoc_insertion_point(class_scope:ai_flow.WorkFlowExecutionListProto)
     private static final com.aiflow.proto.MetadataServiceOuterClass.WorkFlowExecutionListProto DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.WorkFlowExecutionListProto();
@@ -23572,7 +23572,7 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface UpdateWorkflowExecutionEndTimeRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:UpdateWorkflowExecutionEndTimeRequest)
+      // @@protoc_insertion_point(interface_extends:ai_flow.UpdateWorkflowExecutionEndTimeRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -23594,11 +23594,11 @@ public final class MetadataServiceOuterClass {
         getNameBytes();
   }
   /**
-   * Protobuf type {@code UpdateWorkflowExecutionEndTimeRequest}
+   * Protobuf type {@code ai_flow.UpdateWorkflowExecutionEndTimeRequest}
    */
   public static final class UpdateWorkflowExecutionEndTimeRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:UpdateWorkflowExecutionEndTimeRequest)
+      // @@protoc_insertion_point(message_implements:ai_flow.UpdateWorkflowExecutionEndTimeRequest)
       UpdateWorkflowExecutionEndTimeRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use UpdateWorkflowExecutionEndTimeRequest.newBuilder() to construct.
@@ -23671,13 +23671,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateWorkflowExecutionEndTimeRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateWorkflowExecutionEndTimeRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateWorkflowExecutionEndTimeRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateWorkflowExecutionEndTimeRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.UpdateWorkflowExecutionEndTimeRequest.class, com.aiflow.proto.MetadataServiceOuterClass.UpdateWorkflowExecutionEndTimeRequest.Builder.class);
     }
@@ -23898,21 +23898,21 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code UpdateWorkflowExecutionEndTimeRequest}
+     * Protobuf type {@code ai_flow.UpdateWorkflowExecutionEndTimeRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:UpdateWorkflowExecutionEndTimeRequest)
+        // @@protoc_insertion_point(builder_implements:ai_flow.UpdateWorkflowExecutionEndTimeRequest)
         com.aiflow.proto.MetadataServiceOuterClass.UpdateWorkflowExecutionEndTimeRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateWorkflowExecutionEndTimeRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateWorkflowExecutionEndTimeRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateWorkflowExecutionEndTimeRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateWorkflowExecutionEndTimeRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.UpdateWorkflowExecutionEndTimeRequest.class, com.aiflow.proto.MetadataServiceOuterClass.UpdateWorkflowExecutionEndTimeRequest.Builder.class);
       }
@@ -23945,7 +23945,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateWorkflowExecutionEndTimeRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateWorkflowExecutionEndTimeRequest_descriptor;
       }
 
       @java.lang.Override
@@ -24170,10 +24170,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:UpdateWorkflowExecutionEndTimeRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.UpdateWorkflowExecutionEndTimeRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:UpdateWorkflowExecutionEndTimeRequest)
+    // @@protoc_insertion_point(class_scope:ai_flow.UpdateWorkflowExecutionEndTimeRequest)
     private static final com.aiflow.proto.MetadataServiceOuterClass.UpdateWorkflowExecutionEndTimeRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.UpdateWorkflowExecutionEndTimeRequest();
@@ -24211,16 +24211,16 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface UpdateWorkflowExecutionStateRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:UpdateWorkflowExecutionStateRequest)
+      // @@protoc_insertion_point(interface_extends:ai_flow.UpdateWorkflowExecutionStateRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.StateProto state = 1;</code>
+     * <code>.ai_flow.StateProto state = 1;</code>
      * @return The enum numeric value on the wire for state.
      */
     int getStateValue();
     /**
-     * <code>.StateProto state = 1;</code>
+     * <code>.ai_flow.StateProto state = 1;</code>
      * @return The state.
      */
     com.aiflow.proto.Message.StateProto getState();
@@ -24238,11 +24238,11 @@ public final class MetadataServiceOuterClass {
         getNameBytes();
   }
   /**
-   * Protobuf type {@code UpdateWorkflowExecutionStateRequest}
+   * Protobuf type {@code ai_flow.UpdateWorkflowExecutionStateRequest}
    */
   public static final class UpdateWorkflowExecutionStateRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:UpdateWorkflowExecutionStateRequest)
+      // @@protoc_insertion_point(message_implements:ai_flow.UpdateWorkflowExecutionStateRequest)
       UpdateWorkflowExecutionStateRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use UpdateWorkflowExecutionStateRequest.newBuilder() to construct.
@@ -24317,13 +24317,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateWorkflowExecutionStateRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateWorkflowExecutionStateRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateWorkflowExecutionStateRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateWorkflowExecutionStateRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.UpdateWorkflowExecutionStateRequest.class, com.aiflow.proto.MetadataServiceOuterClass.UpdateWorkflowExecutionStateRequest.Builder.class);
     }
@@ -24331,14 +24331,14 @@ public final class MetadataServiceOuterClass {
     public static final int STATE_FIELD_NUMBER = 1;
     private int state_;
     /**
-     * <code>.StateProto state = 1;</code>
+     * <code>.ai_flow.StateProto state = 1;</code>
      * @return The enum numeric value on the wire for state.
      */
     @java.lang.Override public int getStateValue() {
       return state_;
     }
     /**
-     * <code>.StateProto state = 1;</code>
+     * <code>.ai_flow.StateProto state = 1;</code>
      * @return The state.
      */
     @java.lang.Override public com.aiflow.proto.Message.StateProto getState() {
@@ -24550,21 +24550,21 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code UpdateWorkflowExecutionStateRequest}
+     * Protobuf type {@code ai_flow.UpdateWorkflowExecutionStateRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:UpdateWorkflowExecutionStateRequest)
+        // @@protoc_insertion_point(builder_implements:ai_flow.UpdateWorkflowExecutionStateRequest)
         com.aiflow.proto.MetadataServiceOuterClass.UpdateWorkflowExecutionStateRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateWorkflowExecutionStateRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateWorkflowExecutionStateRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateWorkflowExecutionStateRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateWorkflowExecutionStateRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.UpdateWorkflowExecutionStateRequest.class, com.aiflow.proto.MetadataServiceOuterClass.UpdateWorkflowExecutionStateRequest.Builder.class);
       }
@@ -24597,7 +24597,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateWorkflowExecutionStateRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateWorkflowExecutionStateRequest_descriptor;
       }
 
       @java.lang.Override
@@ -24705,14 +24705,14 @@ public final class MetadataServiceOuterClass {
 
       private int state_ = 0;
       /**
-       * <code>.StateProto state = 1;</code>
+       * <code>.ai_flow.StateProto state = 1;</code>
        * @return The enum numeric value on the wire for state.
        */
       @java.lang.Override public int getStateValue() {
         return state_;
       }
       /**
-       * <code>.StateProto state = 1;</code>
+       * <code>.ai_flow.StateProto state = 1;</code>
        * @param value The enum numeric value on the wire for state to set.
        * @return This builder for chaining.
        */
@@ -24723,7 +24723,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.StateProto state = 1;</code>
+       * <code>.ai_flow.StateProto state = 1;</code>
        * @return The state.
        */
       @java.lang.Override
@@ -24733,7 +24733,7 @@ public final class MetadataServiceOuterClass {
         return result == null ? com.aiflow.proto.Message.StateProto.UNRECOGNIZED : result;
       }
       /**
-       * <code>.StateProto state = 1;</code>
+       * <code>.ai_flow.StateProto state = 1;</code>
        * @param value The state to set.
        * @return This builder for chaining.
        */
@@ -24747,7 +24747,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.StateProto state = 1;</code>
+       * <code>.ai_flow.StateProto state = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearState() {
@@ -24845,10 +24845,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:UpdateWorkflowExecutionStateRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.UpdateWorkflowExecutionStateRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:UpdateWorkflowExecutionStateRequest)
+    // @@protoc_insertion_point(class_scope:ai_flow.UpdateWorkflowExecutionStateRequest)
     private static final com.aiflow.proto.MetadataServiceOuterClass.UpdateWorkflowExecutionStateRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.UpdateWorkflowExecutionStateRequest();
@@ -24886,21 +24886,21 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface RegisterProjectRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RegisterProjectRequest)
+      // @@protoc_insertion_point(interface_extends:ai_flow.RegisterProjectRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.ProjectProto project = 1;</code>
+     * <code>.ai_flow.ProjectProto project = 1;</code>
      * @return Whether the project field is set.
      */
     boolean hasProject();
     /**
-     * <code>.ProjectProto project = 1;</code>
+     * <code>.ai_flow.ProjectProto project = 1;</code>
      * @return The project.
      */
     com.aiflow.proto.Message.ProjectProto getProject();
     /**
-     * <code>.ProjectProto project = 1;</code>
+     * <code>.ai_flow.ProjectProto project = 1;</code>
      */
     com.aiflow.proto.Message.ProjectProtoOrBuilder getProjectOrBuilder();
   }
@@ -24909,11 +24909,11 @@ public final class MetadataServiceOuterClass {
    *project
    * </pre>
    *
-   * Protobuf type {@code RegisterProjectRequest}
+   * Protobuf type {@code ai_flow.RegisterProjectRequest}
    */
   public static final class RegisterProjectRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:RegisterProjectRequest)
+      // @@protoc_insertion_point(message_implements:ai_flow.RegisterProjectRequest)
       RegisterProjectRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use RegisterProjectRequest.newBuilder() to construct.
@@ -24987,13 +24987,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterProjectRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterProjectRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterProjectRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterProjectRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.RegisterProjectRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterProjectRequest.Builder.class);
     }
@@ -25001,7 +25001,7 @@ public final class MetadataServiceOuterClass {
     public static final int PROJECT_FIELD_NUMBER = 1;
     private com.aiflow.proto.Message.ProjectProto project_;
     /**
-     * <code>.ProjectProto project = 1;</code>
+     * <code>.ai_flow.ProjectProto project = 1;</code>
      * @return Whether the project field is set.
      */
     @java.lang.Override
@@ -25009,7 +25009,7 @@ public final class MetadataServiceOuterClass {
       return project_ != null;
     }
     /**
-     * <code>.ProjectProto project = 1;</code>
+     * <code>.ai_flow.ProjectProto project = 1;</code>
      * @return The project.
      */
     @java.lang.Override
@@ -25017,7 +25017,7 @@ public final class MetadataServiceOuterClass {
       return project_ == null ? com.aiflow.proto.Message.ProjectProto.getDefaultInstance() : project_;
     }
     /**
-     * <code>.ProjectProto project = 1;</code>
+     * <code>.ai_flow.ProjectProto project = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ProjectProtoOrBuilder getProjectOrBuilder() {
@@ -25189,21 +25189,21 @@ public final class MetadataServiceOuterClass {
      *project
      * </pre>
      *
-     * Protobuf type {@code RegisterProjectRequest}
+     * Protobuf type {@code ai_flow.RegisterProjectRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RegisterProjectRequest)
+        // @@protoc_insertion_point(builder_implements:ai_flow.RegisterProjectRequest)
         com.aiflow.proto.MetadataServiceOuterClass.RegisterProjectRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterProjectRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterProjectRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterProjectRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterProjectRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.RegisterProjectRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterProjectRequest.Builder.class);
       }
@@ -25238,7 +25238,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterProjectRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterProjectRequest_descriptor;
       }
 
       @java.lang.Override
@@ -25347,14 +25347,14 @@ public final class MetadataServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ProjectProto, com.aiflow.proto.Message.ProjectProto.Builder, com.aiflow.proto.Message.ProjectProtoOrBuilder> projectBuilder_;
       /**
-       * <code>.ProjectProto project = 1;</code>
+       * <code>.ai_flow.ProjectProto project = 1;</code>
        * @return Whether the project field is set.
        */
       public boolean hasProject() {
         return projectBuilder_ != null || project_ != null;
       }
       /**
-       * <code>.ProjectProto project = 1;</code>
+       * <code>.ai_flow.ProjectProto project = 1;</code>
        * @return The project.
        */
       public com.aiflow.proto.Message.ProjectProto getProject() {
@@ -25365,7 +25365,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.ProjectProto project = 1;</code>
+       * <code>.ai_flow.ProjectProto project = 1;</code>
        */
       public Builder setProject(com.aiflow.proto.Message.ProjectProto value) {
         if (projectBuilder_ == null) {
@@ -25381,7 +25381,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ProjectProto project = 1;</code>
+       * <code>.ai_flow.ProjectProto project = 1;</code>
        */
       public Builder setProject(
           com.aiflow.proto.Message.ProjectProto.Builder builderForValue) {
@@ -25395,7 +25395,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ProjectProto project = 1;</code>
+       * <code>.ai_flow.ProjectProto project = 1;</code>
        */
       public Builder mergeProject(com.aiflow.proto.Message.ProjectProto value) {
         if (projectBuilder_ == null) {
@@ -25413,7 +25413,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ProjectProto project = 1;</code>
+       * <code>.ai_flow.ProjectProto project = 1;</code>
        */
       public Builder clearProject() {
         if (projectBuilder_ == null) {
@@ -25427,7 +25427,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ProjectProto project = 1;</code>
+       * <code>.ai_flow.ProjectProto project = 1;</code>
        */
       public com.aiflow.proto.Message.ProjectProto.Builder getProjectBuilder() {
         
@@ -25435,7 +25435,7 @@ public final class MetadataServiceOuterClass {
         return getProjectFieldBuilder().getBuilder();
       }
       /**
-       * <code>.ProjectProto project = 1;</code>
+       * <code>.ai_flow.ProjectProto project = 1;</code>
        */
       public com.aiflow.proto.Message.ProjectProtoOrBuilder getProjectOrBuilder() {
         if (projectBuilder_ != null) {
@@ -25446,7 +25446,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.ProjectProto project = 1;</code>
+       * <code>.ai_flow.ProjectProto project = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ProjectProto, com.aiflow.proto.Message.ProjectProto.Builder, com.aiflow.proto.Message.ProjectProtoOrBuilder> 
@@ -25474,10 +25474,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:RegisterProjectRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.RegisterProjectRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:RegisterProjectRequest)
+    // @@protoc_insertion_point(class_scope:ai_flow.RegisterProjectRequest)
     private static final com.aiflow.proto.MetadataServiceOuterClass.RegisterProjectRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.RegisterProjectRequest();
@@ -25515,7 +25515,7 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface UpdateProjectRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:UpdateProjectRequest)
+      // @@protoc_insertion_point(interface_extends:ai_flow.UpdateProjectRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -25625,11 +25625,11 @@ public final class MetadataServiceOuterClass {
     com.google.protobuf.StringValueOrBuilder getPasswordOrBuilder();
   }
   /**
-   * Protobuf type {@code UpdateProjectRequest}
+   * Protobuf type {@code ai_flow.UpdateProjectRequest}
    */
   public static final class UpdateProjectRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:UpdateProjectRequest)
+      // @@protoc_insertion_point(message_implements:ai_flow.UpdateProjectRequest)
       UpdateProjectRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use UpdateProjectRequest.newBuilder() to construct.
@@ -25763,7 +25763,7 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateProjectRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateProjectRequest_descriptor;
     }
 
     @SuppressWarnings({"rawtypes"})
@@ -25781,7 +25781,7 @@ public final class MetadataServiceOuterClass {
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateProjectRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateProjectRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.UpdateProjectRequest.class, com.aiflow.proto.MetadataServiceOuterClass.UpdateProjectRequest.Builder.class);
     }
@@ -25830,7 +25830,7 @@ public final class MetadataServiceOuterClass {
           java.lang.String, java.lang.String> defaultEntry =
               com.google.protobuf.MapEntry
               .<java.lang.String, java.lang.String>newDefaultInstance(
-                  com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateProjectRequest_PropertiesEntry_descriptor, 
+                  com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateProjectRequest_PropertiesEntry_descriptor, 
                   com.google.protobuf.WireFormat.FieldType.STRING,
                   "",
                   com.google.protobuf.WireFormat.FieldType.STRING,
@@ -26250,15 +26250,15 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code UpdateProjectRequest}
+     * Protobuf type {@code ai_flow.UpdateProjectRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:UpdateProjectRequest)
+        // @@protoc_insertion_point(builder_implements:ai_flow.UpdateProjectRequest)
         com.aiflow.proto.MetadataServiceOuterClass.UpdateProjectRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateProjectRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateProjectRequest_descriptor;
       }
 
       @SuppressWarnings({"rawtypes"})
@@ -26286,7 +26286,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateProjectRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateProjectRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.UpdateProjectRequest.class, com.aiflow.proto.MetadataServiceOuterClass.UpdateProjectRequest.Builder.class);
       }
@@ -26342,7 +26342,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateProjectRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateProjectRequest_descriptor;
       }
 
       @java.lang.Override
@@ -27174,10 +27174,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:UpdateProjectRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.UpdateProjectRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:UpdateProjectRequest)
+    // @@protoc_insertion_point(class_scope:ai_flow.UpdateProjectRequest)
     private static final com.aiflow.proto.MetadataServiceOuterClass.UpdateProjectRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.UpdateProjectRequest();
@@ -27215,39 +27215,39 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface ProjectListProtoOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ProjectListProto)
+      // @@protoc_insertion_point(interface_extends:ai_flow.ProjectListProto)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .ProjectProto projects = 1;</code>
+     * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
      */
     java.util.List<com.aiflow.proto.Message.ProjectProto> 
         getProjectsList();
     /**
-     * <code>repeated .ProjectProto projects = 1;</code>
+     * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
      */
     com.aiflow.proto.Message.ProjectProto getProjects(int index);
     /**
-     * <code>repeated .ProjectProto projects = 1;</code>
+     * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
      */
     int getProjectsCount();
     /**
-     * <code>repeated .ProjectProto projects = 1;</code>
+     * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
      */
     java.util.List<? extends com.aiflow.proto.Message.ProjectProtoOrBuilder> 
         getProjectsOrBuilderList();
     /**
-     * <code>repeated .ProjectProto projects = 1;</code>
+     * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
      */
     com.aiflow.proto.Message.ProjectProtoOrBuilder getProjectsOrBuilder(
         int index);
   }
   /**
-   * Protobuf type {@code ProjectListProto}
+   * Protobuf type {@code ai_flow.ProjectListProto}
    */
   public static final class ProjectListProto extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:ProjectListProto)
+      // @@protoc_insertion_point(message_implements:ai_flow.ProjectListProto)
       ProjectListProtoOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use ProjectListProto.newBuilder() to construct.
@@ -27322,13 +27322,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ProjectListProto_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ProjectListProto_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ProjectListProto_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ProjectListProto_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.ProjectListProto.class, com.aiflow.proto.MetadataServiceOuterClass.ProjectListProto.Builder.class);
     }
@@ -27336,14 +27336,14 @@ public final class MetadataServiceOuterClass {
     public static final int PROJECTS_FIELD_NUMBER = 1;
     private java.util.List<com.aiflow.proto.Message.ProjectProto> projects_;
     /**
-     * <code>repeated .ProjectProto projects = 1;</code>
+     * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
      */
     @java.lang.Override
     public java.util.List<com.aiflow.proto.Message.ProjectProto> getProjectsList() {
       return projects_;
     }
     /**
-     * <code>repeated .ProjectProto projects = 1;</code>
+     * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
      */
     @java.lang.Override
     public java.util.List<? extends com.aiflow.proto.Message.ProjectProtoOrBuilder> 
@@ -27351,21 +27351,21 @@ public final class MetadataServiceOuterClass {
       return projects_;
     }
     /**
-     * <code>repeated .ProjectProto projects = 1;</code>
+     * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
      */
     @java.lang.Override
     public int getProjectsCount() {
       return projects_.size();
     }
     /**
-     * <code>repeated .ProjectProto projects = 1;</code>
+     * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ProjectProto getProjects(int index) {
       return projects_.get(index);
     }
     /**
-     * <code>repeated .ProjectProto projects = 1;</code>
+     * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ProjectProtoOrBuilder getProjectsOrBuilder(
@@ -27531,21 +27531,21 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code ProjectListProto}
+     * Protobuf type {@code ai_flow.ProjectListProto}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ProjectListProto)
+        // @@protoc_insertion_point(builder_implements:ai_flow.ProjectListProto)
         com.aiflow.proto.MetadataServiceOuterClass.ProjectListProtoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ProjectListProto_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ProjectListProto_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ProjectListProto_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ProjectListProto_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.ProjectListProto.class, com.aiflow.proto.MetadataServiceOuterClass.ProjectListProto.Builder.class);
       }
@@ -27581,7 +27581,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ProjectListProto_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ProjectListProto_descriptor;
       }
 
       @java.lang.Override
@@ -27728,7 +27728,7 @@ public final class MetadataServiceOuterClass {
           com.aiflow.proto.Message.ProjectProto, com.aiflow.proto.Message.ProjectProto.Builder, com.aiflow.proto.Message.ProjectProtoOrBuilder> projectsBuilder_;
 
       /**
-       * <code>repeated .ProjectProto projects = 1;</code>
+       * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
        */
       public java.util.List<com.aiflow.proto.Message.ProjectProto> getProjectsList() {
         if (projectsBuilder_ == null) {
@@ -27738,7 +27738,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ProjectProto projects = 1;</code>
+       * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
        */
       public int getProjectsCount() {
         if (projectsBuilder_ == null) {
@@ -27748,7 +27748,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ProjectProto projects = 1;</code>
+       * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
        */
       public com.aiflow.proto.Message.ProjectProto getProjects(int index) {
         if (projectsBuilder_ == null) {
@@ -27758,7 +27758,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ProjectProto projects = 1;</code>
+       * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
        */
       public Builder setProjects(
           int index, com.aiflow.proto.Message.ProjectProto value) {
@@ -27775,7 +27775,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ProjectProto projects = 1;</code>
+       * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
        */
       public Builder setProjects(
           int index, com.aiflow.proto.Message.ProjectProto.Builder builderForValue) {
@@ -27789,7 +27789,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ProjectProto projects = 1;</code>
+       * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
        */
       public Builder addProjects(com.aiflow.proto.Message.ProjectProto value) {
         if (projectsBuilder_ == null) {
@@ -27805,7 +27805,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ProjectProto projects = 1;</code>
+       * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
        */
       public Builder addProjects(
           int index, com.aiflow.proto.Message.ProjectProto value) {
@@ -27822,7 +27822,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ProjectProto projects = 1;</code>
+       * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
        */
       public Builder addProjects(
           com.aiflow.proto.Message.ProjectProto.Builder builderForValue) {
@@ -27836,7 +27836,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ProjectProto projects = 1;</code>
+       * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
        */
       public Builder addProjects(
           int index, com.aiflow.proto.Message.ProjectProto.Builder builderForValue) {
@@ -27850,7 +27850,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ProjectProto projects = 1;</code>
+       * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
        */
       public Builder addAllProjects(
           java.lang.Iterable<? extends com.aiflow.proto.Message.ProjectProto> values) {
@@ -27865,7 +27865,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ProjectProto projects = 1;</code>
+       * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
        */
       public Builder clearProjects() {
         if (projectsBuilder_ == null) {
@@ -27878,7 +27878,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ProjectProto projects = 1;</code>
+       * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
        */
       public Builder removeProjects(int index) {
         if (projectsBuilder_ == null) {
@@ -27891,14 +27891,14 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ProjectProto projects = 1;</code>
+       * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
        */
       public com.aiflow.proto.Message.ProjectProto.Builder getProjectsBuilder(
           int index) {
         return getProjectsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .ProjectProto projects = 1;</code>
+       * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
        */
       public com.aiflow.proto.Message.ProjectProtoOrBuilder getProjectsOrBuilder(
           int index) {
@@ -27908,7 +27908,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ProjectProto projects = 1;</code>
+       * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
        */
       public java.util.List<? extends com.aiflow.proto.Message.ProjectProtoOrBuilder> 
            getProjectsOrBuilderList() {
@@ -27919,14 +27919,14 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ProjectProto projects = 1;</code>
+       * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
        */
       public com.aiflow.proto.Message.ProjectProto.Builder addProjectsBuilder() {
         return getProjectsFieldBuilder().addBuilder(
             com.aiflow.proto.Message.ProjectProto.getDefaultInstance());
       }
       /**
-       * <code>repeated .ProjectProto projects = 1;</code>
+       * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
        */
       public com.aiflow.proto.Message.ProjectProto.Builder addProjectsBuilder(
           int index) {
@@ -27934,7 +27934,7 @@ public final class MetadataServiceOuterClass {
             index, com.aiflow.proto.Message.ProjectProto.getDefaultInstance());
       }
       /**
-       * <code>repeated .ProjectProto projects = 1;</code>
+       * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
        */
       public java.util.List<com.aiflow.proto.Message.ProjectProto.Builder> 
            getProjectsBuilderList() {
@@ -27967,10 +27967,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:ProjectListProto)
+      // @@protoc_insertion_point(builder_scope:ai_flow.ProjectListProto)
     }
 
-    // @@protoc_insertion_point(class_scope:ProjectListProto)
+    // @@protoc_insertion_point(class_scope:ai_flow.ProjectListProto)
     private static final com.aiflow.proto.MetadataServiceOuterClass.ProjectListProto DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.ProjectListProto();
@@ -28008,21 +28008,21 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface RegisterArtifactRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RegisterArtifactRequest)
+      // @@protoc_insertion_point(interface_extends:ai_flow.RegisterArtifactRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.ArtifactProto artifact = 1;</code>
+     * <code>.ai_flow.ArtifactProto artifact = 1;</code>
      * @return Whether the artifact field is set.
      */
     boolean hasArtifact();
     /**
-     * <code>.ArtifactProto artifact = 1;</code>
+     * <code>.ai_flow.ArtifactProto artifact = 1;</code>
      * @return The artifact.
      */
     com.aiflow.proto.Message.ArtifactProto getArtifact();
     /**
-     * <code>.ArtifactProto artifact = 1;</code>
+     * <code>.ai_flow.ArtifactProto artifact = 1;</code>
      */
     com.aiflow.proto.Message.ArtifactProtoOrBuilder getArtifactOrBuilder();
   }
@@ -28031,11 +28031,11 @@ public final class MetadataServiceOuterClass {
    *artifact
    * </pre>
    *
-   * Protobuf type {@code RegisterArtifactRequest}
+   * Protobuf type {@code ai_flow.RegisterArtifactRequest}
    */
   public static final class RegisterArtifactRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:RegisterArtifactRequest)
+      // @@protoc_insertion_point(message_implements:ai_flow.RegisterArtifactRequest)
       RegisterArtifactRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use RegisterArtifactRequest.newBuilder() to construct.
@@ -28109,13 +28109,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterArtifactRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterArtifactRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterArtifactRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterArtifactRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.RegisterArtifactRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterArtifactRequest.Builder.class);
     }
@@ -28123,7 +28123,7 @@ public final class MetadataServiceOuterClass {
     public static final int ARTIFACT_FIELD_NUMBER = 1;
     private com.aiflow.proto.Message.ArtifactProto artifact_;
     /**
-     * <code>.ArtifactProto artifact = 1;</code>
+     * <code>.ai_flow.ArtifactProto artifact = 1;</code>
      * @return Whether the artifact field is set.
      */
     @java.lang.Override
@@ -28131,7 +28131,7 @@ public final class MetadataServiceOuterClass {
       return artifact_ != null;
     }
     /**
-     * <code>.ArtifactProto artifact = 1;</code>
+     * <code>.ai_flow.ArtifactProto artifact = 1;</code>
      * @return The artifact.
      */
     @java.lang.Override
@@ -28139,7 +28139,7 @@ public final class MetadataServiceOuterClass {
       return artifact_ == null ? com.aiflow.proto.Message.ArtifactProto.getDefaultInstance() : artifact_;
     }
     /**
-     * <code>.ArtifactProto artifact = 1;</code>
+     * <code>.ai_flow.ArtifactProto artifact = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ArtifactProtoOrBuilder getArtifactOrBuilder() {
@@ -28311,21 +28311,21 @@ public final class MetadataServiceOuterClass {
      *artifact
      * </pre>
      *
-     * Protobuf type {@code RegisterArtifactRequest}
+     * Protobuf type {@code ai_flow.RegisterArtifactRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RegisterArtifactRequest)
+        // @@protoc_insertion_point(builder_implements:ai_flow.RegisterArtifactRequest)
         com.aiflow.proto.MetadataServiceOuterClass.RegisterArtifactRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterArtifactRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterArtifactRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterArtifactRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterArtifactRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.RegisterArtifactRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterArtifactRequest.Builder.class);
       }
@@ -28360,7 +28360,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_RegisterArtifactRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterArtifactRequest_descriptor;
       }
 
       @java.lang.Override
@@ -28469,14 +28469,14 @@ public final class MetadataServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ArtifactProto, com.aiflow.proto.Message.ArtifactProto.Builder, com.aiflow.proto.Message.ArtifactProtoOrBuilder> artifactBuilder_;
       /**
-       * <code>.ArtifactProto artifact = 1;</code>
+       * <code>.ai_flow.ArtifactProto artifact = 1;</code>
        * @return Whether the artifact field is set.
        */
       public boolean hasArtifact() {
         return artifactBuilder_ != null || artifact_ != null;
       }
       /**
-       * <code>.ArtifactProto artifact = 1;</code>
+       * <code>.ai_flow.ArtifactProto artifact = 1;</code>
        * @return The artifact.
        */
       public com.aiflow.proto.Message.ArtifactProto getArtifact() {
@@ -28487,7 +28487,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.ArtifactProto artifact = 1;</code>
+       * <code>.ai_flow.ArtifactProto artifact = 1;</code>
        */
       public Builder setArtifact(com.aiflow.proto.Message.ArtifactProto value) {
         if (artifactBuilder_ == null) {
@@ -28503,7 +28503,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ArtifactProto artifact = 1;</code>
+       * <code>.ai_flow.ArtifactProto artifact = 1;</code>
        */
       public Builder setArtifact(
           com.aiflow.proto.Message.ArtifactProto.Builder builderForValue) {
@@ -28517,7 +28517,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ArtifactProto artifact = 1;</code>
+       * <code>.ai_flow.ArtifactProto artifact = 1;</code>
        */
       public Builder mergeArtifact(com.aiflow.proto.Message.ArtifactProto value) {
         if (artifactBuilder_ == null) {
@@ -28535,7 +28535,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ArtifactProto artifact = 1;</code>
+       * <code>.ai_flow.ArtifactProto artifact = 1;</code>
        */
       public Builder clearArtifact() {
         if (artifactBuilder_ == null) {
@@ -28549,7 +28549,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.ArtifactProto artifact = 1;</code>
+       * <code>.ai_flow.ArtifactProto artifact = 1;</code>
        */
       public com.aiflow.proto.Message.ArtifactProto.Builder getArtifactBuilder() {
         
@@ -28557,7 +28557,7 @@ public final class MetadataServiceOuterClass {
         return getArtifactFieldBuilder().getBuilder();
       }
       /**
-       * <code>.ArtifactProto artifact = 1;</code>
+       * <code>.ai_flow.ArtifactProto artifact = 1;</code>
        */
       public com.aiflow.proto.Message.ArtifactProtoOrBuilder getArtifactOrBuilder() {
         if (artifactBuilder_ != null) {
@@ -28568,7 +28568,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.ArtifactProto artifact = 1;</code>
+       * <code>.ai_flow.ArtifactProto artifact = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.aiflow.proto.Message.ArtifactProto, com.aiflow.proto.Message.ArtifactProto.Builder, com.aiflow.proto.Message.ArtifactProtoOrBuilder> 
@@ -28596,10 +28596,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:RegisterArtifactRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.RegisterArtifactRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:RegisterArtifactRequest)
+    // @@protoc_insertion_point(class_scope:ai_flow.RegisterArtifactRequest)
     private static final com.aiflow.proto.MetadataServiceOuterClass.RegisterArtifactRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.RegisterArtifactRequest();
@@ -28637,7 +28637,7 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface UpdateArtifactRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:UpdateArtifactRequest)
+      // @@protoc_insertion_point(interface_extends:ai_flow.UpdateArtifactRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -28762,11 +28762,11 @@ public final class MetadataServiceOuterClass {
     com.google.protobuf.Int64ValueOrBuilder getUpdateTimeOrBuilder();
   }
   /**
-   * Protobuf type {@code UpdateArtifactRequest}
+   * Protobuf type {@code ai_flow.UpdateArtifactRequest}
    */
   public static final class UpdateArtifactRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:UpdateArtifactRequest)
+      // @@protoc_insertion_point(message_implements:ai_flow.UpdateArtifactRequest)
       UpdateArtifactRequestOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use UpdateArtifactRequest.newBuilder() to construct.
@@ -28913,7 +28913,7 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateArtifactRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateArtifactRequest_descriptor;
     }
 
     @SuppressWarnings({"rawtypes"})
@@ -28931,7 +28931,7 @@ public final class MetadataServiceOuterClass {
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateArtifactRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateArtifactRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.UpdateArtifactRequest.class, com.aiflow.proto.MetadataServiceOuterClass.UpdateArtifactRequest.Builder.class);
     }
@@ -28980,7 +28980,7 @@ public final class MetadataServiceOuterClass {
           java.lang.String, java.lang.String> defaultEntry =
               com.google.protobuf.MapEntry
               .<java.lang.String, java.lang.String>newDefaultInstance(
-                  com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateArtifactRequest_PropertiesEntry_descriptor, 
+                  com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateArtifactRequest_PropertiesEntry_descriptor, 
                   com.google.protobuf.WireFormat.FieldType.STRING,
                   "",
                   com.google.protobuf.WireFormat.FieldType.STRING,
@@ -29442,15 +29442,15 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code UpdateArtifactRequest}
+     * Protobuf type {@code ai_flow.UpdateArtifactRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:UpdateArtifactRequest)
+        // @@protoc_insertion_point(builder_implements:ai_flow.UpdateArtifactRequest)
         com.aiflow.proto.MetadataServiceOuterClass.UpdateArtifactRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateArtifactRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateArtifactRequest_descriptor;
       }
 
       @SuppressWarnings({"rawtypes"})
@@ -29478,7 +29478,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateArtifactRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateArtifactRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.UpdateArtifactRequest.class, com.aiflow.proto.MetadataServiceOuterClass.UpdateArtifactRequest.Builder.class);
       }
@@ -29540,7 +29540,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_UpdateArtifactRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateArtifactRequest_descriptor;
       }
 
       @java.lang.Override
@@ -30499,10 +30499,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:UpdateArtifactRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.UpdateArtifactRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:UpdateArtifactRequest)
+    // @@protoc_insertion_point(class_scope:ai_flow.UpdateArtifactRequest)
     private static final com.aiflow.proto.MetadataServiceOuterClass.UpdateArtifactRequest DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.UpdateArtifactRequest();
@@ -30540,39 +30540,39 @@ public final class MetadataServiceOuterClass {
   }
 
   public interface ArtifactListProtoOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ArtifactListProto)
+      // @@protoc_insertion_point(interface_extends:ai_flow.ArtifactListProto)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .ArtifactProto artifacts = 1;</code>
+     * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
      */
     java.util.List<com.aiflow.proto.Message.ArtifactProto> 
         getArtifactsList();
     /**
-     * <code>repeated .ArtifactProto artifacts = 1;</code>
+     * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
      */
     com.aiflow.proto.Message.ArtifactProto getArtifacts(int index);
     /**
-     * <code>repeated .ArtifactProto artifacts = 1;</code>
+     * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
      */
     int getArtifactsCount();
     /**
-     * <code>repeated .ArtifactProto artifacts = 1;</code>
+     * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
      */
     java.util.List<? extends com.aiflow.proto.Message.ArtifactProtoOrBuilder> 
         getArtifactsOrBuilderList();
     /**
-     * <code>repeated .ArtifactProto artifacts = 1;</code>
+     * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
      */
     com.aiflow.proto.Message.ArtifactProtoOrBuilder getArtifactsOrBuilder(
         int index);
   }
   /**
-   * Protobuf type {@code ArtifactListProto}
+   * Protobuf type {@code ai_flow.ArtifactListProto}
    */
   public static final class ArtifactListProto extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:ArtifactListProto)
+      // @@protoc_insertion_point(message_implements:ai_flow.ArtifactListProto)
       ArtifactListProtoOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use ArtifactListProto.newBuilder() to construct.
@@ -30647,13 +30647,13 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ArtifactListProto_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ArtifactListProto_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ArtifactListProto_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ArtifactListProto_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.aiflow.proto.MetadataServiceOuterClass.ArtifactListProto.class, com.aiflow.proto.MetadataServiceOuterClass.ArtifactListProto.Builder.class);
     }
@@ -30661,14 +30661,14 @@ public final class MetadataServiceOuterClass {
     public static final int ARTIFACTS_FIELD_NUMBER = 1;
     private java.util.List<com.aiflow.proto.Message.ArtifactProto> artifacts_;
     /**
-     * <code>repeated .ArtifactProto artifacts = 1;</code>
+     * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
      */
     @java.lang.Override
     public java.util.List<com.aiflow.proto.Message.ArtifactProto> getArtifactsList() {
       return artifacts_;
     }
     /**
-     * <code>repeated .ArtifactProto artifacts = 1;</code>
+     * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
      */
     @java.lang.Override
     public java.util.List<? extends com.aiflow.proto.Message.ArtifactProtoOrBuilder> 
@@ -30676,21 +30676,21 @@ public final class MetadataServiceOuterClass {
       return artifacts_;
     }
     /**
-     * <code>repeated .ArtifactProto artifacts = 1;</code>
+     * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
      */
     @java.lang.Override
     public int getArtifactsCount() {
       return artifacts_.size();
     }
     /**
-     * <code>repeated .ArtifactProto artifacts = 1;</code>
+     * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ArtifactProto getArtifacts(int index) {
       return artifacts_.get(index);
     }
     /**
-     * <code>repeated .ArtifactProto artifacts = 1;</code>
+     * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
      */
     @java.lang.Override
     public com.aiflow.proto.Message.ArtifactProtoOrBuilder getArtifactsOrBuilder(
@@ -30856,21 +30856,21 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code ArtifactListProto}
+     * Protobuf type {@code ai_flow.ArtifactListProto}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ArtifactListProto)
+        // @@protoc_insertion_point(builder_implements:ai_flow.ArtifactListProto)
         com.aiflow.proto.MetadataServiceOuterClass.ArtifactListProtoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ArtifactListProto_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ArtifactListProto_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ArtifactListProto_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ArtifactListProto_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.aiflow.proto.MetadataServiceOuterClass.ArtifactListProto.class, com.aiflow.proto.MetadataServiceOuterClass.ArtifactListProto.Builder.class);
       }
@@ -30906,7 +30906,7 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ArtifactListProto_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ArtifactListProto_descriptor;
       }
 
       @java.lang.Override
@@ -31053,7 +31053,7 @@ public final class MetadataServiceOuterClass {
           com.aiflow.proto.Message.ArtifactProto, com.aiflow.proto.Message.ArtifactProto.Builder, com.aiflow.proto.Message.ArtifactProtoOrBuilder> artifactsBuilder_;
 
       /**
-       * <code>repeated .ArtifactProto artifacts = 1;</code>
+       * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
        */
       public java.util.List<com.aiflow.proto.Message.ArtifactProto> getArtifactsList() {
         if (artifactsBuilder_ == null) {
@@ -31063,7 +31063,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ArtifactProto artifacts = 1;</code>
+       * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
        */
       public int getArtifactsCount() {
         if (artifactsBuilder_ == null) {
@@ -31073,7 +31073,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ArtifactProto artifacts = 1;</code>
+       * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
        */
       public com.aiflow.proto.Message.ArtifactProto getArtifacts(int index) {
         if (artifactsBuilder_ == null) {
@@ -31083,7 +31083,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ArtifactProto artifacts = 1;</code>
+       * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
        */
       public Builder setArtifacts(
           int index, com.aiflow.proto.Message.ArtifactProto value) {
@@ -31100,7 +31100,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ArtifactProto artifacts = 1;</code>
+       * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
        */
       public Builder setArtifacts(
           int index, com.aiflow.proto.Message.ArtifactProto.Builder builderForValue) {
@@ -31114,7 +31114,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ArtifactProto artifacts = 1;</code>
+       * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
        */
       public Builder addArtifacts(com.aiflow.proto.Message.ArtifactProto value) {
         if (artifactsBuilder_ == null) {
@@ -31130,7 +31130,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ArtifactProto artifacts = 1;</code>
+       * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
        */
       public Builder addArtifacts(
           int index, com.aiflow.proto.Message.ArtifactProto value) {
@@ -31147,7 +31147,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ArtifactProto artifacts = 1;</code>
+       * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
        */
       public Builder addArtifacts(
           com.aiflow.proto.Message.ArtifactProto.Builder builderForValue) {
@@ -31161,7 +31161,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ArtifactProto artifacts = 1;</code>
+       * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
        */
       public Builder addArtifacts(
           int index, com.aiflow.proto.Message.ArtifactProto.Builder builderForValue) {
@@ -31175,7 +31175,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ArtifactProto artifacts = 1;</code>
+       * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
        */
       public Builder addAllArtifacts(
           java.lang.Iterable<? extends com.aiflow.proto.Message.ArtifactProto> values) {
@@ -31190,7 +31190,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ArtifactProto artifacts = 1;</code>
+       * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
        */
       public Builder clearArtifacts() {
         if (artifactsBuilder_ == null) {
@@ -31203,7 +31203,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ArtifactProto artifacts = 1;</code>
+       * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
        */
       public Builder removeArtifacts(int index) {
         if (artifactsBuilder_ == null) {
@@ -31216,14 +31216,14 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ArtifactProto artifacts = 1;</code>
+       * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
        */
       public com.aiflow.proto.Message.ArtifactProto.Builder getArtifactsBuilder(
           int index) {
         return getArtifactsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .ArtifactProto artifacts = 1;</code>
+       * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
        */
       public com.aiflow.proto.Message.ArtifactProtoOrBuilder getArtifactsOrBuilder(
           int index) {
@@ -31233,7 +31233,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ArtifactProto artifacts = 1;</code>
+       * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
        */
       public java.util.List<? extends com.aiflow.proto.Message.ArtifactProtoOrBuilder> 
            getArtifactsOrBuilderList() {
@@ -31244,14 +31244,14 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ArtifactProto artifacts = 1;</code>
+       * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
        */
       public com.aiflow.proto.Message.ArtifactProto.Builder addArtifactsBuilder() {
         return getArtifactsFieldBuilder().addBuilder(
             com.aiflow.proto.Message.ArtifactProto.getDefaultInstance());
       }
       /**
-       * <code>repeated .ArtifactProto artifacts = 1;</code>
+       * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
        */
       public com.aiflow.proto.Message.ArtifactProto.Builder addArtifactsBuilder(
           int index) {
@@ -31259,7 +31259,7 @@ public final class MetadataServiceOuterClass {
             index, com.aiflow.proto.Message.ArtifactProto.getDefaultInstance());
       }
       /**
-       * <code>repeated .ArtifactProto artifacts = 1;</code>
+       * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
        */
       public java.util.List<com.aiflow.proto.Message.ArtifactProto.Builder> 
            getArtifactsBuilderList() {
@@ -31292,10 +31292,10 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:ArtifactListProto)
+      // @@protoc_insertion_point(builder_scope:ai_flow.ArtifactListProto)
     }
 
-    // @@protoc_insertion_point(class_scope:ArtifactListProto)
+    // @@protoc_insertion_point(class_scope:ai_flow.ArtifactListProto)
     private static final com.aiflow.proto.MetadataServiceOuterClass.ArtifactListProto DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.ArtifactListProto();
@@ -31333,7 +31333,7 @@ public final class MetadataServiceOuterClass {
   }
 
   /**
-   * Protobuf service {@code MetadataService}
+   * Protobuf service {@code ai_flow.MetadataService}
    */
   public static abstract class MetadataService
       implements com.google.protobuf.Service {
@@ -31345,7 +31345,7 @@ public final class MetadataServiceOuterClass {
        *example api
        * </pre>
        *
-       * <code>rpc getExampleById(.IdRequest) returns (.Response) { ... }</code>
+       * <code>rpc getExampleById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void getExampleById(
           com.google.protobuf.RpcController controller,
@@ -31353,7 +31353,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc getExampleByName(.NameRequest) returns (.Response) { ... }</code>
+       * <code>rpc getExampleByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void getExampleByName(
           com.google.protobuf.RpcController controller,
@@ -31361,7 +31361,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc listExample(.ListRequest) returns (.Response) { ... }</code>
+       * <code>rpc listExample(.ai_flow.ListRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void listExample(
           com.google.protobuf.RpcController controller,
@@ -31369,7 +31369,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc registerExample(.RegisterExampleRequest) returns (.Response) { ... }</code>
+       * <code>rpc registerExample(.ai_flow.RegisterExampleRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void registerExample(
           com.google.protobuf.RpcController controller,
@@ -31377,7 +31377,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc registerExampleWithCatalog(.RegisterExampleRequest) returns (.Response) { ... }</code>
+       * <code>rpc registerExampleWithCatalog(.ai_flow.RegisterExampleRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void registerExampleWithCatalog(
           com.google.protobuf.RpcController controller,
@@ -31385,7 +31385,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc registerExamples(.RegisterExamplesRequest) returns (.Response) { ... }</code>
+       * <code>rpc registerExamples(.ai_flow.RegisterExamplesRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void registerExamples(
           com.google.protobuf.RpcController controller,
@@ -31393,7 +31393,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc updateExample(.UpdateExampleRequest) returns (.Response) { ... }</code>
+       * <code>rpc updateExample(.ai_flow.UpdateExampleRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void updateExample(
           com.google.protobuf.RpcController controller,
@@ -31401,7 +31401,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc deleteExampleById(.IdRequest) returns (.Response) { ... }</code>
+       * <code>rpc deleteExampleById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void deleteExampleById(
           com.google.protobuf.RpcController controller,
@@ -31409,7 +31409,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc deleteExampleByName(.NameRequest) returns (.Response) { ... }</code>
+       * <code>rpc deleteExampleByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void deleteExampleByName(
           com.google.protobuf.RpcController controller,
@@ -31421,7 +31421,7 @@ public final class MetadataServiceOuterClass {
        *model relation api
        * </pre>
        *
-       * <code>rpc getModelRelationById(.IdRequest) returns (.Response) { ... }</code>
+       * <code>rpc getModelRelationById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void getModelRelationById(
           com.google.protobuf.RpcController controller,
@@ -31429,7 +31429,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc getModelRelationByName(.NameRequest) returns (.Response) { ... }</code>
+       * <code>rpc getModelRelationByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void getModelRelationByName(
           com.google.protobuf.RpcController controller,
@@ -31437,7 +31437,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc listModelRelation(.ListRequest) returns (.Response) { ... }</code>
+       * <code>rpc listModelRelation(.ai_flow.ListRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void listModelRelation(
           com.google.protobuf.RpcController controller,
@@ -31445,7 +31445,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc registerModelRelation(.RegisterModelRelationRequest) returns (.Response) { ... }</code>
+       * <code>rpc registerModelRelation(.ai_flow.RegisterModelRelationRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void registerModelRelation(
           com.google.protobuf.RpcController controller,
@@ -31453,7 +31453,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc deleteModelRelationById(.IdRequest) returns (.Response) { ... }</code>
+       * <code>rpc deleteModelRelationById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void deleteModelRelationById(
           com.google.protobuf.RpcController controller,
@@ -31461,7 +31461,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc deleteModelRelationByName(.NameRequest) returns (.Response) { ... }</code>
+       * <code>rpc deleteModelRelationByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void deleteModelRelationByName(
           com.google.protobuf.RpcController controller,
@@ -31473,7 +31473,7 @@ public final class MetadataServiceOuterClass {
        *model api
        * </pre>
        *
-       * <code>rpc getModelById(.IdRequest) returns (.Response) { ... }</code>
+       * <code>rpc getModelById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void getModelById(
           com.google.protobuf.RpcController controller,
@@ -31481,7 +31481,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc getModelByName(.NameRequest) returns (.Response) { ... }</code>
+       * <code>rpc getModelByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void getModelByName(
           com.google.protobuf.RpcController controller,
@@ -31489,7 +31489,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc registerModel(.RegisterModelRequest) returns (.Response) { ... }</code>
+       * <code>rpc registerModel(.ai_flow.RegisterModelRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void registerModel(
           com.google.protobuf.RpcController controller,
@@ -31497,7 +31497,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc deleteModelById(.IdRequest) returns (.Response) { ... }</code>
+       * <code>rpc deleteModelById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void deleteModelById(
           com.google.protobuf.RpcController controller,
@@ -31505,7 +31505,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc deleteModelByName(.NameRequest) returns (.Response) { ... }</code>
+       * <code>rpc deleteModelByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void deleteModelByName(
           com.google.protobuf.RpcController controller,
@@ -31517,7 +31517,7 @@ public final class MetadataServiceOuterClass {
        *model version relation api
        * </pre>
        *
-       * <code>rpc getModelVersionRelationByVersion(.ModelVersionNameRequest) returns (.Response) { ... }</code>
+       * <code>rpc getModelVersionRelationByVersion(.ai_flow.ModelVersionNameRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void getModelVersionRelationByVersion(
           com.google.protobuf.RpcController controller,
@@ -31525,7 +31525,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc listModelVersionRelation(.ListModelVersionRelationRequest) returns (.Response) { ... }</code>
+       * <code>rpc listModelVersionRelation(.ai_flow.ListModelVersionRelationRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void listModelVersionRelation(
           com.google.protobuf.RpcController controller,
@@ -31533,7 +31533,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc registerModelVersionRelation(.RegisterModelVersionRelationRequest) returns (.Response) { ... }</code>
+       * <code>rpc registerModelVersionRelation(.ai_flow.RegisterModelVersionRelationRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void registerModelVersionRelation(
           com.google.protobuf.RpcController controller,
@@ -31541,7 +31541,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc deleteModelVersionRelationByVersion(.ModelVersionNameRequest) returns (.Response) { ... }</code>
+       * <code>rpc deleteModelVersionRelationByVersion(.ai_flow.ModelVersionNameRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void deleteModelVersionRelationByVersion(
           com.google.protobuf.RpcController controller,
@@ -31553,7 +31553,7 @@ public final class MetadataServiceOuterClass {
        *model version api
        * </pre>
        *
-       * <code>rpc getModelVersionByVersion(.ModelVersionNameRequest) returns (.Response) { ... }</code>
+       * <code>rpc getModelVersionByVersion(.ai_flow.ModelVersionNameRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void getModelVersionByVersion(
           com.google.protobuf.RpcController controller,
@@ -31561,7 +31561,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc registerModelVersion(.RegisterModelVersionRequest) returns (.Response) { ... }</code>
+       * <code>rpc registerModelVersion(.ai_flow.RegisterModelVersionRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void registerModelVersion(
           com.google.protobuf.RpcController controller,
@@ -31569,7 +31569,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc deleteModelVersionByVersion(.ModelVersionNameRequest) returns (.Response) { ... }</code>
+       * <code>rpc deleteModelVersionByVersion(.ai_flow.ModelVersionNameRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void deleteModelVersionByVersion(
           com.google.protobuf.RpcController controller,
@@ -31577,7 +31577,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc getDeployedModelVersion(.ModelNameRequest) returns (.Response) { ... }</code>
+       * <code>rpc getDeployedModelVersion(.ai_flow.ModelNameRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void getDeployedModelVersion(
           com.google.protobuf.RpcController controller,
@@ -31585,7 +31585,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc getLatestValidatedModelVersion(.ModelNameRequest) returns (.Response) { ... }</code>
+       * <code>rpc getLatestValidatedModelVersion(.ai_flow.ModelNameRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void getLatestValidatedModelVersion(
           com.google.protobuf.RpcController controller,
@@ -31593,7 +31593,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc getLatestGeneratedModelVersion(.ModelNameRequest) returns (.Response) { ... }</code>
+       * <code>rpc getLatestGeneratedModelVersion(.ai_flow.ModelNameRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void getLatestGeneratedModelVersion(
           com.google.protobuf.RpcController controller,
@@ -31605,7 +31605,7 @@ public final class MetadataServiceOuterClass {
        *workflow execution api
        * </pre>
        *
-       * <code>rpc getWorkFlowExecutionById(.IdRequest) returns (.Response) { ... }</code>
+       * <code>rpc getWorkFlowExecutionById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void getWorkFlowExecutionById(
           com.google.protobuf.RpcController controller,
@@ -31613,7 +31613,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc getWorkFlowExecutionByName(.NameRequest) returns (.Response) { ... }</code>
+       * <code>rpc getWorkFlowExecutionByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void getWorkFlowExecutionByName(
           com.google.protobuf.RpcController controller,
@@ -31621,7 +31621,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc listWorkFlowExecution(.ListRequest) returns (.Response) { ... }</code>
+       * <code>rpc listWorkFlowExecution(.ai_flow.ListRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void listWorkFlowExecution(
           com.google.protobuf.RpcController controller,
@@ -31629,7 +31629,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc registerWorkFlowExecution(.RegisterWorkFlowExecutionRequest) returns (.Response) { ... }</code>
+       * <code>rpc registerWorkFlowExecution(.ai_flow.RegisterWorkFlowExecutionRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void registerWorkFlowExecution(
           com.google.protobuf.RpcController controller,
@@ -31637,7 +31637,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc updateWorkflowExecution(.UpdateWorkflowExecutionRequest) returns (.Response) { ... }</code>
+       * <code>rpc updateWorkflowExecution(.ai_flow.UpdateWorkflowExecutionRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void updateWorkflowExecution(
           com.google.protobuf.RpcController controller,
@@ -31645,7 +31645,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc deleteWorkflowExecutionById(.IdRequest) returns (.Response) { ... }</code>
+       * <code>rpc deleteWorkflowExecutionById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void deleteWorkflowExecutionById(
           com.google.protobuf.RpcController controller,
@@ -31653,7 +31653,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc deleteWorkflowExecutionByName(.NameRequest) returns (.Response) { ... }</code>
+       * <code>rpc deleteWorkflowExecutionByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void deleteWorkflowExecutionByName(
           com.google.protobuf.RpcController controller,
@@ -31661,7 +31661,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc updateWorkflowExecutionEndTime(.UpdateWorkflowExecutionEndTimeRequest) returns (.Response) { ... }</code>
+       * <code>rpc updateWorkflowExecutionEndTime(.ai_flow.UpdateWorkflowExecutionEndTimeRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void updateWorkflowExecutionEndTime(
           com.google.protobuf.RpcController controller,
@@ -31669,7 +31669,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc updateWorkflowExecutionState(.UpdateWorkflowExecutionStateRequest) returns (.Response) { ... }</code>
+       * <code>rpc updateWorkflowExecutionState(.ai_flow.UpdateWorkflowExecutionStateRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void updateWorkflowExecutionState(
           com.google.protobuf.RpcController controller,
@@ -31681,7 +31681,7 @@ public final class MetadataServiceOuterClass {
        *job api
        * </pre>
        *
-       * <code>rpc getJobById(.IdRequest) returns (.Response) { ... }</code>
+       * <code>rpc getJobById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void getJobById(
           com.google.protobuf.RpcController controller,
@@ -31689,7 +31689,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc getJobByName(.NameRequest) returns (.Response) { ... }</code>
+       * <code>rpc getJobByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void getJobByName(
           com.google.protobuf.RpcController controller,
@@ -31697,7 +31697,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc listJob(.ListRequest) returns (.Response) { ... }</code>
+       * <code>rpc listJob(.ai_flow.ListRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void listJob(
           com.google.protobuf.RpcController controller,
@@ -31705,7 +31705,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc registerJob(.RegisterJobRequest) returns (.Response) { ... }</code>
+       * <code>rpc registerJob(.ai_flow.RegisterJobRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void registerJob(
           com.google.protobuf.RpcController controller,
@@ -31713,7 +31713,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc updateJob(.UpdateJobRequest) returns (.Response) { ... }</code>
+       * <code>rpc updateJob(.ai_flow.UpdateJobRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void updateJob(
           com.google.protobuf.RpcController controller,
@@ -31721,7 +31721,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc updateJobState(.UpdateJobStateRequest) returns (.Response) { ... }</code>
+       * <code>rpc updateJobState(.ai_flow.UpdateJobStateRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void updateJobState(
           com.google.protobuf.RpcController controller,
@@ -31729,7 +31729,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc updateJobEndTime(.UpdateJobEndTimeRequest) returns (.Response) { ... }</code>
+       * <code>rpc updateJobEndTime(.ai_flow.UpdateJobEndTimeRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void updateJobEndTime(
           com.google.protobuf.RpcController controller,
@@ -31737,7 +31737,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc deleteJobById(.IdRequest) returns (.Response) { ... }</code>
+       * <code>rpc deleteJobById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void deleteJobById(
           com.google.protobuf.RpcController controller,
@@ -31745,7 +31745,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc deleteJobByName(.NameRequest) returns (.Response) { ... }</code>
+       * <code>rpc deleteJobByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void deleteJobByName(
           com.google.protobuf.RpcController controller,
@@ -31757,7 +31757,7 @@ public final class MetadataServiceOuterClass {
        *project api
        * </pre>
        *
-       * <code>rpc getProjectById(.IdRequest) returns (.Response) { ... }</code>
+       * <code>rpc getProjectById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void getProjectById(
           com.google.protobuf.RpcController controller,
@@ -31765,7 +31765,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc getProjectByName(.NameRequest) returns (.Response) { ... }</code>
+       * <code>rpc getProjectByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void getProjectByName(
           com.google.protobuf.RpcController controller,
@@ -31773,7 +31773,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc registerProject(.RegisterProjectRequest) returns (.Response) { ... }</code>
+       * <code>rpc registerProject(.ai_flow.RegisterProjectRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void registerProject(
           com.google.protobuf.RpcController controller,
@@ -31781,7 +31781,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc updateProject(.UpdateProjectRequest) returns (.Response) { ... }</code>
+       * <code>rpc updateProject(.ai_flow.UpdateProjectRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void updateProject(
           com.google.protobuf.RpcController controller,
@@ -31789,7 +31789,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc listProject(.ListRequest) returns (.Response) { ... }</code>
+       * <code>rpc listProject(.ai_flow.ListRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void listProject(
           com.google.protobuf.RpcController controller,
@@ -31797,7 +31797,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc deleteProjectById(.IdRequest) returns (.Response) { ... }</code>
+       * <code>rpc deleteProjectById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void deleteProjectById(
           com.google.protobuf.RpcController controller,
@@ -31805,7 +31805,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc deleteProjectByName(.NameRequest) returns (.Response) { ... }</code>
+       * <code>rpc deleteProjectByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void deleteProjectByName(
           com.google.protobuf.RpcController controller,
@@ -31817,7 +31817,7 @@ public final class MetadataServiceOuterClass {
        *artifact api
        * </pre>
        *
-       * <code>rpc getArtifactById(.IdRequest) returns (.Response) { ... }</code>
+       * <code>rpc getArtifactById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void getArtifactById(
           com.google.protobuf.RpcController controller,
@@ -31825,7 +31825,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc getArtifactByName(.NameRequest) returns (.Response) { ... }</code>
+       * <code>rpc getArtifactByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void getArtifactByName(
           com.google.protobuf.RpcController controller,
@@ -31833,7 +31833,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc updateArtifact(.UpdateArtifactRequest) returns (.Response) { ... }</code>
+       * <code>rpc updateArtifact(.ai_flow.UpdateArtifactRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void updateArtifact(
           com.google.protobuf.RpcController controller,
@@ -31841,7 +31841,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc registerArtifact(.RegisterArtifactRequest) returns (.Response) { ... }</code>
+       * <code>rpc registerArtifact(.ai_flow.RegisterArtifactRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void registerArtifact(
           com.google.protobuf.RpcController controller,
@@ -31849,7 +31849,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc listArtifact(.ListRequest) returns (.Response) { ... }</code>
+       * <code>rpc listArtifact(.ai_flow.ListRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void listArtifact(
           com.google.protobuf.RpcController controller,
@@ -31857,7 +31857,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc deleteArtifactById(.IdRequest) returns (.Response) { ... }</code>
+       * <code>rpc deleteArtifactById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void deleteArtifactById(
           com.google.protobuf.RpcController controller,
@@ -31865,7 +31865,7 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc deleteArtifactByName(.NameRequest) returns (.Response) { ... }</code>
+       * <code>rpc deleteArtifactByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
        */
       public abstract void deleteArtifactByName(
           com.google.protobuf.RpcController controller,
@@ -32808,7 +32808,7 @@ public final class MetadataServiceOuterClass {
      *example api
      * </pre>
      *
-     * <code>rpc getExampleById(.IdRequest) returns (.Response) { ... }</code>
+     * <code>rpc getExampleById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void getExampleById(
         com.google.protobuf.RpcController controller,
@@ -32816,7 +32816,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc getExampleByName(.NameRequest) returns (.Response) { ... }</code>
+     * <code>rpc getExampleByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void getExampleByName(
         com.google.protobuf.RpcController controller,
@@ -32824,7 +32824,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc listExample(.ListRequest) returns (.Response) { ... }</code>
+     * <code>rpc listExample(.ai_flow.ListRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void listExample(
         com.google.protobuf.RpcController controller,
@@ -32832,7 +32832,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc registerExample(.RegisterExampleRequest) returns (.Response) { ... }</code>
+     * <code>rpc registerExample(.ai_flow.RegisterExampleRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void registerExample(
         com.google.protobuf.RpcController controller,
@@ -32840,7 +32840,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc registerExampleWithCatalog(.RegisterExampleRequest) returns (.Response) { ... }</code>
+     * <code>rpc registerExampleWithCatalog(.ai_flow.RegisterExampleRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void registerExampleWithCatalog(
         com.google.protobuf.RpcController controller,
@@ -32848,7 +32848,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc registerExamples(.RegisterExamplesRequest) returns (.Response) { ... }</code>
+     * <code>rpc registerExamples(.ai_flow.RegisterExamplesRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void registerExamples(
         com.google.protobuf.RpcController controller,
@@ -32856,7 +32856,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc updateExample(.UpdateExampleRequest) returns (.Response) { ... }</code>
+     * <code>rpc updateExample(.ai_flow.UpdateExampleRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void updateExample(
         com.google.protobuf.RpcController controller,
@@ -32864,7 +32864,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc deleteExampleById(.IdRequest) returns (.Response) { ... }</code>
+     * <code>rpc deleteExampleById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void deleteExampleById(
         com.google.protobuf.RpcController controller,
@@ -32872,7 +32872,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc deleteExampleByName(.NameRequest) returns (.Response) { ... }</code>
+     * <code>rpc deleteExampleByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void deleteExampleByName(
         com.google.protobuf.RpcController controller,
@@ -32884,7 +32884,7 @@ public final class MetadataServiceOuterClass {
      *model relation api
      * </pre>
      *
-     * <code>rpc getModelRelationById(.IdRequest) returns (.Response) { ... }</code>
+     * <code>rpc getModelRelationById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void getModelRelationById(
         com.google.protobuf.RpcController controller,
@@ -32892,7 +32892,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc getModelRelationByName(.NameRequest) returns (.Response) { ... }</code>
+     * <code>rpc getModelRelationByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void getModelRelationByName(
         com.google.protobuf.RpcController controller,
@@ -32900,7 +32900,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc listModelRelation(.ListRequest) returns (.Response) { ... }</code>
+     * <code>rpc listModelRelation(.ai_flow.ListRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void listModelRelation(
         com.google.protobuf.RpcController controller,
@@ -32908,7 +32908,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc registerModelRelation(.RegisterModelRelationRequest) returns (.Response) { ... }</code>
+     * <code>rpc registerModelRelation(.ai_flow.RegisterModelRelationRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void registerModelRelation(
         com.google.protobuf.RpcController controller,
@@ -32916,7 +32916,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc deleteModelRelationById(.IdRequest) returns (.Response) { ... }</code>
+     * <code>rpc deleteModelRelationById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void deleteModelRelationById(
         com.google.protobuf.RpcController controller,
@@ -32924,7 +32924,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc deleteModelRelationByName(.NameRequest) returns (.Response) { ... }</code>
+     * <code>rpc deleteModelRelationByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void deleteModelRelationByName(
         com.google.protobuf.RpcController controller,
@@ -32936,7 +32936,7 @@ public final class MetadataServiceOuterClass {
      *model api
      * </pre>
      *
-     * <code>rpc getModelById(.IdRequest) returns (.Response) { ... }</code>
+     * <code>rpc getModelById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void getModelById(
         com.google.protobuf.RpcController controller,
@@ -32944,7 +32944,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc getModelByName(.NameRequest) returns (.Response) { ... }</code>
+     * <code>rpc getModelByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void getModelByName(
         com.google.protobuf.RpcController controller,
@@ -32952,7 +32952,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc registerModel(.RegisterModelRequest) returns (.Response) { ... }</code>
+     * <code>rpc registerModel(.ai_flow.RegisterModelRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void registerModel(
         com.google.protobuf.RpcController controller,
@@ -32960,7 +32960,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc deleteModelById(.IdRequest) returns (.Response) { ... }</code>
+     * <code>rpc deleteModelById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void deleteModelById(
         com.google.protobuf.RpcController controller,
@@ -32968,7 +32968,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc deleteModelByName(.NameRequest) returns (.Response) { ... }</code>
+     * <code>rpc deleteModelByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void deleteModelByName(
         com.google.protobuf.RpcController controller,
@@ -32980,7 +32980,7 @@ public final class MetadataServiceOuterClass {
      *model version relation api
      * </pre>
      *
-     * <code>rpc getModelVersionRelationByVersion(.ModelVersionNameRequest) returns (.Response) { ... }</code>
+     * <code>rpc getModelVersionRelationByVersion(.ai_flow.ModelVersionNameRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void getModelVersionRelationByVersion(
         com.google.protobuf.RpcController controller,
@@ -32988,7 +32988,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc listModelVersionRelation(.ListModelVersionRelationRequest) returns (.Response) { ... }</code>
+     * <code>rpc listModelVersionRelation(.ai_flow.ListModelVersionRelationRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void listModelVersionRelation(
         com.google.protobuf.RpcController controller,
@@ -32996,7 +32996,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc registerModelVersionRelation(.RegisterModelVersionRelationRequest) returns (.Response) { ... }</code>
+     * <code>rpc registerModelVersionRelation(.ai_flow.RegisterModelVersionRelationRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void registerModelVersionRelation(
         com.google.protobuf.RpcController controller,
@@ -33004,7 +33004,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc deleteModelVersionRelationByVersion(.ModelVersionNameRequest) returns (.Response) { ... }</code>
+     * <code>rpc deleteModelVersionRelationByVersion(.ai_flow.ModelVersionNameRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void deleteModelVersionRelationByVersion(
         com.google.protobuf.RpcController controller,
@@ -33016,7 +33016,7 @@ public final class MetadataServiceOuterClass {
      *model version api
      * </pre>
      *
-     * <code>rpc getModelVersionByVersion(.ModelVersionNameRequest) returns (.Response) { ... }</code>
+     * <code>rpc getModelVersionByVersion(.ai_flow.ModelVersionNameRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void getModelVersionByVersion(
         com.google.protobuf.RpcController controller,
@@ -33024,7 +33024,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc registerModelVersion(.RegisterModelVersionRequest) returns (.Response) { ... }</code>
+     * <code>rpc registerModelVersion(.ai_flow.RegisterModelVersionRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void registerModelVersion(
         com.google.protobuf.RpcController controller,
@@ -33032,7 +33032,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc deleteModelVersionByVersion(.ModelVersionNameRequest) returns (.Response) { ... }</code>
+     * <code>rpc deleteModelVersionByVersion(.ai_flow.ModelVersionNameRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void deleteModelVersionByVersion(
         com.google.protobuf.RpcController controller,
@@ -33040,7 +33040,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc getDeployedModelVersion(.ModelNameRequest) returns (.Response) { ... }</code>
+     * <code>rpc getDeployedModelVersion(.ai_flow.ModelNameRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void getDeployedModelVersion(
         com.google.protobuf.RpcController controller,
@@ -33048,7 +33048,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc getLatestValidatedModelVersion(.ModelNameRequest) returns (.Response) { ... }</code>
+     * <code>rpc getLatestValidatedModelVersion(.ai_flow.ModelNameRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void getLatestValidatedModelVersion(
         com.google.protobuf.RpcController controller,
@@ -33056,7 +33056,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc getLatestGeneratedModelVersion(.ModelNameRequest) returns (.Response) { ... }</code>
+     * <code>rpc getLatestGeneratedModelVersion(.ai_flow.ModelNameRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void getLatestGeneratedModelVersion(
         com.google.protobuf.RpcController controller,
@@ -33068,7 +33068,7 @@ public final class MetadataServiceOuterClass {
      *workflow execution api
      * </pre>
      *
-     * <code>rpc getWorkFlowExecutionById(.IdRequest) returns (.Response) { ... }</code>
+     * <code>rpc getWorkFlowExecutionById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void getWorkFlowExecutionById(
         com.google.protobuf.RpcController controller,
@@ -33076,7 +33076,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc getWorkFlowExecutionByName(.NameRequest) returns (.Response) { ... }</code>
+     * <code>rpc getWorkFlowExecutionByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void getWorkFlowExecutionByName(
         com.google.protobuf.RpcController controller,
@@ -33084,7 +33084,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc listWorkFlowExecution(.ListRequest) returns (.Response) { ... }</code>
+     * <code>rpc listWorkFlowExecution(.ai_flow.ListRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void listWorkFlowExecution(
         com.google.protobuf.RpcController controller,
@@ -33092,7 +33092,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc registerWorkFlowExecution(.RegisterWorkFlowExecutionRequest) returns (.Response) { ... }</code>
+     * <code>rpc registerWorkFlowExecution(.ai_flow.RegisterWorkFlowExecutionRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void registerWorkFlowExecution(
         com.google.protobuf.RpcController controller,
@@ -33100,7 +33100,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc updateWorkflowExecution(.UpdateWorkflowExecutionRequest) returns (.Response) { ... }</code>
+     * <code>rpc updateWorkflowExecution(.ai_flow.UpdateWorkflowExecutionRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void updateWorkflowExecution(
         com.google.protobuf.RpcController controller,
@@ -33108,7 +33108,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc deleteWorkflowExecutionById(.IdRequest) returns (.Response) { ... }</code>
+     * <code>rpc deleteWorkflowExecutionById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void deleteWorkflowExecutionById(
         com.google.protobuf.RpcController controller,
@@ -33116,7 +33116,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc deleteWorkflowExecutionByName(.NameRequest) returns (.Response) { ... }</code>
+     * <code>rpc deleteWorkflowExecutionByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void deleteWorkflowExecutionByName(
         com.google.protobuf.RpcController controller,
@@ -33124,7 +33124,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc updateWorkflowExecutionEndTime(.UpdateWorkflowExecutionEndTimeRequest) returns (.Response) { ... }</code>
+     * <code>rpc updateWorkflowExecutionEndTime(.ai_flow.UpdateWorkflowExecutionEndTimeRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void updateWorkflowExecutionEndTime(
         com.google.protobuf.RpcController controller,
@@ -33132,7 +33132,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc updateWorkflowExecutionState(.UpdateWorkflowExecutionStateRequest) returns (.Response) { ... }</code>
+     * <code>rpc updateWorkflowExecutionState(.ai_flow.UpdateWorkflowExecutionStateRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void updateWorkflowExecutionState(
         com.google.protobuf.RpcController controller,
@@ -33144,7 +33144,7 @@ public final class MetadataServiceOuterClass {
      *job api
      * </pre>
      *
-     * <code>rpc getJobById(.IdRequest) returns (.Response) { ... }</code>
+     * <code>rpc getJobById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void getJobById(
         com.google.protobuf.RpcController controller,
@@ -33152,7 +33152,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc getJobByName(.NameRequest) returns (.Response) { ... }</code>
+     * <code>rpc getJobByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void getJobByName(
         com.google.protobuf.RpcController controller,
@@ -33160,7 +33160,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc listJob(.ListRequest) returns (.Response) { ... }</code>
+     * <code>rpc listJob(.ai_flow.ListRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void listJob(
         com.google.protobuf.RpcController controller,
@@ -33168,7 +33168,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc registerJob(.RegisterJobRequest) returns (.Response) { ... }</code>
+     * <code>rpc registerJob(.ai_flow.RegisterJobRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void registerJob(
         com.google.protobuf.RpcController controller,
@@ -33176,7 +33176,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc updateJob(.UpdateJobRequest) returns (.Response) { ... }</code>
+     * <code>rpc updateJob(.ai_flow.UpdateJobRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void updateJob(
         com.google.protobuf.RpcController controller,
@@ -33184,7 +33184,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc updateJobState(.UpdateJobStateRequest) returns (.Response) { ... }</code>
+     * <code>rpc updateJobState(.ai_flow.UpdateJobStateRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void updateJobState(
         com.google.protobuf.RpcController controller,
@@ -33192,7 +33192,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc updateJobEndTime(.UpdateJobEndTimeRequest) returns (.Response) { ... }</code>
+     * <code>rpc updateJobEndTime(.ai_flow.UpdateJobEndTimeRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void updateJobEndTime(
         com.google.protobuf.RpcController controller,
@@ -33200,7 +33200,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc deleteJobById(.IdRequest) returns (.Response) { ... }</code>
+     * <code>rpc deleteJobById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void deleteJobById(
         com.google.protobuf.RpcController controller,
@@ -33208,7 +33208,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc deleteJobByName(.NameRequest) returns (.Response) { ... }</code>
+     * <code>rpc deleteJobByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void deleteJobByName(
         com.google.protobuf.RpcController controller,
@@ -33220,7 +33220,7 @@ public final class MetadataServiceOuterClass {
      *project api
      * </pre>
      *
-     * <code>rpc getProjectById(.IdRequest) returns (.Response) { ... }</code>
+     * <code>rpc getProjectById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void getProjectById(
         com.google.protobuf.RpcController controller,
@@ -33228,7 +33228,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc getProjectByName(.NameRequest) returns (.Response) { ... }</code>
+     * <code>rpc getProjectByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void getProjectByName(
         com.google.protobuf.RpcController controller,
@@ -33236,7 +33236,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc registerProject(.RegisterProjectRequest) returns (.Response) { ... }</code>
+     * <code>rpc registerProject(.ai_flow.RegisterProjectRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void registerProject(
         com.google.protobuf.RpcController controller,
@@ -33244,7 +33244,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc updateProject(.UpdateProjectRequest) returns (.Response) { ... }</code>
+     * <code>rpc updateProject(.ai_flow.UpdateProjectRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void updateProject(
         com.google.protobuf.RpcController controller,
@@ -33252,7 +33252,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc listProject(.ListRequest) returns (.Response) { ... }</code>
+     * <code>rpc listProject(.ai_flow.ListRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void listProject(
         com.google.protobuf.RpcController controller,
@@ -33260,7 +33260,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc deleteProjectById(.IdRequest) returns (.Response) { ... }</code>
+     * <code>rpc deleteProjectById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void deleteProjectById(
         com.google.protobuf.RpcController controller,
@@ -33268,7 +33268,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc deleteProjectByName(.NameRequest) returns (.Response) { ... }</code>
+     * <code>rpc deleteProjectByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void deleteProjectByName(
         com.google.protobuf.RpcController controller,
@@ -33280,7 +33280,7 @@ public final class MetadataServiceOuterClass {
      *artifact api
      * </pre>
      *
-     * <code>rpc getArtifactById(.IdRequest) returns (.Response) { ... }</code>
+     * <code>rpc getArtifactById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void getArtifactById(
         com.google.protobuf.RpcController controller,
@@ -33288,7 +33288,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc getArtifactByName(.NameRequest) returns (.Response) { ... }</code>
+     * <code>rpc getArtifactByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void getArtifactByName(
         com.google.protobuf.RpcController controller,
@@ -33296,7 +33296,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc updateArtifact(.UpdateArtifactRequest) returns (.Response) { ... }</code>
+     * <code>rpc updateArtifact(.ai_flow.UpdateArtifactRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void updateArtifact(
         com.google.protobuf.RpcController controller,
@@ -33304,7 +33304,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc registerArtifact(.RegisterArtifactRequest) returns (.Response) { ... }</code>
+     * <code>rpc registerArtifact(.ai_flow.RegisterArtifactRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void registerArtifact(
         com.google.protobuf.RpcController controller,
@@ -33312,7 +33312,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc listArtifact(.ListRequest) returns (.Response) { ... }</code>
+     * <code>rpc listArtifact(.ai_flow.ListRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void listArtifact(
         com.google.protobuf.RpcController controller,
@@ -33320,7 +33320,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc deleteArtifactById(.IdRequest) returns (.Response) { ... }</code>
+     * <code>rpc deleteArtifactById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void deleteArtifactById(
         com.google.protobuf.RpcController controller,
@@ -33328,7 +33328,7 @@ public final class MetadataServiceOuterClass {
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc deleteArtifactByName(.NameRequest) returns (.Response) { ... }</code>
+     * <code>rpc deleteArtifactByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
      */
     public abstract void deleteArtifactByName(
         com.google.protobuf.RpcController controller,
@@ -35964,204 +35964,204 @@ public final class MetadataServiceOuterClass {
 
     }
 
-    // @@protoc_insertion_point(class_scope:MetadataService)
+    // @@protoc_insertion_point(class_scope:ai_flow.MetadataService)
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_IdRequest_descriptor;
+    internal_static_ai_flow_IdRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_IdRequest_fieldAccessorTable;
+      internal_static_ai_flow_IdRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_NameRequest_descriptor;
+    internal_static_ai_flow_NameRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_NameRequest_fieldAccessorTable;
+      internal_static_ai_flow_NameRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ListRequest_descriptor;
+    internal_static_ai_flow_ListRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_ListRequest_fieldAccessorTable;
+      internal_static_ai_flow_ListRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_MetaResponse_descriptor;
+    internal_static_ai_flow_MetaResponse_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_MetaResponse_fieldAccessorTable;
+      internal_static_ai_flow_MetaResponse_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_RegisterExampleRequest_descriptor;
+    internal_static_ai_flow_RegisterExampleRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_RegisterExampleRequest_fieldAccessorTable;
+      internal_static_ai_flow_RegisterExampleRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_RegisterExamplesRequest_descriptor;
+    internal_static_ai_flow_RegisterExamplesRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_RegisterExamplesRequest_fieldAccessorTable;
+      internal_static_ai_flow_RegisterExamplesRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ExampleListProto_descriptor;
+    internal_static_ai_flow_ExampleListProto_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_ExampleListProto_fieldAccessorTable;
+      internal_static_ai_flow_ExampleListProto_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_UpdateExampleRequest_descriptor;
+    internal_static_ai_flow_UpdateExampleRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_UpdateExampleRequest_fieldAccessorTable;
+      internal_static_ai_flow_UpdateExampleRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_UpdateExampleRequest_PropertiesEntry_descriptor;
+    internal_static_ai_flow_UpdateExampleRequest_PropertiesEntry_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_UpdateExampleRequest_PropertiesEntry_fieldAccessorTable;
+      internal_static_ai_flow_UpdateExampleRequest_PropertiesEntry_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_RegisterModelRelationRequest_descriptor;
+    internal_static_ai_flow_RegisterModelRelationRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_RegisterModelRelationRequest_fieldAccessorTable;
+      internal_static_ai_flow_RegisterModelRelationRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_RegisterModelRequest_descriptor;
+    internal_static_ai_flow_RegisterModelRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_RegisterModelRequest_fieldAccessorTable;
+      internal_static_ai_flow_RegisterModelRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ModelRelationListProto_descriptor;
+    internal_static_ai_flow_ModelRelationListProto_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_ModelRelationListProto_fieldAccessorTable;
+      internal_static_ai_flow_ModelRelationListProto_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ModelVersionNameRequest_descriptor;
+    internal_static_ai_flow_ModelVersionNameRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_ModelVersionNameRequest_fieldAccessorTable;
+      internal_static_ai_flow_ModelVersionNameRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_RegisterModelVersionRelationRequest_descriptor;
+    internal_static_ai_flow_RegisterModelVersionRelationRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_RegisterModelVersionRelationRequest_fieldAccessorTable;
+      internal_static_ai_flow_RegisterModelVersionRelationRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_RegisterModelVersionRequest_descriptor;
+    internal_static_ai_flow_RegisterModelVersionRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_RegisterModelVersionRequest_fieldAccessorTable;
+      internal_static_ai_flow_RegisterModelVersionRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ListModelVersionRelationRequest_descriptor;
+    internal_static_ai_flow_ListModelVersionRelationRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_ListModelVersionRelationRequest_fieldAccessorTable;
+      internal_static_ai_flow_ListModelVersionRelationRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ModelVersionRelationListProto_descriptor;
+    internal_static_ai_flow_ModelVersionRelationListProto_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_ModelVersionRelationListProto_fieldAccessorTable;
+      internal_static_ai_flow_ModelVersionRelationListProto_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ModelVersionListProto_descriptor;
+    internal_static_ai_flow_ModelVersionListProto_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_ModelVersionListProto_fieldAccessorTable;
+      internal_static_ai_flow_ModelVersionListProto_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ModelNameRequest_descriptor;
+    internal_static_ai_flow_ModelNameRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_ModelNameRequest_fieldAccessorTable;
+      internal_static_ai_flow_ModelNameRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_RegisterJobRequest_descriptor;
+    internal_static_ai_flow_RegisterJobRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_RegisterJobRequest_fieldAccessorTable;
+      internal_static_ai_flow_RegisterJobRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_UpdateJobRequest_descriptor;
+    internal_static_ai_flow_UpdateJobRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_UpdateJobRequest_fieldAccessorTable;
+      internal_static_ai_flow_UpdateJobRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_UpdateJobRequest_PropertiesEntry_descriptor;
+    internal_static_ai_flow_UpdateJobRequest_PropertiesEntry_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_UpdateJobRequest_PropertiesEntry_fieldAccessorTable;
+      internal_static_ai_flow_UpdateJobRequest_PropertiesEntry_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_UpdateJobStateRequest_descriptor;
+    internal_static_ai_flow_UpdateJobStateRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_UpdateJobStateRequest_fieldAccessorTable;
+      internal_static_ai_flow_UpdateJobStateRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_UpdateJobEndTimeRequest_descriptor;
+    internal_static_ai_flow_UpdateJobEndTimeRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_UpdateJobEndTimeRequest_fieldAccessorTable;
+      internal_static_ai_flow_UpdateJobEndTimeRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_JobListProto_descriptor;
+    internal_static_ai_flow_JobListProto_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_JobListProto_fieldAccessorTable;
+      internal_static_ai_flow_JobListProto_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_RegisterWorkFlowExecutionRequest_descriptor;
+    internal_static_ai_flow_RegisterWorkFlowExecutionRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_RegisterWorkFlowExecutionRequest_fieldAccessorTable;
+      internal_static_ai_flow_RegisterWorkFlowExecutionRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_UpdateWorkflowExecutionRequest_descriptor;
+    internal_static_ai_flow_UpdateWorkflowExecutionRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_UpdateWorkflowExecutionRequest_fieldAccessorTable;
+      internal_static_ai_flow_UpdateWorkflowExecutionRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_UpdateWorkflowExecutionRequest_PropertiesEntry_descriptor;
+    internal_static_ai_flow_UpdateWorkflowExecutionRequest_PropertiesEntry_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_UpdateWorkflowExecutionRequest_PropertiesEntry_fieldAccessorTable;
+      internal_static_ai_flow_UpdateWorkflowExecutionRequest_PropertiesEntry_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_WorkFlowExecutionListProto_descriptor;
+    internal_static_ai_flow_WorkFlowExecutionListProto_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_WorkFlowExecutionListProto_fieldAccessorTable;
+      internal_static_ai_flow_WorkFlowExecutionListProto_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_UpdateWorkflowExecutionEndTimeRequest_descriptor;
+    internal_static_ai_flow_UpdateWorkflowExecutionEndTimeRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_UpdateWorkflowExecutionEndTimeRequest_fieldAccessorTable;
+      internal_static_ai_flow_UpdateWorkflowExecutionEndTimeRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_UpdateWorkflowExecutionStateRequest_descriptor;
+    internal_static_ai_flow_UpdateWorkflowExecutionStateRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_UpdateWorkflowExecutionStateRequest_fieldAccessorTable;
+      internal_static_ai_flow_UpdateWorkflowExecutionStateRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_RegisterProjectRequest_descriptor;
+    internal_static_ai_flow_RegisterProjectRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_RegisterProjectRequest_fieldAccessorTable;
+      internal_static_ai_flow_RegisterProjectRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_UpdateProjectRequest_descriptor;
+    internal_static_ai_flow_UpdateProjectRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_UpdateProjectRequest_fieldAccessorTable;
+      internal_static_ai_flow_UpdateProjectRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_UpdateProjectRequest_PropertiesEntry_descriptor;
+    internal_static_ai_flow_UpdateProjectRequest_PropertiesEntry_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_UpdateProjectRequest_PropertiesEntry_fieldAccessorTable;
+      internal_static_ai_flow_UpdateProjectRequest_PropertiesEntry_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ProjectListProto_descriptor;
+    internal_static_ai_flow_ProjectListProto_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_ProjectListProto_fieldAccessorTable;
+      internal_static_ai_flow_ProjectListProto_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_RegisterArtifactRequest_descriptor;
+    internal_static_ai_flow_RegisterArtifactRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_RegisterArtifactRequest_fieldAccessorTable;
+      internal_static_ai_flow_RegisterArtifactRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_UpdateArtifactRequest_descriptor;
+    internal_static_ai_flow_UpdateArtifactRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_UpdateArtifactRequest_fieldAccessorTable;
+      internal_static_ai_flow_UpdateArtifactRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_UpdateArtifactRequest_PropertiesEntry_descriptor;
+    internal_static_ai_flow_UpdateArtifactRequest_PropertiesEntry_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_UpdateArtifactRequest_PropertiesEntry_fieldAccessorTable;
+      internal_static_ai_flow_UpdateArtifactRequest_PropertiesEntry_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ArtifactListProto_descriptor;
+    internal_static_ai_flow_ArtifactListProto_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_ArtifactListProto_fieldAccessorTable;
+      internal_static_ai_flow_ArtifactListProto_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -36171,287 +36171,318 @@ public final class MetadataServiceOuterClass {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\026metadata_service.proto\032\036google/protobu" +
-      "f/wrappers.proto\032\rmessage.proto\032\034google/" +
-      "api/annotations.proto\"\027\n\tIdRequest\022\n\n\002id" +
-      "\030\001 \001(\003\"\033\n\013NameRequest\022\014\n\004name\030\001 \001(\t\"0\n\013L" +
-      "istRequest\022\021\n\tpage_size\030\001 \001(\003\022\016\n\006offset\030" +
-      "\002 \001(\003\"E\n\014MetaResponse\022\023\n\013return_code\030\001 \001" +
-      "(\t\022\022\n\nreturn_msg\030\002 \001(\t\022\014\n\004data\030\003 \001(\t\"8\n\026" +
-      "RegisterExampleRequest\022\036\n\007example\030\001 \001(\0132" +
-      "\r.ExampleProto\":\n\027RegisterExamplesReques" +
-      "t\022\037\n\010examples\030\001 \003(\0132\r.ExampleProto\"3\n\020Ex" +
-      "ampleListProto\022\037\n\010examples\030\001 \003(\0132\r.Examp" +
-      "leProto\"\356\006\n\024UpdateExampleRequest\022\014\n\004name" +
-      "\030\001 \001(\t\0229\n\nproperties\030\002 \003(\0132%.UpdateExamp" +
-      "leRequest.PropertiesEntry\022.\n\014support_typ" +
-      "e\030\003 \001(\0162\030.ExampleSupportTypeProto\022\021\n\tnam" +
-      "e_list\030\004 \003(\t\022!\n\ttype_list\030\005 \003(\0162\016.DataTy" +
-      "peProto\022/\n\tdata_type\030\006 \001(\0132\034.google.prot" +
-      "obuf.StringValue\0221\n\013data_format\030\007 \001(\0132\034." +
-      "google.protobuf.StringValue\022/\n\tbatch_uri" +
-      "\030\010 \001(\0132\034.google.protobuf.StringValue\0220\n\n" +
-      "stream_uri\030\t \001(\0132\034.google.protobuf.Strin" +
-      "gValue\0221\n\013description\030\n \001(\0132\034.google.pro" +
-      "tobuf.StringValue\0220\n\013update_time\030\013 \001(\0132\033" +
-      ".google.protobuf.Int64Value\0222\n\014catalog_n" +
-      "ame\030\014 \001(\0132\034.google.protobuf.StringValue\022" +
-      "2\n\014catalog_type\030\r \001(\0132\034.google.protobuf." +
-      "StringValue\0226\n\020catalog_database\030\016 \001(\0132\034." +
-      "google.protobuf.StringValue\022<\n\026catalog_c" +
-      "onnection_uri\030\017 \001(\0132\034.google.protobuf.St" +
-      "ringValue\0225\n\017catalog_version\030\020 \001(\0132\034.goo" +
-      "gle.protobuf.StringValue\0223\n\rcatalog_tabl" +
-      "e\030\021 \001(\0132\034.google.protobuf.StringValue\0321\n" +
-      "\017PropertiesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002" +
-      " \001(\t:\0028\001\"K\n\034RegisterModelRelationRequest" +
-      "\022+\n\016model_relation\030\001 \001(\0132\023.ModelRelation" +
-      "Proto\"2\n\024RegisterModelRequest\022\032\n\005model\030\001" +
-      " \001(\0132\013.ModelProto\"F\n\026ModelRelationListPr" +
-      "oto\022,\n\017model_relations\030\001 \003(\0132\023.ModelRela" +
-      "tionProto\"9\n\027ModelVersionNameRequest\022\014\n\004" +
-      "name\030\001 \001(\t\022\020\n\010model_id\030\002 \001(\003\"a\n#Register" +
-      "ModelVersionRelationRequest\022:\n\026model_ver" +
-      "sion_relation\030\001 \001(\0132\032.ModelVersionRelati" +
-      "onProto\"H\n\033RegisterModelVersionRequest\022)" +
-      "\n\rmodel_version\030\001 \001(\0132\022.ModelVersionProt" +
-      "o\"V\n\037ListModelVersionRelationRequest\022\020\n\010" +
-      "model_id\030\001 \001(\003\022\021\n\tpage_size\030\002 \001(\003\022\016\n\006off" +
-      "set\030\003 \001(\003\"S\n\035ModelVersionRelationListPro" +
-      "to\0222\n\016model_versions\030\001 \003(\0132\032.ModelVersio" +
-      "nRelationProto\"C\n\025ModelVersionListProto\022" +
-      "*\n\016model_versions\030\001 \003(\0132\022.ModelVersionPr" +
-      "oto\" \n\020ModelNameRequest\022\014\n\004name\030\001 \001(\t\",\n" +
-      "\022RegisterJobRequest\022\026\n\003job\030\001 \001(\0132\t.JobPr" +
-      "oto\"\243\003\n\020UpdateJobRequest\022\014\n\004name\030\001 \001(\t\022:" +
-      "\n\025workflow_execution_id\030\002 \001(\0132\033.google.p" +
-      "rotobuf.Int64Value\022\036\n\tjob_state\030\003 \001(\0162\013." +
-      "StateProto\0225\n\nproperties\030\004 \003(\0132!.UpdateJ" +
-      "obRequest.PropertiesEntry\022,\n\006job_id\030\005 \001(" +
-      "\0132\034.google.protobuf.StringValue\022-\n\010end_t" +
-      "ime\030\006 \001(\0132\033.google.protobuf.Int64Value\022-" +
-      "\n\007log_uri\030\007 \001(\0132\034.google.protobuf.String" +
-      "Value\022/\n\tsignature\030\010 \001(\0132\034.google.protob" +
+      "\n\026metadata_service.proto\022\007ai_flow\032\036googl" +
+      "e/protobuf/wrappers.proto\032\rmessage.proto" +
+      "\032\034google/api/annotations.proto\"\027\n\tIdRequ" +
+      "est\022\n\n\002id\030\001 \001(\003\"\033\n\013NameRequest\022\014\n\004name\030\001" +
+      " \001(\t\"0\n\013ListRequest\022\021\n\tpage_size\030\001 \001(\003\022\016" +
+      "\n\006offset\030\002 \001(\003\"E\n\014MetaResponse\022\023\n\013return" +
+      "_code\030\001 \001(\t\022\022\n\nreturn_msg\030\002 \001(\t\022\014\n\004data\030" +
+      "\003 \001(\t\"@\n\026RegisterExampleRequest\022&\n\007examp" +
+      "le\030\001 \001(\0132\025.ai_flow.ExampleProto\"B\n\027Regis" +
+      "terExamplesRequest\022\'\n\010examples\030\001 \003(\0132\025.a" +
+      "i_flow.ExampleProto\";\n\020ExampleListProto\022" +
+      "\'\n\010examples\030\001 \003(\0132\025.ai_flow.ExampleProto" +
+      "\"\206\007\n\024UpdateExampleRequest\022\014\n\004name\030\001 \001(\t\022" +
+      "A\n\nproperties\030\002 \003(\0132-.ai_flow.UpdateExam" +
+      "pleRequest.PropertiesEntry\0226\n\014support_ty" +
+      "pe\030\003 \001(\0162 .ai_flow.ExampleSupportTypePro" +
+      "to\022\021\n\tname_list\030\004 \003(\t\022)\n\ttype_list\030\005 \003(\016" +
+      "2\026.ai_flow.DataTypeProto\022/\n\tdata_type\030\006 " +
+      "\001(\0132\034.google.protobuf.StringValue\0221\n\013dat" +
+      "a_format\030\007 \001(\0132\034.google.protobuf.StringV" +
+      "alue\022/\n\tbatch_uri\030\010 \001(\0132\034.google.protobu" +
+      "f.StringValue\0220\n\nstream_uri\030\t \001(\0132\034.goog" +
+      "le.protobuf.StringValue\0221\n\013description\030\n" +
+      " \001(\0132\034.google.protobuf.StringValue\0220\n\013up" +
+      "date_time\030\013 \001(\0132\033.google.protobuf.Int64V" +
+      "alue\0222\n\014catalog_name\030\014 \001(\0132\034.google.prot" +
+      "obuf.StringValue\0222\n\014catalog_type\030\r \001(\0132\034" +
+      ".google.protobuf.StringValue\0226\n\020catalog_" +
+      "database\030\016 \001(\0132\034.google.protobuf.StringV" +
+      "alue\022<\n\026catalog_connection_uri\030\017 \001(\0132\034.g" +
+      "oogle.protobuf.StringValue\0225\n\017catalog_ve" +
+      "rsion\030\020 \001(\0132\034.google.protobuf.StringValu" +
+      "e\0223\n\rcatalog_table\030\021 \001(\0132\034.google.protob" +
       "uf.StringValue\0321\n\017PropertiesEntry\022\013\n\003key" +
-      "\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"A\n\025UpdateJobSt" +
-      "ateRequest\022\032\n\005state\030\001 \001(\0162\013.StateProto\022\014" +
-      "\n\004name\030\002 \001(\t\"9\n\027UpdateJobEndTimeRequest\022" +
-      "\020\n\010end_time\030\001 \001(\003\022\014\n\004name\030\002 \001(\t\"\'\n\014JobLi" +
-      "stProto\022\027\n\004jobs\030\001 \003(\0132\t.JobProto\"W\n Regi" +
-      "sterWorkFlowExecutionRequest\0223\n\022workflow" +
-      "_execution\030\001 \001(\0132\027.WorkflowExecutionProt" +
-      "o\"\301\003\n\036UpdateWorkflowExecutionRequest\022\014\n\004" +
-      "name\030\001 \001(\t\022/\n\nproject_id\030\002 \001(\0132\033.google." +
-      "protobuf.Int64Value\022$\n\017execution_state\030\004" +
-      " \001(\0162\013.StateProto\022C\n\nproperties\030\005 \003(\0132/." +
-      "UpdateWorkflowExecutionRequest.Propertie" +
-      "sEntry\022-\n\010end_time\030\006 \001(\0132\033.google.protob" +
-      "uf.Int64Value\022-\n\007log_uri\030\007 \001(\0132\034.google." +
-      "protobuf.StringValue\0223\n\rworkflow_json\030\010 " +
-      "\001(\0132\034.google.protobuf.StringValue\022/\n\tsig" +
-      "nature\030\t \001(\0132\034.google.protobuf.StringVal" +
-      "ue\0321\n\017PropertiesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005va" +
-      "lue\030\002 \001(\t:\0028\001\"R\n\032WorkFlowExecutionListPr" +
-      "oto\0224\n\023workflow_executions\030\001 \003(\0132\027.Workf" +
-      "lowExecutionProto\"G\n%UpdateWorkflowExecu" +
-      "tionEndTimeRequest\022\020\n\010end_time\030\001 \001(\003\022\014\n\004" +
-      "name\030\002 \001(\t\"O\n#UpdateWorkflowExecutionSta" +
-      "teRequest\022\032\n\005state\030\001 \001(\0162\013.StateProto\022\014\n" +
-      "\004name\030\002 \001(\t\"8\n\026RegisterProjectRequest\022\036\n" +
-      "\007project\030\001 \001(\0132\r.ProjectProto\"\315\002\n\024Update" +
-      "ProjectRequest\022\014\n\004name\030\001 \001(\t\0229\n\nproperti" +
-      "es\030\002 \003(\0132%.UpdateProjectRequest.Properti" +
-      "esEntry\0222\n\014project_type\030\003 \001(\0132\034.google.p" +
-      "rotobuf.StringValue\022)\n\003uri\030\004 \001(\0132\034.googl" +
-      "e.protobuf.StringValue\022*\n\004user\030\005 \001(\0132\034.g" +
-      "oogle.protobuf.StringValue\022.\n\010password\030\006" +
-      " \001(\0132\034.google.protobuf.StringValue\0321\n\017Pr" +
-      "opertiesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(" +
-      "\t:\0028\001\"3\n\020ProjectListProto\022\037\n\010projects\030\001 " +
-      "\003(\0132\r.ProjectProto\";\n\027RegisterArtifactRe" +
-      "quest\022 \n\010artifact\030\001 \001(\0132\016.ArtifactProto\"" +
-      "\217\003\n\025UpdateArtifactRequest\022\014\n\004name\030\001 \001(\t\022" +
-      ":\n\nproperties\030\002 \003(\0132&.UpdateArtifactRequ" +
-      "est.PropertiesEntry\0221\n\013data_format\030\003 \001(\013" +
-      "2\034.google.protobuf.StringValue\022/\n\tbatch_" +
-      "uri\030\004 \001(\0132\034.google.protobuf.StringValue\022" +
-      "0\n\nstream_uri\030\005 \001(\0132\034.google.protobuf.St" +
-      "ringValue\0221\n\013description\030\006 \001(\0132\034.google." +
-      "protobuf.StringValue\0220\n\013update_time\030\007 \001(" +
-      "\0132\033.google.protobuf.Int64Value\0321\n\017Proper" +
-      "tiesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028" +
-      "\001\"6\n\021ArtifactListProto\022!\n\tartifacts\030\001 \003(" +
-      "\0132\016.ArtifactProto2\2005\n\017MetadataService\022Y\n" +
-      "\016getExampleById\022\n.IdRequest\032\t.Response\"0" +
-      "\202\323\344\223\002*\"%/aiflow/metadata_store/example/g" +
-      "et/id:\001*\022_\n\020getExampleByName\022\014.NameReque" +
-      "st\032\t.Response\"2\202\323\344\223\002,\"\'/aiflow/metadata_" +
-      "store/example/get/name:\001*\022V\n\013listExample" +
-      "\022\014.ListRequest\032\t.Response\".\202\323\344\223\002(\"#/aifl" +
-      "ow/metadata_store/example/list:\001*\022e\n\017reg" +
-      "isterExample\022\027.RegisterExampleRequest\032\t." +
-      "Response\".\202\323\344\223\002(\"#/aiflow/metadata_store" +
-      "/example/save:\001*\022}\n\032registerExampleWithC" +
-      "atalog\022\027.RegisterExampleRequest\032\t.Respon" +
-      "se\";\202\323\344\223\0025\"0/aiflow/metadata_store/examp" +
-      "le/save_with_catalog:\001*\022h\n\020registerExamp" +
-      "les\022\030.RegisterExamplesRequest\032\t.Response" +
-      "\"/\202\323\344\223\002)\"$/aiflow/metadata_store/example" +
-      "s/save:\001*\022c\n\rupdateExample\022\025.UpdateExamp" +
-      "leRequest\032\t.Response\"0\202\323\344\223\002*\"%/aiflow/me" +
-      "tadata_store/example/update:\001*\022_\n\021delete" +
-      "ExampleById\022\n.IdRequest\032\t.Response\"3\202\323\344\223" +
-      "\002-\"(/aiflow/metadata_store/example/delet" +
-      "e/id:\001*\022e\n\023deleteExampleByName\022\014.NameReq" +
-      "uest\032\t.Response\"5\202\323\344\223\002/\"*/aiflow/metadat" +
-      "a_store/example/delete/name:\001*\022f\n\024getMod" +
-      "elRelationById\022\n.IdRequest\032\t.Response\"7\202" +
-      "\323\344\223\0021\",/aiflow/metadata_store/model_rela" +
-      "tion/get/id:\001*\022l\n\026getModelRelationByName" +
-      "\022\014.NameRequest\032\t.Response\"9\202\323\344\223\0023\"./aifl" +
-      "ow/metadata_store/model_relation/get/nam" +
-      "e:\001*\022c\n\021listModelRelation\022\014.ListRequest\032" +
-      "\t.Response\"5\202\323\344\223\002/\"*/aiflow/metadata_sto" +
-      "re/model_relation/list:\001*\022x\n\025registerMod" +
-      "elRelation\022\035.RegisterModelRelationReques" +
-      "t\032\t.Response\"5\202\323\344\223\002/\"*/aiflow/metadata_s" +
-      "tore/model_relation/save:\001*\022l\n\027deleteMod" +
-      "elRelationById\022\n.IdRequest\032\t.Response\":\202" +
-      "\323\344\223\0024\"//aiflow/metadata_store/model_rela" +
-      "tion/delete/id:\001*\022r\n\031deleteModelRelation" +
-      "ByName\022\014.NameRequest\032\t.Response\"<\202\323\344\223\0026\"" +
-      "1/aiflow/metadata_store/model_relation/d" +
-      "elete/name:\001*\022U\n\014getModelById\022\n.IdReques" +
-      "t\032\t.Response\".\202\323\344\223\002(\"#/aiflow/metadata_s" +
-      "tore/model/get/id:\001*\022[\n\016getModelByName\022\014" +
-      ".NameRequest\032\t.Response\"0\202\323\344\223\002*\"%/aiflow" +
-      "/metadata_store/model/get/name:\001*\022_\n\rreg" +
-      "isterModel\022\025.RegisterModelRequest\032\t.Resp" +
-      "onse\",\202\323\344\223\002&\"!/aiflow/metadata_store/mod" +
-      "el/save:\001*\022[\n\017deleteModelById\022\n.IdReques" +
-      "t\032\t.Response\"1\202\323\344\223\002+\"&/aiflow/metadata_s" +
-      "tore/model/delete/id:\001*\022a\n\021deleteModelBy" +
-      "Name\022\014.NameRequest\032\t.Response\"3\202\323\344\223\002-\"(/" +
-      "aiflow/metadata_store/model/delete/name:" +
-      "\001*\022\214\001\n getModelVersionRelationByVersion\022" +
-      "\030.ModelVersionNameRequest\032\t.Response\"C\202\323" +
-      "\344\223\002=\"8/aiflow/metadata_store/modelVersio" +
-      "n_relation/get/version:\001*\022\205\001\n\030listModelV" +
-      "ersionRelation\022 .ListModelVersionRelatio" +
-      "nRequest\032\t.Response\"<\202\323\344\223\0026\"1/aiflow/met" +
-      "adata_store/modelVersion_relation/list:\001" +
-      "*\022\215\001\n\034registerModelVersionRelation\022$.Reg" +
-      "isterModelVersionRelationRequest\032\t.Respo" +
-      "nse\"<\202\323\344\223\0026\"1/aiflow/metadata_store/mode" +
-      "lVersion_relation/save:\001*\022\222\001\n#deleteMode" +
-      "lVersionRelationByVersion\022\030.ModelVersion" +
-      "NameRequest\032\t.Response\"F\202\323\344\223\002@\";/aiflow/" +
-      "metadata_store/modelVersion_relation/del" +
-      "ete/version:\001*\022{\n\030getModelVersionByVersi" +
-      "on\022\030.ModelVersionNameRequest\032\t.Response\"" +
-      ":\202\323\344\223\0024\"//aiflow/metadata_store/modelVer" +
-      "sion/get/version:\001*\022t\n\024registerModelVers" +
-      "ion\022\034.RegisterModelVersionRequest\032\t.Resp" +
-      "onse\"3\202\323\344\223\002-\"(/aiflow/metadata_store/mod" +
-      "elVersion/save:\001*\022\201\001\n\033deleteModelVersion" +
-      "ByVersion\022\030.ModelVersionNameRequest\032\t.Re" +
-      "sponse\"=\202\323\344\223\0027\"2/aiflow/metadata_store/m" +
-      "odelVersion/delete/version:\001*\022{\n\027getDepl" +
-      "oyedModelVersion\022\021.ModelNameRequest\032\t.Re" +
-      "sponse\"B\202\323\344\223\002<\"7/aiflow/metadata_store/m" +
-      "odelVersion/get_serving_version:\001*\022\221\001\n\036g" +
-      "etLatestValidatedModelVersion\022\021.ModelNam" +
-      "eRequest\032\t.Response\"Q\202\323\344\223\002K\"F/aiflow/met" +
-      "adata_store/modelVersion/get_latest_vali" +
-      "dated_model_version:\001*\022\221\001\n\036getLatestGene" +
-      "ratedModelVersion\022\021.ModelNameRequest\032\t.R" +
-      "esponse\"Q\202\323\344\223\002K\"F/aiflow/metadata_store/" +
-      "modelVersion/get_latest_generated_model_" +
-      "version:\001*\022m\n\030getWorkFlowExecutionById\022\n" +
-      ".IdRequest\032\t.Response\":\202\323\344\223\0024\"//aiflow/m" +
-      "etadata_store/workflowExecution/get/id:\001" +
-      "*\022s\n\032getWorkFlowExecutionByName\022\014.NameRe" +
-      "quest\032\t.Response\"<\202\323\344\223\0026\"1/aiflow/metada" +
-      "ta_store/workflowExecution/get/name:\001*\022j" +
-      "\n\025listWorkFlowExecution\022\014.ListRequest\032\t." +
-      "Response\"8\202\323\344\223\0022\"-/aiflow/metadata_store" +
-      "/workflowExecution/list:\001*\022\203\001\n\031registerW" +
-      "orkFlowExecution\022!.RegisterWorkFlowExecu" +
-      "tionRequest\032\t.Response\"8\202\323\344\223\0022\"-/aiflow/" +
-      "metadata_store/workflowExecution/save:\001*" +
-      "\022\201\001\n\027updateWorkflowExecution\022\037.UpdateWor" +
-      "kflowExecutionRequest\032\t.Response\":\202\323\344\223\0024" +
-      "\"//aiflow/metadata_store/workflowExecuti" +
-      "on/update:\001*\022s\n\033deleteWorkflowExecutionB" +
-      "yId\022\n.IdRequest\032\t.Response\"=\202\323\344\223\0027\"2/aif" +
-      "low/metadata_store/workflowExecution/del" +
-      "ete/id:\001*\022y\n\035deleteWorkflowExecutionByNa" +
-      "me\022\014.NameRequest\032\t.Response\"?\202\323\344\223\0029\"4/ai" +
-      "flow/metadata_store/workflowExecution/de" +
-      "lete/name:\001*\022\230\001\n\036updateWorkflowExecution" +
-      "EndTime\022&.UpdateWorkflowExecutionEndTime" +
-      "Request\032\t.Response\"C\202\323\344\223\002=\"8/aiflow/meta" +
-      "data_store/workflowExecution/update/end_" +
-      "time:\001*\022\221\001\n\034updateWorkflowExecutionState" +
-      "\022$.UpdateWorkflowExecutionStateRequest\032\t" +
-      ".Response\"@\202\323\344\223\002:\"5/aiflow/metadata_stor" +
-      "e/workflowExecution/update/state:\001*\022Q\n\ng" +
-      "etJobById\022\n.IdRequest\032\t.Response\",\202\323\344\223\002&" +
-      "\"!/aiflow/metadata_store/job/get/id:\001*\022W" +
-      "\n\014getJobByName\022\014.NameRequest\032\t.Response\"" +
-      ".\202\323\344\223\002(\"#/aiflow/metadata_store/job/get/" +
-      "name:\001*\022N\n\007listJob\022\014.ListRequest\032\t.Respo" +
-      "nse\"*\202\323\344\223\002$\"\037/aiflow/metadata_store/job/" +
-      "list:\001*\022Y\n\013registerJob\022\023.RegisterJobRequ" +
-      "est\032\t.Response\"*\202\323\344\223\002$\"\037/aiflow/metadata" +
-      "_store/job/save:\001*\022W\n\tupdateJob\022\021.Update" +
-      "JobRequest\032\t.Response\",\202\323\344\223\002&\"!/aiflow/m" +
-      "etadata_store/job/update:\001*\022g\n\016updateJob" +
-      "State\022\026.UpdateJobStateRequest\032\t.Response" +
-      "\"2\202\323\344\223\002,\"\'/aiflow/metadata_store/job/upd" +
-      "ate/state:\001*\022n\n\020updateJobEndTime\022\030.Updat" +
-      "eJobEndTimeRequest\032\t.Response\"5\202\323\344\223\002/\"*/" +
-      "aiflow/metadata_store/job/update/end_tim" +
-      "e:\001*\022W\n\rdeleteJobById\022\n.IdRequest\032\t.Resp" +
-      "onse\"/\202\323\344\223\002)\"$/aiflow/metadata_store/job" +
-      "/delete/id:\001*\022]\n\017deleteJobByName\022\014.NameR" +
-      "equest\032\t.Response\"1\202\323\344\223\002+\"&/aiflow/metad" +
-      "ata_store/job/delete/name:\001*\022Y\n\016getProje" +
-      "ctById\022\n.IdRequest\032\t.Response\"0\202\323\344\223\002*\"%/" +
-      "aiflow/metadata_store/project/get/id:\001*\022" +
-      "_\n\020getProjectByName\022\014.NameRequest\032\t.Resp" +
-      "onse\"2\202\323\344\223\002,\"\'/aiflow/metadata_store/pro" +
-      "ject/get/name:\001*\022e\n\017registerProject\022\027.Re" +
-      "gisterProjectRequest\032\t.Response\".\202\323\344\223\002(\"" +
-      "#/aiflow/metadata_store/project/save:\001*\022" +
-      "c\n\rupdateProject\022\025.UpdateProjectRequest\032" +
-      "\t.Response\"0\202\323\344\223\002*\"%/aiflow/metadata_sto" +
-      "re/project/update:\001*\022V\n\013listProject\022\014.Li" +
-      "stRequest\032\t.Response\".\202\323\344\223\002(\"#/aiflow/me" +
-      "tadata_store/project/list:\001*\022_\n\021deletePr" +
-      "ojectById\022\n.IdRequest\032\t.Response\"3\202\323\344\223\002-" +
-      "\"(/aiflow/metadata_store/project/delete/" +
-      "id:\001*\022e\n\023deleteProjectByName\022\014.NameReque" +
-      "st\032\t.Response\"5\202\323\344\223\002/\"*/aiflow/metadata_" +
-      "store/project/delete/name:\001*\022[\n\017getArtif" +
-      "actById\022\n.IdRequest\032\t.Response\"1\202\323\344\223\002+\"&" +
-      "/aiflow/metadata_store/artifact/get/id:\001" +
-      "*\022a\n\021getArtifactByName\022\014.NameRequest\032\t.R" +
-      "esponse\"3\202\323\344\223\002-\"(/aiflow/metadata_store/" +
-      "artifact/get/name:\001*\022f\n\016updateArtifact\022\026" +
-      ".UpdateArtifactRequest\032\t.Response\"1\202\323\344\223\002" +
-      "+\"&/aiflow/metadata_store/artifact/updat" +
-      "e:\001*\022h\n\020registerArtifact\022\030.RegisterArtif" +
-      "actRequest\032\t.Response\"/\202\323\344\223\002)\"$/aiflow/m" +
-      "etadata_store/artifact/save:\001*\022X\n\014listAr" +
-      "tifact\022\014.ListRequest\032\t.Response\"/\202\323\344\223\002)\"" +
-      "$/aiflow/metadata_store/artifact/list:\001*" +
-      "\022a\n\022deleteArtifactById\022\n.IdRequest\032\t.Res" +
-      "ponse\"4\202\323\344\223\002.\")/aiflow/metadata_store/ar" +
-      "tifact/delete/id:\001*\022g\n\024deleteArtifactByN" +
-      "ame\022\014.NameRequest\032\t.Response\"6\202\323\344\223\0020\"+/a" +
-      "iflow/metadata_store/artifact/delete/nam" +
-      "e:\001*B\030\n\020com.aiflow.proto\210\001\001\220\001\001b\006proto3"
+      "\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"S\n\034RegisterMod" +
+      "elRelationRequest\0223\n\016model_relation\030\001 \001(" +
+      "\0132\033.ai_flow.ModelRelationProto\":\n\024Regist" +
+      "erModelRequest\022\"\n\005model\030\001 \001(\0132\023.ai_flow." +
+      "ModelProto\"N\n\026ModelRelationListProto\0224\n\017" +
+      "model_relations\030\001 \003(\0132\033.ai_flow.ModelRel" +
+      "ationProto\"9\n\027ModelVersionNameRequest\022\014\n" +
+      "\004name\030\001 \001(\t\022\020\n\010model_id\030\002 \001(\003\"i\n#Registe" +
+      "rModelVersionRelationRequest\022B\n\026model_ve" +
+      "rsion_relation\030\001 \001(\0132\".ai_flow.ModelVers" +
+      "ionRelationProto\"P\n\033RegisterModelVersion" +
+      "Request\0221\n\rmodel_version\030\001 \001(\0132\032.ai_flow" +
+      ".ModelVersionProto\"V\n\037ListModelVersionRe" +
+      "lationRequest\022\020\n\010model_id\030\001 \001(\003\022\021\n\tpage_" +
+      "size\030\002 \001(\003\022\016\n\006offset\030\003 \001(\003\"[\n\035ModelVersi" +
+      "onRelationListProto\022:\n\016model_versions\030\001 " +
+      "\003(\0132\".ai_flow.ModelVersionRelationProto\"" +
+      "K\n\025ModelVersionListProto\0222\n\016model_versio" +
+      "ns\030\001 \003(\0132\032.ai_flow.ModelVersionProto\" \n\020" +
+      "ModelNameRequest\022\014\n\004name\030\001 \001(\t\"4\n\022Regist" +
+      "erJobRequest\022\036\n\003job\030\001 \001(\0132\021.ai_flow.JobP" +
+      "roto\"\263\003\n\020UpdateJobRequest\022\014\n\004name\030\001 \001(\t\022" +
+      ":\n\025workflow_execution_id\030\002 \001(\0132\033.google." +
+      "protobuf.Int64Value\022&\n\tjob_state\030\003 \001(\0162\023" +
+      ".ai_flow.StateProto\022=\n\nproperties\030\004 \003(\0132" +
+      ").ai_flow.UpdateJobRequest.PropertiesEnt" +
+      "ry\022,\n\006job_id\030\005 \001(\0132\034.google.protobuf.Str" +
+      "ingValue\022-\n\010end_time\030\006 \001(\0132\033.google.prot" +
+      "obuf.Int64Value\022-\n\007log_uri\030\007 \001(\0132\034.googl" +
+      "e.protobuf.StringValue\022/\n\tsignature\030\010 \001(" +
+      "\0132\034.google.protobuf.StringValue\0321\n\017Prope" +
+      "rtiesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\002" +
+      "8\001\"I\n\025UpdateJobStateRequest\022\"\n\005state\030\001 \001" +
+      "(\0162\023.ai_flow.StateProto\022\014\n\004name\030\002 \001(\t\"9\n" +
+      "\027UpdateJobEndTimeRequest\022\020\n\010end_time\030\001 \001" +
+      "(\003\022\014\n\004name\030\002 \001(\t\"/\n\014JobListProto\022\037\n\004jobs" +
+      "\030\001 \003(\0132\021.ai_flow.JobProto\"_\n RegisterWor" +
+      "kFlowExecutionRequest\022;\n\022workflow_execut" +
+      "ion\030\001 \001(\0132\037.ai_flow.WorkflowExecutionPro" +
+      "to\"\321\003\n\036UpdateWorkflowExecutionRequest\022\014\n" +
+      "\004name\030\001 \001(\t\022/\n\nproject_id\030\002 \001(\0132\033.google" +
+      ".protobuf.Int64Value\022,\n\017execution_state\030" +
+      "\004 \001(\0162\023.ai_flow.StateProto\022K\n\nproperties" +
+      "\030\005 \003(\01327.ai_flow.UpdateWorkflowExecution" +
+      "Request.PropertiesEntry\022-\n\010end_time\030\006 \001(" +
+      "\0132\033.google.protobuf.Int64Value\022-\n\007log_ur" +
+      "i\030\007 \001(\0132\034.google.protobuf.StringValue\0223\n" +
+      "\rworkflow_json\030\010 \001(\0132\034.google.protobuf.S" +
+      "tringValue\022/\n\tsignature\030\t \001(\0132\034.google.p" +
+      "rotobuf.StringValue\0321\n\017PropertiesEntry\022\013" +
+      "\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"Z\n\032WorkFl" +
+      "owExecutionListProto\022<\n\023workflow_executi" +
+      "ons\030\001 \003(\0132\037.ai_flow.WorkflowExecutionPro" +
+      "to\"G\n%UpdateWorkflowExecutionEndTimeRequ" +
+      "est\022\020\n\010end_time\030\001 \001(\003\022\014\n\004name\030\002 \001(\t\"W\n#U" +
+      "pdateWorkflowExecutionStateRequest\022\"\n\005st" +
+      "ate\030\001 \001(\0162\023.ai_flow.StateProto\022\014\n\004name\030\002" +
+      " \001(\t\"@\n\026RegisterProjectRequest\022&\n\007projec" +
+      "t\030\001 \001(\0132\025.ai_flow.ProjectProto\"\325\002\n\024Updat" +
+      "eProjectRequest\022\014\n\004name\030\001 \001(\t\022A\n\npropert" +
+      "ies\030\002 \003(\0132-.ai_flow.UpdateProjectRequest" +
+      ".PropertiesEntry\0222\n\014project_type\030\003 \001(\0132\034" +
+      ".google.protobuf.StringValue\022)\n\003uri\030\004 \001(" +
+      "\0132\034.google.protobuf.StringValue\022*\n\004user\030" +
+      "\005 \001(\0132\034.google.protobuf.StringValue\022.\n\010p" +
+      "assword\030\006 \001(\0132\034.google.protobuf.StringVa" +
+      "lue\0321\n\017PropertiesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005v" +
+      "alue\030\002 \001(\t:\0028\001\";\n\020ProjectListProto\022\'\n\010pr" +
+      "ojects\030\001 \003(\0132\025.ai_flow.ProjectProto\"C\n\027R" +
+      "egisterArtifactRequest\022(\n\010artifact\030\001 \001(\013" +
+      "2\026.ai_flow.ArtifactProto\"\227\003\n\025UpdateArtif" +
+      "actRequest\022\014\n\004name\030\001 \001(\t\022B\n\nproperties\030\002" +
+      " \003(\0132..ai_flow.UpdateArtifactRequest.Pro" +
+      "pertiesEntry\0221\n\013data_format\030\003 \001(\0132\034.goog" +
+      "le.protobuf.StringValue\022/\n\tbatch_uri\030\004 \001" +
+      "(\0132\034.google.protobuf.StringValue\0220\n\nstre" +
+      "am_uri\030\005 \001(\0132\034.google.protobuf.StringVal" +
+      "ue\0221\n\013description\030\006 \001(\0132\034.google.protobu" +
+      "f.StringValue\0220\n\013update_time\030\007 \001(\0132\033.goo" +
+      "gle.protobuf.Int64Value\0321\n\017PropertiesEnt" +
+      "ry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\">\n\021Ar" +
+      "tifactListProto\022)\n\tartifacts\030\001 \003(\0132\026.ai_" +
+      "flow.ArtifactProto2\351<\n\017MetadataService\022i" +
+      "\n\016getExampleById\022\022.ai_flow.IdRequest\032\021.a" +
+      "i_flow.Response\"0\202\323\344\223\002*\"%/aiflow/metadat" +
+      "a_store/example/get/id:\001*\022o\n\020getExampleB" +
+      "yName\022\024.ai_flow.NameRequest\032\021.ai_flow.Re" +
+      "sponse\"2\202\323\344\223\002,\"\'/aiflow/metadata_store/e" +
+      "xample/get/name:\001*\022f\n\013listExample\022\024.ai_f" +
+      "low.ListRequest\032\021.ai_flow.Response\".\202\323\344\223" +
+      "\002(\"#/aiflow/metadata_store/example/list:" +
+      "\001*\022u\n\017registerExample\022\037.ai_flow.Register" +
+      "ExampleRequest\032\021.ai_flow.Response\".\202\323\344\223\002" +
+      "(\"#/aiflow/metadata_store/example/save:\001" +
+      "*\022\215\001\n\032registerExampleWithCatalog\022\037.ai_fl" +
+      "ow.RegisterExampleRequest\032\021.ai_flow.Resp" +
+      "onse\";\202\323\344\223\0025\"0/aiflow/metadata_store/exa" +
+      "mple/save_with_catalog:\001*\022x\n\020registerExa" +
+      "mples\022 .ai_flow.RegisterExamplesRequest\032" +
+      "\021.ai_flow.Response\"/\202\323\344\223\002)\"$/aiflow/meta" +
+      "data_store/examples/save:\001*\022s\n\rupdateExa" +
+      "mple\022\035.ai_flow.UpdateExampleRequest\032\021.ai" +
+      "_flow.Response\"0\202\323\344\223\002*\"%/aiflow/metadata" +
+      "_store/example/update:\001*\022o\n\021deleteExampl" +
+      "eById\022\022.ai_flow.IdRequest\032\021.ai_flow.Resp" +
+      "onse\"3\202\323\344\223\002-\"(/aiflow/metadata_store/exa" +
+      "mple/delete/id:\001*\022u\n\023deleteExampleByName" +
+      "\022\024.ai_flow.NameRequest\032\021.ai_flow.Respons" +
+      "e\"5\202\323\344\223\002/\"*/aiflow/metadata_store/exampl" +
+      "e/delete/name:\001*\022v\n\024getModelRelationById" +
+      "\022\022.ai_flow.IdRequest\032\021.ai_flow.Response\"" +
+      "7\202\323\344\223\0021\",/aiflow/metadata_store/model_re" +
+      "lation/get/id:\001*\022|\n\026getModelRelationByNa" +
+      "me\022\024.ai_flow.NameRequest\032\021.ai_flow.Respo" +
+      "nse\"9\202\323\344\223\0023\"./aiflow/metadata_store/mode" +
+      "l_relation/get/name:\001*\022s\n\021listModelRelat" +
+      "ion\022\024.ai_flow.ListRequest\032\021.ai_flow.Resp" +
+      "onse\"5\202\323\344\223\002/\"*/aiflow/metadata_store/mod" +
+      "el_relation/list:\001*\022\210\001\n\025registerModelRel" +
+      "ation\022%.ai_flow.RegisterModelRelationReq" +
+      "uest\032\021.ai_flow.Response\"5\202\323\344\223\002/\"*/aiflow" +
+      "/metadata_store/model_relation/save:\001*\022|" +
+      "\n\027deleteModelRelationById\022\022.ai_flow.IdRe" +
+      "quest\032\021.ai_flow.Response\":\202\323\344\223\0024\"//aiflo" +
+      "w/metadata_store/model_relation/delete/i" +
+      "d:\001*\022\202\001\n\031deleteModelRelationByName\022\024.ai_" +
+      "flow.NameRequest\032\021.ai_flow.Response\"<\202\323\344" +
+      "\223\0026\"1/aiflow/metadata_store/model_relati" +
+      "on/delete/name:\001*\022e\n\014getModelById\022\022.ai_f" +
+      "low.IdRequest\032\021.ai_flow.Response\".\202\323\344\223\002(" +
+      "\"#/aiflow/metadata_store/model/get/id:\001*" +
+      "\022k\n\016getModelByName\022\024.ai_flow.NameRequest" +
+      "\032\021.ai_flow.Response\"0\202\323\344\223\002*\"%/aiflow/met" +
+      "adata_store/model/get/name:\001*\022o\n\rregiste" +
+      "rModel\022\035.ai_flow.RegisterModelRequest\032\021." +
+      "ai_flow.Response\",\202\323\344\223\002&\"!/aiflow/metada" +
+      "ta_store/model/save:\001*\022k\n\017deleteModelByI" +
+      "d\022\022.ai_flow.IdRequest\032\021.ai_flow.Response" +
+      "\"1\202\323\344\223\002+\"&/aiflow/metadata_store/model/d" +
+      "elete/id:\001*\022q\n\021deleteModelByName\022\024.ai_fl" +
+      "ow.NameRequest\032\021.ai_flow.Response\"3\202\323\344\223\002" +
+      "-\"(/aiflow/metadata_store/model/delete/n" +
+      "ame:\001*\022\234\001\n getModelVersionRelationByVers" +
+      "ion\022 .ai_flow.ModelVersionNameRequest\032\021." +
+      "ai_flow.Response\"C\202\323\344\223\002=\"8/aiflow/metada" +
+      "ta_store/modelVersion_relation/get/versi" +
+      "on:\001*\022\225\001\n\030listModelVersionRelation\022(.ai_" +
+      "flow.ListModelVersionRelationRequest\032\021.a" +
+      "i_flow.Response\"<\202\323\344\223\0026\"1/aiflow/metadat" +
+      "a_store/modelVersion_relation/list:\001*\022\235\001" +
+      "\n\034registerModelVersionRelation\022,.ai_flow" +
+      ".RegisterModelVersionRelationRequest\032\021.a" +
+      "i_flow.Response\"<\202\323\344\223\0026\"1/aiflow/metadat" +
+      "a_store/modelVersion_relation/save:\001*\022\242\001" +
+      "\n#deleteModelVersionRelationByVersion\022 ." +
+      "ai_flow.ModelVersionNameRequest\032\021.ai_flo" +
+      "w.Response\"F\202\323\344\223\002@\";/aiflow/metadata_sto" +
+      "re/modelVersion_relation/delete/version:" +
+      "\001*\022\213\001\n\030getModelVersionByVersion\022 .ai_flo" +
+      "w.ModelVersionNameRequest\032\021.ai_flow.Resp" +
+      "onse\":\202\323\344\223\0024\"//aiflow/metadata_store/mod" +
+      "elVersion/get/version:\001*\022\204\001\n\024registerMod" +
+      "elVersion\022$.ai_flow.RegisterModelVersion" +
+      "Request\032\021.ai_flow.Response\"3\202\323\344\223\002-\"(/aif" +
+      "low/metadata_store/modelVersion/save:\001*\022" +
+      "\221\001\n\033deleteModelVersionByVersion\022 .ai_flo" +
+      "w.ModelVersionNameRequest\032\021.ai_flow.Resp" +
+      "onse\"=\202\323\344\223\0027\"2/aiflow/metadata_store/mod" +
+      "elVersion/delete/version:\001*\022\213\001\n\027getDeplo" +
+      "yedModelVersion\022\031.ai_flow.ModelNameReque" +
+      "st\032\021.ai_flow.Response\"B\202\323\344\223\002<\"7/aiflow/m" +
+      "etadata_store/modelVersion/get_serving_v" +
+      "ersion:\001*\022\241\001\n\036getLatestValidatedModelVer" +
+      "sion\022\031.ai_flow.ModelNameRequest\032\021.ai_flo" +
+      "w.Response\"Q\202\323\344\223\002K\"F/aiflow/metadata_sto" +
+      "re/modelVersion/get_latest_validated_mod" +
+      "el_version:\001*\022\241\001\n\036getLatestGeneratedMode" +
+      "lVersion\022\031.ai_flow.ModelNameRequest\032\021.ai" +
+      "_flow.Response\"Q\202\323\344\223\002K\"F/aiflow/metadata" +
+      "_store/modelVersion/get_latest_generated" +
+      "_model_version:\001*\022}\n\030getWorkFlowExecutio" +
+      "nById\022\022.ai_flow.IdRequest\032\021.ai_flow.Resp" +
+      "onse\":\202\323\344\223\0024\"//aiflow/metadata_store/wor" +
+      "kflowExecution/get/id:\001*\022\203\001\n\032getWorkFlow" +
+      "ExecutionByName\022\024.ai_flow.NameRequest\032\021." +
+      "ai_flow.Response\"<\202\323\344\223\0026\"1/aiflow/metada" +
+      "ta_store/workflowExecution/get/name:\001*\022z" +
+      "\n\025listWorkFlowExecution\022\024.ai_flow.ListRe" +
+      "quest\032\021.ai_flow.Response\"8\202\323\344\223\0022\"-/aiflo" +
+      "w/metadata_store/workflowExecution/list:" +
+      "\001*\022\223\001\n\031registerWorkFlowExecution\022).ai_fl" +
+      "ow.RegisterWorkFlowExecutionRequest\032\021.ai" +
+      "_flow.Response\"8\202\323\344\223\0022\"-/aiflow/metadata" +
+      "_store/workflowExecution/save:\001*\022\221\001\n\027upd" +
+      "ateWorkflowExecution\022\'.ai_flow.UpdateWor" +
+      "kflowExecutionRequest\032\021.ai_flow.Response" +
+      "\":\202\323\344\223\0024\"//aiflow/metadata_store/workflo" +
+      "wExecution/update:\001*\022\203\001\n\033deleteWorkflowE" +
+      "xecutionById\022\022.ai_flow.IdRequest\032\021.ai_fl" +
+      "ow.Response\"=\202\323\344\223\0027\"2/aiflow/metadata_st" +
+      "ore/workflowExecution/delete/id:\001*\022\211\001\n\035d" +
+      "eleteWorkflowExecutionByName\022\024.ai_flow.N" +
+      "ameRequest\032\021.ai_flow.Response\"?\202\323\344\223\0029\"4/" +
+      "aiflow/metadata_store/workflowExecution/" +
+      "delete/name:\001*\022\250\001\n\036updateWorkflowExecuti" +
+      "onEndTime\022..ai_flow.UpdateWorkflowExecut" +
+      "ionEndTimeRequest\032\021.ai_flow.Response\"C\202\323" +
+      "\344\223\002=\"8/aiflow/metadata_store/workflowExe" +
+      "cution/update/end_time:\001*\022\241\001\n\034updateWork" +
+      "flowExecutionState\022,.ai_flow.UpdateWorkf" +
+      "lowExecutionStateRequest\032\021.ai_flow.Respo" +
+      "nse\"@\202\323\344\223\002:\"5/aiflow/metadata_store/work" +
+      "flowExecution/update/state:\001*\022a\n\ngetJobB" +
+      "yId\022\022.ai_flow.IdRequest\032\021.ai_flow.Respon" +
+      "se\",\202\323\344\223\002&\"!/aiflow/metadata_store/job/g" +
+      "et/id:\001*\022g\n\014getJobByName\022\024.ai_flow.NameR" +
+      "equest\032\021.ai_flow.Response\".\202\323\344\223\002(\"#/aifl" +
+      "ow/metadata_store/job/get/name:\001*\022^\n\007lis" +
+      "tJob\022\024.ai_flow.ListRequest\032\021.ai_flow.Res" +
+      "ponse\"*\202\323\344\223\002$\"\037/aiflow/metadata_store/jo" +
+      "b/list:\001*\022i\n\013registerJob\022\033.ai_flow.Regis" +
+      "terJobRequest\032\021.ai_flow.Response\"*\202\323\344\223\002$" +
+      "\"\037/aiflow/metadata_store/job/save:\001*\022g\n\t" +
+      "updateJob\022\031.ai_flow.UpdateJobRequest\032\021.a" +
+      "i_flow.Response\",\202\323\344\223\002&\"!/aiflow/metadat" +
+      "a_store/job/update:\001*\022w\n\016updateJobState\022" +
+      "\036.ai_flow.UpdateJobStateRequest\032\021.ai_flo" +
+      "w.Response\"2\202\323\344\223\002,\"\'/aiflow/metadata_sto" +
+      "re/job/update/state:\001*\022~\n\020updateJobEndTi" +
+      "me\022 .ai_flow.UpdateJobEndTimeRequest\032\021.a" +
+      "i_flow.Response\"5\202\323\344\223\002/\"*/aiflow/metadat" +
+      "a_store/job/update/end_time:\001*\022g\n\rdelete" +
+      "JobById\022\022.ai_flow.IdRequest\032\021.ai_flow.Re" +
+      "sponse\"/\202\323\344\223\002)\"$/aiflow/metadata_store/j" +
+      "ob/delete/id:\001*\022m\n\017deleteJobByName\022\024.ai_" +
+      "flow.NameRequest\032\021.ai_flow.Response\"1\202\323\344" +
+      "\223\002+\"&/aiflow/metadata_store/job/delete/n" +
+      "ame:\001*\022i\n\016getProjectById\022\022.ai_flow.IdReq" +
+      "uest\032\021.ai_flow.Response\"0\202\323\344\223\002*\"%/aiflow" +
+      "/metadata_store/project/get/id:\001*\022o\n\020get" +
+      "ProjectByName\022\024.ai_flow.NameRequest\032\021.ai" +
+      "_flow.Response\"2\202\323\344\223\002,\"\'/aiflow/metadata" +
+      "_store/project/get/name:\001*\022u\n\017registerPr" +
+      "oject\022\037.ai_flow.RegisterProjectRequest\032\021" +
+      ".ai_flow.Response\".\202\323\344\223\002(\"#/aiflow/metad" +
+      "ata_store/project/save:\001*\022s\n\rupdateProje" +
+      "ct\022\035.ai_flow.UpdateProjectRequest\032\021.ai_f" +
+      "low.Response\"0\202\323\344\223\002*\"%/aiflow/metadata_s" +
+      "tore/project/update:\001*\022f\n\013listProject\022\024." +
+      "ai_flow.ListRequest\032\021.ai_flow.Response\"." +
+      "\202\323\344\223\002(\"#/aiflow/metadata_store/project/l" +
+      "ist:\001*\022o\n\021deleteProjectById\022\022.ai_flow.Id" +
+      "Request\032\021.ai_flow.Response\"3\202\323\344\223\002-\"(/aif" +
+      "low/metadata_store/project/delete/id:\001*\022" +
+      "u\n\023deleteProjectByName\022\024.ai_flow.NameReq" +
+      "uest\032\021.ai_flow.Response\"5\202\323\344\223\002/\"*/aiflow" +
+      "/metadata_store/project/delete/name:\001*\022k" +
+      "\n\017getArtifactById\022\022.ai_flow.IdRequest\032\021." +
+      "ai_flow.Response\"1\202\323\344\223\002+\"&/aiflow/metada" +
+      "ta_store/artifact/get/id:\001*\022q\n\021getArtifa" +
+      "ctByName\022\024.ai_flow.NameRequest\032\021.ai_flow" +
+      ".Response\"3\202\323\344\223\002-\"(/aiflow/metadata_stor" +
+      "e/artifact/get/name:\001*\022v\n\016updateArtifact" +
+      "\022\036.ai_flow.UpdateArtifactRequest\032\021.ai_fl" +
+      "ow.Response\"1\202\323\344\223\002+\"&/aiflow/metadata_st" +
+      "ore/artifact/update:\001*\022x\n\020registerArtifa" +
+      "ct\022 .ai_flow.RegisterArtifactRequest\032\021.a" +
+      "i_flow.Response\"/\202\323\344\223\002)\"$/aiflow/metadat" +
+      "a_store/artifact/save:\001*\022h\n\014listArtifact" +
+      "\022\024.ai_flow.ListRequest\032\021.ai_flow.Respons" +
+      "e\"/\202\323\344\223\002)\"$/aiflow/metadata_store/artifa" +
+      "ct/list:\001*\022q\n\022deleteArtifactById\022\022.ai_fl" +
+      "ow.IdRequest\032\021.ai_flow.Response\"4\202\323\344\223\002.\"" +
+      ")/aiflow/metadata_store/artifact/delete/" +
+      "id:\001*\022w\n\024deleteArtifactByName\022\024.ai_flow." +
+      "NameRequest\032\021.ai_flow.Response\"6\202\323\344\223\0020\"+" +
+      "/aiflow/metadata_store/artifact/delete/n" +
+      "ame:\001*B\030\n\020com.aiflow.proto\210\001\001\220\001\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -36460,239 +36491,239 @@ public final class MetadataServiceOuterClass {
           com.aiflow.proto.Message.getDescriptor(),
           com.google.api.AnnotationsProto.getDescriptor(),
         });
-    internal_static_IdRequest_descriptor =
+    internal_static_ai_flow_IdRequest_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_IdRequest_fieldAccessorTable = new
+    internal_static_ai_flow_IdRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_IdRequest_descriptor,
+        internal_static_ai_flow_IdRequest_descriptor,
         new java.lang.String[] { "Id", });
-    internal_static_NameRequest_descriptor =
+    internal_static_ai_flow_NameRequest_descriptor =
       getDescriptor().getMessageTypes().get(1);
-    internal_static_NameRequest_fieldAccessorTable = new
+    internal_static_ai_flow_NameRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_NameRequest_descriptor,
+        internal_static_ai_flow_NameRequest_descriptor,
         new java.lang.String[] { "Name", });
-    internal_static_ListRequest_descriptor =
+    internal_static_ai_flow_ListRequest_descriptor =
       getDescriptor().getMessageTypes().get(2);
-    internal_static_ListRequest_fieldAccessorTable = new
+    internal_static_ai_flow_ListRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_ListRequest_descriptor,
+        internal_static_ai_flow_ListRequest_descriptor,
         new java.lang.String[] { "PageSize", "Offset", });
-    internal_static_MetaResponse_descriptor =
+    internal_static_ai_flow_MetaResponse_descriptor =
       getDescriptor().getMessageTypes().get(3);
-    internal_static_MetaResponse_fieldAccessorTable = new
+    internal_static_ai_flow_MetaResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_MetaResponse_descriptor,
+        internal_static_ai_flow_MetaResponse_descriptor,
         new java.lang.String[] { "ReturnCode", "ReturnMsg", "Data", });
-    internal_static_RegisterExampleRequest_descriptor =
+    internal_static_ai_flow_RegisterExampleRequest_descriptor =
       getDescriptor().getMessageTypes().get(4);
-    internal_static_RegisterExampleRequest_fieldAccessorTable = new
+    internal_static_ai_flow_RegisterExampleRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_RegisterExampleRequest_descriptor,
+        internal_static_ai_flow_RegisterExampleRequest_descriptor,
         new java.lang.String[] { "Example", });
-    internal_static_RegisterExamplesRequest_descriptor =
+    internal_static_ai_flow_RegisterExamplesRequest_descriptor =
       getDescriptor().getMessageTypes().get(5);
-    internal_static_RegisterExamplesRequest_fieldAccessorTable = new
+    internal_static_ai_flow_RegisterExamplesRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_RegisterExamplesRequest_descriptor,
+        internal_static_ai_flow_RegisterExamplesRequest_descriptor,
         new java.lang.String[] { "Examples", });
-    internal_static_ExampleListProto_descriptor =
+    internal_static_ai_flow_ExampleListProto_descriptor =
       getDescriptor().getMessageTypes().get(6);
-    internal_static_ExampleListProto_fieldAccessorTable = new
+    internal_static_ai_flow_ExampleListProto_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_ExampleListProto_descriptor,
+        internal_static_ai_flow_ExampleListProto_descriptor,
         new java.lang.String[] { "Examples", });
-    internal_static_UpdateExampleRequest_descriptor =
+    internal_static_ai_flow_UpdateExampleRequest_descriptor =
       getDescriptor().getMessageTypes().get(7);
-    internal_static_UpdateExampleRequest_fieldAccessorTable = new
+    internal_static_ai_flow_UpdateExampleRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_UpdateExampleRequest_descriptor,
+        internal_static_ai_flow_UpdateExampleRequest_descriptor,
         new java.lang.String[] { "Name", "Properties", "SupportType", "NameList", "TypeList", "DataType", "DataFormat", "BatchUri", "StreamUri", "Description", "UpdateTime", "CatalogName", "CatalogType", "CatalogDatabase", "CatalogConnectionUri", "CatalogVersion", "CatalogTable", });
-    internal_static_UpdateExampleRequest_PropertiesEntry_descriptor =
-      internal_static_UpdateExampleRequest_descriptor.getNestedTypes().get(0);
-    internal_static_UpdateExampleRequest_PropertiesEntry_fieldAccessorTable = new
+    internal_static_ai_flow_UpdateExampleRequest_PropertiesEntry_descriptor =
+      internal_static_ai_flow_UpdateExampleRequest_descriptor.getNestedTypes().get(0);
+    internal_static_ai_flow_UpdateExampleRequest_PropertiesEntry_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_UpdateExampleRequest_PropertiesEntry_descriptor,
+        internal_static_ai_flow_UpdateExampleRequest_PropertiesEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
-    internal_static_RegisterModelRelationRequest_descriptor =
+    internal_static_ai_flow_RegisterModelRelationRequest_descriptor =
       getDescriptor().getMessageTypes().get(8);
-    internal_static_RegisterModelRelationRequest_fieldAccessorTable = new
+    internal_static_ai_flow_RegisterModelRelationRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_RegisterModelRelationRequest_descriptor,
+        internal_static_ai_flow_RegisterModelRelationRequest_descriptor,
         new java.lang.String[] { "ModelRelation", });
-    internal_static_RegisterModelRequest_descriptor =
+    internal_static_ai_flow_RegisterModelRequest_descriptor =
       getDescriptor().getMessageTypes().get(9);
-    internal_static_RegisterModelRequest_fieldAccessorTable = new
+    internal_static_ai_flow_RegisterModelRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_RegisterModelRequest_descriptor,
+        internal_static_ai_flow_RegisterModelRequest_descriptor,
         new java.lang.String[] { "Model", });
-    internal_static_ModelRelationListProto_descriptor =
+    internal_static_ai_flow_ModelRelationListProto_descriptor =
       getDescriptor().getMessageTypes().get(10);
-    internal_static_ModelRelationListProto_fieldAccessorTable = new
+    internal_static_ai_flow_ModelRelationListProto_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_ModelRelationListProto_descriptor,
+        internal_static_ai_flow_ModelRelationListProto_descriptor,
         new java.lang.String[] { "ModelRelations", });
-    internal_static_ModelVersionNameRequest_descriptor =
+    internal_static_ai_flow_ModelVersionNameRequest_descriptor =
       getDescriptor().getMessageTypes().get(11);
-    internal_static_ModelVersionNameRequest_fieldAccessorTable = new
+    internal_static_ai_flow_ModelVersionNameRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_ModelVersionNameRequest_descriptor,
+        internal_static_ai_flow_ModelVersionNameRequest_descriptor,
         new java.lang.String[] { "Name", "ModelId", });
-    internal_static_RegisterModelVersionRelationRequest_descriptor =
+    internal_static_ai_flow_RegisterModelVersionRelationRequest_descriptor =
       getDescriptor().getMessageTypes().get(12);
-    internal_static_RegisterModelVersionRelationRequest_fieldAccessorTable = new
+    internal_static_ai_flow_RegisterModelVersionRelationRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_RegisterModelVersionRelationRequest_descriptor,
+        internal_static_ai_flow_RegisterModelVersionRelationRequest_descriptor,
         new java.lang.String[] { "ModelVersionRelation", });
-    internal_static_RegisterModelVersionRequest_descriptor =
+    internal_static_ai_flow_RegisterModelVersionRequest_descriptor =
       getDescriptor().getMessageTypes().get(13);
-    internal_static_RegisterModelVersionRequest_fieldAccessorTable = new
+    internal_static_ai_flow_RegisterModelVersionRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_RegisterModelVersionRequest_descriptor,
+        internal_static_ai_flow_RegisterModelVersionRequest_descriptor,
         new java.lang.String[] { "ModelVersion", });
-    internal_static_ListModelVersionRelationRequest_descriptor =
+    internal_static_ai_flow_ListModelVersionRelationRequest_descriptor =
       getDescriptor().getMessageTypes().get(14);
-    internal_static_ListModelVersionRelationRequest_fieldAccessorTable = new
+    internal_static_ai_flow_ListModelVersionRelationRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_ListModelVersionRelationRequest_descriptor,
+        internal_static_ai_flow_ListModelVersionRelationRequest_descriptor,
         new java.lang.String[] { "ModelId", "PageSize", "Offset", });
-    internal_static_ModelVersionRelationListProto_descriptor =
+    internal_static_ai_flow_ModelVersionRelationListProto_descriptor =
       getDescriptor().getMessageTypes().get(15);
-    internal_static_ModelVersionRelationListProto_fieldAccessorTable = new
+    internal_static_ai_flow_ModelVersionRelationListProto_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_ModelVersionRelationListProto_descriptor,
+        internal_static_ai_flow_ModelVersionRelationListProto_descriptor,
         new java.lang.String[] { "ModelVersions", });
-    internal_static_ModelVersionListProto_descriptor =
+    internal_static_ai_flow_ModelVersionListProto_descriptor =
       getDescriptor().getMessageTypes().get(16);
-    internal_static_ModelVersionListProto_fieldAccessorTable = new
+    internal_static_ai_flow_ModelVersionListProto_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_ModelVersionListProto_descriptor,
+        internal_static_ai_flow_ModelVersionListProto_descriptor,
         new java.lang.String[] { "ModelVersions", });
-    internal_static_ModelNameRequest_descriptor =
+    internal_static_ai_flow_ModelNameRequest_descriptor =
       getDescriptor().getMessageTypes().get(17);
-    internal_static_ModelNameRequest_fieldAccessorTable = new
+    internal_static_ai_flow_ModelNameRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_ModelNameRequest_descriptor,
+        internal_static_ai_flow_ModelNameRequest_descriptor,
         new java.lang.String[] { "Name", });
-    internal_static_RegisterJobRequest_descriptor =
+    internal_static_ai_flow_RegisterJobRequest_descriptor =
       getDescriptor().getMessageTypes().get(18);
-    internal_static_RegisterJobRequest_fieldAccessorTable = new
+    internal_static_ai_flow_RegisterJobRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_RegisterJobRequest_descriptor,
+        internal_static_ai_flow_RegisterJobRequest_descriptor,
         new java.lang.String[] { "Job", });
-    internal_static_UpdateJobRequest_descriptor =
+    internal_static_ai_flow_UpdateJobRequest_descriptor =
       getDescriptor().getMessageTypes().get(19);
-    internal_static_UpdateJobRequest_fieldAccessorTable = new
+    internal_static_ai_flow_UpdateJobRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_UpdateJobRequest_descriptor,
+        internal_static_ai_flow_UpdateJobRequest_descriptor,
         new java.lang.String[] { "Name", "WorkflowExecutionId", "JobState", "Properties", "JobId", "EndTime", "LogUri", "Signature", });
-    internal_static_UpdateJobRequest_PropertiesEntry_descriptor =
-      internal_static_UpdateJobRequest_descriptor.getNestedTypes().get(0);
-    internal_static_UpdateJobRequest_PropertiesEntry_fieldAccessorTable = new
+    internal_static_ai_flow_UpdateJobRequest_PropertiesEntry_descriptor =
+      internal_static_ai_flow_UpdateJobRequest_descriptor.getNestedTypes().get(0);
+    internal_static_ai_flow_UpdateJobRequest_PropertiesEntry_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_UpdateJobRequest_PropertiesEntry_descriptor,
+        internal_static_ai_flow_UpdateJobRequest_PropertiesEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
-    internal_static_UpdateJobStateRequest_descriptor =
+    internal_static_ai_flow_UpdateJobStateRequest_descriptor =
       getDescriptor().getMessageTypes().get(20);
-    internal_static_UpdateJobStateRequest_fieldAccessorTable = new
+    internal_static_ai_flow_UpdateJobStateRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_UpdateJobStateRequest_descriptor,
+        internal_static_ai_flow_UpdateJobStateRequest_descriptor,
         new java.lang.String[] { "State", "Name", });
-    internal_static_UpdateJobEndTimeRequest_descriptor =
+    internal_static_ai_flow_UpdateJobEndTimeRequest_descriptor =
       getDescriptor().getMessageTypes().get(21);
-    internal_static_UpdateJobEndTimeRequest_fieldAccessorTable = new
+    internal_static_ai_flow_UpdateJobEndTimeRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_UpdateJobEndTimeRequest_descriptor,
+        internal_static_ai_flow_UpdateJobEndTimeRequest_descriptor,
         new java.lang.String[] { "EndTime", "Name", });
-    internal_static_JobListProto_descriptor =
+    internal_static_ai_flow_JobListProto_descriptor =
       getDescriptor().getMessageTypes().get(22);
-    internal_static_JobListProto_fieldAccessorTable = new
+    internal_static_ai_flow_JobListProto_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_JobListProto_descriptor,
+        internal_static_ai_flow_JobListProto_descriptor,
         new java.lang.String[] { "Jobs", });
-    internal_static_RegisterWorkFlowExecutionRequest_descriptor =
+    internal_static_ai_flow_RegisterWorkFlowExecutionRequest_descriptor =
       getDescriptor().getMessageTypes().get(23);
-    internal_static_RegisterWorkFlowExecutionRequest_fieldAccessorTable = new
+    internal_static_ai_flow_RegisterWorkFlowExecutionRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_RegisterWorkFlowExecutionRequest_descriptor,
+        internal_static_ai_flow_RegisterWorkFlowExecutionRequest_descriptor,
         new java.lang.String[] { "WorkflowExecution", });
-    internal_static_UpdateWorkflowExecutionRequest_descriptor =
+    internal_static_ai_flow_UpdateWorkflowExecutionRequest_descriptor =
       getDescriptor().getMessageTypes().get(24);
-    internal_static_UpdateWorkflowExecutionRequest_fieldAccessorTable = new
+    internal_static_ai_flow_UpdateWorkflowExecutionRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_UpdateWorkflowExecutionRequest_descriptor,
+        internal_static_ai_flow_UpdateWorkflowExecutionRequest_descriptor,
         new java.lang.String[] { "Name", "ProjectId", "ExecutionState", "Properties", "EndTime", "LogUri", "WorkflowJson", "Signature", });
-    internal_static_UpdateWorkflowExecutionRequest_PropertiesEntry_descriptor =
-      internal_static_UpdateWorkflowExecutionRequest_descriptor.getNestedTypes().get(0);
-    internal_static_UpdateWorkflowExecutionRequest_PropertiesEntry_fieldAccessorTable = new
+    internal_static_ai_flow_UpdateWorkflowExecutionRequest_PropertiesEntry_descriptor =
+      internal_static_ai_flow_UpdateWorkflowExecutionRequest_descriptor.getNestedTypes().get(0);
+    internal_static_ai_flow_UpdateWorkflowExecutionRequest_PropertiesEntry_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_UpdateWorkflowExecutionRequest_PropertiesEntry_descriptor,
+        internal_static_ai_flow_UpdateWorkflowExecutionRequest_PropertiesEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
-    internal_static_WorkFlowExecutionListProto_descriptor =
+    internal_static_ai_flow_WorkFlowExecutionListProto_descriptor =
       getDescriptor().getMessageTypes().get(25);
-    internal_static_WorkFlowExecutionListProto_fieldAccessorTable = new
+    internal_static_ai_flow_WorkFlowExecutionListProto_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_WorkFlowExecutionListProto_descriptor,
+        internal_static_ai_flow_WorkFlowExecutionListProto_descriptor,
         new java.lang.String[] { "WorkflowExecutions", });
-    internal_static_UpdateWorkflowExecutionEndTimeRequest_descriptor =
+    internal_static_ai_flow_UpdateWorkflowExecutionEndTimeRequest_descriptor =
       getDescriptor().getMessageTypes().get(26);
-    internal_static_UpdateWorkflowExecutionEndTimeRequest_fieldAccessorTable = new
+    internal_static_ai_flow_UpdateWorkflowExecutionEndTimeRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_UpdateWorkflowExecutionEndTimeRequest_descriptor,
+        internal_static_ai_flow_UpdateWorkflowExecutionEndTimeRequest_descriptor,
         new java.lang.String[] { "EndTime", "Name", });
-    internal_static_UpdateWorkflowExecutionStateRequest_descriptor =
+    internal_static_ai_flow_UpdateWorkflowExecutionStateRequest_descriptor =
       getDescriptor().getMessageTypes().get(27);
-    internal_static_UpdateWorkflowExecutionStateRequest_fieldAccessorTable = new
+    internal_static_ai_flow_UpdateWorkflowExecutionStateRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_UpdateWorkflowExecutionStateRequest_descriptor,
+        internal_static_ai_flow_UpdateWorkflowExecutionStateRequest_descriptor,
         new java.lang.String[] { "State", "Name", });
-    internal_static_RegisterProjectRequest_descriptor =
+    internal_static_ai_flow_RegisterProjectRequest_descriptor =
       getDescriptor().getMessageTypes().get(28);
-    internal_static_RegisterProjectRequest_fieldAccessorTable = new
+    internal_static_ai_flow_RegisterProjectRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_RegisterProjectRequest_descriptor,
+        internal_static_ai_flow_RegisterProjectRequest_descriptor,
         new java.lang.String[] { "Project", });
-    internal_static_UpdateProjectRequest_descriptor =
+    internal_static_ai_flow_UpdateProjectRequest_descriptor =
       getDescriptor().getMessageTypes().get(29);
-    internal_static_UpdateProjectRequest_fieldAccessorTable = new
+    internal_static_ai_flow_UpdateProjectRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_UpdateProjectRequest_descriptor,
+        internal_static_ai_flow_UpdateProjectRequest_descriptor,
         new java.lang.String[] { "Name", "Properties", "ProjectType", "Uri", "User", "Password", });
-    internal_static_UpdateProjectRequest_PropertiesEntry_descriptor =
-      internal_static_UpdateProjectRequest_descriptor.getNestedTypes().get(0);
-    internal_static_UpdateProjectRequest_PropertiesEntry_fieldAccessorTable = new
+    internal_static_ai_flow_UpdateProjectRequest_PropertiesEntry_descriptor =
+      internal_static_ai_flow_UpdateProjectRequest_descriptor.getNestedTypes().get(0);
+    internal_static_ai_flow_UpdateProjectRequest_PropertiesEntry_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_UpdateProjectRequest_PropertiesEntry_descriptor,
+        internal_static_ai_flow_UpdateProjectRequest_PropertiesEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
-    internal_static_ProjectListProto_descriptor =
+    internal_static_ai_flow_ProjectListProto_descriptor =
       getDescriptor().getMessageTypes().get(30);
-    internal_static_ProjectListProto_fieldAccessorTable = new
+    internal_static_ai_flow_ProjectListProto_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_ProjectListProto_descriptor,
+        internal_static_ai_flow_ProjectListProto_descriptor,
         new java.lang.String[] { "Projects", });
-    internal_static_RegisterArtifactRequest_descriptor =
+    internal_static_ai_flow_RegisterArtifactRequest_descriptor =
       getDescriptor().getMessageTypes().get(31);
-    internal_static_RegisterArtifactRequest_fieldAccessorTable = new
+    internal_static_ai_flow_RegisterArtifactRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_RegisterArtifactRequest_descriptor,
+        internal_static_ai_flow_RegisterArtifactRequest_descriptor,
         new java.lang.String[] { "Artifact", });
-    internal_static_UpdateArtifactRequest_descriptor =
+    internal_static_ai_flow_UpdateArtifactRequest_descriptor =
       getDescriptor().getMessageTypes().get(32);
-    internal_static_UpdateArtifactRequest_fieldAccessorTable = new
+    internal_static_ai_flow_UpdateArtifactRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_UpdateArtifactRequest_descriptor,
+        internal_static_ai_flow_UpdateArtifactRequest_descriptor,
         new java.lang.String[] { "Name", "Properties", "DataFormat", "BatchUri", "StreamUri", "Description", "UpdateTime", });
-    internal_static_UpdateArtifactRequest_PropertiesEntry_descriptor =
-      internal_static_UpdateArtifactRequest_descriptor.getNestedTypes().get(0);
-    internal_static_UpdateArtifactRequest_PropertiesEntry_fieldAccessorTable = new
+    internal_static_ai_flow_UpdateArtifactRequest_PropertiesEntry_descriptor =
+      internal_static_ai_flow_UpdateArtifactRequest_descriptor.getNestedTypes().get(0);
+    internal_static_ai_flow_UpdateArtifactRequest_PropertiesEntry_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_UpdateArtifactRequest_PropertiesEntry_descriptor,
+        internal_static_ai_flow_UpdateArtifactRequest_PropertiesEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
-    internal_static_ArtifactListProto_descriptor =
+    internal_static_ai_flow_ArtifactListProto_descriptor =
       getDescriptor().getMessageTypes().get(33);
-    internal_static_ArtifactListProto_fieldAccessorTable = new
+    internal_static_ai_flow_ArtifactListProto_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_ArtifactListProto_descriptor,
+        internal_static_ai_flow_ArtifactListProto_descriptor,
         new java.lang.String[] { "Artifacts", });
     com.google.protobuf.ExtensionRegistry registry =
         com.google.protobuf.ExtensionRegistry.newInstance();

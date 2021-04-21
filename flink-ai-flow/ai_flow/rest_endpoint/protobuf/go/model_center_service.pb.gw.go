@@ -20,11 +20,11 @@
 // source: model_center_service.proto
 
 /*
-Package model_center_service is a reverse proxy.
+Package ai_flow is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
-package service
+package ai_flow
 
 import (
 	"context"

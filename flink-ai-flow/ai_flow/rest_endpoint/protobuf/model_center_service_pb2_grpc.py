@@ -45,47 +45,47 @@ class ModelCenterServiceStub(object):
             channel: A grpc.Channel.
         """
         self.createRegisteredModel = channel.unary_unary(
-                '/ModelCenterService/createRegisteredModel',
+                '/ai_flow.ModelCenterService/createRegisteredModel',
                 request_serializer=model__center__service__pb2.CreateRegisteredModelRequest.SerializeToString,
                 response_deserializer=message__pb2.Response.FromString,
                 )
         self.updateRegisteredModel = channel.unary_unary(
-                '/ModelCenterService/updateRegisteredModel',
+                '/ai_flow.ModelCenterService/updateRegisteredModel',
                 request_serializer=model__center__service__pb2.UpdateRegisteredModelRequest.SerializeToString,
                 response_deserializer=message__pb2.Response.FromString,
                 )
         self.deleteRegisteredModel = channel.unary_unary(
-                '/ModelCenterService/deleteRegisteredModel',
+                '/ai_flow.ModelCenterService/deleteRegisteredModel',
                 request_serializer=model__center__service__pb2.DeleteRegisteredModelRequest.SerializeToString,
                 response_deserializer=message__pb2.Response.FromString,
                 )
         self.listRegisteredModels = channel.unary_unary(
-                '/ModelCenterService/listRegisteredModels',
+                '/ai_flow.ModelCenterService/listRegisteredModels',
                 request_serializer=model__center__service__pb2.ListRegisteredModelsRequest.SerializeToString,
                 response_deserializer=message__pb2.Response.FromString,
                 )
         self.getRegisteredModelDetail = channel.unary_unary(
-                '/ModelCenterService/getRegisteredModelDetail',
+                '/ai_flow.ModelCenterService/getRegisteredModelDetail',
                 request_serializer=model__center__service__pb2.GetRegisteredModelDetailRequest.SerializeToString,
                 response_deserializer=message__pb2.Response.FromString,
                 )
         self.createModelVersion = channel.unary_unary(
-                '/ModelCenterService/createModelVersion',
+                '/ai_flow.ModelCenterService/createModelVersion',
                 request_serializer=model__center__service__pb2.CreateModelVersionRequest.SerializeToString,
                 response_deserializer=message__pb2.Response.FromString,
                 )
         self.updateModelVersion = channel.unary_unary(
-                '/ModelCenterService/updateModelVersion',
+                '/ai_flow.ModelCenterService/updateModelVersion',
                 request_serializer=model__center__service__pb2.UpdateModelVersionRequest.SerializeToString,
                 response_deserializer=message__pb2.Response.FromString,
                 )
         self.deleteModelVersion = channel.unary_unary(
-                '/ModelCenterService/deleteModelVersion',
+                '/ai_flow.ModelCenterService/deleteModelVersion',
                 request_serializer=model__center__service__pb2.DeleteModelVersionRequest.SerializeToString,
                 response_deserializer=message__pb2.Response.FromString,
                 )
         self.getModelVersionDetail = channel.unary_unary(
-                '/ModelCenterService/getModelVersionDetail',
+                '/ai_flow.ModelCenterService/getModelVersionDetail',
                 request_serializer=model__center__service__pb2.GetModelVersionDetailRequest.SerializeToString,
                 response_deserializer=message__pb2.Response.FromString,
                 )
@@ -218,7 +218,7 @@ def add_ModelCenterServiceServicer_to_server(servicer, server):
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'ModelCenterService', rpc_method_handlers)
+            'ai_flow.ModelCenterService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
@@ -248,7 +248,7 @@ class ModelCenterService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ModelCenterService/createRegisteredModel',
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.ModelCenterService/createRegisteredModel',
             model__center__service__pb2.CreateRegisteredModelRequest.SerializeToString,
             message__pb2.Response.FromString,
             options, channel_credentials,
@@ -265,7 +265,7 @@ class ModelCenterService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ModelCenterService/updateRegisteredModel',
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.ModelCenterService/updateRegisteredModel',
             model__center__service__pb2.UpdateRegisteredModelRequest.SerializeToString,
             message__pb2.Response.FromString,
             options, channel_credentials,
@@ -282,7 +282,7 @@ class ModelCenterService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ModelCenterService/deleteRegisteredModel',
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.ModelCenterService/deleteRegisteredModel',
             model__center__service__pb2.DeleteRegisteredModelRequest.SerializeToString,
             message__pb2.Response.FromString,
             options, channel_credentials,
@@ -299,7 +299,7 @@ class ModelCenterService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ModelCenterService/listRegisteredModels',
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.ModelCenterService/listRegisteredModels',
             model__center__service__pb2.ListRegisteredModelsRequest.SerializeToString,
             message__pb2.Response.FromString,
             options, channel_credentials,
@@ -316,7 +316,7 @@ class ModelCenterService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ModelCenterService/getRegisteredModelDetail',
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.ModelCenterService/getRegisteredModelDetail',
             model__center__service__pb2.GetRegisteredModelDetailRequest.SerializeToString,
             message__pb2.Response.FromString,
             options, channel_credentials,
@@ -333,7 +333,7 @@ class ModelCenterService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ModelCenterService/createModelVersion',
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.ModelCenterService/createModelVersion',
             model__center__service__pb2.CreateModelVersionRequest.SerializeToString,
             message__pb2.Response.FromString,
             options, channel_credentials,
@@ -350,7 +350,7 @@ class ModelCenterService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ModelCenterService/updateModelVersion',
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.ModelCenterService/updateModelVersion',
             model__center__service__pb2.UpdateModelVersionRequest.SerializeToString,
             message__pb2.Response.FromString,
             options, channel_credentials,
@@ -367,7 +367,7 @@ class ModelCenterService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ModelCenterService/deleteModelVersion',
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.ModelCenterService/deleteModelVersion',
             model__center__service__pb2.DeleteModelVersionRequest.SerializeToString,
             message__pb2.Response.FromString,
             options, channel_credentials,
@@ -384,7 +384,7 @@ class ModelCenterService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ModelCenterService/getModelVersionDetail',
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.ModelCenterService/getModelVersionDetail',
             model__center__service__pb2.GetModelVersionDetailRequest.SerializeToString,
             message__pb2.Response.FromString,
             options, channel_credentials,

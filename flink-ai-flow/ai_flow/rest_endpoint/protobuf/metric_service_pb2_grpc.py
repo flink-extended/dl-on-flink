@@ -34,52 +34,52 @@ class MetricServiceStub(object):
             channel: A grpc.Channel.
         """
         self.registerMetricMeta = channel.unary_unary(
-                '/MetricService/registerMetricMeta',
+                '/ai_flow.MetricService/registerMetricMeta',
                 request_serializer=metric__service__pb2.MetricMetaRequest.SerializeToString,
                 response_deserializer=metric__service__pb2.MetricMetaResponse.FromString,
                 )
         self.registerMetricSummary = channel.unary_unary(
-                '/MetricService/registerMetricSummary',
+                '/ai_flow.MetricService/registerMetricSummary',
                 request_serializer=metric__service__pb2.MetricSummaryRequest.SerializeToString,
                 response_deserializer=metric__service__pb2.MetricSummaryResponse.FromString,
                 )
         self.updateMetricMeta = channel.unary_unary(
-                '/MetricService/updateMetricMeta',
+                '/ai_flow.MetricService/updateMetricMeta',
                 request_serializer=metric__service__pb2.MetricMetaRequest.SerializeToString,
                 response_deserializer=metric__service__pb2.MetricMetaResponse.FromString,
                 )
         self.getMetricMeta = channel.unary_unary(
-                '/MetricService/getMetricMeta',
+                '/ai_flow.MetricService/getMetricMeta',
                 request_serializer=metric__service__pb2.GetMetricMetaRequest.SerializeToString,
                 response_deserializer=metric__service__pb2.MetricMetaResponse.FromString,
                 )
         self.updateMetricSummary = channel.unary_unary(
-                '/MetricService/updateMetricSummary',
+                '/ai_flow.MetricService/updateMetricSummary',
                 request_serializer=metric__service__pb2.MetricSummaryRequest.SerializeToString,
                 response_deserializer=metric__service__pb2.MetricSummaryResponse.FromString,
                 )
         self.getDatasetMetricMeta = channel.unary_unary(
-                '/MetricService/getDatasetMetricMeta',
+                '/ai_flow.MetricService/getDatasetMetricMeta',
                 request_serializer=metric__service__pb2.GetDataSetMetricMetaRequest.SerializeToString,
                 response_deserializer=metric__service__pb2.ListMetricMetaResponse.FromString,
                 )
         self.getModelMetricMeta = channel.unary_unary(
-                '/MetricService/getModelMetricMeta',
+                '/ai_flow.MetricService/getModelMetricMeta',
                 request_serializer=metric__service__pb2.GetModelMetricMetaRequest.SerializeToString,
                 response_deserializer=metric__service__pb2.ListMetricMetaResponse.FromString,
                 )
         self.getMetricSummary = channel.unary_unary(
-                '/MetricService/getMetricSummary',
+                '/ai_flow.MetricService/getMetricSummary',
                 request_serializer=metric__service__pb2.GetMetricSummaryRequest.SerializeToString,
                 response_deserializer=metric__service__pb2.ListMetricSummaryResponse.FromString,
                 )
         self.deleteMetricMeta = channel.unary_unary(
-                '/MetricService/deleteMetricMeta',
+                '/ai_flow.MetricService/deleteMetricMeta',
                 request_serializer=metric__service__pb2.UuidRequest.SerializeToString,
                 response_deserializer=message__pb2.Response.FromString,
                 )
         self.deleteMetricSummary = channel.unary_unary(
-                '/MetricService/deleteMetricSummary',
+                '/ai_flow.MetricService/deleteMetricSummary',
                 request_serializer=metric__service__pb2.UuidRequest.SerializeToString,
                 response_deserializer=message__pb2.Response.FromString,
                 )
@@ -203,7 +203,7 @@ def add_MetricServiceServicer_to_server(servicer, server):
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'MetricService', rpc_method_handlers)
+            'ai_flow.MetricService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
@@ -222,7 +222,7 @@ class MetricService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/MetricService/registerMetricMeta',
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetricService/registerMetricMeta',
             metric__service__pb2.MetricMetaRequest.SerializeToString,
             metric__service__pb2.MetricMetaResponse.FromString,
             options, channel_credentials,
@@ -239,7 +239,7 @@ class MetricService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/MetricService/registerMetricSummary',
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetricService/registerMetricSummary',
             metric__service__pb2.MetricSummaryRequest.SerializeToString,
             metric__service__pb2.MetricSummaryResponse.FromString,
             options, channel_credentials,
@@ -256,7 +256,7 @@ class MetricService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/MetricService/updateMetricMeta',
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetricService/updateMetricMeta',
             metric__service__pb2.MetricMetaRequest.SerializeToString,
             metric__service__pb2.MetricMetaResponse.FromString,
             options, channel_credentials,
@@ -273,7 +273,7 @@ class MetricService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/MetricService/getMetricMeta',
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetricService/getMetricMeta',
             metric__service__pb2.GetMetricMetaRequest.SerializeToString,
             metric__service__pb2.MetricMetaResponse.FromString,
             options, channel_credentials,
@@ -290,7 +290,7 @@ class MetricService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/MetricService/updateMetricSummary',
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetricService/updateMetricSummary',
             metric__service__pb2.MetricSummaryRequest.SerializeToString,
             metric__service__pb2.MetricSummaryResponse.FromString,
             options, channel_credentials,
@@ -307,7 +307,7 @@ class MetricService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/MetricService/getDatasetMetricMeta',
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetricService/getDatasetMetricMeta',
             metric__service__pb2.GetDataSetMetricMetaRequest.SerializeToString,
             metric__service__pb2.ListMetricMetaResponse.FromString,
             options, channel_credentials,
@@ -324,7 +324,7 @@ class MetricService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/MetricService/getModelMetricMeta',
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetricService/getModelMetricMeta',
             metric__service__pb2.GetModelMetricMetaRequest.SerializeToString,
             metric__service__pb2.ListMetricMetaResponse.FromString,
             options, channel_credentials,
@@ -341,7 +341,7 @@ class MetricService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/MetricService/getMetricSummary',
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetricService/getMetricSummary',
             metric__service__pb2.GetMetricSummaryRequest.SerializeToString,
             metric__service__pb2.ListMetricSummaryResponse.FromString,
             options, channel_credentials,
@@ -358,7 +358,7 @@ class MetricService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/MetricService/deleteMetricMeta',
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetricService/deleteMetricMeta',
             metric__service__pb2.UuidRequest.SerializeToString,
             message__pb2.Response.FromString,
             options, channel_credentials,
@@ -375,7 +375,7 @@ class MetricService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/MetricService/deleteMetricSummary',
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetricService/deleteMetricSummary',
             metric__service__pb2.UuidRequest.SerializeToString,
             message__pb2.Response.FromString,
             options, channel_credentials,

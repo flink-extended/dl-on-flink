@@ -23,6 +23,8 @@ option py_generic_services = true;
 
 import "google/api/annotations.proto";
 
+package notification_service;
+
 service NotificationService {
     // AirFlowService provides notification function rest endpoint of NotificationService for Notification Service component.
     // Functions of NotificationService include:

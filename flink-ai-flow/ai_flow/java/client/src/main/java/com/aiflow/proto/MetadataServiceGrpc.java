@@ -42,7 +42,7 @@ public final class MetadataServiceGrpc {
 
   private MetadataServiceGrpc() {}
 
-  public static final String SERVICE_NAME = "MetadataService";
+  public static final String SERVICE_NAME = "ai_flow.MetadataService";
 
   // Static method descriptors that strictly reflect the proto.
   private static volatile io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.IdRequest,
