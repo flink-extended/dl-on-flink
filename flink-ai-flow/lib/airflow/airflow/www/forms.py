@@ -182,6 +182,33 @@ class DagRunEditForm(DagRunForm):
     )
 
 
+class TaskExecutionEditForm(DynamicForm):
+    """Form for editing TaskExecution"""
+
+    dag_id = StringField(lazy_gettext('Dag Id'), validators=[InputRequired()], widget=BS3TextFieldROWidget())
+    task_id = StringField(
+        lazy_gettext('Task Id'), validators=[InputRequired()], widget=BS3TextFieldROWidget()
+    )
+    start_date = DateTimeWithTimezoneField(lazy_gettext('Start Date'), widget=AirflowDateTimePickerROWidget())
+    end_date = DateTimeWithTimezoneField(lazy_gettext('End Date'), widget=AirflowDateTimePickerROWidget())
+    state = SelectField(
+        lazy_gettext('State'),
+        choices=(
+            ('success', 'success'),
+            ('running', 'running'),
+            ('failed', 'failed'),
+            ('up_for_retry', 'up_for_retry'),
+        ),
+        widget=Select2Widget(),
+        validators=[InputRequired()],
+    )
+    execution_date = DateTimeWithTimezoneField(
+        lazy_gettext('Execution Date'),
+        widget=AirflowDateTimePickerROWidget(),
+        validators=[InputRequired()],
+    )
+
+
 class TaskInstanceEditForm(DynamicForm):
     """Form for editing TaskInstance"""
 

@@ -80,6 +80,7 @@ from airflow.models import Connection, DagModel, DagTag, Log, SlaMiss, TaskFail,
 from airflow.models.baseoperator import BaseOperator
 from airflow.models.dagcode import DagCode
 from airflow.models.dagrun import DagRun, DagRunType
+from airflow.models.taskexecution import TaskExecution
 from airflow.models.taskinstance import TaskInstance
 from airflow.providers_manager import ProvidersManager
 from airflow.security import permissions
@@ -101,6 +102,7 @@ from airflow.www.forms import (
     DateTimeForm,
     DateTimeWithNumRunsForm,
     DateTimeWithNumRunsWithDagRunsForm,
+    TaskExecutionEditForm,
     TaskInstanceEditForm,
 )
 from airflow.www.widgets import AirflowModelListWidget
@@ -648,6 +650,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
         [
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG_RUN),
+            (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
         ]
     )
@@ -872,6 +875,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
     @auth.has_access(
         [
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+            (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
         ]
     )
@@ -930,6 +934,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
     @auth.has_access(
         [
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+            (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
         ]
     )
@@ -984,6 +989,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
     @auth.has_access(
         [
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+            (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_LOG),
         ]
@@ -1072,6 +1078,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
     @auth.has_access(
         [
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+            (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_LOG),
         ]
@@ -1122,6 +1129,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
     @auth.has_access(
         [
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+            (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_LOG),
         ]
@@ -1163,6 +1171,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
     @auth.has_access(
         [
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+            (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
         ]
     )
@@ -1251,6 +1260,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
     @auth.has_access(
         [
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+            (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_XCOM),
         ]
@@ -1303,6 +1313,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
     @auth.has_access(
         [
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+            (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
             (permissions.ACTION_CAN_CREATE, permissions.RESOURCE_TASK_INSTANCE),
         ]
     )
@@ -1514,6 +1525,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
     @auth.has_access(
         [
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+            (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
             (permissions.ACTION_CAN_DELETE, permissions.RESOURCE_TASK_INSTANCE),
         ]
     )
@@ -1558,6 +1570,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
     @auth.has_access(
         [
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+            (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
             (permissions.ACTION_CAN_DELETE, permissions.RESOURCE_TASK_INSTANCE),
         ]
     )
@@ -1780,6 +1793,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
     @auth.has_access(
         [
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+            (permissions.ACTION_CAN_EDIT, permissions.RESOURCE_TASK_EXECUTION),
             (permissions.ACTION_CAN_EDIT, permissions.RESOURCE_TASK_INSTANCE),
         ]
     )
@@ -1814,6 +1828,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
     @auth.has_access(
         [
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+            (permissions.ACTION_CAN_EDIT, permissions.RESOURCE_TASK_EXECUTION),
             (permissions.ACTION_CAN_EDIT, permissions.RESOURCE_TASK_INSTANCE),
         ]
     )
@@ -1848,6 +1863,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
     @auth.has_access(
         [
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+            (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_LOG),
         ]
@@ -2014,6 +2030,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
     @auth.has_access(
         [
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+            (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_LOG),
         ]
@@ -2105,6 +2122,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
     @auth.has_access(
         [
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+            (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
         ]
     )
@@ -2235,6 +2253,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
     @auth.has_access(
         [
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+            (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
         ]
     )
@@ -2308,6 +2327,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
     @auth.has_access(
         [
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+            (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
         ]
     )
@@ -2450,6 +2470,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
     @auth.has_access(
         [
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+            (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
         ]
     )
@@ -2546,6 +2567,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
     @auth.has_access(
         [
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+            (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
         ]
     )
@@ -2606,6 +2628,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
     @auth.has_access(
         [
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+            (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
         ]
     )
@@ -3499,6 +3522,197 @@ class TaskRescheduleModelView(AirflowModelView):
     }
 
 
+class TaskExecutionModelView(AirflowModelView):
+    """View to show records from TaskInstance table"""
+
+    route_base = '/taskexecution'
+
+    datamodel = AirflowModelView.CustomSQLAInterface(TaskExecution)  # noqa # type: ignore
+
+    class_permission_name = permissions.RESOURCE_TASK_EXECUTION
+    method_permission_name = {
+        'list': 'read',
+        'action_clear': 'edit',
+        'action_set_running': 'edit',
+        'action_set_failed': 'edit',
+        'action_set_success': 'edit',
+        'action_set_retry': 'edit',
+    }
+    base_permissions = [
+        permissions.ACTION_CAN_CREATE,
+        permissions.ACTION_CAN_READ,
+        permissions.ACTION_CAN_EDIT,
+        permissions.ACTION_CAN_DELETE,
+        permissions.ACTION_CAN_ACCESS_MENU,
+    ]
+
+    page_size = PAGE_SIZE
+
+    list_columns = [
+        'state',
+        'dag_id',
+        'task_id',
+        'execution_date',
+        'operator',
+        'start_date',
+        'end_date',
+        'duration',
+        'job_id',
+        'hostname',
+        'unixname',
+        'priority_weight',
+        'queue',
+        'queued_dttm',
+        'pool'
+    ]
+
+    order_columns = [item for item in list_columns if item not in ['try_number', 'log_url']]
+
+    search_columns = [
+        'state',
+        'dag_id',
+        'task_id',
+        'execution_date',
+        'seq_num',
+        'hostname',
+        'queue',
+        'pool',
+        'operator',
+        'start_date',
+        'end_date',
+    ]
+
+    edit_columns = [
+        'state',
+        'dag_id',
+        'task_id',
+        'execution_date',
+        'start_date',
+        'end_date',
+    ]
+
+    edit_form = TaskExecutionEditForm
+
+    base_order = ('job_id', 'asc')
+
+    base_filters = [['dag_id', DagFilter, lambda: []]]
+
+    def duration_f(self):
+        """Formats duration."""
+        end_date = self.get('end_date')  # noqa pylint: disable=no-member
+        duration = self.get('duration')  # noqa pylint: disable=no-member
+        if end_date and duration:
+            return timedelta(seconds=duration)
+        return None
+
+    formatters_columns = {
+        'task_id': wwwutils.task_instance_link,
+        'hostname': wwwutils.nobr_f('hostname'),
+        'state': wwwutils.state_f,
+        'execution_date': wwwutils.datetime_f('execution_date'),
+        'start_date': wwwutils.datetime_f('start_date'),
+        'end_date': wwwutils.datetime_f('end_date'),
+        'queued_dttm': wwwutils.datetime_f('queued_dttm'),
+        'dag_id': wwwutils.dag_link,
+        'duration': duration_f,
+    }
+
+    @provide_session
+    @action(
+        'clear',
+        lazy_gettext('Clear'),
+        lazy_gettext(
+            'Are you sure you want to clear the state of the selected task'
+            ' instance(s) and set their dagruns to the running state?'
+        ),
+        single=False,
+    )
+    def action_clear(self, task_instances, session=None):
+        """Clears the action."""
+        try:
+            # dag_to_tis = {}
+            #
+            # for ti in task_instances:
+            #     dag = current_app.dag_bag.get_dag(ti.dag_id)
+            #     task_instances_to_clean = dag_to_tis.setdefault(dag, [])
+            #     task_instances_to_clean.append(ti)
+            #
+            # for dag, task_instances_list in dag_to_tis.items():
+            #     models.clear_task_instances(task_instances_list, session, dag=dag)
+            #
+            # session.commit()
+            # flash("{} task instances have been cleared".format(len(task_instances)))
+            self.update_redirect()
+            return redirect(self.get_redirect())
+        except Exception:  # noqa pylint: disable=broad-except
+            # flash('Failed to clear task instances', 'error')
+            pass
+
+    @provide_session
+    def set_task_instance_state(self, tis, target_state, session=None):
+        """Set task instance state."""
+        try:
+            count = len(tis)
+            for ti in tis:
+                ti.set_state(target_state, session)
+            session.commit()
+            flash(
+                "{count} task instances were set to '{target_state}'".format(
+                    count=count, target_state=target_state
+                )
+            )
+        except Exception:  # noqa pylint: disable=broad-except
+            flash('Failed to set state', 'error')
+
+    @action('set_running', "Set state to 'running'", '', single=False)
+    @auth.has_access(
+        [
+            (permissions.ACTION_CAN_EDIT, permissions.RESOURCE_DAG),
+        ]
+    )
+    def action_set_running(self, tis):
+        """Set state to 'running'"""
+        self.set_task_instance_state(tis, State.RUNNING)
+        self.update_redirect()
+        return redirect(self.get_redirect())
+
+    @action('set_failed', "Set state to 'failed'", '', single=False)
+    @auth.has_access(
+        [
+            (permissions.ACTION_CAN_EDIT, permissions.RESOURCE_DAG),
+        ]
+    )
+    def action_set_failed(self, tis):
+        """Set state to 'failed'"""
+        self.set_task_instance_state(tis, State.FAILED)
+        self.update_redirect()
+        return redirect(self.get_redirect())
+
+    @action('set_success', "Set state to 'success'", '', single=False)
+    @auth.has_access(
+        [
+            (permissions.ACTION_CAN_EDIT, permissions.RESOURCE_DAG),
+        ]
+    )
+    def action_set_success(self, tis):
+        """Set state to 'success'"""
+        self.set_task_instance_state(tis, State.SUCCESS)
+        self.update_redirect()
+        return redirect(self.get_redirect())
+
+    @action('set_retry', "Set state to 'up_for_retry'", '', single=False)
+    @auth.has_access(
+        [
+            (permissions.ACTION_CAN_EDIT, permissions.RESOURCE_DAG),
+        ]
+    )
+    def action_set_retry(self, tis):
+        """Set state to 'up_for_retry'"""
+        self.set_task_instance_state(tis, State.UP_FOR_RETRY)
+        self.update_redirect()
+        return redirect(self.get_redirect())
+
+
 class TaskInstanceModelView(AirflowModelView):
     """View to show records from TaskInstance table"""
 
@@ -3575,6 +3789,32 @@ class TaskInstanceModelView(AirflowModelView):
 
     base_filters = [['dag_id', DagFilter, lambda: []]]
 
+    def task_instance_link(attr):
+        """Generates a URL to the Graph View for a TaskInstance."""
+        dag_id = attr.get('dag_id')
+        task_id = attr.get('task_id')
+        execution_date = attr.get('execution_date')
+        url = url_for('Airflow.task', dag_id=dag_id, task_id=task_id, execution_date=execution_date.isoformat())
+        url_root = url_for(
+            'Airflow.graph', dag_id=dag_id, root=task_id, execution_date=execution_date.isoformat()
+        )
+        task_executions_url = url_for('TaskExecutionModelView.list', _flt_0_dag_id=dag_id, _flt_1_task_id=task_id)
+        return Markup(  # noqa
+            """
+            <span style="white-space: nowrap;">
+            <a href="{url}">{task_id}</a>
+            <a href="{task_executions_url}" title="Visit all corresponding task executions">
+            <span class="material-icons" aria-hidden="true">
+                reorder</span>
+            </a>
+            <a href="{url_root}" title="Filter on this task and upstream">
+            <span class="material-icons" style="margin-left:0;"
+                aria-hidden="true">filter_alt</span>
+            </a>
+            </span>
+            """
+        ).format(url=url, task_id=task_id, url_root=url_root, task_executions_url=task_executions_url)
+
     def log_url_formatter(self):
         """Formats log URL."""
         log_url = self.get('log_url')  # noqa pylint: disable=no-member
@@ -3591,8 +3831,9 @@ class TaskInstanceModelView(AirflowModelView):
         return None
 
     formatters_columns = {
+        # 'task_executions': task_executions_formatter,
         'log_url': log_url_formatter,
-        'task_id': wwwutils.task_instance_link,
+        'task_id': task_instance_link,
         'hostname': wwwutils.nobr_f('hostname'),
         'state': wwwutils.state_f,
         'execution_date': wwwutils.datetime_f('execution_date'),
