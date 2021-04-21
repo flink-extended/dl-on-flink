@@ -41,12 +41,14 @@ rm -rf build
 rm -rf dist
 # In case of existed typing cause version conflict, uninstall it and then install AI Flow from source
 pip uninstall -y typing
-sudo pip install ./flink-ai-flow/lib/notification_service
-sudo pip install ./flink-ai-flow/lib/airflow
-sudo pip install ./flink-ai-flow/
+pip install ./flink-ai-flow/lib/notification_service
+pip install ./flink-ai-flow/lib/airflow
+pip install ./flink-ai-flow/
 ```
 
-If you meet any problems during the installation, please refer to the [Troubleshooting](#troubleshooting) section to see if it can help.
+To make it easier to start server, some shell scripts like start-aiflow.sh will be installed with upon commands.
+You could run with `which start-aiflow.sh` to check if the scripts are installed successfully. 
+If not, you can reinstall with `sudo` command. Any other problems during the installation, please refer to the [Troubleshooting](#troubleshooting) section to see if it can help.
 
 ## Start AI Flow
 
