@@ -36,11 +36,11 @@ from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='deploy_service.proto',
-  package='service',
+  package='ai_flow',
   syntax='proto3',
   serialized_options=b'\n\020com.aiflow.proto\210\001\001\220\001\001',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x14\x64\x65ploy_service.proto\x12\x07service\x1a\x1cgoogle/api/annotations.proto\"4\n\x0fWorkflowRequest\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x15\n\rworkflow_json\x18\x02 \x01(\t\"I\n\x10ScheduleResponse\x12\x13\n\x0breturn_code\x18\x01 \x01(\x03\x12\x12\n\nreturn_msg\x18\x02 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x03 \x01(\t\"!\n\x13MasterConfigRequest\x12\n\n\x02id\x18\x01 \x01(\x03\"\xa9\x01\n\x14MasterConfigResponse\x12\x13\n\x0breturn_code\x18\x01 \x01(\x03\x12\x12\n\nreturn_msg\x18\x02 \x01(\t\x12\x39\n\x06\x63onfig\x18\x03 \x03(\x0b\x32).service.MasterConfigResponse.ConfigEntry\x1a-\n\x0b\x43onfigEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x32\x83\x05\n\rDeployService\x12x\n\x15startScheduleWorkflow\x12\x18.service.WorkflowRequest\x1a\x19.service.ScheduleResponse\"*\x82\xd3\xe4\x93\x02$\"\x1f/aiflow/deployer/workflow/start:\x01*\x12v\n\x14stopScheduleWorkflow\x12\x18.service.WorkflowRequest\x1a\x19.service.ScheduleResponse\")\x82\xd3\xe4\x93\x02#\"\x1e/aiflow/deployer/workflow/stop:\x01*\x12~\n\x1agetWorkflowExecutionResult\x12\x18.service.WorkflowRequest\x1a\x19.service.ScheduleResponse\"+\x82\xd3\xe4\x93\x02%\" /aiflow/deployer/workflow/result:\x01*\x12{\n\x18isWorkflowExecutionAlive\x12\x18.service.WorkflowRequest\x1a\x19.service.ScheduleResponse\"*\x82\xd3\xe4\x93\x02$\"\x1f/aiflow/deployer/workflow/alive:\x01*\x12\x82\x01\n\x0fgetMasterConfig\x12\x1c.service.MasterConfigRequest\x1a\x1d.service.MasterConfigResponse\"2\x82\xd3\xe4\x93\x02,\"\'/aiflow/deployer/workflow/master_config:\x01*B\x18\n\x10\x63om.aiflow.proto\x88\x01\x01\x90\x01\x01\x62\x06proto3'
+  serialized_pb=b'\n\x14\x64\x65ploy_service.proto\x12\x07\x61i_flow\x1a\x1cgoogle/api/annotations.proto\"4\n\x0fWorkflowRequest\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x15\n\rworkflow_json\x18\x02 \x01(\t\"I\n\x10ScheduleResponse\x12\x13\n\x0breturn_code\x18\x01 \x01(\x03\x12\x12\n\nreturn_msg\x18\x02 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x03 \x01(\t\"!\n\x13MasterConfigRequest\x12\n\n\x02id\x18\x01 \x01(\x03\"\xa9\x01\n\x14MasterConfigResponse\x12\x13\n\x0breturn_code\x18\x01 \x01(\x03\x12\x12\n\nreturn_msg\x18\x02 \x01(\t\x12\x39\n\x06\x63onfig\x18\x03 \x03(\x0b\x32).ai_flow.MasterConfigResponse.ConfigEntry\x1a-\n\x0b\x43onfigEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x32\x83\x05\n\rDeployService\x12x\n\x15startScheduleWorkflow\x12\x18.ai_flow.WorkflowRequest\x1a\x19.ai_flow.ScheduleResponse\"*\x82\xd3\xe4\x93\x02$\"\x1f/aiflow/deployer/workflow/start:\x01*\x12v\n\x14stopScheduleWorkflow\x12\x18.ai_flow.WorkflowRequest\x1a\x19.ai_flow.ScheduleResponse\")\x82\xd3\xe4\x93\x02#\"\x1e/aiflow/deployer/workflow/stop:\x01*\x12~\n\x1agetWorkflowExecutionResult\x12\x18.ai_flow.WorkflowRequest\x1a\x19.ai_flow.ScheduleResponse\"+\x82\xd3\xe4\x93\x02%\" /aiflow/deployer/workflow/result:\x01*\x12{\n\x18isWorkflowExecutionAlive\x12\x18.ai_flow.WorkflowRequest\x1a\x19.ai_flow.ScheduleResponse\"*\x82\xd3\xe4\x93\x02$\"\x1f/aiflow/deployer/workflow/alive:\x01*\x12\x82\x01\n\x0fgetMasterConfig\x12\x1c.ai_flow.MasterConfigRequest\x1a\x1d.ai_flow.MasterConfigResponse\"2\x82\xd3\xe4\x93\x02,\"\'/aiflow/deployer/workflow/master_config:\x01*B\x18\n\x10\x63om.aiflow.proto\x88\x01\x01\x90\x01\x01\x62\x06proto3'
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,])
 
@@ -49,21 +49,21 @@ DESCRIPTOR = _descriptor.FileDescriptor(
 
 _WORKFLOWREQUEST = _descriptor.Descriptor(
   name='WorkflowRequest',
-  full_name='service.WorkflowRequest',
+  full_name='ai_flow.WorkflowRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='id', full_name='service.WorkflowRequest.id', index=0,
+      name='id', full_name='ai_flow.WorkflowRequest.id', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='workflow_json', full_name='service.WorkflowRequest.workflow_json', index=1,
+      name='workflow_json', full_name='ai_flow.WorkflowRequest.workflow_json', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -88,28 +88,28 @@ _WORKFLOWREQUEST = _descriptor.Descriptor(
 
 _SCHEDULERESPONSE = _descriptor.Descriptor(
   name='ScheduleResponse',
-  full_name='service.ScheduleResponse',
+  full_name='ai_flow.ScheduleResponse',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='return_code', full_name='service.ScheduleResponse.return_code', index=0,
+      name='return_code', full_name='ai_flow.ScheduleResponse.return_code', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='return_msg', full_name='service.ScheduleResponse.return_msg', index=1,
+      name='return_msg', full_name='ai_flow.ScheduleResponse.return_msg', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='data', full_name='service.ScheduleResponse.data', index=2,
+      name='data', full_name='ai_flow.ScheduleResponse.data', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -134,14 +134,14 @@ _SCHEDULERESPONSE = _descriptor.Descriptor(
 
 _MASTERCONFIGREQUEST = _descriptor.Descriptor(
   name='MasterConfigRequest',
-  full_name='service.MasterConfigRequest',
+  full_name='ai_flow.MasterConfigRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='id', full_name='service.MasterConfigRequest.id', index=0,
+      name='id', full_name='ai_flow.MasterConfigRequest.id', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -166,21 +166,21 @@ _MASTERCONFIGREQUEST = _descriptor.Descriptor(
 
 _MASTERCONFIGRESPONSE_CONFIGENTRY = _descriptor.Descriptor(
   name='ConfigEntry',
-  full_name='service.MasterConfigResponse.ConfigEntry',
+  full_name='ai_flow.MasterConfigResponse.ConfigEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='service.MasterConfigResponse.ConfigEntry.key', index=0,
+      name='key', full_name='ai_flow.MasterConfigResponse.ConfigEntry.key', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='value', full_name='service.MasterConfigResponse.ConfigEntry.value', index=1,
+      name='value', full_name='ai_flow.MasterConfigResponse.ConfigEntry.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -204,28 +204,28 @@ _MASTERCONFIGRESPONSE_CONFIGENTRY = _descriptor.Descriptor(
 
 _MASTERCONFIGRESPONSE = _descriptor.Descriptor(
   name='MasterConfigResponse',
-  full_name='service.MasterConfigResponse',
+  full_name='ai_flow.MasterConfigResponse',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='return_code', full_name='service.MasterConfigResponse.return_code', index=0,
+      name='return_code', full_name='ai_flow.MasterConfigResponse.return_code', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='return_msg', full_name='service.MasterConfigResponse.return_msg', index=1,
+      name='return_msg', full_name='ai_flow.MasterConfigResponse.return_msg', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='config', full_name='service.MasterConfigResponse.config', index=2,
+      name='config', full_name='ai_flow.MasterConfigResponse.config', index=2,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -258,21 +258,21 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 WorkflowRequest = _reflection.GeneratedProtocolMessageType('WorkflowRequest', (_message.Message,), {
   'DESCRIPTOR' : _WORKFLOWREQUEST,
   '__module__' : 'deploy_service_pb2'
-  # @@protoc_insertion_point(class_scope:service.WorkflowRequest)
+  # @@protoc_insertion_point(class_scope:ai_flow.WorkflowRequest)
   })
 _sym_db.RegisterMessage(WorkflowRequest)
 
 ScheduleResponse = _reflection.GeneratedProtocolMessageType('ScheduleResponse', (_message.Message,), {
   'DESCRIPTOR' : _SCHEDULERESPONSE,
   '__module__' : 'deploy_service_pb2'
-  # @@protoc_insertion_point(class_scope:service.ScheduleResponse)
+  # @@protoc_insertion_point(class_scope:ai_flow.ScheduleResponse)
   })
 _sym_db.RegisterMessage(ScheduleResponse)
 
 MasterConfigRequest = _reflection.GeneratedProtocolMessageType('MasterConfigRequest', (_message.Message,), {
   'DESCRIPTOR' : _MASTERCONFIGREQUEST,
   '__module__' : 'deploy_service_pb2'
-  # @@protoc_insertion_point(class_scope:service.MasterConfigRequest)
+  # @@protoc_insertion_point(class_scope:ai_flow.MasterConfigRequest)
   })
 _sym_db.RegisterMessage(MasterConfigRequest)
 
@@ -281,12 +281,12 @@ MasterConfigResponse = _reflection.GeneratedProtocolMessageType('MasterConfigRes
   'ConfigEntry' : _reflection.GeneratedProtocolMessageType('ConfigEntry', (_message.Message,), {
     'DESCRIPTOR' : _MASTERCONFIGRESPONSE_CONFIGENTRY,
     '__module__' : 'deploy_service_pb2'
-    # @@protoc_insertion_point(class_scope:service.MasterConfigResponse.ConfigEntry)
+    # @@protoc_insertion_point(class_scope:ai_flow.MasterConfigResponse.ConfigEntry)
     })
   ,
   'DESCRIPTOR' : _MASTERCONFIGRESPONSE,
   '__module__' : 'deploy_service_pb2'
-  # @@protoc_insertion_point(class_scope:service.MasterConfigResponse)
+  # @@protoc_insertion_point(class_scope:ai_flow.MasterConfigResponse)
   })
 _sym_db.RegisterMessage(MasterConfigResponse)
 _sym_db.RegisterMessage(MasterConfigResponse.ConfigEntry)
@@ -297,7 +297,7 @@ _MASTERCONFIGRESPONSE_CONFIGENTRY._options = None
 
 _DEPLOYSERVICE = _descriptor.ServiceDescriptor(
   name='DeployService',
-  full_name='service.DeployService',
+  full_name='ai_flow.DeployService',
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
@@ -307,7 +307,7 @@ _DEPLOYSERVICE = _descriptor.ServiceDescriptor(
   methods=[
   _descriptor.MethodDescriptor(
     name='startScheduleWorkflow',
-    full_name='service.DeployService.startScheduleWorkflow',
+    full_name='ai_flow.DeployService.startScheduleWorkflow',
     index=0,
     containing_service=None,
     input_type=_WORKFLOWREQUEST,
@@ -317,7 +317,7 @@ _DEPLOYSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='stopScheduleWorkflow',
-    full_name='service.DeployService.stopScheduleWorkflow',
+    full_name='ai_flow.DeployService.stopScheduleWorkflow',
     index=1,
     containing_service=None,
     input_type=_WORKFLOWREQUEST,
@@ -327,7 +327,7 @@ _DEPLOYSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='getWorkflowExecutionResult',
-    full_name='service.DeployService.getWorkflowExecutionResult',
+    full_name='ai_flow.DeployService.getWorkflowExecutionResult',
     index=2,
     containing_service=None,
     input_type=_WORKFLOWREQUEST,
@@ -337,7 +337,7 @@ _DEPLOYSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='isWorkflowExecutionAlive',
-    full_name='service.DeployService.isWorkflowExecutionAlive',
+    full_name='ai_flow.DeployService.isWorkflowExecutionAlive',
     index=3,
     containing_service=None,
     input_type=_WORKFLOWREQUEST,
@@ -347,7 +347,7 @@ _DEPLOYSERVICE = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='getMasterConfig',
-    full_name='service.DeployService.getMasterConfig',
+    full_name='ai_flow.DeployService.getMasterConfig',
     index=4,
     containing_service=None,
     input_type=_MASTERCONFIGREQUEST,

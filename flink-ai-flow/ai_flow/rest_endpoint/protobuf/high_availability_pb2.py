@@ -36,16 +36,16 @@ _sym_db = _symbol_database.Default()
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='high_availability.proto',
-  package='service',
+  package='ai_flow',
   syntax='proto3',
   serialized_options=b'\n\020com.aiflow.proto\210\001\001\220\001\001',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x17high_availability.proto\x12\x07service\"G\n\x0bMemberProto\x12\x0f\n\x07version\x18\x01 \x01(\x03\x12\x12\n\nserver_uri\x18\x02 \x01(\t\x12\x13\n\x0bupdate_time\x18\x03 \x01(\x03\"-\n\x12ListMembersRequest\x12\x17\n\x0ftimeout_seconds\x18\x01 \x01(\x05\"|\n\x13ListMembersResponse\x12*\n\x0breturn_code\x18\x01 \x01(\x0e\x32\x15.service.ReturnStatus\x12\x12\n\nreturn_msg\x18\x02 \x01(\t\x12%\n\x07members\x18\x03 \x03(\x0b\x32\x14.service.MemberProto\">\n\x16NotifyNewMemberRequest\x12$\n\x06member\x18\x01 \x01(\x0b\x32\x14.service.MemberProto\"Y\n\x17NotifyNewMemberResponse\x12*\n\x0breturn_code\x18\x01 \x01(\x0e\x32\x15.service.ReturnStatus\x12\x12\n\nreturn_msg\x18\x02 \x01(\t*0\n\x0cReturnStatus\x12\x10\n\x0c\x43\x41LL_SUCCESS\x10\x00\x12\x0e\n\nCALL_ERROR\x10\x01\x32\xbd\x01\n\x17HighAvailabilityManager\x12J\n\x0blistMembers\x12\x1b.service.ListMembersRequest\x1a\x1c.service.ListMembersResponse\"\x00\x12V\n\x0fnotifyNewMember\x12\x1f.service.NotifyNewMemberRequest\x1a .service.NotifyNewMemberResponse\"\x00\x42\x18\n\x10\x63om.aiflow.proto\x88\x01\x01\x90\x01\x01\x62\x06proto3'
+  serialized_pb=b'\n\x17high_availability.proto\x12\x07\x61i_flow\"G\n\x0bMemberProto\x12\x0f\n\x07version\x18\x01 \x01(\x03\x12\x12\n\nserver_uri\x18\x02 \x01(\t\x12\x13\n\x0bupdate_time\x18\x03 \x01(\x03\"-\n\x12ListMembersRequest\x12\x17\n\x0ftimeout_seconds\x18\x01 \x01(\x05\"|\n\x13ListMembersResponse\x12*\n\x0breturn_code\x18\x01 \x01(\x0e\x32\x15.ai_flow.ReturnStatus\x12\x12\n\nreturn_msg\x18\x02 \x01(\t\x12%\n\x07members\x18\x03 \x03(\x0b\x32\x14.ai_flow.MemberProto\">\n\x16NotifyNewMemberRequest\x12$\n\x06member\x18\x01 \x01(\x0b\x32\x14.ai_flow.MemberProto\"Y\n\x17NotifyNewMemberResponse\x12*\n\x0breturn_code\x18\x01 \x01(\x0e\x32\x15.ai_flow.ReturnStatus\x12\x12\n\nreturn_msg\x18\x02 \x01(\t*0\n\x0cReturnStatus\x12\x10\n\x0c\x43\x41LL_SUCCESS\x10\x00\x12\x0e\n\nCALL_ERROR\x10\x01\x32\xbd\x01\n\x17HighAvailabilityManager\x12J\n\x0blistMembers\x12\x1b.ai_flow.ListMembersRequest\x1a\x1c.ai_flow.ListMembersResponse\"\x00\x12V\n\x0fnotifyNewMember\x12\x1f.ai_flow.NotifyNewMemberRequest\x1a .ai_flow.NotifyNewMemberResponse\"\x00\x42\x18\n\x10\x63om.aiflow.proto\x88\x01\x01\x90\x01\x01\x62\x06proto3'
 )
 
 _RETURNSTATUS = _descriptor.EnumDescriptor(
   name='ReturnStatus',
-  full_name='service.ReturnStatus',
+  full_name='ai_flow.ReturnStatus',
   filename=None,
   file=DESCRIPTOR,
   create_key=_descriptor._internal_create_key,
@@ -76,28 +76,28 @@ CALL_ERROR = 1
 
 _MEMBERPROTO = _descriptor.Descriptor(
   name='MemberProto',
-  full_name='service.MemberProto',
+  full_name='ai_flow.MemberProto',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='version', full_name='service.MemberProto.version', index=0,
+      name='version', full_name='ai_flow.MemberProto.version', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='server_uri', full_name='service.MemberProto.server_uri', index=1,
+      name='server_uri', full_name='ai_flow.MemberProto.server_uri', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='update_time', full_name='service.MemberProto.update_time', index=2,
+      name='update_time', full_name='ai_flow.MemberProto.update_time', index=2,
       number=3, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -122,14 +122,14 @@ _MEMBERPROTO = _descriptor.Descriptor(
 
 _LISTMEMBERSREQUEST = _descriptor.Descriptor(
   name='ListMembersRequest',
-  full_name='service.ListMembersRequest',
+  full_name='ai_flow.ListMembersRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='timeout_seconds', full_name='service.ListMembersRequest.timeout_seconds', index=0,
+      name='timeout_seconds', full_name='ai_flow.ListMembersRequest.timeout_seconds', index=0,
       number=1, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -154,28 +154,28 @@ _LISTMEMBERSREQUEST = _descriptor.Descriptor(
 
 _LISTMEMBERSRESPONSE = _descriptor.Descriptor(
   name='ListMembersResponse',
-  full_name='service.ListMembersResponse',
+  full_name='ai_flow.ListMembersResponse',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='return_code', full_name='service.ListMembersResponse.return_code', index=0,
+      name='return_code', full_name='ai_flow.ListMembersResponse.return_code', index=0,
       number=1, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='return_msg', full_name='service.ListMembersResponse.return_msg', index=1,
+      name='return_msg', full_name='ai_flow.ListMembersResponse.return_msg', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='members', full_name='service.ListMembersResponse.members', index=2,
+      name='members', full_name='ai_flow.ListMembersResponse.members', index=2,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -200,14 +200,14 @@ _LISTMEMBERSRESPONSE = _descriptor.Descriptor(
 
 _NOTIFYNEWMEMBERREQUEST = _descriptor.Descriptor(
   name='NotifyNewMemberRequest',
-  full_name='service.NotifyNewMemberRequest',
+  full_name='ai_flow.NotifyNewMemberRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='member', full_name='service.NotifyNewMemberRequest.member', index=0,
+      name='member', full_name='ai_flow.NotifyNewMemberRequest.member', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -232,21 +232,21 @@ _NOTIFYNEWMEMBERREQUEST = _descriptor.Descriptor(
 
 _NOTIFYNEWMEMBERRESPONSE = _descriptor.Descriptor(
   name='NotifyNewMemberResponse',
-  full_name='service.NotifyNewMemberResponse',
+  full_name='ai_flow.NotifyNewMemberResponse',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='return_code', full_name='service.NotifyNewMemberResponse.return_code', index=0,
+      name='return_code', full_name='ai_flow.NotifyNewMemberResponse.return_code', index=0,
       number=1, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='return_msg', full_name='service.NotifyNewMemberResponse.return_msg', index=1,
+      name='return_msg', full_name='ai_flow.NotifyNewMemberResponse.return_msg', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -283,35 +283,35 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 MemberProto = _reflection.GeneratedProtocolMessageType('MemberProto', (_message.Message,), {
   'DESCRIPTOR' : _MEMBERPROTO,
   '__module__' : 'high_availability_pb2'
-  # @@protoc_insertion_point(class_scope:service.MemberProto)
+  # @@protoc_insertion_point(class_scope:ai_flow.MemberProto)
   })
 _sym_db.RegisterMessage(MemberProto)
 
 ListMembersRequest = _reflection.GeneratedProtocolMessageType('ListMembersRequest', (_message.Message,), {
   'DESCRIPTOR' : _LISTMEMBERSREQUEST,
   '__module__' : 'high_availability_pb2'
-  # @@protoc_insertion_point(class_scope:service.ListMembersRequest)
+  # @@protoc_insertion_point(class_scope:ai_flow.ListMembersRequest)
   })
 _sym_db.RegisterMessage(ListMembersRequest)
 
 ListMembersResponse = _reflection.GeneratedProtocolMessageType('ListMembersResponse', (_message.Message,), {
   'DESCRIPTOR' : _LISTMEMBERSRESPONSE,
   '__module__' : 'high_availability_pb2'
-  # @@protoc_insertion_point(class_scope:service.ListMembersResponse)
+  # @@protoc_insertion_point(class_scope:ai_flow.ListMembersResponse)
   })
 _sym_db.RegisterMessage(ListMembersResponse)
 
 NotifyNewMemberRequest = _reflection.GeneratedProtocolMessageType('NotifyNewMemberRequest', (_message.Message,), {
   'DESCRIPTOR' : _NOTIFYNEWMEMBERREQUEST,
   '__module__' : 'high_availability_pb2'
-  # @@protoc_insertion_point(class_scope:service.NotifyNewMemberRequest)
+  # @@protoc_insertion_point(class_scope:ai_flow.NotifyNewMemberRequest)
   })
 _sym_db.RegisterMessage(NotifyNewMemberRequest)
 
 NotifyNewMemberResponse = _reflection.GeneratedProtocolMessageType('NotifyNewMemberResponse', (_message.Message,), {
   'DESCRIPTOR' : _NOTIFYNEWMEMBERRESPONSE,
   '__module__' : 'high_availability_pb2'
-  # @@protoc_insertion_point(class_scope:service.NotifyNewMemberResponse)
+  # @@protoc_insertion_point(class_scope:ai_flow.NotifyNewMemberResponse)
   })
 _sym_db.RegisterMessage(NotifyNewMemberResponse)
 
@@ -320,7 +320,7 @@ DESCRIPTOR._options = None
 
 _HIGHAVAILABILITYMANAGER = _descriptor.ServiceDescriptor(
   name='HighAvailabilityManager',
-  full_name='service.HighAvailabilityManager',
+  full_name='ai_flow.HighAvailabilityManager',
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
@@ -330,7 +330,7 @@ _HIGHAVAILABILITYMANAGER = _descriptor.ServiceDescriptor(
   methods=[
   _descriptor.MethodDescriptor(
     name='listMembers',
-    full_name='service.HighAvailabilityManager.listMembers',
+    full_name='ai_flow.HighAvailabilityManager.listMembers',
     index=0,
     containing_service=None,
     input_type=_LISTMEMBERSREQUEST,
@@ -340,7 +340,7 @@ _HIGHAVAILABILITYMANAGER = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='notifyNewMember',
-    full_name='service.HighAvailabilityManager.notifyNewMember',
+    full_name='ai_flow.HighAvailabilityManager.notifyNewMember',
     index=1,
     containing_service=None,
     input_type=_NOTIFYNEWMEMBERREQUEST,

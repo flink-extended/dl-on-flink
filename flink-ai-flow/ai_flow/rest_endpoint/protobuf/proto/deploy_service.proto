@@ -23,7 +23,7 @@ option py_generic_services = true;
 
 import "google/api/annotations.proto";
 
-package service;
+package ai_flow;
 
 message WorkflowRequest {
     int64 id = 1;
