@@ -19,7 +19,7 @@ import unittest
 import os
 import threading
 from typing import Callable
-
+import time
 from airflow.events.scheduler_events import StopSchedulerEvent
 from ai_flow.api.configuration import set_project_config_file
 from airflow.contrib.jobs.event_based_scheduler_job import EventBasedSchedulerJob
@@ -96,6 +96,7 @@ class BaseETETest(unittest.TestCase):
         dag_file = ai_flow_function()
 
         def run_test_fun():
+            time.sleep(5)
             client = NotificationClient(server_uri="localhost:{}".format(master_port()),
                                         default_namespace="test")
             test_function(client)
