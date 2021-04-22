@@ -27,8 +27,6 @@ from abc import ABC, abstractmethod
 
 from typing import Dict
 
-from ai_flow.store.abstract_store import AbstractStore
-
 from ai_flow.rest_endpoint.protobuf.high_availability_pb2 import ListMembersResponse, ReturnStatus, MemberProto, \
     NotifyNewMemberResponse, NotifyNewMemberRequest
 from ai_flow.rest_endpoint.protobuf.high_availability_pb2_grpc import HighAvailabilityManagerServicer, \
@@ -88,7 +86,7 @@ class SimpleAIFlowServerHaManager(AIFlowServerHaManager):
 
     def __init__(self):
         self.server_uri = None
-        self.storage = None  # type: AbstractStore
+        self.storage = None
         self.ttl_ms = None
         self.living_members = []
         self.member_connections = {}  # type: Dict[str, HighAvailabilityManagerStub]
