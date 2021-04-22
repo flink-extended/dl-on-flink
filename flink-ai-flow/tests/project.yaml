@@ -16,9 +16,7 @@
 ## specific language governing permissions and limitations
 ## under the License.
 ##
-
-project_name: simple_project
+project_name: test_project
 master_ip: localhost
 master_port: 50051
-# for airflow scheduler this option should be enabled.
-notification_uri: localhost:50052
+airflow_deploy_path: /tmp/airflow/
