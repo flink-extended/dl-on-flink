@@ -16,9 +16,7 @@
 ## specific language governing permissions and limitations
 ## under the License.
 ##
-
-project_name: simple_project
 master_ip: localhost
 master_port: 50051
-# for airflow scheduler this option should be enabled.
-notification_uri: localhost:50052
+db_uri: sqlite:///aiflow.db
+db_type: sql_lite
