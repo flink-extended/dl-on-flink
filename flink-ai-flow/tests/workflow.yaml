@@ -17,8 +17,14 @@
 ## under the License.
 ##
 
-project_name: simple_project
-master_ip: localhost
-master_port: 50051
-# for airflow scheduler this option should be enabled.
-notification_uri: localhost:50052
+workflow_name: test_workflow
+task_1:
+  platform: local
+  engine: cmd_line
+  job_name: task_1
+
+task_2:
+  platform: local
+  engine: python
+  job_name: task_2
+
