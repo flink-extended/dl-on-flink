@@ -22,6 +22,7 @@ import traceback
 
 from notification_service.base_notification import BaseEvent
 from notification_service.event_storage import BaseEventStorage
+from notification_service.high_availability import NotificationServerHaManager
 from notification_service.proto import notification_service_pb2_grpc, notification_service_pb2
 from notification_service.util.utils import event_to_proto, event_list_to_proto, member_to_proto, event_proto_to_event, \
     proto_to_member
