@@ -17,18 +17,18 @@
 ## specific language governing permissions and limitations
 ## under the License.
 ##
+
 set -e
-export AIFLOW_PID_DIR=${AIFLOW_PID_DIR:-/tmp}
-AIRFLOW_DEPLOY_PATH="${AIRFLOW_HOME}/airflow_deploy"
 
-set +e
-for((i=1;i<=3;i++));do kill $(cat ${AIFLOW_PID_DIR}/scheduler.pid) >/dev/null 2>&1 && sleep 1;done
-for((i=1;i<=3;i++));do kill $(cat ${AIFLOW_PID_DIR}/web.pid) >/dev/null 2>&1 && sleep 1;done
-for((i=1;i<=3;i++));do kill $(cat ${AIFLOW_PID_DIR}/master_server.pid) >/dev/null 2>&1 && sleep 1;done
-for((i=1;i<=3;i++));do kill $(cat ${AIFLOW_PID_DIR}/notification_service.pid) >/dev/null 2>&1 && sleep 1;done
+bin=$(dirname "${BASH_SOURCE[0]}")
+bin=$(cd "$bin"; pwd)
+workdir=$bin/../..
 
+# In case of existed typing cause version conflict, uninstall it and then install AI Flow from source
+pip uninstall -y typing
 
-rm ${AIFLOW_PID_DIR}/scheduler.pid
-rm ${AIFLOW_PID_DIR}/web.pid
-rm ${AIFLOW_PID_DIR}/master_server.pid
-rm ${AIFLOW_PID_DIR}/notification_service.pid
+# Compile Web UI assets of airflow (yarn is required)
+bash "$workdir"/lib/airflow/airflow/www/compile_assets.sh
+pip install "$workdir"/lib/notification_service
+pip install "$workdir"/lib/airflow
+pip install "$workdir"
