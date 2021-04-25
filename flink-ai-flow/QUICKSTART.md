@@ -15,6 +15,7 @@ The Quickstart will show you how to install AI Flow and help you get started wit
 1. python3.7
 2. pip
 3. MySQL
+4. yarn(1.22.10 or newer)
 
 We strongly recommend using [virtualenv](https://virtualenv.pypa.io/en/latest/index.html) or other similar tools to provide a isolated Python environment, 
 in case of dependencies conflict error.
@@ -34,21 +35,13 @@ We added an event-based scheduler named event_scheduler to Apache Airflow which 
 If you are installing AI Flow from source, you can install AI Flow by running the following command:
 
 ```shell
-# remove the build cache if exists
 cd flink-ai-extended
-rm -rf ai_flow.egg-info
-rm -rf build
-rm -rf dist
-# In case of existed typing cause version conflict, uninstall it and then install AI Flow from source
-pip uninstall -y typing
-pip install ./flink-ai-flow/lib/notification_service
-pip install ./flink-ai-flow/lib/airflow
-pip install ./flink-ai-flow/
+bash flink-ai-flow/ai_flow/bin/install_aiflow.sh
 ```
-
 To make it easier to start server, some shell scripts like start-aiflow.sh will be installed with upon commands.
 You could run with `which start-aiflow.sh` to check if the scripts are installed successfully. 
 If not, you can reinstall with `sudo` command. Any other problems during the installation, please refer to the [Troubleshooting](#troubleshooting) section to see if it can help.
+If you meet any problems during the installation, please refer to the [Troubleshooting](#troubleshooting) section to see if it can help.
 
 ## Start AI Flow
 
