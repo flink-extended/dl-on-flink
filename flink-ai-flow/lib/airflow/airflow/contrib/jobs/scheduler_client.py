@@ -52,7 +52,7 @@ class EventSchedulerClient(object):
     def generate_id(id):
         return '{}_{}'.format(id, time.time_ns())
 
-    def trigger_parse_dag(self) -> bool:
+    def trigger_parse_dag(self, file_path) -> bool:
         id = self.generate_id('')
         watcher: ResponseWatcher = ResponseWatcher()
         handler: ThreadEventWatcherHandle \
@@ -61,7 +61,8 @@ class EventSchedulerClient(object):
                                                 namespace=SCHEDULER_NAMESPACE, watcher=watcher)
 
         self.ns_client.send_event(BaseEvent(key=id,
-                                            event_type=SchedulerInnerEventType.PARSE_DAG_REQUEST.value, value=''))
+                                            event_type=SchedulerInnerEventType.PARSE_DAG_REQUEST.value,
+                                            value=file_path))
         result = watcher.get_result()
         handler.stop()
         return True
