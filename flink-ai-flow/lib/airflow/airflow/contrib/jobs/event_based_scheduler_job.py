@@ -564,7 +564,7 @@ class EventBasedSchedulerJob(BaseJob):
     def __init__(self, dag_directory,
                  server_uri=None,
                  max_runs=-1,
-                 refresh_dag_dir_interval=conf.getint('scheduler', 'refresh_dag_dir_interval', fallback=30),
+                 refresh_dag_dir_interval=conf.getint('scheduler', 'refresh_dag_dir_interval', fallback=1),
                  *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.mailbox: Mailbox = Mailbox()
