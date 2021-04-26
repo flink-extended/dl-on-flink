@@ -83,6 +83,7 @@
     <div>
       {% for op in operators %}<span class="legend-item" style="color: {{ op.ui_fgcolor }};background: {{ op.ui_color }};">
         {{ op.task_type }}</span>{% endfor %}
+      {% if events != '{}' %}<span class="legend-item" style="color: #000;background: #e1dcf5;">event</span>{% endif %}
     </div>
     <div>
       {% for state, state_color in state_color_mapping.items() %}<span class="legend-item js-state-legend-item" data-state="{{state}}" style="border-color: {{state_color}};">
