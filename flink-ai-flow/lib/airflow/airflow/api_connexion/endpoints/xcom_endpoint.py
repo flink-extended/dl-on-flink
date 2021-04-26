@@ -39,6 +39,7 @@ from airflow.utils.session import provide_session
     [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG_RUN),
+        (permissions.ACTION_CAN_READ, permissions.RESOURCE_EVENT),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_XCOM),
@@ -79,6 +80,7 @@ def get_xcom_entries(
     [
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG_RUN),
+        (permissions.ACTION_CAN_READ, permissions.RESOURCE_EVENT),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
         (permissions.ACTION_CAN_READ, permissions.RESOURCE_XCOM),
