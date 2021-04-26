@@ -85,14 +85,19 @@ class AirflowOperation(object):
         """
         pass
 
-    def trigger_workflow_execution(self, workflow_name) -> ExecutionContext:
+    def trigger_workflow_execution(self, project_desc, workflow_name) -> ExecutionContext:
         """
         Trigger a new instance of workflow immediately.
 
         :param workflow_name: workflow name
+        :param project_desc: project desc
         :return: True if a new instance is triggered
         """
-        self.airflow_client.trigger_parse_dag()
+        deploy_path = project_desc.project_config.get_airflow_deploy_path()
+        if deploy_path is None:
+            raise Exception("airflow_deploy_path config not set!")
+        airflow_file_path = deploy_path + '/' + workflow_name + '.py'
+        self.airflow_client.trigger_parse_dag(airflow_file_path)
         return self.airflow_client.schedule_dag(workflow_name)
 
     def stop_workflow_execution(self, workflow_name, context) -> bool:
@@ -160,6 +165,6 @@ class AirflowOperation(object):
         else:
             return False
 
-    def trigger_parse_dag(self):
-        """Trigger a dag parse. """
-        return self.airflow_client.trigger_parse_dag()
+    def trigger_parse_dag(self, file_path):
+        """Trigger a dag parse of specific file. """
+        return self.airflow_client.trigger_parse_dag(file_path)
