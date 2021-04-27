@@ -82,6 +82,11 @@ def init_appbuilder_views(app):
         category=permissions.RESOURCE_BROWSE_MENU,
     )
     appbuilder.add_view(
+        views.EventModelView,
+        permissions.RESOURCE_EVENT,
+        category=permissions.RESOURCE_BROWSE_MENU,
+    )
+    appbuilder.add_view(
         views.ConfigurationView,
         permissions.RESOURCE_CONFIG,
         category=permissions.RESOURCE_ADMIN_MENU,
