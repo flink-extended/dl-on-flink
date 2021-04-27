@@ -182,7 +182,7 @@ class LocalFlinkJobPlugin(LocalCMDJobPlugin):
                             execution_config_file, entry_module_path]
             else:
                 exec_cmd = ['flink', 'run',
-                            '-pym', version.py_cluster_main_file,
+                            '-py', version.py_cluster_main_file,
                             '-pyfs', job.job_config.project_path + ',' + job.job_config.project_path + '/python_codes/',
                             '-pyexec', python3_location,
                             '--project-path', job.job_config.project_path,
