@@ -24,7 +24,7 @@ default_args = {
 dag = DAG(
     dag_id='test_event_based_dag',
     default_args=default_args,
-    schedule_interval=timedelta(days=10000),
+    schedule_interval=timedelta(days=1),
 )
 
 t1 = BashOperator(
