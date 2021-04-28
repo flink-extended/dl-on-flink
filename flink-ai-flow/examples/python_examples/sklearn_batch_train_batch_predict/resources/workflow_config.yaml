@@ -17,11 +17,27 @@
 ## under the License.
 ##
 
-project_name: quick_start_project
-master_ip: localhost
-master_port: 50051
-# for airflow scheduler this option should be enabled.
-notification_uri: localhost:50052
-# for airflow scheduler this option should be enabled.
-# the following config is the absolute path of airflow deployment, whose format is like: /path/airflow/airflow_deploy
-airflow_deploy_path: /path/airflow/airflow_deploy
+train_job:
+  platform: local
+  engine: python
+  job_name: Train
+
+eval_job:
+  platform: local
+  engine: python
+  job_name: Evaluate
+
+validate_job:
+  platform: local
+  engine: python
+  job_name: Validate
+
+push_job:
+  platform: local
+  engine: python
+  job_name: Push
+
+predict_job:
+  platform: local
+  engine: python
+  job_name: Predict
