@@ -6,7 +6,7 @@ from ai_flow.plugins.engine import CMDEngine
 from ai_flow.plugins.local_platform import LocalPlatform
 from python_ai_flow import Executor, FunctionContext
 from python_ai_flow.python_engine import PythonEngine
-import example_util
+from ai_flow.common.path_util import get_file_dir
 
 
 # Transform Executor class
@@ -20,8 +20,8 @@ class SimpleTransform(Executor):
         return [result]
 
 
-def run_simple_transform_example():
-    project_root_path = example_util.get_root_path()
+def run_project(project_root_path):
+
     af.set_project_config_file(project_root_path + '/project.yaml')
     # Config command line job, we set platform to local and engine to cmd_line here
     cmd_job_config = af.BaseJobConfig(platform=LocalPlatform.platform(), engine=CMDEngine().engine())
@@ -60,19 +60,18 @@ def run_simple_transform_example():
 
         # Write example to specific path
         write = af.write_example(input_data=transform_channel, example_info=write_example_meta,
-                                 exec_args=ExecuteArgs(batch_properties=Args(sep='_', header=False, index=False)))
+                                 exec_args=ExecuteArgs(batch_properties=Args(sep=',', header=False, index=False)))
 
     # Add control dependency, which means read_example job will start right after command line job finishes.
     af.stop_before_control_dependency(read_example_channel, cmd_job)
 
-    transform_dag = 'simple_transform_airflow_example'
+    transform_dag = 'simple_transform'
     af.deploy_to_airflow(project_root_path, dag_id=transform_dag)
-    print(example_util.get_root_path())
     context = af.run(project_path=project_root_path,
                      dag_id=transform_dag,
                      scheduler_type=SchedulerType.AIRFLOW)
-    print(context.dagrun_id)
 
 
 if __name__ == '__main__':
-    run_simple_transform_example()
+    project_path = os.path.dirname(get_file_dir(__file__))
+    run_project(project_path)
