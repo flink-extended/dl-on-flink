@@ -16,10 +16,6 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-from airflow.contrib.jobs.scheduler_client import EventSchedulerClient, ExecutionContext
-from airflow.contrib.jobs.event_based_scheduler_job import SCHEDULER_NAMESPACE
-from airflow.events.scheduler_events import StopDagEvent
-from airflow.executors.scheduling_action import SchedulingAction
 from notification_service.client import NotificationClient
 
 _workflow_execution_id_set_flag = False
@@ -42,10 +38,13 @@ def get_workflow_execution_id():
 class AirflowOperation(object):
     def __init__(self, notification_server_uri=None, ns_client: NotificationClient = None):
         self.server_uri = notification_server_uri
+        from airflow.contrib.jobs.event_based_scheduler_job import SCHEDULER_NAMESPACE
         self.namespace = SCHEDULER_NAMESPACE
         if ns_client is not None:
+            from airflow.contrib.jobs.scheduler_client import EventSchedulerClient
             self.airflow_client = EventSchedulerClient(ns_client=ns_client, namespace=SCHEDULER_NAMESPACE)
         elif notification_server_uri is not None:
+            from airflow.contrib.jobs.scheduler_client import EventSchedulerClient
             self.airflow_client = EventSchedulerClient(server_uri=notification_server_uri,
                                                        namespace=SCHEDULER_NAMESPACE)
         else:
@@ -61,7 +60,9 @@ class AirflowOperation(object):
         # TODO For now, simply return True as long as message is sent successfully,
         #  actually we need a response from
         try:
+            from airflow.contrib.jobs.event_based_scheduler_job import SCHEDULER_NAMESPACE
             notification_client = NotificationClient(self.server_uri, SCHEDULER_NAMESPACE)
+            from airflow.events.scheduler_events import StopDagEvent
             notification_client.send_event(StopDagEvent(workflow_name).to_event())
             return True
         except Exception:
@@ -85,7 +86,7 @@ class AirflowOperation(object):
         """
         pass
 
-    def trigger_workflow_execution(self, workflow_name) -> ExecutionContext:
+    def trigger_workflow_execution(self, workflow_name):
         """
         Trigger a new instance of workflow immediately.
 
@@ -106,7 +107,7 @@ class AirflowOperation(object):
         else:
             return False
 
-    def start_task_instance(self, workflow_name, job_name, context: ExecutionContext) -> bool:
+    def start_task_instance(self, workflow_name, job_name, context) -> bool:
         """
         Force start a task. if it is running, do nothing.
 
@@ -115,6 +116,8 @@ class AirflowOperation(object):
         :param context: context of workflow instance
         :return: True if the task is started
         """
+        from airflow.executors.scheduling_action import SchedulingAction
+
         result = self.airflow_client.schedule_task(dag_id=workflow_name,
                                                    task_id=job_name,
                                                    action=SchedulingAction.START,
@@ -124,7 +127,7 @@ class AirflowOperation(object):
         else:
             return False
 
-    def stop_task_instance(self, workflow_name, job_name, context: ExecutionContext) -> bool:
+    def stop_task_instance(self, workflow_name, job_name, context) -> bool:
         """
         Force stop a running task
 
@@ -133,6 +136,8 @@ class AirflowOperation(object):
         :param context: context of workflow instance
         :return: True if the task is stopped
         """
+        from airflow.executors.scheduling_action import SchedulingAction
+
         result = self.airflow_client.schedule_task(dag_id=workflow_name,
                                                    task_id=job_name,
                                                    action=SchedulingAction.STOP,
@@ -142,7 +147,7 @@ class AirflowOperation(object):
         else:
             return False
 
-    def restart_task_instance(self, workflow_name, job_name, context: ExecutionContext) -> bool:
+    def restart_task_instance(self, workflow_name, job_name, context) -> bool:
         """
         Force restart a task
 
@@ -151,6 +156,7 @@ class AirflowOperation(object):
         :param context: context of workflow instance
         :return: True if the task is restarted
         """
+        from airflow.executors.scheduling_action import SchedulingAction
         result = self.airflow_client.schedule_task(dag_id=workflow_name,
                                                    task_id=job_name,
                                                    action=SchedulingAction.RESTART,
