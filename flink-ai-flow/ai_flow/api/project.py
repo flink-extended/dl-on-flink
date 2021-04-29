@@ -224,7 +224,7 @@ def deploy_to_airflow(project_path: Text = None,
 def _submit_to_airflow(project_desc: ProjectDesc = ProjectDesc(), dag_id: Text = None):
     airflow_operation = AirflowOperation(
         notification_server_uri=project_desc.project_config.get_notification_service_uri())
-    return airflow_operation.trigger_workflow_execution(dag_id)
+    return airflow_operation.trigger_workflow_execution(project_desc, dag_id)
 
 
 def generate_project_desc(project_path: Text = None) -> ProjectDesc:
