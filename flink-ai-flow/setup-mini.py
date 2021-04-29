@@ -57,14 +57,16 @@ try:
         if 'airflow' not in package and 'python_ai_flow' not in package and 'flink_ai_flow' not in package:
             packages.append(package)
 
-    require_file = '{}/{}'.format(os.path.dirname(os.path.abspath(__file__)), "requirements-mini.txt")
+    require_file = '{}/{}'.format(os.path.dirname(os.path.abspath(__file__)), "requirements.txt")
     with open(require_file) as f:
         context = f.read()
         require_file_lines = context.strip().split('\n')
-    require_packages = []
+    required_packages = []
     for line in require_file_lines:
+        if line.startswith("# Optional"):
+            break
         if not len(line.strip()) == 0 and not line.startswith("#"):
-            require_packages.append(line)
+            required_packages.append(line)
 
     setup(
         name='ai_flow',
@@ -74,7 +76,7 @@ try:
         author_email='',
         url='',
         packages=packages,
-        install_requires=require_packages,
+        install_requires=required_packages,
         include_package_data=True,
         scripts=['ai_flow/bin/start-aiflow.sh',
                  'ai_flow/bin/stop-aiflow.sh',
