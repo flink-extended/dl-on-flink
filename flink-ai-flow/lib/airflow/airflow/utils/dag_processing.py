@@ -53,7 +53,8 @@ from airflow.utils.mixins import MultiprocessingStartMethodMixin
 from airflow.utils.process_utils import kill_child_processes_by_pids, reap_process_group
 from airflow.utils.session import provide_session
 from airflow.utils.state import State
-from airflow.events.scheduler_events import SCHEDULER_NAMESPACE
+from airflow.events.scheduler_events import SCHEDULER_NAMESPACE, SchedulerInnerEventType
+
 
 class AbstractDagFileProcessorProcess(metaclass=ABCMeta):
     """Processes a DAG file. See SchedulerJob.process_file() for more details."""
@@ -478,7 +479,7 @@ class ProcessorManagerWatcher(EventWatcher, LoggingMixin):
     def process(self, events: List[BaseEvent]):
         for e in events:
             self.log.debug("Listen Event: {}".format(e))
-            self.signal_queue.put(e)
+            self.signal_queue.put((e, timezone.utcnow()))
 
 
 class DagFileProcessorManager(LoggingMixin):  # pylint: disable=too-many-instance-attributes
@@ -540,7 +541,7 @@ class DagFileProcessorManager(LoggingMixin):  # pylint: disable=too-many-instanc
         self.signal_queue = queue.Queue()
         if notification_service_uri is not None:
             self.watcher = ProcessorManagerWatcher(self.signal_queue)
-            self.message_buffer = []
+            self.message_buffer: Dict[str, (BaseEvent, datetime)] = {}
 
         self._parallelism = conf.getint('scheduler', 'parsing_processes')
         if 'sqlite' in conf.get('core', 'sql_alchemy_conn') and self._parallelism > 1:
@@ -759,31 +760,41 @@ class DagFileProcessorManager(LoggingMixin):  # pylint: disable=too-many-instanc
                 else:
                     poll_time = 0.0
             # send event to notify parse dag finished
+            refresh_dag_dir_interval = time.monotonic() - loop_start_time
+            if refresh_dag_dir_interval < self._refresh_dag_dir_interval:
+                wait_time = self._refresh_dag_dir_interval - refresh_dag_dir_interval
+            else:
+                wait_time = 1.0
             if self.notification_service_uri is not None and len(self.message_buffer) > 0:
-                for e in self.message_buffer:
-                    self.log.debug('send message key {}'.format(e.key))
-                    self.ns_client.send_event(BaseEvent(key=e.key, value='', event_type='PARSE_DAG_RESPONSE'))
-                self.message_buffer.clear()
+                self._process_and_send_response()
+                self.collect_results()
+                time.sleep(wait_time)
 
-            if 0 != self._refresh_dag_dir_interval:
-                refresh_dag_dir_interval = time.monotonic() - loop_start_time
-                if refresh_dag_dir_interval < self._refresh_dag_dir_interval:
-                    wait_time = self._refresh_dag_dir_interval - refresh_dag_dir_interval
-                else:
-                    wait_time = 1.0
-                self.log.info('Dag ProcessorManager sleep {}.'
-                              .format(wait_time))
-                try:
-                    message: BaseEvent = self.signal_queue.get(timeout=wait_time)
-                    self.log.debug('receive message key {}'.format(message.key))
-                    self.message_buffer.append(message)
-                    if self.signal_queue.qsize() > 0:
-                        for i in range(self.signal_queue.qsize()):
-                            message = self.signal_queue.get()
-                            self.log.debug('receive message key {}'.format(message.key))
-                            self.message_buffer.append(message)
-                except Exception as e:
-                    pass
+            if self.signal_queue.qsize() > 0:
+                self._add_file_to_queue()
+
+    def _process_and_send_response(self):
+        for event, process_time in self.message_buffer.copy().values():
+            file_path = event.value
+            finish_process_time = self.get_last_finish_time(file_path)
+            duration = self.get_last_runtime(file_path)
+            if not finish_process_time or not duration:
+                continue
+            start_process_time = finish_process_time - timedelta(seconds=duration)
+            if start_process_time > process_time:
+                self.ns_client.send_event(BaseEvent(key=event.key,
+                                                    value=file_path,
+                                                    event_type=SchedulerInnerEventType.PARSE_DAG_RESPONSE.value))
+                self.message_buffer.pop(file_path)
+
+    def _add_file_to_queue(self):
+        for i in range(self.signal_queue.qsize()):
+            message, process_time = self.signal_queue.get()
+            file_path = message.value
+            if file_path in self._file_path_queue:
+                self._file_path_queue.remove(file_path)
+            self._file_path_queue.insert(0, file_path)
+            self.message_buffer[file_path] = (message, process_time)
 
     def _add_callback_to_queue(self, request: CallbackRequest):
         self._callback_to_execute[request.full_filepath].append(request)
