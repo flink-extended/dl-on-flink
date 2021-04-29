@@ -15,6 +15,8 @@
         <tensorflow.version>2.3.1</tensorflow.version>
         <tensorflow.java.version>0.2.0</tensorflow.java.version>
         <javacpp.platform.extension></javacpp.platform.extension>
+        <skip.install.tensorflow>false</skip.install.tensorflow>
+        <skip.install.python.dependency>false</skip.install.python.dependency>
     </properties>
 
     <dependencies>
@@ -23,31 +25,6 @@
             <artifactId>flink-ml-tensorflow-common</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.alibaba.flink.ml</groupId>
-            <artifactId>flink-ml-framework</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.flink.ml</groupId>
-            <artifactId>flink-ml-framework</artifactId>
-            <version>${project.parent.version}</version>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.flink.ml</groupId>
-            <artifactId>flink-ml-operator</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.flink.ml</groupId>
-            <artifactId>flink-ml-operator</artifactId>
-            <version>${project.parent.version}</version>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
-
         <dependency>
             <groupId>org.tensorflow</groupId>
             <artifactId>tensorflow-core-api</artifactId>
@@ -69,6 +46,20 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.flink.ml</groupId>
+            <artifactId>flink-ml-framework</artifactId>
+            <version>${project.parent.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.flink.ml</groupId>
+            <artifactId>flink-ml-operator</artifactId>
+            <version>${project.parent.version}</version>
+            <type>test-jar</type>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -120,6 +111,7 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
+                            <skip>${skip.install.tensorflow}</skip>
                             <executable>${pip.version}</executable>
                             <workingDirectory>${project.basedir}/python</workingDirectory>
                             <arguments>
@@ -136,6 +128,7 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
+                            <skip>${skip.install.python.dependency}</skip>
                             <executable>${pip.version}</executable>
                             <workingDirectory>${project.basedir}/python</workingDirectory>
                             <arguments>
@@ -155,6 +148,42 @@
                         <goals>
                             <goal>test-jar</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>jar-with-dependencies</shadedClassifierName>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                            </transformers>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>org.scala-lang:*</exclude>
+                                    <!-- log4j -->
+                                    <exclude>org.slf4j:slf4j-log4j12</exclude>
+                                    <exclude>org.apache.logging.log4j:log4j-slf4j-impl</exclude>
+                                    <exclude>org.apache.logging.log4j:log4j-api</exclude>
+                                    <exclude>org.apache.logging.log4j:log4j-core</exclude>
+                                    <exclude>log4j:log4j</exclude>
+                                    <exclude></exclude>
+                                    <!-- flink shaded jars -->
+                                    <exclude>org.apache.flink:flink-shaded-*</exclude>
+                                    <!-- flink dependencies are provided -->
+                                    <exclude>org.apache.flink:*</exclude>
+                                </excludes>
+                            </artifactSet>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
