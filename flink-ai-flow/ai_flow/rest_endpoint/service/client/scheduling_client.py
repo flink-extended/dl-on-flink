@@ -19,7 +19,7 @@ from typing import Text, List, Dict
 import grpc
 from ai_flow.rest_endpoint.protobuf import scheduling_service_pb2_grpc
 from ai_flow.rest_endpoint.protobuf import scheduling_service_pb2
-from ai_flow.rest_endpoint.protobuf.message_pb2 import WorkflowProto, WorkflowExecutionProto, JobProto
+from ai_flow.rest_endpoint.protobuf.message_pb2 import WorkflowProto, WorkflowExecutionProto, JobProto, StatusProto
 
 from ai_flow.rest_endpoint.service.client.base_client import BaseClient
 
@@ -45,6 +45,8 @@ class SchedulingClient(BaseClient):
         request.namespace = namespace
         request.workflow_name = workflow_name
         response = self.scheduling_stub.submitWorkflow(request)
+        if response.result.status != StatusProto.OK:
+            raise Exception(response.result.error_message)
         return response.workflow
 
     def delete_workflow(self,
@@ -60,6 +62,8 @@ class SchedulingClient(BaseClient):
         request.namespace = namespace
         request.workflow_name = workflow_name
         response = self.scheduling_stub.deleteWorkflow(request)
+        if response.result.status != StatusProto.OK:
+            raise Exception(response.result.error_message)
         return response.workflow
 
     def pause_workflow_scheduling(self,
@@ -75,6 +79,8 @@ class SchedulingClient(BaseClient):
         request.namespace = namespace
         request.workflow_name = workflow_name
         response = self.scheduling_stub.pauseWorkflowScheduling(request)
+        if response.result.status != StatusProto.OK:
+            raise Exception(response.result.error_message)
         return response.workflow
 
     def resume_workflow_scheduling(self,
@@ -90,6 +96,8 @@ class SchedulingClient(BaseClient):
         request.namespace = namespace
         request.workflow_name = workflow_name
         response = self.scheduling_stub.resumeWorkflowScheduling(request)
+        if response.result.status != StatusProto.OK:
+            raise Exception(response.result.error_message)
         return response.workflow
 
     def get_workflow(self,
@@ -105,6 +113,8 @@ class SchedulingClient(BaseClient):
         request.namespace = namespace
         request.workflow_name = workflow_name
         response = self.scheduling_stub.getWorkflow(request)
+        if response.result.status != StatusProto.OK:
+            raise Exception(response.result.error_message)
         return response.workflow
 
     def list_workflows(self, namespace: Text) -> List[WorkflowProto]:
@@ -114,7 +124,9 @@ class SchedulingClient(BaseClient):
         request = scheduling_service_pb2.ScheduleWorkflowRequest()
         request.namespace = namespace
         response = self.scheduling_stub.listWorkflows(request)
-        return response.workflow
+        if response.result.status != StatusProto.OK:
+            raise Exception(response.result.error_message)
+        return response.workflow_list
 
     def start_new_workflow_execution(self,
                                      namespace: Text,
@@ -129,6 +141,8 @@ class SchedulingClient(BaseClient):
         request.namespace = namespace
         request.workflow_name = workflow_name
         response = self.scheduling_stub.startNewWorkflowExecution(request)
+        if response.result.status != StatusProto.OK:
+            raise Exception(response.result.error_message)
         return response.workflow_execution
 
     def kill_all_workflow_executions(self,
@@ -144,6 +158,8 @@ class SchedulingClient(BaseClient):
         request.namespace = namespace
         request.workflow_name = workflow_name
         response = self.scheduling_stub.killAllWorkflowExecutions(request)
+        if response.result.status != StatusProto.OK:
+            raise Exception(response.result.error_message)
         return response.workflow_execution_list
 
     def kill_workflow_execution(self,
@@ -156,6 +172,8 @@ class SchedulingClient(BaseClient):
         request = scheduling_service_pb2.WorkflowExecutionRequest()
         request.execution_id = execution_id
         response = self.scheduling_stub.killWorkflowExecution(request)
+        if response.result.status != StatusProto.OK:
+            raise Exception(response.result.error_message)
         return response.workflow_execution
 
     def get_workflow_execution(self,
@@ -168,6 +186,8 @@ class SchedulingClient(BaseClient):
         request = scheduling_service_pb2.WorkflowExecutionRequest()
         request.execution_id = execution_id
         response = self.scheduling_stub.getWorkflowExecution(request)
+        if response.result.status != StatusProto.OK:
+            raise Exception(response.result.error_message)
         return response.workflow_execution
 
     def list_workflow_executions(self,
@@ -182,6 +202,8 @@ class SchedulingClient(BaseClient):
         request.namespace = namespace
         request.workflow_name = workflow_name
         response = self.scheduling_stub.listWorkflowExecutions(request)
+        if response.result.status != StatusProto.OK:
+            raise Exception(response.result.error_message)
         return response.workflow_execution_list
 
     def start_job(self, job_name: Text,
@@ -196,6 +218,8 @@ class SchedulingClient(BaseClient):
         request.job_name = job_name
         request.execution_id = execution_id
         response = self.scheduling_stub.startJob(request)
+        if response.result.status != StatusProto.OK:
+            raise Exception(response.result.error_message)
         return response.job
 
     def stop_job(self, job_name: Text,
@@ -210,6 +234,8 @@ class SchedulingClient(BaseClient):
         request.job_name = job_name
         request.execution_id = execution_id
         response = self.scheduling_stub.stopJob(request)
+        if response.result.status != StatusProto.OK:
+            raise Exception(response.result.error_message)
         return response.job
 
     def restart_job(self, job_name: Text,
@@ -224,6 +250,8 @@ class SchedulingClient(BaseClient):
         request.job_name = job_name
         request.execution_id = execution_id
         response = self.scheduling_stub.restartJob(request)
+        if response.result.status != StatusProto.OK:
+            raise Exception(response.result.error_message)
         return response.job
 
     def get_job(self, job_name: Text,
@@ -238,6 +266,8 @@ class SchedulingClient(BaseClient):
         request.job_name = job_name
         request.execution_id = execution_id
         response = self.scheduling_stub.getJob(request)
+        if response.result.status != StatusProto.OK:
+            raise Exception(response.result.error_message)
         return response.job
 
     def list_jobs(self, execution_id: Text) -> List[JobProto]:
@@ -248,6 +278,8 @@ class SchedulingClient(BaseClient):
         """
         request = scheduling_service_pb2.ScheduleJobRequest()
         request.execution_id = execution_id
-        response = self.scheduling_stub.startJob(request)
+        response = self.scheduling_stub.listJobs(request)
+        if response.result.status != StatusProto.OK:
+            raise Exception(response.result.error_message)
         return response.job_list
 
