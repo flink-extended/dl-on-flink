@@ -15,18 +15,20 @@
 # specific language governing permissions and limitations
 # under the License.
 from abc import ABC, abstractmethod
-from typing import Dict, Text, List
+from typing import Dict, Text, List, Optional
 from ai_flow.workflow.workflow import Workflow, WorkflowInfo, WorkflowExecutionInfo, JobInfo
 from ai_flow.project.project_description import ProjectDesc
 
 
 class SchedulerConfig(object):
     def __init__(self,
-                 repository: Text,
                  scheduler_class_name: Text,
+                 repository: Text = None,
+                 notification_service_uri: Text = None,
                  properties: Dict = None):
         self._repository = repository
         self._scheduler_class_name = scheduler_class_name
+        self._notification_service_uri = notification_service_uri
         if properties is None:
             properties = {}
         self._properties: Dict = properties
@@ -38,6 +40,10 @@ class SchedulerConfig(object):
     @property
     def scheduler_class_name(self):
         return self._scheduler_class_name
+
+    @property
+    def notification_service_uri(self):
+        return self._notification_service_uri
 
     @property
     def properties(self):
@@ -53,43 +59,43 @@ class AbstractScheduler(ABC):
         return self._config
 
     @abstractmethod
-    def submit_workflow(self, workflow: Workflow, project_desc: ProjectDesc, args: Dict = None)->WorkflowInfo:
+    def submit_workflow(self, workflow: Workflow, project_desc: ProjectDesc, args: Dict = None) -> WorkflowInfo:
         pass
 
     @abstractmethod
-    def delete_workflow(self, project_name: Text, workflow_name: Text)->WorkflowInfo:
+    def delete_workflow(self, project_name: Text, workflow_name: Text) -> Optional[WorkflowInfo]:
         pass
 
     @abstractmethod
-    def pause_workflow_scheduling(self, project_name: Text, workflow_name: Text)->WorkflowInfo:
+    def pause_workflow_scheduling(self, project_name: Text, workflow_name: Text) -> WorkflowInfo:
         pass
 
     @abstractmethod
-    def resume_workflow_scheduling(self, project_name: Text, workflow_name: Text)->WorkflowInfo:
+    def resume_workflow_scheduling(self, project_name: Text, workflow_name: Text) -> WorkflowInfo:
         pass
 
     @abstractmethod
-    def get_workflow(self, project_name: Text, workflow_name: Text)->WorkflowInfo:
+    def get_workflow(self, project_name: Text, workflow_name: Text) -> Optional[WorkflowInfo]:
         pass
 
     @abstractmethod
-    def list_workflows(self, project_name: Text, workflow_name: Text)->List[WorkflowInfo]:
+    def list_workflows(self, project_name: Text) -> List[WorkflowInfo]:
         pass
 
     @abstractmethod
-    def start_new_workflow_execution(self, project_name: Text, workflow_name: Text)->WorkflowExecutionInfo:
+    def start_new_workflow_execution(self, project_name: Text, workflow_name: Text) -> Optional[WorkflowExecutionInfo]:
         pass
 
     @abstractmethod
-    def kill_all_workflow_execution(self, project_name: Text, workflow_name: Text)->List[WorkflowExecutionInfo]:
+    def kill_all_workflow_execution(self, project_name: Text, workflow_name: Text) -> List[WorkflowExecutionInfo]:
         pass
 
     @abstractmethod
-    def kill_workflow_execution(self, execution_id: Text)->WorkflowExecutionInfo:
+    def kill_workflow_execution(self, execution_id: Text) -> Optional[WorkflowExecutionInfo]:
         pass
 
     @abstractmethod
-    def get_workflow_execution(self, execution_id: Text) -> WorkflowExecutionInfo:
+    def get_workflow_execution(self, execution_id: Text) -> Optional[WorkflowExecutionInfo]:
         pass
 
     @abstractmethod
@@ -109,7 +115,7 @@ class AbstractScheduler(ABC):
         pass
 
     @abstractmethod
-    def get_job(self, job_name: Text, execution_id: Text) -> JobInfo:
+    def get_job(self, job_name: Text, execution_id: Text) -> Optional[JobInfo]:
         pass
 
     @abstractmethod
