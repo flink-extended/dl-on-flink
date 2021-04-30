@@ -108,7 +108,8 @@ class AIFlowServer(object):
                     scheduler_class_name='ai_flow.scheduler.implements.airflow_scheduler.AirFlowScheduler',
                     notification_service_uri=nf_uri
                 )
-            scheduling_service_pb2_grpc.add_SchedulingServiceServicer_to_server(SchedulingService(scheduler_config),
+            self.scheduling_service = SchedulingService(scheduler_config)
+            scheduling_service_pb2_grpc.add_SchedulingServiceServicer_to_server(self.scheduling_service,
                                                                                 self.server)
 
         self.server.add_insecure_port('[::]:' + str(port))

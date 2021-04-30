@@ -131,7 +131,7 @@ service SchedulingService {
         };
     };
 
-    rpc killAllWorkflowExecutions (WorkflowExecutionRequest) returns (WorkflowExecutionResponse) {
+    rpc killAllWorkflowExecutions (WorkflowExecutionRequest) returns (ListWorkflowExecutionResponse) {
         option (google.api.http) = {
         post: "/aiflow/scheduling/workflow_execution/kill_all"
         body: "*"

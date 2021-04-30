@@ -54,7 +54,7 @@ class UnitTestScheduler(AbstractScheduler):
     def get_workflow_execution(self, execution_id: Text) -> WorkflowExecutionInfo:
         pass
 
-    def list_workflow_execution(self, project_name: Text, workflow_name: Text) -> List[WorkflowExecutionInfo]:
+    def list_workflow_executions(self, project_name: Text, workflow_name: Text) -> List[WorkflowExecutionInfo]:
         pass
 
     def start_job(self, job_name: Text, execution_id: Text) -> JobInfo:
@@ -69,7 +69,7 @@ class UnitTestScheduler(AbstractScheduler):
     def get_job(self, job_name: Text, execution_id: Text) -> JobInfo:
         pass
 
-    def list_job(self, execution_id: Text) -> List[JobInfo]:
+    def list_jobs(self, execution_id: Text) -> List[JobInfo]:
         pass
 
 

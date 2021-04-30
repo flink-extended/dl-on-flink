@@ -99,7 +99,7 @@ class AbstractScheduler(ABC):
         pass
 
     @abstractmethod
-    def list_workflow_execution(self, project_name: Text, workflow_name: Text) -> List[WorkflowExecutionInfo]:
+    def list_workflow_executions(self, project_name: Text, workflow_name: Text) -> List[WorkflowExecutionInfo]:
         pass
 
     @abstractmethod
@@ -119,5 +119,5 @@ class AbstractScheduler(ABC):
         pass
 
     @abstractmethod
-    def list_job(self, execution_id: Text) -> List[JobInfo]:
+    def list_jobs(self, execution_id: Text) -> List[JobInfo]:
         pass
