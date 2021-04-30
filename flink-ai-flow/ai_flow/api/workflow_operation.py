@@ -127,7 +127,7 @@ def list_workflow_executions(workflow_name: Text) -> List[WorkflowExecutionInfo]
     :return: All workflow executions of the workflow.
     """
     namespace = project_config().get_project_name()
-    return proto_to_workflow_execution_list(get_ai_flow_client().list_workflow_execution(workflow_name))
+    return proto_to_workflow_execution_list(get_ai_flow_client().list_workflow_executions(workflow_name))
 
 
 def start_job(job_name: Text,

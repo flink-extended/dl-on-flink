@@ -179,7 +179,7 @@ class SchedulingService(SchedulingServiceServicer):
     def listWorkflowExecutions(self, request, context):
         try:
             rq: WorkflowExecutionRequest = request
-            workflow_execution_list = self._scheduler.list_workflow_execution(rq.namespace, rq.workflow_name)
+            workflow_execution_list = self._scheduler.list_workflow_executions(rq.namespace, rq.workflow_name)
             response = ListWorkflowExecutionResponse(result=ResultProto(status=StatusProto.OK))
             response.workflow_execution_list.extend(workflow_execution_list_to_proto(workflow_execution_list))
             return response
@@ -238,7 +238,7 @@ class SchedulingService(SchedulingServiceServicer):
     def listJobs(self, request, context):
         try:
             rq: ScheduleJobRequest = request
-            job_list = self._scheduler.list_job(rq.execution_id)
+            job_list = self._scheduler.list_jobs(rq.execution_id)
             response = ListJobInfoResponse(result=ResultProto(status=StatusProto.OK))
             response.job_list.extend(job_list_to_proto(job_list))
             return response

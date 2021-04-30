@@ -116,7 +116,7 @@ message WorkflowExecutionProto {
     google.protobuf.StringValue log_uri = 8;
     google.protobuf.StringValue workflow_json = 9;
     google.protobuf.StringValue signature = 10;
-    google.protobuf.StringValue execution_id = 11;
+    string execution_id = 11;
     WorkflowProto workflow = 12;
 }
 
