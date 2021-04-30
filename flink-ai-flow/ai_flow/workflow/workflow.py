@@ -83,60 +83,6 @@ class WorkflowInfo(object):
         self._properties = value
 
 
-def submit_workflow(workflow_name: Text = None,
-                    args: Dict = None) -> WorkflowInfo:
-    """
-    Submit the ai flow workflow to the scheduler.
-    :param workflow_name: The ai flow workflow identify.
-    :param args: The arguments of the submit action.
-    :return: The result of the submit action.
-    """
-    pass
-
-
-def delete_workflow(workflow_name: Text = None) -> WorkflowInfo:
-    """
-    Delete the ai flow workflow from the scheduler.
-    :param workflow_name: The ai flow workflow identify.
-    :return: The result of the action.
-    """
-    pass
-
-
-def pause_workflow_scheduling(workflow_name: Text = None) -> WorkflowInfo:
-    """
-    Pause the ai flow workflow from the scheduler.
-    :param workflow_name: The ai flow workflow identify.
-    :return: The result of the action.
-    """
-    pass
-
-
-def resume_workflow_scheduling(workflow_name: Text = None) -> WorkflowInfo:
-    """
-    Resume the ai flow workflow from the scheduler.
-    :param workflow_name: The ai flow workflow identify.
-    :return: The result of the action.
-    """
-    pass
-
-
-def get_workflow(workflow_name: Text = None) -> WorkflowInfo:
-    """
-    Return the workflow information.
-    :param workflow_name: The ai flow workflow identify.
-    :return: the workflow information.
-    """
-    pass
-
-
-def list_workflows() -> List[WorkflowInfo]:
-    """
-    :return: All workflow information.
-    """
-    pass
-
-
 class WorkflowExecutionInfo(object):
     def __init__(self,
                  execution_id: Text,
@@ -183,50 +129,6 @@ class WorkflowExecutionInfo(object):
         self._properties = value
 
 
-def start_new_workflow_execution(workflow_name: Text) -> WorkflowExecutionInfo:
-    """
-    Run the project under the current project path.
-    :param workflow_name: The ai flow workflow identify.
-    :return: The result of the run action.
-    """
-    pass
-
-
-def kill_all_workflow_executions(workflow_name: Text) -> List[WorkflowExecutionInfo]:
-    """
-    Stop all instances of the workflow.
-    :param workflow_name: The ai flow workflow identify.
-    :return: The result of the action.
-    """
-    pass
-
-
-def kill_workflow_execution(execution_id: Text) -> WorkflowExecutionInfo:
-    """
-    Stop the instance of the workflow.
-    :param execution_id: The ai flow workflow execution identify.
-    :return: The result of the action.
-    """
-    pass
-
-
-def get_workflow_execution(execution_id: Text) -> WorkflowExecutionInfo:
-    """
-    Get the WorkflowExecutionInfo from scheduler.
-    :param execution_id:
-    :return: WorkflowExecutionInfo
-    """
-    pass
-
-
-def list_workflow_executions(workflow_name: Text) -> List[WorkflowExecutionInfo]:
-    """
-    :param workflow_name: The ai flow workflow identify.
-    :return: All workflow executions of the workflow.
-    """
-    pass
-
-
 class JobInfo(object):
     def __init__(self,
                  job_name: Text,
@@ -260,56 +162,3 @@ class JobInfo(object):
     @workflow_execution.setter
     def workflow_execution(self, value):
         self._workflow_execution = value
-
-
-def start_job(job_name: Text,
-              execution_id: Text) -> JobInfo:
-    """
-    Start a job defined in the ai flow workflow.
-    :param job_name: The job name which task defined in workflow.
-    :param execution_id: The ai flow workflow execution identify.
-    :return: The result of the action.
-    """
-    pass
-
-
-def stop_job(job_name: Text,
-             execution_id: Text) -> JobInfo:
-    """
-    Stop a job defined in the ai flow workflow.
-    :param job_name: The job name which task defined in workflow.
-    :param execution_id: The ai flow workflow execution identify.
-    :return: The result of the action.
-    """
-    pass
-
-
-def restart_job(job_name: Text,
-                execution_id: Text) -> JobInfo:
-    """
-    Restart a task defined in the ai flow workflow.
-    :param job_name: The job name which task defined in workflow.
-    :param execution_id: The ai flow workflow execution identify.
-    :return: The result of the action.
-    """
-    pass
-
-
-def get_job(job_name: Text,
-            execution_id: Text) -> JobInfo:
-    """
-    Get job information by job name.
-    :param job_name:
-    :param execution_id:
-    :return:
-    """
-    pass
-
-
-def list_jobs(execution_id: Text) -> List[JobInfo]:
-    """
-    List the jobs of the workflow execution.
-    :param execution_id:
-    :return:
-    """
-    pass
