@@ -25,14 +25,14 @@ from ai_flow.workflow.workflow import WorkflowInfo, WorkflowExecutionInfo, JobIn
 def workflow_to_proto(workflow: WorkflowInfo) -> WorkflowProto:
     if workflow is None:
         return None
-    return WorkflowProto(workflow_name=workflow.workflow_name)
+    return WorkflowProto(name=workflow.workflow_name)
 
 
 def proto_to_workflow(proto: WorkflowProto) -> WorkflowInfo:
     if proto is None:
         return None
     else:
-        return WorkflowInfo(workflow_name=proto.workflow_name)
+        return WorkflowInfo(workflow_name=proto.name)
 
 
 def workflow_list_to_proto(workflow_list: List[WorkflowInfo]) -> List[WorkflowProto]:
@@ -50,8 +50,8 @@ def proto_to_workflow_list(proto_list: List[WorkflowProto]) -> List[WorkflowInfo
 
 
 def workflow_execution_to_proto(workflow_execution: WorkflowExecutionInfo) -> WorkflowExecutionProto:
-    return WorkflowExecutionProto(excution_id=workflow_execution.execution_id,
-                                  state=StateProto.Value(workflow_execution.state.value),
+    return WorkflowExecutionProto(execution_id=workflow_execution.execution_id,
+                                  execution_state=StateProto.Value(workflow_execution.state.value),
                                   workflow=workflow_to_proto(workflow_execution.workflow_info))
 
 
@@ -59,7 +59,7 @@ def proto_to_workflow_execution(proto: WorkflowExecutionProto) -> WorkflowExecut
     if proto is None:
         return None
     else:
-        return WorkflowExecutionInfo(execution_id=proto.excution_id, state=State(proto.state.value),
+        return WorkflowExecutionInfo(execution_id=proto.excution_id, state=State(proto.execution_state.value),
                                      workflow_info=proto_to_workflow(proto.workflow))
 
 
@@ -80,7 +80,7 @@ def proto_to_workflow_execution_list(proto_list: List[WorkflowExecutionProto]) -
 
 def job_to_proto(job: JobInfo) -> JobProto:
     return JobProto(name=job.job_name,
-                    state=StateProto.Value(job.state.value),
+                    job_state=StateProto.Value(job.state.value),
                     workflow_execution=workflow_execution_to_proto(job.workflow_execution))
 
 
@@ -88,7 +88,7 @@ def proto_to_job(proto: JobProto) -> JobInfo:
     if proto is None:
         return None
     else:
-        return JobInfo(job_name=proto.name, state=State(proto.state.value),
+        return JobInfo(job_name=proto.name, state=State(proto.job_state.value),
                        workflow_execution=proto_to_workflow_execution(proto.workflow_execution))
 
 

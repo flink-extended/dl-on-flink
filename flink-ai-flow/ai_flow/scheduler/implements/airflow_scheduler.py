@@ -161,7 +161,7 @@ class AirFlowScheduler(AbstractScheduler):
         return WorkflowExecutionInfo(execution_id=context.dagrun_id, state=job_meta.State.INIT)
 
     def kill_all_workflow_execution(self, project_name: Text, workflow_name: Text) -> List[WorkflowExecutionInfo]:
-        workflow_execution_list = self.list_workflow_execution(project_name, workflow_name)
+        workflow_execution_list = self.list_workflow_executions(project_name, workflow_name)
         for we in workflow_execution_list:
             self.kill_workflow_execution(we.execution_id)
         return workflow_execution_list
@@ -184,7 +184,7 @@ class AirFlowScheduler(AbstractScheduler):
                 state = self.airflow_state_to_state(dagrun.state)
                 return WorkflowExecutionInfo(execution_id=dagrun.run_id, state=state)
 
-    def list_workflow_execution(self, project_name: Text, workflow_name: Text) -> List[WorkflowExecutionInfo]:
+    def list_workflow_executions(self, project_name: Text, workflow_name: Text) -> List[WorkflowExecutionInfo]:
         dag_id = self.airflow_dag_id(project_name, workflow_name)
         with create_session() as session:
             dagrun_list = session.query(DagRun).filter(DagRun.dag_id == dag_id).all()
@@ -278,7 +278,7 @@ class AirFlowScheduler(AbstractScheduler):
                                =WorkflowExecutionInfo(execution_id=dagrun.run_id,
                                                       state=self.airflow_state_to_state(dagrun.state)))
 
-    def list_job(self, execution_id: Text) -> List[JobInfo]:
+    def list_jobs(self, execution_id: Text) -> List[JobInfo]:
         with create_session() as session:
             dagrun = session.query(DagRun).filter(DagRun.run_id == execution_id).first()
             if dagrun is None:
