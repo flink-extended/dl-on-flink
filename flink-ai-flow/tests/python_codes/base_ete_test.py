@@ -27,11 +27,11 @@ from airflow.executors.local_executor import LocalExecutor
 from ai_flow.application_master.master import AIFlowMaster
 from notification_service.client import NotificationClient
 
-from tests import db_utils
+from tests.python_codes import db_utils
 
 
 def project_path():
-    return os.path.dirname(__file__)
+    return os.path.dirname(os.path.dirname(__file__))
 
 
 def project_config_file():
@@ -43,7 +43,7 @@ def master_config_file():
 
 
 def workflow_config_file():
-    return project_path() + '/workflow.yaml'
+    return project_path() + '/resources/workflow.yaml'
 
 
 master = AIFlowMaster(config_file=master_config_file())

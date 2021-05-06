@@ -20,16 +20,16 @@ import time
 from typing import List
 
 from ai_flow.udf.function_context import FunctionContext
-from airflow.models import DagRun
-from airflow.utils.state import State
 from python_ai_flow.user_define_funcs import Executor
-
-from ai_flow.common.scheduler_type import SchedulerType
-from airflow.models.taskexecution import TaskExecution
-from airflow.utils.session import create_session
 from notification_service.client import NotificationClient
 from ai_flow.executor.executor import CmdExecutor
-from tests.base_ete_test import BaseETETest, workflow_config_file, project_path
+
+from airflow.models import DagRun
+from airflow.utils.state import State
+from airflow.models.taskexecution import TaskExecution
+from airflow.utils.session import create_session
+
+from tests.python_codes.base_ete_test import BaseETETest, workflow_config_file
 import ai_flow as af
 
 
@@ -67,14 +67,14 @@ class TestRunAIFlowJobs(BaseETETest):
             with af.global_config_file(workflow_config_file()):
                 with af.config('task_2'):
                     executor = af.user_define_operation(af.PythonObjectExecutor(SimpleExecutor()))
-                dag_file = af.submit(project_path())
-            return dag_file
+                workflow_info = af.workflow_operation.submit_workflow('test_workflow')
+            return workflow_info.workflow_name
 
         def run_task_function(client: NotificationClient):
-            af.run(project_path(), 'test_workflow', SchedulerType.AIRFLOW)
+            af.workflow_operation.start_new_workflow_execution('test_workflow')
             while True:
                 with create_session() as session:
-                    dag_run = session.query(DagRun).filter(DagRun.dag_id == 'test_workflow').first()
+                    dag_run = session.query(DagRun).filter(DagRun.dag_id == 'test_project.test_workflow').first()
                     if dag_run is not None and dag_run.state in State.finished:
                         break
                     else:
@@ -82,7 +82,7 @@ class TestRunAIFlowJobs(BaseETETest):
 
         self.run_ai_flow(build_and_submit_ai_flow, run_task_function)
         with create_session() as session:
-            tes = session.query(TaskExecution).filter(TaskExecution.dag_id == 'test_workflow',
+            tes = session.query(TaskExecution).filter(TaskExecution.dag_id == 'test_project.test_workflow',
                                                       TaskExecution.task_id == 'task_2').all()
             self.assertEqual(1, len(tes))
 
