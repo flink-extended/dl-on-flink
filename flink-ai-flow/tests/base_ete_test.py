@@ -21,7 +21,7 @@ import threading
 from typing import Callable
 import time
 from airflow.events.scheduler_events import StopSchedulerEvent
-from ai_flow.api.configuration import set_project_config_file
+from ai_flow.api.configuration import set_project_path
 from airflow.contrib.jobs.event_based_scheduler_job import EventBasedSchedulerJob
 from airflow.executors.local_executor import LocalExecutor
 from ai_flow.application_master.master import AIFlowMaster
@@ -53,6 +53,10 @@ def master_port():
     return master.master_config.get('master_port')
 
 
+def deploy_path():
+    return master.master_config.get('scheduler').get('properties').get('airflow_deploy_path')
+
+
 class BaseETETest(unittest.TestCase):
 
     @classmethod
@@ -71,7 +75,7 @@ class BaseETETest(unittest.TestCase):
         db_utils.clear_db_runs()
         db_utils.clear_db_task_execution()
         db_utils.clear_db_message()
-        set_project_config_file(project_config_file())
+        set_project_path(project_path())
 
     def tearDown(self):
         master._clear_db()
@@ -93,7 +97,7 @@ class BaseETETest(unittest.TestCase):
 
     def run_ai_flow(self, ai_flow_function: Callable[[], str], test_function: Callable[[NotificationClient], None],
                     executor=None):
-        dag_file = ai_flow_function()
+        workflow_name = ai_flow_function()
 
         def run_test_fun():
             time.sleep(5)
@@ -104,4 +108,6 @@ class BaseETETest(unittest.TestCase):
         t = threading.Thread(target=run_test_fun, args=())
         t.setDaemon(True)
         t.start()
+        dp = deploy_path()
+        dag_file = dp + '/' + workflow_name + '.py'
         self.start_scheduler(dag_file, executor)

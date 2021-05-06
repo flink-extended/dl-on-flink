@@ -16,8 +16,12 @@
 ## specific language governing permissions and limitations
 ## under the License.
 ##
-project_name: test_project
 master_ip: localhost
 master_port: 50051
-airflow_deploy_path: /tmp/airflow/
-repository: /tmp
+db_uri: sqlite:///aiflow.db
+db_type: sql_lite
+start_scheduling_service: False
+scheduler:
+  scheduler_class_name: test.TestScheduler
+  notification_service_uri: localhost:9999
+  repository: /tmp/repo

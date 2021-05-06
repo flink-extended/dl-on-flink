@@ -77,6 +77,7 @@ class TestSchedulerFactory(unittest.TestCase):
 
     def test_create_scheduler(self):
         print(AbstractScheduler.__class__.__name__, AbstractScheduler.__class__.__module__)
-        config = SchedulerConfig(scheduler_class_name='ai_flow.test.scheduler.test_scheduler_factory.UnitTestScheduler')
+        config = SchedulerConfig()
+        config.set_scheduler_class_name('ai_flow.test.scheduler.test_scheduler_factory.UnitTestScheduler')
         sc = SchedulerFactory.create_scheduler(config)
         self.assertTrue(isinstance(sc, AbstractScheduler))

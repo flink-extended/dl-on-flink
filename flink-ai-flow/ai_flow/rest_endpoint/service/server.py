@@ -31,6 +31,7 @@ from grpc import _common, _server
 from grpc._cython.cygrpc import StatusCode
 from grpc._server import _serialize_response, _status, _abort, _Context, _unary_request, \
     _select_thread_pool_for_behavior, _unary_response_in_pool
+from typing import Dict
 
 from ai_flow.rest_endpoint.protobuf.high_availability_pb2_grpc import add_HighAvailabilityManagerServicer_to_server
 from ai_flow.rest_endpoint.service.high_availability import SimpleAIFlowServerHaManager, HighAvailableService
@@ -70,7 +71,7 @@ class AIFlowServer(object):
                  start_metric_service: bool = True,
                  start_deploy_service: bool = True,
                  start_scheduling_service: bool = True,
-                 scheduler_config: SchedulerConfig = None):
+                 scheduler_config: Dict = None):
         self.executor = Executor(futures.ThreadPoolExecutor(max_workers=10))
         self.server = grpc.server(self.executor)
         self.start_default_notification = start_default_notification
@@ -104,11 +105,21 @@ class AIFlowServer(object):
             logging.info("start scheduling service.")
             if scheduler_config is None:
                 nf_uri = server_uri if start_default_notification else notification_uri
-                scheduler_config = SchedulerConfig(
-                    scheduler_class_name='ai_flow.scheduler.implements.airflow_scheduler.AirFlowScheduler',
-                    notification_service_uri=nf_uri
-                )
-            self.scheduling_service = SchedulingService(scheduler_config)
+                scheduler_config = SchedulerConfig()
+                scheduler_config.set_notification_service_uri(nf_uri)
+                scheduler_config.\
+                    set_scheduler_class_name('ai_flow.scheduler.implements.airflow_scheduler.AirFlowScheduler')
+                scheduler_config.set_repository('/tmp/airflow')
+            real_config = SchedulerConfig()
+            if scheduler_config.get('notification_uri') is None:
+                nf_uri = server_uri if start_default_notification else notification_uri
+                real_config.set_notification_service_uri(nf_uri)
+            else:
+                real_config.set_notification_service_uri(scheduler_config.get('notification_uri'))
+            real_config.set_properties(scheduler_config.get('properties'))
+            real_config.set_repository(scheduler_config.get('repository'))
+            real_config.set_scheduler_class_name(scheduler_config.get('scheduler_class_name'))
+            self.scheduling_service = SchedulingService(real_config)
             scheduling_service_pb2_grpc.add_SchedulingServiceServicer_to_server(self.scheduling_service,
                                                                                 self.server)
 

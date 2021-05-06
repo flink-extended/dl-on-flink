@@ -38,6 +38,17 @@ class ProjectTest(unittest.TestCase):
         downloaded_path = blob_manager.download_blob('1', uploaded_path)
         self.assertEqual(project_path, downloaded_path)
 
+    def test_project_upload_download_local_2(self):
+        project_path = get_file_dir(__file__)
+        config = {'repository': '/tmp'}
+
+        # blob_server.type = local
+        blob_manager = BlobManagerFactory.get_blob_manager(config)
+        uploaded_path = blob_manager.upload_blob('1', project_path)
+
+        downloaded_path = blob_manager.download_blob('1', uploaded_path)
+        self.assertEqual('/tmp/workflow_1_project/project', downloaded_path)
+
     def test_load_project_config(self):
         project_path = get_file_dir(__file__)
         set_project_config_file(project_path+"/project.yaml")

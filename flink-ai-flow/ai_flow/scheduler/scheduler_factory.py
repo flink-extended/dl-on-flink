@@ -22,5 +22,5 @@ class SchedulerFactory(object):
 
     @classmethod
     def create_scheduler(cls, config: SchedulerConfig) -> AbstractScheduler:
-        class_object = import_string(config.scheduler_class_name)
+        class_object = import_string(config.scheduler_class_name())
         return class_object(config)
