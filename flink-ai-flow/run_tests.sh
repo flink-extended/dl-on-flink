@@ -49,7 +49,7 @@ function run_test_class() {
 }
 # python3 -m unittest discover -v ai_flow.test.api
 
-mvn verify
+# mvn verify
 
 run_test_class 'ai_flow/test/rest_endpoint/' 'test_client.TestAIFlowClientSqlite'
 run_test_class 'ai_flow/test/rest_endpoint/' 'test_mysql_client.TestAIFlowClientMySQL'

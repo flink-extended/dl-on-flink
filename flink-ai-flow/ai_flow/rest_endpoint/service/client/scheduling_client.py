@@ -32,10 +32,12 @@ class SchedulingClient(BaseClient):
 
     def submit_workflow_to_scheduler(self,
                                      namespace: Text,
+                                     workflow_json: Text,
                                      workflow_name: Text = None,
                                      args: Dict = None) -> WorkflowProto:
         """
         Submit the ai flow workflow to the scheduler.
+        :param workflow_json:
         :param namespace:
         :param workflow_name: The ai flow workflow identify.
         :param args: The arguments of the submit action.
@@ -44,6 +46,10 @@ class SchedulingClient(BaseClient):
         request = scheduling_service_pb2.ScheduleWorkflowRequest()
         request.namespace = namespace
         request.workflow_name = workflow_name
+        request.workflow_json = workflow_json
+        if args is not None:
+            for k, v in args.items():
+                request.args[k] = v
         response = self.scheduling_stub.submitWorkflow(request)
         if response.result.status != StatusProto.OK:
             raise Exception(response.result.error_message)

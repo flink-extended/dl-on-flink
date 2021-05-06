@@ -15,6 +15,9 @@
 # specific language governing permissions and limitations
 # under the License.
 from typing import Text
+
+from ai_flow.project.blob_manager import BlobManagerFactory
+
 from ai_flow.common import json_utils
 from ai_flow.project.project_description import ProjectDesc, get_project_description_from
 from ai_flow.rest_endpoint.protobuf.message_pb2 import ResultProto, StatusProto
@@ -41,6 +44,7 @@ class SchedulingService(SchedulingServiceServicer):
                  scheduler_config: SchedulerConfig,
                  notification_service_uri: Text = None):
         self._notification_service_uri = notification_service_uri
+        self._scheduler_config = scheduler_config
         self._scheduler: AbstractScheduler = SchedulerFactory.create_scheduler(scheduler_config)
 
     # workflow interface
@@ -49,8 +53,15 @@ class SchedulingService(SchedulingServiceServicer):
         try:
             rq: ScheduleWorkflowRequest = request
             workflow: Workflow = json_utils.loads(rq.workflow_json)
-            # todo download project code
-            project_path: Text = None
+            workflow.workflow_name = rq.workflow_name
+            config = {}
+            config.update(workflow.project_desc.project_config)
+            config['repository'] = self._scheduler_config.repository()
+            blob_manager = BlobManagerFactory.get_blob_manager(config)
+            project_path: Text = blob_manager\
+                .download_blob(workflow_id=workflow.workflow_id,
+                               remote_path=workflow.project_desc.project_config.get('uploaded_project_path'))
+
             project_desc: ProjectDesc = get_project_description_from(project_path)
             workflow_info = self._scheduler.submit_workflow(workflow, project_desc)
             if workflow_info is None:

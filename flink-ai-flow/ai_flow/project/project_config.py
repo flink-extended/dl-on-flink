@@ -65,6 +65,15 @@ class ProjectConfig(AIFlowConfiguration):
     def set_notification_service_uri(self, uri):
         self["notification_uri"] = uri
 
+    def get_uploaded_project_path(self):
+        if "uploaded_project_path" in self:
+            return self["uploaded_project_path"]
+        else:
+            return self.get_master_uri()
+
+    def set_uploaded_project_path(self, uri):
+        self["uploaded_project_path"] = uri
+
     def get_schedule_interval(self):
         if "schedule_interval" in self:
             return self["schedule_interval"]
