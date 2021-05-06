@@ -14,13 +14,46 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
+import time
 from typing import Text, List, Dict
+from ai_flow.project.blob_manager import BlobManagerFactory
+from ai_flow.common import json_utils
+from ai_flow.graph.graph import default_graph
+from ai_flow.translator.base_translator import get_default_translator
 from ai_flow.client.ai_flow_client import get_ai_flow_client
-from ai_flow.api.configuration import project_config
-from ai_flow.workflow.workflow import JobInfo, WorkflowExecutionInfo, WorkflowInfo
+from ai_flow.api.configuration import project_config, project_description
+from ai_flow.workflow.workflow import JobInfo, WorkflowExecutionInfo, WorkflowInfo, Workflow
 from ai_flow.rest_endpoint.service.workflow_proto_utils import \
     proto_to_workflow, proto_to_workflow_list, proto_to_workflow_execution, proto_to_workflow_execution_list,\
     proto_to_job, proto_to_job_list
+
+
+def _upload_project_package(workflow: Workflow):
+    """
+    Upload the project package.
+
+    :param workflow: The generated workflow.
+    """
+    project_desc = project_description()
+    with open(project_desc.get_absolute_temp_path() + "/"
+              + project_desc.project_config.get_project_uuid() + "_workflow.json", 'w') as f:
+        f.write(json_utils.dumps(workflow))
+    blob_manager = BlobManagerFactory.get_blob_manager(project_desc.project_config)
+    uploaded_project_path = blob_manager.upload_blob(str(workflow.workflow_id), project_desc.project_path)
+    project_desc.project_config.set_uploaded_project_path(uploaded_project_path)
+    for job in workflow.jobs.values():
+        job.job_config.project_path = uploaded_project_path
+
+
+def _register_job_meta(workflow_id: int, job):
+
+    start_time = time.time()
+    if job.job_config.job_name is None:
+        name = job.instance_id
+    else:
+        name = job.job_config.job_name
+    job_name = str(workflow_id) + '_' + name[0:20] + '_' + str(start_time)
+    job.job_name = job_name
 
 
 def submit_workflow(workflow_name: Text = None,
@@ -32,7 +65,16 @@ def submit_workflow(workflow_name: Text = None,
     :return: The result of the submit action.
     """
     namespace = project_config().get_project_name()
-    return proto_to_workflow(get_ai_flow_client().submit_workflow_to_scheduler(namespace, workflow_name, args))
+    translator = get_default_translator()
+    workflow = translator.translate(graph=default_graph(), project_desc=project_description())
+    for job in workflow.jobs.values():
+        _register_job_meta(workflow_id=workflow.workflow_id, job=job)
+    _upload_project_package(workflow)
+    return proto_to_workflow(get_ai_flow_client()
+                             .submit_workflow_to_scheduler(namespace=namespace,
+                                                           workflow_json=json_utils.dumps(workflow),
+                                                           workflow_name=workflow_name,
+                                                           args=args))
 
 
 def delete_workflow(workflow_name: Text = None) -> WorkflowInfo:
@@ -127,7 +169,7 @@ def list_workflow_executions(workflow_name: Text) -> List[WorkflowExecutionInfo]
     :return: All workflow executions of the workflow.
     """
     namespace = project_config().get_project_name()
-    return proto_to_workflow_execution_list(get_ai_flow_client().list_workflow_executions(workflow_name))
+    return proto_to_workflow_execution_list(get_ai_flow_client().list_workflow_executions(namespace, workflow_name))
 
 
 def start_job(job_name: Text,

@@ -16,38 +16,40 @@
 # under the License.
 from abc import ABC, abstractmethod
 from typing import Dict, Text, List, Optional
+
+from ai_flow.common.configuration import AIFlowConfiguration
 from ai_flow.workflow.workflow import Workflow, WorkflowInfo, WorkflowExecutionInfo, JobInfo
 from ai_flow.project.project_description import ProjectDesc
 
 
-class SchedulerConfig(object):
-    def __init__(self,
-                 scheduler_class_name: Text,
-                 repository: Text = None,
-                 notification_service_uri: Text = None,
-                 properties: Dict = None):
-        self._repository = repository
-        self._scheduler_class_name = scheduler_class_name
-        self._notification_service_uri = notification_service_uri
-        if properties is None:
-            properties = {}
-        self._properties: Dict = properties
+class SchedulerConfig(AIFlowConfiguration):
 
-    @property
     def repository(self):
-        return self._repository
+        return self['repository']
 
-    @property
+    def set_repository(self, value):
+        self['repository'] = value
+
     def scheduler_class_name(self):
-        return self._scheduler_class_name
+        if self.get('scheduler_class_name') is not None:
+            return self.get('scheduler_class_name')
+        else:
+            return 'ai_flow.scheduler.implements.airflow_scheduler.AirFlowScheduler'
 
-    @property
+    def set_scheduler_class_name(self, value):
+        self['scheduler_class_name'] = value
+
     def notification_service_uri(self):
-        return self._notification_service_uri
+        return self.get('notification_service_uri', None)
 
-    @property
+    def set_notification_service_uri(self, value):
+        self['notification_service_uri'] = value
+
     def properties(self):
-        return self._properties
+        return self['properties']
+
+    def set_properties(self, value):
+        self['properties'] = value
 
 
 class AbstractScheduler(ABC):
