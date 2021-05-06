@@ -86,7 +86,8 @@ class MockScheduler(AbstractScheduler):
 
 class TestSchedulingService(unittest.TestCase):
     def setUp(self):
-        config = SchedulerConfig(scheduler_class_name='ai_flow.test.scheduler.test_scheduling_service.MockScheduler')
+        config = SchedulerConfig()
+        config.set_scheduler_class_name('ai_flow.test.scheduler.test_scheduling_service.MockScheduler')
         if os.path.exists(_SQLITE_DB_FILE):
             os.remove(_SQLITE_DB_FILE)
         self.server = AIFlowServer(store_uri=_SQLITE_DB_URI, port=_PORT,

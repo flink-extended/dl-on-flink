@@ -33,7 +33,7 @@ message ScheduleWorkflowRequest {
     string namespace = 1;
     string workflow_name = 2;
     map<string, string> args = 3;
-    google.protobuf.StringValue workflow_json = 4;
+    string workflow_json = 4;
 }
 
 message WorkflowExecutionRequest {

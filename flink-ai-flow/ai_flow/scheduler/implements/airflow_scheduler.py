@@ -17,13 +17,13 @@
 import os
 from tempfile import NamedTemporaryFile
 from typing import Dict, Text, List, Optional
-from airflow.executors.scheduling_action import SchedulingAction
 from ai_flow.meta import job_meta
 from ai_flow.airflow.dag_generator import DAGGenerator
 from ai_flow.project.project_description import ProjectDesc
 from ai_flow.scheduler.scheduler_interface import AbstractScheduler, SchedulerConfig
 from ai_flow.workflow.workflow import Workflow, WorkflowInfo, JobInfo, WorkflowExecutionInfo
 
+from airflow.executors.scheduling_action import SchedulingAction
 from airflow.models.taskexecution import TaskExecution
 from airflow.models.taskinstance import TaskInstance
 from airflow.models.taskstate import TaskState
@@ -41,8 +41,7 @@ class AirFlowScheduler(AbstractScheduler):
     def __init__(self, config: SchedulerConfig):
         super().__init__(config)
         self.dag_generator = DAGGenerator()
-        self.airflow_client = EventSchedulerClient(server_uri=self.config.notification_service_uri,
-                                                   namespace=SCHEDULER_NAMESPACE)
+        self._airflow_client = None
 
     @classmethod
     def airflow_dag_id(cls, namespace, workflow_name):
@@ -86,15 +85,28 @@ class AirFlowScheduler(AbstractScheduler):
             else:
                 return True
 
+    @property
+    def airflow_client(self):
+        if self._airflow_client is None:
+            self._airflow_client = EventSchedulerClient(server_uri=self.config.notification_service_uri(),
+                                                        namespace=SCHEDULER_NAMESPACE)
+        return self._airflow_client
+
     def submit_workflow(self, workflow: Workflow, project_desc: ProjectDesc, args: Dict = None) -> WorkflowInfo:
-        code_text = self.dag_generator.generator(workflow, workflow.workflow_name, args)
-        deploy_path = self.config.properties.get('airflow_deploy_path')
+        workflow_name = workflow.workflow_name
+        dag_id = self.airflow_dag_id(project_desc.project_name, workflow.workflow_name)
+        code_text = self.dag_generator.generator(workflow, dag_id, args)
+        workflow.workflow_name = workflow_name
+        deploy_path = self.config.properties().get('airflow_deploy_path')
         if deploy_path is None:
             raise Exception("airflow_deploy_path config not set!")
-        airflow_file_path = os.path.join(deploy_path, workflow.workflow_name + '.py')
+        if not os.path.exists(deploy_path):
+            os.makedirs(deploy_path)
+        airflow_file_path = os.path.join(deploy_path,
+                                         dag_id + '.py')
         if os.path.exists(airflow_file_path):
             os.remove(airflow_file_path)
-        with NamedTemporaryFile(mode='w+t', prefix=workflow.workflow_name, suffix='.py', dir='/tmp', delete=False) as f:
+        with NamedTemporaryFile(mode='w+t', prefix=dag_id, suffix='.py', dir='/tmp', delete=False) as f:
             f.write(code_text)
         os.rename(f.name, airflow_file_path)
         return WorkflowInfo(workflow_name=workflow.workflow_name)
@@ -154,9 +166,13 @@ class AirFlowScheduler(AbstractScheduler):
 
     def start_new_workflow_execution(self, project_name: Text, workflow_name: Text) -> Optional[WorkflowExecutionInfo]:
         dag_id = self.airflow_dag_id(project_name, workflow_name)
+        deploy_path = self.config.properties().get('airflow_deploy_path')
+        if deploy_path is None:
+            raise Exception("airflow_deploy_path config not set!")
+        airflow_file_path = os.path.join(deploy_path, dag_id + '.py')
+        self.airflow_client.trigger_parse_dag(airflow_file_path)
         if not self.dag_exist(dag_id):
             return None
-        self.airflow_client.trigger_parse_dag()
         context: ExecutionContext = self.airflow_client.schedule_dag(dag_id)
         return WorkflowExecutionInfo(execution_id=context.dagrun_id, state=job_meta.State.INIT)
 

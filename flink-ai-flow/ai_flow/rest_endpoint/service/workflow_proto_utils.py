@@ -16,6 +16,8 @@
 # under the License.
 from typing import List
 
+from ai_flow.metadata_store.utils.ProtoToMeta import ProtoToMeta
+
 from ai_flow.meta.job_meta import State
 
 from ai_flow.rest_endpoint.protobuf.message_pb2 import WorkflowProto, WorkflowExecutionProto, StateProto, JobProto
@@ -59,7 +61,8 @@ def proto_to_workflow_execution(proto: WorkflowExecutionProto) -> WorkflowExecut
     if proto is None:
         return None
     else:
-        return WorkflowExecutionInfo(execution_id=proto.excution_id, state=State(proto.execution_state.value),
+        return WorkflowExecutionInfo(execution_id=proto.execution_id,
+                                     state=ProtoToMeta.proto_to_state(proto.execution_state),
                                      workflow_info=proto_to_workflow(proto.workflow))
 
 
@@ -88,7 +91,7 @@ def proto_to_job(proto: JobProto) -> JobInfo:
     if proto is None:
         return None
     else:
-        return JobInfo(job_name=proto.name, state=State(proto.job_state.value),
+        return JobInfo(job_name=proto.name, state=ProtoToMeta.proto_to_state(proto.job_state),
                        workflow_execution=proto_to_workflow_execution(proto.workflow_execution))
 
 
