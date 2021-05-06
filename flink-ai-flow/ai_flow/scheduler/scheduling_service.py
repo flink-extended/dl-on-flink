@@ -15,7 +15,7 @@
 # specific language governing permissions and limitations
 # under the License.
 from typing import Text
-
+import traceback
 from ai_flow.project.blob_manager import BlobManagerFactory
 
 from ai_flow.common import json_utils
@@ -63,6 +63,12 @@ class SchedulingService(SchedulingServiceServicer):
                                remote_path=workflow.project_desc.project_config.get('uploaded_project_path'))
 
             project_desc: ProjectDesc = get_project_description_from(project_path)
+            # update workflow
+            workflow.project_desc = project_desc
+            for n, j in workflow.jobs.items():
+                j.job_config.project_desc = project_desc
+                j.job_config.project_path = project_path
+
             workflow_info = self._scheduler.submit_workflow(workflow, project_desc)
             if workflow_info is None:
                 return WorkflowInfoResponse(
@@ -71,7 +77,8 @@ class SchedulingService(SchedulingServiceServicer):
             return WorkflowInfoResponse(result=ResultProto(status=StatusProto.OK),
                                         workflow=workflow_to_proto(workflow_info))
         except Exception as err:
-            return WorkflowInfoResponse(result=ResultProto(status=StatusProto.ERROR, error_message=str(err)))
+            return WorkflowInfoResponse(result=ResultProto(status=StatusProto.ERROR,
+                                                           error_message=traceback.format_exc()))
 
     def deleteWorkflow(self, request, context):
         try:
@@ -84,7 +91,8 @@ class SchedulingService(SchedulingServiceServicer):
             return WorkflowInfoResponse(result=ResultProto(status=StatusProto.OK),
                                         workflow=workflow_to_proto(workflow_info))
         except Exception as err:
-            return WorkflowInfoResponse(result=ResultProto(status=StatusProto.ERROR, error_message=str(err)))
+            return WorkflowInfoResponse(result=ResultProto(status=StatusProto.ERROR,
+                                                           error_message=traceback.format_exc()))
 
     def pauseWorkflowScheduling(self, request, context):
         try:
@@ -97,7 +105,8 @@ class SchedulingService(SchedulingServiceServicer):
             return WorkflowInfoResponse(result=ResultProto(status=StatusProto.OK),
                                         workflow=workflow_to_proto(workflow_info))
         except Exception as err:
-            return WorkflowInfoResponse(result=ResultProto(status=StatusProto.ERROR, error_message=str(err)))
+            return WorkflowInfoResponse(result=ResultProto(status=StatusProto.ERROR,
+                                                           error_message=traceback.format_exc()))
 
     def resumeWorkflowScheduling(self, request, context):
         try:
@@ -110,7 +119,8 @@ class SchedulingService(SchedulingServiceServicer):
             return WorkflowInfoResponse(result=ResultProto(status=StatusProto.OK),
                                         workflow=workflow_to_proto(workflow_info))
         except Exception as err:
-            return WorkflowInfoResponse(result=ResultProto(status=StatusProto.ERROR, error_message=str(err)))
+            return WorkflowInfoResponse(result=ResultProto(status=StatusProto.ERROR,
+                                                           error_message=traceback.format_exc()))
 
     def getWorkflow(self, request, context):
         try:
@@ -123,7 +133,8 @@ class SchedulingService(SchedulingServiceServicer):
             return WorkflowInfoResponse(result=ResultProto(status=StatusProto.OK),
                                         workflow=workflow_to_proto(workflow_info))
         except Exception as err:
-            return WorkflowInfoResponse(result=ResultProto(status=StatusProto.ERROR, error_message=str(err)))
+            return WorkflowInfoResponse(result=ResultProto(status=StatusProto.ERROR,
+                                                           error_message=traceback.format_exc()))
 
     def listWorkflows(self, request, context):
         try:
@@ -134,7 +145,8 @@ class SchedulingService(SchedulingServiceServicer):
             response.workflow_list.extend(workflow_proto_list)
             return response
         except Exception as err:
-            return ListWorkflowInfoResponse(result=ResultProto(status=StatusProto.ERROR, error_message=str(err)))
+            return ListWorkflowInfoResponse(result=ResultProto(status=StatusProto.ERROR,
+                                                               error_message=traceback.format_exc()))
 
     # workflow execution interface
 
@@ -149,7 +161,8 @@ class SchedulingService(SchedulingServiceServicer):
             return WorkflowExecutionResponse(result=ResultProto(status=StatusProto.OK),
                                              workflow_execution=workflow_execution_to_proto(workflow_execution))
         except Exception as err:
-            return WorkflowExecutionResponse(result=ResultProto(status=StatusProto.ERROR, error_message=str(err)))
+            return WorkflowExecutionResponse(result=ResultProto(status=StatusProto.ERROR,
+                                                                error_message=traceback.format_exc()))
 
     def killAllWorkflowExecutions(self, request, context):
         try:
@@ -159,7 +172,8 @@ class SchedulingService(SchedulingServiceServicer):
             response.workflow_execution_list.extend(workflow_execution_list_to_proto(workflow_execution_list))
             return response
         except Exception as err:
-            return ListWorkflowExecutionResponse(result=ResultProto(status=StatusProto.ERROR, error_message=str(err)))
+            return ListWorkflowExecutionResponse(result=ResultProto(status=StatusProto.ERROR,
+                                                                    error_message=traceback.format_exc()))
 
     def killWorkflowExecution(self, request, context):
         try:
@@ -172,7 +186,8 @@ class SchedulingService(SchedulingServiceServicer):
             return WorkflowExecutionResponse(result=ResultProto(status=StatusProto.OK),
                                              workflow_execution=workflow_execution_to_proto(workflow_execution))
         except Exception as err:
-            return WorkflowExecutionResponse(result=ResultProto(status=StatusProto.ERROR, error_message=str(err)))
+            return WorkflowExecutionResponse(result=ResultProto(status=StatusProto.ERROR,
+                                                                error_message=traceback.format_exc()))
 
     def getWorkflowExecution(self, request, context):
         try:
@@ -185,7 +200,8 @@ class SchedulingService(SchedulingServiceServicer):
             return WorkflowExecutionResponse(result=ResultProto(status=StatusProto.OK),
                                              workflow_execution=workflow_execution_to_proto(workflow_execution))
         except Exception as err:
-            return WorkflowExecutionResponse(result=ResultProto(status=StatusProto.ERROR, error_message=str(err)))
+            return WorkflowExecutionResponse(result=ResultProto(status=StatusProto.ERROR,
+                                                                error_message=traceback.format_exc()))
 
     def listWorkflowExecutions(self, request, context):
         try:
@@ -195,7 +211,8 @@ class SchedulingService(SchedulingServiceServicer):
             response.workflow_execution_list.extend(workflow_execution_list_to_proto(workflow_execution_list))
             return response
         except Exception as err:
-            return ListWorkflowExecutionResponse(result=ResultProto(status=StatusProto.ERROR, error_message=str(err)))
+            return ListWorkflowExecutionResponse(result=ResultProto(status=StatusProto.ERROR,
+                                                                    error_message=traceback.format_exc()))
 
     # job interface
     def startJob(self, request, context):
@@ -208,7 +225,8 @@ class SchedulingService(SchedulingServiceServicer):
                                        error_message='{} do not exist!'.format(rq.job_name)))
             return JobInfoResponse(result=ResultProto(status=StatusProto.OK), job=job_to_proto(job))
         except Exception as err:
-            return JobInfoResponse(result=ResultProto(status=StatusProto.ERROR, error_message=str(err)))
+            return JobInfoResponse(result=ResultProto(status=StatusProto.ERROR,
+                                                      error_message=traceback.format_exc()))
 
     def stopJob(self, request, context):
         try:
@@ -220,7 +238,8 @@ class SchedulingService(SchedulingServiceServicer):
                                        error_message='{} do not exist!'.format(rq.job_name)))
             return JobInfoResponse(result=ResultProto(status=StatusProto.OK), job=job_to_proto(job))
         except Exception as err:
-            return JobInfoResponse(result=ResultProto(status=StatusProto.ERROR, error_message=str(err)))
+            return JobInfoResponse(result=ResultProto(status=StatusProto.ERROR,
+                                                      error_message=traceback.format_exc()))
 
     def restartJob(self, request, context):
         try:
@@ -232,7 +251,8 @@ class SchedulingService(SchedulingServiceServicer):
                                        error_message='{} do not exist!'.format(rq.job_name)))
             return JobInfoResponse(result=ResultProto(status=StatusProto.OK), job=job_to_proto(job))
         except Exception as err:
-            return JobInfoResponse(result=ResultProto(status=StatusProto.ERROR, error_message=str(err)))
+            return JobInfoResponse(result=ResultProto(status=StatusProto.ERROR,
+                                                      error_message=traceback.format_exc()))
 
     def getJob(self, request, context):
         try:
@@ -244,7 +264,8 @@ class SchedulingService(SchedulingServiceServicer):
                                        error_message='{} do not exist!'.format(rq.job_name)))
             return JobInfoResponse(result=ResultProto(status=StatusProto.OK), job=job_to_proto(job))
         except Exception as err:
-            return JobInfoResponse(result=ResultProto(status=StatusProto.ERROR, error_message=str(err)))
+            return JobInfoResponse(result=ResultProto(status=StatusProto.ERROR,
+                                                      error_message=traceback.format_exc()))
 
     def listJobs(self, request, context):
         try:
@@ -254,4 +275,5 @@ class SchedulingService(SchedulingServiceServicer):
             response.job_list.extend(job_list_to_proto(job_list))
             return response
         except Exception as err:
-            return ListJobInfoResponse(result=ResultProto(status=StatusProto.ERROR, error_message=str(err)))
+            return ListJobInfoResponse(result=ResultProto(status=StatusProto.ERROR,
+                                                          error_message=traceback.format_exc()))

@@ -15,6 +15,8 @@
 # specific language governing permissions and limitations
 # under the License.
 import time
+import sys
+import os
 from typing import Text, List, Dict
 from ai_flow.project.blob_manager import BlobManagerFactory
 from ai_flow.common import json_utils
@@ -56,6 +58,15 @@ def _register_job_meta(workflow_id: int, job):
     job.job_name = job_name
 
 
+def _set_entry_module_path(workflow: Workflow, entry_module_path: Text):
+    """
+    Set entry model path.
+    :param workflow: The generated workflow.
+    """
+    for job in workflow.jobs.values():
+        job.job_config.properties['entry_module_path'] = entry_module_path
+
+
 def submit_workflow(workflow_name: Text = None,
                     args: Dict = None) -> WorkflowInfo:
     """
@@ -64,11 +75,15 @@ def submit_workflow(workflow_name: Text = None,
     :param args: The arguments of the submit action.
     :return: The result of the submit action.
     """
+    call_path = os.path.abspath(sys._getframe(1).f_code.co_filename)
+    project_path = os.path.abspath(project_description().project_path)
+    entry_module_path = call_path[len(project_path)+14:-3].replace('/', '.')
     namespace = project_config().get_project_name()
     translator = get_default_translator()
     workflow = translator.translate(graph=default_graph(), project_desc=project_description())
     for job in workflow.jobs.values():
         _register_job_meta(workflow_id=workflow.workflow_id, job=job)
+    _set_entry_module_path(workflow, entry_module_path)
     _upload_project_package(workflow)
     return proto_to_workflow(get_ai_flow_client()
                              .submit_workflow_to_scheduler(namespace=namespace,
