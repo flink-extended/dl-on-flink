@@ -21,6 +21,8 @@ import threading
 from typing import Callable
 import time
 from airflow.events.scheduler_events import StopSchedulerEvent
+from notification_service.base_notification import BaseEvent
+
 from ai_flow.api.configuration import set_project_path
 from airflow.contrib.jobs.event_based_scheduler_job import EventBasedSchedulerJob
 from airflow.executors.local_executor import LocalExecutor
@@ -75,6 +77,7 @@ class BaseETETest(unittest.TestCase):
         db_utils.clear_db_runs()
         db_utils.clear_db_task_execution()
         db_utils.clear_db_message()
+        db_utils.clear_db_jobs()
         set_project_path(project_path())
 
     def tearDown(self):
@@ -95,19 +98,20 @@ class BaseETETest(unittest.TestCase):
         print("scheduler starting")
         scheduler.run()
 
-    def run_ai_flow(self, ai_flow_function: Callable[[], str], test_function: Callable[[NotificationClient], None],
+    def run_ai_flow(self, workflow_name, test_function: Callable[[NotificationClient], None],
                     executor=None):
-        workflow_name = ai_flow_function()
-
         def run_test_fun():
-            time.sleep(5)
+            time.sleep(3)
             client = NotificationClient(server_uri="localhost:{}".format(master_port()),
                                         default_namespace="test")
             test_function(client)
+            time.sleep(3)
             client.send_event(StopSchedulerEvent(job_id=0).to_event())
+
         t = threading.Thread(target=run_test_fun, args=())
         t.setDaemon(True)
         t.start()
+
         dp = deploy_path()
         dag_file = dp + '/' + workflow_name + '.py'
         self.start_scheduler(dag_file, executor)

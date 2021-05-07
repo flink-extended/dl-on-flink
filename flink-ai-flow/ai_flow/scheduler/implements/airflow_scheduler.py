@@ -109,13 +109,14 @@ class AirFlowScheduler(AbstractScheduler):
         with NamedTemporaryFile(mode='w+t', prefix=dag_id, suffix='.py', dir='/tmp', delete=False) as f:
             f.write(code_text)
         os.rename(f.name, airflow_file_path)
+        self.airflow_client.trigger_parse_dag(airflow_file_path)
         return WorkflowInfo(workflow_name=workflow.workflow_name)
 
-    def delete_workflow(self, workflow_name: Text, project_name: Text) -> Optional[WorkflowInfo]:
+    def delete_workflow(self, project_name: Text, workflow_name: Text) -> Optional[WorkflowInfo]:
         dag_id = self.airflow_dag_id(project_name, workflow_name)
         if not self.dag_exist(dag_id):
             return None
-        deploy_path = self.config.properties.get('airflow_deploy_path')
+        deploy_path = self.config.properties().get('airflow_deploy_path')
         if deploy_path is None:
             raise Exception("airflow_deploy_path config not set!")
         airflow_file_path = os.path.join(deploy_path, dag_id + '.py')
@@ -129,7 +130,7 @@ class AirFlowScheduler(AbstractScheduler):
         with create_session() as session:
             session.query(DagTag).filter(DagTag.dag_id == dag_id).delete()
             session.query(DagModel).filter(DagModel.dag_id == dag_id).delete()
-            session.query(DagCode).filter(DagCode.dag_id == dag_id).delete()
+            # session.query(DagCode).filter(DagCode.dag_id == dag_id).delete()
             session.query(SerializedDagModel).filter(SerializedDagModel.dag_id == dag_id).delete()
             session.query(DagRun).filter(DagRun.dag_id == dag_id).delete()
             session.query(TaskState).filter(TaskState.dag_id == dag_id).delete()
@@ -169,8 +170,6 @@ class AirFlowScheduler(AbstractScheduler):
         deploy_path = self.config.properties().get('airflow_deploy_path')
         if deploy_path is None:
             raise Exception("airflow_deploy_path config not set!")
-        airflow_file_path = os.path.join(deploy_path, dag_id + '.py')
-        self.airflow_client.trigger_parse_dag(airflow_file_path)
         if not self.dag_exist(dag_id):
             return None
         context: ExecutionContext = self.airflow_client.schedule_dag(dag_id)
@@ -179,7 +178,8 @@ class AirFlowScheduler(AbstractScheduler):
     def kill_all_workflow_execution(self, project_name: Text, workflow_name: Text) -> List[WorkflowExecutionInfo]:
         workflow_execution_list = self.list_workflow_executions(project_name, workflow_name)
         for we in workflow_execution_list:
-            self.kill_workflow_execution(we.execution_id)
+            if we.state == job_meta.State.RUNNING:
+                self.kill_workflow_execution(we.execution_id)
         return workflow_execution_list
 
     def kill_workflow_execution(self, execution_id: Text) -> Optional[WorkflowExecutionInfo]:
@@ -300,7 +300,7 @@ class AirFlowScheduler(AbstractScheduler):
             if dagrun is None:
                 return None
             task_list = session.query(TaskInstance).filter(TaskInstance.dag_id == dagrun.dag_id,
-                                                           TaskInstance.execution_date == dagrun.execution_date).first()
+                                                           TaskInstance.execution_date == dagrun.execution_date).all()
             if task_list is None:
                 return []
             else:
