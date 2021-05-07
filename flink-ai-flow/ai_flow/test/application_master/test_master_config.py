@@ -30,7 +30,7 @@ class TestConfiguration(unittest.TestCase):
 
     def test_load_master_configuration(self):
         config = MasterConfig()
-        config.load_from_file(os.path.dirname(__file__) + '/test_master.yaml')
+        config.load_from_file(os.path.dirname(__file__) + '/master_config.yaml')
         self.assertEqual('sql_lite', config.get_db_type())
         self.assertEqual('/tmp/repo', config.get_scheduler_config()['repository'])
         self.assertEqual(False, config.start_scheduling_service())
