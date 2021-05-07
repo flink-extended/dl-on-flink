@@ -166,7 +166,7 @@ def kill_workflow_execution(execution_id: Text) -> WorkflowExecutionInfo:
     :param execution_id: The ai flow workflow execution identify.
     :return: The result of the action.
     """
-    return proto_to_workflow_execution(get_ai_flow_client().kill_all_workflow_executions(execution_id))
+    return proto_to_workflow_execution(get_ai_flow_client().kill_workflow_execution(execution_id))
 
 
 def get_workflow_execution(execution_id: Text) -> WorkflowExecutionInfo:
