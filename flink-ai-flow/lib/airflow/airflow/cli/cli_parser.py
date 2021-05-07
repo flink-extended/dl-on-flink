@@ -1421,6 +1421,7 @@ airflow_commands: List[CLICommand] = [
             ARG_SSL_CERT,
             ARG_SSL_KEY,
             ARG_DEBUG,
+            ARG_SERVER_URI,
         ),
     ),
     ActionCommand(
