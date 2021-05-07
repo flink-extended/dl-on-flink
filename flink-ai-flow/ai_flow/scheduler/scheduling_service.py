@@ -55,12 +55,13 @@ class SchedulingService(SchedulingServiceServicer):
             workflow: Workflow = json_utils.loads(rq.workflow_json)
             workflow.workflow_name = rq.workflow_name
             config = {}
-            config.update(workflow.project_desc.project_config)
-            config['repository'] = self._scheduler_config.repository()
+            config.update(workflow.project_desc.project_config['blob'])
+            # config['local_repository'] = self._scheduler_config.repository()
             blob_manager = BlobManagerFactory.get_blob_manager(config)
             project_path: Text = blob_manager\
                 .download_blob(workflow_id=workflow.workflow_id,
-                               remote_path=workflow.project_desc.project_config.get('uploaded_project_path'))
+                               remote_path=workflow.project_desc.project_config.get('uploaded_project_path'),
+                               local_path=self._scheduler_config.repository())
 
             project_desc: ProjectDesc = get_project_description_from(project_path)
             # update workflow
