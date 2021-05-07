@@ -40,7 +40,7 @@ def _upload_project_package(workflow: Workflow):
     with open(project_desc.get_absolute_temp_path() + "/"
               + project_desc.project_config.get_project_uuid() + "_workflow.json", 'w') as f:
         f.write(json_utils.dumps(workflow))
-    blob_manager = BlobManagerFactory.get_blob_manager(project_desc.project_config)
+    blob_manager = BlobManagerFactory.get_blob_manager(project_desc.project_config['blob'])
     uploaded_project_path = blob_manager.upload_blob(str(workflow.workflow_id), project_desc.project_path)
     project_desc.project_config.set_uploaded_project_path(uploaded_project_path)
     for job in workflow.jobs.values():
