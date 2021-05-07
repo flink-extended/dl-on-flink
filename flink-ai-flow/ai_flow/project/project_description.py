@@ -18,7 +18,7 @@
 #
 import os
 from typing import List, Text
-from ai_flow.project.project_config import ProjectConfig
+from ai_flow.project.project_config import ProjectConfig, _default_project_config
 from ai_flow.common.json_utils import Jsonable
 from pathlib import Path
 import logging
@@ -76,6 +76,11 @@ def get_project_description_from(project_path: Text) -> ProjectDesc:
         os.makedirs(project_spec.get_absolute_temp_path())
     project_spec.project_config = ProjectConfig()
     project_spec.project_config.load_from_file(os.path.join(project_path, 'project.yaml'))
+    # adapter to old scheduler
+    if _default_project_config.get_project_uuid() is not None:
+        project_spec.project_config.set_project_uuid(_default_project_config.get_project_uuid())
+    if 'entry_module_path' in _default_project_config:
+        project_spec.project_config['entry_module_path'] = _default_project_config['entry_module_path']
     project_spec.project_name = project_spec.project_config.get_project_name()
     return project_spec
 

@@ -28,3 +28,14 @@ task_2:
   engine: python
   job_name: task_2
 
+task_3:
+  platform: local
+  engine: flink
+  job_name: task_3
+  local_mode: python
+
+task_4:
+  platform: local
+  engine: flink
+  job_name: task_4
+  local_mode: cluster
