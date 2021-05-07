@@ -135,10 +135,14 @@ class TestRunAIFlowJobs(BaseETETest):
                                       batch_uri=output_file,
                                       stream_uri=output_file,
                                       data_format="csv")
+        if 'test_run_mode' in os.environ and 'cluster' == os.environ['test_run_mode']:
+            task_config = 'task_4'
+        else:
+            task_config = 'task_3'
 
         def build_and_submit_ai_flow():
             with af.global_config_file(workflow_config_file()):
-                with af.config('task_4'):
+                with af.config(task_config):
                     input_example = af.read_example(example_info=example_1,
                                                     executor=faf.flink_executor.FlinkPythonExecutor(
                                                         python_object=Source())
@@ -167,7 +171,7 @@ class TestRunAIFlowJobs(BaseETETest):
         self.run_ai_flow(build_and_submit_ai_flow, run_task_function)
         with create_session() as session:
             tes = session.query(TaskExecution).filter(TaskExecution.dag_id == 'test_project.test_workflow',
-                                                      TaskExecution.task_id == 'task_4').all()
+                                                      TaskExecution.task_id == task_config).all()
             self.assertEqual(1, len(tes))
 
 
