@@ -344,7 +344,7 @@ def webserver(args):
 
     if args.debug:
         print(f"Starting the web server on port {args.port} and host {args.hostname}.")
-        app = create_app(testing=conf.getboolean('core', 'unit_test_mode'))
+        app = create_app(testing=conf.getboolean('core', 'unit_test_mode'), server_uri=args.server_uri)
         app.run(
             debug=True,
             use_reloader=not app.config['TESTING'],
@@ -452,6 +452,8 @@ def webserver(args):
                 ),
             ).start()
 
+        os.environ['SERVER_URI'] = args.server_uri
+
         if args.daemon:
             handle = setup_logging(log_file)
 
@@ -464,7 +466,7 @@ def webserver(args):
                     stderr=stderr,
                 )
                 with ctx:
-                    subprocess.Popen(run_args, close_fds=True)
+                    subprocess.Popen(run_args, close_fds=True, env=os.environ)
 
                     # Reading pid of gunicorn master as it will be different that
                     # the one of process spawned above.
@@ -479,5 +481,5 @@ def webserver(args):
                     monitor_gunicorn(gunicorn_master_proc.pid)
 
         else:
-            gunicorn_master_proc = subprocess.Popen(run_args, close_fds=True)
+            gunicorn_master_proc = subprocess.Popen(run_args, close_fds=True, env=os.environ)
             monitor_gunicorn(gunicorn_master_proc.pid)
