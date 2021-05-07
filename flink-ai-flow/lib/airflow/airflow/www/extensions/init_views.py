@@ -41,7 +41,7 @@ def init_flash_views(app):
     app.register_blueprint(routes)
 
 
-def init_appbuilder_views(app):
+def init_appbuilder_views(app, server_uri):
     """Initialize Web UI views"""
     appbuilder = app.appbuilder
     from airflow.www import views
@@ -50,7 +50,7 @@ def init_appbuilder_views(app):
     # reusing a session with a disconnected connection
     appbuilder.session.remove()
     appbuilder.add_view_no_menu(views.DagModelView())
-    appbuilder.add_view_no_menu(views.Airflow())
+    appbuilder.add_view_no_menu(views.Airflow(server_uri))
     appbuilder.add_view(
         views.DagRunModelView,
         permissions.RESOURCE_DAG_RUN,
