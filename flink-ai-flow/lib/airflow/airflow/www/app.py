@@ -16,6 +16,7 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+import os
 from datetime import timedelta
 from typing import Optional
 
@@ -65,7 +66,7 @@ def sync_appbuilder_roles(flask_app):
         security_manager.sync_resource_permissions()
 
 
-def create_app(config=None, testing=False, app_name="Airflow"):
+def create_app(config=None, testing=False, app_name="Airflow", server_uri=None):
     """Create a new instance of Airflow WWW app"""
     flask_app = Flask(__name__)
     flask_app.secret_key = conf.get('webserver', 'SECRET_KEY')
@@ -112,7 +113,7 @@ def create_app(config=None, testing=False, app_name="Airflow"):
     with flask_app.app_context():
         init_appbuilder(flask_app)
 
-        init_appbuilder_views(flask_app)
+        init_appbuilder_views(flask_app, server_uri)
         init_appbuilder_links(flask_app)
         init_plugins(flask_app)
         init_connection_form()
@@ -132,5 +133,5 @@ def cached_app(config=None, testing=False):
     """Return cached instance of Airflow WWW app"""
     global app  # pylint: disable=global-statement
     if not app:
-        app = create_app(config=config, testing=testing)
+        app = create_app(config=config, testing=testing, server_uri=os.getenv('SERVER_URI',  None))
     return app
