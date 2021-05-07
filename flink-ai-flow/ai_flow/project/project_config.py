@@ -42,7 +42,10 @@ class ProjectConfig(AIFlowConfiguration):
         self["project_name"] = value
 
     def get_project_uuid(self):
-        return self["project_uuid"]
+        if "project_uuid" in self:
+            return self["project_uuid"]
+        else:
+            return None
 
     def set_project_uuid(self, value):
         self["project_uuid"] = value
