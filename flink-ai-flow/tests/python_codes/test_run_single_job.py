@@ -46,7 +46,9 @@ class SimpleExecutor(Executor):
 class TestRunAIFlowJobs(BaseETETest):
 
     def test_run_cmd_job(self):
+        project_name = 'test_project'
         workflow_name = 'test_workflow'
+        dag_id = '{}.{}'.format(project_name, workflow_name)
 
         def run_task_function(client: NotificationClient):
             with af.global_config_file(workflow_config_file()):
@@ -59,20 +61,23 @@ class TestRunAIFlowJobs(BaseETETest):
             af.workflow_operation.start_new_workflow_execution(workflow_name)
             while True:
                 with create_session() as session:
-                    dag_run = session.query(DagRun).filter(DagRun.dag_id == 'test_project.test_workflow').first()
+                    dag_run = session.query(DagRun)\
+                        .filter(DagRun.dag_id == 'test_project.{}'.format(workflow_name)).first()
                     if dag_run is not None and dag_run.state == State.SUCCESS:
                         break
                     else:
                         time.sleep(1)
 
-        self.run_ai_flow(workflow_name, run_task_function)
+        self.run_ai_flow(dag_id, run_task_function)
         with create_session() as session:
-            tes = session.query(TaskExecution).filter(TaskExecution.dag_id == 'test_project.test_workflow',
+            tes = session.query(TaskExecution).filter(TaskExecution.dag_id == 'test_project.{}'.format(workflow_name),
                                                       TaskExecution.task_id == 'task_1').all()
             self.assertEqual(1, len(tes))
 
     def test_run_python_job(self):
+        project_name = 'test_project'
         workflow_name = 'test_workflow'
+        dag_id = '{}.{}'.format(project_name, workflow_name)
 
         def run_task_function(client: NotificationClient):
             with af.global_config_file(workflow_config_file()):
@@ -89,14 +94,16 @@ class TestRunAIFlowJobs(BaseETETest):
                     else:
                         time.sleep(1)
 
-        self.run_ai_flow(workflow_name, run_task_function)
+        self.run_ai_flow(dag_id, run_task_function)
         with create_session() as session:
             tes = session.query(TaskExecution).filter(TaskExecution.dag_id == 'test_project.test_workflow',
                                                       TaskExecution.task_id == 'task_2').all()
             self.assertEqual(1, len(tes))
 
     def test_run_python_job_2(self):
+        project_name = 'test_project'
         workflow_name = 'test_workflow'
+        dag_id = '{}.{}'.format(project_name, workflow_name)
 
         def run_task_function(client: NotificationClient):
             with af.global_config_file(workflow_config_file()):
@@ -113,14 +120,16 @@ class TestRunAIFlowJobs(BaseETETest):
                     else:
                         time.sleep(1)
 
-        self.run_ai_flow(workflow_name, run_task_function)
+        self.run_ai_flow(dag_id, run_task_function)
         with create_session() as session:
             tes = session.query(TaskExecution).filter(TaskExecution.dag_id == 'test_project.test_workflow',
                                                       TaskExecution.task_id == 'task_2').all()
             self.assertEqual(1, len(tes))
 
     def test_run_local_flink_job(self):
+        project_name = 'test_project'
         workflow_name = 'test_workflow'
+        dag_id = '{}.{}'.format(project_name, workflow_name)
 
         input_file = project_path() + '/resources/word_count.txt'
         output_file = project_path() + '/resources/word_count_output.csv'
@@ -169,15 +178,16 @@ class TestRunAIFlowJobs(BaseETETest):
                     else:
                         time.sleep(1)
 
-        self.run_ai_flow(workflow_name, run_task_function)
+        self.run_ai_flow(dag_id, run_task_function)
         with create_session() as session:
             tes = session.query(TaskExecution).filter(TaskExecution.dag_id == 'test_project.test_workflow',
                                                       TaskExecution.task_id == task_config).all()
             self.assertEqual(1, len(tes))
 
     def test_get_list_delete_workflow(self):
-        workflow_name = 'test_workflow'
         project_name = 'test_project'
+        workflow_name = 'test_workflow'
+        dag_id = '{}.{}'.format(project_name, workflow_name)
 
         def run_task_function(client: NotificationClient):
             with af.global_config_file(workflow_config_file()):
@@ -196,13 +206,12 @@ class TestRunAIFlowJobs(BaseETETest):
             workflow_info = af.workflow_operation.delete_workflow(workflow_name)
             with self.assertRaises(Exception) as context:
                 workflow_info = af.workflow_operation.get_workflow(workflow_name)
-                print(context)
-
-        self.run_ai_flow(workflow_name, run_task_function)
+        self.run_ai_flow(dag_id, run_task_function)
 
     def test_kill_workflow_execution(self):
         workflow_name = 'test_workflow'
         project_name = 'test_project'
+        dag_id = '{}.{}'.format(project_name, workflow_name)
 
         def run_task_function(client: NotificationClient):
             with af.global_config_file(workflow_config_file()):
@@ -225,8 +234,8 @@ class TestRunAIFlowJobs(BaseETETest):
             self.assertEqual(1, len(we_list))
             while True:
                 with create_session() as session:
-                    ti = session.query(TaskInstance)\
-                        .filter(TaskInstance.dag_id == 'test_project.test_workflow').first()
+                    ti = session.query(TaskInstance) \
+                        .filter(TaskInstance.dag_id == dag_id).first()
                     if ti is not None and ti.state == State.RUNNING:
                         af.workflow_operation.kill_workflow_execution(we.execution_id)
                     elif ti.state == State.KILLED:
@@ -234,15 +243,16 @@ class TestRunAIFlowJobs(BaseETETest):
                     else:
                         time.sleep(1)
 
-        self.run_ai_flow(workflow_name, run_task_function)
+        self.run_ai_flow(dag_id, run_task_function)
         with create_session() as session:
-            tes = session.query(TaskExecution).filter(TaskExecution.dag_id == 'test_project.test_workflow',
+            tes = session.query(TaskExecution).filter(TaskExecution.dag_id == dag_id,
                                                       TaskExecution.task_id == 'task_1').all()
             self.assertEqual(1, len(tes))
 
     def test_job_api(self):
         project_name = 'test_project'
         workflow_name = 'test_workflow'
+        dag_id = '{}.{}'.format(project_name, workflow_name)
 
         def run_task_function(client: NotificationClient):
             with af.global_config_file(workflow_config_file()):
@@ -255,7 +265,7 @@ class TestRunAIFlowJobs(BaseETETest):
             we = af.workflow_operation.start_new_workflow_execution(workflow_name)
             while True:
                 with create_session() as session:
-                    ti = session.query(TaskInstance)\
+                    ti = session.query(TaskInstance) \
                         .filter(TaskInstance.dag_id == 'test_project.test_workflow').first()
                     if ti is not None and ti.state == State.RUNNING:
                         af.workflow_operation.stop_job('task_1', we.execution_id)
@@ -270,7 +280,7 @@ class TestRunAIFlowJobs(BaseETETest):
             job_info_list = af.workflow_operation.list_jobs(we.execution_id)
             self.assertEqual(1, len(job_info_list))
 
-        self.run_ai_flow(workflow_name, run_task_function)
+        self.run_ai_flow(dag_id, run_task_function)
 
         with create_session() as session:
             tes = session.query(TaskExecution).filter(TaskExecution.dag_id == 'test_project.test_workflow',
@@ -278,7 +288,9 @@ class TestRunAIFlowJobs(BaseETETest):
             self.assertEqual(1, len(tes))
 
     def test_pause_resume_workflow(self):
+        project_name = 'test_project'
         workflow_name = 'test_workflow'
+        dag_id = '{}.{}'.format(project_name, workflow_name)
 
         def is_paused():
             with create_session() as session:
@@ -298,4 +310,4 @@ class TestRunAIFlowJobs(BaseETETest):
                 af.workflow_operation.resume_workflow_scheduling(workflow_name)
                 self.assertFalse(is_paused())
 
-        self.run_ai_flow(workflow_name, run_task_function)
+        self.run_ai_flow(dag_id, run_task_function)
