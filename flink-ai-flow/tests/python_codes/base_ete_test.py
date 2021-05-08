@@ -21,8 +21,6 @@ import threading
 from typing import Callable
 import time
 from airflow.events.scheduler_events import StopSchedulerEvent
-from notification_service.base_notification import BaseEvent
-
 from ai_flow.api.configuration import set_project_path
 from airflow.contrib.jobs.event_based_scheduler_job import EventBasedSchedulerJob
 from airflow.executors.local_executor import LocalExecutor
@@ -64,6 +62,7 @@ class BaseETETest(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         master.start()
+        set_project_path(project_path())
 
     @classmethod
     def tearDownClass(cls) -> None:
@@ -78,7 +77,6 @@ class BaseETETest(unittest.TestCase):
         db_utils.clear_db_task_execution()
         db_utils.clear_db_message()
         db_utils.clear_db_jobs()
-        set_project_path(project_path())
 
     def tearDown(self):
         master._clear_db()
