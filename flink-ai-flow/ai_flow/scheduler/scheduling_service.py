@@ -64,6 +64,7 @@ class SchedulingService(SchedulingServiceServicer):
                                local_path=self._scheduler_config.repository())
 
             project_desc: ProjectDesc = get_project_description_from(project_path)
+            project_name = project_desc.project_name
             # update workflow
             workflow.project_desc = project_desc
             for n, j in workflow.jobs.items():
@@ -74,7 +75,8 @@ class SchedulingService(SchedulingServiceServicer):
             if workflow_info is None:
                 return WorkflowInfoResponse(
                     result=ResultProto(status=StatusProto.ERROR,
-                                       error_message='{} do not exist!'.format(workflow.workflow_name)))
+                                       error_message='{}, {} do not exist!'.format(project_name,
+                                                                                   workflow.workflow_name)))
             return WorkflowInfoResponse(result=ResultProto(status=StatusProto.OK),
                                         workflow=workflow_to_proto(workflow_info))
         except Exception as err:
@@ -88,7 +90,7 @@ class SchedulingService(SchedulingServiceServicer):
             if workflow_info is None:
                 return WorkflowInfoResponse(
                     result=ResultProto(status=StatusProto.ERROR,
-                                       error_message='{} do not exist!'.format(rq.workflow_name)))
+                                       error_message='{},{} do not exist!'.format(rq.namespace, rq.workflow_name)))
             return WorkflowInfoResponse(result=ResultProto(status=StatusProto.OK),
                                         workflow=workflow_to_proto(workflow_info))
         except Exception as err:
@@ -158,7 +160,7 @@ class SchedulingService(SchedulingServiceServicer):
             if workflow_execution is None:
                 return WorkflowInfoResponse(
                     result=ResultProto(status=StatusProto.ERROR,
-                                       error_message='{} do not exist!'.format(rq.workflow_name)))
+                                       error_message='{}, {} do not exist!'.format(rq.namespace, rq.workflow_name)))
             return WorkflowExecutionResponse(result=ResultProto(status=StatusProto.OK),
                                              workflow_execution=workflow_execution_to_proto(workflow_execution))
         except Exception as err:
