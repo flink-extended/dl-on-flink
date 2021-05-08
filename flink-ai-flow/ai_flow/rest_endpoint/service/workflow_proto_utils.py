@@ -27,14 +27,14 @@ from ai_flow.workflow.workflow import WorkflowInfo, WorkflowExecutionInfo, JobIn
 def workflow_to_proto(workflow: WorkflowInfo) -> WorkflowProto:
     if workflow is None:
         return None
-    return WorkflowProto(name=workflow.workflow_name)
+    return WorkflowProto(name=workflow.workflow_name, namespace=workflow.namespace)
 
 
 def proto_to_workflow(proto: WorkflowProto) -> WorkflowInfo:
     if proto is None:
         return None
     else:
-        return WorkflowInfo(workflow_name=proto.name)
+        return WorkflowInfo(namespace=proto.namespace, workflow_name=proto.name)
 
 
 def workflow_list_to_proto(workflow_list: List[WorkflowInfo]) -> List[WorkflowProto]:

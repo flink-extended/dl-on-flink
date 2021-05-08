@@ -56,15 +56,24 @@ class Workflow(BaseNode):
 
 class WorkflowInfo(object):
 
-    def __init__(self, workflow_name: Text = None, properties: Dict = None):
+    def __init__(self, namespace: Text = None, workflow_name: Text = None, properties: Dict = None):
         """
         :param workflow_name: The identify of the ai_flow workflow.
         :param properties: The properties of the workflow.
         """
+        self._namespace = namespace
         self._workflow_name = workflow_name
         if properties is None:
             properties = {}
         self._properties = properties
+
+    @property
+    def namespace(self):
+        return self._namespace
+
+    @namespace.setter
+    def namespace(self, value):
+        self._namespace = value
 
     @property
     def workflow_name(self):
