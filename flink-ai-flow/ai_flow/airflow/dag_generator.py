@@ -104,7 +104,7 @@ op_{0}.subscribe_event('UNREACHED_EVENT', 'UNREACHED_EVENT', 'UNREACHED_EVENT')\
 
     UPSTREAM_OP = """{0}.set_upstream({1})\n"""
 
-    EVENT_DEPS = """{0}.subscribe_event('{1}', '{2}', '{3}')\n"""
+    EVENT_DEPS = """{0}.subscribe_event('{1}', '{2}', '{3}', '{4}')\n"""
 
     MET_HANDLER = """configs_{0}='{1}'\n
 {0}.set_events_handler(AIFlowHandler(configs_{0}))\n"""
@@ -118,13 +118,14 @@ class DAGGenerator(object):
         self.op_count += 1
         generator: AirflowCodeGenerator = get_airflow_code_manager().get_generator(job.platform, job.exec_engine)
         code_text = generator.generate_code(op_index=self.op_count, job=job)
-        return job.instance_id, "op_{0}".format(self.op_count), code_text
+        return job.instance_id, "op_{0}".format(self.op_count), code_text, job.job_name
 
     def generate_upstream(self, op_1, op_2):
         return DAGTemplate.UPSTREAM_OP.format(op_1, op_2)
 
-    def generate_event_deps(self, op, met_config):
-        return DAGTemplate.EVENT_DEPS.format(op, met_config.event_key, met_config.event_type, met_config.namespace)
+    def generate_event_deps(self, op, from_op, met_config):
+        return DAGTemplate.EVENT_DEPS.format(op, met_config.event_key, met_config.event_type,
+                                             met_config.namespace, from_op)
 
     def generate_handler(self, op, configs: List[MetConfig]):
         return DAGTemplate.MET_HANDLER.format(op, json_utils.dumps(configs))
@@ -154,10 +155,12 @@ class DAGGenerator(object):
         code_text += DAGTemplate.DAG_DEFINE.format(dag_id)
 
         task_map = {}
+        job_name_map = {}
         for name, job in workflow.jobs.items():
             if job.exec_engine != DummyEngine.engine():
-                task_id, op_name, code = self.generate_op_code(job)
+                task_id, op_name, code, job_name = self.generate_op_code(job)
                 task_map[task_id] = op_name
+                job_name_map[task_id] = job_name
                 code_text += code
                 # add periodic
                 if job.job_config.periodic_config is not None:
@@ -183,7 +186,11 @@ class DAGGenerator(object):
                         code = self.generate_upstream(op_name, task_map[dep_task_id])
                         code_text += code
                     else:
-                        code = self.generate_event_deps(op_name, met_config)
+                        if edge.target_node_id in job_name_map:
+                            from_op_name = job_name_map[edge.target_node_id]
+                        else:
+                            from_op_name = ''
+                        code = self.generate_event_deps(op_name, from_op_name, met_config)
                         code_text += code
                         configs.append(met_config)
                 if len(configs) > 0:

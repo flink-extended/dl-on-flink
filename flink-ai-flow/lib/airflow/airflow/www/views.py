@@ -357,7 +357,7 @@ def dag_edges(dag):
                 get_downstream(child)
         subscribed_events = task.get_subscribed_events()
         if subscribed_events:
-            for event_namespace, event_key, event_type in BaseSerialization._deserialize(subscribed_events):
+            for event_namespace, event_key, event_type, from_task_id in BaseSerialization._deserialize(subscribed_events):
                 edge = ('{},{},{}'.format(event_namespace, event_key, event_type), task.task_id)
                 if edge not in edges:
                     edges.add(edge)

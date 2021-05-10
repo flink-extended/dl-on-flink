@@ -137,14 +137,18 @@ class EventOperator(LoggingMixin, Operator):
         :type event_handler: EventHandler
         """
         super().__init__()
-        self._subscribed_events: Set[Tuple[str, str, str]] = set()
+        self._subscribed_events: Set[Tuple[str, str, str, str]] = set()
         self._events_handler: EventHandler = event_handler
 
-    def subscribe_event(self, event_key: str, event_type: str = UNDEFINED_EVENT_TYPE, event_namespace: str = 'default'):
+    def subscribe_event(self, event_key: str,
+                        event_type: str = UNDEFINED_EVENT_TYPE,
+                        event_namespace: str = 'default',
+                        from_task_id: str = ''):
         """
         Subscribe to the events with the event_key and event_type. The event_handler will only handle the
         event that the operator subscribes to. event_type is optional, if it is not specify, it subscribes to all type
         of the event.
+        :param from_task_id: which task send the event
         :param event_key: the key of the event to subscribe to.
         :type event_key: str
         :param event_namespace: namespace of the event to subscribe to, default namespace is default
@@ -153,9 +157,9 @@ class EventOperator(LoggingMixin, Operator):
         :type event_type: str
         :return: None
         """
-        self._subscribed_events.add((event_namespace, event_key, event_type))
+        self._subscribed_events.add((event_namespace, event_key, event_type, from_task_id))
 
-    def get_subscribed_events(self) -> Set[Tuple[str, str, str]]:
+    def get_subscribed_events(self) -> Set[Tuple[str, str, str, str]]:
         """
         :return: the set of events that the operator subscribes to.
         :rtype: Set[str, str, str]

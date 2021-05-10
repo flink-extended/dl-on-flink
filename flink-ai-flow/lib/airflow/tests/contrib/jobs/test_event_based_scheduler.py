@@ -301,7 +301,7 @@ class TestEventBasedScheduler(unittest.TestCase):
                 tes = session.query(TaskExecution).filter(TaskExecution.dag_id == 'trigger_task',
                                                           TaskExecution.task_id == 'task_1').all()
                 if len(tes) > 0:
-                    client.schedule_task('task_2', SchedulingAction.START, execution_context)
+                    client.schedule_task('trigger_task', 'task_2', SchedulingAction.START, execution_context)
                     while True:
                         with create_session() as session_2:
                             tes_2 = session_2.query(TaskExecution).filter(TaskExecution.dag_id == 'trigger_task',

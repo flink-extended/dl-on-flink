@@ -119,7 +119,7 @@ class TestDAGGenerator(unittest.TestCase):
                                  met_config=MetConfig(event_key='key_1',
                                                       event_value='value_1',
                                                       event_type=UNDEFINED_EVENT_TYPE))]
-        deps_2 = [JobControlEdge(target_node_id='', source_node_id='2_job',
+        deps_2 = [JobControlEdge(target_node_id='1_job', source_node_id='2_job',
                                  met_config=MetConfig(event_key='key_2',
                                                       event_value='value_2',
                                                       event_type=UNDEFINED_EVENT_TYPE))]
