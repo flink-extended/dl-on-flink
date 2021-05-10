@@ -25,7 +25,10 @@ from ai_flow.project.project_description import ProjectDesc
 class SchedulerConfig(AIFlowConfiguration):
 
     def repository(self):
-        return self['repository']
+        if 'repository' not in self:
+            return '/tmp/airflow'
+        else:
+            return self['repository']
 
     def set_repository(self, value):
         self['repository'] = value
@@ -46,6 +49,8 @@ class SchedulerConfig(AIFlowConfiguration):
         self['notification_service_uri'] = value
 
     def properties(self):
+        if 'properties' not in self:
+            return None
         return self['properties']
 
     def set_properties(self, value):
