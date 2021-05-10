@@ -1,7 +1,10 @@
 name: Deep Learning on Flink Unit Tests
-on: [push]
+on: 
+  push:
+    paths:
+      - 'deep-learning-on-flink/**'
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
@@ -28,7 +31,35 @@ jobs:
           python --version
           pip --version
           pip install -U --user pip six numpy wheel mock grpcio grpcio-tools
-      - name: Build with maven
+      - name: Build and test with maven
         env:
           TF_ON_FLINK_IP: 127.0.0.1
         run: cd deep-learning-on-flink && mvn -DskipITs=true -B clean package
+      - name: Upload jars
+        uses: actions/upload-artifact@v2
+        with:
+          name: flink-ml-dist
+          path: deep-learning-on-flink/flink-ml-dist/target/flink-ml-dist-*-dist
+  build-wheels:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up python 3.7
+        uses: actions/setup-python@v2
+        with:
+          # Semantic version range syntax or exact version of a Python version
+          python-version: '3.7'
+          # Optional - x64 or x86 architecture, defaults to x64
+          architecture: 'x64'
+      - name: Install Python dependencies
+        run: |
+          python --version
+          pip --version
+          pip install -U --user pip six numpy wheel mock grpcio grpcio-tools
+      - name: Build wheels
+        run: cd deep-learning-on-flink && bash tools/build_wheel.sh
+      - name: Upload wheels
+        uses: actions/upload-artifact@v2
+        with:
+          name: wheels
+          path: deep-learning-on-flink/tools/dist
