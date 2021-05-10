@@ -37,8 +37,9 @@ def _upload_project_package(workflow: Workflow):
     :param workflow: The generated workflow.
     """
     project_desc = project_description()
-    with open(project_desc.get_absolute_temp_path() + "/"
-              + project_desc.project_config.get_project_uuid() + "_workflow.json", 'w') as f:
+    workflow_json_file = os.path.join(project_desc.get_absolute_temp_path(),
+                                      project_desc.project_config.get_project_uuid() + "_workflow.json")
+    with open(workflow_json_file, 'w') as f:
         f.write(json_utils.dumps(workflow))
     blob_manager = BlobManagerFactory.get_blob_manager(project_desc.project_config)
     uploaded_project_path = blob_manager.upload_blob(str(workflow.workflow_id), project_desc.project_path)
@@ -77,6 +78,7 @@ def submit_workflow(workflow_name: Text = None,
     """
     call_path = os.path.abspath(sys._getframe(1).f_code.co_filename)
     project_path = os.path.abspath(project_description().project_path)
+    # length /python_codes/ is 14; length .py is 3
     entry_module_path = call_path[len(project_path)+14:-3].replace('/', '.')
     namespace = project_config().get_project_name()
     translator = get_default_translator()
