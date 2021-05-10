@@ -41,9 +41,7 @@ from ai_flow.rest_endpoint.service.workflow_proto_utils import workflow_to_proto
 
 class SchedulingService(SchedulingServiceServicer):
     def __init__(self,
-                 scheduler_config: SchedulerConfig,
-                 notification_service_uri: Text = None):
-        self._notification_service_uri = notification_service_uri
+                 scheduler_config: SchedulerConfig):
         self._scheduler_config = scheduler_config
         self._scheduler: AbstractScheduler = SchedulerFactory.create_scheduler(scheduler_config)
 
