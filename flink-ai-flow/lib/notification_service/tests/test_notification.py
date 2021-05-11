@@ -50,6 +50,7 @@ class NotificationTest(object):
 
     def test_list_events(self):
         self.client._default_namespace = "a"
+        self.client._sender = 's'
         event1 = self.client.send_event(BaseEvent(key="key", value="value1"))
 
         self.client._default_namespace = "b"
@@ -59,6 +60,7 @@ class NotificationTest(object):
 
         events = self.client.list_events(["key", "key2"], version=event1.version)
         self.assertEqual(3, len(events))
+        self.assertEqual('s', events[0].sender)
 
         self.client._default_namespace = "a"
         events = self.client.list_events("key")
@@ -70,6 +72,12 @@ class NotificationTest(object):
 
         events = self.client.list_events("key", event_type="a")
         self.assertEqual(1, len(events))
+
+        events = self.client.list_events("key", sender='s')
+        self.assertEqual(2, len(events))
+
+        events = self.client.list_events("key", sender='p')
+        self.assertEqual(0, len(events))
 
     def test_listen_events(self):
         event_list = []
@@ -83,10 +91,11 @@ class NotificationTest(object):
                 self.event_list.extend(events)
 
         self.client._default_namespace = "a"
+        self.client._sender = "s"
         event1 = self.client.send_event(BaseEvent(key="key", value="value1"))
-        self.client.start_listen_event(key="key",
-                                       watcher=TestWatch(event_list),
-                                       version=event1.version)
+        h = self.client.start_listen_event(key="key",
+                                           watcher=TestWatch(event_list),
+                                           version=event1.version)
         self.client.send_event(BaseEvent(key="key", value="value2"))
         self.client.send_event(BaseEvent(key="key", value="value3"))
 
@@ -94,9 +103,83 @@ class NotificationTest(object):
         self.client.send_event(BaseEvent(key="key", value="value4"))
 
         self.client._default_namespace = "a"
-        self.client.stop_listen_event("key")
+        h.stop()
         events = self.client.list_events("key", version=event1.version)
         self.assertEqual(2, len(events))
+        self.assertEqual(2, len(event_list))
+
+        # listen by event_type
+        print('listen by event_type')
+        event_list.clear()
+        h = self.client.start_listen_event(key="key",
+                                           watcher=TestWatch(event_list),
+                                           start_time=int(time.time() * 1000),
+                                           event_type='e')
+        self.client.send_event(BaseEvent(key="key", value="value2", event_type='e'))
+        self.client.send_event(BaseEvent(key="key", value="value2", event_type='f'))
+        h.stop()
+        self.assertEqual(1, len(event_list))
+
+        event_list.clear()
+        h = self.client.start_listen_event(key="key",
+                                           start_time=int(time.time() * 1000),
+                                           watcher=TestWatch(event_list))
+        self.client.send_event(BaseEvent(key="key", value="value2", event_type='e'))
+        self.client.send_event(BaseEvent(key="key", value="value2", event_type='f'))
+        h.stop()
+        self.assertEqual(2, len(event_list))
+
+        # listen by namespace
+        print("listen by namespace")
+        self.client._default_namespace = "a"
+        event_list.clear()
+        h = self.client.start_listen_event(key="key",
+                                           start_time=int(time.time() * 1000),
+                                           watcher=TestWatch(event_list),
+                                           namespace='a')
+        self.client.send_event(BaseEvent(key="key", value="value2"))
+        self.client._default_namespace = "b"
+        self.client.send_event(BaseEvent(key="key", value="value2"))
+        h.stop()
+        self.assertEqual(1, len(event_list))
+
+        event_list.clear()
+        h = self.client.start_listen_event(key="key",
+                                           start_time=int(time.time() * 1000),
+                                           watcher=TestWatch(event_list),
+                                           namespace='*')
+        self.client._default_namespace = "a"
+        self.client.send_event(BaseEvent(key="key", value="value2"))
+        self.client._default_namespace = "b"
+        self.client.send_event(BaseEvent(key="key", value="value2"))
+        h.stop()
+        self.assertEqual(2, len(event_list))
+
+        # listen by sender
+        print("listen by sender")
+        event_list.clear()
+        h = self.client.start_listen_event(key="key",
+                                           watcher=TestWatch(event_list),
+                                           start_time=int(time.time() * 1000),
+                                           namespace='*',
+                                           sender='s')
+        self.client._sender = "s"
+        self.client.send_event(BaseEvent(key="key", value="value2"))
+        self.client._sender = "p"
+        self.client.send_event(BaseEvent(key="key", value="value2"))
+        h.stop()
+        self.assertEqual(1, len(event_list))
+
+        event_list.clear()
+        h = self.client.start_listen_event(key="key",
+                                           watcher=TestWatch(event_list),
+                                           start_time=int(time.time() * 1000),
+                                           namespace='*')
+        self.client._sender = "s"
+        self.client.send_event(BaseEvent(key="key", value="value2"))
+        self.client._sender = "p"
+        self.client.send_event(BaseEvent(key="key", value="value2"))
+        h.stop()
         self.assertEqual(2, len(event_list))
 
     def test_all_listen_events(self):
@@ -164,11 +247,13 @@ class NotificationTest(object):
 
     def test_list_any_condition(self):
         self.client._default_namespace = 'a'
+        self.client._sender = 's'
         self.client.send_event(BaseEvent(key="key_1", value="value1"))
         self.client.send_event(BaseEvent(key="key_2", value="value2"))
         result = self.client.list_events(key='*', event_type='*')
         self.assertEqual(2, len(result))
         self.client._default_namespace = 'b'
+        self.client._sender = 'p'
         self.client.send_event(BaseEvent(key="key_1", value="value1", event_type='event_type'))
         result = self.client.list_events(key='*', event_type='*')
         self.assertEqual(1, len(result))
@@ -178,7 +263,15 @@ class NotificationTest(object):
         self.assertEqual(2, len(result))
         result = self.client.list_events(key='key_1', event_type='event_type', namespace='*')
         self.assertEqual(1, len(result))
-        
+        result = self.client.list_events(key='key_1', namespace='*')
+        self.assertEqual(2, len(result))
+        result = self.client.list_events(key='key_1', namespace='*', sender='*')
+        self.assertEqual(2, len(result))
+        result = self.client.list_events(key='key_1', namespace='*', sender='s')
+        self.assertEqual(1, len(result))
+        result = self.client.list_events(key='key_1', namespace='*', sender='p')
+        self.assertEqual(1, len(result))
+
 
 class DbStorageTest(unittest.TestCase, NotificationTest):
 

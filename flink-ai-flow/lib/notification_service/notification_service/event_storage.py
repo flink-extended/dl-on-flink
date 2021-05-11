@@ -38,7 +38,8 @@ class BaseEventStorage(ABC):
                     version: int = None,
                     event_type: str = None,
                     start_time: int = None,
-                    namespace: str = None):
+                    namespace: str = None,
+                    sender: str = None):
         pass
 
     @abstractmethod
@@ -66,7 +67,7 @@ class MemoryEventStorage(BaseEventStorage):
 
     def add_event(self, event: BaseEvent, uuid: str):
         self.max_version += 1
-        event.create_time = time.time_ns()
+        event.create_time = int(time.time() * 1000)
         event.version = self.max_version
         self.store.append(event)
         return event
@@ -76,12 +77,14 @@ class MemoryEventStorage(BaseEventStorage):
                     version: int = None,
                     event_type: str = None,
                     start_time: int = None,
-                    namespace: str = None):
+                    namespace: str = None,
+                    sender: str = None):
         res = []
         key = None if key == "" else key
         version = None if version == 0 else version
         event_type = None if event_type == "" else event_type
         namespace = None if namespace == "" else namespace
+        sender = None if sender == "" else sender
         if isinstance(key, str):
             key = (key, )
         elif isinstance(key, Iterable):
@@ -95,7 +98,9 @@ class MemoryEventStorage(BaseEventStorage):
                 continue
             if start_time is not None and event.create_time < start_time:
                 continue
-            if namespace != ANY_CONDITION and event.namespace != namespace:
+            if namespace is not None and namespace != ANY_CONDITION and event.namespace != namespace:
+                continue
+            if sender is not None and sender != ANY_CONDITION and event.sender != sender:
                 continue
             res.append(event)
         return res
@@ -140,8 +145,9 @@ class DbEventStorage(BaseEventStorage):
                     version: int = None,
                     event_type: str = None,
                     start_time: int = None,
-                    namespace: str = None):
-        return EventModel.list_events(key, version, event_type, start_time, namespace)
+                    namespace: str = None,
+                    sender: str = None):
+        return EventModel.list_events(key, version, event_type, start_time, namespace, sender)
 
     def list_all_events(self, start_time: int):
         return EventModel.list_all_events(start_time)
