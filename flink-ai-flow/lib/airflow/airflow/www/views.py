@@ -185,7 +185,7 @@ def get_date_time_num_runs_dag_runs_form_data(www_request, session, dag):
     }
 
 
-def task_group_to_dict(task_group, events):
+def task_group_to_dict(task_group):
     """
     Create a nested dict representation of this TaskGroup and its children used to construct
     the Graph View.
@@ -194,10 +194,8 @@ def task_group_to_dict(task_group, events):
         nodes = []
         subscribed_events = task_group.get_subscribed_events()
         if subscribed_events:
-            dependencies = []
-            for event_namespace, event_key, event_type in BaseSerialization._deserialize(subscribed_events):
+            for event_namespace, event_key, event_type, from_task_id in BaseSerialization._deserialize(subscribed_events):
                 event = '{},{},{}'.format(event_namespace, event_key, event_type)
-                dependencies.append([event_namespace, event_key, event_type])
                 nodes.append({
                     'id': event,
                     'value': {
@@ -208,7 +206,6 @@ def task_group_to_dict(task_group, events):
                         'ry': 5,
                     }
                 })
-            events.update({task_group.task_id: dependencies})
 
         nodes.append({
             'id': task_group.task_id,
@@ -224,7 +221,7 @@ def task_group_to_dict(task_group, events):
 
     children = []
     for child in sorted(task_group.children.values(), key=lambda t: t.label):
-        children.extend(task_group_to_dict(child, events))
+        children.extend(task_group_to_dict(child))
 
     if task_group.upstream_group_ids or task_group.upstream_task_ids:
         children.append(
@@ -358,9 +355,12 @@ def dag_edges(dag):
         subscribed_events = task.get_subscribed_events()
         if subscribed_events:
             for event_namespace, event_key, event_type, from_task_id in BaseSerialization._deserialize(subscribed_events):
-                edge = ('{},{},{}'.format(event_namespace, event_key, event_type), task.task_id)
-                if edge not in edges:
-                    edges.add(edge)
+                from_edge = (from_task_id, '{},{},{}'.format(event_namespace, event_key, event_type))
+                to_edge = ('{},{},{}'.format(event_namespace, event_key, event_type), task.task_id)
+                if from_edge not in edges:
+                    edges.add(from_edge)
+                if to_edge not in edges:
+                    edges.add(to_edge)
 
     for root in dag.roots:
         get_downstream(root)
@@ -2110,8 +2110,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
 
         arrange = request.args.get('arrange', dag.orientation)
 
-        events = {}
-        nodes = task_group_to_dict(dag.task_group, events)
+        nodes = task_group_to_dict(dag.task_group)
         edges = dag_edges(dag)
 
         dt_nr_dr_data = get_date_time_num_runs_dag_runs_form_data(request, session, dag)
@@ -2134,7 +2133,17 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
         form = GraphForm(data=dt_nr_dr_data)
         form.execution_date.choices = dt_nr_dr_data['dr_choices']
 
-        task_instances = {ti.task_id: alchemy_to_dict(ti) for ti in dag.get_task_instances(dttm, dttm)}
+        task_instances = {}
+        events = {}
+        for ti in dag.get_task_instances(dttm, dttm):
+            task_instances.update({ti.task_id: alchemy_to_dict(ti)})
+            subscribed_events = dag.get_task(ti.task_id).get_subscribed_events()
+            if subscribed_events:
+                for event_namespace, event_key, event_type, from_task_id in BaseSerialization._deserialize(
+                        subscribed_events):
+                    event = '{},{},{}'.format(event_namespace, event_key, event_type)
+                    events.update({event: (event_namespace, event_key, event_type)})
+
         tasks = {
             t.task_id: {
                 'dag_id': t.dag_id,
@@ -2168,10 +2177,10 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
             blur=blur,
             root=root or '',
             task_instances=task_instances,
+            events=events,
             tasks=tasks,
             nodes=nodes,
             edges=edges,
-            events=json.dumps(events),
             show_external_log_redirect=task_log_reader.supports_external_link,
             external_log_name=external_log_name,
             dag_run_state=dt_nr_dr_data['dr_state'],
@@ -2688,7 +2697,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
             response.status_code = 404
             return response
 
-    @expose('/object/task_instances')
+    @expose('/object/nodes')
     @auth.has_access(
         [
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
@@ -2698,7 +2707,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
         ]
     )
     @action_logging
-    def task_instances(self):
+    def nodes(self):
         """Shows task instances."""
         dag_id = request.args.get('dag_id')
         dag = current_app.dag_bag.get_dag(dag_id)
@@ -2709,9 +2718,18 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
         else:
             return "Error: Invalid execution_date"
 
-        task_instances = {ti.task_id: alchemy_to_dict(ti) for ti in dag.get_task_instances(dttm, dttm)}
+        task_instances = {}
+        events = {}
+        for ti in dag.get_task_instances(dttm, dttm):
+            task_instances.update({ti.task_id: alchemy_to_dict(ti)})
+            subscribed_events = dag.get_task(ti.task_id).get_subscribed_events()
+            if subscribed_events:
+                for event_namespace, event_key, event_type, from_task_id in BaseSerialization._deserialize(
+                        subscribed_events):
+                    event = '{},{},{}'.format(event_namespace, event_key, event_type)
+                    events.update({event: (event_namespace, event_key, event_type)})
 
-        return json.dumps(task_instances, cls=utils_json.AirflowJsonEncoder)
+        return json.dumps({'task_instances':task_instances, 'events':events}, cls=utils_json.AirflowJsonEncoder)
 
 
 class ConfigurationView(AirflowBaseView):
