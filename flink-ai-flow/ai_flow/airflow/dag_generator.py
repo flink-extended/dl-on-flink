@@ -186,8 +186,11 @@ class DAGGenerator(object):
                         code = self.generate_upstream(op_name, task_map[dep_task_id])
                         code_text += code
                     else:
-                        from_task_id = edge.target_node_id if edge.target_node_id in job_name_map else None
-                        code = self.generate_event_deps(op_name, from_task_id, met_config)
+                        if edge.target_node_id in job_name_map:
+                            from_op_name = job_name_map[edge.target_node_id]
+                        else:
+                            from_op_name = ''
+                        code = self.generate_event_deps(op_name, job_name_to_task_id(from_op_name), met_config)
                         code_text += code
                         configs.append(met_config)
                 if len(configs) > 0:
