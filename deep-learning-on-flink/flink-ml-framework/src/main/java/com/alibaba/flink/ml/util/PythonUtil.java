@@ -105,7 +105,7 @@ public class PythonUtil {
 		String workDir = mlContext.getWorkDir().getAbsolutePath();
 		String envZipName = FileUtil.parseFileName(virtualEnv);
 		LOG.info("envZipName:" + envZipName);
-		String envDirName = FileUtil.parseDirName(envZipName);
+		String envDirName = FileUtil.getFileNameWithoutExtension(envZipName);
 		LOG.info("envDirName:" + envDirName);
 		File envDir = new File(workDir + "/" + envDirName);
 		if (!envDir.exists()) {
