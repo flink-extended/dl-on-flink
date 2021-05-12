@@ -16,15 +16,15 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-from datetime import datetime
 from abc import ABC
+from datetime import datetime
 from typing import Text, List
 
+from ai_flow.common import json_utils
+from ai_flow.common.registry import BaseRegistry
+from ai_flow.graph.edge import MetConfig, MetCondition, EventLife, MetValueCondition, TaskAction
 from ai_flow.plugins.engine import DummyEngine
 from ai_flow.workflow.job_config import PeriodicConfig
-from ai_flow.common.registry import BaseRegistry
-from ai_flow.common import json_utils
-from ai_flow.graph.edge import MetConfig, MetCondition, EventLife, MetValueCondition, TaskAction
 from ai_flow.workflow.workflow import Workflow
 
 
@@ -123,9 +123,9 @@ class DAGGenerator(object):
     def generate_upstream(self, op_1, op_2):
         return DAGTemplate.UPSTREAM_OP.format(op_1, op_2)
 
-    def generate_event_deps(self, op, from_op, met_config):
+    def generate_event_deps(self, op, from_task_id, met_config):
         return DAGTemplate.EVENT_DEPS.format(op, met_config.event_key, met_config.event_type,
-                                             met_config.namespace, from_op)
+                                             met_config.namespace, from_task_id)
 
     def generate_handler(self, op, configs: List[MetConfig]):
         return DAGTemplate.MET_HANDLER.format(op, json_utils.dumps(configs))
@@ -190,7 +190,7 @@ class DAGGenerator(object):
                             from_op_name = job_name_map[edge.target_node_id]
                         else:
                             from_op_name = ''
-                        code = self.generate_event_deps(op_name, from_op_name, met_config)
+                        code = self.generate_event_deps(op_name, job_name_to_task_id(from_op_name), met_config)
                         code_text += code
                         configs.append(met_config)
                 if len(configs) > 0:
