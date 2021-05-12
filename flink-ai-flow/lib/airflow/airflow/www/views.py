@@ -88,7 +88,7 @@ from airflow.providers_manager import ProvidersManager
 from airflow.security import permissions
 from airflow.serialization.serialized_objects import BaseSerialization
 from airflow.ti_deps.dep_context import DepContext
-from airflow.ti_deps.dependencies_deps import RUNNING_DEPS, SCHEDULER_QUEUED_DEPS
+from airflow.ti_deps.dependencies_deps import SCHEDULER_QUEUED_DEPS
 from airflow.utils import json as utils_json, timezone
 from airflow.utils.dates import infer_time_unit, scale_time_units
 from airflow.utils.helpers import alchemy_to_dict
@@ -2133,25 +2133,21 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
         form = GraphForm(data=dt_nr_dr_data)
         form.execution_date.choices = dt_nr_dr_data['dr_choices']
 
-        task_instances = {}
-        events = {}
-        for ti in dag.get_task_instances(dttm, dttm):
-            task_instances.update({ti.task_id: alchemy_to_dict(ti)})
-            subscribed_events = dag.get_task(ti.task_id).get_subscribed_events()
-            if subscribed_events:
-                for event_namespace, event_key, event_type, from_task_id in BaseSerialization._deserialize(
-                        subscribed_events):
-                    event = '{},{},{}'.format(event_namespace, event_key, event_type)
-                    events.update({event: (event_namespace, event_key, event_type)})
-
-        tasks = {
-            t.task_id: {
+        task_instances = {ti.task_id: alchemy_to_dict(ti) for ti in dag.get_task_instances(dttm, dttm)}
+        tasks: Dict[str, Dict[str, str]] = {}
+        events: Dict[str, Tuple[str, str, str]] = {}
+        for t in dag.tasks:
+            tasks[t.task_id] = {
                 'dag_id': t.dag_id,
                 'task_type': t.task_type,
                 'extra_links': t.extra_links,
             }
-            for t in dag.tasks
-        }
+            if t.get_subscribed_events():
+                for event_namespace, event_key, event_type, from_task_id in BaseSerialization._deserialize(
+                        t.get_subscribed_events()):
+                    event = '{},{},{}'.format(event_namespace, event_key, event_type)
+                    events[event] = (event_namespace, event_key, event_type)
+
         if not tasks:
             flash("No tasks found", "error")
         session.commit()
@@ -2177,8 +2173,8 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
             blur=blur,
             root=root or '',
             task_instances=task_instances,
-            events=events,
             tasks=tasks,
+            events=events,
             nodes=nodes,
             edges=edges,
             show_external_log_redirect=task_log_reader.supports_external_link,
@@ -2718,16 +2714,15 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
         else:
             return "Error: Invalid execution_date"
 
-        task_instances = {}
-        events = {}
-        for ti in dag.get_task_instances(dttm, dttm):
-            task_instances.update({ti.task_id: alchemy_to_dict(ti)})
-            subscribed_events = dag.get_task(ti.task_id).get_subscribed_events()
-            if subscribed_events:
+        task_instances = {ti.task_id: alchemy_to_dict(ti) for ti in dag.get_task_instances(dttm, dttm)}
+
+        events: Dict[str, Tuple[str, str, str]] = {}
+        for t in dag.tasks:
+            if t.get_subscribed_events():
                 for event_namespace, event_key, event_type, from_task_id in BaseSerialization._deserialize(
-                        subscribed_events):
+                        t.get_subscribed_events()):
                     event = '{},{},{}'.format(event_namespace, event_key, event_type)
-                    events.update({event: (event_namespace, event_key, event_type)})
+                    events[event] = (event_namespace, event_key, event_type)
 
         return json.dumps({'task_instances':task_instances, 'events':events}, cls=utils_json.AirflowJsonEncoder)
 
