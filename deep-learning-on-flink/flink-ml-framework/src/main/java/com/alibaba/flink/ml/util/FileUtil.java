@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 /**
  * down load zip file from remote file system to local
@@ -45,12 +46,12 @@ public class FileUtil {
 	}
 
 	/**
-	 * parse a path and get dir name.
-	 * @param path path address.
+	 * parse a fileName and get dir name.
+	 * @param fileName fileName address.
 	 * @return dir name.
 	 */
-	public static String parseDirName(String path) {
-		return path.substring(0, path.lastIndexOf("."));
+	public static String getFileNameWithoutExtension(String fileName) {
+		return fileName.substring(0, fileName.lastIndexOf("."));
 	}
 
 	/**
@@ -61,43 +62,42 @@ public class FileUtil {
 	 * @throws IOException
 	 */
 	public static void downLoadZipToLocal(String workDir, String remotePath, String unzipDirName) throws IOException {
-		String zipName = FileUtil.parseFileName(remotePath);
-		String dirName = FileUtil.parseDirName(zipName);
-		if (null != unzipDirName && !unzipDirName.isEmpty()) {
-			dirName = unzipDirName;
-		}
-		File targetDir = new File(workDir + "/" + dirName);
-		Path remote = new Path(remotePath);
-		FileSystem fs = remote.getFileSystem(new Configuration());
 		// virtual env is shared across jobs, so we can't use mlContext's temp dir here
-		File tmp = new File(workDir + "/tmp");
-		if (!tmp.exists()) {
-			tmp.mkdir();
-		}
-		Runtime.getRuntime().addShutdownHook(new Thread(() -> FileUtils.deleteQuietly(tmp)));
-		Path local = new Path(tmp.getPath(), zipName);
-		LOG.info("local path:" + local.toString());
-		LOG.info("remote path:" + remote.toString());
-		fs.copyToLocalFile(remote, local);
-		Preconditions.checkState(ShellExec.run(
-				String.format("unzip -q -d %s %s", tmp.getPath(), local.toString()), LOG::info),
-				"Failed to unzip file:" + local.toString());
-		File tmpFile = new File(tmp, dirName);
-		Preconditions.checkState(tmpFile.renameTo(targetDir), "Failed to rename "
-				+ tmpFile.getAbsolutePath() + " to " + targetDir.getAbsolutePath());
-		LOG.info("deployed remote file to " + targetDir.getAbsolutePath());
-	}
+		final java.nio.file.Path tempDirectory = Files.createTempDirectory("flink-ml-zip");
 
-	public static boolean deleteDir(File dir) {
-		if (dir.isDirectory()) {
-			String[] children = dir.list();
-			for (int i = 0; i < children.length; i++) {
-				boolean success = deleteDir(new File(dir, children[i]));
-				if (!success) {
-					return false;
-				}
+		try {
+			Path remote = new Path(remotePath);
+
+			String zipName = FileUtil.parseFileName(remotePath);
+			Path local = new Path(tempDirectory.toAbsolutePath().toString(), zipName);
+
+			LOG.info("Copying from remote path: {} to local path: {}", remote.toString(), local.toString());
+			FileSystem fs = remote.getFileSystem(new Configuration());
+			fs.copyToLocalFile(remote, local);
+
+			LOG.info("Unzipping {} to {}", local.toString(), tempDirectory.toAbsolutePath().toString());
+			Preconditions.checkState(ShellExec.run(
+					String.format("unzip -q -d %s %s", tempDirectory.toAbsolutePath().toString(), local.toString()), LOG::info),
+					"Failed to unzip file:" + local.toString());
+
+			// dir name is the name of the zip file without extension by default
+			if (null == unzipDirName || unzipDirName.isEmpty()) {
+				unzipDirName = FileUtil.getFileNameWithoutExtension(zipName);
+				LOG.warn("Name of the unzip directory is not given. Set it to the name of the zip file: " + unzipDirName);
 			}
+
+			File targetDir = new File(workDir + "/" + unzipDirName);
+			File tmpFile = new File(tempDirectory.toFile(), unzipDirName);
+			if (!tmpFile.exists()) {
+				throw new MLException(tmpFile.getAbsolutePath() + " does not exist.");
+			}
+
+			LOG.info("Renaming {} to {}", tmpFile.getAbsolutePath(), targetDir.getAbsolutePath());
+			Preconditions.checkState(tmpFile.renameTo(targetDir), "Failed to rename "
+					+ tmpFile.getAbsolutePath() + " to " + targetDir.getAbsolutePath());
+			LOG.info("Downloaded remote file: " + remote.toString() + " to " + targetDir.getAbsolutePath());
+		} finally {
+			FileUtils.deleteDirectory(tempDirectory.toFile());
 		}
-		return dir.delete();
 	}
 }
