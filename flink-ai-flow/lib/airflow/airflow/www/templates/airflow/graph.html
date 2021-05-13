@@ -31,6 +31,9 @@
         stroke: {{state_color}};
       }
     {% endfor %}
+      g.node.event_sent rect {
+        stroke: #7b09f7;
+      }
   </style>
 {% endblock %}
 
@@ -82,12 +85,12 @@
   <div class="legend-row">
     <div>
       {% for op in operators %}<span class="legend-item" style="color: {{ op.ui_fgcolor }};background: {{ op.ui_color }};">
-        {{ op.task_type }}</span>{% endfor %}
-      {% if events != {} %}<span class="legend-item" style="color: #000;background: #e1dcf5;">event</span>{% endif %}
+        {{ op.task_type }}</span>{% endfor %}{% if events != {} %}<span class="legend-item" style="color: #000;background: #ccb4fb;">event</span>{% endif %}
     </div>
     <div>
       {% for state, state_color in state_color_mapping.items() %}<span class="legend-item js-state-legend-item" data-state="{{state}}" style="border-color: {{state_color}};">
-        {{state}}</span>{% endfor %}<span class="legend-item legend-item--no-border js-state-legend-item" data-state="no_status" style="border-color:white;">no_status</span>
+        {{state}}</span>{% endfor %}{% if events != {} %}<span class="legend-item js-state-legend-item" data-state="event_sent" style="border-color: #7b09f7;">event_sent</span>{% endif %}
+      <span class="legend-item legend-item--no-border js-state-legend-item" data-state="no_status" style="border-color: white;">no_status</span>
     </div>
   </div>
   <div id="error" style="display: none; margin-top: 10px;" class="alert alert-danger" role="alert">
@@ -338,7 +341,7 @@
           var children = get_children_ids(node);
           for(const child of children) {
             if(child.indexOf(search_text) > -1)
-              return true
+              return true;
           }
         }
       }
@@ -452,10 +455,10 @@
       function stateIsSet(){
           for (var key in stateFocusMap){
               if (stateFocusMap[key]){
-                  return true
+                  return true;
               }
           }
-          return false
+          return false;
       }
 
       function handleRefresh() {
@@ -554,7 +557,7 @@
         for(const node_id of g.nodes())
         {
           elem = g.node(node_id).elem;
-          elem.setAttribute("class", "node enter " + get_node_state(node_id, tis));
+          elem.setAttribute("class", "node enter " + get_node_state(node_id, tis, es));
           elem.setAttribute("data-toggle", "tooltip");
 
           elem.onmouseover = (evt) => {
@@ -590,28 +593,31 @@
             }
           }
         }
-        return children
+        return children;
       }
 
 
       // Return the state for the node based on the state of its taskinstance or that of its
       // children if it's a group node
-      function get_node_state(node_id, tis) {
-        node = g.node(node_id)
+      function get_node_state(node_id, tis, es) {
+        if (node_id in es && es[node_id][3] > 0)
+          return 'event_sent';
+
+        node = g.node(node_id);
 
         if (node.children == undefined) {
           if(node_id in tis)
-            return tis[node_id].state
+            return tis[node_id].state;
 
-          return "no_status"
+          return "no_status";
         }
-        var children = get_children_ids(node)
+        var children = get_children_ids(node);
 
-        children_states = new Set()
+        children_states = new Set();
         children.forEach(function(task_id) {
           if (task_id in tis) {
-            var state = tis[task_id].state
-            children_states.add(state == null ? "no_status" : state)
+            var state = tis[task_id].state;
+            children_states.add(state == null ? "no_status" : state);
           }
         })
 
@@ -619,13 +625,13 @@
         // the group state.
         var priority = ["failed", "upstream_failed", "up_for_retry","up_for_reschedule",
                         "queued", "scheduled", "sensing", "running", "shutdown", "removed",
-                        "no_status", "success", "skipped"]
+                        "no_status", "success", "skipped"];
 
         for(const state of priority) {
           if (children_states.has(state))
-            return state
+            return state;
         }
-        return "no_status"
+        return "no_status";
       }
 
       // Focus the graph on the expanded/collapsed node

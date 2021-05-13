@@ -26,7 +26,8 @@ export default function eTooltip(e, { includeTryNumber = false } = {}) {
   let tt = '';
   tt += `<strong>Namespace:</strong> ${escapeHtml(e[0])}<br><br>`;
   tt += `Event_Key: ${escapeHtml(e[1])}<br>`;
-  tt += `Event_Type: ${escapeHtml(e[2])}<br>`;
+  tt += `Event_Type: ${escapeHtml(e[2])}<br><br>`;
+  tt +=`<em><strong>Send_Count:</strong> ${escapeHtml(e[3])}</em>`;
   return tt;
 }
 
