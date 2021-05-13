@@ -294,13 +294,15 @@ class LocalFlinkJobPlugin(LocalCMDJobPlugin):
                 os.remove(job_execution_path)
 
 
-class LocalFlinkOperator(BashOperator):
+class FlinkOperator(BashOperator):
+
+    ui_color = '#d9ff05'
 
     def __init__(
             self,
             properties,
             *args, **kwargs):
-        super(LocalFlinkOperator, self).__init__(*args, **kwargs)
+        super(FlinkOperator, self).__init__(*args, **kwargs)
         self.properties = json.loads(properties)
 
     def on_kill(self):

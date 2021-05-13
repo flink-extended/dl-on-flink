@@ -109,6 +109,7 @@ from airflow.www.forms import (
     TaskInstanceEditForm,
 )
 from airflow.www.widgets import AirflowModelListWidget
+from notification_service.client import NotificationClient
 from notification_service.util.db import EventModel
 
 PAGE_SIZE = conf.getint('webserver', 'page_size')
@@ -201,7 +202,7 @@ def task_group_to_dict(task_group):
                     'value': {
                         'label': event,
                         'labelStyle': 'fill:#000;',
-                        'style': 'fill:#e1dcf5;',
+                        'style': 'fill:#ccb4fb;',
                         'rx': 5,
                         'ry': 5,
                     }
@@ -439,8 +440,8 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
     def __init__(self, server_uri=None, **kwargs):
         super().__init__(**kwargs)
         if server_uri:
-            self.scheduler_client: EventSchedulerClient = EventSchedulerClient(server_uri=server_uri,
-                                                                               namespace=SCHEDULER_NAMESPACE)
+            self.notification_client: NotificationClient = NotificationClient(server_uri, SCHEDULER_NAMESPACE)
+            self.scheduler_client: EventSchedulerClient = EventSchedulerClient(ns_client=self.notification_client)
 
     @expose('/health')
     def health(self):
@@ -2146,7 +2147,8 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
                 for event_namespace, event_key, event_type, from_task_id in BaseSerialization._deserialize(
                         t.get_subscribed_events()):
                     event = '{},{},{}'.format(event_namespace, event_key, event_type)
-                    events[event] = (event_namespace, event_key, event_type)
+                    if event not in events:
+                        events[event] = (event_namespace, event_key, event_type)
 
         if not tasks:
             flash("No tasks found", "error")
@@ -2174,7 +2176,10 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
             root=root or '',
             task_instances=task_instances,
             tasks=tasks,
-            events=events,
+            events={key: (value[0], value[1], value[2],
+                          len(self.notification_client.list_events(
+                              namespace=value[0], key=value[1], event_type=value[2])))
+                    for key, value in events.items()},
             nodes=nodes,
             edges=edges,
             show_external_log_redirect=task_log_reader.supports_external_link,
@@ -2724,7 +2729,12 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
                     event = '{},{},{}'.format(event_namespace, event_key, event_type)
                     events[event] = (event_namespace, event_key, event_type)
 
-        return json.dumps({'task_instances':task_instances, 'events':events}, cls=utils_json.AirflowJsonEncoder)
+        return json.dumps({'task_instances': task_instances,
+                           'events': {key: (value[0], value[1], value[2],
+                                            len(self.notification_client.list_events(namespace=value[0], key=value[1],
+                                                                                     event_type=value[2])))
+                                      for key, value in events.items()}},
+                          cls=utils_json.AirflowJsonEncoder)
 
 
 class ConfigurationView(AirflowBaseView):
@@ -4035,11 +4045,11 @@ class EventModelView(AirflowModelView):
 
     page_size = PAGE_SIZE
 
-    list_columns = ['key', 'version', 'value', 'event_type', 'context', 'namespace', 'create_time', 'uuid']
+    list_columns = ['key', 'version', 'value', 'event_type', 'context', 'namespace', 'sender', 'create_time', 'uuid']
 
     order_columns = [item for item in list_columns if item not in ['context']]
 
-    search_columns = ['key', 'version', 'event_type', 'namespace', 'create_time']
+    search_columns = ['key', 'version', 'event_type', 'namespace', 'sender', 'create_time']
 
     base_order = ('key', 'asc')
 
