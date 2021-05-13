@@ -271,7 +271,7 @@ class LocalFlinkJobPlugin(LocalCMDJobPlugin):
             python_path.extend(job.job_config.project_desc.python_paths)
         sys_env['PYTHONPATH'] = ':'.join(python_path)
         sys_env['PYFLINK_CLIENT_EXECUTABLE'] = sys.executable
-        return """from flink_ai_flow.local_flink_job import FlinkOperator\nenv_{0}={{'PYTHONPATH': '{4}', 'PATH': '{5}', 'PYFLINK_CLIENT_EXECUTABLE': '{6}'}}\nop_{0} = LocalFlinkOperator(task_id='{1}', bash_command='{2}', properties='{3}', dag=dag, env=env_{0})\n""".format(op_index, job_name_to_task_id(job.job_name), ' '.join(job.exec_cmd),
+        return """from flink_ai_flow.local_flink_job import FlinkOperator\nenv_{0}={{'PYTHONPATH': '{4}', 'PATH': '{5}', 'PYFLINK_CLIENT_EXECUTABLE': '{6}'}}\nop_{0} = FlinkOperator(task_id='{1}', bash_command='{2}', properties='{3}', dag=dag, env=env_{0})\n""".format(op_index, job_name_to_task_id(job.job_name), ' '.join(job.exec_cmd),
                    json.dumps({'project_path': job.job_config.project_path,
                                'workflow_execution_id': job.job_context.workflow_execution_id,
                                'instance_id': job.instance_id}),
