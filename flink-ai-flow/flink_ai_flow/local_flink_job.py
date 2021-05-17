@@ -365,6 +365,7 @@ class LocalFlinkOperator(BashOperator):
             with open(job_execution_path) as f:
                 job_id = f.readline()
             rest_url = os.environ.get('REST_URL') if 'REST_URL' in os.environ else 'http://localhost:8081'
+            os.environ['no_proxy'] = '*'
             response = requests.patch('%s/jobs/%s' % (rest_url, job_id))
-            if response.status_code == 200:
+            if response.status_code == 200 or response.status_code == 202:
                 os.remove(job_execution_path)
