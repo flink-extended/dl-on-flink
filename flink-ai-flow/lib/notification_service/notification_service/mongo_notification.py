@@ -31,6 +31,7 @@ class MongoEvent(Document):
     create_time = IntField()
     context = StringField()
     namespace = StringField()
+    sender = StringField()
     uuid = StringField()
 
     def to_dict(self):
@@ -41,7 +42,8 @@ class MongoEvent(Document):
             "version": int(self.version),
             "create_time": self.create_time,
             "context": self.context,
-            "namespace": self.namespace
+            "namespace": self.namespace,
+            "sender": self.sender
         }
 
     def to_base_event(self):
@@ -72,7 +74,8 @@ class MongoEvent(Document):
                         version: int = None,
                         event_type: str = None,
                         start_time: int = None,
-                        namespace: str = None):
+                        namespace: str = None,
+                        sender: str = None):
         conditions = dict()
         if len(key) == 1:
             if ANY_CONDITION != key[0]:
@@ -88,6 +91,8 @@ class MongoEvent(Document):
             conditions["start_time_gte"] = start_time
         if ANY_CONDITION != namespace:
             conditions["namespace"] = namespace
+        if sender is not None and ANY_CONDITION != sender:
+            conditions["sender"] = sender
         mongo_events = cls.objects(**conditions).order_by("version")
         return cls.convert_to_base_events(mongo_events)
 

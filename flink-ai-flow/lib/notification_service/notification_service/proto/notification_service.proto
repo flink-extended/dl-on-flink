@@ -19,6 +19,7 @@
 syntax = "proto3";
 option java_generic_services = true;
 option java_package = "com.aiflow.notification.proto";
+option go_package = "/notification_service";
 option py_generic_services = true;
 
 import "google/api/annotations.proto";
@@ -95,6 +96,7 @@ message EventProto {
     string namespace = 5;
     int64 version = 6;
     int64 create_time = 7;
+    string sender = 8;
 }
 
 
@@ -122,6 +124,7 @@ message ListEventsRequest {
     int64 start_version = 4;
     int32 timeout_seconds = 5;
     string namespace = 6;
+    string sender = 7;
 }
 
 message ListAllEventsRequest {

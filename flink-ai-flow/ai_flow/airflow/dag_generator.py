@@ -16,15 +16,15 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-from datetime import datetime
 from abc import ABC
+from datetime import datetime
 from typing import Text, List
 
+from ai_flow.common import json_utils
+from ai_flow.common.registry import BaseRegistry
+from ai_flow.graph.edge import MetConfig, MetCondition, EventLife, MetValueCondition, TaskAction
 from ai_flow.plugins.engine import DummyEngine
 from ai_flow.workflow.job_config import PeriodicConfig
-from ai_flow.common.registry import BaseRegistry
-from ai_flow.common import json_utils
-from ai_flow.graph.edge import MetConfig, MetCondition, EventLife, MetValueCondition, TaskAction
 from ai_flow.workflow.workflow import Workflow
 
 
@@ -47,7 +47,7 @@ def job_name_to_task_id(job_name):
     elif first_index == last_index:
         return job_name
     else:
-        return job_name[first_index+1: last_index]
+        return job_name[first_index + 1: last_index]
 
 
 class AirflowCodeGenerator(ABC):
@@ -88,9 +88,9 @@ class DAGTemplate(object):
 import datetime
 from airflow.contrib.jobs.event_handlers import AIFlowHandler
 from airflow.operators.bash import BashOperator\n"""
-# from ai_flow.deployer.utils.kubernetes_util import load_kubernetes_config
-# import ai_flow as af
-# load_kubernetes_config()\n"""
+    # from ai_flow.deployer.utils.kubernetes_util import load_kubernetes_config
+    # import ai_flow as af
+    # load_kubernetes_config()\n"""
 
     SET_CONFIG = """af.set_project_config_file('{0}')\naf.set_master_config()\n"""
 
@@ -100,11 +100,11 @@ from airflow.operators.bash import BashOperator\n"""
     DAG_DEFINE = """dag = DAG(dag_id='{0}', default_args=default_args)\n"""
 
     PERIODIC_CONFIG = """op_{0}.executor_config = {{'periodic_config': {1}}}
-op_{0}.subscribe_event('UNREACHED_EVENT', 'UNREACHED_EVENT', 'UNREACHED_EVENT')\n"""
+op_{0}.subscribe_event('UNREACHED_EVENT', 'UNREACHED_EVENT', 'UNREACHED_EVENT', None)\n"""
 
     UPSTREAM_OP = """{0}.set_upstream({1})\n"""
 
-    EVENT_DEPS = """{0}.subscribe_event('{1}', '{2}', '{3}')\n"""
+    EVENT_DEPS = """{0}.subscribe_event('{1}', '{2}', '{3}', '{4}')\n"""
 
     MET_HANDLER = """configs_{0}='{1}'\n
 {0}.set_events_handler(AIFlowHandler(configs_{0}))\n"""
@@ -118,13 +118,14 @@ class DAGGenerator(object):
         self.op_count += 1
         generator: AirflowCodeGenerator = get_airflow_code_manager().get_generator(job.platform, job.exec_engine)
         code_text = generator.generate_code(op_index=self.op_count, job=job)
-        return job.instance_id, "op_{0}".format(self.op_count), code_text
+        return job.instance_id, "op_{0}".format(self.op_count), code_text, job.job_name
 
     def generate_upstream(self, op_1, op_2):
         return DAGTemplate.UPSTREAM_OP.format(op_1, op_2)
 
-    def generate_event_deps(self, op, met_config):
-        return DAGTemplate.EVENT_DEPS.format(op, met_config.event_key, met_config.event_type, met_config.namespace)
+    def generate_event_deps(self, op, from_task_id, met_config):
+        return DAGTemplate.EVENT_DEPS.format(op, met_config.event_key, met_config.event_type,
+                                             met_config.namespace, from_task_id)
 
     def generate_handler(self, op, configs: List[MetConfig]):
         return DAGTemplate.MET_HANDLER.format(op, json_utils.dumps(configs))
@@ -144,7 +145,8 @@ class DAGGenerator(object):
         op_set = set()
         for name, job in workflow.jobs.items():
             if job.exec_engine != DummyEngine.engine():
-                generator: AirflowCodeGenerator = get_airflow_code_manager().get_generator(job.platform, job.exec_engine)
+                generator: AirflowCodeGenerator = get_airflow_code_manager().get_generator(job.platform,
+                                                                                           job.exec_engine)
                 if generator not in op_set:
                     code_text += generator.generate_operator_code()
                     op_set.add(generator)
@@ -154,10 +156,12 @@ class DAGGenerator(object):
         code_text += DAGTemplate.DAG_DEFINE.format(dag_id)
 
         task_map = {}
+        job_name_map = {}
         for name, job in workflow.jobs.items():
             if job.exec_engine != DummyEngine.engine():
-                task_id, op_name, code = self.generate_op_code(job)
+                task_id, op_name, code, job_name = self.generate_op_code(job)
                 task_map[task_id] = op_name
+                job_name_map[task_id] = job_name
                 code_text += code
                 # add periodic
                 if job.job_config.periodic_config is not None:
@@ -183,7 +187,11 @@ class DAGGenerator(object):
                         code = self.generate_upstream(op_name, task_map[dep_task_id])
                         code_text += code
                     else:
-                        code = self.generate_event_deps(op_name, met_config)
+                        if edge.target_node_id in job_name_map:
+                            from_op_name = job_name_map[edge.target_node_id]
+                        else:
+                            from_op_name = ''
+                        code = self.generate_event_deps(op_name, job_name_to_task_id(from_op_name), met_config)
                         code_text += code
                         configs.append(met_config)
                 if len(configs) > 0:

@@ -45,7 +45,6 @@ import attr
 import jinja2
 from cached_property import cached_property
 from dateutil.relativedelta import relativedelta
-from notification_service.base_notification import UNDEFINED_EVENT_TYPE, BaseEvent
 from sqlalchemy.orm import Session
 
 from airflow.configuration import conf
@@ -72,6 +71,7 @@ from airflow.utils.operator_resources import Resources
 from airflow.utils.session import provide_session
 from airflow.utils.trigger_rule import TriggerRule
 from airflow.utils.weight_rule import WeightRule
+from notification_service.base_notification import UNDEFINED_EVENT_TYPE, BaseEvent
 
 if TYPE_CHECKING:
     from airflow.utils.task_group import TaskGroup  # pylint: disable=cyclic-import
@@ -137,10 +137,13 @@ class EventOperator(LoggingMixin, Operator):
         :type event_handler: EventHandler
         """
         super().__init__()
-        self._subscribed_events: Set[Tuple[str, str, str]] = set()
+        self._subscribed_events: Set[Tuple[str, str, str, str]] = set()
         self._events_handler: EventHandler = event_handler
 
-    def subscribe_event(self, event_key: str, event_type: str = UNDEFINED_EVENT_TYPE, event_namespace: str = 'default'):
+    def subscribe_event(self, event_key: str,
+                        event_type: str = UNDEFINED_EVENT_TYPE,
+                        event_namespace: str = 'default',
+                        from_task_id: str = None):
         """
         Subscribe to the events with the event_key and event_type. The event_handler will only handle the
         event that the operator subscribes to. event_type is optional, if it is not specify, it subscribes to all type
@@ -151,14 +154,16 @@ class EventOperator(LoggingMixin, Operator):
         :type event_namespace: str
         :param event_type: the type of the event to subscribe to.
         :type event_type: str
+        :param from_task_id: which task send the event
+        :type from_task_id: str
         :return: None
         """
-        self._subscribed_events.add((event_namespace, event_key, event_type))
+        self._subscribed_events.add((event_namespace, event_key, event_type, from_task_id))
 
-    def get_subscribed_events(self) -> Set[Tuple[str, str, str]]:
+    def get_subscribed_events(self) -> Set[Tuple[str, str, str, str]]:
         """
         :return: the set of events that the operator subscribes to.
-        :rtype: Set[str, str, str]
+        :rtype: Set[str, str, str, str]
         """
         return self._subscribed_events
 
