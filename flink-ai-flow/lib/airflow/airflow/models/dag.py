@@ -2044,15 +2044,15 @@ class DagEventDependencies(object):
         # value: key: event_key
         #        value:
         #           key: event_type
-        #           value: dict(task_id: None)
+        #           value: dict(task_id: from_task_id)
         self.task_event_dependencies = {}
         if dag is not None:
             for task_id, op in dag.task_dict.items():
-                dep_set: Set[Tuple[str, str, str]] = op.get_subscribed_events()
-                for event_namespace, event_key, event_type in dep_set:
-                    self.add_dependencies(task_id, EventKey(event_key, event_type, event_namespace))
+                dep_set: Set[Tuple[str, str, str, str]] = op.get_subscribed_events()
+                for event_namespace, event_key, event_type, from_task_id in dep_set:
+                    self.add_dependencies(task_id, EventKey(event_key, event_type, event_namespace), from_task_id)
 
-    def add_dependencies(self, task_id: str, event_key: EventKey):
+    def add_dependencies(self, task_id: str, event_key: EventKey, from_task_id: str = None):
         if event_key.namespace not in self.task_event_dependencies:
             self.task_event_dependencies[event_key.namespace] = {}
         namespace_dict = self.task_event_dependencies[event_key.namespace]
@@ -2061,7 +2061,7 @@ class DagEventDependencies(object):
         key_dict = namespace_dict[event_key.key]
         if event_key.event_type not in key_dict:
             key_dict[event_key.event_type] = {}
-        key_dict[event_key.event_type][task_id] = None
+        key_dict[event_key.event_type][task_id] = from_task_id
 
     def find_affected_tasks(self, event_key: EventKey)->Optional[List]:
         result = set()

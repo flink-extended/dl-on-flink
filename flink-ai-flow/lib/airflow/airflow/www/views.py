@@ -28,7 +28,7 @@ from collections import defaultdict
 from datetime import datetime, timedelta
 from json import JSONDecodeError
 from operator import itemgetter
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Set, Tuple
 from urllib.parse import parse_qsl, unquote, urlencode, urlparse
 
 import lazy_object_proxy
@@ -88,7 +88,7 @@ from airflow.providers_manager import ProvidersManager
 from airflow.security import permissions
 from airflow.serialization.serialized_objects import BaseSerialization
 from airflow.ti_deps.dep_context import DepContext
-from airflow.ti_deps.dependencies_deps import RUNNING_DEPS, SCHEDULER_QUEUED_DEPS
+from airflow.ti_deps.dependencies_deps import SCHEDULER_QUEUED_DEPS
 from airflow.utils import json as utils_json, timezone
 from airflow.utils.dates import infer_time_unit, scale_time_units
 from airflow.utils.helpers import alchemy_to_dict
@@ -109,6 +109,7 @@ from airflow.www.forms import (
     TaskInstanceEditForm,
 )
 from airflow.www.widgets import AirflowModelListWidget
+from notification_service.client import NotificationClient
 from notification_service.util.db import EventModel
 
 PAGE_SIZE = conf.getint('webserver', 'page_size')
@@ -185,7 +186,7 @@ def get_date_time_num_runs_dag_runs_form_data(www_request, session, dag):
     }
 
 
-def task_group_to_dict(task_group, events):
+def task_group_to_dict(task_group):
     """
     Create a nested dict representation of this TaskGroup and its children used to construct
     the Graph View.
@@ -194,21 +195,18 @@ def task_group_to_dict(task_group, events):
         nodes = []
         subscribed_events = task_group.get_subscribed_events()
         if subscribed_events:
-            dependencies = []
-            for event_namespace, event_key, event_type in BaseSerialization._deserialize(subscribed_events):
+            for event_namespace, event_key, event_type, from_task_id in BaseSerialization._deserialize(subscribed_events):
                 event = '{},{},{}'.format(event_namespace, event_key, event_type)
-                dependencies.append([event_namespace, event_key, event_type])
                 nodes.append({
                     'id': event,
                     'value': {
                         'label': event,
                         'labelStyle': 'fill:#000;',
-                        'style': 'fill:#e1dcf5;',
+                        'style': 'fill:#ccb4fb;',
                         'rx': 5,
                         'ry': 5,
                     }
                 })
-            events.update({task_group.task_id: dependencies})
 
         nodes.append({
             'id': task_group.task_id,
@@ -224,7 +222,7 @@ def task_group_to_dict(task_group, events):
 
     children = []
     for child in sorted(task_group.children.values(), key=lambda t: t.label):
-        children.extend(task_group_to_dict(child, events))
+        children.extend(task_group_to_dict(child))
 
     if task_group.upstream_group_ids or task_group.upstream_task_ids:
         children.append(
@@ -357,10 +355,14 @@ def dag_edges(dag):
                 get_downstream(child)
         subscribed_events = task.get_subscribed_events()
         if subscribed_events:
-            for event_namespace, event_key, event_type in BaseSerialization._deserialize(subscribed_events):
-                edge = ('{},{},{}'.format(event_namespace, event_key, event_type), task.task_id)
-                if edge not in edges:
-                    edges.add(edge)
+            for event_namespace, event_key, event_type, from_task_id in BaseSerialization._deserialize(subscribed_events):
+                to_edge = ('{},{},{}'.format(event_namespace, event_key, event_type), task.task_id)
+                if to_edge not in edges:
+                    edges.add(to_edge)
+                if from_task_id:
+                    from_edge = (from_task_id, '{},{},{}'.format(event_namespace, event_key, event_type))
+                    if from_edge not in edges:
+                        edges.add(from_edge)
 
     for root in dag.roots:
         get_downstream(root)
@@ -439,8 +441,8 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
     def __init__(self, server_uri=None, **kwargs):
         super().__init__(**kwargs)
         if server_uri:
-            self.scheduler_client: EventSchedulerClient = EventSchedulerClient(server_uri=server_uri,
-                                                                               namespace=SCHEDULER_NAMESPACE)
+            self.notification_client: NotificationClient = NotificationClient(server_uri, SCHEDULER_NAMESPACE)
+            self.scheduler_client: EventSchedulerClient = EventSchedulerClient(ns_client=self.notification_client)
 
     @expose('/health')
     def health(self):
@@ -1977,6 +1979,19 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
         node_count = 0
         node_limit = 5000 / max(1, len(dag.leaves))
 
+        upstream_tasks: Dict[str, Set] = {}
+        downstream_tasks: Set = set()
+        for t in dag.tasks:
+            if t.get_subscribed_events():
+                downstream_tasks.add(t)
+                for event_namespace, event_key, event_type, from_task_id in BaseSerialization._deserialize(t.get_subscribed_events()):
+                    downstream_task = dag.get_task(t.task_id)
+                    if from_task_id:
+                        if from_task_id in upstream_tasks:
+                            upstream_tasks[from_task_id].add(downstream_task)
+                        else:
+                            upstream_tasks[from_task_id] = {downstream_task}
+
         def encode_ti(task_instance: Optional[models.TaskInstance]) -> Optional[List]:
             if not task_instance:
                 return None
@@ -2005,21 +2020,24 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
             visited.add(task)
             task_id = task.task_id
 
+            task_downstream = upstream_tasks[task.task_id].union(
+                task.downstream_list) if task.task_id in upstream_tasks else task.downstream_list
+
             node = {
                 'name': task.task_id,
                 'instances': [encode_ti(task_instances.get((task_id, d))) for d in dates],
-                'num_dep': len(task.downstream_list),
+                'num_dep': len(task_downstream),
                 'operator': task.task_type,
                 'retries': task.retries,
                 'owner': task.owner,
                 'ui_color': task.ui_color,
             }
 
-            if task.downstream_list:
+            if task_downstream:
                 children = [
-                    recurse_nodes(t, visited)
-                    for t in task.downstream_list
-                    if node_count < node_limit or t not in visited
+                    recurse_nodes(d, visited)
+                    for d in task_downstream
+                    if node_count < node_limit or d not in visited
                 ]
 
                 # D3 tree uses children vs _children to define what is
@@ -2046,7 +2064,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
 
         data = {
             'name': '[DAG]',
-            'children': [recurse_nodes(t, set()) for t in dag.roots],
+            'children': [recurse_nodes(t, set()) for t in [n for n in dag.roots if n not in downstream_tasks]],
             'instances': [dag_runs.get(d) or {'execution_date': d.isoformat()} for d in dates],
         }
 
@@ -2110,8 +2128,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
 
         arrange = request.args.get('arrange', dag.orientation)
 
-        events = {}
-        nodes = task_group_to_dict(dag.task_group, events)
+        nodes = task_group_to_dict(dag.task_group)
         edges = dag_edges(dag)
 
         dt_nr_dr_data = get_date_time_num_runs_dag_runs_form_data(request, session, dag)
@@ -2135,14 +2152,21 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
         form.execution_date.choices = dt_nr_dr_data['dr_choices']
 
         task_instances = {ti.task_id: alchemy_to_dict(ti) for ti in dag.get_task_instances(dttm, dttm)}
-        tasks = {
-            t.task_id: {
+        tasks: Dict[str, Dict[str, str]] = {}
+        events: Dict[str, Tuple[str, str, str]] = {}
+        for t in dag.tasks:
+            tasks[t.task_id] = {
                 'dag_id': t.dag_id,
                 'task_type': t.task_type,
                 'extra_links': t.extra_links,
             }
-            for t in dag.tasks
-        }
+            if t.get_subscribed_events():
+                for event_namespace, event_key, event_type, from_task_id in BaseSerialization._deserialize(
+                        t.get_subscribed_events()):
+                    event = '{},{},{}'.format(event_namespace, event_key, event_type)
+                    if event not in events:
+                        events[event] = (event_namespace, event_key, event_type)
+
         if not tasks:
             flash("No tasks found", "error")
         session.commit()
@@ -2169,9 +2193,12 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
             root=root or '',
             task_instances=task_instances,
             tasks=tasks,
+            events={key: (value[0], value[1], value[2],
+                          len(self.notification_client.list_events(
+                              namespace=value[0], key=value[1], event_type=value[2])))
+                    for key, value in events.items()},
             nodes=nodes,
             edges=edges,
-            events=json.dumps(events),
             show_external_log_redirect=task_log_reader.supports_external_link,
             external_log_name=external_log_name,
             dag_run_state=dt_nr_dr_data['dr_state'],
@@ -2688,7 +2715,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
             response.status_code = 404
             return response
 
-    @expose('/object/task_instances')
+    @expose('/object/nodes')
     @auth.has_access(
         [
             (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
@@ -2698,7 +2725,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
         ]
     )
     @action_logging
-    def task_instances(self):
+    def nodes(self):
         """Shows task instances."""
         dag_id = request.args.get('dag_id')
         dag = current_app.dag_bag.get_dag(dag_id)
@@ -2711,7 +2738,20 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
 
         task_instances = {ti.task_id: alchemy_to_dict(ti) for ti in dag.get_task_instances(dttm, dttm)}
 
-        return json.dumps(task_instances, cls=utils_json.AirflowJsonEncoder)
+        events: Dict[str, Tuple[str, str, str]] = {}
+        for t in dag.tasks:
+            if t.get_subscribed_events():
+                for event_namespace, event_key, event_type, from_task_id in BaseSerialization._deserialize(
+                        t.get_subscribed_events()):
+                    event = '{},{},{}'.format(event_namespace, event_key, event_type)
+                    events[event] = (event_namespace, event_key, event_type)
+
+        return json.dumps({'task_instances': task_instances,
+                           'events': {key: (value[0], value[1], value[2],
+                                            len(self.notification_client.list_events(namespace=value[0], key=value[1],
+                                                                                     event_type=value[2])))
+                                      for key, value in events.items()}},
+                          cls=utils_json.AirflowJsonEncoder)
 
 
 class ConfigurationView(AirflowBaseView):
@@ -4022,11 +4062,11 @@ class EventModelView(AirflowModelView):
 
     page_size = PAGE_SIZE
 
-    list_columns = ['key', 'version', 'value', 'event_type', 'context', 'namespace', 'create_time', 'uuid']
+    list_columns = ['key', 'version', 'value', 'event_type', 'context', 'namespace', 'sender', 'create_time', 'uuid']
 
     order_columns = [item for item in list_columns if item not in ['context']]
 
-    search_columns = ['key', 'version', 'event_type', 'namespace', 'create_time']
+    search_columns = ['key', 'version', 'event_type', 'namespace', 'sender', 'create_time']
 
     base_order = ('key', 'asc')
 

@@ -24,5 +24,5 @@ dag = DAG(dag_id="trigger_task", start_date=datetime.utcnow()+timedelta(1), sche
 op1 = BashOperator(task_id="task_1", dag=dag,  owner='airflow', bash_command='echo "hello world 1!"')
 
 op2 = BashOperator(task_id="task_2", dag=dag,  owner='airflow', bash_command='echo "hello world 2!"')
-op2.subscribe_event('key_1')
+op2.subscribe_event(event_key='key_1', from_task_id='task_1')
 op2.set_events_handler(StartEventHandler())

@@ -108,6 +108,7 @@ class EventModel(Base):
     event_type = Column(String(1024), server_default="UNDEFINED")
     context = Column(Text())
     namespace = Column(String(1024))
+    sender = Column(String(1024))
     create_time = Column(BigInteger(), nullable=False)
     uuid = Column(String(40), nullable=False, unique=True)
 
@@ -122,6 +123,7 @@ class EventModel(Base):
         event_model.namespace = event.namespace
         event_model.create_time = int(time.time() * 1000)
         event_model.uuid = uuid
+        event_model.sender = event.sender
         session.add(event_model)
         session.commit()
         return event_model_to_event(event_model)
@@ -133,10 +135,12 @@ class EventModel(Base):
                     event_type: str = None,
                     start_time: int = None,
                     namespace: str = None,
+                    sender: str = None,
                     session=None):
         key = None if key == "" else key
         event_type = None if event_type == "" else event_type
         namespace = None if namespace == "" else namespace
+        sender = None if sender == "" else sender
         if isinstance(key, str):
             key = (key,)
         elif isinstance(key, Iterable):
@@ -149,8 +153,10 @@ class EventModel(Base):
             conditions.append(EventModel.event_type == event_type)
         if start_time is not None and start_time > 0:
             conditions.append(EventModel.create_time >= start_time)
-        if ANY_CONDITION != namespace:
+        if namespace is not None and ANY_CONDITION != namespace:
             conditions.append(EventModel.namespace == namespace)
+        if sender is not None and ANY_CONDITION != sender:
+            conditions.append(EventModel.sender == sender)
         if version > 0:
             conditions.append(EventModel.version > version)
         if ANY_CONDITION not in key:
@@ -189,6 +195,7 @@ class EventModel(Base):
         event_model.namespace = event.namespace
         event_model.create_time = event.create_time
         event_model.uuid = uuid
+        event_model.sender = event.sender
         session.add(event_model)
         session.commit()
         return event_model_to_event(event_model)

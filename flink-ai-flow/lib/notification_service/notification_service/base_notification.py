@@ -25,6 +25,7 @@ UNDEFINED_EVENT_TYPE = "UNDEFINED"
 ANY_CONDITION = "*"
 DEFAULT_NAMESPACE = "default"
 
+
 class BaseEvent(object):
     def __init__(self,
                  key: str,
@@ -33,7 +34,8 @@ class BaseEvent(object):
                  version: int = None,
                  create_time: int = None,
                  context: str = None,
-                 namespace: str = None):
+                 namespace: str = None,
+                 sender: str = None):
         self.key = key
         self.value = value
         self.event_type = event_type
@@ -41,12 +43,13 @@ class BaseEvent(object):
         self.create_time = create_time
         self.context = context
         self.namespace = namespace
+        self.sender = sender
 
     def __str__(self) -> str:
         return 'key:{0}, value:{1}, type:{2}, version:{3}, create_time:{4}, ' \
-               'context: {5}, namespace: {6}' \
+               'context: {5}, namespace: {6}, sender: {7}' \
             .format(self.key, self.value, self.event_type, self.version, self.create_time,
-                    self.context, self.namespace)
+                    self.context, self.namespace, self.sender)
 
     def __eq__(self, other):
         if not isinstance(other, BaseEvent):
@@ -57,7 +60,8 @@ class BaseEvent(object):
             self.version == other.version and \
             self.create_time == other.create_time and \
             self.context == other.context and \
-            self.namespace == other.namespace
+            self.namespace == other.namespace and \
+            self.sender == other.sender
 
 
 class EventWatcher(metaclass=abc.ABCMeta):
@@ -96,16 +100,20 @@ class BaseNotification(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def list_events(self,
                     key: Union[str, List[str]],
+                    namespace: str = None,
                     version: int = None,
                     event_type: str = None,
-                    start_time: int = None) -> List[BaseEvent]:
+                    start_time: int = None,
+                    sender: str = None) -> List[BaseEvent]:
         """
         List specific events in Notification Service.
 
         :param key: Key of the event for listening.
+        :param namespace: Namespace of the event for listening.
         :param version: (Optional) The version of the events must greater than this version.
         :param event_type: (Optional) Type of the events.
         :param start_time: (Optional) Start time of the events.
+        :param sender: The event sender.
         :return: The event list.
         """
         pass
@@ -114,27 +122,38 @@ class BaseNotification(metaclass=abc.ABCMeta):
     def start_listen_event(self,
                            key: Union[str, Tuple[str]],
                            watcher: EventWatcher,
+                           namespace: str = None,
                            version: int = None,
                            event_type: str = None,
-                           start_time: int = None) -> EventWatcherHandle:
+                           start_time: int = None,
+                           sender: str = None) -> EventWatcherHandle:
         """
         Start listen specific `key` or `version` notifications in Notification Service.
 
         :param key: Key of notification for listening.
+        :param namespace: Namespace of the event for listening.
         :param watcher: Watcher instance for listening.
         :param version: (Optional) The version of the events must greater than this version.
         :param event_type: (Optional) Type of the events for listening.
         :param start_time: (Optional) Start time of the events for listening.
+        :param sender: The event sender.
         :return: The handle used to stop the listening.
         """
         pass
 
     @abc.abstractmethod
-    def stop_listen_event(self, key: Union[str, Tuple[str]] = None):
+    def stop_listen_event(self, key: Union[str, Tuple[str]] = None,
+                          namespace: str = None,
+                          event_type: str = None,
+                          sender: str = None
+                          ):
         """
         Stop listen specific `key` notifications in Notification Service.
 
         :param key: Keys of notification for listening.
+        :param namespace: Namespace of notification for listening.
+        :param event_type: (Optional) Type of the events for listening.
+        :param sender: The event sender.
         """
         pass
 
@@ -178,10 +197,11 @@ class BaseNotification(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def get_latest_version(self, key: str = None):
+    def get_latest_version(self, key: str = None, namespace: str = None):
         """
         get latest event's version by key.
         :param key: Key of notification for listening.
+        :param namespace: Namespace of notification for listening.
         :return: Version number of the specific key.
         """
         pass

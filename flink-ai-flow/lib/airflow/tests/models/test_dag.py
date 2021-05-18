@@ -77,10 +77,13 @@ class TestDagEventDependencies(unittest.TestCase):
     def test_dependencies_json(self):
         dag_event_dependencies = DagEventDependencies()
         dag_event_dependencies.add_dependencies('task_1', EventKey(key='key_1', event_type='type_1'))
-        dag_event_dependencies.add_dependencies('task_2', EventKey(key='key_1', event_type='type_2'))
+        dag_event_dependencies.add_dependencies('task_2', EventKey(key='key_1', event_type='type_2'),
+                                                from_task_id='task_1')
         dag_event_dependencies.add_dependencies('task_3', EventKey(key='key_1', event_type='*'))
         json_str = DagEventDependencies.to_json(dag_event_dependencies)
         dag_event_dependencies_copy: DagEventDependencies = DagEventDependencies.from_json(json_str)
+        self.assertEqual('task_1',
+                         dag_event_dependencies_copy.task_event_dependencies['default']['key_1']['type_2']['task_2'])
         dag_event_dependencies_copy.add_dependencies('task_4', EventKey(key='key_1', event_type='type_1'))
         tasks = dag_event_dependencies_copy.find_affected_tasks(EventKey('key_1', 'type_1'))
         self.assertEqual(3, len(tasks))
