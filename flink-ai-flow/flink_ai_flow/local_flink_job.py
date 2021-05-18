@@ -320,9 +320,9 @@ op_{0} = BashOperator(task_id='{1}', bash_command='{2}', dag=dag, env=env_{0})\n
                 ' '.join(job.exec_cmd),
                 sys_env)
         else:
-            return """from flink_ai_flow.local_flink_job import LocalFlinkOperator
+            return """from flink_ai_flow.local_flink_job import FlinkOperator
 env_{0}={4}
-op_{0} = LocalFlinkOperator(task_id='{1}', bash_command='{2}', properties='{3}', dag=dag, env=env_{0})\n""".format(
+op_{0} = FlinkOperator(task_id='{1}', bash_command='{2}', properties='{3}', dag=dag, env=env_{0})\n""".format(
                 op_index,
                 job_name_to_task_id(job.job_name),
                 ' '.join(job.exec_cmd),
@@ -347,13 +347,15 @@ op_{0} = LocalFlinkOperator(task_id='{1}', bash_command='{2}', properties='{3}',
                 os.remove(job_execution_path)
 
 
-class LocalFlinkOperator(BashOperator):
+class FlinkOperator(BashOperator):
+
+    ui_color = '#d9ff05'
 
     def __init__(
             self,
             properties,
             *args, **kwargs):
-        super(LocalFlinkOperator, self).__init__(*args, **kwargs)
+        super(FlinkOperator, self).__init__(*args, **kwargs)
         self.properties = json.loads(properties)
 
     def on_kill(self):

@@ -41,7 +41,7 @@ t2 = BashOperator(
     dag=dag,
     event_handler=ActionEventHandler()
 )
-t2.subscribe_event('start', '', event_namespace='test_namespace')
+t2.subscribe_event('start', '', event_namespace='test_namespace', from_task_id='print_date')
 t2.subscribe_event(event_key="stop",
                    event_namespace='test_namespace',
                    event_type=UNDEFINED_EVENT_TYPE)
@@ -70,7 +70,8 @@ t3 = PythonOperator(
 t3.subscribe_event('start', '', event_namespace='test_namespace')
 t3.subscribe_event(event_key="restart",
                    event_namespace='test_namespace',
-                   event_type=UNDEFINED_EVENT_TYPE)
+                   event_type=UNDEFINED_EVENT_TYPE,
+                   from_task_id='sleep_to_be_stopped')
 
 dag.doc_md = __doc__
 

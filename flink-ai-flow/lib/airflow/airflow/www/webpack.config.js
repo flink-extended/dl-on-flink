@@ -50,6 +50,7 @@ const config = {
     moment: 'moment-timezone',
     switch: `${STATIC_DIR}/css/switch.css`,
     taskInstances: `${STATIC_DIR}/js/task-instances.js`,
+    events: `${STATIC_DIR}/js/events.js`,
     tree: `${STATIC_DIR}/css/tree.css`,
   },
   output: {

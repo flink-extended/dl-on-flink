@@ -102,10 +102,6 @@ public final class NotificationServiceOuterClass {
 
     public final com.google.protobuf.Descriptors.EnumValueDescriptor
         getValueDescriptor() {
-      if (this == UNRECOGNIZED) {
-        throw new java.lang.IllegalStateException(
-            "Can't get the descriptor of an unrecognized enum value.");
-      }
       return getDescriptor().getValues().get(ordinal());
     }
     public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -215,11 +211,23 @@ public final class NotificationServiceOuterClass {
      * @return The createTime.
      */
     long getCreateTime();
+
+    /**
+     * <code>string sender = 8;</code>
+     * @return The sender.
+     */
+    java.lang.String getSender();
+    /**
+     * <code>string sender = 8;</code>
+     * @return The bytes for sender.
+     */
+    com.google.protobuf.ByteString
+        getSenderBytes();
   }
   /**
    * Protobuf type {@code notification_service.EventProto}
    */
-  public static final class EventProto extends
+  public  static final class EventProto extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:notification_service.EventProto)
       EventProtoOrBuilder {
@@ -234,6 +242,7 @@ public final class NotificationServiceOuterClass {
       eventType_ = "";
       context_ = "";
       namespace_ = "";
+      sender_ = "";
     }
 
     @java.lang.Override
@@ -306,6 +315,12 @@ public final class NotificationServiceOuterClass {
               createTime_ = input.readInt64();
               break;
             }
+            case 66: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              sender_ = s;
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -344,7 +359,6 @@ public final class NotificationServiceOuterClass {
      * <code>string key = 1;</code>
      * @return The key.
      */
-    @java.lang.Override
     public java.lang.String getKey() {
       java.lang.Object ref = key_;
       if (ref instanceof java.lang.String) {
@@ -361,7 +375,6 @@ public final class NotificationServiceOuterClass {
      * <code>string key = 1;</code>
      * @return The bytes for key.
      */
-    @java.lang.Override
     public com.google.protobuf.ByteString
         getKeyBytes() {
       java.lang.Object ref = key_;
@@ -382,7 +395,6 @@ public final class NotificationServiceOuterClass {
      * <code>string value = 2;</code>
      * @return The value.
      */
-    @java.lang.Override
     public java.lang.String getValue() {
       java.lang.Object ref = value_;
       if (ref instanceof java.lang.String) {
@@ -399,7 +411,6 @@ public final class NotificationServiceOuterClass {
      * <code>string value = 2;</code>
      * @return The bytes for value.
      */
-    @java.lang.Override
     public com.google.protobuf.ByteString
         getValueBytes() {
       java.lang.Object ref = value_;
@@ -420,7 +431,6 @@ public final class NotificationServiceOuterClass {
      * <code>string event_type = 3;</code>
      * @return The eventType.
      */
-    @java.lang.Override
     public java.lang.String getEventType() {
       java.lang.Object ref = eventType_;
       if (ref instanceof java.lang.String) {
@@ -437,7 +447,6 @@ public final class NotificationServiceOuterClass {
      * <code>string event_type = 3;</code>
      * @return The bytes for eventType.
      */
-    @java.lang.Override
     public com.google.protobuf.ByteString
         getEventTypeBytes() {
       java.lang.Object ref = eventType_;
@@ -458,7 +467,6 @@ public final class NotificationServiceOuterClass {
      * <code>string context = 4;</code>
      * @return The context.
      */
-    @java.lang.Override
     public java.lang.String getContext() {
       java.lang.Object ref = context_;
       if (ref instanceof java.lang.String) {
@@ -475,7 +483,6 @@ public final class NotificationServiceOuterClass {
      * <code>string context = 4;</code>
      * @return The bytes for context.
      */
-    @java.lang.Override
     public com.google.protobuf.ByteString
         getContextBytes() {
       java.lang.Object ref = context_;
@@ -496,7 +503,6 @@ public final class NotificationServiceOuterClass {
      * <code>string namespace = 5;</code>
      * @return The namespace.
      */
-    @java.lang.Override
     public java.lang.String getNamespace() {
       java.lang.Object ref = namespace_;
       if (ref instanceof java.lang.String) {
@@ -513,7 +519,6 @@ public final class NotificationServiceOuterClass {
      * <code>string namespace = 5;</code>
      * @return The bytes for namespace.
      */
-    @java.lang.Override
     public com.google.protobuf.ByteString
         getNamespaceBytes() {
       java.lang.Object ref = namespace_;
@@ -534,7 +539,6 @@ public final class NotificationServiceOuterClass {
      * <code>int64 version = 6;</code>
      * @return The version.
      */
-    @java.lang.Override
     public long getVersion() {
       return version_;
     }
@@ -545,9 +549,44 @@ public final class NotificationServiceOuterClass {
      * <code>int64 create_time = 7;</code>
      * @return The createTime.
      */
-    @java.lang.Override
     public long getCreateTime() {
       return createTime_;
+    }
+
+    public static final int SENDER_FIELD_NUMBER = 8;
+    private volatile java.lang.Object sender_;
+    /**
+     * <code>string sender = 8;</code>
+     * @return The sender.
+     */
+    public java.lang.String getSender() {
+      java.lang.Object ref = sender_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        sender_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string sender = 8;</code>
+     * @return The bytes for sender.
+     */
+    public com.google.protobuf.ByteString
+        getSenderBytes() {
+      java.lang.Object ref = sender_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        sender_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     private byte memoizedIsInitialized = -1;
@@ -585,6 +624,9 @@ public final class NotificationServiceOuterClass {
       if (createTime_ != 0L) {
         output.writeInt64(7, createTime_);
       }
+      if (!getSenderBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, sender_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -617,6 +659,9 @@ public final class NotificationServiceOuterClass {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(7, createTime_);
       }
+      if (!getSenderBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, sender_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -646,6 +691,8 @@ public final class NotificationServiceOuterClass {
           != other.getVersion()) return false;
       if (getCreateTime()
           != other.getCreateTime()) return false;
+      if (!getSender()
+          .equals(other.getSender())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -673,6 +720,8 @@ public final class NotificationServiceOuterClass {
       hash = (37 * hash) + CREATE_TIME_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getCreateTime());
+      hash = (37 * hash) + SENDER_FIELD_NUMBER;
+      hash = (53 * hash) + getSender().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -820,6 +869,8 @@ public final class NotificationServiceOuterClass {
 
         createTime_ = 0L;
 
+        sender_ = "";
+
         return this;
       }
 
@@ -853,6 +904,7 @@ public final class NotificationServiceOuterClass {
         result.namespace_ = namespace_;
         result.version_ = version_;
         result.createTime_ = createTime_;
+        result.sender_ = sender_;
         onBuilt();
         return result;
       }
@@ -926,6 +978,10 @@ public final class NotificationServiceOuterClass {
         }
         if (other.getCreateTime() != 0L) {
           setCreateTime(other.getCreateTime());
+        }
+        if (!other.getSender().isEmpty()) {
+          sender_ = other.sender_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1341,7 +1397,6 @@ public final class NotificationServiceOuterClass {
        * <code>int64 version = 6;</code>
        * @return The version.
        */
-      @java.lang.Override
       public long getVersion() {
         return version_;
       }
@@ -1372,7 +1427,6 @@ public final class NotificationServiceOuterClass {
        * <code>int64 create_time = 7;</code>
        * @return The createTime.
        */
-      @java.lang.Override
       public long getCreateTime() {
         return createTime_;
       }
@@ -1394,6 +1448,82 @@ public final class NotificationServiceOuterClass {
       public Builder clearCreateTime() {
         
         createTime_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object sender_ = "";
+      /**
+       * <code>string sender = 8;</code>
+       * @return The sender.
+       */
+      public java.lang.String getSender() {
+        java.lang.Object ref = sender_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          sender_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string sender = 8;</code>
+       * @return The bytes for sender.
+       */
+      public com.google.protobuf.ByteString
+          getSenderBytes() {
+        java.lang.Object ref = sender_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          sender_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string sender = 8;</code>
+       * @param value The sender to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSender(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        sender_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string sender = 8;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearSender() {
+        
+        sender_ = getDefaultInstance().getSender();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string sender = 8;</code>
+       * @param value The bytes for sender to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSenderBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        sender_ = value;
         onChanged();
         return this;
       }
@@ -1492,7 +1622,7 @@ public final class NotificationServiceOuterClass {
   /**
    * Protobuf type {@code notification_service.SendEventRequest}
    */
-  public static final class SendEventRequest extends
+  public  static final class SendEventRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:notification_service.SendEventRequest)
       SendEventRequestOrBuilder {
@@ -1592,7 +1722,6 @@ public final class NotificationServiceOuterClass {
      * <code>.notification_service.EventProto event = 1;</code>
      * @return Whether the event field is set.
      */
-    @java.lang.Override
     public boolean hasEvent() {
       return event_ != null;
     }
@@ -1600,14 +1729,12 @@ public final class NotificationServiceOuterClass {
      * <code>.notification_service.EventProto event = 1;</code>
      * @return The event.
      */
-    @java.lang.Override
     public com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto getEvent() {
       return event_ == null ? com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto.getDefaultInstance() : event_;
     }
     /**
      * <code>.notification_service.EventProto event = 1;</code>
      */
-    @java.lang.Override
     public com.aiflow.notification.proto.NotificationServiceOuterClass.EventProtoOrBuilder getEventOrBuilder() {
       return getEvent();
     }
@@ -1622,7 +1749,6 @@ public final class NotificationServiceOuterClass {
      * <code>string uuid = 2;</code>
      * @return The uuid.
      */
-    @java.lang.Override
     public java.lang.String getUuid() {
       java.lang.Object ref = uuid_;
       if (ref instanceof java.lang.String) {
@@ -1643,7 +1769,6 @@ public final class NotificationServiceOuterClass {
      * <code>string uuid = 2;</code>
      * @return The bytes for uuid.
      */
-    @java.lang.Override
     public com.google.protobuf.ByteString
         getUuidBytes() {
       java.lang.Object ref = uuid_;
@@ -2302,7 +2427,7 @@ public final class NotificationServiceOuterClass {
   /**
    * Protobuf type {@code notification_service.SendEventsResponse}
    */
-  public static final class SendEventsResponse extends
+  public  static final class SendEventsResponse extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:notification_service.SendEventsResponse)
       SendEventsResponseOrBuilder {
@@ -2409,7 +2534,6 @@ public final class NotificationServiceOuterClass {
      * <code>.notification_service.EventProto event = 1;</code>
      * @return Whether the event field is set.
      */
-    @java.lang.Override
     public boolean hasEvent() {
       return event_ != null;
     }
@@ -2417,14 +2541,12 @@ public final class NotificationServiceOuterClass {
      * <code>.notification_service.EventProto event = 1;</code>
      * @return The event.
      */
-    @java.lang.Override
     public com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto getEvent() {
       return event_ == null ? com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto.getDefaultInstance() : event_;
     }
     /**
      * <code>.notification_service.EventProto event = 1;</code>
      */
-    @java.lang.Override
     public com.aiflow.notification.proto.NotificationServiceOuterClass.EventProtoOrBuilder getEventOrBuilder() {
       return getEvent();
     }
@@ -2435,14 +2557,14 @@ public final class NotificationServiceOuterClass {
      * <code>.notification_service.ReturnStatus return_code = 2;</code>
      * @return The enum numeric value on the wire for returnCode.
      */
-    @java.lang.Override public int getReturnCodeValue() {
+    public int getReturnCodeValue() {
       return returnCode_;
     }
     /**
      * <code>.notification_service.ReturnStatus return_code = 2;</code>
      * @return The returnCode.
      */
-    @java.lang.Override public com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus getReturnCode() {
+    public com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus getReturnCode() {
       @SuppressWarnings("deprecation")
       com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus result = com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus.valueOf(returnCode_);
       return result == null ? com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus.UNRECOGNIZED : result;
@@ -2454,7 +2576,6 @@ public final class NotificationServiceOuterClass {
      * <code>string return_msg = 3;</code>
      * @return The returnMsg.
      */
-    @java.lang.Override
     public java.lang.String getReturnMsg() {
       java.lang.Object ref = returnMsg_;
       if (ref instanceof java.lang.String) {
@@ -2471,7 +2592,6 @@ public final class NotificationServiceOuterClass {
      * <code>string return_msg = 3;</code>
      * @return The bytes for returnMsg.
      */
-    @java.lang.Override
     public com.google.protobuf.ByteString
         getReturnMsgBytes() {
       java.lang.Object ref = returnMsg_;
@@ -2958,7 +3078,7 @@ public final class NotificationServiceOuterClass {
        * <code>.notification_service.ReturnStatus return_code = 2;</code>
        * @return The enum numeric value on the wire for returnCode.
        */
-      @java.lang.Override public int getReturnCodeValue() {
+      public int getReturnCodeValue() {
         return returnCode_;
       }
       /**
@@ -2967,7 +3087,6 @@ public final class NotificationServiceOuterClass {
        * @return This builder for chaining.
        */
       public Builder setReturnCodeValue(int value) {
-        
         returnCode_ = value;
         onChanged();
         return this;
@@ -2976,7 +3095,6 @@ public final class NotificationServiceOuterClass {
        * <code>.notification_service.ReturnStatus return_code = 2;</code>
        * @return The returnCode.
        */
-      @java.lang.Override
       public com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus getReturnCode() {
         @SuppressWarnings("deprecation")
         com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus result = com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus.valueOf(returnCode_);
@@ -3205,11 +3323,23 @@ public final class NotificationServiceOuterClass {
      */
     com.google.protobuf.ByteString
         getNamespaceBytes();
+
+    /**
+     * <code>string sender = 7;</code>
+     * @return The sender.
+     */
+    java.lang.String getSender();
+    /**
+     * <code>string sender = 7;</code>
+     * @return The bytes for sender.
+     */
+    com.google.protobuf.ByteString
+        getSenderBytes();
   }
   /**
    * Protobuf type {@code notification_service.ListEventsRequest}
    */
-  public static final class ListEventsRequest extends
+  public  static final class ListEventsRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:notification_service.ListEventsRequest)
       ListEventsRequestOrBuilder {
@@ -3222,6 +3352,7 @@ public final class NotificationServiceOuterClass {
       keys_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       eventType_ = "";
       namespace_ = "";
+      sender_ = "";
     }
 
     @java.lang.Override
@@ -3289,6 +3420,12 @@ public final class NotificationServiceOuterClass {
               java.lang.String s = input.readStringRequireUtf8();
 
               namespace_ = s;
+              break;
+            }
+            case 58: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              sender_ = s;
               break;
             }
             default: {
@@ -3367,7 +3504,6 @@ public final class NotificationServiceOuterClass {
      * <code>string event_type = 2;</code>
      * @return The eventType.
      */
-    @java.lang.Override
     public java.lang.String getEventType() {
       java.lang.Object ref = eventType_;
       if (ref instanceof java.lang.String) {
@@ -3384,7 +3520,6 @@ public final class NotificationServiceOuterClass {
      * <code>string event_type = 2;</code>
      * @return The bytes for eventType.
      */
-    @java.lang.Override
     public com.google.protobuf.ByteString
         getEventTypeBytes() {
       java.lang.Object ref = eventType_;
@@ -3405,7 +3540,6 @@ public final class NotificationServiceOuterClass {
      * <code>int64 start_time = 3;</code>
      * @return The startTime.
      */
-    @java.lang.Override
     public long getStartTime() {
       return startTime_;
     }
@@ -3416,7 +3550,6 @@ public final class NotificationServiceOuterClass {
      * <code>int64 start_version = 4;</code>
      * @return The startVersion.
      */
-    @java.lang.Override
     public long getStartVersion() {
       return startVersion_;
     }
@@ -3427,7 +3560,6 @@ public final class NotificationServiceOuterClass {
      * <code>int32 timeout_seconds = 5;</code>
      * @return The timeoutSeconds.
      */
-    @java.lang.Override
     public int getTimeoutSeconds() {
       return timeoutSeconds_;
     }
@@ -3438,7 +3570,6 @@ public final class NotificationServiceOuterClass {
      * <code>string namespace = 6;</code>
      * @return The namespace.
      */
-    @java.lang.Override
     public java.lang.String getNamespace() {
       java.lang.Object ref = namespace_;
       if (ref instanceof java.lang.String) {
@@ -3455,7 +3586,6 @@ public final class NotificationServiceOuterClass {
      * <code>string namespace = 6;</code>
      * @return The bytes for namespace.
      */
-    @java.lang.Override
     public com.google.protobuf.ByteString
         getNamespaceBytes() {
       java.lang.Object ref = namespace_;
@@ -3464,6 +3594,42 @@ public final class NotificationServiceOuterClass {
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         namespace_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int SENDER_FIELD_NUMBER = 7;
+    private volatile java.lang.Object sender_;
+    /**
+     * <code>string sender = 7;</code>
+     * @return The sender.
+     */
+    public java.lang.String getSender() {
+      java.lang.Object ref = sender_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        sender_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string sender = 7;</code>
+     * @return The bytes for sender.
+     */
+    public com.google.protobuf.ByteString
+        getSenderBytes() {
+      java.lang.Object ref = sender_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        sender_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -3502,6 +3668,9 @@ public final class NotificationServiceOuterClass {
       if (!getNamespaceBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 6, namespace_);
       }
+      if (!getSenderBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, sender_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -3537,6 +3706,9 @@ public final class NotificationServiceOuterClass {
       if (!getNamespaceBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, namespace_);
       }
+      if (!getSenderBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, sender_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -3564,6 +3736,8 @@ public final class NotificationServiceOuterClass {
           != other.getTimeoutSeconds()) return false;
       if (!getNamespace()
           .equals(other.getNamespace())) return false;
+      if (!getSender()
+          .equals(other.getSender())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -3591,6 +3765,8 @@ public final class NotificationServiceOuterClass {
       hash = (53 * hash) + getTimeoutSeconds();
       hash = (37 * hash) + NAMESPACE_FIELD_NUMBER;
       hash = (53 * hash) + getNamespace().hashCode();
+      hash = (37 * hash) + SENDER_FIELD_NUMBER;
+      hash = (53 * hash) + getSender().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -3736,6 +3912,8 @@ public final class NotificationServiceOuterClass {
 
         namespace_ = "";
 
+        sender_ = "";
+
         return this;
       }
 
@@ -3773,6 +3951,7 @@ public final class NotificationServiceOuterClass {
         result.startVersion_ = startVersion_;
         result.timeoutSeconds_ = timeoutSeconds_;
         result.namespace_ = namespace_;
+        result.sender_ = sender_;
         onBuilt();
         return result;
       }
@@ -3846,6 +4025,10 @@ public final class NotificationServiceOuterClass {
         }
         if (!other.getNamespace().isEmpty()) {
           namespace_ = other.namespace_;
+          onChanged();
+        }
+        if (!other.getSender().isEmpty()) {
+          sender_ = other.sender_;
           onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
@@ -4069,7 +4252,6 @@ public final class NotificationServiceOuterClass {
        * <code>int64 start_time = 3;</code>
        * @return The startTime.
        */
-      @java.lang.Override
       public long getStartTime() {
         return startTime_;
       }
@@ -4100,7 +4282,6 @@ public final class NotificationServiceOuterClass {
        * <code>int64 start_version = 4;</code>
        * @return The startVersion.
        */
-      @java.lang.Override
       public long getStartVersion() {
         return startVersion_;
       }
@@ -4131,7 +4312,6 @@ public final class NotificationServiceOuterClass {
        * <code>int32 timeout_seconds = 5;</code>
        * @return The timeoutSeconds.
        */
-      @java.lang.Override
       public int getTimeoutSeconds() {
         return timeoutSeconds_;
       }
@@ -4232,6 +4412,82 @@ public final class NotificationServiceOuterClass {
         onChanged();
         return this;
       }
+
+      private java.lang.Object sender_ = "";
+      /**
+       * <code>string sender = 7;</code>
+       * @return The sender.
+       */
+      public java.lang.String getSender() {
+        java.lang.Object ref = sender_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          sender_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string sender = 7;</code>
+       * @return The bytes for sender.
+       */
+      public com.google.protobuf.ByteString
+          getSenderBytes() {
+        java.lang.Object ref = sender_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          sender_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string sender = 7;</code>
+       * @param value The sender to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSender(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        sender_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string sender = 7;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearSender() {
+        
+        sender_ = getDefaultInstance().getSender();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string sender = 7;</code>
+       * @param value The bytes for sender to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSenderBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        sender_ = value;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -4316,7 +4572,7 @@ public final class NotificationServiceOuterClass {
   /**
    * Protobuf type {@code notification_service.ListAllEventsRequest}
    */
-  public static final class ListAllEventsRequest extends
+  public  static final class ListAllEventsRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:notification_service.ListAllEventsRequest)
       ListAllEventsRequestOrBuilder {
@@ -4416,7 +4672,6 @@ public final class NotificationServiceOuterClass {
      * <code>int32 timeout_seconds = 1;</code>
      * @return The timeoutSeconds.
      */
-    @java.lang.Override
     public int getTimeoutSeconds() {
       return timeoutSeconds_;
     }
@@ -4427,7 +4682,6 @@ public final class NotificationServiceOuterClass {
      * <code>int64 start_time = 2;</code>
      * @return The startTime.
      */
-    @java.lang.Override
     public long getStartTime() {
       return startTime_;
     }
@@ -4438,7 +4692,6 @@ public final class NotificationServiceOuterClass {
      * <code>int64 start_version = 3;</code>
      * @return The startVersion.
      */
-    @java.lang.Override
     public long getStartVersion() {
       return startVersion_;
     }
@@ -4449,7 +4702,6 @@ public final class NotificationServiceOuterClass {
      * <code>int64 end_version = 4;</code>
      * @return The endVersion.
      */
-    @java.lang.Override
     public long getEndVersion() {
       return endVersion_;
     }
@@ -4815,7 +5067,6 @@ public final class NotificationServiceOuterClass {
        * <code>int32 timeout_seconds = 1;</code>
        * @return The timeoutSeconds.
        */
-      @java.lang.Override
       public int getTimeoutSeconds() {
         return timeoutSeconds_;
       }
@@ -4846,7 +5097,6 @@ public final class NotificationServiceOuterClass {
        * <code>int64 start_time = 2;</code>
        * @return The startTime.
        */
-      @java.lang.Override
       public long getStartTime() {
         return startTime_;
       }
@@ -4877,7 +5127,6 @@ public final class NotificationServiceOuterClass {
        * <code>int64 start_version = 3;</code>
        * @return The startVersion.
        */
-      @java.lang.Override
       public long getStartVersion() {
         return startVersion_;
       }
@@ -4908,7 +5157,6 @@ public final class NotificationServiceOuterClass {
        * <code>int64 end_version = 4;</code>
        * @return The endVersion.
        */
-      @java.lang.Override
       public long getEndVersion() {
         return endVersion_;
       }
@@ -5040,7 +5288,7 @@ public final class NotificationServiceOuterClass {
   /**
    * Protobuf type {@code notification_service.ListEventsResponse}
    */
-  public static final class ListEventsResponse extends
+  public  static final class ListEventsResponse extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:notification_service.ListEventsResponse)
       ListEventsResponseOrBuilder {
@@ -5148,14 +5396,14 @@ public final class NotificationServiceOuterClass {
      * <code>.notification_service.ReturnStatus return_code = 1;</code>
      * @return The enum numeric value on the wire for returnCode.
      */
-    @java.lang.Override public int getReturnCodeValue() {
+    public int getReturnCodeValue() {
       return returnCode_;
     }
     /**
      * <code>.notification_service.ReturnStatus return_code = 1;</code>
      * @return The returnCode.
      */
-    @java.lang.Override public com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus getReturnCode() {
+    public com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus getReturnCode() {
       @SuppressWarnings("deprecation")
       com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus result = com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus.valueOf(returnCode_);
       return result == null ? com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus.UNRECOGNIZED : result;
@@ -5167,7 +5415,6 @@ public final class NotificationServiceOuterClass {
      * <code>string return_msg = 2;</code>
      * @return The returnMsg.
      */
-    @java.lang.Override
     public java.lang.String getReturnMsg() {
       java.lang.Object ref = returnMsg_;
       if (ref instanceof java.lang.String) {
@@ -5184,7 +5431,6 @@ public final class NotificationServiceOuterClass {
      * <code>string return_msg = 2;</code>
      * @return The bytes for returnMsg.
      */
-    @java.lang.Override
     public com.google.protobuf.ByteString
         getReturnMsgBytes() {
       java.lang.Object ref = returnMsg_;
@@ -5204,14 +5450,12 @@ public final class NotificationServiceOuterClass {
     /**
      * <code>repeated .notification_service.EventProto events = 3;</code>
      */
-    @java.lang.Override
     public java.util.List<com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto> getEventsList() {
       return events_;
     }
     /**
      * <code>repeated .notification_service.EventProto events = 3;</code>
      */
-    @java.lang.Override
     public java.util.List<? extends com.aiflow.notification.proto.NotificationServiceOuterClass.EventProtoOrBuilder> 
         getEventsOrBuilderList() {
       return events_;
@@ -5219,21 +5463,18 @@ public final class NotificationServiceOuterClass {
     /**
      * <code>repeated .notification_service.EventProto events = 3;</code>
      */
-    @java.lang.Override
     public int getEventsCount() {
       return events_.size();
     }
     /**
      * <code>repeated .notification_service.EventProto events = 3;</code>
      */
-    @java.lang.Override
     public com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto getEvents(int index) {
       return events_.get(index);
     }
     /**
      * <code>repeated .notification_service.EventProto events = 3;</code>
      */
-    @java.lang.Override
     public com.aiflow.notification.proto.NotificationServiceOuterClass.EventProtoOrBuilder getEventsOrBuilder(
         int index) {
       return events_.get(index);
@@ -5619,7 +5860,7 @@ public final class NotificationServiceOuterClass {
        * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @return The enum numeric value on the wire for returnCode.
        */
-      @java.lang.Override public int getReturnCodeValue() {
+      public int getReturnCodeValue() {
         return returnCode_;
       }
       /**
@@ -5628,7 +5869,6 @@ public final class NotificationServiceOuterClass {
        * @return This builder for chaining.
        */
       public Builder setReturnCodeValue(int value) {
-        
         returnCode_ = value;
         onChanged();
         return this;
@@ -5637,7 +5877,6 @@ public final class NotificationServiceOuterClass {
        * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @return The returnCode.
        */
-      @java.lang.Override
       public com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus getReturnCode() {
         @SuppressWarnings("deprecation")
         com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus result = com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus.valueOf(returnCode_);
@@ -6073,7 +6312,7 @@ public final class NotificationServiceOuterClass {
   /**
    * Protobuf type {@code notification_service.GetLatestVersionByKeyRequest}
    */
-  public static final class GetLatestVersionByKeyRequest extends
+  public  static final class GetLatestVersionByKeyRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:notification_service.GetLatestVersionByKeyRequest)
       GetLatestVersionByKeyRequestOrBuilder {
@@ -6172,7 +6411,6 @@ public final class NotificationServiceOuterClass {
      * <code>string key = 1;</code>
      * @return The key.
      */
-    @java.lang.Override
     public java.lang.String getKey() {
       java.lang.Object ref = key_;
       if (ref instanceof java.lang.String) {
@@ -6189,7 +6427,6 @@ public final class NotificationServiceOuterClass {
      * <code>string key = 1;</code>
      * @return The bytes for key.
      */
-    @java.lang.Override
     public com.google.protobuf.ByteString
         getKeyBytes() {
       java.lang.Object ref = key_;
@@ -6210,7 +6447,6 @@ public final class NotificationServiceOuterClass {
      * <code>string namespace = 2;</code>
      * @return The namespace.
      */
-    @java.lang.Override
     public java.lang.String getNamespace() {
       java.lang.Object ref = namespace_;
       if (ref instanceof java.lang.String) {
@@ -6227,7 +6463,6 @@ public final class NotificationServiceOuterClass {
      * <code>string namespace = 2;</code>
      * @return The bytes for namespace.
      */
-    @java.lang.Override
     public com.google.protobuf.ByteString
         getNamespaceBytes() {
       java.lang.Object ref = namespace_;
@@ -6248,7 +6483,6 @@ public final class NotificationServiceOuterClass {
      * <code>int32 timeout_seconds = 3;</code>
      * @return The timeoutSeconds.
      */
-    @java.lang.Override
     public int getTimeoutSeconds() {
       return timeoutSeconds_;
     }
@@ -6746,7 +6980,6 @@ public final class NotificationServiceOuterClass {
        * <code>int32 timeout_seconds = 3;</code>
        * @return The timeoutSeconds.
        */
-      @java.lang.Override
       public int getTimeoutSeconds() {
         return timeoutSeconds_;
       }
@@ -6861,7 +7094,7 @@ public final class NotificationServiceOuterClass {
   /**
    * Protobuf type {@code notification_service.GetLatestVersionResponse}
    */
-  public static final class GetLatestVersionResponse extends
+  public  static final class GetLatestVersionResponse extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:notification_service.GetLatestVersionResponse)
       GetLatestVersionResponseOrBuilder {
@@ -6960,7 +7193,6 @@ public final class NotificationServiceOuterClass {
      * <code>string return_code = 1;</code>
      * @return The returnCode.
      */
-    @java.lang.Override
     public java.lang.String getReturnCode() {
       java.lang.Object ref = returnCode_;
       if (ref instanceof java.lang.String) {
@@ -6977,7 +7209,6 @@ public final class NotificationServiceOuterClass {
      * <code>string return_code = 1;</code>
      * @return The bytes for returnCode.
      */
-    @java.lang.Override
     public com.google.protobuf.ByteString
         getReturnCodeBytes() {
       java.lang.Object ref = returnCode_;
@@ -6998,7 +7229,6 @@ public final class NotificationServiceOuterClass {
      * <code>string return_msg = 2;</code>
      * @return The returnMsg.
      */
-    @java.lang.Override
     public java.lang.String getReturnMsg() {
       java.lang.Object ref = returnMsg_;
       if (ref instanceof java.lang.String) {
@@ -7015,7 +7245,6 @@ public final class NotificationServiceOuterClass {
      * <code>string return_msg = 2;</code>
      * @return The bytes for returnMsg.
      */
-    @java.lang.Override
     public com.google.protobuf.ByteString
         getReturnMsgBytes() {
       java.lang.Object ref = returnMsg_;
@@ -7036,7 +7265,6 @@ public final class NotificationServiceOuterClass {
      * <code>int64 version = 3;</code>
      * @return The version.
      */
-    @java.lang.Override
     public long getVersion() {
       return version_;
     }
@@ -7535,7 +7763,6 @@ public final class NotificationServiceOuterClass {
        * <code>int64 version = 3;</code>
        * @return The version.
        */
-      @java.lang.Override
       public long getVersion() {
         return version_;
       }
@@ -7644,7 +7871,7 @@ public final class NotificationServiceOuterClass {
   /**
    * Protobuf type {@code notification_service.MemberProto}
    */
-  public static final class MemberProto extends
+  public  static final class MemberProto extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:notification_service.MemberProto)
       MemberProtoOrBuilder {
@@ -7741,7 +7968,6 @@ public final class NotificationServiceOuterClass {
      * <code>int64 version = 1;</code>
      * @return The version.
      */
-    @java.lang.Override
     public long getVersion() {
       return version_;
     }
@@ -7752,7 +7978,6 @@ public final class NotificationServiceOuterClass {
      * <code>string server_uri = 2;</code>
      * @return The serverUri.
      */
-    @java.lang.Override
     public java.lang.String getServerUri() {
       java.lang.Object ref = serverUri_;
       if (ref instanceof java.lang.String) {
@@ -7769,7 +7994,6 @@ public final class NotificationServiceOuterClass {
      * <code>string server_uri = 2;</code>
      * @return The bytes for serverUri.
      */
-    @java.lang.Override
     public com.google.protobuf.ByteString
         getServerUriBytes() {
       java.lang.Object ref = serverUri_;
@@ -7790,7 +8014,6 @@ public final class NotificationServiceOuterClass {
      * <code>int64 update_time = 3;</code>
      * @return The updateTime.
      */
-    @java.lang.Override
     public long getUpdateTime() {
       return updateTime_;
     }
@@ -8138,7 +8361,6 @@ public final class NotificationServiceOuterClass {
        * <code>int64 version = 1;</code>
        * @return The version.
        */
-      @java.lang.Override
       public long getVersion() {
         return version_;
       }
@@ -8245,7 +8467,6 @@ public final class NotificationServiceOuterClass {
        * <code>int64 update_time = 3;</code>
        * @return The updateTime.
        */
-      @java.lang.Override
       public long getUpdateTime() {
         return updateTime_;
       }
@@ -8354,7 +8575,7 @@ public final class NotificationServiceOuterClass {
   /**
    * Protobuf type {@code notification_service.Notify}
    */
-  public static final class Notify extends
+  public  static final class Notify extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:notification_service.Notify)
       NotifyOrBuilder {
@@ -8448,7 +8669,6 @@ public final class NotificationServiceOuterClass {
      * <code>string key = 1;</code>
      * @return The key.
      */
-    @java.lang.Override
     public java.lang.String getKey() {
       java.lang.Object ref = key_;
       if (ref instanceof java.lang.String) {
@@ -8465,7 +8685,6 @@ public final class NotificationServiceOuterClass {
      * <code>string key = 1;</code>
      * @return The bytes for key.
      */
-    @java.lang.Override
     public com.google.protobuf.ByteString
         getKeyBytes() {
       java.lang.Object ref = key_;
@@ -8486,7 +8705,6 @@ public final class NotificationServiceOuterClass {
      * <code>string namespace = 2;</code>
      * @return The namespace.
      */
-    @java.lang.Override
     public java.lang.String getNamespace() {
       java.lang.Object ref = namespace_;
       if (ref instanceof java.lang.String) {
@@ -8503,7 +8721,6 @@ public final class NotificationServiceOuterClass {
      * <code>string namespace = 2;</code>
      * @return The bytes for namespace.
      */
-    @java.lang.Override
     public com.google.protobuf.ByteString
         getNamespaceBytes() {
       java.lang.Object ref = namespace_;
@@ -9072,7 +9289,7 @@ public final class NotificationServiceOuterClass {
   /**
    * Protobuf type {@code notification_service.NotifyRequest}
    */
-  public static final class NotifyRequest extends
+  public  static final class NotifyRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:notification_service.NotifyRequest)
       NotifyRequestOrBuilder {
@@ -9165,14 +9382,12 @@ public final class NotificationServiceOuterClass {
     /**
      * <code>repeated .notification_service.Notify notifies = 1;</code>
      */
-    @java.lang.Override
     public java.util.List<com.aiflow.notification.proto.NotificationServiceOuterClass.Notify> getNotifiesList() {
       return notifies_;
     }
     /**
      * <code>repeated .notification_service.Notify notifies = 1;</code>
      */
-    @java.lang.Override
     public java.util.List<? extends com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyOrBuilder> 
         getNotifiesOrBuilderList() {
       return notifies_;
@@ -9180,21 +9395,18 @@ public final class NotificationServiceOuterClass {
     /**
      * <code>repeated .notification_service.Notify notifies = 1;</code>
      */
-    @java.lang.Override
     public int getNotifiesCount() {
       return notifies_.size();
     }
     /**
      * <code>repeated .notification_service.Notify notifies = 1;</code>
      */
-    @java.lang.Override
     public com.aiflow.notification.proto.NotificationServiceOuterClass.Notify getNotifies(int index) {
       return notifies_.get(index);
     }
     /**
      * <code>repeated .notification_service.Notify notifies = 1;</code>
      */
-    @java.lang.Override
     public com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyOrBuilder getNotifiesOrBuilder(
         int index) {
       return notifies_.get(index);
@@ -9864,7 +10076,7 @@ public final class NotificationServiceOuterClass {
   /**
    * Protobuf type {@code notification_service.NotifyResponse}
    */
-  public static final class NotifyResponse extends
+  public  static final class NotifyResponse extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:notification_service.NotifyResponse)
       NotifyResponseOrBuilder {
@@ -9958,14 +10170,14 @@ public final class NotificationServiceOuterClass {
      * <code>.notification_service.ReturnStatus return_code = 1;</code>
      * @return The enum numeric value on the wire for returnCode.
      */
-    @java.lang.Override public int getReturnCodeValue() {
+    public int getReturnCodeValue() {
       return returnCode_;
     }
     /**
      * <code>.notification_service.ReturnStatus return_code = 1;</code>
      * @return The returnCode.
      */
-    @java.lang.Override public com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus getReturnCode() {
+    public com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus getReturnCode() {
       @SuppressWarnings("deprecation")
       com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus result = com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus.valueOf(returnCode_);
       return result == null ? com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus.UNRECOGNIZED : result;
@@ -9977,7 +10189,6 @@ public final class NotificationServiceOuterClass {
      * <code>string return_msg = 2;</code>
      * @return The returnMsg.
      */
-    @java.lang.Override
     public java.lang.String getReturnMsg() {
       java.lang.Object ref = returnMsg_;
       if (ref instanceof java.lang.String) {
@@ -9994,7 +10205,6 @@ public final class NotificationServiceOuterClass {
      * <code>string return_msg = 2;</code>
      * @return The bytes for returnMsg.
      */
-    @java.lang.Override
     public com.google.protobuf.ByteString
         getReturnMsgBytes() {
       java.lang.Object ref = returnMsg_;
@@ -10332,7 +10542,7 @@ public final class NotificationServiceOuterClass {
        * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @return The enum numeric value on the wire for returnCode.
        */
-      @java.lang.Override public int getReturnCodeValue() {
+      public int getReturnCodeValue() {
         return returnCode_;
       }
       /**
@@ -10341,7 +10551,6 @@ public final class NotificationServiceOuterClass {
        * @return This builder for chaining.
        */
       public Builder setReturnCodeValue(int value) {
-        
         returnCode_ = value;
         onChanged();
         return this;
@@ -10350,7 +10559,6 @@ public final class NotificationServiceOuterClass {
        * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @return The returnCode.
        */
-      @java.lang.Override
       public com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus getReturnCode() {
         @SuppressWarnings("deprecation")
         com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus result = com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus.valueOf(returnCode_);
@@ -10522,7 +10730,7 @@ public final class NotificationServiceOuterClass {
   /**
    * Protobuf type {@code notification_service.ListMembersRequest}
    */
-  public static final class ListMembersRequest extends
+  public  static final class ListMembersRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:notification_service.ListMembersRequest)
       ListMembersRequestOrBuilder {
@@ -10607,7 +10815,6 @@ public final class NotificationServiceOuterClass {
      * <code>int32 timeout_seconds = 1;</code>
      * @return The timeoutSeconds.
      */
-    @java.lang.Override
     public int getTimeoutSeconds() {
       return timeoutSeconds_;
     }
@@ -10919,7 +11126,6 @@ public final class NotificationServiceOuterClass {
        * <code>int32 timeout_seconds = 1;</code>
        * @return The timeoutSeconds.
        */
-      @java.lang.Override
       public int getTimeoutSeconds() {
         return timeoutSeconds_;
       }
@@ -11051,7 +11257,7 @@ public final class NotificationServiceOuterClass {
   /**
    * Protobuf type {@code notification_service.ListMembersResponse}
    */
-  public static final class ListMembersResponse extends
+  public  static final class ListMembersResponse extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:notification_service.ListMembersResponse)
       ListMembersResponseOrBuilder {
@@ -11159,14 +11365,14 @@ public final class NotificationServiceOuterClass {
      * <code>.notification_service.ReturnStatus return_code = 1;</code>
      * @return The enum numeric value on the wire for returnCode.
      */
-    @java.lang.Override public int getReturnCodeValue() {
+    public int getReturnCodeValue() {
       return returnCode_;
     }
     /**
      * <code>.notification_service.ReturnStatus return_code = 1;</code>
      * @return The returnCode.
      */
-    @java.lang.Override public com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus getReturnCode() {
+    public com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus getReturnCode() {
       @SuppressWarnings("deprecation")
       com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus result = com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus.valueOf(returnCode_);
       return result == null ? com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus.UNRECOGNIZED : result;
@@ -11178,7 +11384,6 @@ public final class NotificationServiceOuterClass {
      * <code>string return_msg = 2;</code>
      * @return The returnMsg.
      */
-    @java.lang.Override
     public java.lang.String getReturnMsg() {
       java.lang.Object ref = returnMsg_;
       if (ref instanceof java.lang.String) {
@@ -11195,7 +11400,6 @@ public final class NotificationServiceOuterClass {
      * <code>string return_msg = 2;</code>
      * @return The bytes for returnMsg.
      */
-    @java.lang.Override
     public com.google.protobuf.ByteString
         getReturnMsgBytes() {
       java.lang.Object ref = returnMsg_;
@@ -11215,14 +11419,12 @@ public final class NotificationServiceOuterClass {
     /**
      * <code>repeated .notification_service.MemberProto members = 3;</code>
      */
-    @java.lang.Override
     public java.util.List<com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto> getMembersList() {
       return members_;
     }
     /**
      * <code>repeated .notification_service.MemberProto members = 3;</code>
      */
-    @java.lang.Override
     public java.util.List<? extends com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProtoOrBuilder> 
         getMembersOrBuilderList() {
       return members_;
@@ -11230,21 +11432,18 @@ public final class NotificationServiceOuterClass {
     /**
      * <code>repeated .notification_service.MemberProto members = 3;</code>
      */
-    @java.lang.Override
     public int getMembersCount() {
       return members_.size();
     }
     /**
      * <code>repeated .notification_service.MemberProto members = 3;</code>
      */
-    @java.lang.Override
     public com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto getMembers(int index) {
       return members_.get(index);
     }
     /**
      * <code>repeated .notification_service.MemberProto members = 3;</code>
      */
-    @java.lang.Override
     public com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProtoOrBuilder getMembersOrBuilder(
         int index) {
       return members_.get(index);
@@ -11630,7 +11829,7 @@ public final class NotificationServiceOuterClass {
        * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @return The enum numeric value on the wire for returnCode.
        */
-      @java.lang.Override public int getReturnCodeValue() {
+      public int getReturnCodeValue() {
         return returnCode_;
       }
       /**
@@ -11639,7 +11838,6 @@ public final class NotificationServiceOuterClass {
        * @return This builder for chaining.
        */
       public Builder setReturnCodeValue(int value) {
-        
         returnCode_ = value;
         onChanged();
         return this;
@@ -11648,7 +11846,6 @@ public final class NotificationServiceOuterClass {
        * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @return The returnCode.
        */
-      @java.lang.Override
       public com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus getReturnCode() {
         @SuppressWarnings("deprecation")
         com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus result = com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus.valueOf(returnCode_);
@@ -12069,7 +12266,7 @@ public final class NotificationServiceOuterClass {
   /**
    * Protobuf type {@code notification_service.NotifyNewMemberRequest}
    */
-  public static final class NotifyNewMemberRequest extends
+  public  static final class NotifyNewMemberRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:notification_service.NotifyNewMemberRequest)
       NotifyNewMemberRequestOrBuilder {
@@ -12162,7 +12359,6 @@ public final class NotificationServiceOuterClass {
      * <code>.notification_service.MemberProto member = 1;</code>
      * @return Whether the member field is set.
      */
-    @java.lang.Override
     public boolean hasMember() {
       return member_ != null;
     }
@@ -12170,14 +12366,12 @@ public final class NotificationServiceOuterClass {
      * <code>.notification_service.MemberProto member = 1;</code>
      * @return The member.
      */
-    @java.lang.Override
     public com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto getMember() {
       return member_ == null ? com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto.getDefaultInstance() : member_;
     }
     /**
      * <code>.notification_service.MemberProto member = 1;</code>
      */
-    @java.lang.Override
     public com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProtoOrBuilder getMemberOrBuilder() {
       return getMember();
     }
@@ -12698,7 +12892,7 @@ public final class NotificationServiceOuterClass {
   /**
    * Protobuf type {@code notification_service.NotifyNewMemberResponse}
    */
-  public static final class NotifyNewMemberResponse extends
+  public  static final class NotifyNewMemberResponse extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:notification_service.NotifyNewMemberResponse)
       NotifyNewMemberResponseOrBuilder {
@@ -12792,14 +12986,14 @@ public final class NotificationServiceOuterClass {
      * <code>.notification_service.ReturnStatus return_code = 1;</code>
      * @return The enum numeric value on the wire for returnCode.
      */
-    @java.lang.Override public int getReturnCodeValue() {
+    public int getReturnCodeValue() {
       return returnCode_;
     }
     /**
      * <code>.notification_service.ReturnStatus return_code = 1;</code>
      * @return The returnCode.
      */
-    @java.lang.Override public com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus getReturnCode() {
+    public com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus getReturnCode() {
       @SuppressWarnings("deprecation")
       com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus result = com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus.valueOf(returnCode_);
       return result == null ? com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus.UNRECOGNIZED : result;
@@ -12811,7 +13005,6 @@ public final class NotificationServiceOuterClass {
      * <code>string return_msg = 2;</code>
      * @return The returnMsg.
      */
-    @java.lang.Override
     public java.lang.String getReturnMsg() {
       java.lang.Object ref = returnMsg_;
       if (ref instanceof java.lang.String) {
@@ -12828,7 +13021,6 @@ public final class NotificationServiceOuterClass {
      * <code>string return_msg = 2;</code>
      * @return The bytes for returnMsg.
      */
-    @java.lang.Override
     public com.google.protobuf.ByteString
         getReturnMsgBytes() {
       java.lang.Object ref = returnMsg_;
@@ -13166,7 +13358,7 @@ public final class NotificationServiceOuterClass {
        * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @return The enum numeric value on the wire for returnCode.
        */
-      @java.lang.Override public int getReturnCodeValue() {
+      public int getReturnCodeValue() {
         return returnCode_;
       }
       /**
@@ -13175,7 +13367,6 @@ public final class NotificationServiceOuterClass {
        * @return This builder for chaining.
        */
       public Builder setReturnCodeValue(int value) {
-        
         returnCode_ = value;
         onChanged();
         return this;
@@ -13184,7 +13375,6 @@ public final class NotificationServiceOuterClass {
        * <code>.notification_service.ReturnStatus return_code = 1;</code>
        * @return The returnCode.
        */
-      @java.lang.Override
       public com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus getReturnCode() {
         @SuppressWarnings("deprecation")
         com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus result = com.aiflow.notification.proto.NotificationServiceOuterClass.ReturnStatus.valueOf(returnCode_);
@@ -14155,77 +14345,79 @@ public final class NotificationServiceOuterClass {
     java.lang.String[] descriptorData = {
       "\n\032notification_service.proto\022\024notificati" +
       "on_service\032\034google/api/annotations.proto" +
-      "\"\206\001\n\nEventProto\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 " +
+      "\"\226\001\n\nEventProto\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 " +
       "\001(\t\022\022\n\nevent_type\030\003 \001(\t\022\017\n\007context\030\004 \001(\t" +
       "\022\021\n\tnamespace\030\005 \001(\t\022\017\n\007version\030\006 \001(\003\022\023\n\013" +
-      "create_time\030\007 \001(\003\"Q\n\020SendEventRequest\022/\n" +
-      "\005event\030\001 \001(\0132 .notification_service.Even" +
-      "tProto\022\014\n\004uuid\030\002 \001(\t\"\222\001\n\022SendEventsRespo" +
-      "nse\022/\n\005event\030\001 \001(\0132 .notification_servic" +
-      "e.EventProto\0227\n\013return_code\030\002 \001(\0162\".noti" +
-      "fication_service.ReturnStatus\022\022\n\nreturn_" +
-      "msg\030\003 \001(\t\"\214\001\n\021ListEventsRequest\022\014\n\004keys\030" +
-      "\001 \003(\t\022\022\n\nevent_type\030\002 \001(\t\022\022\n\nstart_time\030" +
-      "\003 \001(\003\022\025\n\rstart_version\030\004 \001(\003\022\027\n\017timeout_" +
-      "seconds\030\005 \001(\005\022\021\n\tnamespace\030\006 \001(\t\"o\n\024List" +
-      "AllEventsRequest\022\027\n\017timeout_seconds\030\001 \001(" +
-      "\005\022\022\n\nstart_time\030\002 \001(\003\022\025\n\rstart_version\030\003" +
-      " \001(\003\022\023\n\013end_version\030\004 \001(\003\"\223\001\n\022ListEvents" +
+      "create_time\030\007 \001(\003\022\016\n\006sender\030\010 \001(\t\"Q\n\020Sen" +
+      "dEventRequest\022/\n\005event\030\001 \001(\0132 .notificat" +
+      "ion_service.EventProto\022\014\n\004uuid\030\002 \001(\t\"\222\001\n" +
+      "\022SendEventsResponse\022/\n\005event\030\001 \001(\0132 .not" +
+      "ification_service.EventProto\0227\n\013return_c" +
+      "ode\030\002 \001(\0162\".notification_service.ReturnS" +
+      "tatus\022\022\n\nreturn_msg\030\003 \001(\t\"\234\001\n\021ListEvents" +
+      "Request\022\014\n\004keys\030\001 \003(\t\022\022\n\nevent_type\030\002 \001(" +
+      "\t\022\022\n\nstart_time\030\003 \001(\003\022\025\n\rstart_version\030\004" +
+      " \001(\003\022\027\n\017timeout_seconds\030\005 \001(\005\022\021\n\tnamespa" +
+      "ce\030\006 \001(\t\022\016\n\006sender\030\007 \001(\t\"o\n\024ListAllEvent" +
+      "sRequest\022\027\n\017timeout_seconds\030\001 \001(\005\022\022\n\nsta" +
+      "rt_time\030\002 \001(\003\022\025\n\rstart_version\030\003 \001(\003\022\023\n\013" +
+      "end_version\030\004 \001(\003\"\223\001\n\022ListEventsResponse" +
+      "\0227\n\013return_code\030\001 \001(\0162\".notification_ser" +
+      "vice.ReturnStatus\022\022\n\nreturn_msg\030\002 \001(\t\0220\n" +
+      "\006events\030\003 \003(\0132 .notification_service.Eve" +
+      "ntProto\"W\n\034GetLatestVersionByKeyRequest\022" +
+      "\013\n\003key\030\001 \001(\t\022\021\n\tnamespace\030\002 \001(\t\022\027\n\017timeo" +
+      "ut_seconds\030\003 \001(\005\"T\n\030GetLatestVersionResp" +
+      "onse\022\023\n\013return_code\030\001 \001(\t\022\022\n\nreturn_msg\030" +
+      "\002 \001(\t\022\017\n\007version\030\003 \001(\003\"G\n\013MemberProto\022\017\n" +
+      "\007version\030\001 \001(\003\022\022\n\nserver_uri\030\002 \001(\t\022\023\n\013up" +
+      "date_time\030\003 \001(\003\"(\n\006Notify\022\013\n\003key\030\001 \001(\t\022\021" +
+      "\n\tnamespace\030\002 \001(\t\"?\n\rNotifyRequest\022.\n\010no" +
+      "tifies\030\001 \003(\0132\034.notification_service.Noti" +
+      "fy\"]\n\016NotifyResponse\0227\n\013return_code\030\001 \001(" +
+      "\0162\".notification_service.ReturnStatus\022\022\n" +
+      "\nreturn_msg\030\002 \001(\t\"-\n\022ListMembersRequest\022" +
+      "\027\n\017timeout_seconds\030\001 \001(\005\"\226\001\n\023ListMembers" +
       "Response\0227\n\013return_code\030\001 \001(\0162\".notifica" +
       "tion_service.ReturnStatus\022\022\n\nreturn_msg\030" +
-      "\002 \001(\t\0220\n\006events\030\003 \003(\0132 .notification_ser" +
-      "vice.EventProto\"W\n\034GetLatestVersionByKey" +
-      "Request\022\013\n\003key\030\001 \001(\t\022\021\n\tnamespace\030\002 \001(\t\022" +
-      "\027\n\017timeout_seconds\030\003 \001(\005\"T\n\030GetLatestVer" +
-      "sionResponse\022\023\n\013return_code\030\001 \001(\t\022\022\n\nret" +
-      "urn_msg\030\002 \001(\t\022\017\n\007version\030\003 \001(\003\"G\n\013Member" +
-      "Proto\022\017\n\007version\030\001 \001(\003\022\022\n\nserver_uri\030\002 \001" +
-      "(\t\022\023\n\013update_time\030\003 \001(\003\"(\n\006Notify\022\013\n\003key" +
-      "\030\001 \001(\t\022\021\n\tnamespace\030\002 \001(\t\"?\n\rNotifyReque" +
-      "st\022.\n\010notifies\030\001 \003(\0132\034.notification_serv" +
-      "ice.Notify\"]\n\016NotifyResponse\0227\n\013return_c" +
-      "ode\030\001 \001(\0162\".notification_service.ReturnS" +
-      "tatus\022\022\n\nreturn_msg\030\002 \001(\t\"-\n\022ListMembers" +
-      "Request\022\027\n\017timeout_seconds\030\001 \001(\005\"\226\001\n\023Lis" +
-      "tMembersResponse\0227\n\013return_code\030\001 \001(\0162\"." +
-      "notification_service.ReturnStatus\022\022\n\nret" +
-      "urn_msg\030\002 \001(\t\0222\n\007members\030\003 \003(\0132!.notific" +
-      "ation_service.MemberProto\"K\n\026NotifyNewMe" +
-      "mberRequest\0221\n\006member\030\001 \001(\0132!.notificati" +
-      "on_service.MemberProto\"f\n\027NotifyNewMembe" +
-      "rResponse\0227\n\013return_code\030\001 \001(\0162\".notific" +
-      "ation_service.ReturnStatus\022\022\n\nreturn_msg" +
-      "\030\002 \001(\t*&\n\014ReturnStatus\022\013\n\007SUCCESS\020\000\022\t\n\005E" +
-      "RROR\020\0012\357\010\n\023NotificationService\022\221\001\n\tsendE" +
-      "vent\022&.notification_service.SendEventReq" +
-      "uest\032(.notification_service.SendEventsRe" +
-      "sponse\"2\202\323\344\223\002,\"\'/aiflow/notification-ser" +
-      "vice/send_event:\001*\022\224\001\n\nlistEvents\022\'.noti" +
-      "fication_service.ListEventsRequest\032(.not" +
-      "ification_service.ListEventsResponse\"3\202\323" +
-      "\344\223\002-\"(/aiflow/notification-service/list_" +
-      "events:\001*\022\236\001\n\rlistAllEvents\022*.notificati" +
-      "on_service.ListAllEventsRequest\032(.notifi" +
-      "cation_service.ListEventsResponse\"7\202\323\344\223\002" +
-      "1\",/aiflow/notification-service/list_all" +
-      "_events:\001*\022\203\001\n\006notify\022#.notification_ser" +
-      "vice.NotifyRequest\032$.notification_servic" +
-      "e.NotifyResponse\".\202\323\344\223\002(\"#/aiflow/notifi" +
-      "cation-service/notify:\001*\022\230\001\n\013listMembers" +
-      "\022(.notification_service.ListMembersReque" +
-      "st\032).notification_service.ListMembersRes" +
-      "ponse\"4\202\323\344\223\002.\")/aiflow/notification-serv" +
-      "ice/list_members:\001*\022\251\001\n\017notifyNewMember\022" +
-      ",.notification_service.NotifyNewMemberRe" +
-      "quest\032-.notification_service.NotifyNewMe" +
-      "mberResponse\"9\202\323\344\223\0023\"./aiflow/notificati" +
-      "on-service/notify_new_member:\001*\022\276\001\n\025getL" +
-      "atestVersionByKey\0222.notification_service" +
-      ".GetLatestVersionByKeyRequest\032..notifica" +
-      "tion_service.GetLatestVersionResponse\"A\202" +
-      "\323\344\223\002;\"6/aiflow/notification-service/get_" +
-      "latest_version_by_key:\001*B%\n\035com.aiflow.n" +
-      "otification.proto\210\001\001\220\001\001b\006proto3"
+      "\002 \001(\t\0222\n\007members\030\003 \003(\0132!.notification_se" +
+      "rvice.MemberProto\"K\n\026NotifyNewMemberRequ" +
+      "est\0221\n\006member\030\001 \001(\0132!.notification_servi" +
+      "ce.MemberProto\"f\n\027NotifyNewMemberRespons" +
+      "e\0227\n\013return_code\030\001 \001(\0162\".notification_se" +
+      "rvice.ReturnStatus\022\022\n\nreturn_msg\030\002 \001(\t*&" +
+      "\n\014ReturnStatus\022\013\n\007SUCCESS\020\000\022\t\n\005ERROR\020\0012\357" +
+      "\010\n\023NotificationService\022\221\001\n\tsendEvent\022&.n" +
+      "otification_service.SendEventRequest\032(.n" +
+      "otification_service.SendEventsResponse\"2" +
+      "\202\323\344\223\002,\"\'/aiflow/notification-service/sen" +
+      "d_event:\001*\022\224\001\n\nlistEvents\022\'.notification" +
+      "_service.ListEventsRequest\032(.notificatio" +
+      "n_service.ListEventsResponse\"3\202\323\344\223\002-\"(/a" +
+      "iflow/notification-service/list_events:\001" +
+      "*\022\236\001\n\rlistAllEvents\022*.notification_servi" +
+      "ce.ListAllEventsRequest\032(.notification_s" +
+      "ervice.ListEventsResponse\"7\202\323\344\223\0021\",/aifl" +
+      "ow/notification-service/list_all_events:" +
+      "\001*\022\203\001\n\006notify\022#.notification_service.Not" +
+      "ifyRequest\032$.notification_service.Notify" +
+      "Response\".\202\323\344\223\002(\"#/aiflow/notification-s" +
+      "ervice/notify:\001*\022\230\001\n\013listMembers\022(.notif" +
+      "ication_service.ListMembersRequest\032).not" +
+      "ification_service.ListMembersResponse\"4\202" +
+      "\323\344\223\002.\")/aiflow/notification-service/list" +
+      "_members:\001*\022\251\001\n\017notifyNewMember\022,.notifi" +
+      "cation_service.NotifyNewMemberRequest\032-." +
+      "notification_service.NotifyNewMemberResp" +
+      "onse\"9\202\323\344\223\0023\"./aiflow/notification-servi" +
+      "ce/notify_new_member:\001*\022\276\001\n\025getLatestVer" +
+      "sionByKey\0222.notification_service.GetLate" +
+      "stVersionByKeyRequest\032..notification_ser" +
+      "vice.GetLatestVersionResponse\"A\202\323\344\223\002;\"6/" +
+      "aiflow/notification-service/get_latest_v" +
+      "ersion_by_key:\001*B<\n\035com.aiflow.notificat" +
+      "ion.protoZ\025/notification_service\210\001\001\220\001\001b\006" +
+      "proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -14237,7 +14429,7 @@ public final class NotificationServiceOuterClass {
     internal_static_notification_service_EventProto_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_notification_service_EventProto_descriptor,
-        new java.lang.String[] { "Key", "Value", "EventType", "Context", "Namespace", "Version", "CreateTime", });
+        new java.lang.String[] { "Key", "Value", "EventType", "Context", "Namespace", "Version", "CreateTime", "Sender", });
     internal_static_notification_service_SendEventRequest_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_notification_service_SendEventRequest_fieldAccessorTable = new
@@ -14255,7 +14447,7 @@ public final class NotificationServiceOuterClass {
     internal_static_notification_service_ListEventsRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_notification_service_ListEventsRequest_descriptor,
-        new java.lang.String[] { "Keys", "EventType", "StartTime", "StartVersion", "TimeoutSeconds", "Namespace", });
+        new java.lang.String[] { "Keys", "EventType", "StartTime", "StartVersion", "TimeoutSeconds", "Namespace", "Sender", });
     internal_static_notification_service_ListAllEventsRequest_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_notification_service_ListAllEventsRequest_fieldAccessorTable = new
