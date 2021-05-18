@@ -58,6 +58,6 @@ rm -rf *.py-E
 
 cd ..
 
-sed -i -E 's/^package notification_service/package service/' go/*.go
-sed -i '' 's/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/\/\/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/g' go/notification_service.pb.go
+sed -i -E 's/^package notification_service/package service/' go/notification_service/*.go
+sed -i '' 's/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/\/\/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/g' go/notification_service/notification_service.pb.go
 rm -rf go/*.go-E

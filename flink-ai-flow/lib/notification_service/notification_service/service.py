@@ -17,6 +17,7 @@
 # under the License.
 #
 import asyncio
+import logging
 import time
 import traceback
 
@@ -59,19 +60,20 @@ class NotificationService(notification_service_pb2_grpc.NotificationServiceServi
             value=event_proto.value,
             event_type=None if event_proto.event_type == "" else event_proto.event_type,
             context=None if event_proto.context == "" else event_proto.context,
-            namespace=None if event_proto.namespace == "" else event_proto.namespace)
+            namespace=None if event_proto.namespace == "" else event_proto.namespace,
+            sender=None if event_proto.sender == "" else event_proto.sender
+        )
         uuid = request.uuid
         key = event.key
-        namespace = event.namespace
         # Lock conditions dict for get/check/update of key
         await self.lock.acquire()
-        if self.notification_conditions.get((key, namespace)) is None:
-            self.notification_conditions.update({((key, namespace), asyncio.Condition())})
+        if self.notification_conditions.get(key) is None:
+            self.notification_conditions.update({(key, asyncio.Condition())})
         # Release lock after check/update key of notification conditions dict
         self.lock.release()
-        async with self.notification_conditions.get((key, namespace)), self.write_condition:
+        async with self.notification_conditions.get(key), self.write_condition:
             event: BaseEvent = self.storage.add_event(event, uuid)
-            self.notification_conditions.get((key, namespace)).notify_all()
+            self.notification_conditions.get(key).notify_all()
             self.write_condition.notify_all()
 
         result_event_proto = event_to_proto(event)
@@ -93,11 +95,12 @@ class NotificationService(notification_service_pb2_grpc.NotificationServiceServi
         event_type = request.event_type
         start_time = request.start_time
         start_version = request.start_version
-        namespace = request.namespace
+        namespace = None if request.namespace == '' else request.namespace
+        sender = None if request.sender == '' else request.sender
         timeout_seconds = request.timeout_seconds
 
         if timeout_seconds == 0:
-            event_models = self._query_events(keys, event_type, start_time, start_version, namespace)
+            event_models = self._query_events(keys, event_type, start_time, start_version, namespace, sender)
             event_proto_list = event_list_to_proto(event_models)
             return notification_service_pb2.ListEventsResponse(
                 return_code=notification_service_pb2.ReturnStatus.SUCCESS,
@@ -108,14 +111,14 @@ class NotificationService(notification_service_pb2_grpc.NotificationServiceServi
             # Lock conditions dict for get/check/update of key
             await self.lock.acquire()
             for key in keys:
-                if self.notification_conditions.get((key, namespace)) is None:
-                    self.notification_conditions.update({((key, namespace), asyncio.Condition())})
+                if self.notification_conditions.get(key) is None:
+                    self.notification_conditions.update({(key, asyncio.Condition())})
             # Release lock after check/update key of notification conditions dict
             self.lock.release()
             event_models = []
             if len(keys) == 1:
                 key = keys[0]
-                condition = self.notification_conditions.get((key, namespace))
+                condition = self.notification_conditions.get(key)
             else:
                 condition = self.write_condition
             async with condition:
@@ -124,20 +127,20 @@ class NotificationService(notification_service_pb2_grpc.NotificationServiceServi
                         await asyncio.wait_for(condition.wait(),
                                                timeout_seconds - time.time() + start)
                         event_models = self._query_events(
-                            keys, event_type, start_time, start_version, namespace)
+                            keys, event_type, start_time, start_version, namespace, sender)
                     except asyncio.TimeoutError:
                         pass
                 if len(event_models) == 0:
                     event_models = self._query_events(
-                        keys, event_type, start_time, start_version, namespace)
+                        keys, event_type, start_time, start_version, namespace, sender)
             event_proto_list = event_list_to_proto(event_models)
             return notification_service_pb2.ListEventsResponse(
                 return_code=notification_service_pb2.ReturnStatus.SUCCESS,
                 return_msg='',
                 events=event_proto_list)
 
-    def _query_events(self, keys, event_type, start_time, start_version, namespace):
-        return self.storage.list_events(keys, start_version, event_type, start_time, namespace)
+    def _query_events(self, keys, event_type, start_time, start_version, namespace, sender):
+        return self.storage.list_events(keys, start_version, event_type, start_time, namespace, sender)
 
     @asyncio.coroutine
     def listAllEvents(self, request, context):
@@ -231,9 +234,9 @@ class NotificationService(notification_service_pb2_grpc.NotificationServiceServi
 
     async def _notify(self, request):
         for notify in request.notifies:
-            if (notify.key, notify.namespace) in self.notification_conditions:
-                async with self.notification_conditions.get((notify.key, notify.namespace)):
-                    self.notification_conditions.get((notify.key, notify.namespace)).notify_all()
+            if notify.key in self.notification_conditions:
+                async with self.notification_conditions.get(notify.key):
+                    self.notification_conditions.get(notify.key).notify_all()
         async with self.write_condition:
             self.write_condition.notify_all()
         return notification_service_pb2.NotifyResponse(
