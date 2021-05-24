@@ -51,13 +51,19 @@ jobs:
           python-version: '3.7'
           # Optional - x64 or x86 architecture, defaults to x64
           architecture: 'x64'
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
       - name: Install Python dependencies
         run: |
           python --version
           pip --version
           pip install -U --user pip six numpy wheel mock grpcio grpcio-tools
       - name: Build wheels
-        run: cd deep-learning-on-flink && bash tools/build_wheel.sh
+        run: cd deep-learning-on-flink && mvn clean install -DskipTests -Dfast -B && bash tools/build_wheel.sh
       - name: Upload wheels
         uses: actions/upload-artifact@v2
         with:
