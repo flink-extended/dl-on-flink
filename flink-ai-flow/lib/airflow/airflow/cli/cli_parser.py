@@ -1437,6 +1437,7 @@ airflow_commands: List[CLICommand] = [
             ARG_STDOUT,
             ARG_STDERR,
             ARG_LOG_FILE,
+            ARG_SERVER_URI,
         ),
         epilog=(
             'Signals:\n'
