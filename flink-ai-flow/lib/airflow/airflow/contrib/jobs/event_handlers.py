@@ -17,12 +17,11 @@
 
 from typing import Tuple, List, Dict, Text
 import json
-import time
 import copy
 from enum import Enum
 from airflow.executors.scheduling_action import SchedulingAction
 from airflow.models.eventhandler import EventHandler
-from notification_service.base_notification import BaseEvent, UNDEFINED_EVENT_TYPE
+from notification_service.base_notification import BaseEvent, UNDEFINED_EVENT_TYPE, DEFAULT_NAMESPACE, ANY_CONDITION
 
 
 class StartEventHandler(EventHandler):
@@ -81,9 +80,6 @@ class MetValueCondition(str, Enum):
     UPDATE = "UPDATE"
 
 
-DEFAULT_NAMESPACE = 'default'
-
-
 class MetConfig(object):
     def __init__(self,
                  event_key: Text,
@@ -93,7 +89,8 @@ class MetConfig(object):
                  action: SchedulingAction = SchedulingAction.START,
                  life: EventLife = EventLife.ONCE,
                  value_condition: MetValueCondition = MetValueCondition.EQUAL,
-                 namespace: Text = DEFAULT_NAMESPACE
+                 namespace: Text = DEFAULT_NAMESPACE,
+                 sender: Text = ANY_CONDITION
                  ):
         self.event_type = event_type
         self.event_key = event_key
@@ -103,15 +100,18 @@ class MetConfig(object):
         self.life = life
         self.value_condition = value_condition
         self.namespace = namespace
+        self.sender = sender
 
 
 class AiFlowTs(object):
     def __init__(self):
+        # namespace event_type sender event_key
         self.event_map = {}
         self.schedule_time = 0
+        self.latest_time = 0
 
     def __str__(self):
-        return "EVENT_MAP: {0} TIME: {1}".format(self.event_map, self.schedule_time)
+        return "EVENT_MAP: {0} TIME: {1} LATEST: {2}".format(self.event_map, self.schedule_time, self.latest_time)
 
 
 class ActionWrapper(object):
@@ -135,7 +135,8 @@ class AIFlowHandler(EventHandler):
                                    condition=MetCondition(config['condition']),
                                    value_condition=MetValueCondition(config['value_condition']),
                                    life=EventLife(config['life']),
-                                   namespace=config['namespace'])
+                                   namespace=config['namespace'],
+                                   sender=config['sender'])
             configs.append(met_config)
         return configs
 
@@ -144,12 +145,13 @@ class AIFlowHandler(EventHandler):
         if task_state is None:
             task_state = AiFlowTs()
         af_ts = copy.deepcopy(task_state)
-        af_ts.event_map[(event.namespace, event.key, event.event_type)] = event
+        af_ts.event_map[(event.namespace, event.event_type, event.sender, event.key)] = event
+        af_ts.latest_time = event.create_time
         aw = ActionWrapper()
         res = self.met_sc(configs, af_ts, aw)
         if res:
             if aw.action in SchedulingAction:
-                af_ts.schedule_time = time.time_ns()
+                af_ts.schedule_time = af_ts.latest_time
             if len(configs) == 0:
                 return SchedulingAction.START, af_ts
             else:
@@ -157,63 +159,91 @@ class AIFlowHandler(EventHandler):
         else:
             return SchedulingAction.NONE, af_ts
 
-    def met_sc(self, configs, ts: AiFlowTs, aw: ActionWrapper)->bool:
+    @staticmethod
+    def _match_config_events(namespace, event_type, sender, key, event_map: Dict):
+        events = []
+        
+        def match_condition(config_value, event_value)->bool:
+            if config_value == ANY_CONDITION or event_value == config_value:
+                return True
+            else:
+                return False
+                
+        for e_key, event in event_map.items():
+            c_namespace = match_condition(namespace, event.namespace)
+            c_event_type = match_condition(event_type, event.event_type)
+            c_sender = match_condition(sender, event.sender)
+            c_key = match_condition(key, event.key)
+            if c_namespace and c_event_type and c_sender and c_key:
+                events.append(event)
+        return events
+
+    def met_sc(self, configs, ts: AiFlowTs, aw: ActionWrapper) -> bool:
         event_map: Dict = ts.event_map
         schedule_time = ts.schedule_time
         has_necessary_edge = False
         for met_config in configs:
             namespace = met_config.namespace
+            sender = met_config.sender
             key = met_config.event_key
             value = met_config.event_value
             event_type = met_config.event_type
-
+            events = self._match_config_events(namespace, event_type, sender, key, event_map)
             if met_config.condition == MetCondition.SUFFICIENT:
-                if (namespace, key, event_type) not in event_map:
+                if 0 == len(events):
                     continue
-                event: BaseEvent = event_map[(namespace, key, event_type)]
-                v, event_time = event.value, event.create_time
-                if met_config.life == EventLife.ONCE:
-                    if met_config.value_condition == MetValueCondition.EQUAL:
-                        if v == value and event_time > schedule_time:
-                            aw.action = met_config.action
-                            return True
+                for event in events:
+                    v, event_time = event.value, event.create_time
+                    if met_config.life == EventLife.ONCE:
+                        if met_config.value_condition == MetValueCondition.EQUAL:
+                            if v == value and event_time > schedule_time:
+                                aw.action = met_config.action
+                                return True
+                        else:
+                            if event_time > schedule_time:
+                                aw.action = met_config.action
+                                return True
                     else:
-                        if event_time > schedule_time:
+                        if met_config.value_condition == MetValueCondition.EQUAL:
+                            if v == value:
+                                aw.action = met_config.action
+                                return True
+                        else:
                             aw.action = met_config.action
                             return True
-                else:
-                    if met_config.value_condition == MetValueCondition.EQUAL:
-                        if v == value:
-                            aw.action = met_config.action
-                            return True
-                    else:
-                        aw.action = met_config.action
-                        return True
             else:
                 has_necessary_edge = True
-                if (namespace, key, event_type) not in event_map:
+                if 0 == len(events):
                     return False
-                event: BaseEvent = event_map[(namespace, key, event_type)]
-                v, event_time = event.value, event.create_time
-                if met_config.life == EventLife.ONCE:
-                    if met_config.value_condition == MetValueCondition.EQUAL:
-                        if schedule_time >= event_time:
-                            return False
+                final_flag = False
+                for event in events:
+                    flag = True
+                    v, event_time = event.value, event.create_time
+                    if met_config.life == EventLife.ONCE:
+                        if met_config.value_condition == MetValueCondition.EQUAL:
+                            if schedule_time >= event_time:
+                                flag = False
+                            else:
+                                if v != value:
+                                    flag = False
                         else:
+                            if schedule_time >= event_time:
+                                flag = False
+    
+                    else:
+                        if met_config.value_condition == MetValueCondition.EQUAL:
                             if v != value:
-                                return False
-                    else:
-                        if schedule_time >= event_time:
-                            return False
-
-                else:
-                    if met_config.value_condition == MetValueCondition.EQUAL:
-                        if v != value:
-                            return False
-
-                    else:
-                        if v is None:
-                            return False
+                                flag = False
+    
+                        else:
+                            if v is None:
+                                flag = False
+                    if flag:
+                        final_flag = True
+                        break
+                if not final_flag:
+                    return False
+                
         if has_necessary_edge:
             aw.action = configs[0].action
             return True

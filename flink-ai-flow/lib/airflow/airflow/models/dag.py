@@ -2040,41 +2040,38 @@ class DAG(LoggingMixin):
 
 class DagEventDependencies(object):
     def __init__(self, dag: DAG = None):
-        # key: namespace
-        # value: key: event_key
-        #        value:
-        #           key: event_type
-        #           value: dict(task_id: from_task_id)
-        self.task_event_dependencies = {}
+        ANY_CONDITION = '*'
+        # list: [task_id, namespace, event_type, sender, key]
+        self.task_event_dependencies = []
         if dag is not None:
             for task_id, op in dag.task_dict.items():
                 dep_set: Set[Tuple[str, str, str, str]] = op.get_subscribed_events()
-                for event_namespace, event_key, event_type, from_task_id in dep_set:
-                    self.add_dependencies(task_id, EventKey(event_key, event_type, event_namespace), from_task_id)
+                for event_namespace, event_key, event_type, sender in dep_set:
+                    if sender is None or '' == sender:
+                        sender = ANY_CONDITION
+                    self.add_dependencies(task_id, EventKey(event_key, event_type, event_namespace, sender))
 
-    def add_dependencies(self, task_id: str, event_key: EventKey, from_task_id: str = None):
-        if event_key.namespace not in self.task_event_dependencies:
-            self.task_event_dependencies[event_key.namespace] = {}
-        namespace_dict = self.task_event_dependencies[event_key.namespace]
-        if event_key.key not in namespace_dict:
-            namespace_dict[event_key.key] = {}
-        key_dict = namespace_dict[event_key.key]
-        if event_key.event_type not in key_dict:
-            key_dict[event_key.event_type] = {}
-        key_dict[event_key.event_type][task_id] = from_task_id
+    def add_dependencies(self, task_id: str, event_key: EventKey):
+        self.task_event_dependencies.append([task_id, event_key.namespace, event_key.event_type,
+                                             event_key.sender, event_key.key])
 
     def find_affected_tasks(self, event_key: EventKey)->Optional[List]:
+        ANY_CONDITION = '*'
         result = set()
-        if event_key.namespace not in self.task_event_dependencies:
-            return None
-        namespace_dict = self.task_event_dependencies[event_key.namespace]
-        if event_key.key not in namespace_dict:
-            return None
-        key_dict = namespace_dict[event_key.key]
-        if event_key.event_type in key_dict:
-            result.update(key_dict[event_key.event_type])
-        if '*' in key_dict:
-            result.update(key_dict['*'])
+
+        def match_condition(config_value, event_value)->bool:
+            if config_value == ANY_CONDITION or event_value == config_value:
+                return True
+            else:
+                return False
+
+        for task_id, namespace, event_type, sender, key in self.task_event_dependencies:
+            c_namespace = match_condition(namespace, event_key.namespace)
+            c_event_type = match_condition(event_type, event_key.event_type)
+            c_sender = match_condition(sender, event_key.sender)
+            c_key = match_condition(key, event_key.key)
+            if c_namespace and c_event_type and c_sender and c_key:
+                result.add(task_id)
         return list(result)
 
     def is_affect(self, event_key: EventKey)->bool:
@@ -2088,11 +2085,8 @@ class DagEventDependencies(object):
 
     def find_event_dependencies_tasks(self)->set:
         tasks = set()
-        for n in self.task_event_dependencies:
-            for k in self.task_event_dependencies[n]:
-                for t in self.task_event_dependencies[n][k]:
-                    for task in self.task_event_dependencies[n][k][t]:
-                        tasks.add(task)
+        for task_id, namespace, event_type, sender, key in self.task_event_dependencies:
+            tasks.add(task_id)
         return tasks
 
     @classmethod

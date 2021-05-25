@@ -284,7 +284,10 @@ class DagRunEventExecutor(LoggingMixin):
         :param event: the event to be handled.
         :type event: BaseEvent
         """
-        task_ids = self._dependency.find_affected_tasks(EventKey(event.key, event.event_type, event.namespace))
+        task_ids = self._dependency.find_affected_tasks(EventKey(event.key,
+                                                                 event.event_type,
+                                                                 event.namespace,
+                                                                 event.sender))
         if task_ids is None:
             return {}
         operators: Set[BaseOperator] = set()
