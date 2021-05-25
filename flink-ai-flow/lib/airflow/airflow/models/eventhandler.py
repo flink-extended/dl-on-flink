@@ -19,19 +19,18 @@ from __future__ import annotations
 
 import json
 from typing import Tuple, Dict
-
-from notification_service.base_notification import BaseEvent
-
+from notification_service.base_notification import BaseEvent, DEFAULT_NAMESPACE, ANY_CONDITION
 from airflow.executors.scheduling_action import SchedulingAction
 
 
 class EventKey(object):
 
-    def __init__(self, key, event_type, namespace='default') -> None:
+    def __init__(self, key, event_type, namespace=DEFAULT_NAMESPACE, sender=ANY_CONDITION) -> None:
         super().__init__()
         self.key = key
         self.event_type = event_type
         self.namespace = namespace
+        self.sender = sender
 
 
 class EventHandler(object):

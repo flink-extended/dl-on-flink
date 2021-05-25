@@ -71,7 +71,7 @@ from airflow.utils.operator_resources import Resources
 from airflow.utils.session import provide_session
 from airflow.utils.trigger_rule import TriggerRule
 from airflow.utils.weight_rule import WeightRule
-from notification_service.base_notification import UNDEFINED_EVENT_TYPE, BaseEvent
+from notification_service.base_notification import UNDEFINED_EVENT_TYPE, BaseEvent, ANY_CONDITION, DEFAULT_NAMESPACE
 
 if TYPE_CHECKING:
     from airflow.utils.task_group import TaskGroup  # pylint: disable=cyclic-import
@@ -142,8 +142,8 @@ class EventOperator(LoggingMixin, Operator):
 
     def subscribe_event(self, event_key: str,
                         event_type: str = UNDEFINED_EVENT_TYPE,
-                        event_namespace: str = 'default',
-                        from_task_id: str = None):
+                        event_namespace: str = DEFAULT_NAMESPACE,
+                        from_task_id: str = ANY_CONDITION):
         """
         Subscribe to the events with the event_key and event_type. The event_handler will only handle the
         event that the operator subscribes to. event_type is optional, if it is not specify, it subscribes to all type
