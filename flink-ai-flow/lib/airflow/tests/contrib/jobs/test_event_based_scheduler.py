@@ -326,11 +326,12 @@ class TestEventBasedScheduler(unittest.TestCase):
 
     def run_ai_flow_function(self):
         client = NotificationClient(server_uri="localhost:{}".format(self.port),
-                                    default_namespace="default")
+                                    default_namespace="default",
+                                    sender='1-job-name')
         while True:
             with create_session() as session:
                 tes = session.query(TaskExecution).filter(TaskExecution.dag_id == 'workflow_1',
-                                                          TaskExecution.task_id == '0_job').all()
+                                                          TaskExecution.task_id == '1-job-name').all()
                 if len(tes) > 0:
                     time.sleep(5)
                     client.send_event(BaseEvent(key='key_1', value='value_1', event_type='UNDEFINED'))
@@ -354,7 +355,7 @@ class TestEventBasedScheduler(unittest.TestCase):
         t.setDaemon(True)
         t.start()
         self.start_scheduler('../../dags/test_aiflow_dag.py')
-        tes: List[TaskExecution] = self.get_task_execution("workflow_1", "1_job")
+        tes: List[TaskExecution] = self.get_task_execution("workflow_1", "1-job-name")
         self.assertEqual(len(tes), 1)
 
     def stop_dag_function(self):
