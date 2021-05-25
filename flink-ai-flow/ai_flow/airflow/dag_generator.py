@@ -20,6 +20,8 @@ from abc import ABC
 from datetime import datetime
 from typing import Text, List
 
+from ai_flow.workflow.job import BaseJob
+
 from ai_flow.common import json_utils
 from ai_flow.common.registry import BaseRegistry
 from ai_flow.graph.edge import MetConfig, MetCondition, EventLife, MetValueCondition, TaskAction
@@ -106,7 +108,7 @@ op_{0}.subscribe_event('UNREACHED_EVENT', 'UNREACHED_EVENT', 'UNREACHED_EVENT', 
 
     EVENT_DEPS = """{0}.subscribe_event('{1}', '{2}', '{3}', '{4}')\n"""
 
-    MET_HANDLER = """configs_{0}='{1}'\n
+    MET_HANDLER = """configs_{0}='{1}'
 {0}.set_events_handler(AIFlowHandler(configs_{0}))\n"""
 
 
@@ -182,6 +184,17 @@ class DAGGenerator(object):
                 configs = []
                 for edge in edges:
                     met_config: MetConfig = edge.met_config
+
+                    def reset_met_config():
+                        target_node_id = edge.target_node_id
+                        if target_node_id is not None and '' != target_node_id:
+                            target_job: BaseJob = workflow.jobs.get(target_node_id)
+                            if target_job.job_name is not None:
+                                met_config.sender = target_job.job_name
+                        else:
+                            met_config.sender = '*'
+                    reset_met_config()
+
                     if match_stop_before_config(met_config):
                         dep_task_id = edge.target_node_id
                         code = self.generate_upstream(op_name, task_map[dep_task_id])

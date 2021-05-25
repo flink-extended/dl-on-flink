@@ -20,7 +20,7 @@ from enum import Enum
 from typing import Text
 
 from ai_flow.common.json_utils import Jsonable
-from notification_service.base_notification import UNDEFINED_EVENT_TYPE
+from notification_service.base_notification import UNDEFINED_EVENT_TYPE, ANY_CONDITION, DEFAULT_NAMESPACE
 
 
 class Edge(Jsonable):
@@ -107,9 +107,6 @@ class MetValueCondition(str, Enum):
     UPDATE = "UPDATE"
 
 
-DEFAULT_NAMESPACE = 'default'
-
-
 class MetConfig(Jsonable):
     def __init__(self,
                  event_key: Text,
@@ -119,7 +116,8 @@ class MetConfig(Jsonable):
                  action: TaskAction = TaskAction.START,
                  life: EventLife = EventLife.ONCE,
                  value_condition: MetValueCondition = MetValueCondition.EQUAL,
-                 namespace: Text = DEFAULT_NAMESPACE
+                 namespace: Text = DEFAULT_NAMESPACE,
+                 sender: Text = ANY_CONDITION
                  ):
         self.event_type = event_type
         self.event_key = event_key
@@ -129,6 +127,10 @@ class MetConfig(Jsonable):
         self.life = life
         self.value_condition = value_condition
         self.namespace = namespace
+        if sender is None or '' == sender:
+            self.sender = ANY_CONDITION
+        else:
+            self.sender = sender
 
 
 def generate_job_status_key(target_id) -> str:
@@ -143,7 +145,8 @@ class ControlEdge(Edge):
     def generate_met_config(self) -> MetConfig:
         return MetConfig(event_key=generate_job_status_key(self.target_node_id),
                          event_value="FINISHED",
-                         namespace=self.namespace)
+                         namespace=self.namespace,
+                         sender=self.target_node_id)
 
 
 class UserDefineControlEdge(ControlEdge):
@@ -176,7 +179,8 @@ class UserDefineControlEdge(ControlEdge):
                          action=self.action,
                          life=self.life,
                          value_condition=self.value_condition,
-                         namespace=self.namespace)
+                         namespace=self.namespace,
+                         sender=self.target_node_id)
 
 
 class JobControlEdge(Edge):
@@ -190,7 +194,8 @@ class JobControlEdge(Edge):
         if met_config is None:
             self.met_config = MetConfig(event_key=generate_job_status_key(target_node_id),
                                         event_value="FINISHED",
-                                        namespace=namespace)
+                                        namespace=namespace,
+                                        sender=target_node_id)
         else:
             self.met_config = met_config
 
@@ -205,7 +210,7 @@ class StartBeforeControlEdge(ControlEdge):
 
     def generate_met_config(self) -> MetConfig:
         return MetConfig(event_key=generate_job_status_key(self.target_node_id),
-                         event_value="STARTING", namespace=self.namespace)
+                         event_value="STARTING", namespace=self.namespace, sender=self.target_node_id)
 
 
 class StopBeforeControlEdge(ControlEdge):
@@ -217,7 +222,8 @@ class RestartBeforeControlEdge(ControlEdge):
         return MetConfig(event_key=generate_job_status_key(self.target_node_id),
                          event_value="FINISHED",
                          namespace=self.namespace,
-                         action=TaskAction.RESTART)
+                         action=TaskAction.RESTART,
+                         sender=self.target_node_id)
 
 
 class ModelVersionControlEdge(ControlEdge):
