@@ -104,11 +104,11 @@ public class MLMapFunction<IN, OUT> implements Closeable, Serializable {
 
 		// wait for tf thread finish
 		try {
+			//as in batch mode, we can't user timer to drain queue, so drain it here
+			drainRead(collector, true);
 			if (serverFuture != null && !serverFuture.isCancelled()) {
 				serverFuture.get();
 			}
-			//as in batch mode, we can't user timer to drain queue, so drain it here
-			drainRead(collector, true);
 		} catch (InterruptedException e) {
 			LOG.error("Interrupted waiting for server join {}.", e.getMessage());
 			serverFuture.cancel(true);
