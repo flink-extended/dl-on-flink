@@ -21,6 +21,7 @@ import os
 import sys
 import tempfile
 import time
+import shutil
 from typing import Optional, Tuple, Text
 from tempfile import NamedTemporaryFile
 from ai_flow.airflow.dag_generator import DAGGenerator
@@ -217,7 +218,7 @@ def deploy_to_airflow(project_path: Text = None,
                                                  default_args=default_args)
     with NamedTemporaryFile(mode='w+t', prefix=dag_id, suffix='.py', dir='/tmp', delete=False) as f:
         f.write(generated_code)
-    os.rename(f.name, airflow_file_path)
+    shutil.move(f.name, airflow_file_path)
     return airflow_file_path
 
 
