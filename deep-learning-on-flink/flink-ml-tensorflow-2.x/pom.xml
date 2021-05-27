@@ -176,7 +176,6 @@
                                     <exclude>org.apache.logging.log4j:log4j-api</exclude>
                                     <exclude>org.apache.logging.log4j:log4j-core</exclude>
                                     <exclude>log4j:log4j</exclude>
-                                    <exclude></exclude>
                                     <!-- flink shaded jars -->
                                     <exclude>org.apache.flink:flink-shaded-*</exclude>
                                     <!-- flink dependencies are provided -->
