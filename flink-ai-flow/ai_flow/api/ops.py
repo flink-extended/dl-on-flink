@@ -18,6 +18,8 @@
 #
 from typing import Union, Text, Tuple, Optional, List
 
+from notification_service.base_notification import UNDEFINED_EVENT_TYPE
+
 from ai_flow.api.ai_flow_context import config, BaseJobConfig
 from ai_flow.api.ai_flow_context import default_af_job_context, NONE_ENGINE
 from ai_flow.client.ai_flow_client import get_ai_flow_client
@@ -550,22 +552,22 @@ def user_define_operation(
             return tuple(output)
 
 
-def start_before_control_dependency(src: Channel,
-                                    dependency: Channel,
-                                    namespace: Text = DEFAULT_NAMESPACE
-                                    ) -> None:
-    """
-    Add start-before control dependency. It means src channel will start when and only the dependency channel start.
-
-    :param namespace:
-    :param src: The src channel depended on the dependency channel.
-    :param dependency: The channel which is the dependency.
-    :return: None.
-    """
-    tmp = StartBeforeControlEdge(source_node_id=src.node_id,
-                                 target_node_id=dependency.node_id,
-                                 namespace=namespace)
-    _default_ai_graph.add_edge(src.node_id, tmp)
+# def start_before_control_dependency(src: Channel,
+#                                     dependency: Channel,
+#                                     namespace: Text = DEFAULT_NAMESPACE
+#                                     ) -> None:
+#     """
+#     Add start-before control dependency. It means src channel will start when and only the dependency channel start.
+#
+#     :param namespace:
+#     :param src: The src channel depended on the dependency channel.
+#     :param dependency: The channel which is the dependency.
+#     :return: None.
+#     """
+#     tmp = StartBeforeControlEdge(source_node_id=src.node_id,
+#                                  target_node_id=dependency.node_id,
+#                                  namespace=namespace)
+#     _default_ai_graph.add_edge(src.node_id, tmp)
 
 
 def stop_before_control_dependency(src: Channel,
@@ -587,23 +589,23 @@ def stop_before_control_dependency(src: Channel,
     _default_ai_graph.add_edge(src.node_id, tmp)
 
 
-def restart_before_control_dependency(src: Channel,
-                                      dependency: Channel,
-                                      namespace: Text = DEFAULT_NAMESPACE
-                                      ) -> None:
-    """
-    Add restart-before control dependency. It means src channel will restart when and only the dependency channel stop.
-
-    :param namespace:
-    :param src: The src channel depended on the dependency channel.
-    :param dependency: The channel which is the dependency.
-    :return: None.
-    """
-
-    tmp = RestartBeforeControlEdge(source_node_id=src.node_id,
-                                   target_node_id=dependency.node_id,
-                                   namespace=namespace)
-    _default_ai_graph.add_edge(src.node_id, tmp)
+# def restart_before_control_dependency(src: Channel,
+#                                       dependency: Channel,
+#                                       namespace: Text = DEFAULT_NAMESPACE
+#                                       ) -> None:
+#     """
+#     Add restart-before control dependency. It means src channel will restart when and only the dependency channel stop.
+#
+#     :param namespace:
+#     :param src: The src channel depended on the dependency channel.
+#     :param dependency: The channel which is the dependency.
+#     :return: None.
+#     """
+#
+#     tmp = RestartBeforeControlEdge(source_node_id=src.node_id,
+#                                    target_node_id=dependency.node_id,
+#                                    namespace=namespace)
+#     _default_ai_graph.add_edge(src.node_id, tmp)
 
 
 def model_version_control_dependency(src: Channel,
@@ -657,12 +659,13 @@ def user_define_control_dependency(src: Channel,
                                    dependency: Channel,
                                    event_key: Text,
                                    event_value: Text,
-                                   event_type: Text = None,
+                                   event_type: Text = UNDEFINED_EVENT_TYPE,
                                    condition: MetCondition = MetCondition.NECESSARY,
                                    action: TaskAction = TaskAction.START,
                                    life: EventLife = EventLife.ONCE,
                                    value_condition: MetValueCondition = MetValueCondition.EQUAL,
-                                   namespace: Text = DEFAULT_NAMESPACE
+                                   namespace: Text = DEFAULT_NAMESPACE,
+                                   sender: Text = None
                                    ) -> None:
     """
     Add user defined control dependency.
@@ -681,6 +684,7 @@ def user_define_control_dependency(src: Channel,
                             equals to the event value under the specific event key, while update means src channel
                             will start or restart when in the the condition that the notification service has a update
                             operation on the event key which event value belongs to.
+    :param sender: The event sender identity. If sender is None, the sender will be dependency.
     :return:None.
     """
     control_edge = UserDefineControlEdge(target_node_id=dependency.node_id,
@@ -692,6 +696,7 @@ def user_define_control_dependency(src: Channel,
                                          action=action,
                                          life=life,
                                          value_condition=value_condition,
-                                         namespace=namespace
+                                         namespace=namespace,
+                                         sender=sender
                                          )
     _default_ai_graph.add_edge(src.node_id, control_edge)

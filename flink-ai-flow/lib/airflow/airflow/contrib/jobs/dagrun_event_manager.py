@@ -20,6 +20,7 @@ from concurrent.futures.thread import ThreadPoolExecutor
 from queue import Queue, Empty
 from typing import Optional, Set, Dict, cast
 
+from airflow.utils.session import create_session
 from notification_service.base_notification import BaseEvent
 
 from airflow.contrib.jobs.background_service import BackgroundService
@@ -308,12 +309,14 @@ class DagRunEventExecutor(LoggingMixin):
     def _operator_handle_event(event, operator, execution_date) -> SchedulingAction:
         task_state = TaskState.get_task_state(operator.dag_id, operator.task_id, execution_date)
         event_handler = operator.get_events_handler()
-        if task_state:
-            scheduling_action, state = event_handler.handle_event(event, task_state.task_state)
-            task_state.task_state = state
-            task_state.update_task_state()
-        else:
-            scheduling_action, state = event_handler.handle_event(event, None)
+        if not task_state:
+            task_state = TaskState(task_id=operator.task_id, dag_id=operator.dag_id, execution_date=execution_date)
+            with create_session() as session:
+                session.add(task_state)
+                session.commit()
+        scheduling_action, state = event_handler.handle_event(event, task_state.task_state)
+        task_state.task_state = state
+        task_state.update_task_state()
         return scheduling_action
 
     def _find_operator(self, task_id) -> Optional[BaseOperator]:
