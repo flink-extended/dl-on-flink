@@ -1,0 +1,6 @@
+project_name: wide_and_deep_project
+master_ip: localhost
+master_port: 50051
+notification_uri: localhost:50052
+# the following config is the airflow deployment absolute path, whose format is like: /path/airflow/airflow_deploy
+airflow_deploy_path: /Users/kenken/airflow/airflow_deploy

@@ -1,0 +1,72 @@
+census_batch_preprocess:
+  platform: local
+  engine: python
+  job_name: batch_preprocess
+#  periodic_config:
+#    periodic_type: interval # 'interval' or 'cron'
+#    args:
+#      seconds: 80
+
+census_batch_train:
+  platform: local
+  engine: flink
+  job_name: batch_train
+  flink_home: xxx # Please use your own flink path in this config
+  local_mode: cluster
+  language_type: PYTHON
+
+census_batch_evaluate:
+  platform: local
+  engine: python
+  job_name: batch_evaluate
+
+census_batch_validate:
+  platform: local
+  engine: python
+  job_name: batch_validate
+
+
+
+census_stream_preprocess_train:
+  platform: local
+  engine: flink
+  job_name: stream_prep_train
+  flink_home: xxx # Please use your own flink path in this config
+  local_mode: cluster
+  language_type: PYTHON
+
+
+census_stream_train:
+  platform: local
+  engine: flink
+  job_name: stream_train
+  flink_home: xxx # Please use your own flink path in this config
+  local_mode: cluster
+  language_type: PYTHON
+
+census_stream_validate:
+  platform: local
+  engine: python
+  job_name: validate
+
+
+census_stream_push:
+  platform: local
+  engine: python
+  job_name: push
+
+census_stream_preprocess_predict:
+  platform: local
+  engine: flink
+  job_name: stream_prep_predict
+  flink_home: xxx # Please use your own flink path in this config
+  local_mode: cluster
+  language_type: PYTHON
+
+census_stream_predict:
+  platform: local
+  engine: flink
+  job_name: stream_predict
+  flink_home: xxx # Please use your own flink path in this config
+  local_mode: cluster
+  language_type: PYTHON
