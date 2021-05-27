@@ -18,6 +18,8 @@
 #
 import unittest
 
+from ai_flow.application_master.master import AIFlowMaster
+
 from ai_flow.common.path_util import get_file_dir
 from ai_flow.project.blob_manager import BlobManagerFactory
 from ai_flow.project.project_description import get_project_description_from
@@ -48,6 +50,16 @@ class ProjectTest(unittest.TestCase):
 
         downloaded_path = blob_manager.download_blob('1', uploaded_path)
         self.assertEqual('/tmp/workflow_1_project/project', downloaded_path)
+
+    def setUp(self):
+        project_path = get_file_dir(__file__)
+        config_file = project_path + '/master.yaml'
+        self.master = AIFlowMaster(config_file=config_file)
+        self.master.start()
+
+    def tearDown(self):
+        self.master.stop()
+        self.master._clear_db()
 
     def test_load_project_config(self):
         project_path = get_file_dir(__file__)
