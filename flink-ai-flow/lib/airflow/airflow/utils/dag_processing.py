@@ -781,6 +781,8 @@ class DagFileProcessorManager(LoggingMixin):  # pylint: disable=too-many-instanc
             if not finish_process_time or not duration:
                 continue
             start_process_time = finish_process_time - timedelta(seconds=duration)
+            self.log.debug('Check dag processor start_process_time {} process_time {} file_path {}'
+                           .format(start_process_time, process_time, file_path))
             if start_process_time > process_time:
                 self.ns_client.send_event(BaseEvent(key=event.key,
                                                     value=file_path,
@@ -1075,6 +1077,10 @@ class DagFileProcessorManager(LoggingMixin):  # pylint: disable=too-many-instanc
         """Start more processors if we have enough slots and files to process"""
         while self._parallelism - len(self._processors) > 0 and self._file_path_queue:
             file_path = self._file_path_queue.pop(0)
+            # wait until the processor end
+            if file_path in self._processors:
+                self._file_path_queue.append(file_path)
+                continue
             callback_to_execute_for_file = self._callback_to_execute[file_path]
             processor = self._processor_factory(
                 file_path, callback_to_execute_for_file, self._dag_ids, self._pickle_dags

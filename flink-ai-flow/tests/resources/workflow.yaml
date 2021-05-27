@@ -39,3 +39,13 @@ task_4:
   engine: flink
   job_name: task_4
   local_mode: cluster
+
+task_5:
+  platform: local
+  engine: python
+  job_name: task_5
+
+task_6:
+  platform: local
+  engine: python
+  job_name: task_6
