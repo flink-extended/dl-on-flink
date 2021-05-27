@@ -444,7 +444,7 @@ class EventBasedScheduler(LoggingMixin):
         dag_run.verify_integrity(session=session)
 
     def _send_scheduling_task_event(self, ti: Optional[TI], action: SchedulingAction):
-        if ti is None:
+        if ti is None or action == SchedulingAction.NONE:
             return
         task_scheduling_event = TaskSchedulingEvent(
             ti.task_id,

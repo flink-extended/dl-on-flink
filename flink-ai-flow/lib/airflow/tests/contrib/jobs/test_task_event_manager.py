@@ -19,6 +19,7 @@ import time
 import unittest
 from typing import Tuple
 
+from airflow.events.scheduler_events import SchedulerInnerEventUtil
 from notification_service.base_notification import BaseEvent
 
 from airflow.contrib.jobs.dagrun_event_manager import DagRunEventExecutor, EventHandleResult, \
@@ -77,17 +78,17 @@ class TestDagRunEventManager(EventHandlerTestBase):
         event_manager.handle_event(DagRunId(self._dag_run.dag_id, self._dag_run.run_id), event)
 
         handle_event = mailbox.get_message()
-        message = EventHandleResult.from_event(handle_event)
+        message = EventHandleResult.from_event(SchedulerInnerEventUtil.to_inner_event(handle_event))
         assert message == EventHandleResult(DagRunId(self._dag_run.dag_id, self._dag_run.run_id), "operator_toggle_handler", SchedulingAction.START)
 
         handle_event = mailbox.get_message()
-        message = EventHandleResult.from_event(handle_event)
+        message = EventHandleResult.from_event(SchedulerInnerEventUtil.to_inner_event(handle_event))
         assert message == EventHandleResult(DagRunId(self._dag_run.dag_id, self._dag_run.run_id), "operator_toggle_handler", SchedulingAction.STOP)
 
         time.sleep(2)
         event_manager.handle_event(DagRunId(self._dag_run.dag_id, self._dag_run.run_id), event)
         handle_event = mailbox.get_message()
-        message = EventHandleResult.from_event(handle_event)
+        message = EventHandleResult.from_event(SchedulerInnerEventUtil.to_inner_event(handle_event))
         assert message == EventHandleResult(DagRunId(self._dag_run.dag_id, self._dag_run.run_id), "operator_toggle_handler", SchedulingAction.START)
         event_manager.end()
 
@@ -117,15 +118,15 @@ class TestDagRunEventManager(EventHandlerTestBase):
         event_manager = DagRunEventManager(mailbox=mailbox)
         event_manager.handle_event(DagRunId(dag_run1.dag_id, dag_run1.run_id), event)
         event_manager.handle_event(DagRunId(dag_run2.dag_id, dag_run2.run_id), event)
-        messages = [EventHandleResult.from_event(mailbox.get_message()),
-                    EventHandleResult.from_event(mailbox.get_message())]
+        messages = [EventHandleResult.from_event(SchedulerInnerEventUtil.to_inner_event(mailbox.get_message())),
+                    EventHandleResult.from_event(SchedulerInnerEventUtil.to_inner_event(mailbox.get_message()))]
         assert EventHandleResult(DagRunId(dag_run1.dag_id, dag_run1.run_id), "operator_toggle_handler", SchedulingAction.START) in messages
         assert EventHandleResult(DagRunId(dag_run2.dag_id, dag_run2.run_id), "operator_toggle_handler", SchedulingAction.START) in messages
 
         event_manager.handle_event(DagRunId(dag_run1.dag_id, dag_run1.run_id), event)
         event_manager.handle_event(DagRunId(dag_run2.dag_id, dag_run2.run_id), event)
-        messages = [EventHandleResult.from_event(mailbox.get_message()),
-                    EventHandleResult.from_event(mailbox.get_message())]
+        messages = [EventHandleResult.from_event(SchedulerInnerEventUtil.to_inner_event(mailbox.get_message())),
+                    EventHandleResult.from_event(SchedulerInnerEventUtil.to_inner_event(mailbox.get_message()))]
         assert EventHandleResult(DagRunId(dag_run1.dag_id, dag_run1.run_id), "operator_toggle_handler", SchedulingAction.STOP) in messages
         assert EventHandleResult(DagRunId(dag_run2.dag_id, dag_run2.run_id), "operator_toggle_handler", SchedulingAction.STOP) in messages
 
@@ -166,12 +167,12 @@ class TestTaskEventExecutorRunner(EventHandlerTestBase):
 
         executor_runner.run()
         handle_event = mailbox.get_message()
-        message = EventHandleResult.from_event(handle_event)
+        message = EventHandleResult.from_event(SchedulerInnerEventUtil.to_inner_event(handle_event))
         assert message == EventHandleResult(DagRunId(self._dag_run.dag_id, self._dag_run.run_id),
                                             "operator_toggle_handler", SchedulingAction.START)
 
         handle_event = mailbox.get_message()
-        message = EventHandleResult.from_event(handle_event)
+        message = EventHandleResult.from_event(SchedulerInnerEventUtil.to_inner_event(handle_event))
         assert message == EventHandleResult(DagRunId(self._dag_run.dag_id, self._dag_run.run_id),
                                             "operator_toggle_handler", SchedulingAction.STOP)
 

@@ -25,8 +25,8 @@ from ai_flow.api.configuration import set_default_project_config, set_project_co
     ensure_project_registered, unset_project_config, project_config
 from ai_flow.api.notification import *
 from ai_flow.api.ops import read_example, write_example, transform, train, predict, evaluate, example_validate, \
-    model_validate, push_model, external_trigger, user_define_operation, start_before_control_dependency, \
-    stop_before_control_dependency, restart_before_control_dependency, model_version_control_dependency, \
+    model_validate, push_model, external_trigger, user_define_operation, \
+    stop_before_control_dependency, model_version_control_dependency, \
     example_control_dependency, user_define_control_dependency
 from ai_flow.api.project import run, submit_ai_flow, stop_execution_by_id, wait_workflow_execution_finished, \
     compile_workflow, deploy_to_airflow, generate_airflow_file_text, submit
