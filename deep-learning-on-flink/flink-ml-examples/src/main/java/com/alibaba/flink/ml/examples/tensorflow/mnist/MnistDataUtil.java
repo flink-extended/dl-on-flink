@@ -23,6 +23,7 @@ import com.alibaba.flink.ml.cluster.ExecutionMode;
 import com.alibaba.flink.ml.cluster.node.MLContext;
 import com.alibaba.flink.ml.cluster.node.runner.python.ProcessPythonRunner;
 import com.alibaba.flink.ml.tensorflow.client.TFConfig;
+import com.alibaba.flink.ml.tensorflow.client.TFConfigBase;
 import com.alibaba.flink.ml.util.*;
 import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
@@ -104,7 +105,7 @@ public class MnistDataUtil {
 		File f = new File(rootPath + "/flink-ml-examples/src/test/python/mnist_data_setup.py");
 		System.out.println(f.getAbsolutePath());
 		if (flag) {
-			TFConfig config = new TFConfig(0, 0, null, (String) null,
+			TFConfigBase config = new TFConfig(0, 0, null, (String) null,
 					null, null);
 			MLContext mlContext = new MLContext(ExecutionMode.TRAIN, config.getMlConfig(),
 					"worker", 0, null, null);
@@ -113,12 +114,10 @@ public class MnistDataUtil {
 	}
 
 	public static void prepareData() throws IOException {
-		downloadData();
 		genTFRecord();
 	}
 
 	public static void main(String[] args) throws IOException {
-		downloadData();
 		genTFRecord();
 	}
 

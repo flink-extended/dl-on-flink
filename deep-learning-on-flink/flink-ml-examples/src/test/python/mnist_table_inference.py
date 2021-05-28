@@ -2,14 +2,15 @@
 
 from __future__ import print_function
 from datetime import datetime
-import tensorflow as tf
+# A quick fix to run TF 1.X code in TF 2.X, we may want to properly migrate the Python script to TF 2.X API.
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 from tensorflow.python.summary.writer.writer_cache import FileWriterCache as SummaryWriterCache
 import math
 import numpy
 import json
 import sys
-from flink_ml_tensorflow.tensorflow_on_flink_ops import *
-from flink_ml_tensorflow.tensorflow_context import *
+from flink_ml_tensorflow.tensorflow_context import TFContext
 
 
 def test_log(message):
@@ -38,7 +39,7 @@ def input_iter(context, batch_size):
     dataset = dataset.map(lambda record: tf.parse_single_example(record, features=features))
     dataset = dataset.map(decode)
     dataset = dataset.batch(batch_size)
-    iterator = dataset.make_one_shot_iterator()
+    iterator = tf.data.make_one_shot_iterator(dataset)
     return iterator
 
 

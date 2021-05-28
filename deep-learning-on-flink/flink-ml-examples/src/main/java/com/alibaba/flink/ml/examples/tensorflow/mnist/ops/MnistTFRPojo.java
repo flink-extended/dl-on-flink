@@ -19,7 +19,7 @@
 package com.alibaba.flink.ml.examples.tensorflow.mnist.ops;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import org.tensorflow.example.Example;
+import org.tensorflow.proto.example.Example;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
