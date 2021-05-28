@@ -28,7 +28,7 @@ from airflow.executors.scheduling_action import SchedulingAction
 from airflow.models.taskinstance import TaskInstance, TaskInstanceKey
 from airflow.stats import Stats
 from airflow.utils.log.logging_mixin import LoggingMixin
-from airflow.utils.session import provide_session
+from airflow.utils.session import provide_session, create_session
 from airflow.utils.state import State
 from airflow.settings import CHECK_TASK_STOPPED_INTERVAL, CHECK_TASK_STOPPED_NUM
 
@@ -137,14 +137,25 @@ class BaseExecutor(LoggingMixin):
         :param key: task instance key
         :param action: task scheduling action in [START, STOP, RESTART]
         """
-        if SchedulingAction.START == action:
-            self._start_task_instance(key)
-        elif SchedulingAction.STOP == action:
-            self._stop_task_instance(key)
-        elif SchedulingAction.RESTART == action:
-            self._restart_task_instance(key)
-        else:
-            raise ValueError('The task scheduling action must in ["START", "STOP", "RESTART"].')
+        with create_session() as session:
+            ti = session.query(TaskInstance).filter(
+                TaskInstance.dag_id == key.dag_id,
+                TaskInstance.task_id == key.task_id,
+                TaskInstance.execution_date == key.execution_date
+            ).first()
+            if SchedulingAction.START == action:
+                if ti.state not in State.running:
+                    self._start_task_instance(key)
+            elif SchedulingAction.STOP == action:
+                if ti.state in State.unfinished:
+                    self._stop_task_instance(key)
+            elif SchedulingAction.RESTART == action:
+                if ti.state in State.running:
+                    self._restart_task_instance(key)
+                else:
+                    self._start_task_instance(key)
+            else:
+                raise ValueError('The task scheduling action must in ["START", "STOP", "RESTART"].')
 
     def _start_task_instance(self, key: TaskInstanceKey):
         """

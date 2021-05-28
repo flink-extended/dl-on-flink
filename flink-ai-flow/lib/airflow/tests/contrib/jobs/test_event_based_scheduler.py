@@ -167,6 +167,14 @@ class TestEventBasedScheduler(unittest.TestCase):
         print("scheduler starting")
         self.scheduler.run()
 
+    def wait_for_running(self):
+        while True:
+            if self.scheduler is not None:
+                time.sleep(5)
+                break
+            else:
+                time.sleep(1)
+
     def wait_for_task_execution(self, dag_id, task_id, expected_num):
         result = False
         check_nums = 100
@@ -408,3 +416,24 @@ class TestEventBasedScheduler(unittest.TestCase):
         self.start_scheduler('../../dags/test_periodic_task_dag.py')
         tes: List[TaskExecution] = self.get_task_execution("single", "task_1")
         self.assertGreater(len(tes), 1)
+
+    def run_one_task_function(self):
+        self.wait_for_running()
+        self.client.send_event(BaseEvent(key='a', value='a'))
+        time.sleep(5)
+        self.client.send_event(BaseEvent(key='a', value='a'))
+        while True:
+            with create_session() as session:
+                tes = session.query(TaskExecution).filter(TaskExecution.dag_id == 'single',
+                                                          TaskExecution.task_id == 'task_1').all()
+                if len(tes) >= 2:
+                    break
+                else:
+                    time.sleep(1)
+        self.client.send_event(StopSchedulerEvent(job_id=0).to_event())
+
+    def test_run_one_task(self):
+        t = threading.Thread(target=self.run_one_task_function, args=())
+        t.setDaemon(True)
+        t.start()
+        self.start_scheduler('../../dags/test_multiple_trigger_task_dag.py')
