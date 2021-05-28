@@ -10,7 +10,7 @@
     <artifactId>flink_ai_extended</artifactId>
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
-    <version>0.3.0</version>
+    <version>0.4-SNAPSHOT</version>
     <description>This project extends support for AI computing framework on Flink</description>
     <url>https://github.com/alibaba/flink-ai-extended</url>
     <licenses>
@@ -51,6 +51,8 @@
         <module>flink-ml-framework</module>
         <module>flink-ml-operator</module>
         <module>flink-ml-tensorflow</module>
+        <module>flink-ml-tensorflow-2.x</module>
+        <module>flink-ml-tensorflow-common</module>
         <module>flink-ml-pytorch</module>
         <module>flink-ml-examples</module>
         <module>flink-ml-lib</module>
@@ -58,7 +60,7 @@
     </modules>
 
     <properties>
-        <protobuf.version>3.6.0</protobuf.version>
+        <protobuf.version>3.8.0</protobuf.version>
         <flink.version>1.11.2</flink.version>
         <scala.major.version>2.11</scala.major.version>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -66,7 +68,6 @@
         <grpc.version>1.13.2</grpc.version>
         <log4j.version>2.11.1</log4j.version>
         <hadoop.version>2.8.0</hadoop.version>
-        <tensorflow.version>1.15.0</tensorflow.version>
         <tensorflow.package.name>tensorflow</tensorflow.package.name>
         <netty.version>4.1.30.Final</netty.version>
         <curator.version>2.7.1</curator.version>
@@ -287,21 +288,6 @@
                 <groupId>org.scalatest</groupId>
                 <artifactId>scalatest_${scala.major.version}</artifactId>
                 <version>${scala.test.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.tensorflow</groupId>
-                <artifactId>tensorflow</artifactId>
-                <version>${tensorflow.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.tensorflow</groupId>
-                <artifactId>proto</artifactId>
-                <version>${tensorflow.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.tensorflow</groupId>
-                <artifactId>tensorflow-hadoop</artifactId>
-                <version>${tensorflow.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

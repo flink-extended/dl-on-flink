@@ -3,7 +3,7 @@ package com.alibaba.flink.ml.lib.tensorflow.utils;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.scala.typeutils.Types;
 
-import org.tensorflow.framework.DataType;
+import org.tensorflow.proto.framework.DataType;
 
 /**
  * helper function to convert TypeDef to TypeInformation, DataType etc.

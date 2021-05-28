@@ -16,15 +16,14 @@ import org.slf4j.LoggerFactory;
 import org.tensorflow.SavedModelBundle;
 import org.tensorflow.Session;
 import org.tensorflow.Tensor;
-import org.tensorflow.framework.ConfigProto;
-import org.tensorflow.framework.DataType;
-import org.tensorflow.framework.MetaGraphDef;
-import org.tensorflow.framework.SignatureDef;
-import org.tensorflow.framework.TensorInfo;
+import org.tensorflow.proto.framework.ConfigProto;
+import org.tensorflow.proto.framework.DataType;
+import org.tensorflow.proto.framework.MetaGraphDef;
+import org.tensorflow.proto.framework.SignatureDef;
+import org.tensorflow.proto.framework.TensorInfo;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -102,7 +101,7 @@ public class TFInference {
 		// local fs is assumed when no scheme provided
 		if (StringUtils.isEmpty(scheme) || scheme.equals("file")) {
 			model = SavedModelBundle.loader(modelDir)
-					.withConfigProto(configProto.toByteArray())
+					.withConfigProto(configProto)
 					.withTags(TAG)
 					.load();
 		} else if (scheme.equals("hdfs")) {
@@ -114,13 +113,13 @@ public class TFInference {
 			fs.copyToLocalFile(modelPath, localPath);
 			//model = SavedModelBundle.load(localPath.toString(), TAG);
 			model = SavedModelBundle.loader(localPath.toString())
-					.withConfigProto(configProto.toByteArray())
+					.withConfigProto(configProto)
 					.withTags(TAG)
 					.load();
 		} else {
 			throw new IllegalArgumentException("Model URI not supported: " + modelDir);
 		}
-		modelSig = MetaGraphDef.parseFrom(model.metaGraphDef()).getSignatureDefOrThrow("serving_default");
+		modelSig = MetaGraphDef.parseFrom(model.metaGraphDef().toByteArray()).getSignatureDefOrThrow("serving_default");
 		logSignature();
 		inputTensorNameSet = modelSig.getInputsMap().keySet();
 		inputTensorNames = inputTensorNameSet.toArray(new String[0]);
@@ -187,6 +186,8 @@ public class TFInference {
 						//rows[j].setField(i, cols[j]);
 					}
 				}
+			} catch (Exception e) {
+				LOG.error("Error in inference: ", e);
 			} finally {
 				for (Tensor<?> tensor : toClose) {
 					tensor.close();

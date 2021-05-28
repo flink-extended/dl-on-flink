@@ -5,9 +5,14 @@
     <parent>
         <artifactId>flink_ai_extended</artifactId>
         <groupId>com.alibaba.flink.ml</groupId>
-        <version>0.3.0</version>
+        <version>0.4-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <properties>
+        <tensorflow.version>2.3.1</tensorflow.version>
+        <tensorflow.java.version>0.2.0</tensorflow.java.version>
+        <javacpp.platform.extension></javacpp.platform.extension>
+    </properties>
 
     <artifactId>flink-ml-lib</artifactId>
     <dependencies>
@@ -18,15 +23,20 @@
         </dependency>
         <dependency>
             <groupId>org.tensorflow</groupId>
-            <artifactId>tensorflow</artifactId>
+            <artifactId>tensorflow-core-api</artifactId>
+            <version>${tensorflow.java.version}</version>
         </dependency>
         <dependency>
             <groupId>org.tensorflow</groupId>
-            <artifactId>proto</artifactId>
+            <artifactId>tensorflow-core-api</artifactId>
+            <version>${tensorflow.java.version}</version>
+            <classifier>linux-x86_64${javacpp.platform.extension}</classifier>
         </dependency>
         <dependency>
             <groupId>org.tensorflow</groupId>
-            <artifactId>tensorflow-hadoop</artifactId>
+            <artifactId>tensorflow-core-api</artifactId>
+            <version>${tensorflow.java.version}</version>
+            <classifier>macosx-x86_64${javacpp.platform.extension}</classifier>
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
