@@ -1,13 +1,15 @@
 # Distributed MNIST on grid based on TensorFlow MNIST example
 
 from datetime import datetime
-import tensorflow as tf
+# A quick fix to run TF 1.X code in TF 2.X, we may want to properly migrate the Python script to TF 2.X API.
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 from tensorflow.python.summary.writer.writer_cache import FileWriterCache as SummaryWriterCache
 import math
 import numpy
 import json
 import sys
-from flink_ml_tensorflow.tensorflow_context import *
+from flink_ml_tensorflow.tensorflow_context import TFContext
 
 
 def export_saved_model(sess, export_dir, tag_set, signatures):

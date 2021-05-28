@@ -5,7 +5,7 @@
     <parent>
         <artifactId>flink_ai_extended</artifactId>
         <groupId>com.alibaba.flink.ml</groupId>
-        <version>0.3.0</version>
+        <version>0.4-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -117,6 +117,11 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j-impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.errorprone</groupId>
+            <artifactId>error_prone_annotations</artifactId>
+            <version>2.0.12</version>
         </dependency>
         <dependency>
             <groupId>org.apache.hadoop</groupId>

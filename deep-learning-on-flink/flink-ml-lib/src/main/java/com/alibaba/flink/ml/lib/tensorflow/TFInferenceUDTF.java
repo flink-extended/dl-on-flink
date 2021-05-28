@@ -10,7 +10,7 @@ import com.alibaba.flink.ml.lib.tensorflow.utils.TypeMapping;
 import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.tensorflow.framework.DataType;
+import org.tensorflow.proto.framework.DataType;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -20,8 +20,15 @@ package com.alibaba.flink.ml.lib.tensorflow.utils;
 
 import com.google.common.base.Preconditions;
 import org.tensorflow.Tensor;
-import org.tensorflow.Tensors;
-import org.tensorflow.framework.TensorInfo;
+import org.tensorflow.ndarray.StdArrays;
+import org.tensorflow.proto.framework.TensorInfo;
+import org.tensorflow.types.TFloat32;
+import org.tensorflow.types.TFloat64;
+import org.tensorflow.types.TInt32;
+import org.tensorflow.types.TInt64;
+import org.tensorflow.types.TString;
+
+import java.io.Serializable;
 
 
 // TODO: support more kinds of tensors
@@ -46,183 +53,124 @@ public class TensorConversion {
 			case DT_INT32: {
 				switch (rank){
 					case 1:{
-						return Tensors.create((int[])object);
+						return TInt32.tensorOf(StdArrays.ndCopyOf((int[]) object));
 					}
 					case 2:{
-						return Tensors.create((int[][])object);
+						return TInt32.tensorOf(StdArrays.ndCopyOf((int[][]) object));
 					}
 					case 3:{
-						return Tensors.create((int[][][])object);
+						return TInt32.tensorOf(StdArrays.ndCopyOf((int[][][]) object));
 					}
 					case 4:{
-						return Tensors.create((int[][][][])object);
+						return TInt32.tensorOf(StdArrays.ndCopyOf((int[][][][]) object));
 					}
 					case 5:{
-						return Tensors.create((int[][][][][])object);
+						return TInt32.tensorOf(StdArrays.ndCopyOf((int[][][][][]) object));
 					}
 					case 6:{
-						return Tensors.create((int[][][][][][])object);
+						return TInt32.tensorOf(StdArrays.ndCopyOf((int[][][][][][]) object));
 					}
 					default:
 						throw new UnsupportedOperationException(
-								"dim count can't supported: " + String.valueOf(rank));
+								"dim count can't supported: " + rank);
 				}
 			}
 			case DT_INT64: {
 				switch (rank){
 					case 1:{
-						return Tensors.create((long[])object);
+						return TInt64.tensorOf(StdArrays.ndCopyOf((long[])object));
 					}
 					case 2:{
-						return Tensors.create((long[][])object);
+						return TInt64.tensorOf(StdArrays.ndCopyOf((long[][])object));
 					}
 					case 3:{
-						return Tensors.create((long[][][])object);
+						return TInt64.tensorOf(StdArrays.ndCopyOf((long[][][])object));
 					}
 					case 4:{
-						return Tensors.create((long[][][][])object);
+						return TInt64.tensorOf(StdArrays.ndCopyOf((long[][][][])object));
 					}
 					case 5:{
-						return Tensors.create((long[][][][][])object);
+						return TInt64.tensorOf(StdArrays.ndCopyOf((long[][][][][])object));
 					}
 					case 6:{
-						return Tensors.create((long[][][][][][])object);
+						return TInt64.tensorOf(StdArrays.ndCopyOf((long[][][][][][])object));
 					}
 					default:
-						throw new UnsupportedOperationException(
-								"dim count can't supported: " + String.valueOf(rank));
+						throw new UnsupportedOperationException("dim count can't supported: " + rank);
 				}
 			}
 			case DT_FLOAT: {
 				switch (rank){
 					case 1:{
-						return Tensors.create((float[])object);
+						return TFloat32.tensorOf(StdArrays.ndCopyOf((float[])object));
 					}
 					case 2:{
-						return Tensors.create((float[][])object);
+						return TFloat32.tensorOf(StdArrays.ndCopyOf((float[][])object));
 					}
 					case 3:{
-						return Tensors.create((float[][][])object);
+						return TFloat32.tensorOf(StdArrays.ndCopyOf((float[][][])object));
 					}
 					case 4:{
-						return Tensors.create((float[][][][])object);
+						return TFloat32.tensorOf(StdArrays.ndCopyOf((float[][][][])object));
 					}
 					case 5:{
-						return Tensors.create((float[][][][][])object);
+						return TFloat32.tensorOf(StdArrays.ndCopyOf((float[][][][][])object));
 					}
 					case 6:{
-						return Tensors.create((float[][][][][][])object);
+						return TFloat32.tensorOf(StdArrays.ndCopyOf((float[][][][][][])object));
 					}
 					default:
-						throw new UnsupportedOperationException(
-								"dim count can't supported: " + String.valueOf(rank));
+						throw new UnsupportedOperationException("dim count can't supported: " + rank);
 				}
 			}
 			case DT_DOUBLE: {
 				switch (rank){
 					case 1:{
-						return Tensors.create((double[])object);
+						return TFloat64.tensorOf(StdArrays.ndCopyOf((double[])object));
 					}
 					case 2:{
-						return Tensors.create((double[][])object);
+						return TFloat64.tensorOf(StdArrays.ndCopyOf((double[][])object));
 					}
 					case 3:{
-						return Tensors.create((double[][][])object);
+						return TFloat64.tensorOf(StdArrays.ndCopyOf((double[][][])object));
 					}
 					case 4:{
-						return Tensors.create((double[][][][])object);
+						return TFloat64.tensorOf(StdArrays.ndCopyOf((double[][][][])object));
 					}
 					case 5:{
-						return Tensors.create((double[][][][][])object);
+						return TFloat64.tensorOf(StdArrays.ndCopyOf((double[][][][][])object));
 					}
 					case 6:{
-						return Tensors.create((double[][][][][][])object);
+						return TFloat64.tensorOf(StdArrays.ndCopyOf((double[][][][][][])object));
 					}
 					default:
-						throw new UnsupportedOperationException(
-								"dim count can't supported: " + String.valueOf(rank));
+						throw new UnsupportedOperationException("dim count can't supported: " + rank);
 				}
 			}
 			case DT_STRING: {
 				switch (rank){
 					case 1:{
 						String[] stringArray = (String[])object;
-						byte[][] temp = new byte[stringArray.length][];
-						for(int i = 0; i < stringArray.length; i++){
-							temp[i] = stringArray[i].getBytes();
-						}
-						return Tensors.create(temp);
+						return TString.tensorOf(StdArrays.ndCopyOf(stringArray));
 					}
 					case 2:{
 						String[][] stringArray = (String[][])object;
-						int len1 = stringArray.length;
-						int len2 = stringArray[0].length;
-						byte[][][] temp = new byte[len1][len2][];
-						for(int i = 0; i < len1; i++){
-							for(int j = 0; j < len2; j++) {
-								temp[i][j] = stringArray[i][j].getBytes();
-							}
-						}
-						return Tensors.create(temp);
+						return TString.tensorOf(StdArrays.ndCopyOf(stringArray));
 					}
 					case 3:{
 						String[][][] stringArray = (String[][][])object;
-						int len1 = stringArray.length;
-						int len2 = stringArray[0].length;
-						int len3 = stringArray[0][0].length;
-						byte[][][][] temp = new byte[len1][len2][len3][];
-						for(int i = 0; i < len1; i++){
-							for(int j = 0; j < len2; j++) {
-								for(int k = 0; k < len3; k++) {
-									temp[i][j][k] = stringArray[i][j][k].getBytes();
-								}
-							}
-						}
-						return Tensors.create(temp);
+						return TString.tensorOf(StdArrays.ndCopyOf(stringArray));
 					}
 					case 4:{
 						String[][][][] stringArray = (String[][][][])object;
-						int len1 = stringArray.length;
-						int len2 = stringArray[0].length;
-						int len3 = stringArray[0][0].length;
-						int len4 = stringArray[0][0][0].length;
-						byte[][][][][] temp = new byte[len1][len2][len3][len4][];
-						for(int i = 0; i < len1; i++){
-							for(int j = 0; j < len2; j++) {
-								for(int k = 0; k < len3; k++) {
-									for(int m = 0; m < len4; m++) {
-										temp[i][j][k][m] = stringArray[i][j][k][m].getBytes();
-									}
-								}
-							}
-						}
-						return Tensors.create(temp);
+						return TString.tensorOf(StdArrays.ndCopyOf(stringArray));
 					}
 					case 5:{
 						String[][][][][] stringArray = (String[][][][][])object;
-						int len1 = stringArray.length;
-						int len2 = stringArray[0].length;
-						int len3 = stringArray[0][0].length;
-						int len4 = stringArray[0][0][0].length;
-						int len5 = stringArray[0][0][0][0].length;
-
-						byte[][][][][][] temp = new byte[len1][len2][len3][len4][len5][];
-						for(int i = 0; i < len1; i++){
-							for(int j = 0; j < len2; j++) {
-								for(int k = 0; k < len3; k++) {
-									for(int m = 0; m < len4; m++) {
-										for(int n = 0; n < len5; n++) {
-											temp[i][j][k][m][n] = stringArray[i][j][k][m][n].getBytes();
-										}
-									}
-								}
-							}
-						}
-						return Tensors.create(temp);
+						return TString.tensorOf(StdArrays.ndCopyOf(stringArray));
 					}
 					default:
-						throw new UnsupportedOperationException(
-								"dim count can't supported: " + String.valueOf(rank));
+						throw new UnsupportedOperationException("dim count can't supported: " + rank);
 				}
 			}
 			default:
@@ -238,229 +186,263 @@ public class TensorConversion {
 	 * @return java objects corresponded to given tensor.
 	 */
 	public static Object fromTensor(Tensor<?> tensor) {
-		Preconditions.checkArgument(tensor.numDimensions() <= 5,
-				"Can only convert tensors with shape less than 2 current " + tensor.numDimensions());
-		final int rank = tensor.numDimensions();
-		switch (tensor.dataType()) {
-			case INT32: {
-				switch (rank){
-					case 1:{
-						final int len1 = (int) tensor.shape()[0];
-						return tensor.copyTo(new int[len1]);
-					}
-					case 2:{
-						final int len1 = (int) tensor.shape()[0];
-						final int len2 = (int) tensor.shape()[1];
-						return tensor.copyTo(new int[len1][len2]);
-					}
-					case 3:{
-						final int len1 = (int) tensor.shape()[0];
-						final int len2 = (int) tensor.shape()[1];
-						final int len3 = (int) tensor.shape()[2];
-						return tensor.copyTo(new int[len1][len2][len3]);
-					}
-					case 4:{
-						final int len1 = (int) tensor.shape()[0];
-						final int len2 = (int) tensor.shape()[1];
-						final int len3 = (int) tensor.shape()[2];
-						final int len4 = (int) tensor.shape()[3];
-						return tensor.copyTo(new int[len1][len2][len3][len4]);
-					}
-					case 5:{
-						final int len1 = (int) tensor.shape()[0];
-						final int len2 = (int) tensor.shape()[1];
-						final int len3 = (int) tensor.shape()[2];
-						final int len4 = (int) tensor.shape()[3];
-						final int len5 = (int) tensor.shape()[4];
-						return tensor.copyTo(new int[len1][len2][len3][len4][len5]);
-					}
-				}
-			}
-			case FLOAT: {
-				switch (rank){
-					case 1:{
-						final int len1 = (int) tensor.shape()[0];
-						return tensor.copyTo(new float[len1]);
-					}
-					case 2:{
-						final int len1 = (int) tensor.shape()[0];
-						final int len2 = (int) tensor.shape()[1];
-						return tensor.copyTo(new float[len1][len2]);
-					}
-					case 3:{
-						final int len1 = (int) tensor.shape()[0];
-						final int len2 = (int) tensor.shape()[1];
-						final int len3 = (int) tensor.shape()[2];
-						return tensor.copyTo(new float[len1][len2][len3]);
-					}
-					case 4:{
-						final int len1 = (int) tensor.shape()[0];
-						final int len2 = (int) tensor.shape()[1];
-						final int len3 = (int) tensor.shape()[2];
-						final int len4 = (int) tensor.shape()[3];
-						return tensor.copyTo(new float[len1][len2][len3][len4]);
-					}
-					case 5:{
-						final int len1 = (int) tensor.shape()[0];
-						final int len2 = (int) tensor.shape()[1];
-						final int len3 = (int) tensor.shape()[2];
-						final int len4 = (int) tensor.shape()[3];
-						final int len5 = (int) tensor.shape()[4];
-						return tensor.copyTo(new float[len1][len2][len3][len4][len5]);
-					}
-				}
-			}
-			case INT64: {
-				switch (rank){
-					case 1:{
-						final int len1 = (int) tensor.shape()[0];
-						return tensor.copyTo(new long[len1]);
-					}
-					case 2:{
-						final int len1 = (int) tensor.shape()[0];
-						final int len2 = (int) tensor.shape()[1];
-						return tensor.copyTo(new long[len1][len2]);
-					}
-					case 3:{
-						final int len1 = (int) tensor.shape()[0];
-						final int len2 = (int) tensor.shape()[1];
-						final int len3 = (int) tensor.shape()[2];
-						return tensor.copyTo(new long[len1][len2][len3]);
-					}
-					case 4:{
-						final int len1 = (int) tensor.shape()[0];
-						final int len2 = (int) tensor.shape()[1];
-						final int len3 = (int) tensor.shape()[2];
-						final int len4 = (int) tensor.shape()[3];
-						return tensor.copyTo(new long[len1][len2][len3][len4]);
-					}
-					case 5:{
-						final int len1 = (int) tensor.shape()[0];
-						final int len2 = (int) tensor.shape()[1];
-						final int len3 = (int) tensor.shape()[2];
-						final int len4 = (int) tensor.shape()[3];
-						final int len5 = (int) tensor.shape()[4];
-						return tensor.copyTo(new long[len1][len2][len3][len4][len5]);
-					}
-				}
-			}
-			case DOUBLE: {
-				switch (rank){
-					case 1:{
-						final int len1 = (int) tensor.shape()[0];
-						return tensor.copyTo(new double[len1]);
-					}
-					case 2:{
-						final int len1 = (int) tensor.shape()[0];
-						final int len2 = (int) tensor.shape()[1];
-						return tensor.copyTo(new double[len1][len2]);
-					}
-					case 3:{
-						final int len1 = (int) tensor.shape()[0];
-						final int len2 = (int) tensor.shape()[1];
-						final int len3 = (int) tensor.shape()[2];
-						return tensor.copyTo(new double[len1][len2][len3]);
-					}
-					case 4:{
-						final int len1 = (int) tensor.shape()[0];
-						final int len2 = (int) tensor.shape()[1];
-						final int len3 = (int) tensor.shape()[2];
-						final int len4 = (int) tensor.shape()[3];
-						return tensor.copyTo(new double[len1][len2][len3][len4]);
-					}
-					case 5:{
-						final int len1 = (int) tensor.shape()[0];
-						final int len2 = (int) tensor.shape()[1];
-						final int len3 = (int) tensor.shape()[2];
-						final int len4 = (int) tensor.shape()[3];
-						final int len5 = (int) tensor.shape()[4];
-						return tensor.copyTo(new double[len1][len2][len3][len4][len5]);
-					}
-				}
-			}
-			case STRING:{
-				switch (rank) {
-					case 1: {
-						final int len1 = (int) tensor.shape()[0];
-						byte[][] resultBytes = tensor.copyTo(new byte[len1][]);
-						String[] results = new String[len1];
-						for (int i = 0; i < len1; i++){
-							results[i] = new String(resultBytes[i]);
-						}
-						return results;
-					}
-					case 2: {
-						final int len1 = (int) tensor.shape()[0];
-						final int len2 = (int) tensor.shape()[1];
-						byte[][][] resultBytes = tensor.copyTo(new byte[len1][len2][]);
-						String[][] results = new String[len1][len2];
-						for (int i = 0; i < len1; i++) {
-							for (int j = 0; j < len2; j++) {
-								results[i][j] = new String(resultBytes[i][j]);
-							}
-						}
-						return results;
-					}
-					case 3: {
-						final int len1 = (int) tensor.shape()[0];
-						final int len2 = (int) tensor.shape()[1];
-						final int len3 = (int) tensor.shape()[2];
-						byte[][][][] resultBytes = tensor.copyTo(new byte[len1][len2][len3][]);
-						String[][][] results = new String[len1][len2][len3];
-						for (int i = 0; i < len1; i++) {
-							for (int j = 0; j < len2; j++) {
-								for (int k = 0; k < len3; k++) {
-									results[i][j][k] = new String(resultBytes[i][j][k]);
-								}
-							}
-						}
-						return results;
-					}
-					case 4: {
-						final int len1 = (int) tensor.shape()[0];
-						final int len2 = (int) tensor.shape()[1];
-						final int len3 = (int) tensor.shape()[2];
-						final int len4 = (int) tensor.shape()[3];
-						byte[][][][][] resultBytes = tensor.copyTo(new byte[len1][len2][len3][len4][]);
-						String[][][][] results = new String[len1][len2][len3][len4];
-						for (int i = 0; i < len1; i++) {
-							for (int j = 0; j < len2; j++) {
-								for (int k = 0; k < len3; k++) {
-									for (int m = 0; m < len4; m++) {
-										results[i][j][k][m] = new String(resultBytes[i][j][k][m]);
-									}
-								}
-							}
-						}
-						return results;
-					}
-					case 5: {
-						final int len1 = (int) tensor.shape()[0];
-						final int len2 = (int) tensor.shape()[1];
-						final int len3 = (int) tensor.shape()[2];
-						final int len4 = (int) tensor.shape()[3];
-						final int len5 = (int) tensor.shape()[4];
-						byte[][][][][][] resultBytes = tensor.copyTo(new byte[len1][len2][len3][len4][len5][]);
-						String[][][][][] results = new String[len1][len2][len3][len4][len5];
-						for (int i = 0; i < len1; i++) {
-							for (int j = 0; j < len2; j++) {
-								for (int k = 0; k < len3; k++) {
-									for (int m = 0; m < len4; m++) {
-										for (int n = 0; n < len5; n++) {
-											results[i][j][k][m][n] = new String(resultBytes[i][j][k][m][n]);
-										}
-									}
-								}
-							}
-						}
-						return results;
-					}
-				}
-			}
+		final double numDimensions = tensor.shape().numDimensions();
+		Preconditions.checkArgument(numDimensions <= 5,
+				"Can only convert tensors with shape less than 2 current " + numDimensions);
+		final int rank = (int) numDimensions;
+		if (TInt32.DTYPE.equals(tensor.dataType())) {
+			return fromIntTensor(tensor, rank);
+		} else if (TFloat32.DTYPE.equals(tensor.dataType())) {
+			return fromFloatTensor(tensor, rank);
+		} else if (TInt64.DTYPE.equals(tensor.dataType())) {
+			return fromLongTensor(tensor, rank);
+		} else if (TFloat64.DTYPE.equals(tensor.dataType())) {
+			return fromDoubleTensor(tensor, rank);
+		} else if (TString.DTYPE.equals(tensor.dataType())) {
+			return fromStringTensor(tensor, rank);
+		}
 
+		throw new UnsupportedOperationException(
+				"Type can't be converted from tensor : " + tensor.dataType().name());
+	}
+
+	private static Serializable[] fromStringTensor(Tensor<?> tensor, int rank) {
+		switch (rank) {
+			case 1: {
+				final int len1 = (int) tensor.shape().size(0);
+				final String[] results = new String[len1];
+				StdArrays.copyFrom((TString) tensor.data(), results);
+				return results;
+			}
+			case 2: {
+				final int len1 = (int) tensor.shape().size(0);
+				final int len2 = (int) tensor.shape().size(1);
+				final String[][] results = new String[len1][len2];
+				StdArrays.copyFrom((TString) tensor.data(), results);
+				return results;
+			}
+			case 3: {
+				final int len1 = (int) tensor.shape().size(0);
+				final int len2 = (int) tensor.shape().size(1);
+				final int len3 = (int) tensor.shape().size(2);
+				final String[][][] results = new String[len1][len2][len3];
+				StdArrays.copyFrom((TString) tensor.data(), results);
+				return results;
+			}
+			case 4: {
+				final int len1 = (int) tensor.shape().size(0);
+				final int len2 = (int) tensor.shape().size(1);
+				final int len3 = (int) tensor.shape().size(2);
+				final int len4 = (int) tensor.shape().size(3);
+				final String[][][][] results = new String[len1][len2][len3][len4];
+				StdArrays.copyFrom((TString) tensor.data(), results);
+				return results;
+			}
+			case 5: {
+				final int len1 = (int) tensor.shape().size(0);
+				final int len2 = (int) tensor.shape().size(1);
+				final int len3 = (int) tensor.shape().size(2);
+				final int len4 = (int) tensor.shape().size(3);
+				final int len5 = (int) tensor.shape().size(4);
+				final String[][][][][] results = new String[len1][len2][len3][len4][len5];
+				StdArrays.copyFrom((TString) tensor.data(), results);
+				return results;
+			}
 			default:
 				throw new UnsupportedOperationException(
-						"Type can't be converted from tensor : " + tensor.dataType().name());
+						"dim count can't supported: " + rank);
+		}
+	}
+
+	private static Cloneable fromDoubleTensor(Tensor<?> tensor, int rank) {
+		switch (rank){
+			case 1:{
+				final int len1 = (int) tensor.shape().size(0);
+				final double[] res = new double[len1];
+				StdArrays.copyFrom((TFloat64) tensor.data(), res);
+				return res;
+			}
+			case 2:{
+				final int len1 = (int) tensor.shape().size(0);
+				final int len2 = (int) tensor.shape().size(1);
+				final double[][] res = new double[len1][len2];
+				StdArrays.copyFrom((TFloat64) tensor.data(), res);
+				return res;
+			}
+			case 3:{
+				final int len1 = (int) tensor.shape().size(0);
+				final int len2 = (int) tensor.shape().size(1);
+				final int len3 = (int) tensor.shape().size(2);
+				final double[][][] res = new double[len1][len2][len3];
+				StdArrays.copyFrom((TFloat64) tensor.data(), res);
+				return res;
+			}
+			case 4:{
+				final int len1 = (int) tensor.shape().size(0);
+				final int len2 = (int) tensor.shape().size(1);
+				final int len3 = (int) tensor.shape().size(2);
+				final int len4 = (int) tensor.shape().size(3);
+				final double[][][][] res = new double[len1][len2][len3][len4];
+				StdArrays.copyFrom((TFloat64) tensor.data(), res);
+				return res;
+			}
+			case 5:{
+				final int len1 = (int) tensor.shape().size(0);
+				final int len2 = (int) tensor.shape().size(1);
+				final int len3 = (int) tensor.shape().size(2);
+				final int len4 = (int) tensor.shape().size(3);
+				final int len5 = (int) tensor.shape().size(4);
+				final double[][][][][] res = new double[len1][len2][len3][len4][len5];
+				StdArrays.copyFrom((TFloat64) tensor.data(), res);
+				return res;
+			}
+			default:
+				throw new UnsupportedOperationException(
+						"dim count can't supported: " + rank);
+		}
+	}
+
+	private static Cloneable fromLongTensor(Tensor<?> tensor, int rank) {
+		switch (rank){
+			case 1:{
+				final int len1 = (int) tensor.shape().size(0);
+				final long[] res = new long[len1];
+				StdArrays.copyFrom((TInt64) tensor.data(), res);
+				return res;
+			}
+			case 2:{
+				final int len1 = (int) tensor.shape().size(0);
+				final int len2 = (int) tensor.shape().size(1);
+				final long[][] res = new long[len1][len2];
+				StdArrays.copyFrom((TInt64) tensor.data(), res);
+				return res;
+			}
+			case 3:{
+				final int len1 = (int) tensor.shape().size(0);
+				final int len2 = (int) tensor.shape().size(1);
+				final int len3 = (int) tensor.shape().size(2);
+				final long[][][] res = new long[len1][len2][len3];
+				StdArrays.copyFrom((TInt64) tensor.data(), res);
+				return res;
+			}
+			case 4:{
+				final int len1 = (int) tensor.shape().size(0);
+				final int len2 = (int) tensor.shape().size(1);
+				final int len3 = (int) tensor.shape().size(2);
+				final int len4 = (int) tensor.shape().size(3);
+				final long[][][][] res = new long[len1][len2][len3][len4];
+				StdArrays.copyFrom((TInt64) tensor.data(), res);
+				return res;
+			}
+			case 5:{
+				final int len1 = (int) tensor.shape().size(0);
+				final int len2 = (int) tensor.shape().size(1);
+				final int len3 = (int) tensor.shape().size(2);
+				final int len4 = (int) tensor.shape().size(3);
+				final int len5 = (int) tensor.shape().size(4);
+				final long[][][][][] res = new long[len1][len2][len3][len4][len5];
+				StdArrays.copyFrom((TInt64) tensor.data(), res);
+				return res;
+			}
+			default:
+				throw new UnsupportedOperationException(
+						"dim count can't supported: " + rank);
+		}
+	}
+
+	private static Cloneable fromFloatTensor(Tensor<?> tensor, int rank) {
+		switch (rank){
+			case 1:{
+				final int len1 = (int) tensor.shape().size(0);
+				final float[] res = new float[len1];
+				StdArrays.copyFrom((TFloat32) tensor.data(), res);
+				return res;
+			}
+			case 2:{
+				final int len1 = (int) tensor.shape().size(0);
+				final int len2 = (int) tensor.shape().size(1);
+				final float[][] res = new float[len1][len2];
+				StdArrays.copyFrom((TFloat32) tensor.data(), res);
+				return res;
+			}
+			case 3:{
+				final int len1 = (int) tensor.shape().size(0);
+				final int len2 = (int) tensor.shape().size(1);
+				final int len3 = (int) tensor.shape().size(2);
+				final float[][][] res = new float[len1][len2][len3];
+				StdArrays.copyFrom((TFloat32) tensor.data(), res);
+				return res;
+			}
+			case 4:{
+				final int len1 = (int) tensor.shape().size(0);
+				final int len2 = (int) tensor.shape().size(1);
+				final int len3 = (int) tensor.shape().size(2);
+				final int len4 = (int) tensor.shape().size(3);
+				final float[][][][] res = new float[len1][len2][len3][len4];
+				StdArrays.copyFrom((TFloat32) tensor.data(), res);
+				return res;
+			}
+			case 5:{
+				final int len1 = (int) tensor.shape().size(0);
+				final int len2 = (int) tensor.shape().size(1);
+				final int len3 = (int) tensor.shape().size(2);
+				final int len4 = (int) tensor.shape().size(3);
+				final int len5 = (int) tensor.shape().size(4);
+				final float[][][][][] res = new float[len1][len2][len3][len4][len5];
+				StdArrays.copyFrom((TFloat32) tensor.data(), res);
+				return res;
+			}
+			default:
+				throw new UnsupportedOperationException(
+						"dim count can't supported: " + rank);
+		}
+	}
+
+	private static Object fromIntTensor(Tensor<?> tensor, int rank) {
+		switch (rank){
+			case 1:{
+				final int len1 = (int) tensor.shape().size(0);
+				final int[] res = new int[len1];
+				StdArrays.copyFrom((TInt32) tensor.data(), res);
+				return res;
+			}
+			case 2:{
+				final int len1 = (int) tensor.shape().size(0);
+				final int len2 = (int) tensor.shape().size(1);
+				final int[][] res = new int[len1][len2];
+				StdArrays.copyFrom((TInt32) tensor.data(), res);
+				return res;
+			}
+			case 3:{
+				final int len1 = (int) tensor.shape().size(0);
+				final int len2 = (int) tensor.shape().size(1);
+				final int len3 = (int) tensor.shape().size(2);
+				final int[][][] res = new int[len1][len2][len3];
+				StdArrays.copyFrom((TInt32) tensor.data(), res);
+				return res;
+			}
+			case 4:{
+				final int len1 = (int) tensor.shape().size(0);
+				final int len2 = (int) tensor.shape().size(1);
+				final int len3 = (int) tensor.shape().size(2);
+				final int len4 = (int) tensor.shape().size(3);
+				final int[][][][] res = new int[len1][len2][len3][len4];
+				StdArrays.copyFrom((TInt32) tensor.data(), res);
+				return res;
+			}
+			case 5:{
+				final int len1 = (int) tensor.shape().size(0);
+				final int len2 = (int) tensor.shape().size(1);
+				final int len3 = (int) tensor.shape().size(2);
+				final int len4 = (int) tensor.shape().size(3);
+				final int len5 = (int) tensor.shape().size(4);
+				final int[][][][][] res = new int[len1][len2][len3][len4][len5];
+				StdArrays.copyFrom((TInt32) tensor.data(), res);
+				return res;
+			}
+			default:
+				throw new UnsupportedOperationException(
+						"dim count can't supported: " + rank);
 		}
 	}
 

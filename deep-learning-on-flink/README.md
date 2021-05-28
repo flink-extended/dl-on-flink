@@ -6,7 +6,7 @@ Deep Learning on Flink aims to integrate Flink and deep learning frameworks (e.g
 It runs the deep learning tasks inside a Flink operator, so that Flink can help establish a distributed environment, 
 manage the resource, read/write the records and handle the failures.
 
-Currently Deep Learning on Flink only supports TensorFlow.
+Currently, Deep Learning on Flink supports TensorFlow and PyTorch.
 
 **contents**
 
@@ -41,12 +41,12 @@ TensorFlow is a deep learning system developed by Google and open source, which 
 Flink is a data processing framework. It is widely used in data extraction, feature preprocessing and data cleaning.
 
 This project combines TensorFlow with Flink and provides users with more convenient and useful tools.
-**Currently, Flink job code uses java language and the algorithm code uses python language.**
+**Currently, Flink job code can be written in both java with Flink Java API and in python with PyFlink. The algorithm code is written in python.**
 
 ## Support Version
-TensorFlow: 1.15.0
+TensorFlow: 1.15.0 & 2.3.1
 
-Flink: 1.11.0
+Flink: 1.11.x
  
 ## Quick Start
 
@@ -54,12 +54,11 @@ Flink: 1.11.0
 
 **Requirements**
 1. python: 3.7
-2. pip
-3. cmake >= 3.6
-4. java 1.8
-5. maven >=3.3.0
+1. cmake >= 3.6
+1. java 1.8
+1. maven >=3.3.0
 
-**Install python2**
+**Install python3**
 
 macOS
 ```shell
@@ -117,7 +116,7 @@ export PATH=${PATH}:${MAVEN_HOME}/bin
 ```
 
 ### Build From Source
-**Compiling source code depends on tensorflow 1.15.0. Compiling commands will automatically install tensorflow 1.15.0**
+**Compiling source code depends on tensorflow. Compiling flink-ml-tensorflow module will automatically install tensorflow 1.15.0**
 
 ```shell 
 mvn -DskipTests=true clean install

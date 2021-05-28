@@ -18,6 +18,7 @@
 
 package com.alibaba.flink.ml.examples.tensorflow.mnist.ops;
 
+import com.alibaba.flink.ml.tensorflow.data.TFRecordReader;
 import com.alibaba.flink.ml.tensorflow.io.TFRExtractRowHelper;
 
 import org.apache.flink.api.common.typeinfo.TypeInformation;
@@ -33,7 +34,6 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.tensorflow.hadoop.util.TFRecordReader;
 
 import java.util.Collections;
 import java.util.List;
