@@ -628,12 +628,12 @@ class EventBasedSchedulerJob(BaseJob):
             self.scheduler.recover(self.last_scheduling_id)
             self.scheduler.schedule()
 
-            self.executor.end()
+            self._stop_listen_events()
             self.periodic_manager.shutdown()
             self.dag_trigger.end()
             self.task_event_manager.end()
-            self._stop_listen_events()
-
+            self.executor.end()
+            
             settings.Session.remove()  # type: ignore
         except Exception as e:  # pylint: disable=broad-except
             self.log.exception("Exception when executing scheduler, %s", e)
