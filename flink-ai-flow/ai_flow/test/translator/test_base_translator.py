@@ -18,6 +18,11 @@
 #
 import unittest
 
+from ai_flow.project.project_description import get_project_description_from
+from ai_flow.application_master.master import AIFlowMaster
+from ai_flow.test import test_util
+from ai_flow.workflow.job_config import PeriodicConfig
+from ai_flow.graph.graph import default_graph
 import ai_flow as af
 from ai_flow.executor.executor import CmdExecutor
 from ai_flow.translator.base_translator import *
@@ -47,6 +52,24 @@ def add_control_edge(graph, src, target):
 
 
 class TestTranslator(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        config_file = test_util.get_master_config_file()
+        cls.master = AIFlowMaster(config_file=config_file)
+        cls.master.start()
+        test_util.set_project_config(__file__)
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        cls.master.stop()
+
+    def setUp(self):
+        TestTranslator.master._clear_db()
+        default_graph().clear_graph()
+
+    def tearDown(self):
+        TestTranslator.master._clear_db()
 
     def test_split_graph(self):
         def build_ai_graph() -> AIGraph:
@@ -336,6 +359,46 @@ class TestTranslator(unittest.TestCase):
         except Exception as e:
             exception_flag = True
         self.assertTrue(True, exception_flag)
+
+    def test_periodic_job(self):
+        periodic_config = PeriodicConfig(periodic_type='interval', args={'seconds': 5})
+        job_config = af.BaseJobConfig(platform='local', engine='cmd_line')
+        job_config.job_name = 'test_periodic'
+        job_config.periodic_config = periodic_config
+        with af.config(job_config):
+            job = af.user_define_operation(executor=af.CmdExecutor(cmd_line="echo 'hello world!'"))
+
+        job_config_2 = af.BaseJobConfig(platform='local', engine='cmd_line')
+        job_config_2.job_name = 'test_job'
+        with af.config(job_config_2):
+            job2 = af.user_define_operation(executor=af.CmdExecutor(cmd_line="echo 'hello world!'"))
+
+        af.user_define_control_dependency(job2, job, event_key='a', event_value='b')
+
+        workflow = get_default_translator().translate(graph=default_graph(),
+                                                      project_desc=get_project_description_from(
+                                                          test_util.get_project_path()))
+        self.assertIsNotNone(workflow.jobs['LocalCMDJob_0'].job_config.periodic_config)
+
+    def test_not_validated_periodic_job(self):
+        periodic_config = PeriodicConfig(periodic_type='interval', args={'seconds': 5})
+        job_config_1 = af.BaseJobConfig(platform='local', engine='cmd_line')
+        job_config_1.job_name = 'test_periodic_1'
+        job_config_1.periodic_config = periodic_config
+        with af.config(job_config_1):
+            job1 = af.user_define_operation(executor=af.CmdExecutor(cmd_line="echo 'hello world!'"))
+
+        job_config_2 = af.BaseJobConfig(platform='local', engine='cmd_line')
+        job_config_2.job_name = 'test_job'
+        with af.config(job_config_2):
+            job2 = af.user_define_operation(executor=af.CmdExecutor(cmd_line="echo 'hello world!'"))
+
+        af.user_define_control_dependency(job1, job2, event_key='a', event_value='b')
+        with self.assertRaises(Exception) as context:
+            workflow = get_default_translator().translate(graph=default_graph(),
+                                                          project_desc=get_project_description_from(
+                                                              test_util.get_project_path()))
+            self.assertTrue('Periodic job' in context.exception)
 
 
 if __name__ == '__main__':
