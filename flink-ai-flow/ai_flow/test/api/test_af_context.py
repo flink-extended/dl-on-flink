@@ -81,6 +81,21 @@ class ContextTests(unittest.TestCase):
             self.assertEqual('flink', node_list[len(node_list) - 1].config.engine)
             self.assertEqual('kubernetes', node_list[len(node_list) - 1].config.platform)
 
+    def test_context_with_yaml_file(self):
+        config_file = path_util.get_file_dir(__file__) + "/workflow.yaml"
+        with af.global_config_file(config_path=config_file) as g_config:
+            with af.config('task_1') as config_1:
+                self.assertEqual('task_1', config_1.job_name)
+                self.assertEqual('cmd_line', config_1.engine)
+                self.assertEqual('interval', config_1.periodic_config.periodic_type)
+                self.assertEqual(20, config_1.periodic_config.args['seconds'])
+            with af.config('task_2') as config_2:
+                self.assertEqual('task_2', config_2.job_name)
+                self.assertEqual('cmd_line', config_2.engine)
+                self.assertEqual('cron', config_2.periodic_config.periodic_type)
+                self.assertEqual('* * * * *', config_2.periodic_config.args)
+
+
 
 if __name__ == '__main__':
     test_util.set_project_config(__file__)
