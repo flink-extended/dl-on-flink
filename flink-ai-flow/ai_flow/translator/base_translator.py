@@ -22,7 +22,7 @@ from ai_flow.rest_endpoint.service.client.aiflow_client import AIFlowClient
 from ai_flow.api.configuration import project_config
 from ai_flow.meta.workflow_execution_meta import WorkflowExecutionMeta
 from ai_flow.workflow.workflow import Workflow
-from ai_flow.workflow.job import BaseJob
+from ai_flow.workflow.job import BaseJob, BaseJobConfig
 from ai_flow.graph.graph import AIGraph, SplitGraph, AISubGraph
 from ai_flow.graph.ai_node import AINode
 from ai_flow.api.ai_flow_context import ENGINE_NAME
@@ -236,6 +236,8 @@ class DefaultWorkflowConstructor(BaseWorkflowConstructor):
                 .get_object((sub.config.platform, sub.config.engine))
             job: BaseJob = generator.generate(sub_graph=sub, project_desc=project_desc)
             job.job_config.project_desc = project_desc
+            if job.job_name is None:
+                job.job_name = job.job_config.job_name
             workflow.add_job(job)
             sub_id_to_job_id[sub.instance_id] = job.instance_id
         # add edges to workflow
@@ -605,7 +607,16 @@ class DefaultTranslator(BaseTranslator):
                                                 project_desc=project_desc)
         workflow = self.workflow_constructor.build_workflow(split_graph=split_graph,
                                                             project_desc=project_desc)
+        self.check_periodic_job_validated(workflow)
         return workflow
+
+    def check_periodic_job_validated(self, workflow: Workflow):
+        for node_id, job in workflow.jobs.items():
+            job_config: BaseJobConfig = job.job_config
+            if job_config.periodic_config is not None:
+                if node_id in workflow.edges:
+                    raise Exception('Periodic job: {} can not have upstream job or upstream event.'
+                                    .format(job.job_name))
 
 
 _default_graph_splitter = DefaultGraphSplitter()
