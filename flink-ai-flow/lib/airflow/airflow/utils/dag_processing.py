@@ -1075,11 +1075,12 @@ class DagFileProcessorManager(LoggingMixin):  # pylint: disable=too-many-instanc
 
     def start_new_processes(self):
         """Start more processors if we have enough slots and files to process"""
+        waiting_queue = []
         while self._parallelism - len(self._processors) > 0 and self._file_path_queue:
             file_path = self._file_path_queue.pop(0)
             # wait until the processor end
             if file_path in self._processors:
-                self._file_path_queue.append(file_path)
+                waiting_queue.append(file_path)
                 continue
             callback_to_execute_for_file = self._callback_to_execute[file_path]
             processor = self._processor_factory(
@@ -1093,6 +1094,9 @@ class DagFileProcessorManager(LoggingMixin):  # pylint: disable=too-many-instanc
             self.log.debug("Started a process (PID: %s) to generate tasks for %s", processor.pid, file_path)
             self._processors[file_path] = processor
             self.waitables[processor.waitable_handle] = processor
+        waiting_queue.reverse()
+        for waiting_file_path in waiting_queue:
+            self._file_path_queue.insert(0, waiting_file_path)
 
     def prepare_file_path_queue(self):
         """Generate more file paths to process. Result are saved in _file_path_queue."""
