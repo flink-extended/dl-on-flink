@@ -138,7 +138,7 @@ public class NodeServer implements Runnable {
 			if (!codeFile.isEmpty()) {
 				String codeFileName = FileUtil.parseFileName(codeFile);
 				LOG.info("codeFileName:" + codeFileName);
-				String codeDirName = FileUtil.parseDirName(codeFileName);
+				String codeDirName = FileUtil.getFileNameWithoutExtension(codeFileName);
 				if (mlContext.getProperties().containsKey(MLConstants.CODE_DIR_NAME)) {
 					codeDirName = mlContext.getProperties().get(MLConstants.CODE_DIR_NAME);
 				}
