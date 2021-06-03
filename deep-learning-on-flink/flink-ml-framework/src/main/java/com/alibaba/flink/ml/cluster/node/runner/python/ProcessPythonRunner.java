@@ -90,7 +90,7 @@ public class ProcessPythonRunner extends AbstractScriptRunner {
 		String pythonExec = "python" + pythonVersion;
 		//check if has python2 or python3 environment
 		if (checkPythonEnvironment("which " + pythonExec) != 0){
-			throw new RuntimeException("No this python environment");
+			throw new RuntimeException("Python executable: " + pythonExec + " not found");
 		}
 		String virtualEnv = mlContext.getProperties()
 				.getOrDefault(MLConstants.VIRTUAL_ENV_DIR, "");
