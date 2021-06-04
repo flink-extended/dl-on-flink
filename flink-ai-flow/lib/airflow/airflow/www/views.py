@@ -2753,6 +2753,35 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
                                       for key, value in events.items()}},
                           cls=utils_json.AirflowJsonEncoder)
 
+    @expose('/event/senders')
+    @auth.has_access(
+        [
+            (permissions.ACTION_CAN_READ, permissions.RESOURCE_DAG),
+            (permissions.ACTION_CAN_READ, permissions.RESOURCE_EVENT),
+            (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_EXECUTION),
+            (permissions.ACTION_CAN_READ, permissions.RESOURCE_TASK_INSTANCE),
+        ]
+    )
+    @action_logging
+    def event_senders(self):
+        """Shows event senders."""
+        event_namespace = request.args.get('event_namespace')
+        event_key = request.args.get('event_key')
+        event_type = request.args.get('event_type')
+        events = self.notification_client.list_events(namespace=event_namespace, key=event_key, event_type=event_type)
+        logging.info('List events: {}'.format(str(events)))
+        event_senders = {}
+        for event in events:
+            sender = event.sender
+            if sender in event_senders:
+                event_senders[sender] = event_senders[sender] + 1
+            else:
+                event_senders[sender] = 1
+        logging.info('List event senders: {}'.format(str(event_senders)))
+
+        return json.dumps({'event_senders': event_senders},
+                          cls=utils_json.AirflowJsonEncoder)
+
 
 class ConfigurationView(AirflowBaseView):
     """View to show Airflow Configurations"""

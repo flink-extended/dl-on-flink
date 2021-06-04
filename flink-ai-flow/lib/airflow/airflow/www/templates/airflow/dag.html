@@ -124,7 +124,7 @@
     </div>
   </div>
   {{ dag_docs(doc_md) }}
-  <!-- Modal -->
+  <!-- Modal for task instance -->
   <div class="modal fade" id="taskInstanceModal" tabindex="-1" role="dialog" aria-labelledby="taskInstanceModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -373,6 +373,37 @@
       </div>
     </div>
   </div>
+  <!-- Modal for event -->
+  <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="eventModalLabel">
+            <span class="text-muted">Event:</span>  <span id="event_id"></span>
+          </h4>
+        </div>
+        <div class="modal-body">
+          <h4>Send Events</h4>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Sender</th>
+                  <th>Count</th>
+                </tr>
+              </thead>
+              <tbody id="eventTbody">
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
 {% block tail %}
   {{ super() }}
@@ -580,6 +611,33 @@
         dag_id: dag_id,
         execution_date: execution_date,
         });
+    }
+
+    function call_modal_event(event_id, event) {
+      $('#eventTbody').empty();
+      var url = '{{ url_for('Airflow.event_senders') }}' +
+                  '?event_namespace=' + event[0] +
+                  '&event_key=' + event[1] +
+                  '&event_type=' + event[2];
+      $.ajax(
+            {url: url,
+             cache: false,
+             success: function (data, textStatus, jqXHR) {
+              var event_senders=JSON.parse(data)['event_senders']
+              console.info(event_senders);
+              for(var event_sender in event_senders){
+                var sender_url = '{{ url_for('EventModelView.list') }}' +
+                    '?_flt_3_namespace=' + event[0] +
+                    '&_flt_3_key=' + event[1] +
+                    '&_flt_3_event_type=' + event[2] +
+                    '&_flt_3_sender=' + event_sender;
+                $('#eventTbody').append('<tr><td><a href=' + sender_url + '>' + event_sender + '</a></td><td>' + event_senders[event_sender] + '</td></tr>');
+              }
+             }
+      });
+      $('#event_id').text(event_id)
+      $('#eventModal').modal({});
+      $('#eventModal').css('margin-top','0');
     }
 
     function confirmDeleteDag(link, dag_id){
