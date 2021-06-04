@@ -219,6 +219,8 @@
               call_modal(node_id, execution_date, task.extra_links, try_number, true);
             else
               call_modal(node_id, execution_date, task.extra_links, try_number, undefined);
+          } else if (node_id in events) {
+              call_modal_event(node_id, events[node_id])
           } else {
             // join node between TaskGroup. Ignore.
           }
