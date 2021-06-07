@@ -19,6 +19,8 @@
 import signal
 
 import daemon
+from airflow.contrib.jobs.event_based_scheduler_job import EventBasedSchedulerJob
+from airflow.contrib.jobs.scheduler_factory import SchedulerFactory
 from daemon.pidfile import TimeoutPIDLockFile
 
 from airflow import settings
@@ -36,6 +38,16 @@ def scheduler(args):
         num_runs=args.num_runs,
         do_pickle=args.do_pickle,
     )
+    scheduler_name = SchedulerFactory.get_scheduler_name()
+    if scheduler_name == SchedulerFactory.DEFAULT_SCHEDULER:
+        pass
+    elif scheduler_name == SchedulerFactory.EVENT_BASED_SCHEDULER:
+        job = EventBasedSchedulerJob(
+            dag_directory=process_subdir(args.subdir),
+            server_uri=args.server_uri)
+    else:
+        scheduler_class = SchedulerFactory.get_default_scheduler()
+        job = scheduler_class()
 
     if args.daemon:
         pid, stdout, stderr, log_file = setup_locations(
