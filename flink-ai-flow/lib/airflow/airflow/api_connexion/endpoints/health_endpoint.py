@@ -15,7 +15,7 @@
 # specific language governing permissions and limitations
 # under the License.
 from airflow.api_connexion.schemas.health_schema import health_schema
-from airflow.jobs.scheduler_job import SchedulerJob
+from airflow.contrib.jobs.scheduler_factory import SchedulerFactory
 
 HEALTHY = "healthy"
 UNHEALTHY = "unhealthy"
@@ -27,7 +27,8 @@ def get_health():
     latest_scheduler_heartbeat = None
     scheduler_status = UNHEALTHY
     try:
-        scheduler_job = SchedulerJob.most_recent_job()
+        scheduler_class = SchedulerFactory.get_default_scheduler()
+        scheduler_job = scheduler_class.most_recent_job()
 
         if scheduler_job:
             latest_scheduler_heartbeat = scheduler_job.latest_heartbeat.isoformat()
