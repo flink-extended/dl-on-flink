@@ -17,6 +17,7 @@
 import pickle
 import queue
 
+from airflow.configuration import conf
 from airflow.models.message import Message, IdentifiedMessage
 from airflow.utils.log.logging_mixin import LoggingMixin
 
@@ -46,7 +47,7 @@ class Mailbox(LoggingMixin):
             return None
 
     def get_identified_message(self) -> IdentifiedMessage:
-        return self.queue.get()
+        return self.get_message_with_timeout(timeout=1)
 
     def length(self):
         return self.queue.qsize()
