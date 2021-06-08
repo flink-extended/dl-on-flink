@@ -468,7 +468,14 @@
         $.get(getNodeURL)
           .done(
             (ns) => {
-              nodes = JSON.parse(ns)
+              nodes = JSON.parse(ns);
+              nodes.edges.forEach(function(edge) {
+                source_id = map_task_to_node.get(edge.source_id);
+                target_id = map_task_to_node.get(edge.target_id);
+                if(source_id != target_id && !g.hasEdge(source_id, target_id))
+                  g.setEdge(source_id, target_id);
+              })
+              draw();
               updateNodesStates(nodes.task_instances, nodes.events);
               setTimeout(function() { $('#loading-dots').hide(); }, 500);
               $('#error').hide();
