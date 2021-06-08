@@ -1980,17 +1980,35 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
         node_limit = 5000 / max(1, len(dag.leaves))
 
         upstream_tasks: Dict[str, Set] = {}
-        downstream_tasks: Set = set()
+        event_tasks: Dict[Tuple, Set] = {}
         for t in dag.tasks:
             if t.get_subscribed_events():
-                downstream_tasks.add(t)
-                for event_namespace, event_key, event_type, from_task_id in BaseSerialization._deserialize(t.get_subscribed_events()):
+                for event_namespace, event_key, event_type, from_task_id in BaseSerialization._deserialize(
+                    t.get_subscribed_events()):
                     downstream_task = dag.get_task(t.task_id)
-                    if from_task_id:
+                    if from_task_id and from_task_id == '*':
+                        event_tuple = (event_namespace, event_key, event_type)
+                        if event_tuple in event_tasks:
+                            event_tasks[event_tuple].add(downstream_task)
+                        else:
+                            event_tasks[event_tuple] = {downstream_task}
+                    else:
                         if from_task_id in upstream_tasks:
                             upstream_tasks[from_task_id].add(downstream_task)
                         else:
                             upstream_tasks[from_task_id] = {downstream_task}
+
+        downstream_tasks = set()
+        for key, value in event_tasks.items():
+            event_metas = self.notification_client.list_events(namespace=key[0], key=key[1], event_type=key[2])
+            for event_meta in event_metas:
+                sender = event_meta.sender
+                if sender in dag.task_ids:
+                    downstream_tasks = downstream_tasks.union(value)
+                    if sender in upstream_tasks:
+                        upstream_tasks[sender] = upstream_tasks[sender].union(value)
+                    else:
+                        upstream_tasks[sender] = value
 
         def encode_ti(task_instance: Optional[models.TaskInstance]) -> Optional[List]:
             if not task_instance:
@@ -2167,6 +2185,26 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
                     if event not in events:
                         events[event] = (event_namespace, event_key, event_type)
 
+        send_events = {}
+        event_senders = {}
+        for key, value in events.items():
+            event_metas = self.notification_client.list_events(namespace=value[0], key=value[1], event_type=value[2])
+            event_senders[key] = event_metas
+            sender_count = 0
+            for event_meta in event_metas:
+                if event_meta.sender in dag.task_ids:
+                    sender_count += 1
+            send_events[key] = (value[0], value[1], value[2], sender_count, len(event_metas) - sender_count)
+
+        node_edges = set()
+        for e in edges:
+            if e['source_id'] == '*':
+                for event_meta in event_senders[e['target_id']]:
+                    if event_meta.sender in dag.task_ids:
+                        node_edges.add((event_meta.sender, e['target_id']))
+            else:
+                node_edges.add((e['source_id'], e['target_id']))
+
         if not tasks:
             flash("No tasks found", "error")
         session.commit()
@@ -2193,12 +2231,9 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
             root=root or '',
             task_instances=task_instances,
             tasks=tasks,
-            events={key: (value[0], value[1], value[2],
-                          len(self.notification_client.list_events(
-                              namespace=value[0], key=value[1], event_type=value[2])))
-                    for key, value in events.items()},
+            events=send_events,
             nodes=nodes,
-            edges=edges,
+            edges=[{'source_id': source_id, 'target_id': target_id} for source_id, target_id in node_edges],
             show_external_log_redirect=task_log_reader.supports_external_link,
             external_log_name=external_log_name,
             dag_run_state=dt_nr_dr_data['dr_state'],
@@ -2746,12 +2781,21 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
                     event = '{},{},{}'.format(event_namespace, event_key, event_type)
                     events[event] = (event_namespace, event_key, event_type)
 
-        return json.dumps({'task_instances': task_instances,
-                           'events': {key: (value[0], value[1], value[2],
-                                            len(self.notification_client.list_events(namespace=value[0], key=value[1],
-                                                                                     event_type=value[2])))
-                                      for key, value in events.items()}},
-                          cls=utils_json.AirflowJsonEncoder)
+        send_events = {}
+        node_edges = set()
+        for key, value in events.items():
+            event_metas = self.notification_client.list_events(namespace=value[0], key=value[1],
+                                                               event_type=value[2])
+            sender_count = 0
+            for event_meta in event_metas:
+                if event_meta.sender in dag.task_ids:
+                    sender_count += 1
+                    node_edges.add((event_meta.sender, key))
+            send_events[key] = (value[0], value[1], value[2], sender_count, len(event_metas) - sender_count)
+
+        return json.dumps({'task_instances': task_instances, 'events': send_events,
+                           'edges': [{'source_id': source_id, 'target_id': target_id} for source_id, target_id in
+                                     node_edges]}, cls=utils_json.AirflowJsonEncoder)
 
     @expose('/event/senders')
     @auth.has_access(
