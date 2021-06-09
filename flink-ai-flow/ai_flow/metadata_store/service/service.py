@@ -21,11 +21,11 @@ from ai_flow.meta.example_meta import DataType, ExampleSupportType
 from ai_flow.meta.job_meta import State
 from ai_flow.metadata_store.utils.MetaToProto import MetaToProto
 from ai_flow.metadata_store.utils.ProtoToMeta import ProtoToMeta
-from ai_flow.rest_endpoint.protobuf import metadata_service_pb2_grpc
-from ai_flow.rest_endpoint.protobuf.message_pb2 import ExampleSupportTypeProto, DataTypeProto, StateProto, \
+from ai_flow.protobuf import metadata_service_pb2_grpc
+from ai_flow.protobuf.message_pb2 import ExampleSupportTypeProto, DataTypeProto, StateProto, \
     ModelType
-from ai_flow.rest_endpoint.service.client.model_center_client import ModelCenterClient
-from ai_flow.rest_endpoint.service.util import _wrap_meta_response, transform_example_meta, \
+from ai_flow.endpoint.client.model_center_client import ModelCenterClient
+from ai_flow.endpoint.server.util import _wrap_meta_response, transform_example_meta, \
     _warp_example_list_response, _wrap_delete_response, transform_model_relation_meta, \
     _warp_model_relation_list_response, _warp_model_version_relation_list_response, \
     transform_model_version_relation_meta, _warp_job_list_response, \

@@ -16,7 +16,7 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-from ai_flow.rest_endpoint.protobuf.message_pb2 import INTERNAL_ERROR
+from ai_flow.protobuf.message_pb2 import INTERNAL_ERROR
 
 
 class AIFlowException(Exception):
@@ -33,7 +33,7 @@ class AIFlowException(Exception):
                         exception's serialized JSON representation.
         :param error_code: An appropriate error code for the error that occured; it will be included
                            in the exception's serialized JSON representation. This should be one of
-                           the codes listed in the `ai_flow.rest_endpoint.proto.message_pb2` proto.
+                           the codes listed in the `ai_flow.endpoint.proto.message_pb2` proto.
         :param kwargs: Additional key-value pairs to include in the serialized JSON representation
                        of the AIFlowException.
         """

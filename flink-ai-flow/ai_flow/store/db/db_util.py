@@ -24,8 +24,8 @@ from contextlib import contextmanager
 
 import sqlalchemy
 
-from ai_flow.rest_endpoint.protobuf.message_pb2 import INTERNAL_ERROR
-from ai_flow.rest_endpoint.service.exception import AIFlowException
+from ai_flow.protobuf.message_pb2 import INTERNAL_ERROR
+from ai_flow.endpoint.server.exception import AIFlowException
 from ai_flow.store import AIFLOW_SQLALCHEMYSTORE_MAX_OVERFLOW, AIFLOW_SQLALCHEMYSTORE_POOL_SIZE
 from ai_flow.store.db.db_engine import DATABASE_ENGINES
 

@@ -17,11 +17,11 @@
 from typing import Text, List, Dict
 
 import grpc
-from ai_flow.rest_endpoint.protobuf import scheduling_service_pb2_grpc
-from ai_flow.rest_endpoint.protobuf import scheduling_service_pb2
-from ai_flow.rest_endpoint.protobuf.message_pb2 import WorkflowProto, WorkflowExecutionProto, JobProto, StatusProto
+from ai_flow.protobuf import scheduling_service_pb2_grpc
+from ai_flow.protobuf import scheduling_service_pb2
+from ai_flow.protobuf.message_pb2 import WorkflowProto, WorkflowExecutionProto, JobProto, StatusProto
 
-from ai_flow.rest_endpoint.service.client.base_client import BaseClient
+from ai_flow.endpoint.client.base_client import BaseClient
 
 
 class SchedulingClient(BaseClient):

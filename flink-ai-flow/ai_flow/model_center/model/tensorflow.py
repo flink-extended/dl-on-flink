@@ -22,7 +22,7 @@ The ``aiflow.tensorflow`` module provides an API for loading tensorflow models.
 import warnings
 from distutils.version import LooseVersion
 import tensorflow
-from ai_flow.rest_endpoint.service.exception import AIFlowException
+from ai_flow.endpoint.server.exception import AIFlowException
 
 
 def _load_tensorflow_saved_model(model_uri, meta_graph_tags, signature_def_map_key, tf_session):

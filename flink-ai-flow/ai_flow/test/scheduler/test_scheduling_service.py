@@ -21,10 +21,10 @@ import unittest
 from typing import Text, List, Dict
 
 from ai_flow.meta.job_meta import State
-from ai_flow.rest_endpoint.protobuf.message_pb2 import StateProto
+from ai_flow.protobuf.message_pb2 import StateProto
 
-from ai_flow.rest_endpoint.service.client.scheduling_client import SchedulingClient
-from ai_flow.rest_endpoint.service.server import AIFlowServer
+from ai_flow.endpoint.client.scheduling_client import SchedulingClient
+from ai_flow.endpoint.server.server import AIFlowServer
 from ai_flow.project.project_description import ProjectDesc
 from ai_flow.scheduler.scheduler_interface import AbstractScheduler, SchedulerConfig
 from ai_flow.workflow.workflow import JobInfo, WorkflowExecutionInfo, WorkflowInfo, Workflow

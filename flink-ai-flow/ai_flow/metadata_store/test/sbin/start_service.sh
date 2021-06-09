@@ -19,5 +19,5 @@
 ##
 /usr/local/bin/python3 server_for_test.py >/dev/null 2>&1 &
 echo $! >/tmp/rest_test
-cd ../../../rest_endpoint/service
+cd ../../../endpoint/server
 nohup /usr/local/bin/go run proxy.go >/dev/null 2>&1 &

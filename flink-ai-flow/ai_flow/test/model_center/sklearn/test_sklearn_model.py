@@ -32,8 +32,8 @@ from notification_service.base_notification import EventWatcher
 
 from ai_flow import ModelType
 from ai_flow.model_center.model import sklearn
-from ai_flow.rest_endpoint.service.client.aiflow_client import AIFlowClient
-from ai_flow.rest_endpoint.service.server import AIFlowServer
+from ai_flow.endpoint.client.aiflow_client import AIFlowClient
+from ai_flow.endpoint.server.server import AIFlowServer
 
 ModelWithData = namedtuple('ModelWithData', ['model', 'inference_data'])
 

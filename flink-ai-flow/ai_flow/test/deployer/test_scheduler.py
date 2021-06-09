@@ -20,7 +20,7 @@ import os
 import time
 import unittest
 import sys
-from ai_flow.rest_endpoint.service.client.aiflow_client import AIFlowClient
+from ai_flow.endpoint.client.aiflow_client import AIFlowClient
 
 import ai_flow as af
 from ai_flow.deployer.scheduler import EventScheduler
@@ -28,10 +28,10 @@ from ai_flow.graph.edge import JobControlEdge, MetConfig, generate_job_status_ke
 from ai_flow.graph.edge import TaskAction
 from ai_flow.meta.job_meta import State
 from ai_flow.plugins.local_cmd_job_plugin import LocalCMDJob
-from ai_flow.rest_endpoint.service.server import AIFlowServer
+from ai_flow.endpoint.server.server import AIFlowServer
 from ai_flow.store.db.base_model import base
 from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
-from ai_flow.test.rest_endpoint.test_client import _SQLITE_DB_FILE, _PORT, _SQLITE_DB_URI
+from ai_flow.test.endpoint.test_client import _SQLITE_DB_FILE, _PORT, _SQLITE_DB_URI
 from ai_flow.workflow.job import BaseJob, BaseJobConfig
 from ai_flow.workflow.job_config import PeriodicConfig
 from ai_flow.workflow.job_context import JobContext

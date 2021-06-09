@@ -33,8 +33,8 @@ from grpc._server import _serialize_response, _status, _abort, _Context, _unary_
     _select_thread_pool_for_behavior, _unary_response_in_pool
 from typing import Dict
 
-from ai_flow.rest_endpoint.protobuf.high_availability_pb2_grpc import add_HighAvailabilityManagerServicer_to_server
-from ai_flow.rest_endpoint.service.high_availability import SimpleAIFlowServerHaManager, HighAvailableService
+from ai_flow.protobuf.high_availability_pb2_grpc import add_HighAvailabilityManagerServicer_to_server
+from ai_flow.endpoint.server.high_availability import SimpleAIFlowServerHaManager, HighAvailableService
 from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
 from ai_flow.store.mongo_store import MongoStore
 from ai_flow.store.db.db_util import extract_db_engine_from_uri, parse_mongo_uri
@@ -51,7 +51,7 @@ from ai_flow.scheduler.scheduling_service import SchedulingService, SchedulerCon
 
 sys.path.append(os.path.abspath(os.path.join(os.getcwd(), "../../..")))
 
-from ai_flow.rest_endpoint.protobuf import model_center_service_pb2_grpc, \
+from ai_flow.protobuf import model_center_service_pb2_grpc, \
     metadata_service_pb2_grpc, deploy_service_pb2_grpc, metric_service_pb2_grpc, scheduling_service_pb2_grpc
 
 _PORT = '50051'

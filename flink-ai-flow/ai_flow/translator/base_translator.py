@@ -18,7 +18,7 @@
 #
 from ai_flow.util.time_utils import generate_time_str
 from ai_flow.meta.job_meta import State, ExecutionMode
-from ai_flow.rest_endpoint.service.client.aiflow_client import AIFlowClient
+from ai_flow.endpoint.client.aiflow_client import AIFlowClient
 from ai_flow.api.configuration import project_config
 from ai_flow.meta.workflow_execution_meta import WorkflowExecutionMeta
 from ai_flow.workflow.workflow import Workflow

@@ -21,7 +21,7 @@ import os
 from ai_flow.project.project_description import get_project_description_from, ProjectDesc
 
 from ai_flow.project.project_config import ProjectConfig, _default_project_config
-from ai_flow.rest_endpoint.service.client.aiflow_client import AIFlowClient
+from ai_flow.endpoint.client.aiflow_client import AIFlowClient
 
 _default_project_config_set_flag = False
 

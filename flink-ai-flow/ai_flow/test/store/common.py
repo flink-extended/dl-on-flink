@@ -29,10 +29,10 @@ from ai_flow.meta.example_meta import DataType, ExampleMeta, Schema, ExampleSupp
 from ai_flow.meta.job_meta import State
 from ai_flow.meta.metric_meta import MetricType
 from ai_flow.model_center.entity.registered_model_detail import RegisteredModelDetail
-from ai_flow.rest_endpoint.protobuf.message_pb2 import RESOURCE_ALREADY_EXISTS, \
+from ai_flow.protobuf.message_pb2 import RESOURCE_ALREADY_EXISTS, \
     INVALID_PARAMETER_VALUE
-from ai_flow.rest_endpoint.service.exception import AIFlowException
-from ai_flow.test.rest_endpoint import random_str
+from ai_flow.endpoint.server.exception import AIFlowException
+from ai_flow.test.endpoint import random_str
 
 
 class AbstractTestStore(object):

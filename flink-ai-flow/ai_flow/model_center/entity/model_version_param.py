@@ -17,7 +17,7 @@
 # under the License.
 #
 from ai_flow.model_center.entity._model_repo_entity import _ModelRepoEntity
-from ai_flow.rest_endpoint.protobuf.message_pb2 import ModelVersionStage
+from ai_flow.protobuf.message_pb2 import ModelVersionStage
 
 
 class ModelVersionParam(_ModelRepoEntity):

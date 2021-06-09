@@ -16,9 +16,9 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-from ai_flow.rest_endpoint.protobuf.message_pb2 import INVALID_PARAMETER_VALUE, \
+from ai_flow.protobuf.message_pb2 import INVALID_PARAMETER_VALUE, \
     ModelVersionStage as ProtoModelVersionStage
-from ai_flow.rest_endpoint.service.exception import AIFlowException
+from ai_flow.endpoint.server.exception import AIFlowException
 from enum import Enum
 
 STAGE_GENERATED = "Generated"

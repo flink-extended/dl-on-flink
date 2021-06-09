@@ -18,12 +18,12 @@
 #
 import ast
 from typing import Text, Optional, Union, List
-from ai_flow.rest_endpoint.protobuf.metric_service_pb2 import MetricMetaResponse, ListMetricMetaResponse, \
+from ai_flow.protobuf.metric_service_pb2 import MetricMetaResponse, ListMetricMetaResponse, \
     MetricSummaryResponse, ListMetricSummaryResponse
-from ai_flow.rest_endpoint.service import int64Value, stringValue
+from ai_flow.endpoint.server import int64Value, stringValue
 from ai_flow.common.properties import Properties
 from ai_flow.meta.metric_meta import MetricMeta, MetricType, MetricSummary
-from ai_flow.rest_endpoint.protobuf.message_pb2 import MetricMetaProto, MetricSummaryProto, MetricTypeProto, ReturnCode, \
+from ai_flow.protobuf.message_pb2 import MetricMetaProto, MetricSummaryProto, MetricTypeProto, ReturnCode, \
     SUCCESS, RESOURCE_DOES_NOT_EXIST
 from ai_flow.store.db.db_model import SqlMetricMeta, SqlMetricSummary
 from ai_flow.store.db.db_model import MongoMetricSummary, MongoMetricMeta
