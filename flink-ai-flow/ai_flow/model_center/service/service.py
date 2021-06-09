@@ -27,9 +27,9 @@ from ai_flow.model_center.entity.model_version_stage import MODEL_VERSION_TO_EVE
     ModelVersionStage
 from ai_flow.model_center.entity.registered_model import RegisteredModel
 from ai_flow.model_center.entity.registered_model_param import RegisteredModelParam
-from ai_flow.rest_endpoint.protobuf import model_center_service_pb2_grpc
-from ai_flow.rest_endpoint.protobuf.message_pb2 import ModelType, RegisteredModelMetas
-from ai_flow.rest_endpoint.service.util import catch_exception, _wrap_response
+from ai_flow.protobuf import model_center_service_pb2_grpc
+from ai_flow.protobuf.message_pb2 import ModelType, RegisteredModelMetas
+from ai_flow.endpoint.server.util import catch_exception, _wrap_response
 from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
 from ai_flow.store.mongo_store import MongoStore
 from ai_flow.store.db.db_util import extract_db_engine_from_uri, parse_mongo_uri

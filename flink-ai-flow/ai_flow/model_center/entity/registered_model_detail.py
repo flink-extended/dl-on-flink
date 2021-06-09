@@ -18,9 +18,9 @@
 #
 from ai_flow.model_center.entity.model_version_detail import ModelVersionDetail
 from ai_flow.model_center.entity.registered_model import RegisteredModel
-from ai_flow.rest_endpoint.protobuf.message_pb2 import ModelType, RegisteredModelDetail as ProtoModelDetail, \
+from ai_flow.protobuf.message_pb2 import ModelType, RegisteredModelDetail as ProtoModelDetail, \
     RegisteredModelMeta
-from ai_flow.rest_endpoint.service import stringValue
+from ai_flow.endpoint.server import stringValue
 
 
 class RegisteredModelDetail(RegisteredModel):

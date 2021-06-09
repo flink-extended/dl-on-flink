@@ -29,14 +29,14 @@ from ai_flow.meta.model_relation_meta import ModelRelationMeta, ModelVersionRela
 from ai_flow.meta.project_meta import ProjectMeta
 from ai_flow.meta.workflow_execution_meta import WorkflowExecutionMeta
 from ai_flow.metadata_store.utils.MetaToProto import MetaToProto
-from ai_flow.rest_endpoint.protobuf import metadata_service_pb2_grpc, metadata_service_pb2
-from ai_flow.rest_endpoint.protobuf.message_pb2 import ExampleProto, SchemaProto, ModelRelationProto, ModelProto, \
+from ai_flow.protobuf import metadata_service_pb2_grpc, metadata_service_pb2
+from ai_flow.protobuf.message_pb2 import ExampleProto, SchemaProto, ModelRelationProto, ModelProto, \
     ModelVersionRelationProto, ModelVersionProto, WorkflowExecutionProto, StateProto, JobProto, ProjectProto, \
     ArtifactProto, ModelVersionStage, ExampleSupportTypeProto, ModelType
-from ai_flow.rest_endpoint.protobuf.metadata_service_pb2 import ModelNameRequest
-from ai_flow.rest_endpoint.service import stringValue, int64Value
-from ai_flow.rest_endpoint.service.client.base_client import BaseClient
-from ai_flow.rest_endpoint.service.util import _unwrap_example_response, \
+from ai_flow.protobuf.metadata_service_pb2 import ModelNameRequest
+from ai_flow.endpoint.server import stringValue, int64Value
+from ai_flow.endpoint.client.base_client import BaseClient
+from ai_flow.endpoint.server.util import _unwrap_example_response, \
     transform_example_type_list_to_proto, _unwrap_example_list_response, _unwrap_delete_response, \
     _unwrap_model_relation_response, _unwrap_model_relation_list_response, _unwrap_model_response, \
     _unwrap_model_version_relation_response, _unwrap_model_version_relation_list_response, \

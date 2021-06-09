@@ -35,7 +35,7 @@ from ai_flow.graph.edge import JobControlEdge, MetCondition
 from ai_flow.meta.job_meta import State
 from ai_flow.deployer.kv_store import BaseKVStore, MemoryKVStore
 from ai_flow.graph.edge import generate_job_status_key
-from ai_flow.rest_endpoint.service.client.aiflow_client import AIFlowClient
+from ai_flow.endpoint.client.aiflow_client import AIFlowClient
 from ai_flow.meta.job_meta import JobMeta
 from ai_flow.graph.edge import EventLife, TaskAction, MetValueCondition
 from ai_flow.deployer.utils.kubernetes_util import load_kubernetes_config

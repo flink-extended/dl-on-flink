@@ -18,7 +18,7 @@
 #
 from abc import abstractmethod, ABCMeta
 
-from ai_flow.rest_endpoint.service.high_availability import Member
+from ai_flow.endpoint.server.high_availability import Member
 from typing import Text, Union, List, Optional
 
 from ai_flow.meta.metric_meta import MetricMeta, MetricSummary

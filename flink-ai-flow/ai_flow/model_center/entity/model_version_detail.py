@@ -19,8 +19,8 @@
 from ai_flow.model_center.entity.model_version import ModelVersion
 from ai_flow.model_center.entity.model_version_stage import ModelVersionStage
 from ai_flow.model_center.entity.model_version_status import ModelVersionStatus
-from ai_flow.rest_endpoint.protobuf.message_pb2 import ModelVersionMeta
-from ai_flow.rest_endpoint.service import stringValue
+from ai_flow.protobuf.message_pb2 import ModelVersionMeta
+from ai_flow.endpoint.server import stringValue
 
 
 class ModelVersionDetail(ModelVersion):

@@ -54,7 +54,7 @@ alibaba/porsche-docker/build-venv/python/
 # flink-ai-flow
 
 flink-ai-flow/ai_flow.egg-info/*
-flink-ai-flow/ai_flow/test/rest_endpoint/aiflow.db
+flink-ai-flow/ai_flow/test/endpoint/aiflow.db
 flink-ai-flow/ai_flow/test/api/workflow_config.json
 flink-ai-flow/ai_flow/test/common/test.yaml
 flink-ai-flow/examples/simple_examples/logs/*

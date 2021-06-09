@@ -23,7 +23,7 @@ from ai_flow.meta.model_meta import ModelMeta, ModelVersionMeta
 from ai_flow.meta.model_relation_meta import ModelRelationMeta, ModelVersionRelationMeta
 from ai_flow.meta.project_meta import ProjectMeta
 from ai_flow.meta.workflow_execution_meta import WorkflowExecutionMeta
-from ai_flow.rest_endpoint.protobuf.message_pb2 import ExampleProto, ProjectProto, JobProto, \
+from ai_flow.protobuf.message_pb2 import ExampleProto, ProjectProto, JobProto, \
     WorkflowExecutionProto, StateProto, ModelRelationProto, ModelVersionRelationProto, ModelProto, ModelVersionProto, \
     ArtifactProto, ModelVersionStage, DataTypeProto, ExampleSupportTypeProto, ModelType
 
