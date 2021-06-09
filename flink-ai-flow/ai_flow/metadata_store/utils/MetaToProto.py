@@ -24,11 +24,11 @@ from ai_flow.meta.job_meta import JobMeta
 from ai_flow.meta.model_relation_meta import ModelRelationMeta, ModelVersionRelationMeta
 from ai_flow.meta.project_meta import ProjectMeta
 from ai_flow.meta.workflow_execution_meta import WorkflowExecutionMeta
-from ai_flow.rest_endpoint.protobuf.message_pb2 import ExampleProto, ExampleSupportTypeProto, DataTypeProto, \
+from ai_flow.protobuf.message_pb2 import ExampleProto, ExampleSupportTypeProto, DataTypeProto, \
     SchemaProto, ProjectProto, JobProto, WorkflowExecutionProto, \
     ModelRelationProto, ModelVersionRelationProto, ModelProto, ModelVersionProto, StateProto, ArtifactProto, \
     ModelVersionStage
-from ai_flow.rest_endpoint.service import stringValue, int64Value
+from ai_flow.endpoint.server import stringValue, int64Value
 
 
 class MetaToProto:

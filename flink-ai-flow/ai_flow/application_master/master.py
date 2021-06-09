@@ -18,7 +18,7 @@
 #
 import os
 from typing import Text
-from ai_flow.rest_endpoint.service.server import AIFlowServer, HighAvailableAIFlowServer
+from ai_flow.endpoint.server.server import AIFlowServer, HighAvailableAIFlowServer
 from ai_flow.store.db.base_model import base
 from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
 from ai_flow.store.mongo_store import MongoStoreConnManager

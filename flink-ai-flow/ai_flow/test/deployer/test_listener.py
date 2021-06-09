@@ -20,15 +20,15 @@ import os
 import time
 import unittest
 
-from ai_flow.rest_endpoint.service.client.aiflow_client import AIFlowClient
+from ai_flow.endpoint.client.aiflow_client import AIFlowClient
 from kubernetes import client as kube_cli
 
 from ai_flow.common.message_queue import MessageQueue
 from ai_flow.deployer.listener import EventListener, EventListenerWatcher, ListenerManager, JobStatusEvent, SimpleEvent
-from ai_flow.rest_endpoint.service.server import AIFlowServer
+from ai_flow.endpoint.server.server import AIFlowServer
 from ai_flow.store.db.base_model import base
 from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
-from ai_flow.test.rest_endpoint.test_client import _SQLITE_DB_FILE, _PORT, _SQLITE_DB_URI
+from ai_flow.test.endpoint.test_client import _SQLITE_DB_FILE, _PORT, _SQLITE_DB_URI
 
 client = None
 

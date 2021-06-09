@@ -37,9 +37,9 @@ from ai_flow.metric.utils import table_to_metric_meta, table_to_metric_summary, 
     metric_summary_to_table
 from ai_flow.model_center.entity.model_version_stage import STAGE_DELETED, get_canonical_stage, STAGE_GENERATED, \
     STAGE_DEPLOYED, STAGE_VALIDATED
-from ai_flow.rest_endpoint.protobuf.message_pb2 import INVALID_PARAMETER_VALUE, RESOURCE_ALREADY_EXISTS
-from ai_flow.rest_endpoint.service.exception import AIFlowException
-from ai_flow.rest_endpoint.service.high_availability import Member
+from ai_flow.protobuf.message_pb2 import INVALID_PARAMETER_VALUE, RESOURCE_ALREADY_EXISTS
+from ai_flow.endpoint.server.exception import AIFlowException
+from ai_flow.endpoint.server.high_availability import Member
 from ai_flow.store.abstract_store import AbstractStore
 from ai_flow.store.db.base_model import base
 from ai_flow.store.db.db_model import SqlExample, SqlModelRelation, SqlModelVersionRelation, SqlProject, \

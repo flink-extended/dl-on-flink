@@ -32,7 +32,7 @@ from ai_flow.graph.graph import default_graph, AIGraph
 from ai_flow.project.blob_manager import BlobManagerFactory
 from ai_flow.project.project_description import get_project_description_from, ProjectDesc
 from ai_flow.project.project_util import file_path_to_absolute_module
-from ai_flow.rest_endpoint.service.client.aiflow_client import AIFlowClient
+from ai_flow.endpoint.client.aiflow_client import AIFlowClient
 from ai_flow.translator.base_translator import get_default_translator
 from ai_flow.workflow.workflow import Workflow
 from ai_flow.api.ai_flow_context import default_af_job_context

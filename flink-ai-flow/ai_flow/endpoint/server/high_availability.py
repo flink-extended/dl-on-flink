@@ -27,9 +27,9 @@ from abc import ABC, abstractmethod
 
 from typing import Dict
 
-from ai_flow.rest_endpoint.protobuf.high_availability_pb2 import ListMembersResponse, ReturnStatus, MemberProto, \
+from ai_flow.protobuf.high_availability_pb2 import ListMembersResponse, ReturnStatus, MemberProto, \
     NotifyNewMemberResponse, NotifyNewMemberRequest
-from ai_flow.rest_endpoint.protobuf.high_availability_pb2_grpc import HighAvailabilityManagerServicer, \
+from ai_flow.protobuf.high_availability_pb2_grpc import HighAvailabilityManagerServicer, \
     HighAvailabilityManagerStub
 
 if not hasattr(time, 'time_ns'):

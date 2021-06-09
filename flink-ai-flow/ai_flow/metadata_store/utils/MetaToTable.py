@@ -19,7 +19,7 @@
 from typing import List, Text
 
 from ai_flow.meta.example_meta import ExampleMeta
-from ai_flow.rest_endpoint.service.exception import AIFlowException
+from ai_flow.endpoint.server.exception import AIFlowException
 from ai_flow.store.db.db_model import SqlExample, SqlProject, SqlJob, SqlWorkflowExecution, SqlModelRelation, \
     SqlModelVersionRelation, SqlArtifact
 from ai_flow.store.db.db_model import (MongoProject, MongoExample, MongoJob,

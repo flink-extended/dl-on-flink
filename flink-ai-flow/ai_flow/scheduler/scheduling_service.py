@@ -20,9 +20,9 @@ from ai_flow.project.blob_manager import BlobManagerFactory
 
 from ai_flow.util import json_utils
 from ai_flow.project.project_description import ProjectDesc, get_project_description_from
-from ai_flow.rest_endpoint.protobuf.message_pb2 import ResultProto, StatusProto
-from ai_flow.rest_endpoint.protobuf.scheduling_service_pb2_grpc import SchedulingServiceServicer
-from ai_flow.rest_endpoint.protobuf.scheduling_service_pb2 import \
+from ai_flow.protobuf.message_pb2 import ResultProto, StatusProto
+from ai_flow.protobuf.scheduling_service_pb2_grpc import SchedulingServiceServicer
+from ai_flow.protobuf.scheduling_service_pb2 import \
     (ScheduleWorkflowRequest,
      WorkflowInfoResponse,
      ListWorkflowInfoResponse,
@@ -35,7 +35,7 @@ from ai_flow.rest_endpoint.protobuf.scheduling_service_pb2 import \
 from ai_flow.scheduler.scheduler_factory import SchedulerFactory
 from ai_flow.scheduler.scheduler_interface import AbstractScheduler, SchedulerConfig
 from ai_flow.workflow.workflow import Workflow
-from ai_flow.rest_endpoint.service.workflow_proto_utils import workflow_to_proto, workflow_list_to_proto, \
+from ai_flow.endpoint.server.workflow_proto_utils import workflow_to_proto, workflow_list_to_proto, \
     workflow_execution_to_proto, workflow_execution_list_to_proto, job_to_proto, job_list_to_proto
 
 

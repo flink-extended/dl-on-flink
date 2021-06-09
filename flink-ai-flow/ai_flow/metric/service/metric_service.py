@@ -19,10 +19,10 @@
 from ai_flow.meta.metric_meta import MetricType
 from ai_flow.metric.utils import proto_to_metric_meta, _warp_metric_meta_response, _warp_list_metric_meta_response, \
     proto_to_metric_summary, _warp_metric_summary_response, _warp_list_metric_summary_response
-from ai_flow.rest_endpoint.protobuf.message_pb2 import MetricTypeProto
-from ai_flow.rest_endpoint.protobuf.message_pb2 import Response, ReturnCode
-from ai_flow.rest_endpoint.protobuf.metric_service_pb2_grpc import MetricServiceServicer
-from ai_flow.rest_endpoint.service.util import catch_exception
+from ai_flow.protobuf.message_pb2 import MetricTypeProto
+from ai_flow.protobuf.message_pb2 import Response, ReturnCode
+from ai_flow.protobuf.metric_service_pb2_grpc import MetricServiceServicer
+from ai_flow.endpoint.server.util import catch_exception
 from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
 from ai_flow.store.mongo_store import MongoStore
 from ai_flow.store.db.db_util import extract_db_engine_from_uri, parse_mongo_uri

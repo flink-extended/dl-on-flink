@@ -16,9 +16,9 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-from ai_flow.rest_endpoint.protobuf.deploy_service_pb2_grpc import DeployServiceServicer
-from ai_flow.rest_endpoint.protobuf.deploy_service_pb2 import ScheduleResponse, WorkflowRequest, MasterConfigResponse
-from ai_flow.rest_endpoint.service.client.aiflow_client import _SERVER_URI
+from ai_flow.protobuf.deploy_service_pb2_grpc import DeployServiceServicer
+from ai_flow.protobuf.deploy_service_pb2 import ScheduleResponse, WorkflowRequest, MasterConfigResponse
+from ai_flow.endpoint.client.aiflow_client import _SERVER_URI
 from ai_flow.deployer.scheduler import SchedulerManager
 from ai_flow.workflow.workflow import Workflow
 from ai_flow.util.json_utils import loads

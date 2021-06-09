@@ -25,7 +25,7 @@ import (
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 
-	gw "../protobuf/go"
+	gw "../../protobuf/go"
 )
 
 var (

@@ -30,13 +30,13 @@ from ai_flow.meta.project_meta import ProjectMeta
 from ai_flow.meta.workflow_execution_meta import WorkflowExecutionMeta
 from ai_flow.metadata_store.utils.MetaToProto import MetaToProto
 from ai_flow.metadata_store.utils.ProtoToMeta import ProtoToMeta
-from ai_flow.rest_endpoint.protobuf.message_pb2 import Response, SUCCESS, ReturnCode, RESOURCE_DOES_NOT_EXIST, \
+from ai_flow.protobuf.message_pb2 import Response, SUCCESS, ReturnCode, RESOURCE_DOES_NOT_EXIST, \
     ExampleProto, ModelProto, ModelVersionProto, WorkflowExecutionProto, JobProto, ProjectProto, INTERNAL_ERROR, \
     DataTypeProto, ExampleSupportTypeProto, StateProto, ArtifactProto
-from ai_flow.rest_endpoint.protobuf.metadata_service_pb2 import ExampleListProto, WorkFlowExecutionListProto, \
+from ai_flow.protobuf.metadata_service_pb2 import ExampleListProto, WorkFlowExecutionListProto, \
     JobListProto, ProjectListProto, ModelVersionRelationListProto, ModelRelationListProto, ModelVersionListProto, \
     ArtifactListProto
-from ai_flow.rest_endpoint.service.exception import AIFlowException
+from ai_flow.endpoint.server.exception import AIFlowException
 from ai_flow.store.sqlalchemy_store import UPDATE_FAIL
 
 

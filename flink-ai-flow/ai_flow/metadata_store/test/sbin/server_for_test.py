@@ -22,7 +22,7 @@ import tempfile
 
 sys.path.append(os.path.abspath(os.path.join(os.getcwd(), "../../../..")))
 
-from ai_flow.rest_endpoint.service.server import AIFlowServer
+from ai_flow.endpoint.server.server import AIFlowServer
 
 if __name__ == '__main__':
     fd, temp_dbfile = tempfile.mkstemp()
