@@ -20,10 +20,10 @@ import unittest
 
 import sqlalchemy
 
-from ai_flow.rest_endpoint.service.client.aiflow_client import AIFlowClient
-from ai_flow.rest_endpoint.service.server import AIFlowServer
+from ai_flow.endpoint.client.aiflow_client import AIFlowClient
+from ai_flow.endpoint.server.server import AIFlowServer
 from ai_flow.store.db.base_model import base
-from ai_flow.test.rest_endpoint import test_client
+from ai_flow.test.endpoint import test_client
 from ai_flow.test.store.test_sqlalchemy_store import _get_store
 from ai_flow.test.test_util import get_mysql_server_url
 

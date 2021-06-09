@@ -25,17 +25,17 @@ from ai_flow.model_center.entity.model_version_detail import ModelVersionDetail
 from ai_flow.model_center.entity.model_version_stage import ModelVersionStage
 from ai_flow.model_center.entity.registered_model import RegisteredModel
 from ai_flow.model_center.entity.registered_model_detail import RegisteredModelDetail
-from ai_flow.rest_endpoint.protobuf import model_center_service_pb2_grpc
-from ai_flow.rest_endpoint.protobuf.message_pb2 import ModelMetaParam, RegisteredModelParam, \
+from ai_flow.protobuf import model_center_service_pb2_grpc
+from ai_flow.protobuf.message_pb2 import ModelMetaParam, RegisteredModelParam, \
     ModelVersionParam, RegisteredModelDetail as ProtoModelDetail, RegisteredModelMeta, RegisteredModelMetas, \
     ModelVersionMeta, ModelType
-from ai_flow.rest_endpoint.protobuf.model_center_service_pb2 import CreateRegisteredModelRequest, \
+from ai_flow.protobuf.model_center_service_pb2 import CreateRegisteredModelRequest, \
     UpdateRegisteredModelRequest, DeleteRegisteredModelRequest, ListRegisteredModelsRequest, \
     GetRegisteredModelDetailRequest, CreateModelVersionRequest, UpdateModelVersionRequest, DeleteModelVersionRequest, \
     GetModelVersionDetailRequest
-from ai_flow.rest_endpoint.service import stringValue
-from ai_flow.rest_endpoint.service.client.base_client import BaseClient
-from ai_flow.rest_endpoint.service.util import _parse_response
+from ai_flow.endpoint.server import stringValue
+from ai_flow.endpoint.client.base_client import BaseClient
+from ai_flow.endpoint.server.util import _parse_response
 
 
 class ModelCenterClient(BaseClient):

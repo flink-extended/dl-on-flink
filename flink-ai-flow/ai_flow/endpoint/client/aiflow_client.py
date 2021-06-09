@@ -25,22 +25,22 @@ import time
 from functools import wraps
 
 from ai_flow.project.project_config import ProjectConfig
-from ai_flow.rest_endpoint.protobuf.deploy_service_pb2_grpc import DeployServiceStub
-from ai_flow.rest_endpoint.protobuf.high_availability_pb2 import ListMembersRequest, ReturnStatus
-from ai_flow.rest_endpoint.protobuf.high_availability_pb2_grpc import HighAvailabilityManagerStub
-from ai_flow.rest_endpoint.protobuf.metadata_service_pb2_grpc import MetadataServiceStub
-from ai_flow.rest_endpoint.protobuf.metric_service_pb2_grpc import MetricServiceStub
-from ai_flow.rest_endpoint.protobuf.model_center_service_pb2_grpc import ModelCenterServiceStub
-from ai_flow.rest_endpoint.protobuf.scheduling_service_pb2_grpc import SchedulingServiceStub
-from ai_flow.rest_endpoint.service.high_availability import proto_to_member, sleep_and_detecting_running
+from ai_flow.protobuf.deploy_service_pb2_grpc import DeployServiceStub
+from ai_flow.protobuf.high_availability_pb2 import ListMembersRequest, ReturnStatus
+from ai_flow.protobuf.high_availability_pb2_grpc import HighAvailabilityManagerStub
+from ai_flow.protobuf.metadata_service_pb2_grpc import MetadataServiceStub
+from ai_flow.protobuf.metric_service_pb2_grpc import MetricServiceStub
+from ai_flow.protobuf.model_center_service_pb2_grpc import ModelCenterServiceStub
+from ai_flow.protobuf.scheduling_service_pb2_grpc import SchedulingServiceStub
+from ai_flow.endpoint.server.high_availability import proto_to_member, sleep_and_detecting_running
 from notification_service.base_notification import BaseEvent
 from ai_flow.notification.event_types import AI_FLOW_TYPE
-from ai_flow.rest_endpoint.service.client.deploy_client import DeployClient
-from ai_flow.rest_endpoint.service.client.metadata_client import MetadataClient
-from ai_flow.rest_endpoint.service.client.model_center_client import ModelCenterClient
+from ai_flow.endpoint.client.deploy_client import DeployClient
+from ai_flow.endpoint.client.metadata_client import MetadataClient
+from ai_flow.endpoint.client.model_center_client import ModelCenterClient
 from notification_service.client import NotificationClient
-from ai_flow.rest_endpoint.service.client.metric_client import MetricClient
-from ai_flow.rest_endpoint.service.client.scheduling_client import SchedulingClient
+from ai_flow.endpoint.client.metric_client import MetricClient
+from ai_flow.endpoint.client.scheduling_client import SchedulingClient
 
 
 if not hasattr(time, 'time_ns'):

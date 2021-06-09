@@ -20,7 +20,7 @@ from ai_flow.metadata_store.utils.ProtoToMeta import ProtoToMeta
 
 from ai_flow.meta.job_meta import State
 
-from ai_flow.rest_endpoint.protobuf.message_pb2 import WorkflowProto, WorkflowExecutionProto, StateProto, JobProto
+from ai_flow.protobuf.message_pb2 import WorkflowProto, WorkflowExecutionProto, StateProto, JobProto
 from ai_flow.workflow.workflow import WorkflowInfo, WorkflowExecutionInfo, JobInfo
 
 

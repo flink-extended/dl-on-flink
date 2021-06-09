@@ -16,7 +16,7 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-from ai_flow.rest_endpoint.protobuf.message_pb2 import \
+from ai_flow.protobuf.message_pb2 import \
     ModelVersionStatus as ProtoModelVersionStatus
 
 

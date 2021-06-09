@@ -25,7 +25,7 @@ from ai_flow.translator.base_translator import get_default_translator
 from ai_flow.client.ai_flow_client import get_ai_flow_client
 from ai_flow.api.configuration import project_config, project_description
 from ai_flow.workflow.workflow import JobInfo, WorkflowExecutionInfo, WorkflowInfo, Workflow
-from ai_flow.rest_endpoint.service.workflow_proto_utils import \
+from ai_flow.endpoint.server.workflow_proto_utils import \
     proto_to_workflow, proto_to_workflow_list, proto_to_workflow_execution, proto_to_workflow_execution_list,\
     proto_to_job, proto_to_job_list
 

@@ -23,10 +23,10 @@ import grpc
 from ai_flow.common.properties import Properties
 from ai_flow.meta.metric_meta import MetricMeta, MetricSummary, MetricType
 from ai_flow.metric.utils import proto_to_metric_meta, proto_to_metric_summary
-from ai_flow.rest_endpoint.protobuf import metric_service_pb2, metric_service_pb2_grpc, message_pb2
-from ai_flow.rest_endpoint.protobuf.message_pb2 import ReturnCode
-from ai_flow.rest_endpoint.service import stringValue, int64Value
-from ai_flow.rest_endpoint.service.client.base_client import BaseClient
+from ai_flow.protobuf import metric_service_pb2, metric_service_pb2_grpc, message_pb2
+from ai_flow.protobuf.message_pb2 import ReturnCode
+from ai_flow.endpoint.server import stringValue, int64Value
+from ai_flow.endpoint.client.base_client import BaseClient
 
 
 class MetricClient(BaseClient):

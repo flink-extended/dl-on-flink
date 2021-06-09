@@ -94,7 +94,7 @@
                         <exclude>lib/airflow/*</exclude>
                         <exclude>lib/airflow/**/*</exclude>
                         <!-- generated files -->
-                        <exclude>ai_flow/rest_endpoint/protobuf/go/*.go</exclude>
+                        <exclude>ai_flow/protobuf/go/*.go</exclude>
                         <exclude>lib/**/*</exclude>
                         <exclude>examples/**/*</exclude>
                         <exclude>python_ai_flow/test/**/*</exclude>

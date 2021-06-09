@@ -51,8 +51,8 @@ function run_test_class() {
 
 mvn verify
 
-run_test_class 'ai_flow/test/rest_endpoint/' 'test_client.TestAIFlowClientSqlite'
-run_test_class 'ai_flow/test/rest_endpoint/' 'test_mysql_client.TestAIFlowClientMySQL'
+run_test_class 'ai_flow/test/endpoint/' 'test_client.TestAIFlowClientSqlite'
+run_test_class 'ai_flow/test/endpoint/' 'test_mysql_client.TestAIFlowClientMySQL'
 
 run_tests 'ai_flow/test/graph/'
 run_tests 'ai_flow/test/common/'

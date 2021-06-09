@@ -20,8 +20,8 @@ import time
 import unittest
 
 from ai_flow.project.project_config import ProjectConfig
-from ai_flow.rest_endpoint.service.client.aiflow_client import AIFlowClient
-from ai_flow.rest_endpoint.service.server import HighAvailableAIFlowServer
+from ai_flow.endpoint.client.aiflow_client import AIFlowClient
+from ai_flow.endpoint.server.server import HighAvailableAIFlowServer
 from ai_flow.store.db.base_model import base
 from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
 
