@@ -28,26 +28,17 @@ class ProjectMeta(Jsonable):
                  name: Text,
                  uri: Text,
                  properties: Properties = None,
-                 user: Text = None,
-                 password: Text = None,
-                 project_type: Text = None,
                  uuid: int = None
                  ) -> None:
         """
 
         :param name: the project name
         :param uri: the address of the code of the project
-        :param user: the project user
-        :param password: the project password
         :param properties: the project properties
-        :param project_type: the project type, GIT, notebook or etc.
         """
 
         self.name = name
-        self.project_type = project_type
         self.uri = uri
-        self.user = user
-        self.password = password
         self.properties = properties
         self.uuid = uuid
 
@@ -56,25 +47,15 @@ class ProjectMeta(Jsonable):
                'ProjectMeta\n' \
                'uuid:{},\n' \
                'name:{},\n' \
-               'project_type:{},\n' \
                'properties:{},\n' \
                'uri:{},\n' \
-               'user:{},\n' \
-               'password:{},\n' \
                '>'.format(self.uuid,
                           self.name,
-                          self.project_type,
                           self.properties,
-                          self.uri,
-                          self.user,
-                          self.password)
+                          self.uri)
 
 
 def create_project(name: Text,
                    uri: Text,
-                   user: Text = None,
-                   password: Text = None,
-                   properties: Properties = None,
-                   project_type: Text = None) -> ProjectMeta:
-    return ProjectMeta(name=name, uri=uri, user=user, password=password, properties=properties,
-                       project_type=project_type)
+                   properties: Properties = None) -> ProjectMeta:
+    return ProjectMeta(name=name, uri=uri, properties=properties)

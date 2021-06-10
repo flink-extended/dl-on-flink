@@ -415,11 +415,7 @@ def transform_project_meta(project_proto):
     return ProjectMeta(
         name=project_proto.name,
         properties=properties,
-        uri=project_proto.uri.value if project_proto.HasField('uri') else None,
-        user=project_proto.user.value if project_proto.HasField('user') else None,
-        password=project_proto.password.value if project_proto.HasField('password') else None,
-        project_type=project_proto.project_type.value if project_proto.HasField(
-            'project_type') else None)
+        uri=project_proto.uri.value if project_proto.HasField('uri') else None)
 
 
 def transform_artifact_meta(artifact_proto) -> ArtifactMeta:

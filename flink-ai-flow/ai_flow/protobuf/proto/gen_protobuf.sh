@@ -19,6 +19,10 @@
 ##
 set -e
 
+current_dir=$(cd "$(dirname "$0")";pwd)
+root_dir=${current_dir}/../..
+echo $root_dir
+
 #generate go file
 protoc -I/usr/local/include -I. \
   -I$GOPATH/src \
@@ -84,33 +88,33 @@ protoc -I/usr/local/include -I. \
 #generate java file
 protoc -I/usr/local/include -I. \
   -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-  --java_out=../../../java/client/src/main/java \
+  --java_out=${root_dir}/java/client/src/main/java \
   --proto_path=. \
   message.proto
 
 protoc -I/usr/local/include -I. \
   -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-  --java_out=../../../java/client/src/main/java \
+  --java_out=${root_dir}/java/client/src/main/java \
   --proto_path=. \
   metadata_service.proto
 
 protoc -I/usr/local/include -I. \
   -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
   --plugin=protoc-gen-grpc-java \
-  --grpc-java_out=../../../java/client/src/main/java \
+  --grpc-java_out=${root_dir}/java/client/src/main/java \
   --proto_path=. \
   metadata_service.proto
 
 protoc -I/usr/local/include -I. \
   -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-  --java_out=../../../java/client/src/main/java \
+  --java_out=${root_dir}/java/client/src/main/java \
   --proto_path=. \
   model_center_service.proto
 
 protoc -I/usr/local/include -I. \
   -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
   --plugin=protoc-gen-grpc-java \
-  --grpc-java_out=../../../java/client/src/main/java \
+  --grpc-java_out=${root_dir}/java/client/src/main/java \
   --proto_path=. \
   model_center_service.proto
 

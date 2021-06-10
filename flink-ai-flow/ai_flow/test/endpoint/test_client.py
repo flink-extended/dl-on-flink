@@ -168,7 +168,7 @@ class AIFlowClientTestCases(object):
     """test project"""
 
     def test_save_project_get_project_by_id_and_name(self):
-        response = client.register_project(name='project', uri='www.code.com', project_type='GIT')
+        response = client.register_project(name='project', uri='www.code.com',)
         project_id = client.get_project_by_id(response.uuid)
         project_name = client.get_project_by_name('project')
         self.assertEqual(project_id.name, 'project')
@@ -176,26 +176,21 @@ class AIFlowClientTestCases(object):
         print(project_id)
 
     def test_double_register_project(self):
-        client.register_project(name='project', uri='www.code.com', project_type='GIT')
-        client.register_project(name='project', uri='www.code.com', project_type='GIT')
-        self.assertRaises(AIFlowException, client.register_project, name='project',
-                          uri='www.code.com', project_type='NOTEBOOK')
-        self.assertRaises(AIFlowException, client.register_project, name='project',
-                          user='tom', uri='www.code.com', project_type='GIT')
+        client.register_project(name='project', uri='www.code.com')
+        client.register_project(name='project', uri='www.code.com')
+        self.assertRaises(AIFlowException, client.register_project,
+                          name='project', uri='www.code2.com')
 
     def test_list_project(self):
-        response = client.register_project(name='project', uri='www.code.com',
-                                           project_type='GIT')
-        client.register_project(name='project1', uri='www.code.com',
-                                project_type='GIT')
+        response = client.register_project(name='project', uri='www.code.com')
+        client.register_project(name='project1', uri='www.code.com')
         project_list = client.list_project(2, response.uuid - 1)
         self.assertEqual(2, len(project_list))
         self.assertEqual('project', project_list[0].name)
         self.assertEqual('project1', project_list[1].name)
 
     def test_delete_project_by_id(self):
-        project = client.register_project(name='project', uri='www.code.com',
-                                          project_type='GIT')
+        project = client.register_project(name='project', uri='www.code.com')
         model = client.register_model_relation(name='model', project_id=project.uuid)
         work_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
                                                             execution_state=State.INIT,
@@ -223,8 +218,7 @@ class AIFlowClientTestCases(object):
         self.assertIsNone(client.list_job(1, 0))
 
     def test_delete_project_by_name(self):
-        project = client.register_project(name='project', uri='www.code.com',
-                                          project_type='GIT')
+        project = client.register_project(name='project', uri='www.code.com')
         model = client.register_model_relation(name='model', project_id=project.uuid)
         work_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
                                                             execution_state=State.INIT,
@@ -252,18 +246,15 @@ class AIFlowClientTestCases(object):
         self.assertIsNone(client.list_job(1, 0))
 
     def test_update_project(self):
-        client.register_project(name='project', uri='www.code.com',
-                                project_type='GIT')
+        client.register_project(name='project', uri='www.code.com')
         update_project = client.update_project(project_name='project', uri='git@alibaba.com')
         project = client.get_project_by_name('project')
         self.assertEqual(update_project.uri, project.uri)
-        self.assertEqual(update_project.project_type, project.project_type)
 
     """test workflow execution"""
 
     def test_save_workflow_execution_get_by_id_and_name(self):
-        project = client.register_project(name='project', uri='www.code.com',
-                                          project_type='GIT')
+        project = client.register_project(name='project', uri='www.code.com')
         workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
                                                                 execution_state=State.INIT,
                                                                 workflow_json='workflow.yaml',
@@ -275,8 +266,7 @@ class AIFlowClientTestCases(object):
         print(execution_id)
 
     def test_list_workflow_execution(self):
-        project = client.register_project(name='project', uri='www.code.com',
-                                          project_type='GIT')
+        project = client.register_project(name='project', uri='www.code.com')
         client.register_workflow_execution(name='execution', project_id=project.uuid,
                                            execution_state=State.INIT,
                                            workflow_json='workflow.yaml',
@@ -293,8 +283,7 @@ class AIFlowClientTestCases(object):
             print(execution)
 
     def test_update_workflow_execution(self):
-        project = client.register_project(name='project', uri='www.code.com',
-                                          project_type='GIT')
+        project = client.register_project(name='project', uri='www.code.com')
         client.register_workflow_execution(name='execution', project_id=project.uuid,
                                            execution_state=State.INIT,
                                            workflow_json='workflow.yaml',
@@ -312,8 +301,7 @@ class AIFlowClientTestCases(object):
         print(execution.to_json_dict())
 
     def test_update_workflow_execution_end_time(self):
-        project = client.register_project(name='project', uri='www.code.com',
-                                          project_type='GIT')
+        project = client.register_project(name='project', uri='www.code.com')
         client.register_workflow_execution(name='execution', project_id=project.uuid,
                                            execution_state=State.INIT,
                                            workflow_json='workflow.yaml',
@@ -324,8 +312,7 @@ class AIFlowClientTestCases(object):
         print(client.get_workflow_execution_by_name('execution'))
 
     def test_update_workflow_execution_state(self):
-        project = client.register_project(name='project', uri='www.code.com',
-                                          project_type='GIT')
+        project = client.register_project(name='project', uri='www.code.com')
         client.register_workflow_execution(name='execution', project_id=project.uuid,
                                            execution_state=State.STARTING,
                                            workflow_json='workflow.yaml',
@@ -336,8 +323,7 @@ class AIFlowClientTestCases(object):
         print(client.get_workflow_execution_by_name('execution'))
 
     def test_delete_workflow_execution_by_id(self):
-        project = client.register_project(name='project', uri='www.code.com',
-                                          project_type='GIT')
+        project = client.register_project(name='project', uri='www.code.com')
         workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
                                                                 start_time=122,
                                                                 execution_state=State.INIT,
@@ -352,8 +338,7 @@ class AIFlowClientTestCases(object):
         self.assertIsNone(client.get_job_by_name('job'))
 
     def test_delete_workflow_execution_by_name(self):
-        project = client.register_project(name='project', uri='www.code.com',
-                                          project_type='GIT')
+        project = client.register_project(name='project', uri='www.code.com')
         workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
                                                                 execution_state=State.INIT,
                                                                 workflow_json='workflow.yaml',
@@ -369,8 +354,7 @@ class AIFlowClientTestCases(object):
     """test job"""
 
     def test_save_job_get_by_id_and_name(self):
-        project = client.register_project(name='project', uri='www.code.com',
-                                          project_type='GIT')
+        project = client.register_project(name='project', uri='www.code.com')
         workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
                                                                 execution_state=State.INIT,
                                                                 workflow_json='workflow.yaml',
@@ -385,8 +369,7 @@ class AIFlowClientTestCases(object):
         print(job_id)
 
     def test_list_job(self):
-        project = client.register_project(name='project', uri='www.code.com',
-                                          project_type='GIT')
+        project = client.register_project(name='project', uri='www.code.com')
         workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
                                                                 execution_state=State.INIT,
                                                                 workflow_json='workflow.yaml',
@@ -404,8 +387,7 @@ class AIFlowClientTestCases(object):
             print(job)
 
     def test_update_Job(self):
-        project = client.register_project(name='project', uri='www.code.com',
-                                          project_type='GIT')
+        project = client.register_project(name='project', uri='www.code.com')
         workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
                                                                 execution_state=State.INIT,
                                                                 workflow_json='workflow.yaml',
@@ -422,8 +404,7 @@ class AIFlowClientTestCases(object):
         self.assertEqual(client.get_job_by_name('job').end_time, now)
 
     def test_update_job(self):
-        project = client.register_project(name='project', uri='www.code.com',
-                                          project_type='GIT')
+        project = client.register_project(name='project', uri='www.code.com')
         workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
                                                                 execution_state=State.INIT,
                                                                 workflow_json='workflow.yaml',
@@ -441,8 +422,7 @@ class AIFlowClientTestCases(object):
         self.assertEqual(1000, job_response.end_time)
 
     def test_delete_job_by_id(self):
-        project = client.register_project(name='project', uri='www.code.com',
-                                          project_type='GIT')
+        project = client.register_project(name='project', uri='www.code.com')
         workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
                                                                 execution_state=State.INIT,
                                                                 workflow_json='workflow.yaml',
@@ -454,8 +434,7 @@ class AIFlowClientTestCases(object):
         self.assertIsNone(client.get_job_by_id(job.uuid))
 
     def test_delete_job_by_name(self):
-        project = client.register_project(name='project', uri='www.code.com',
-                                          project_type='GIT')
+        project = client.register_project(name='project', uri='www.code.com')
         workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
                                                                 execution_state=State.INIT,
                                                                 workflow_json='workflow.yaml',
@@ -469,8 +448,7 @@ class AIFlowClientTestCases(object):
     """test model"""
 
     def test_model_api(self):
-        project = client.register_project(name='project', uri='www.code.com',
-                                          project_type='GIT')
+        project = client.register_project(name='project', uri='www.code.com')
         model = client.register_model(model_name='test_register_model1', model_type=ModelType.SAVED_MODEL,
                                       model_desc='test register model1', project_id=project.uuid)
         self.assertIsNone(client.get_model_by_name('no'))
@@ -488,8 +466,7 @@ class AIFlowClientTestCases(object):
         self.assertEqual(len(client.list_registered_models()), 0)
 
     def test_get_deployed_model_version(self):
-        project = client.register_project(name='project', uri='www.code.com',
-                                          project_type='GIT')
+        project = client.register_project(name='project', uri='www.code.com')
         model = client.register_model(model_name='test_register_model1', model_type=ModelType.SAVED_MODEL,
                                       model_desc='test register model1', project_id=project.uuid)
         model_version = client.register_model_version(model=model.uuid, model_path='/path/to/your/model/version')
@@ -504,8 +481,7 @@ class AIFlowClientTestCases(object):
                           current_stage=ModelVersionStage.DEPLOYED)
 
     def test_save_model_get_id_and_name(self):
-        project = client.register_project(name='project', uri='www.code.com',
-                                          project_type='GIT')
+        project = client.register_project(name='project', uri='www.code.com')
         response = client.register_model_relation(name='model', project_id=project.uuid)
         model_id = client.get_model_relation_by_id(response.uuid)
         model_name = client.get_model_relation_by_name('model')
@@ -514,8 +490,7 @@ class AIFlowClientTestCases(object):
         print(model_id)
 
     def test_list_model(self):
-        project = client.register_project(name='project', uri='www.code.com',
-                                          project_type='GIT')
+        project = client.register_project(name='project', uri='www.code.com')
         client.register_model_relation(name='model', project_id=project.uuid)
         client.register_model_relation(name='model1', project_id=project.uuid)
         self.assertEqual(2, len(client.list_model_relation(2, 0)))
@@ -523,8 +498,7 @@ class AIFlowClientTestCases(object):
         self.assertEqual('model1', client.list_model_relation(2, 0)[1].name)
 
     def test_delete_model_by_id(self):
-        project = client.register_project(name='project', uri='www.code.com',
-                                          project_type='GIT')
+        project = client.register_project(name='project', uri='www.code.com')
         model_relation = client.register_model_relation(name='model', project_id=project.uuid)
         workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
                                                                 execution_state=State.INIT,
@@ -539,8 +513,7 @@ class AIFlowClientTestCases(object):
         self.assertIsNone(client.get_model_relation_by_name('model'))
 
     def test_delete_model_by_name(self):
-        project = client.register_project(name='project', uri='www.code.com',
-                                          project_type='GIT')
+        project = client.register_project(name='project', uri='www.code.com')
         model_relation = client.register_model_relation(name='model', project_id=project.uuid)
         workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
                                                                 execution_state=State.INIT,
@@ -557,8 +530,7 @@ class AIFlowClientTestCases(object):
     """test model version"""
 
     def test_model_version_api(self):
-        project = client.register_project(name='project', uri='www.code.com',
-                                          project_type='GIT')
+        project = client.register_project(name='project', uri='www.code.com')
         model = client.register_model(model_name='test_register_model', model_type=ModelType.SAVED_MODEL,
                                       model_desc='test register model', project_id=project.uuid)
         self.assertIsNone(client.get_model_version_by_version('1', model.uuid))
@@ -611,8 +583,7 @@ class AIFlowClientTestCases(object):
         self.assertEqual(model_version_meta.version_desc, 'test model version 1')
 
     def test_get_latest_model_version(self):
-        project = client.register_project(name='project', uri='www.code.com',
-                                          project_type='GIT')
+        project = client.register_project(name='project', uri='www.code.com')
         model = client.register_model(model_name='test_register_model', model_type=ModelType.SAVED_MODEL,
                                       model_desc='test register model', project_id=project.uuid)
         workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
@@ -645,8 +616,7 @@ class AIFlowClientTestCases(object):
         self.assertEqual(response_2.version, new_generated_model_version_2.version)
 
     def test_save_model_version_get_by_version(self):
-        project = client.register_project(name='project', uri='www.code.com',
-                                          project_type='GIT')
+        project = client.register_project(name='project', uri='www.code.com')
         model = client.register_model_relation(name='model', project_id=project.uuid)
         workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
                                                                 execution_state=State.INIT,
@@ -660,8 +630,7 @@ class AIFlowClientTestCases(object):
         print(client.get_model_version_relation_by_version(response.version, model.uuid))
 
     def test_list_model_version(self):
-        project = client.register_project(name='project', uri='www.code.com',
-                                          project_type='GIT')
+        project = client.register_project(name='project', uri='www.code.com')
         model = client.register_model_relation(name='model', project_id=project.uuid)
         workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
                                                                 execution_state=State.INIT,
@@ -676,8 +645,7 @@ class AIFlowClientTestCases(object):
         self.assertEqual(client.list_model_version_relation(1, 2, 0)[1].version, '2')
 
     def test_delete_model_version_by_version(self):
-        project = client.register_project(name='project', uri='www.code.com',
-                                          project_type='GIT')
+        project = client.register_project(name='project', uri='www.code.com')
         model = client.register_model_relation(name='model', project_id=project.uuid)
         workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
                                                                 execution_state=State.INIT,

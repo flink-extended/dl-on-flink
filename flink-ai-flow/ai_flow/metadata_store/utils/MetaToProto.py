@@ -88,10 +88,7 @@ class MetaToProto:
                 uuid=project_meta.uuid,
                 name=project_meta.name,
                 properties=project_meta.properties,
-                uri=stringValue(project_meta.uri),
-                user=stringValue(project_meta.user),
-                password=stringValue(project_meta.password),
-                project_type=stringValue(project_meta.project_type))
+                uri=stringValue(project_meta.uri))
 
     @staticmethod
     def project_meta_list_to_proto(projects: List[ProjectMeta]) -> List[ProjectProto]:

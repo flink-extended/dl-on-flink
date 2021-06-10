@@ -824,15 +824,11 @@ public class MetadataClient {
      * @param name        Name of project.
      * @param uri         Uri of project
      * @param properties  Properties of project
-     * @param user        User of project
-     * @param password    Password of project
-     * @param projectType Project type of project
      * @return Single ProjectMeta object registered in Metadata Store.
      */
-    public ProjectMeta registerProject(String name, String uri, Map<String, String> properties, String user,
-                                       String password, String projectType) throws Exception {
-        ProjectProto projectProto = ProjectProto.newBuilder().setName(name).setUri(stringValue(uri)).putAllProperties(properties)
-                .setUser(stringValue(user)).setPassword(stringValue(password)).setProjectType(stringValue(projectType)).build();
+    public ProjectMeta registerProject(String name, String uri, Map<String, String> properties) throws Exception {
+        ProjectProto projectProto = ProjectProto.newBuilder().setName(name).setUri(stringValue(uri))
+                .putAllProperties(properties).build();
         RegisterProjectRequest request = RegisterProjectRequest.newBuilder().setProject(projectProto).build();
         Response response = metadataServiceStub.registerProject(request);
         ProjectProto.Builder builder = ProjectProto.newBuilder();
@@ -845,15 +841,10 @@ public class MetadataClient {
      * @param name        Name of project.
      * @param uri         Uri of project
      * @param properties  Properties of project
-     * @param user        User of project
-     * @param password    Password of project
-     * @param projectType Project type of project
      * @return Single ProjectMeta object registered in Metadata Store.
      */
-    public ProjectMeta updateProject(String name, String uri, Map<String, String> properties, String user,
-                                     String password, String projectType) throws Exception {
-        UpdateProjectRequest.Builder projectProto = UpdateProjectRequest.newBuilder().setName(name).setUri(stringValue(uri)).putAllProperties(properties)
-                .setUser(stringValue(user)).setPassword(stringValue(password)).setProjectType(stringValue(projectType));
+    public ProjectMeta updateProject(String name, String uri, Map<String, String> properties) throws Exception {
+        UpdateProjectRequest.Builder projectProto = UpdateProjectRequest.newBuilder().setName(name).setUri(stringValue(uri)).putAllProperties(properties);
         UpdateProjectRequest request = projectProto.build();
         Response response = metadataServiceStub.updateProject(request);
         ProjectProto.Builder builder = ProjectProto.newBuilder();

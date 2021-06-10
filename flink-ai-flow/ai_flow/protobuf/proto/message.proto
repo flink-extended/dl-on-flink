@@ -124,10 +124,7 @@ message ProjectProto {
     int64 uuid = 1;
     string name = 2;
     map<string, string> properties = 3;
-    google.protobuf.StringValue project_type = 4;
-    google.protobuf.StringValue uri = 5;
-    google.protobuf.StringValue user = 6;
-    google.protobuf.StringValue password = 7;
+    google.protobuf.StringValue uri = 4;
 }
 
 message ArtifactProto {

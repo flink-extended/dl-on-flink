@@ -586,10 +586,7 @@ message RegisterProjectRequest {
 message UpdateProjectRequest {
     string name = 1;
     map<string, string> properties = 2;
-    google.protobuf.StringValue project_type = 3;
-    google.protobuf.StringValue uri = 4;
-    google.protobuf.StringValue user = 5;
-    google.protobuf.StringValue password = 6;
+    google.protobuf.StringValue uri = 3;
 }
 
 message ProjectListProto {
