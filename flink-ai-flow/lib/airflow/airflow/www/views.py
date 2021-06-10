@@ -196,7 +196,7 @@ def task_group_to_dict(task_group):
         nodes = []
         if task_group.get_subscribed_events():
             for event_namespace, event_key, event_type, from_task_id in BaseSerialization._deserialize(
-                task_group.get_subscribed_events()):
+                    task_group.get_subscribed_events()):
                 event = '{},{},{}'.format(event_namespace, event_key, event_type)
                 nodes.append({
                     'id': event,
@@ -356,13 +356,14 @@ def dag_edges(dag):
                 get_downstream(child)
         subscribed_events = task.get_subscribed_events()
         if subscribed_events:
-            for event_namespace, event_key, event_type, from_task_id in BaseSerialization._deserialize(
-                subscribed_events):
+            for event_namespace, event_key, event_type, from_task_id in BaseSerialization._deserialize(subscribed_events):
                 to_edge = ('{},{},{}'.format(event_namespace, event_key, event_type), task.task_id)
-                from_edge = ('', '{},{},{}'.format(event_namespace, event_key, event_type))
                 if to_edge not in edges:
                     edges.add(to_edge)
-                    edges.add(from_edge)
+                if from_task_id:
+                    from_edge = (from_task_id, '{},{},{}'.format(event_namespace, event_key, event_type))
+                    if from_edge not in edges:
+                        edges.add(from_edge)
 
     for root in dag.roots:
         get_downstream(root)
@@ -1981,21 +1982,27 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
         node_count = 0
         node_limit = 5000 / max(1, len(dag.leaves))
 
+        downstream_tasks = set()
         upstream_tasks: Dict[str, Set] = {}
         event_tasks: Dict[Tuple, Set] = {}
         for t in dag.tasks:
             if t.get_subscribed_events():
                 for event_namespace, event_key, event_type, from_task_id in BaseSerialization._deserialize(
-                    t.get_subscribed_events()):
+                        t.get_subscribed_events()):
                     downstream_task = dag.get_task(t.task_id)
-                    if from_task_id:
+                    if from_task_id and from_task_id == '*':
                         event_tuple = (event_namespace, event_key, event_type)
                         if event_tuple in event_tasks:
                             event_tasks[event_tuple].add(downstream_task)
                         else:
                             event_tasks[event_tuple] = {downstream_task}
+                    else:
+                        downstream_tasks.add(downstream_task)
+                        if from_task_id in upstream_tasks:
+                            upstream_tasks[from_task_id].add(downstream_task)
+                        else:
+                            upstream_tasks[from_task_id] = {downstream_task}
 
-        downstream_tasks = set()
         for key, value in event_tasks.items():
             event_metas = self.notification_client.list_events(namespace=key[0], key=key[1], event_type=key[2])
             for event_meta in event_metas:
@@ -2195,7 +2202,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
 
         node_edges = set()
         for e in edges:
-            if e['source_id'] == '':
+            if e['source_id'] == '*':
                 for event_meta in event_senders[e['target_id']]:
                     if event_meta.sender in dag.task_ids:
                         node_edges.add((event_meta.sender, e['target_id']))
