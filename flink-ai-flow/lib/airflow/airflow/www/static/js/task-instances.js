@@ -93,6 +93,11 @@ export default function tiTooltip(ti, { includeTryNumber = false } = {}) {
   if (includeTryNumber) {
     tt += `Try Number: ${escapeHtml(ti.try_number)}<br>`;
   }
+
+  if (ti.periodic_config !== undefined) {
+    tt += `<br><strong>Schedule:</strong><br>${escapeHtml(JSON.stringify(ti.periodic_config))}<br>`;
+  }
+
   // dagTZ has been defined in dag.html
   tt += generateTooltipDateTimes(ti.start_date, ti.end_date, dagTZ);
   return tt;
