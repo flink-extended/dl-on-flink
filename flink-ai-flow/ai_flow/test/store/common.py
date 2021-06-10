@@ -174,7 +174,7 @@ class AbstractTestStore(object):
     """test project"""
 
     def test_save_project_get_project_by_id_and_name(self):
-        response = self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
+        response = self.store.register_project(name='project', uri='www.code.com')
         self.assertEqual(response.uuid, 1)
         response_id = self.store.get_project_by_id(response.uuid)
         response_name = self.store.get_project_by_name('project')
@@ -183,16 +183,14 @@ class AbstractTestStore(object):
         print(response_id)
 
     def test_double_register_project(self):
-        self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
-        self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
+        self.store.register_project(name='project', uri='www.code.com')
+        self.store.register_project(name='project', uri='www.code.com')
         self.assertRaises(AIFlowException, self.store.register_project, name='project',
-                          uri='www.code.com', project_type='NOTEBOOK')
-        self.assertRaises(AIFlowException, self.store.register_project, name='project',
-                          user='tom', uri='www.code.com', project_type='NOTEBOOK')
+                          uri='www.code2.com')
 
     def test_list_project(self):
-        self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
-        self.store.register_project(name='project1', uri='www.code.com', project_type='GIT')
+        self.store.register_project(name='project', uri='www.code.com')
+        self.store.register_project(name='project1', uri='www.code.com')
         response_list = self.store.list_project(2, 0)
         self.assertEqual(2, len(response_list))
         self.assertEqual('project', response_list[0].name)
@@ -200,7 +198,7 @@ class AbstractTestStore(object):
         print(response_list[1])
 
     def test_delete_project_by_id(self):
-        self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
+        self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=1)
         self.store.register_workflow_execution(name='execution', project_id=1,
                                                execution_state=State.INIT)
@@ -224,7 +222,7 @@ class AbstractTestStore(object):
         self.assertIsNone(self.store.list_workflow_execution(1, 0))
         self.assertIsNone(self.store.list_model_version_relation(1, 1, 0))
         self.assertIsNone(self.store.list_job(1, 0))
-        self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
+        self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=2)
         self.store.register_workflow_execution(name='execution', project_id=2,
                                                execution_state=State.INIT)
@@ -235,7 +233,7 @@ class AbstractTestStore(object):
         self.assertEqual(Status.OK, self.store.delete_project_by_id(2))
 
     def test_delete_project_by_name(self):
-        self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
+        self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=1)
         self.store.register_workflow_execution(name='execution', project_id=1,
                                                execution_state=State.INIT)
@@ -259,7 +257,7 @@ class AbstractTestStore(object):
         self.assertIsNone(self.store.list_workflow_execution(1, 0))
         self.assertIsNone(self.store.list_model_version_relation(1, 1, 0))
         self.assertIsNone(self.store.list_job(1, 0))
-        self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
+        self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=2)
         self.store.register_workflow_execution(name='execution', project_id=2,
                                                execution_state=State.INIT)
@@ -270,18 +268,15 @@ class AbstractTestStore(object):
         self.assertEqual(Status.OK, self.store.delete_project_by_name('project'))
 
     def test_update_project(self):
-        self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
-        update_project = self.store.update_project(project_name='project', uri='git@alibaba', project_type='GIT')
+        self.store.register_project(name='project', uri='www.code.com')
+        update_project = self.store.update_project(project_name='project', uri='git@alibaba')
         self.assertEqual(update_project.uri, 'git@alibaba')
-        self.assertEqual(update_project.project_type, 'GIT')
         self.assertIsNone(update_project.properties)
-        self.assertIsNone(update_project.user)
-        self.assertIsNone(update_project.password)
 
     """test workflow execution"""
 
     def test_save_workflow_execution_get_by_id_and_name(self):
-        self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
+        self.store.register_project(name='project', uri='www.code.com')
         response = self.store.register_workflow_execution(name='execution', project_id=1,
                                                           execution_state=State.INIT)
         self.assertEqual(response.name, 'execution')
@@ -291,7 +286,7 @@ class AbstractTestStore(object):
         self.assertEqual(response_name.name, 'execution')
 
     def test_list_workflow_execution(self):
-        self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
+        self.store.register_project(name='project', uri='www.code.com')
         self.store.register_workflow_execution(name='execution', project_id=1,
                                                execution_state=State.INIT)
         self.store.register_workflow_execution(name='execution1', project_id=1,
@@ -314,7 +309,7 @@ class AbstractTestStore(object):
         print(update_execution)
 
     def test_update_workflow_execution_end_time(self):
-        self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
+        self.store.register_project(name='project', uri='www.code.com')
         self.store.register_workflow_execution(name='execution', project_id=1,
                                                execution_state=State.INIT)
         now = int(time.time() * 1000)
@@ -323,7 +318,7 @@ class AbstractTestStore(object):
         print(self.store.get_workflow_execution_by_name('execution'))
 
     def test_update_workflow_execution_state(self):
-        self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
+        self.store.register_project(name='project', uri='www.code.com')
         self.store.register_workflow_execution(name='execution', project_id=1,
                                                execution_state=State.INIT)
         self.assertEqual(State.INIT, self.store.get_workflow_execution_by_name('execution').execution_state)
@@ -332,7 +327,7 @@ class AbstractTestStore(object):
         print(self.store.get_workflow_execution_by_name('execution'))
 
     def test_delete_workflow_execution_by_id(self):
-        self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
+        self.store.register_project(name='project', uri='www.code.com')
         self.store.register_workflow_execution(name='execution', project_id=1,
                                                execution_state=State.INIT)
         self.store.register_job(name='job', workflow_execution_id=1, job_state=State.STARTING,
@@ -349,7 +344,7 @@ class AbstractTestStore(object):
         self.assertEqual(Status.OK, self.store.delete_workflow_execution_by_id(2))
 
     def test_delete_workflow_execution_by_name(self):
-        self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
+        self.store.register_project(name='project', uri='www.code.com')
         self.store.register_workflow_execution(name='execution', project_id=1,
                                                execution_state=State.INIT)
         self.store.register_job(name='job', workflow_execution_id=1, job_state=State.STARTING,
@@ -368,7 +363,7 @@ class AbstractTestStore(object):
     """test job"""
 
     def test_save_job_get_by_id_and_name(self):
-        self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
+        self.store.register_project(name='project', uri='www.code.com')
         self.store.register_workflow_execution(name='execution', project_id=1,
                                                execution_state=State.INIT)
         response = self.store.register_job(name='job', workflow_execution_id=1, job_state=State.STARTING,
@@ -382,7 +377,7 @@ class AbstractTestStore(object):
         print(self.store.get_workflow_execution_by_id(1))
 
     def test_list_job(self):
-        self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
+        self.store.register_project(name='project', uri='www.code.com')
         self.store.register_workflow_execution(name='execution', project_id=1,
                                                execution_state=State.INIT)
         self.store.register_job(name='job', workflow_execution_id=1, job_state=State.STARTING,
@@ -395,7 +390,7 @@ class AbstractTestStore(object):
         self.assertEqual('job1', response_list[1].name)
 
     def test_update_job(self):
-        self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
+        self.store.register_project(name='project', uri='www.code.com')
         self.store.register_workflow_execution(name='execution', project_id=1,
                                                execution_state=State.INIT)
         self.store.register_job(name='job', workflow_execution_id=1, job_state=State.STARTING,
@@ -410,7 +405,7 @@ class AbstractTestStore(object):
         print(response)
 
     def test_delete_job_by_id(self):
-        self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
+        self.store.register_project(name='project', uri='www.code.com')
         self.store.register_workflow_execution(name='execution', project_id=1,
                                                execution_state=State.INIT)
         self.store.register_job(name='job', workflow_execution_id=1, job_state=State.STARTING,
@@ -423,7 +418,7 @@ class AbstractTestStore(object):
         self.assertEqual(Status.OK, self.store.delete_job_by_id(2))
 
     def test_delete_job_by_name(self):
-        self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
+        self.store.register_project(name='project', uri='www.code.com')
         self.store.register_workflow_execution(name='execution', project_id=1,
                                                execution_state=State.INIT)
         self.store.register_job(name='job', workflow_execution_id=1, job_state=State.STARTING,
@@ -448,7 +443,7 @@ class AbstractTestStore(object):
     """test model """
 
     def test_save_model_get_id_and_name(self):
-        self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
+        self.store.register_project(name='project', uri='www.code.com')
         response = self.store.register_model_relation(name='model', project_id=1)
         self.assertEqual(response.name, 'model')
         self.assertEqual(self.store.get_model_relation_by_id(response.uuid).name, 'model')
@@ -456,7 +451,7 @@ class AbstractTestStore(object):
         print(self.store.get_model_relation_by_id(response.uuid))
 
     def test_list_model(self):
-        self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
+        self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=1)
         self.store.register_model_relation(name='model1', project_id=1)
         self.assertEqual(2, len(self.store.list_model_relation(2, 0)))
@@ -464,7 +459,7 @@ class AbstractTestStore(object):
         self.assertEqual('model1', self.store.list_model_relation(2, 0)[1].name)
 
     def test_delete_model_by_id(self):
-        self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
+        self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=1)
         self.store.register_workflow_execution(name='execution', project_id=1,
                                                execution_state=State.INIT)
@@ -480,7 +475,7 @@ class AbstractTestStore(object):
         self.assertEqual(Status.OK, self.store.delete_model_relation_by_id(2))
 
     def test_delete_model_by_name(self):
-        self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
+        self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=1)
         self.store.register_workflow_execution(name='execution', project_id=1,
                                                execution_state=State.INIT)
@@ -496,7 +491,7 @@ class AbstractTestStore(object):
         self.assertEqual(Status.OK, self.store.delete_model_relation_by_name('model'))
 
     def test_double_register_model_relation(self):
-        self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
+        self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=1)
         self.store.register_model_relation(name='model', project_id=1)
         self.assertRaises(AIFlowException, self.store.register_model_relation, name='model', project_id=2)
@@ -504,7 +499,7 @@ class AbstractTestStore(object):
     """test model version"""
 
     def test_save_model_version_get_by_version(self):
-        self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
+        self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=1)
         self.store.register_workflow_execution(name='execution', project_id=1,
                                                execution_state=State.INIT)
@@ -513,7 +508,7 @@ class AbstractTestStore(object):
         self.assertEqual(self.store.get_model_version_relation_by_version(version_name='1', model_id=1).version, '1')
 
     def test_list_model_version(self):
-        self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
+        self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=1)
         self.store.register_workflow_execution(name='execution', project_id=1,
                                                execution_state=State.INIT)
@@ -524,7 +519,7 @@ class AbstractTestStore(object):
         self.assertEqual(self.store.list_model_version_relation(1, 2, 0)[1].version, '2')
 
     def test_delete_model_version_by_version(self):
-        self.store.register_project(name='project', uri='www.code.com', project_type='GIT')
+        self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=1)
         self.store.register_workflow_execution(name='execution', project_id=1,
                                                execution_state=State.INIT)

@@ -284,15 +284,12 @@ def get_project_by_name(project_name) -> Optional[ProjectMeta]:
     return get_ai_flow_client().get_project_by_name(project_name)
 
 
-def register_project(name, uri: Text = None, properties: Properties = None,
-                     user: Text = None, password: Text = None, project_type: Text = None) -> ProjectMeta:
-    return get_ai_flow_client().register_project(name, uri, properties, user, password, project_type)
+def register_project(name, uri: Text = None, properties: Properties = None) -> ProjectMeta:
+    return get_ai_flow_client().register_project(name, uri, properties)
 
 
-def update_project(project_name: Text, uri: Text = None, properties: Properties = None,
-                   user: Text = None, password: Text = None, project_type: Text = None) -> Optional[ProjectMeta]:
-    return get_ai_flow_client().update_project(project_name, uri, properties, project_type, user, password,
-                                               project_type)
+def update_project(project_name: Text, uri: Text = None, properties: Properties = None) -> Optional[ProjectMeta]:
+    return get_ai_flow_client().update_project(project_name, uri, properties)
 
 
 def list_project(page_size, offset) -> Optional[List[ProjectMeta]]:

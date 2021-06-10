@@ -495,9 +495,7 @@ class MetadataService(metadata_service_pb2_grpc.MetadataServiceServicer):
     @catch_exception
     def registerProject(self, request, context):
         project = transform_project_meta(request.project)
-        response = self.store.register_project(name=project.name, uri=project.uri, properties=project.properties,
-                                               user=project.user, password=project.password,
-                                               project_type=project.project_type)
+        response = self.store.register_project(name=project.name, uri=project.uri, properties=project.properties)
         return _wrap_meta_response(MetaToProto.project_meta_to_proto(response))
 
     @catch_exception
@@ -505,12 +503,7 @@ class MetadataService(metadata_service_pb2_grpc.MetadataServiceServicer):
         properties = None if request.properties == {} else request.properties
         project = self.store.update_project(project_name=request.name,
                                             uri=request.uri.value if request.HasField('uri') else None,
-                                            properties=properties,
-                                            user=request.user.value if request.HasField('user') else None,
-                                            password=request.password.value if request.HasField('password') else None,
-                                            project_type=request.project_type.value if request.HasField(
-                                                'project_type') else None
-                                            )
+                                            properties=properties)
         return _wrap_meta_response(MetaToProto.project_meta_to_proto(project))
 
     @catch_exception

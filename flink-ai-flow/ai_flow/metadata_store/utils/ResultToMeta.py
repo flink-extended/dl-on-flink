@@ -64,9 +64,7 @@ class ResultToMeta:
         if properties is not None:
             properties = ast.literal_eval(properties)
         return ProjectMeta(uuid=project_result.uuid, name=project_result.name, uri=project_result.uri,
-                           properties=properties, user=project_result.user,
-                           password=project_result.password,
-                           project_type=project_result.project_type)
+                           properties=properties)
 
     @staticmethod
     def result_to_job_meta(job_result) -> JobMeta:
