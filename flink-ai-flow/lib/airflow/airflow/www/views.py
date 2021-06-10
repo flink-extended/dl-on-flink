@@ -2182,6 +2182,8 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
                 'task_type': t.task_type,
                 'extra_links': t.extra_links,
             }
+            if t.task_id in task_instances and t.executor_config is not None and 'periodic_config' in t.executor_config:
+                task_instances[t.task_id].update({'periodic_config': t.executor_config['periodic_config']})
             if t.get_subscribed_events():
                 for event_namespace, event_key, event_type, from_task_id in BaseSerialization._deserialize(
                         t.get_subscribed_events()):
