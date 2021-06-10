@@ -45,7 +45,7 @@ public final class MetadataServiceOuterClass {
   /**
    * Protobuf type {@code ai_flow.IdRequest}
    */
-  public  static final class IdRequest extends
+  public static final class IdRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.IdRequest)
       IdRequestOrBuilder {
@@ -130,6 +130,7 @@ public final class MetadataServiceOuterClass {
      * <code>int64 id = 1;</code>
      * @return The id.
      */
+    @java.lang.Override
     public long getId() {
       return id_;
     }
@@ -442,6 +443,7 @@ public final class MetadataServiceOuterClass {
        * <code>int64 id = 1;</code>
        * @return The id.
        */
+      @java.lang.Override
       public long getId() {
         return id_;
       }
@@ -538,7 +540,7 @@ public final class MetadataServiceOuterClass {
   /**
    * Protobuf type {@code ai_flow.NameRequest}
    */
-  public  static final class NameRequest extends
+  public static final class NameRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.NameRequest)
       NameRequestOrBuilder {
@@ -625,6 +627,7 @@ public final class MetadataServiceOuterClass {
      * <code>string name = 1;</code>
      * @return The name.
      */
+    @java.lang.Override
     public java.lang.String getName() {
       java.lang.Object ref = name_;
       if (ref instanceof java.lang.String) {
@@ -641,6 +644,7 @@ public final class MetadataServiceOuterClass {
      * <code>string name = 1;</code>
      * @return The bytes for name.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getNameBytes() {
       java.lang.Object ref = name_;
@@ -1104,7 +1108,7 @@ public final class MetadataServiceOuterClass {
   /**
    * Protobuf type {@code ai_flow.ListRequest}
    */
-  public  static final class ListRequest extends
+  public static final class ListRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.ListRequest)
       ListRequestOrBuilder {
@@ -1194,6 +1198,7 @@ public final class MetadataServiceOuterClass {
      * <code>int64 page_size = 1;</code>
      * @return The pageSize.
      */
+    @java.lang.Override
     public long getPageSize() {
       return pageSize_;
     }
@@ -1204,6 +1209,7 @@ public final class MetadataServiceOuterClass {
      * <code>int64 offset = 2;</code>
      * @return The offset.
      */
+    @java.lang.Override
     public long getOffset() {
       return offset_;
     }
@@ -1534,6 +1540,7 @@ public final class MetadataServiceOuterClass {
        * <code>int64 page_size = 1;</code>
        * @return The pageSize.
        */
+      @java.lang.Override
       public long getPageSize() {
         return pageSize_;
       }
@@ -1564,6 +1571,7 @@ public final class MetadataServiceOuterClass {
        * <code>int64 offset = 2;</code>
        * @return The offset.
        */
+      @java.lang.Override
       public long getOffset() {
         return offset_;
       }
@@ -1684,7 +1692,7 @@ public final class MetadataServiceOuterClass {
   /**
    * Protobuf type {@code ai_flow.MetaResponse}
    */
-  public  static final class MetaResponse extends
+  public static final class MetaResponse extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.MetaResponse)
       MetaResponseOrBuilder {
@@ -1785,6 +1793,7 @@ public final class MetadataServiceOuterClass {
      * <code>string return_code = 1;</code>
      * @return The returnCode.
      */
+    @java.lang.Override
     public java.lang.String getReturnCode() {
       java.lang.Object ref = returnCode_;
       if (ref instanceof java.lang.String) {
@@ -1801,6 +1810,7 @@ public final class MetadataServiceOuterClass {
      * <code>string return_code = 1;</code>
      * @return The bytes for returnCode.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getReturnCodeBytes() {
       java.lang.Object ref = returnCode_;
@@ -1821,6 +1831,7 @@ public final class MetadataServiceOuterClass {
      * <code>string return_msg = 2;</code>
      * @return The returnMsg.
      */
+    @java.lang.Override
     public java.lang.String getReturnMsg() {
       java.lang.Object ref = returnMsg_;
       if (ref instanceof java.lang.String) {
@@ -1837,6 +1848,7 @@ public final class MetadataServiceOuterClass {
      * <code>string return_msg = 2;</code>
      * @return The bytes for returnMsg.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getReturnMsgBytes() {
       java.lang.Object ref = returnMsg_;
@@ -1857,6 +1869,7 @@ public final class MetadataServiceOuterClass {
      * <code>string data = 3;</code>
      * @return The data.
      */
+    @java.lang.Override
     public java.lang.String getData() {
       java.lang.Object ref = data_;
       if (ref instanceof java.lang.String) {
@@ -1873,6 +1886,7 @@ public final class MetadataServiceOuterClass {
      * <code>string data = 3;</code>
      * @return The bytes for data.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getDataBytes() {
       java.lang.Object ref = data_;
@@ -2529,7 +2543,7 @@ public final class MetadataServiceOuterClass {
    *
    * Protobuf type {@code ai_flow.RegisterExampleRequest}
    */
-  public  static final class RegisterExampleRequest extends
+  public static final class RegisterExampleRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.RegisterExampleRequest)
       RegisterExampleRequestOrBuilder {
@@ -2622,6 +2636,7 @@ public final class MetadataServiceOuterClass {
      * <code>.ai_flow.ExampleProto example = 1;</code>
      * @return Whether the example field is set.
      */
+    @java.lang.Override
     public boolean hasExample() {
       return example_ != null;
     }
@@ -2629,12 +2644,14 @@ public final class MetadataServiceOuterClass {
      * <code>.ai_flow.ExampleProto example = 1;</code>
      * @return The example.
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ExampleProto getExample() {
       return example_ == null ? com.aiflow.proto.Message.ExampleProto.getDefaultInstance() : example_;
     }
     /**
      * <code>.ai_flow.ExampleProto example = 1;</code>
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ExampleProtoOrBuilder getExampleOrBuilder() {
       return getExample();
     }
@@ -3160,7 +3177,7 @@ public final class MetadataServiceOuterClass {
   /**
    * Protobuf type {@code ai_flow.RegisterExamplesRequest}
    */
-  public  static final class RegisterExamplesRequest extends
+  public static final class RegisterExamplesRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.RegisterExamplesRequest)
       RegisterExamplesRequestOrBuilder {
@@ -3253,12 +3270,14 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<com.aiflow.proto.Message.ExampleProto> getExamplesList() {
       return examples_;
     }
     /**
      * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.aiflow.proto.Message.ExampleProtoOrBuilder> 
         getExamplesOrBuilderList() {
       return examples_;
@@ -3266,18 +3285,21 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
+    @java.lang.Override
     public int getExamplesCount() {
       return examples_.size();
     }
     /**
      * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ExampleProto getExamples(int index) {
       return examples_.get(index);
     }
     /**
      * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ExampleProtoOrBuilder getExamplesOrBuilder(
         int index) {
       return examples_.get(index);
@@ -3948,7 +3970,7 @@ public final class MetadataServiceOuterClass {
   /**
    * Protobuf type {@code ai_flow.ExampleListProto}
    */
-  public  static final class ExampleListProto extends
+  public static final class ExampleListProto extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.ExampleListProto)
       ExampleListProtoOrBuilder {
@@ -4041,12 +4063,14 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<com.aiflow.proto.Message.ExampleProto> getExamplesList() {
       return examples_;
     }
     /**
      * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.aiflow.proto.Message.ExampleProtoOrBuilder> 
         getExamplesOrBuilderList() {
       return examples_;
@@ -4054,18 +4078,21 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
+    @java.lang.Override
     public int getExamplesCount() {
       return examples_.size();
     }
     /**
      * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ExampleProto getExamples(int index) {
       return examples_.get(index);
     }
     /**
      * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ExampleProtoOrBuilder getExamplesOrBuilder(
         int index) {
       return examples_.get(index);
@@ -5003,7 +5030,7 @@ public final class MetadataServiceOuterClass {
   /**
    * Protobuf type {@code ai_flow.UpdateExampleRequest}
    */
-  public  static final class UpdateExampleRequest extends
+  public static final class UpdateExampleRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.UpdateExampleRequest)
       UpdateExampleRequestOrBuilder {
@@ -5319,6 +5346,7 @@ public final class MetadataServiceOuterClass {
      * <code>string name = 1;</code>
      * @return The name.
      */
+    @java.lang.Override
     public java.lang.String getName() {
       java.lang.Object ref = name_;
       if (ref instanceof java.lang.String) {
@@ -5335,6 +5363,7 @@ public final class MetadataServiceOuterClass {
      * <code>string name = 1;</code>
      * @return The bytes for name.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getNameBytes() {
       java.lang.Object ref = name_;
@@ -5379,6 +5408,7 @@ public final class MetadataServiceOuterClass {
      * <code>map&lt;string, string&gt; properties = 2;</code>
      */
 
+    @java.lang.Override
     public boolean containsProperties(
         java.lang.String key) {
       if (key == null) { throw new java.lang.NullPointerException(); }
@@ -5387,6 +5417,7 @@ public final class MetadataServiceOuterClass {
     /**
      * Use {@link #getPropertiesMap()} instead.
      */
+    @java.lang.Override
     @java.lang.Deprecated
     public java.util.Map<java.lang.String, java.lang.String> getProperties() {
       return getPropertiesMap();
@@ -5394,6 +5425,7 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>map&lt;string, string&gt; properties = 2;</code>
      */
+    @java.lang.Override
 
     public java.util.Map<java.lang.String, java.lang.String> getPropertiesMap() {
       return internalGetProperties().getMap();
@@ -5401,6 +5433,7 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>map&lt;string, string&gt; properties = 2;</code>
      */
+    @java.lang.Override
 
     public java.lang.String getPropertiesOrDefault(
         java.lang.String key,
@@ -5413,6 +5446,7 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>map&lt;string, string&gt; properties = 2;</code>
      */
+    @java.lang.Override
 
     public java.lang.String getPropertiesOrThrow(
         java.lang.String key) {
@@ -5431,14 +5465,14 @@ public final class MetadataServiceOuterClass {
      * <code>.ai_flow.ExampleSupportTypeProto support_type = 3;</code>
      * @return The enum numeric value on the wire for supportType.
      */
-    public int getSupportTypeValue() {
+    @java.lang.Override public int getSupportTypeValue() {
       return supportType_;
     }
     /**
      * <code>.ai_flow.ExampleSupportTypeProto support_type = 3;</code>
      * @return The supportType.
      */
-    public com.aiflow.proto.Message.ExampleSupportTypeProto getSupportType() {
+    @java.lang.Override public com.aiflow.proto.Message.ExampleSupportTypeProto getSupportType() {
       @SuppressWarnings("deprecation")
       com.aiflow.proto.Message.ExampleSupportTypeProto result = com.aiflow.proto.Message.ExampleSupportTypeProto.valueOf(supportType_);
       return result == null ? com.aiflow.proto.Message.ExampleSupportTypeProto.UNRECOGNIZED : result;
@@ -5495,6 +5529,7 @@ public final class MetadataServiceOuterClass {
      * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
      * @return A list containing the typeList.
      */
+    @java.lang.Override
     public java.util.List<com.aiflow.proto.Message.DataTypeProto> getTypeListList() {
       return new com.google.protobuf.Internal.ListAdapter<
           java.lang.Integer, com.aiflow.proto.Message.DataTypeProto>(typeList_, typeList_converter_);
@@ -5503,6 +5538,7 @@ public final class MetadataServiceOuterClass {
      * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
      * @return The count of typeList.
      */
+    @java.lang.Override
     public int getTypeListCount() {
       return typeList_.size();
     }
@@ -5511,6 +5547,7 @@ public final class MetadataServiceOuterClass {
      * @param index The index of the element to return.
      * @return The typeList at the given index.
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.DataTypeProto getTypeList(int index) {
       return typeList_converter_.convert(typeList_.get(index));
     }
@@ -5518,6 +5555,7 @@ public final class MetadataServiceOuterClass {
      * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
      * @return A list containing the enum numeric values on the wire for typeList.
      */
+    @java.lang.Override
     public java.util.List<java.lang.Integer>
     getTypeListValueList() {
       return typeList_;
@@ -5527,6 +5565,7 @@ public final class MetadataServiceOuterClass {
      * @param index The index of the value to return.
      * @return The enum numeric value on the wire of typeList at the given index.
      */
+    @java.lang.Override
     public int getTypeListValue(int index) {
       return typeList_.get(index);
     }
@@ -5538,6 +5577,7 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue data_type = 6;</code>
      * @return Whether the dataType field is set.
      */
+    @java.lang.Override
     public boolean hasDataType() {
       return dataType_ != null;
     }
@@ -5545,12 +5585,14 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue data_type = 6;</code>
      * @return The dataType.
      */
+    @java.lang.Override
     public com.google.protobuf.StringValue getDataType() {
       return dataType_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : dataType_;
     }
     /**
      * <code>.google.protobuf.StringValue data_type = 6;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getDataTypeOrBuilder() {
       return getDataType();
     }
@@ -5561,6 +5603,7 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue data_format = 7;</code>
      * @return Whether the dataFormat field is set.
      */
+    @java.lang.Override
     public boolean hasDataFormat() {
       return dataFormat_ != null;
     }
@@ -5568,12 +5611,14 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue data_format = 7;</code>
      * @return The dataFormat.
      */
+    @java.lang.Override
     public com.google.protobuf.StringValue getDataFormat() {
       return dataFormat_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : dataFormat_;
     }
     /**
      * <code>.google.protobuf.StringValue data_format = 7;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getDataFormatOrBuilder() {
       return getDataFormat();
     }
@@ -5584,6 +5629,7 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue batch_uri = 8;</code>
      * @return Whether the batchUri field is set.
      */
+    @java.lang.Override
     public boolean hasBatchUri() {
       return batchUri_ != null;
     }
@@ -5591,12 +5637,14 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue batch_uri = 8;</code>
      * @return The batchUri.
      */
+    @java.lang.Override
     public com.google.protobuf.StringValue getBatchUri() {
       return batchUri_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : batchUri_;
     }
     /**
      * <code>.google.protobuf.StringValue batch_uri = 8;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getBatchUriOrBuilder() {
       return getBatchUri();
     }
@@ -5607,6 +5655,7 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue stream_uri = 9;</code>
      * @return Whether the streamUri field is set.
      */
+    @java.lang.Override
     public boolean hasStreamUri() {
       return streamUri_ != null;
     }
@@ -5614,12 +5663,14 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue stream_uri = 9;</code>
      * @return The streamUri.
      */
+    @java.lang.Override
     public com.google.protobuf.StringValue getStreamUri() {
       return streamUri_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : streamUri_;
     }
     /**
      * <code>.google.protobuf.StringValue stream_uri = 9;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getStreamUriOrBuilder() {
       return getStreamUri();
     }
@@ -5630,6 +5681,7 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue description = 10;</code>
      * @return Whether the description field is set.
      */
+    @java.lang.Override
     public boolean hasDescription() {
       return description_ != null;
     }
@@ -5637,12 +5689,14 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue description = 10;</code>
      * @return The description.
      */
+    @java.lang.Override
     public com.google.protobuf.StringValue getDescription() {
       return description_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : description_;
     }
     /**
      * <code>.google.protobuf.StringValue description = 10;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getDescriptionOrBuilder() {
       return getDescription();
     }
@@ -5653,6 +5707,7 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.Int64Value update_time = 11;</code>
      * @return Whether the updateTime field is set.
      */
+    @java.lang.Override
     public boolean hasUpdateTime() {
       return updateTime_ != null;
     }
@@ -5660,12 +5715,14 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.Int64Value update_time = 11;</code>
      * @return The updateTime.
      */
+    @java.lang.Override
     public com.google.protobuf.Int64Value getUpdateTime() {
       return updateTime_ == null ? com.google.protobuf.Int64Value.getDefaultInstance() : updateTime_;
     }
     /**
      * <code>.google.protobuf.Int64Value update_time = 11;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.Int64ValueOrBuilder getUpdateTimeOrBuilder() {
       return getUpdateTime();
     }
@@ -5676,6 +5733,7 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue catalog_name = 12;</code>
      * @return Whether the catalogName field is set.
      */
+    @java.lang.Override
     public boolean hasCatalogName() {
       return catalogName_ != null;
     }
@@ -5683,12 +5741,14 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue catalog_name = 12;</code>
      * @return The catalogName.
      */
+    @java.lang.Override
     public com.google.protobuf.StringValue getCatalogName() {
       return catalogName_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : catalogName_;
     }
     /**
      * <code>.google.protobuf.StringValue catalog_name = 12;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getCatalogNameOrBuilder() {
       return getCatalogName();
     }
@@ -5699,6 +5759,7 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue catalog_type = 13;</code>
      * @return Whether the catalogType field is set.
      */
+    @java.lang.Override
     public boolean hasCatalogType() {
       return catalogType_ != null;
     }
@@ -5706,12 +5767,14 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue catalog_type = 13;</code>
      * @return The catalogType.
      */
+    @java.lang.Override
     public com.google.protobuf.StringValue getCatalogType() {
       return catalogType_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : catalogType_;
     }
     /**
      * <code>.google.protobuf.StringValue catalog_type = 13;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getCatalogTypeOrBuilder() {
       return getCatalogType();
     }
@@ -5722,6 +5785,7 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue catalog_database = 14;</code>
      * @return Whether the catalogDatabase field is set.
      */
+    @java.lang.Override
     public boolean hasCatalogDatabase() {
       return catalogDatabase_ != null;
     }
@@ -5729,12 +5793,14 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue catalog_database = 14;</code>
      * @return The catalogDatabase.
      */
+    @java.lang.Override
     public com.google.protobuf.StringValue getCatalogDatabase() {
       return catalogDatabase_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : catalogDatabase_;
     }
     /**
      * <code>.google.protobuf.StringValue catalog_database = 14;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getCatalogDatabaseOrBuilder() {
       return getCatalogDatabase();
     }
@@ -5745,6 +5811,7 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue catalog_connection_uri = 15;</code>
      * @return Whether the catalogConnectionUri field is set.
      */
+    @java.lang.Override
     public boolean hasCatalogConnectionUri() {
       return catalogConnectionUri_ != null;
     }
@@ -5752,12 +5819,14 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue catalog_connection_uri = 15;</code>
      * @return The catalogConnectionUri.
      */
+    @java.lang.Override
     public com.google.protobuf.StringValue getCatalogConnectionUri() {
       return catalogConnectionUri_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : catalogConnectionUri_;
     }
     /**
      * <code>.google.protobuf.StringValue catalog_connection_uri = 15;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getCatalogConnectionUriOrBuilder() {
       return getCatalogConnectionUri();
     }
@@ -5768,6 +5837,7 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue catalog_version = 16;</code>
      * @return Whether the catalogVersion field is set.
      */
+    @java.lang.Override
     public boolean hasCatalogVersion() {
       return catalogVersion_ != null;
     }
@@ -5775,12 +5845,14 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue catalog_version = 16;</code>
      * @return The catalogVersion.
      */
+    @java.lang.Override
     public com.google.protobuf.StringValue getCatalogVersion() {
       return catalogVersion_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : catalogVersion_;
     }
     /**
      * <code>.google.protobuf.StringValue catalog_version = 16;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getCatalogVersionOrBuilder() {
       return getCatalogVersion();
     }
@@ -5791,6 +5863,7 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue catalog_table = 17;</code>
      * @return Whether the catalogTable field is set.
      */
+    @java.lang.Override
     public boolean hasCatalogTable() {
       return catalogTable_ != null;
     }
@@ -5798,12 +5871,14 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue catalog_table = 17;</code>
      * @return The catalogTable.
      */
+    @java.lang.Override
     public com.google.protobuf.StringValue getCatalogTable() {
       return catalogTable_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : catalogTable_;
     }
     /**
      * <code>.google.protobuf.StringValue catalog_table = 17;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getCatalogTableOrBuilder() {
       return getCatalogTable();
     }
@@ -6719,6 +6794,7 @@ public final class MetadataServiceOuterClass {
        * <code>map&lt;string, string&gt; properties = 2;</code>
        */
 
+      @java.lang.Override
       public boolean containsProperties(
           java.lang.String key) {
         if (key == null) { throw new java.lang.NullPointerException(); }
@@ -6727,6 +6803,7 @@ public final class MetadataServiceOuterClass {
       /**
        * Use {@link #getPropertiesMap()} instead.
        */
+      @java.lang.Override
       @java.lang.Deprecated
       public java.util.Map<java.lang.String, java.lang.String> getProperties() {
         return getPropertiesMap();
@@ -6734,6 +6811,7 @@ public final class MetadataServiceOuterClass {
       /**
        * <code>map&lt;string, string&gt; properties = 2;</code>
        */
+      @java.lang.Override
 
       public java.util.Map<java.lang.String, java.lang.String> getPropertiesMap() {
         return internalGetProperties().getMap();
@@ -6741,6 +6819,7 @@ public final class MetadataServiceOuterClass {
       /**
        * <code>map&lt;string, string&gt; properties = 2;</code>
        */
+      @java.lang.Override
 
       public java.lang.String getPropertiesOrDefault(
           java.lang.String key,
@@ -6753,6 +6832,7 @@ public final class MetadataServiceOuterClass {
       /**
        * <code>map&lt;string, string&gt; properties = 2;</code>
        */
+      @java.lang.Override
 
       public java.lang.String getPropertiesOrThrow(
           java.lang.String key) {
@@ -6817,7 +6897,7 @@ public final class MetadataServiceOuterClass {
        * <code>.ai_flow.ExampleSupportTypeProto support_type = 3;</code>
        * @return The enum numeric value on the wire for supportType.
        */
-      public int getSupportTypeValue() {
+      @java.lang.Override public int getSupportTypeValue() {
         return supportType_;
       }
       /**
@@ -6826,6 +6906,7 @@ public final class MetadataServiceOuterClass {
        * @return This builder for chaining.
        */
       public Builder setSupportTypeValue(int value) {
+        
         supportType_ = value;
         onChanged();
         return this;
@@ -6834,6 +6915,7 @@ public final class MetadataServiceOuterClass {
        * <code>.ai_flow.ExampleSupportTypeProto support_type = 3;</code>
        * @return The supportType.
        */
+      @java.lang.Override
       public com.aiflow.proto.Message.ExampleSupportTypeProto getSupportType() {
         @SuppressWarnings("deprecation")
         com.aiflow.proto.Message.ExampleSupportTypeProto result = com.aiflow.proto.Message.ExampleSupportTypeProto.valueOf(supportType_);
@@ -8620,7 +8702,7 @@ public final class MetadataServiceOuterClass {
    *
    * Protobuf type {@code ai_flow.RegisterModelRelationRequest}
    */
-  public  static final class RegisterModelRelationRequest extends
+  public static final class RegisterModelRelationRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.RegisterModelRelationRequest)
       RegisterModelRelationRequestOrBuilder {
@@ -8713,6 +8795,7 @@ public final class MetadataServiceOuterClass {
      * <code>.ai_flow.ModelRelationProto model_relation = 1;</code>
      * @return Whether the modelRelation field is set.
      */
+    @java.lang.Override
     public boolean hasModelRelation() {
       return modelRelation_ != null;
     }
@@ -8720,12 +8803,14 @@ public final class MetadataServiceOuterClass {
      * <code>.ai_flow.ModelRelationProto model_relation = 1;</code>
      * @return The modelRelation.
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ModelRelationProto getModelRelation() {
       return modelRelation_ == null ? com.aiflow.proto.Message.ModelRelationProto.getDefaultInstance() : modelRelation_;
     }
     /**
      * <code>.ai_flow.ModelRelationProto model_relation = 1;</code>
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ModelRelationProtoOrBuilder getModelRelationOrBuilder() {
       return getModelRelation();
     }
@@ -9242,7 +9327,7 @@ public final class MetadataServiceOuterClass {
   /**
    * Protobuf type {@code ai_flow.RegisterModelRequest}
    */
-  public  static final class RegisterModelRequest extends
+  public static final class RegisterModelRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.RegisterModelRequest)
       RegisterModelRequestOrBuilder {
@@ -9335,6 +9420,7 @@ public final class MetadataServiceOuterClass {
      * <code>.ai_flow.ModelProto model = 1;</code>
      * @return Whether the model field is set.
      */
+    @java.lang.Override
     public boolean hasModel() {
       return model_ != null;
     }
@@ -9342,12 +9428,14 @@ public final class MetadataServiceOuterClass {
      * <code>.ai_flow.ModelProto model = 1;</code>
      * @return The model.
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ModelProto getModel() {
       return model_ == null ? com.aiflow.proto.Message.ModelProto.getDefaultInstance() : model_;
     }
     /**
      * <code>.ai_flow.ModelProto model = 1;</code>
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ModelProtoOrBuilder getModelOrBuilder() {
       return getModel();
     }
@@ -9869,7 +9957,7 @@ public final class MetadataServiceOuterClass {
   /**
    * Protobuf type {@code ai_flow.ModelRelationListProto}
    */
-  public  static final class ModelRelationListProto extends
+  public static final class ModelRelationListProto extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.ModelRelationListProto)
       ModelRelationListProtoOrBuilder {
@@ -9962,12 +10050,14 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<com.aiflow.proto.Message.ModelRelationProto> getModelRelationsList() {
       return modelRelations_;
     }
     /**
      * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.aiflow.proto.Message.ModelRelationProtoOrBuilder> 
         getModelRelationsOrBuilderList() {
       return modelRelations_;
@@ -9975,18 +10065,21 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
      */
+    @java.lang.Override
     public int getModelRelationsCount() {
       return modelRelations_.size();
     }
     /**
      * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ModelRelationProto getModelRelations(int index) {
       return modelRelations_.get(index);
     }
     /**
      * <code>repeated .ai_flow.ModelRelationProto model_relations = 1;</code>
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ModelRelationProtoOrBuilder getModelRelationsOrBuilder(
         int index) {
       return modelRelations_.get(index);
@@ -10655,7 +10748,7 @@ public final class MetadataServiceOuterClass {
    *
    * Protobuf type {@code ai_flow.ModelVersionNameRequest}
    */
-  public  static final class ModelVersionNameRequest extends
+  public static final class ModelVersionNameRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.ModelVersionNameRequest)
       ModelVersionNameRequestOrBuilder {
@@ -10747,6 +10840,7 @@ public final class MetadataServiceOuterClass {
      * <code>string name = 1;</code>
      * @return The name.
      */
+    @java.lang.Override
     public java.lang.String getName() {
       java.lang.Object ref = name_;
       if (ref instanceof java.lang.String) {
@@ -10763,6 +10857,7 @@ public final class MetadataServiceOuterClass {
      * <code>string name = 1;</code>
      * @return The bytes for name.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getNameBytes() {
       java.lang.Object ref = name_;
@@ -10783,6 +10878,7 @@ public final class MetadataServiceOuterClass {
      * <code>int64 model_id = 2;</code>
      * @return The modelId.
      */
+    @java.lang.Override
     public long getModelId() {
       return modelId_;
     }
@@ -11192,6 +11288,7 @@ public final class MetadataServiceOuterClass {
        * <code>int64 model_id = 2;</code>
        * @return The modelId.
        */
+      @java.lang.Override
       public long getModelId() {
         return modelId_;
       }
@@ -11291,7 +11388,7 @@ public final class MetadataServiceOuterClass {
   /**
    * Protobuf type {@code ai_flow.RegisterModelVersionRelationRequest}
    */
-  public  static final class RegisterModelVersionRelationRequest extends
+  public static final class RegisterModelVersionRelationRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.RegisterModelVersionRelationRequest)
       RegisterModelVersionRelationRequestOrBuilder {
@@ -11384,6 +11481,7 @@ public final class MetadataServiceOuterClass {
      * <code>.ai_flow.ModelVersionRelationProto model_version_relation = 1;</code>
      * @return Whether the modelVersionRelation field is set.
      */
+    @java.lang.Override
     public boolean hasModelVersionRelation() {
       return modelVersionRelation_ != null;
     }
@@ -11391,12 +11489,14 @@ public final class MetadataServiceOuterClass {
      * <code>.ai_flow.ModelVersionRelationProto model_version_relation = 1;</code>
      * @return The modelVersionRelation.
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ModelVersionRelationProto getModelVersionRelation() {
       return modelVersionRelation_ == null ? com.aiflow.proto.Message.ModelVersionRelationProto.getDefaultInstance() : modelVersionRelation_;
     }
     /**
      * <code>.ai_flow.ModelVersionRelationProto model_version_relation = 1;</code>
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ModelVersionRelationProtoOrBuilder getModelVersionRelationOrBuilder() {
       return getModelVersionRelation();
     }
@@ -11909,7 +12009,7 @@ public final class MetadataServiceOuterClass {
   /**
    * Protobuf type {@code ai_flow.RegisterModelVersionRequest}
    */
-  public  static final class RegisterModelVersionRequest extends
+  public static final class RegisterModelVersionRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.RegisterModelVersionRequest)
       RegisterModelVersionRequestOrBuilder {
@@ -12002,6 +12102,7 @@ public final class MetadataServiceOuterClass {
      * <code>.ai_flow.ModelVersionProto model_version = 1;</code>
      * @return Whether the modelVersion field is set.
      */
+    @java.lang.Override
     public boolean hasModelVersion() {
       return modelVersion_ != null;
     }
@@ -12009,12 +12110,14 @@ public final class MetadataServiceOuterClass {
      * <code>.ai_flow.ModelVersionProto model_version = 1;</code>
      * @return The modelVersion.
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ModelVersionProto getModelVersion() {
       return modelVersion_ == null ? com.aiflow.proto.Message.ModelVersionProto.getDefaultInstance() : modelVersion_;
     }
     /**
      * <code>.ai_flow.ModelVersionProto model_version = 1;</code>
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ModelVersionProtoOrBuilder getModelVersionOrBuilder() {
       return getModelVersion();
     }
@@ -12530,7 +12633,7 @@ public final class MetadataServiceOuterClass {
   /**
    * Protobuf type {@code ai_flow.ListModelVersionRelationRequest}
    */
-  public  static final class ListModelVersionRelationRequest extends
+  public static final class ListModelVersionRelationRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.ListModelVersionRelationRequest)
       ListModelVersionRelationRequestOrBuilder {
@@ -12625,6 +12728,7 @@ public final class MetadataServiceOuterClass {
      * <code>int64 model_id = 1;</code>
      * @return The modelId.
      */
+    @java.lang.Override
     public long getModelId() {
       return modelId_;
     }
@@ -12635,6 +12739,7 @@ public final class MetadataServiceOuterClass {
      * <code>int64 page_size = 2;</code>
      * @return The pageSize.
      */
+    @java.lang.Override
     public long getPageSize() {
       return pageSize_;
     }
@@ -12645,6 +12750,7 @@ public final class MetadataServiceOuterClass {
      * <code>int64 offset = 3;</code>
      * @return The offset.
      */
+    @java.lang.Override
     public long getOffset() {
       return offset_;
     }
@@ -12993,6 +13099,7 @@ public final class MetadataServiceOuterClass {
        * <code>int64 model_id = 1;</code>
        * @return The modelId.
        */
+      @java.lang.Override
       public long getModelId() {
         return modelId_;
       }
@@ -13023,6 +13130,7 @@ public final class MetadataServiceOuterClass {
        * <code>int64 page_size = 2;</code>
        * @return The pageSize.
        */
+      @java.lang.Override
       public long getPageSize() {
         return pageSize_;
       }
@@ -13053,6 +13161,7 @@ public final class MetadataServiceOuterClass {
        * <code>int64 offset = 3;</code>
        * @return The offset.
        */
+      @java.lang.Override
       public long getOffset() {
         return offset_;
       }
@@ -13161,7 +13270,7 @@ public final class MetadataServiceOuterClass {
   /**
    * Protobuf type {@code ai_flow.ModelVersionRelationListProto}
    */
-  public  static final class ModelVersionRelationListProto extends
+  public static final class ModelVersionRelationListProto extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.ModelVersionRelationListProto)
       ModelVersionRelationListProtoOrBuilder {
@@ -13254,12 +13363,14 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<com.aiflow.proto.Message.ModelVersionRelationProto> getModelVersionsList() {
       return modelVersions_;
     }
     /**
      * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.aiflow.proto.Message.ModelVersionRelationProtoOrBuilder> 
         getModelVersionsOrBuilderList() {
       return modelVersions_;
@@ -13267,18 +13378,21 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
      */
+    @java.lang.Override
     public int getModelVersionsCount() {
       return modelVersions_.size();
     }
     /**
      * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ModelVersionRelationProto getModelVersions(int index) {
       return modelVersions_.get(index);
     }
     /**
      * <code>repeated .ai_flow.ModelVersionRelationProto model_versions = 1;</code>
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ModelVersionRelationProtoOrBuilder getModelVersionsOrBuilder(
         int index) {
       return modelVersions_.get(index);
@@ -13949,7 +14063,7 @@ public final class MetadataServiceOuterClass {
   /**
    * Protobuf type {@code ai_flow.ModelVersionListProto}
    */
-  public  static final class ModelVersionListProto extends
+  public static final class ModelVersionListProto extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.ModelVersionListProto)
       ModelVersionListProtoOrBuilder {
@@ -14042,12 +14156,14 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<com.aiflow.proto.Message.ModelVersionProto> getModelVersionsList() {
       return modelVersions_;
     }
     /**
      * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.aiflow.proto.Message.ModelVersionProtoOrBuilder> 
         getModelVersionsOrBuilderList() {
       return modelVersions_;
@@ -14055,18 +14171,21 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
      */
+    @java.lang.Override
     public int getModelVersionsCount() {
       return modelVersions_.size();
     }
     /**
      * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ModelVersionProto getModelVersions(int index) {
       return modelVersions_.get(index);
     }
     /**
      * <code>repeated .ai_flow.ModelVersionProto model_versions = 1;</code>
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ModelVersionProtoOrBuilder getModelVersionsOrBuilder(
         int index) {
       return modelVersions_.get(index);
@@ -14725,7 +14844,7 @@ public final class MetadataServiceOuterClass {
   /**
    * Protobuf type {@code ai_flow.ModelNameRequest}
    */
-  public  static final class ModelNameRequest extends
+  public static final class ModelNameRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.ModelNameRequest)
       ModelNameRequestOrBuilder {
@@ -14812,6 +14931,7 @@ public final class MetadataServiceOuterClass {
      * <code>string name = 1;</code>
      * @return The name.
      */
+    @java.lang.Override
     public java.lang.String getName() {
       java.lang.Object ref = name_;
       if (ref instanceof java.lang.String) {
@@ -14828,6 +14948,7 @@ public final class MetadataServiceOuterClass {
      * <code>string name = 1;</code>
      * @return The bytes for name.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getNameBytes() {
       java.lang.Object ref = name_;
@@ -15298,7 +15419,7 @@ public final class MetadataServiceOuterClass {
    *
    * Protobuf type {@code ai_flow.RegisterJobRequest}
    */
-  public  static final class RegisterJobRequest extends
+  public static final class RegisterJobRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.RegisterJobRequest)
       RegisterJobRequestOrBuilder {
@@ -15391,6 +15512,7 @@ public final class MetadataServiceOuterClass {
      * <code>.ai_flow.JobProto job = 1;</code>
      * @return Whether the job field is set.
      */
+    @java.lang.Override
     public boolean hasJob() {
       return job_ != null;
     }
@@ -15398,12 +15520,14 @@ public final class MetadataServiceOuterClass {
      * <code>.ai_flow.JobProto job = 1;</code>
      * @return The job.
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.JobProto getJob() {
       return job_ == null ? com.aiflow.proto.Message.JobProto.getDefaultInstance() : job_;
     }
     /**
      * <code>.ai_flow.JobProto job = 1;</code>
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.JobProtoOrBuilder getJobOrBuilder() {
       return getJob();
     }
@@ -16037,7 +16161,7 @@ public final class MetadataServiceOuterClass {
   /**
    * Protobuf type {@code ai_flow.UpdateJobRequest}
    */
-  public  static final class UpdateJobRequest extends
+  public static final class UpdateJobRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.UpdateJobRequest)
       UpdateJobRequestOrBuilder {
@@ -16222,6 +16346,7 @@ public final class MetadataServiceOuterClass {
      * <code>string name = 1;</code>
      * @return The name.
      */
+    @java.lang.Override
     public java.lang.String getName() {
       java.lang.Object ref = name_;
       if (ref instanceof java.lang.String) {
@@ -16238,6 +16363,7 @@ public final class MetadataServiceOuterClass {
      * <code>string name = 1;</code>
      * @return The bytes for name.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getNameBytes() {
       java.lang.Object ref = name_;
@@ -16258,6 +16384,7 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.Int64Value workflow_execution_id = 2;</code>
      * @return Whether the workflowExecutionId field is set.
      */
+    @java.lang.Override
     public boolean hasWorkflowExecutionId() {
       return workflowExecutionId_ != null;
     }
@@ -16265,12 +16392,14 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.Int64Value workflow_execution_id = 2;</code>
      * @return The workflowExecutionId.
      */
+    @java.lang.Override
     public com.google.protobuf.Int64Value getWorkflowExecutionId() {
       return workflowExecutionId_ == null ? com.google.protobuf.Int64Value.getDefaultInstance() : workflowExecutionId_;
     }
     /**
      * <code>.google.protobuf.Int64Value workflow_execution_id = 2;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.Int64ValueOrBuilder getWorkflowExecutionIdOrBuilder() {
       return getWorkflowExecutionId();
     }
@@ -16281,14 +16410,14 @@ public final class MetadataServiceOuterClass {
      * <code>.ai_flow.StateProto job_state = 3;</code>
      * @return The enum numeric value on the wire for jobState.
      */
-    public int getJobStateValue() {
+    @java.lang.Override public int getJobStateValue() {
       return jobState_;
     }
     /**
      * <code>.ai_flow.StateProto job_state = 3;</code>
      * @return The jobState.
      */
-    public com.aiflow.proto.Message.StateProto getJobState() {
+    @java.lang.Override public com.aiflow.proto.Message.StateProto getJobState() {
       @SuppressWarnings("deprecation")
       com.aiflow.proto.Message.StateProto result = com.aiflow.proto.Message.StateProto.valueOf(jobState_);
       return result == null ? com.aiflow.proto.Message.StateProto.UNRECOGNIZED : result;
@@ -16324,6 +16453,7 @@ public final class MetadataServiceOuterClass {
      * <code>map&lt;string, string&gt; properties = 4;</code>
      */
 
+    @java.lang.Override
     public boolean containsProperties(
         java.lang.String key) {
       if (key == null) { throw new java.lang.NullPointerException(); }
@@ -16332,6 +16462,7 @@ public final class MetadataServiceOuterClass {
     /**
      * Use {@link #getPropertiesMap()} instead.
      */
+    @java.lang.Override
     @java.lang.Deprecated
     public java.util.Map<java.lang.String, java.lang.String> getProperties() {
       return getPropertiesMap();
@@ -16339,6 +16470,7 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>map&lt;string, string&gt; properties = 4;</code>
      */
+    @java.lang.Override
 
     public java.util.Map<java.lang.String, java.lang.String> getPropertiesMap() {
       return internalGetProperties().getMap();
@@ -16346,6 +16478,7 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>map&lt;string, string&gt; properties = 4;</code>
      */
+    @java.lang.Override
 
     public java.lang.String getPropertiesOrDefault(
         java.lang.String key,
@@ -16358,6 +16491,7 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>map&lt;string, string&gt; properties = 4;</code>
      */
+    @java.lang.Override
 
     public java.lang.String getPropertiesOrThrow(
         java.lang.String key) {
@@ -16376,6 +16510,7 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue job_id = 5;</code>
      * @return Whether the jobId field is set.
      */
+    @java.lang.Override
     public boolean hasJobId() {
       return jobId_ != null;
     }
@@ -16383,12 +16518,14 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue job_id = 5;</code>
      * @return The jobId.
      */
+    @java.lang.Override
     public com.google.protobuf.StringValue getJobId() {
       return jobId_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : jobId_;
     }
     /**
      * <code>.google.protobuf.StringValue job_id = 5;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getJobIdOrBuilder() {
       return getJobId();
     }
@@ -16399,6 +16536,7 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.Int64Value end_time = 6;</code>
      * @return Whether the endTime field is set.
      */
+    @java.lang.Override
     public boolean hasEndTime() {
       return endTime_ != null;
     }
@@ -16406,12 +16544,14 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.Int64Value end_time = 6;</code>
      * @return The endTime.
      */
+    @java.lang.Override
     public com.google.protobuf.Int64Value getEndTime() {
       return endTime_ == null ? com.google.protobuf.Int64Value.getDefaultInstance() : endTime_;
     }
     /**
      * <code>.google.protobuf.Int64Value end_time = 6;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.Int64ValueOrBuilder getEndTimeOrBuilder() {
       return getEndTime();
     }
@@ -16422,6 +16562,7 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue log_uri = 7;</code>
      * @return Whether the logUri field is set.
      */
+    @java.lang.Override
     public boolean hasLogUri() {
       return logUri_ != null;
     }
@@ -16429,12 +16570,14 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue log_uri = 7;</code>
      * @return The logUri.
      */
+    @java.lang.Override
     public com.google.protobuf.StringValue getLogUri() {
       return logUri_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : logUri_;
     }
     /**
      * <code>.google.protobuf.StringValue log_uri = 7;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getLogUriOrBuilder() {
       return getLogUri();
     }
@@ -16445,6 +16588,7 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue signature = 8;</code>
      * @return Whether the signature field is set.
      */
+    @java.lang.Override
     public boolean hasSignature() {
       return signature_ != null;
     }
@@ -16452,12 +16596,14 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue signature = 8;</code>
      * @return The signature.
      */
+    @java.lang.Override
     public com.google.protobuf.StringValue getSignature() {
       return signature_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : signature_;
     }
     /**
      * <code>.google.protobuf.StringValue signature = 8;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getSignatureOrBuilder() {
       return getSignature();
     }
@@ -17181,7 +17327,7 @@ public final class MetadataServiceOuterClass {
        * <code>.ai_flow.StateProto job_state = 3;</code>
        * @return The enum numeric value on the wire for jobState.
        */
-      public int getJobStateValue() {
+      @java.lang.Override public int getJobStateValue() {
         return jobState_;
       }
       /**
@@ -17190,6 +17336,7 @@ public final class MetadataServiceOuterClass {
        * @return This builder for chaining.
        */
       public Builder setJobStateValue(int value) {
+        
         jobState_ = value;
         onChanged();
         return this;
@@ -17198,6 +17345,7 @@ public final class MetadataServiceOuterClass {
        * <code>.ai_flow.StateProto job_state = 3;</code>
        * @return The jobState.
        */
+      @java.lang.Override
       public com.aiflow.proto.Message.StateProto getJobState() {
         @SuppressWarnings("deprecation")
         com.aiflow.proto.Message.StateProto result = com.aiflow.proto.Message.StateProto.valueOf(jobState_);
@@ -17258,6 +17406,7 @@ public final class MetadataServiceOuterClass {
        * <code>map&lt;string, string&gt; properties = 4;</code>
        */
 
+      @java.lang.Override
       public boolean containsProperties(
           java.lang.String key) {
         if (key == null) { throw new java.lang.NullPointerException(); }
@@ -17266,6 +17415,7 @@ public final class MetadataServiceOuterClass {
       /**
        * Use {@link #getPropertiesMap()} instead.
        */
+      @java.lang.Override
       @java.lang.Deprecated
       public java.util.Map<java.lang.String, java.lang.String> getProperties() {
         return getPropertiesMap();
@@ -17273,6 +17423,7 @@ public final class MetadataServiceOuterClass {
       /**
        * <code>map&lt;string, string&gt; properties = 4;</code>
        */
+      @java.lang.Override
 
       public java.util.Map<java.lang.String, java.lang.String> getPropertiesMap() {
         return internalGetProperties().getMap();
@@ -17280,6 +17431,7 @@ public final class MetadataServiceOuterClass {
       /**
        * <code>map&lt;string, string&gt; properties = 4;</code>
        */
+      @java.lang.Override
 
       public java.lang.String getPropertiesOrDefault(
           java.lang.String key,
@@ -17292,6 +17444,7 @@ public final class MetadataServiceOuterClass {
       /**
        * <code>map&lt;string, string&gt; properties = 4;</code>
        */
+      @java.lang.Override
 
       public java.lang.String getPropertiesOrThrow(
           java.lang.String key) {
@@ -17909,7 +18062,7 @@ public final class MetadataServiceOuterClass {
   /**
    * Protobuf type {@code ai_flow.UpdateJobStateRequest}
    */
-  public  static final class UpdateJobStateRequest extends
+  public static final class UpdateJobStateRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.UpdateJobStateRequest)
       UpdateJobStateRequestOrBuilder {
@@ -18003,14 +18156,14 @@ public final class MetadataServiceOuterClass {
      * <code>.ai_flow.StateProto state = 1;</code>
      * @return The enum numeric value on the wire for state.
      */
-    public int getStateValue() {
+    @java.lang.Override public int getStateValue() {
       return state_;
     }
     /**
      * <code>.ai_flow.StateProto state = 1;</code>
      * @return The state.
      */
-    public com.aiflow.proto.Message.StateProto getState() {
+    @java.lang.Override public com.aiflow.proto.Message.StateProto getState() {
       @SuppressWarnings("deprecation")
       com.aiflow.proto.Message.StateProto result = com.aiflow.proto.Message.StateProto.valueOf(state_);
       return result == null ? com.aiflow.proto.Message.StateProto.UNRECOGNIZED : result;
@@ -18022,6 +18175,7 @@ public final class MetadataServiceOuterClass {
      * <code>string name = 2;</code>
      * @return The name.
      */
+    @java.lang.Override
     public java.lang.String getName() {
       java.lang.Object ref = name_;
       if (ref instanceof java.lang.String) {
@@ -18038,6 +18192,7 @@ public final class MetadataServiceOuterClass {
      * <code>string name = 2;</code>
      * @return The bytes for name.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getNameBytes() {
       java.lang.Object ref = name_;
@@ -18375,7 +18530,7 @@ public final class MetadataServiceOuterClass {
        * <code>.ai_flow.StateProto state = 1;</code>
        * @return The enum numeric value on the wire for state.
        */
-      public int getStateValue() {
+      @java.lang.Override public int getStateValue() {
         return state_;
       }
       /**
@@ -18384,6 +18539,7 @@ public final class MetadataServiceOuterClass {
        * @return This builder for chaining.
        */
       public Builder setStateValue(int value) {
+        
         state_ = value;
         onChanged();
         return this;
@@ -18392,6 +18548,7 @@ public final class MetadataServiceOuterClass {
        * <code>.ai_flow.StateProto state = 1;</code>
        * @return The state.
        */
+      @java.lang.Override
       public com.aiflow.proto.Message.StateProto getState() {
         @SuppressWarnings("deprecation")
         com.aiflow.proto.Message.StateProto result = com.aiflow.proto.Message.StateProto.valueOf(state_);
@@ -18575,7 +18732,7 @@ public final class MetadataServiceOuterClass {
   /**
    * Protobuf type {@code ai_flow.UpdateJobEndTimeRequest}
    */
-  public  static final class UpdateJobEndTimeRequest extends
+  public static final class UpdateJobEndTimeRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.UpdateJobEndTimeRequest)
       UpdateJobEndTimeRequestOrBuilder {
@@ -18667,6 +18824,7 @@ public final class MetadataServiceOuterClass {
      * <code>int64 end_time = 1;</code>
      * @return The endTime.
      */
+    @java.lang.Override
     public long getEndTime() {
       return endTime_;
     }
@@ -18677,6 +18835,7 @@ public final class MetadataServiceOuterClass {
      * <code>string name = 2;</code>
      * @return The name.
      */
+    @java.lang.Override
     public java.lang.String getName() {
       java.lang.Object ref = name_;
       if (ref instanceof java.lang.String) {
@@ -18693,6 +18852,7 @@ public final class MetadataServiceOuterClass {
      * <code>string name = 2;</code>
      * @return The bytes for name.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getNameBytes() {
       java.lang.Object ref = name_;
@@ -19032,6 +19192,7 @@ public final class MetadataServiceOuterClass {
        * <code>int64 end_time = 1;</code>
        * @return The endTime.
        */
+      @java.lang.Override
       public long getEndTime() {
         return endTime_;
       }
@@ -19216,7 +19377,7 @@ public final class MetadataServiceOuterClass {
   /**
    * Protobuf type {@code ai_flow.JobListProto}
    */
-  public  static final class JobListProto extends
+  public static final class JobListProto extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.JobListProto)
       JobListProtoOrBuilder {
@@ -19309,12 +19470,14 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>repeated .ai_flow.JobProto jobs = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<com.aiflow.proto.Message.JobProto> getJobsList() {
       return jobs_;
     }
     /**
      * <code>repeated .ai_flow.JobProto jobs = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.aiflow.proto.Message.JobProtoOrBuilder> 
         getJobsOrBuilderList() {
       return jobs_;
@@ -19322,18 +19485,21 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>repeated .ai_flow.JobProto jobs = 1;</code>
      */
+    @java.lang.Override
     public int getJobsCount() {
       return jobs_.size();
     }
     /**
      * <code>repeated .ai_flow.JobProto jobs = 1;</code>
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.JobProto getJobs(int index) {
       return jobs_.get(index);
     }
     /**
      * <code>repeated .ai_flow.JobProto jobs = 1;</code>
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.JobProtoOrBuilder getJobsOrBuilder(
         int index) {
       return jobs_.get(index);
@@ -19999,7 +20165,7 @@ public final class MetadataServiceOuterClass {
    *
    * Protobuf type {@code ai_flow.RegisterWorkFlowExecutionRequest}
    */
-  public  static final class RegisterWorkFlowExecutionRequest extends
+  public static final class RegisterWorkFlowExecutionRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.RegisterWorkFlowExecutionRequest)
       RegisterWorkFlowExecutionRequestOrBuilder {
@@ -20092,6 +20258,7 @@ public final class MetadataServiceOuterClass {
      * <code>.ai_flow.WorkflowExecutionProto workflow_execution = 1;</code>
      * @return Whether the workflowExecution field is set.
      */
+    @java.lang.Override
     public boolean hasWorkflowExecution() {
       return workflowExecution_ != null;
     }
@@ -20099,12 +20266,14 @@ public final class MetadataServiceOuterClass {
      * <code>.ai_flow.WorkflowExecutionProto workflow_execution = 1;</code>
      * @return The workflowExecution.
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.WorkflowExecutionProto getWorkflowExecution() {
       return workflowExecution_ == null ? com.aiflow.proto.Message.WorkflowExecutionProto.getDefaultInstance() : workflowExecution_;
     }
     /**
      * <code>.ai_flow.WorkflowExecutionProto workflow_execution = 1;</code>
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.WorkflowExecutionProtoOrBuilder getWorkflowExecutionOrBuilder() {
       return getWorkflowExecution();
     }
@@ -20738,7 +20907,7 @@ public final class MetadataServiceOuterClass {
   /**
    * Protobuf type {@code ai_flow.UpdateWorkflowExecutionRequest}
    */
-  public  static final class UpdateWorkflowExecutionRequest extends
+  public static final class UpdateWorkflowExecutionRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.UpdateWorkflowExecutionRequest)
       UpdateWorkflowExecutionRequestOrBuilder {
@@ -20923,6 +21092,7 @@ public final class MetadataServiceOuterClass {
      * <code>string name = 1;</code>
      * @return The name.
      */
+    @java.lang.Override
     public java.lang.String getName() {
       java.lang.Object ref = name_;
       if (ref instanceof java.lang.String) {
@@ -20939,6 +21109,7 @@ public final class MetadataServiceOuterClass {
      * <code>string name = 1;</code>
      * @return The bytes for name.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getNameBytes() {
       java.lang.Object ref = name_;
@@ -20959,6 +21130,7 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.Int64Value project_id = 2;</code>
      * @return Whether the projectId field is set.
      */
+    @java.lang.Override
     public boolean hasProjectId() {
       return projectId_ != null;
     }
@@ -20966,12 +21138,14 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.Int64Value project_id = 2;</code>
      * @return The projectId.
      */
+    @java.lang.Override
     public com.google.protobuf.Int64Value getProjectId() {
       return projectId_ == null ? com.google.protobuf.Int64Value.getDefaultInstance() : projectId_;
     }
     /**
      * <code>.google.protobuf.Int64Value project_id = 2;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.Int64ValueOrBuilder getProjectIdOrBuilder() {
       return getProjectId();
     }
@@ -20982,14 +21156,14 @@ public final class MetadataServiceOuterClass {
      * <code>.ai_flow.StateProto execution_state = 4;</code>
      * @return The enum numeric value on the wire for executionState.
      */
-    public int getExecutionStateValue() {
+    @java.lang.Override public int getExecutionStateValue() {
       return executionState_;
     }
     /**
      * <code>.ai_flow.StateProto execution_state = 4;</code>
      * @return The executionState.
      */
-    public com.aiflow.proto.Message.StateProto getExecutionState() {
+    @java.lang.Override public com.aiflow.proto.Message.StateProto getExecutionState() {
       @SuppressWarnings("deprecation")
       com.aiflow.proto.Message.StateProto result = com.aiflow.proto.Message.StateProto.valueOf(executionState_);
       return result == null ? com.aiflow.proto.Message.StateProto.UNRECOGNIZED : result;
@@ -21025,6 +21199,7 @@ public final class MetadataServiceOuterClass {
      * <code>map&lt;string, string&gt; properties = 5;</code>
      */
 
+    @java.lang.Override
     public boolean containsProperties(
         java.lang.String key) {
       if (key == null) { throw new java.lang.NullPointerException(); }
@@ -21033,6 +21208,7 @@ public final class MetadataServiceOuterClass {
     /**
      * Use {@link #getPropertiesMap()} instead.
      */
+    @java.lang.Override
     @java.lang.Deprecated
     public java.util.Map<java.lang.String, java.lang.String> getProperties() {
       return getPropertiesMap();
@@ -21040,6 +21216,7 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>map&lt;string, string&gt; properties = 5;</code>
      */
+    @java.lang.Override
 
     public java.util.Map<java.lang.String, java.lang.String> getPropertiesMap() {
       return internalGetProperties().getMap();
@@ -21047,6 +21224,7 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>map&lt;string, string&gt; properties = 5;</code>
      */
+    @java.lang.Override
 
     public java.lang.String getPropertiesOrDefault(
         java.lang.String key,
@@ -21059,6 +21237,7 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>map&lt;string, string&gt; properties = 5;</code>
      */
+    @java.lang.Override
 
     public java.lang.String getPropertiesOrThrow(
         java.lang.String key) {
@@ -21077,6 +21256,7 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.Int64Value end_time = 6;</code>
      * @return Whether the endTime field is set.
      */
+    @java.lang.Override
     public boolean hasEndTime() {
       return endTime_ != null;
     }
@@ -21084,12 +21264,14 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.Int64Value end_time = 6;</code>
      * @return The endTime.
      */
+    @java.lang.Override
     public com.google.protobuf.Int64Value getEndTime() {
       return endTime_ == null ? com.google.protobuf.Int64Value.getDefaultInstance() : endTime_;
     }
     /**
      * <code>.google.protobuf.Int64Value end_time = 6;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.Int64ValueOrBuilder getEndTimeOrBuilder() {
       return getEndTime();
     }
@@ -21100,6 +21282,7 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue log_uri = 7;</code>
      * @return Whether the logUri field is set.
      */
+    @java.lang.Override
     public boolean hasLogUri() {
       return logUri_ != null;
     }
@@ -21107,12 +21290,14 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue log_uri = 7;</code>
      * @return The logUri.
      */
+    @java.lang.Override
     public com.google.protobuf.StringValue getLogUri() {
       return logUri_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : logUri_;
     }
     /**
      * <code>.google.protobuf.StringValue log_uri = 7;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getLogUriOrBuilder() {
       return getLogUri();
     }
@@ -21123,6 +21308,7 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue workflow_json = 8;</code>
      * @return Whether the workflowJson field is set.
      */
+    @java.lang.Override
     public boolean hasWorkflowJson() {
       return workflowJson_ != null;
     }
@@ -21130,12 +21316,14 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue workflow_json = 8;</code>
      * @return The workflowJson.
      */
+    @java.lang.Override
     public com.google.protobuf.StringValue getWorkflowJson() {
       return workflowJson_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : workflowJson_;
     }
     /**
      * <code>.google.protobuf.StringValue workflow_json = 8;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getWorkflowJsonOrBuilder() {
       return getWorkflowJson();
     }
@@ -21146,6 +21334,7 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue signature = 9;</code>
      * @return Whether the signature field is set.
      */
+    @java.lang.Override
     public boolean hasSignature() {
       return signature_ != null;
     }
@@ -21153,12 +21342,14 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue signature = 9;</code>
      * @return The signature.
      */
+    @java.lang.Override
     public com.google.protobuf.StringValue getSignature() {
       return signature_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : signature_;
     }
     /**
      * <code>.google.protobuf.StringValue signature = 9;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getSignatureOrBuilder() {
       return getSignature();
     }
@@ -21882,7 +22073,7 @@ public final class MetadataServiceOuterClass {
        * <code>.ai_flow.StateProto execution_state = 4;</code>
        * @return The enum numeric value on the wire for executionState.
        */
-      public int getExecutionStateValue() {
+      @java.lang.Override public int getExecutionStateValue() {
         return executionState_;
       }
       /**
@@ -21891,6 +22082,7 @@ public final class MetadataServiceOuterClass {
        * @return This builder for chaining.
        */
       public Builder setExecutionStateValue(int value) {
+        
         executionState_ = value;
         onChanged();
         return this;
@@ -21899,6 +22091,7 @@ public final class MetadataServiceOuterClass {
        * <code>.ai_flow.StateProto execution_state = 4;</code>
        * @return The executionState.
        */
+      @java.lang.Override
       public com.aiflow.proto.Message.StateProto getExecutionState() {
         @SuppressWarnings("deprecation")
         com.aiflow.proto.Message.StateProto result = com.aiflow.proto.Message.StateProto.valueOf(executionState_);
@@ -21959,6 +22152,7 @@ public final class MetadataServiceOuterClass {
        * <code>map&lt;string, string&gt; properties = 5;</code>
        */
 
+      @java.lang.Override
       public boolean containsProperties(
           java.lang.String key) {
         if (key == null) { throw new java.lang.NullPointerException(); }
@@ -21967,6 +22161,7 @@ public final class MetadataServiceOuterClass {
       /**
        * Use {@link #getPropertiesMap()} instead.
        */
+      @java.lang.Override
       @java.lang.Deprecated
       public java.util.Map<java.lang.String, java.lang.String> getProperties() {
         return getPropertiesMap();
@@ -21974,6 +22169,7 @@ public final class MetadataServiceOuterClass {
       /**
        * <code>map&lt;string, string&gt; properties = 5;</code>
        */
+      @java.lang.Override
 
       public java.util.Map<java.lang.String, java.lang.String> getPropertiesMap() {
         return internalGetProperties().getMap();
@@ -21981,6 +22177,7 @@ public final class MetadataServiceOuterClass {
       /**
        * <code>map&lt;string, string&gt; properties = 5;</code>
        */
+      @java.lang.Override
 
       public java.lang.String getPropertiesOrDefault(
           java.lang.String key,
@@ -21993,6 +22190,7 @@ public final class MetadataServiceOuterClass {
       /**
        * <code>map&lt;string, string&gt; properties = 5;</code>
        */
+      @java.lang.Override
 
       public java.lang.String getPropertiesOrThrow(
           java.lang.String key) {
@@ -22611,7 +22809,7 @@ public final class MetadataServiceOuterClass {
   /**
    * Protobuf type {@code ai_flow.WorkFlowExecutionListProto}
    */
-  public  static final class WorkFlowExecutionListProto extends
+  public static final class WorkFlowExecutionListProto extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.WorkFlowExecutionListProto)
       WorkFlowExecutionListProtoOrBuilder {
@@ -22704,12 +22902,14 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<com.aiflow.proto.Message.WorkflowExecutionProto> getWorkflowExecutionsList() {
       return workflowExecutions_;
     }
     /**
      * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.aiflow.proto.Message.WorkflowExecutionProtoOrBuilder> 
         getWorkflowExecutionsOrBuilderList() {
       return workflowExecutions_;
@@ -22717,18 +22917,21 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
      */
+    @java.lang.Override
     public int getWorkflowExecutionsCount() {
       return workflowExecutions_.size();
     }
     /**
      * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.WorkflowExecutionProto getWorkflowExecutions(int index) {
       return workflowExecutions_.get(index);
     }
     /**
      * <code>repeated .ai_flow.WorkflowExecutionProto workflow_executions = 1;</code>
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.WorkflowExecutionProtoOrBuilder getWorkflowExecutionsOrBuilder(
         int index) {
       return workflowExecutions_.get(index);
@@ -23393,7 +23596,7 @@ public final class MetadataServiceOuterClass {
   /**
    * Protobuf type {@code ai_flow.UpdateWorkflowExecutionEndTimeRequest}
    */
-  public  static final class UpdateWorkflowExecutionEndTimeRequest extends
+  public static final class UpdateWorkflowExecutionEndTimeRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.UpdateWorkflowExecutionEndTimeRequest)
       UpdateWorkflowExecutionEndTimeRequestOrBuilder {
@@ -23485,6 +23688,7 @@ public final class MetadataServiceOuterClass {
      * <code>int64 end_time = 1;</code>
      * @return The endTime.
      */
+    @java.lang.Override
     public long getEndTime() {
       return endTime_;
     }
@@ -23495,6 +23699,7 @@ public final class MetadataServiceOuterClass {
      * <code>string name = 2;</code>
      * @return The name.
      */
+    @java.lang.Override
     public java.lang.String getName() {
       java.lang.Object ref = name_;
       if (ref instanceof java.lang.String) {
@@ -23511,6 +23716,7 @@ public final class MetadataServiceOuterClass {
      * <code>string name = 2;</code>
      * @return The bytes for name.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getNameBytes() {
       java.lang.Object ref = name_;
@@ -23850,6 +24056,7 @@ public final class MetadataServiceOuterClass {
        * <code>int64 end_time = 1;</code>
        * @return The endTime.
        */
+      @java.lang.Override
       public long getEndTime() {
         return endTime_;
       }
@@ -24033,7 +24240,7 @@ public final class MetadataServiceOuterClass {
   /**
    * Protobuf type {@code ai_flow.UpdateWorkflowExecutionStateRequest}
    */
-  public  static final class UpdateWorkflowExecutionStateRequest extends
+  public static final class UpdateWorkflowExecutionStateRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.UpdateWorkflowExecutionStateRequest)
       UpdateWorkflowExecutionStateRequestOrBuilder {
@@ -24127,14 +24334,14 @@ public final class MetadataServiceOuterClass {
      * <code>.ai_flow.StateProto state = 1;</code>
      * @return The enum numeric value on the wire for state.
      */
-    public int getStateValue() {
+    @java.lang.Override public int getStateValue() {
       return state_;
     }
     /**
      * <code>.ai_flow.StateProto state = 1;</code>
      * @return The state.
      */
-    public com.aiflow.proto.Message.StateProto getState() {
+    @java.lang.Override public com.aiflow.proto.Message.StateProto getState() {
       @SuppressWarnings("deprecation")
       com.aiflow.proto.Message.StateProto result = com.aiflow.proto.Message.StateProto.valueOf(state_);
       return result == null ? com.aiflow.proto.Message.StateProto.UNRECOGNIZED : result;
@@ -24146,6 +24353,7 @@ public final class MetadataServiceOuterClass {
      * <code>string name = 2;</code>
      * @return The name.
      */
+    @java.lang.Override
     public java.lang.String getName() {
       java.lang.Object ref = name_;
       if (ref instanceof java.lang.String) {
@@ -24162,6 +24370,7 @@ public final class MetadataServiceOuterClass {
      * <code>string name = 2;</code>
      * @return The bytes for name.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getNameBytes() {
       java.lang.Object ref = name_;
@@ -24499,7 +24708,7 @@ public final class MetadataServiceOuterClass {
        * <code>.ai_flow.StateProto state = 1;</code>
        * @return The enum numeric value on the wire for state.
        */
-      public int getStateValue() {
+      @java.lang.Override public int getStateValue() {
         return state_;
       }
       /**
@@ -24508,6 +24717,7 @@ public final class MetadataServiceOuterClass {
        * @return This builder for chaining.
        */
       public Builder setStateValue(int value) {
+        
         state_ = value;
         onChanged();
         return this;
@@ -24516,6 +24726,7 @@ public final class MetadataServiceOuterClass {
        * <code>.ai_flow.StateProto state = 1;</code>
        * @return The state.
        */
+      @java.lang.Override
       public com.aiflow.proto.Message.StateProto getState() {
         @SuppressWarnings("deprecation")
         com.aiflow.proto.Message.StateProto result = com.aiflow.proto.Message.StateProto.valueOf(state_);
@@ -24700,7 +24911,7 @@ public final class MetadataServiceOuterClass {
    *
    * Protobuf type {@code ai_flow.RegisterProjectRequest}
    */
-  public  static final class RegisterProjectRequest extends
+  public static final class RegisterProjectRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.RegisterProjectRequest)
       RegisterProjectRequestOrBuilder {
@@ -24793,6 +25004,7 @@ public final class MetadataServiceOuterClass {
      * <code>.ai_flow.ProjectProto project = 1;</code>
      * @return Whether the project field is set.
      */
+    @java.lang.Override
     public boolean hasProject() {
       return project_ != null;
     }
@@ -24800,12 +25012,14 @@ public final class MetadataServiceOuterClass {
      * <code>.ai_flow.ProjectProto project = 1;</code>
      * @return The project.
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ProjectProto getProject() {
       return project_ == null ? com.aiflow.proto.Message.ProjectProto.getDefaultInstance() : project_;
     }
     /**
      * <code>.ai_flow.ProjectProto project = 1;</code>
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ProjectProtoOrBuilder getProjectOrBuilder() {
       return getProject();
     }
@@ -25351,69 +25565,24 @@ public final class MetadataServiceOuterClass {
         java.lang.String key);
 
     /**
-     * <code>.google.protobuf.StringValue project_type = 3;</code>
-     * @return Whether the projectType field is set.
-     */
-    boolean hasProjectType();
-    /**
-     * <code>.google.protobuf.StringValue project_type = 3;</code>
-     * @return The projectType.
-     */
-    com.google.protobuf.StringValue getProjectType();
-    /**
-     * <code>.google.protobuf.StringValue project_type = 3;</code>
-     */
-    com.google.protobuf.StringValueOrBuilder getProjectTypeOrBuilder();
-
-    /**
-     * <code>.google.protobuf.StringValue uri = 4;</code>
+     * <code>.google.protobuf.StringValue uri = 3;</code>
      * @return Whether the uri field is set.
      */
     boolean hasUri();
     /**
-     * <code>.google.protobuf.StringValue uri = 4;</code>
+     * <code>.google.protobuf.StringValue uri = 3;</code>
      * @return The uri.
      */
     com.google.protobuf.StringValue getUri();
     /**
-     * <code>.google.protobuf.StringValue uri = 4;</code>
+     * <code>.google.protobuf.StringValue uri = 3;</code>
      */
     com.google.protobuf.StringValueOrBuilder getUriOrBuilder();
-
-    /**
-     * <code>.google.protobuf.StringValue user = 5;</code>
-     * @return Whether the user field is set.
-     */
-    boolean hasUser();
-    /**
-     * <code>.google.protobuf.StringValue user = 5;</code>
-     * @return The user.
-     */
-    com.google.protobuf.StringValue getUser();
-    /**
-     * <code>.google.protobuf.StringValue user = 5;</code>
-     */
-    com.google.protobuf.StringValueOrBuilder getUserOrBuilder();
-
-    /**
-     * <code>.google.protobuf.StringValue password = 6;</code>
-     * @return Whether the password field is set.
-     */
-    boolean hasPassword();
-    /**
-     * <code>.google.protobuf.StringValue password = 6;</code>
-     * @return The password.
-     */
-    com.google.protobuf.StringValue getPassword();
-    /**
-     * <code>.google.protobuf.StringValue password = 6;</code>
-     */
-    com.google.protobuf.StringValueOrBuilder getPasswordOrBuilder();
   }
   /**
    * Protobuf type {@code ai_flow.UpdateProjectRequest}
    */
-  public  static final class UpdateProjectRequest extends
+  public static final class UpdateProjectRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.UpdateProjectRequest)
       UpdateProjectRequestOrBuilder {
@@ -25478,19 +25647,6 @@ public final class MetadataServiceOuterClass {
             }
             case 26: {
               com.google.protobuf.StringValue.Builder subBuilder = null;
-              if (projectType_ != null) {
-                subBuilder = projectType_.toBuilder();
-              }
-              projectType_ = input.readMessage(com.google.protobuf.StringValue.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(projectType_);
-                projectType_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            case 34: {
-              com.google.protobuf.StringValue.Builder subBuilder = null;
               if (uri_ != null) {
                 subBuilder = uri_.toBuilder();
               }
@@ -25498,32 +25654,6 @@ public final class MetadataServiceOuterClass {
               if (subBuilder != null) {
                 subBuilder.mergeFrom(uri_);
                 uri_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            case 42: {
-              com.google.protobuf.StringValue.Builder subBuilder = null;
-              if (user_ != null) {
-                subBuilder = user_.toBuilder();
-              }
-              user_ = input.readMessage(com.google.protobuf.StringValue.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(user_);
-                user_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            case 50: {
-              com.google.protobuf.StringValue.Builder subBuilder = null;
-              if (password_ != null) {
-                subBuilder = password_.toBuilder();
-              }
-              password_ = input.readMessage(com.google.protobuf.StringValue.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(password_);
-                password_ = subBuilder.buildPartial();
               }
 
               break;
@@ -25578,6 +25708,7 @@ public final class MetadataServiceOuterClass {
      * <code>string name = 1;</code>
      * @return The name.
      */
+    @java.lang.Override
     public java.lang.String getName() {
       java.lang.Object ref = name_;
       if (ref instanceof java.lang.String) {
@@ -25594,6 +25725,7 @@ public final class MetadataServiceOuterClass {
      * <code>string name = 1;</code>
      * @return The bytes for name.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getNameBytes() {
       java.lang.Object ref = name_;
@@ -25638,6 +25770,7 @@ public final class MetadataServiceOuterClass {
      * <code>map&lt;string, string&gt; properties = 2;</code>
      */
 
+    @java.lang.Override
     public boolean containsProperties(
         java.lang.String key) {
       if (key == null) { throw new java.lang.NullPointerException(); }
@@ -25646,6 +25779,7 @@ public final class MetadataServiceOuterClass {
     /**
      * Use {@link #getPropertiesMap()} instead.
      */
+    @java.lang.Override
     @java.lang.Deprecated
     public java.util.Map<java.lang.String, java.lang.String> getProperties() {
       return getPropertiesMap();
@@ -25653,6 +25787,7 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>map&lt;string, string&gt; properties = 2;</code>
      */
+    @java.lang.Override
 
     public java.util.Map<java.lang.String, java.lang.String> getPropertiesMap() {
       return internalGetProperties().getMap();
@@ -25660,6 +25795,7 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>map&lt;string, string&gt; properties = 2;</code>
      */
+    @java.lang.Override
 
     public java.lang.String getPropertiesOrDefault(
         java.lang.String key,
@@ -25672,6 +25808,7 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>map&lt;string, string&gt; properties = 2;</code>
      */
+    @java.lang.Override
 
     public java.lang.String getPropertiesOrThrow(
         java.lang.String key) {
@@ -25684,96 +25821,30 @@ public final class MetadataServiceOuterClass {
       return map.get(key);
     }
 
-    public static final int PROJECT_TYPE_FIELD_NUMBER = 3;
-    private com.google.protobuf.StringValue projectType_;
-    /**
-     * <code>.google.protobuf.StringValue project_type = 3;</code>
-     * @return Whether the projectType field is set.
-     */
-    public boolean hasProjectType() {
-      return projectType_ != null;
-    }
-    /**
-     * <code>.google.protobuf.StringValue project_type = 3;</code>
-     * @return The projectType.
-     */
-    public com.google.protobuf.StringValue getProjectType() {
-      return projectType_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : projectType_;
-    }
-    /**
-     * <code>.google.protobuf.StringValue project_type = 3;</code>
-     */
-    public com.google.protobuf.StringValueOrBuilder getProjectTypeOrBuilder() {
-      return getProjectType();
-    }
-
-    public static final int URI_FIELD_NUMBER = 4;
+    public static final int URI_FIELD_NUMBER = 3;
     private com.google.protobuf.StringValue uri_;
     /**
-     * <code>.google.protobuf.StringValue uri = 4;</code>
+     * <code>.google.protobuf.StringValue uri = 3;</code>
      * @return Whether the uri field is set.
      */
+    @java.lang.Override
     public boolean hasUri() {
       return uri_ != null;
     }
     /**
-     * <code>.google.protobuf.StringValue uri = 4;</code>
+     * <code>.google.protobuf.StringValue uri = 3;</code>
      * @return The uri.
      */
+    @java.lang.Override
     public com.google.protobuf.StringValue getUri() {
       return uri_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : uri_;
     }
     /**
-     * <code>.google.protobuf.StringValue uri = 4;</code>
+     * <code>.google.protobuf.StringValue uri = 3;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getUriOrBuilder() {
       return getUri();
-    }
-
-    public static final int USER_FIELD_NUMBER = 5;
-    private com.google.protobuf.StringValue user_;
-    /**
-     * <code>.google.protobuf.StringValue user = 5;</code>
-     * @return Whether the user field is set.
-     */
-    public boolean hasUser() {
-      return user_ != null;
-    }
-    /**
-     * <code>.google.protobuf.StringValue user = 5;</code>
-     * @return The user.
-     */
-    public com.google.protobuf.StringValue getUser() {
-      return user_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : user_;
-    }
-    /**
-     * <code>.google.protobuf.StringValue user = 5;</code>
-     */
-    public com.google.protobuf.StringValueOrBuilder getUserOrBuilder() {
-      return getUser();
-    }
-
-    public static final int PASSWORD_FIELD_NUMBER = 6;
-    private com.google.protobuf.StringValue password_;
-    /**
-     * <code>.google.protobuf.StringValue password = 6;</code>
-     * @return Whether the password field is set.
-     */
-    public boolean hasPassword() {
-      return password_ != null;
-    }
-    /**
-     * <code>.google.protobuf.StringValue password = 6;</code>
-     * @return The password.
-     */
-    public com.google.protobuf.StringValue getPassword() {
-      return password_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : password_;
-    }
-    /**
-     * <code>.google.protobuf.StringValue password = 6;</code>
-     */
-    public com.google.protobuf.StringValueOrBuilder getPasswordOrBuilder() {
-      return getPassword();
     }
 
     private byte memoizedIsInitialized = -1;
@@ -25799,17 +25870,8 @@ public final class MetadataServiceOuterClass {
           internalGetProperties(),
           PropertiesDefaultEntryHolder.defaultEntry,
           2);
-      if (projectType_ != null) {
-        output.writeMessage(3, getProjectType());
-      }
       if (uri_ != null) {
-        output.writeMessage(4, getUri());
-      }
-      if (user_ != null) {
-        output.writeMessage(5, getUser());
-      }
-      if (password_ != null) {
-        output.writeMessage(6, getPassword());
+        output.writeMessage(3, getUri());
       }
       unknownFields.writeTo(output);
     }
@@ -25833,21 +25895,9 @@ public final class MetadataServiceOuterClass {
         size += com.google.protobuf.CodedOutputStream
             .computeMessageSize(2, properties__);
       }
-      if (projectType_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, getProjectType());
-      }
       if (uri_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, getUri());
-      }
-      if (user_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, getUser());
-      }
-      if (password_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(6, getPassword());
+          .computeMessageSize(3, getUri());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -25868,25 +25918,10 @@ public final class MetadataServiceOuterClass {
           .equals(other.getName())) return false;
       if (!internalGetProperties().equals(
           other.internalGetProperties())) return false;
-      if (hasProjectType() != other.hasProjectType()) return false;
-      if (hasProjectType()) {
-        if (!getProjectType()
-            .equals(other.getProjectType())) return false;
-      }
       if (hasUri() != other.hasUri()) return false;
       if (hasUri()) {
         if (!getUri()
             .equals(other.getUri())) return false;
-      }
-      if (hasUser() != other.hasUser()) return false;
-      if (hasUser()) {
-        if (!getUser()
-            .equals(other.getUser())) return false;
-      }
-      if (hasPassword() != other.hasPassword()) return false;
-      if (hasPassword()) {
-        if (!getPassword()
-            .equals(other.getPassword())) return false;
       }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
@@ -25905,21 +25940,9 @@ public final class MetadataServiceOuterClass {
         hash = (37 * hash) + PROPERTIES_FIELD_NUMBER;
         hash = (53 * hash) + internalGetProperties().hashCode();
       }
-      if (hasProjectType()) {
-        hash = (37 * hash) + PROJECT_TYPE_FIELD_NUMBER;
-        hash = (53 * hash) + getProjectType().hashCode();
-      }
       if (hasUri()) {
         hash = (37 * hash) + URI_FIELD_NUMBER;
         hash = (53 * hash) + getUri().hashCode();
-      }
-      if (hasUser()) {
-        hash = (37 * hash) + USER_FIELD_NUMBER;
-        hash = (53 * hash) + getUser().hashCode();
-      }
-      if (hasPassword()) {
-        hash = (37 * hash) + PASSWORD_FIELD_NUMBER;
-        hash = (53 * hash) + getPassword().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -26079,29 +26102,11 @@ public final class MetadataServiceOuterClass {
         name_ = "";
 
         internalGetMutableProperties().clear();
-        if (projectTypeBuilder_ == null) {
-          projectType_ = null;
-        } else {
-          projectType_ = null;
-          projectTypeBuilder_ = null;
-        }
         if (uriBuilder_ == null) {
           uri_ = null;
         } else {
           uri_ = null;
           uriBuilder_ = null;
-        }
-        if (userBuilder_ == null) {
-          user_ = null;
-        } else {
-          user_ = null;
-          userBuilder_ = null;
-        }
-        if (passwordBuilder_ == null) {
-          password_ = null;
-        } else {
-          password_ = null;
-          passwordBuilder_ = null;
         }
         return this;
       }
@@ -26133,25 +26138,10 @@ public final class MetadataServiceOuterClass {
         result.name_ = name_;
         result.properties_ = internalGetProperties();
         result.properties_.makeImmutable();
-        if (projectTypeBuilder_ == null) {
-          result.projectType_ = projectType_;
-        } else {
-          result.projectType_ = projectTypeBuilder_.build();
-        }
         if (uriBuilder_ == null) {
           result.uri_ = uri_;
         } else {
           result.uri_ = uriBuilder_.build();
-        }
-        if (userBuilder_ == null) {
-          result.user_ = user_;
-        } else {
-          result.user_ = userBuilder_.build();
-        }
-        if (passwordBuilder_ == null) {
-          result.password_ = password_;
-        } else {
-          result.password_ = passwordBuilder_.build();
         }
         onBuilt();
         return result;
@@ -26207,17 +26197,8 @@ public final class MetadataServiceOuterClass {
         }
         internalGetMutableProperties().mergeFrom(
             other.internalGetProperties());
-        if (other.hasProjectType()) {
-          mergeProjectType(other.getProjectType());
-        }
         if (other.hasUri()) {
           mergeUri(other.getUri());
-        }
-        if (other.hasUser()) {
-          mergeUser(other.getUser());
-        }
-        if (other.hasPassword()) {
-          mergePassword(other.getPassword());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -26355,6 +26336,7 @@ public final class MetadataServiceOuterClass {
        * <code>map&lt;string, string&gt; properties = 2;</code>
        */
 
+      @java.lang.Override
       public boolean containsProperties(
           java.lang.String key) {
         if (key == null) { throw new java.lang.NullPointerException(); }
@@ -26363,6 +26345,7 @@ public final class MetadataServiceOuterClass {
       /**
        * Use {@link #getPropertiesMap()} instead.
        */
+      @java.lang.Override
       @java.lang.Deprecated
       public java.util.Map<java.lang.String, java.lang.String> getProperties() {
         return getPropertiesMap();
@@ -26370,6 +26353,7 @@ public final class MetadataServiceOuterClass {
       /**
        * <code>map&lt;string, string&gt; properties = 2;</code>
        */
+      @java.lang.Override
 
       public java.util.Map<java.lang.String, java.lang.String> getPropertiesMap() {
         return internalGetProperties().getMap();
@@ -26377,6 +26361,7 @@ public final class MetadataServiceOuterClass {
       /**
        * <code>map&lt;string, string&gt; properties = 2;</code>
        */
+      @java.lang.Override
 
       public java.lang.String getPropertiesOrDefault(
           java.lang.String key,
@@ -26389,6 +26374,7 @@ public final class MetadataServiceOuterClass {
       /**
        * <code>map&lt;string, string&gt; properties = 2;</code>
        */
+      @java.lang.Override
 
       public java.lang.String getPropertiesOrThrow(
           java.lang.String key) {
@@ -26448,137 +26434,18 @@ public final class MetadataServiceOuterClass {
         return this;
       }
 
-      private com.google.protobuf.StringValue projectType_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> projectTypeBuilder_;
-      /**
-       * <code>.google.protobuf.StringValue project_type = 3;</code>
-       * @return Whether the projectType field is set.
-       */
-      public boolean hasProjectType() {
-        return projectTypeBuilder_ != null || projectType_ != null;
-      }
-      /**
-       * <code>.google.protobuf.StringValue project_type = 3;</code>
-       * @return The projectType.
-       */
-      public com.google.protobuf.StringValue getProjectType() {
-        if (projectTypeBuilder_ == null) {
-          return projectType_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : projectType_;
-        } else {
-          return projectTypeBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>.google.protobuf.StringValue project_type = 3;</code>
-       */
-      public Builder setProjectType(com.google.protobuf.StringValue value) {
-        if (projectTypeBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          projectType_ = value;
-          onChanged();
-        } else {
-          projectTypeBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue project_type = 3;</code>
-       */
-      public Builder setProjectType(
-          com.google.protobuf.StringValue.Builder builderForValue) {
-        if (projectTypeBuilder_ == null) {
-          projectType_ = builderForValue.build();
-          onChanged();
-        } else {
-          projectTypeBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue project_type = 3;</code>
-       */
-      public Builder mergeProjectType(com.google.protobuf.StringValue value) {
-        if (projectTypeBuilder_ == null) {
-          if (projectType_ != null) {
-            projectType_ =
-              com.google.protobuf.StringValue.newBuilder(projectType_).mergeFrom(value).buildPartial();
-          } else {
-            projectType_ = value;
-          }
-          onChanged();
-        } else {
-          projectTypeBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue project_type = 3;</code>
-       */
-      public Builder clearProjectType() {
-        if (projectTypeBuilder_ == null) {
-          projectType_ = null;
-          onChanged();
-        } else {
-          projectType_ = null;
-          projectTypeBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue project_type = 3;</code>
-       */
-      public com.google.protobuf.StringValue.Builder getProjectTypeBuilder() {
-        
-        onChanged();
-        return getProjectTypeFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>.google.protobuf.StringValue project_type = 3;</code>
-       */
-      public com.google.protobuf.StringValueOrBuilder getProjectTypeOrBuilder() {
-        if (projectTypeBuilder_ != null) {
-          return projectTypeBuilder_.getMessageOrBuilder();
-        } else {
-          return projectType_ == null ?
-              com.google.protobuf.StringValue.getDefaultInstance() : projectType_;
-        }
-      }
-      /**
-       * <code>.google.protobuf.StringValue project_type = 3;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> 
-          getProjectTypeFieldBuilder() {
-        if (projectTypeBuilder_ == null) {
-          projectTypeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder>(
-                  getProjectType(),
-                  getParentForChildren(),
-                  isClean());
-          projectType_ = null;
-        }
-        return projectTypeBuilder_;
-      }
-
       private com.google.protobuf.StringValue uri_;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> uriBuilder_;
       /**
-       * <code>.google.protobuf.StringValue uri = 4;</code>
+       * <code>.google.protobuf.StringValue uri = 3;</code>
        * @return Whether the uri field is set.
        */
       public boolean hasUri() {
         return uriBuilder_ != null || uri_ != null;
       }
       /**
-       * <code>.google.protobuf.StringValue uri = 4;</code>
+       * <code>.google.protobuf.StringValue uri = 3;</code>
        * @return The uri.
        */
       public com.google.protobuf.StringValue getUri() {
@@ -26589,7 +26456,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.google.protobuf.StringValue uri = 4;</code>
+       * <code>.google.protobuf.StringValue uri = 3;</code>
        */
       public Builder setUri(com.google.protobuf.StringValue value) {
         if (uriBuilder_ == null) {
@@ -26605,7 +26472,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue uri = 4;</code>
+       * <code>.google.protobuf.StringValue uri = 3;</code>
        */
       public Builder setUri(
           com.google.protobuf.StringValue.Builder builderForValue) {
@@ -26619,7 +26486,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue uri = 4;</code>
+       * <code>.google.protobuf.StringValue uri = 3;</code>
        */
       public Builder mergeUri(com.google.protobuf.StringValue value) {
         if (uriBuilder_ == null) {
@@ -26637,7 +26504,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue uri = 4;</code>
+       * <code>.google.protobuf.StringValue uri = 3;</code>
        */
       public Builder clearUri() {
         if (uriBuilder_ == null) {
@@ -26651,7 +26518,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue uri = 4;</code>
+       * <code>.google.protobuf.StringValue uri = 3;</code>
        */
       public com.google.protobuf.StringValue.Builder getUriBuilder() {
         
@@ -26659,7 +26526,7 @@ public final class MetadataServiceOuterClass {
         return getUriFieldBuilder().getBuilder();
       }
       /**
-       * <code>.google.protobuf.StringValue uri = 4;</code>
+       * <code>.google.protobuf.StringValue uri = 3;</code>
        */
       public com.google.protobuf.StringValueOrBuilder getUriOrBuilder() {
         if (uriBuilder_ != null) {
@@ -26670,7 +26537,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.google.protobuf.StringValue uri = 4;</code>
+       * <code>.google.protobuf.StringValue uri = 3;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> 
@@ -26684,244 +26551,6 @@ public final class MetadataServiceOuterClass {
           uri_ = null;
         }
         return uriBuilder_;
-      }
-
-      private com.google.protobuf.StringValue user_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> userBuilder_;
-      /**
-       * <code>.google.protobuf.StringValue user = 5;</code>
-       * @return Whether the user field is set.
-       */
-      public boolean hasUser() {
-        return userBuilder_ != null || user_ != null;
-      }
-      /**
-       * <code>.google.protobuf.StringValue user = 5;</code>
-       * @return The user.
-       */
-      public com.google.protobuf.StringValue getUser() {
-        if (userBuilder_ == null) {
-          return user_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : user_;
-        } else {
-          return userBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>.google.protobuf.StringValue user = 5;</code>
-       */
-      public Builder setUser(com.google.protobuf.StringValue value) {
-        if (userBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          user_ = value;
-          onChanged();
-        } else {
-          userBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue user = 5;</code>
-       */
-      public Builder setUser(
-          com.google.protobuf.StringValue.Builder builderForValue) {
-        if (userBuilder_ == null) {
-          user_ = builderForValue.build();
-          onChanged();
-        } else {
-          userBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue user = 5;</code>
-       */
-      public Builder mergeUser(com.google.protobuf.StringValue value) {
-        if (userBuilder_ == null) {
-          if (user_ != null) {
-            user_ =
-              com.google.protobuf.StringValue.newBuilder(user_).mergeFrom(value).buildPartial();
-          } else {
-            user_ = value;
-          }
-          onChanged();
-        } else {
-          userBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue user = 5;</code>
-       */
-      public Builder clearUser() {
-        if (userBuilder_ == null) {
-          user_ = null;
-          onChanged();
-        } else {
-          user_ = null;
-          userBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue user = 5;</code>
-       */
-      public com.google.protobuf.StringValue.Builder getUserBuilder() {
-        
-        onChanged();
-        return getUserFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>.google.protobuf.StringValue user = 5;</code>
-       */
-      public com.google.protobuf.StringValueOrBuilder getUserOrBuilder() {
-        if (userBuilder_ != null) {
-          return userBuilder_.getMessageOrBuilder();
-        } else {
-          return user_ == null ?
-              com.google.protobuf.StringValue.getDefaultInstance() : user_;
-        }
-      }
-      /**
-       * <code>.google.protobuf.StringValue user = 5;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> 
-          getUserFieldBuilder() {
-        if (userBuilder_ == null) {
-          userBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder>(
-                  getUser(),
-                  getParentForChildren(),
-                  isClean());
-          user_ = null;
-        }
-        return userBuilder_;
-      }
-
-      private com.google.protobuf.StringValue password_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> passwordBuilder_;
-      /**
-       * <code>.google.protobuf.StringValue password = 6;</code>
-       * @return Whether the password field is set.
-       */
-      public boolean hasPassword() {
-        return passwordBuilder_ != null || password_ != null;
-      }
-      /**
-       * <code>.google.protobuf.StringValue password = 6;</code>
-       * @return The password.
-       */
-      public com.google.protobuf.StringValue getPassword() {
-        if (passwordBuilder_ == null) {
-          return password_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : password_;
-        } else {
-          return passwordBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>.google.protobuf.StringValue password = 6;</code>
-       */
-      public Builder setPassword(com.google.protobuf.StringValue value) {
-        if (passwordBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          password_ = value;
-          onChanged();
-        } else {
-          passwordBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue password = 6;</code>
-       */
-      public Builder setPassword(
-          com.google.protobuf.StringValue.Builder builderForValue) {
-        if (passwordBuilder_ == null) {
-          password_ = builderForValue.build();
-          onChanged();
-        } else {
-          passwordBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue password = 6;</code>
-       */
-      public Builder mergePassword(com.google.protobuf.StringValue value) {
-        if (passwordBuilder_ == null) {
-          if (password_ != null) {
-            password_ =
-              com.google.protobuf.StringValue.newBuilder(password_).mergeFrom(value).buildPartial();
-          } else {
-            password_ = value;
-          }
-          onChanged();
-        } else {
-          passwordBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue password = 6;</code>
-       */
-      public Builder clearPassword() {
-        if (passwordBuilder_ == null) {
-          password_ = null;
-          onChanged();
-        } else {
-          password_ = null;
-          passwordBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue password = 6;</code>
-       */
-      public com.google.protobuf.StringValue.Builder getPasswordBuilder() {
-        
-        onChanged();
-        return getPasswordFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>.google.protobuf.StringValue password = 6;</code>
-       */
-      public com.google.protobuf.StringValueOrBuilder getPasswordOrBuilder() {
-        if (passwordBuilder_ != null) {
-          return passwordBuilder_.getMessageOrBuilder();
-        } else {
-          return password_ == null ?
-              com.google.protobuf.StringValue.getDefaultInstance() : password_;
-        }
-      }
-      /**
-       * <code>.google.protobuf.StringValue password = 6;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> 
-          getPasswordFieldBuilder() {
-        if (passwordBuilder_ == null) {
-          passwordBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder>(
-                  getPassword(),
-                  getParentForChildren(),
-                  isClean());
-          password_ = null;
-        }
-        return passwordBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -27007,7 +26636,7 @@ public final class MetadataServiceOuterClass {
   /**
    * Protobuf type {@code ai_flow.ProjectListProto}
    */
-  public  static final class ProjectListProto extends
+  public static final class ProjectListProto extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.ProjectListProto)
       ProjectListProtoOrBuilder {
@@ -27100,12 +26729,14 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<com.aiflow.proto.Message.ProjectProto> getProjectsList() {
       return projects_;
     }
     /**
      * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.aiflow.proto.Message.ProjectProtoOrBuilder> 
         getProjectsOrBuilderList() {
       return projects_;
@@ -27113,18 +26744,21 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
      */
+    @java.lang.Override
     public int getProjectsCount() {
       return projects_.size();
     }
     /**
      * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ProjectProto getProjects(int index) {
       return projects_.get(index);
     }
     /**
      * <code>repeated .ai_flow.ProjectProto projects = 1;</code>
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ProjectProtoOrBuilder getProjectsOrBuilder(
         int index) {
       return projects_.get(index);
@@ -27790,7 +27424,7 @@ public final class MetadataServiceOuterClass {
    *
    * Protobuf type {@code ai_flow.RegisterArtifactRequest}
    */
-  public  static final class RegisterArtifactRequest extends
+  public static final class RegisterArtifactRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.RegisterArtifactRequest)
       RegisterArtifactRequestOrBuilder {
@@ -27883,6 +27517,7 @@ public final class MetadataServiceOuterClass {
      * <code>.ai_flow.ArtifactProto artifact = 1;</code>
      * @return Whether the artifact field is set.
      */
+    @java.lang.Override
     public boolean hasArtifact() {
       return artifact_ != null;
     }
@@ -27890,12 +27525,14 @@ public final class MetadataServiceOuterClass {
      * <code>.ai_flow.ArtifactProto artifact = 1;</code>
      * @return The artifact.
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ArtifactProto getArtifact() {
       return artifact_ == null ? com.aiflow.proto.Message.ArtifactProto.getDefaultInstance() : artifact_;
     }
     /**
      * <code>.ai_flow.ArtifactProto artifact = 1;</code>
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ArtifactProtoOrBuilder getArtifactOrBuilder() {
       return getArtifact();
     }
@@ -28518,7 +28155,7 @@ public final class MetadataServiceOuterClass {
   /**
    * Protobuf type {@code ai_flow.UpdateArtifactRequest}
    */
-  public  static final class UpdateArtifactRequest extends
+  public static final class UpdateArtifactRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.UpdateArtifactRequest)
       UpdateArtifactRequestOrBuilder {
@@ -28696,6 +28333,7 @@ public final class MetadataServiceOuterClass {
      * <code>string name = 1;</code>
      * @return The name.
      */
+    @java.lang.Override
     public java.lang.String getName() {
       java.lang.Object ref = name_;
       if (ref instanceof java.lang.String) {
@@ -28712,6 +28350,7 @@ public final class MetadataServiceOuterClass {
      * <code>string name = 1;</code>
      * @return The bytes for name.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getNameBytes() {
       java.lang.Object ref = name_;
@@ -28756,6 +28395,7 @@ public final class MetadataServiceOuterClass {
      * <code>map&lt;string, string&gt; properties = 2;</code>
      */
 
+    @java.lang.Override
     public boolean containsProperties(
         java.lang.String key) {
       if (key == null) { throw new java.lang.NullPointerException(); }
@@ -28764,6 +28404,7 @@ public final class MetadataServiceOuterClass {
     /**
      * Use {@link #getPropertiesMap()} instead.
      */
+    @java.lang.Override
     @java.lang.Deprecated
     public java.util.Map<java.lang.String, java.lang.String> getProperties() {
       return getPropertiesMap();
@@ -28771,6 +28412,7 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>map&lt;string, string&gt; properties = 2;</code>
      */
+    @java.lang.Override
 
     public java.util.Map<java.lang.String, java.lang.String> getPropertiesMap() {
       return internalGetProperties().getMap();
@@ -28778,6 +28420,7 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>map&lt;string, string&gt; properties = 2;</code>
      */
+    @java.lang.Override
 
     public java.lang.String getPropertiesOrDefault(
         java.lang.String key,
@@ -28790,6 +28433,7 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>map&lt;string, string&gt; properties = 2;</code>
      */
+    @java.lang.Override
 
     public java.lang.String getPropertiesOrThrow(
         java.lang.String key) {
@@ -28808,6 +28452,7 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue data_format = 3;</code>
      * @return Whether the dataFormat field is set.
      */
+    @java.lang.Override
     public boolean hasDataFormat() {
       return dataFormat_ != null;
     }
@@ -28815,12 +28460,14 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue data_format = 3;</code>
      * @return The dataFormat.
      */
+    @java.lang.Override
     public com.google.protobuf.StringValue getDataFormat() {
       return dataFormat_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : dataFormat_;
     }
     /**
      * <code>.google.protobuf.StringValue data_format = 3;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getDataFormatOrBuilder() {
       return getDataFormat();
     }
@@ -28831,6 +28478,7 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue batch_uri = 4;</code>
      * @return Whether the batchUri field is set.
      */
+    @java.lang.Override
     public boolean hasBatchUri() {
       return batchUri_ != null;
     }
@@ -28838,12 +28486,14 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue batch_uri = 4;</code>
      * @return The batchUri.
      */
+    @java.lang.Override
     public com.google.protobuf.StringValue getBatchUri() {
       return batchUri_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : batchUri_;
     }
     /**
      * <code>.google.protobuf.StringValue batch_uri = 4;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getBatchUriOrBuilder() {
       return getBatchUri();
     }
@@ -28854,6 +28504,7 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue stream_uri = 5;</code>
      * @return Whether the streamUri field is set.
      */
+    @java.lang.Override
     public boolean hasStreamUri() {
       return streamUri_ != null;
     }
@@ -28861,12 +28512,14 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue stream_uri = 5;</code>
      * @return The streamUri.
      */
+    @java.lang.Override
     public com.google.protobuf.StringValue getStreamUri() {
       return streamUri_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : streamUri_;
     }
     /**
      * <code>.google.protobuf.StringValue stream_uri = 5;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getStreamUriOrBuilder() {
       return getStreamUri();
     }
@@ -28877,6 +28530,7 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue description = 6;</code>
      * @return Whether the description field is set.
      */
+    @java.lang.Override
     public boolean hasDescription() {
       return description_ != null;
     }
@@ -28884,12 +28538,14 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.StringValue description = 6;</code>
      * @return The description.
      */
+    @java.lang.Override
     public com.google.protobuf.StringValue getDescription() {
       return description_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : description_;
     }
     /**
      * <code>.google.protobuf.StringValue description = 6;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getDescriptionOrBuilder() {
       return getDescription();
     }
@@ -28900,6 +28556,7 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.Int64Value update_time = 7;</code>
      * @return Whether the updateTime field is set.
      */
+    @java.lang.Override
     public boolean hasUpdateTime() {
       return updateTime_ != null;
     }
@@ -28907,12 +28564,14 @@ public final class MetadataServiceOuterClass {
      * <code>.google.protobuf.Int64Value update_time = 7;</code>
      * @return The updateTime.
      */
+    @java.lang.Override
     public com.google.protobuf.Int64Value getUpdateTime() {
       return updateTime_ == null ? com.google.protobuf.Int64Value.getDefaultInstance() : updateTime_;
     }
     /**
      * <code>.google.protobuf.Int64Value update_time = 7;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.Int64ValueOrBuilder getUpdateTimeOrBuilder() {
       return getUpdateTime();
     }
@@ -29526,6 +29185,7 @@ public final class MetadataServiceOuterClass {
        * <code>map&lt;string, string&gt; properties = 2;</code>
        */
 
+      @java.lang.Override
       public boolean containsProperties(
           java.lang.String key) {
         if (key == null) { throw new java.lang.NullPointerException(); }
@@ -29534,6 +29194,7 @@ public final class MetadataServiceOuterClass {
       /**
        * Use {@link #getPropertiesMap()} instead.
        */
+      @java.lang.Override
       @java.lang.Deprecated
       public java.util.Map<java.lang.String, java.lang.String> getProperties() {
         return getPropertiesMap();
@@ -29541,6 +29202,7 @@ public final class MetadataServiceOuterClass {
       /**
        * <code>map&lt;string, string&gt; properties = 2;</code>
        */
+      @java.lang.Override
 
       public java.util.Map<java.lang.String, java.lang.String> getPropertiesMap() {
         return internalGetProperties().getMap();
@@ -29548,6 +29210,7 @@ public final class MetadataServiceOuterClass {
       /**
        * <code>map&lt;string, string&gt; properties = 2;</code>
        */
+      @java.lang.Override
 
       public java.lang.String getPropertiesOrDefault(
           java.lang.String key,
@@ -29560,6 +29223,7 @@ public final class MetadataServiceOuterClass {
       /**
        * <code>map&lt;string, string&gt; properties = 2;</code>
        */
+      @java.lang.Override
 
       public java.lang.String getPropertiesOrThrow(
           java.lang.String key) {
@@ -30297,7 +29961,7 @@ public final class MetadataServiceOuterClass {
   /**
    * Protobuf type {@code ai_flow.ArtifactListProto}
    */
-  public  static final class ArtifactListProto extends
+  public static final class ArtifactListProto extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:ai_flow.ArtifactListProto)
       ArtifactListProtoOrBuilder {
@@ -30390,12 +30054,14 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<com.aiflow.proto.Message.ArtifactProto> getArtifactsList() {
       return artifacts_;
     }
     /**
      * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.aiflow.proto.Message.ArtifactProtoOrBuilder> 
         getArtifactsOrBuilderList() {
       return artifacts_;
@@ -30403,18 +30069,21 @@ public final class MetadataServiceOuterClass {
     /**
      * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
      */
+    @java.lang.Override
     public int getArtifactsCount() {
       return artifacts_.size();
     }
     /**
      * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ArtifactProto getArtifacts(int index) {
       return artifacts_.get(index);
     }
     /**
      * <code>repeated .ai_flow.ArtifactProto artifacts = 1;</code>
      */
+    @java.lang.Override
     public com.aiflow.proto.Message.ArtifactProtoOrBuilder getArtifactsOrBuilder(
         int index) {
       return artifacts_.get(index);
@@ -35985,227 +35654,223 @@ public final class MetadataServiceOuterClass {
       "pdateWorkflowExecutionStateRequest\022\"\n\005st" +
       "ate\030\001 \001(\0162\023.ai_flow.StateProto\022\014\n\004name\030\002" +
       " \001(\t\"@\n\026RegisterProjectRequest\022&\n\007projec" +
-      "t\030\001 \001(\0132\025.ai_flow.ProjectProto\"\325\002\n\024Updat" +
+      "t\030\001 \001(\0132\025.ai_flow.ProjectProto\"\305\001\n\024Updat" +
       "eProjectRequest\022\014\n\004name\030\001 \001(\t\022A\n\npropert" +
       "ies\030\002 \003(\0132-.ai_flow.UpdateProjectRequest" +
-      ".PropertiesEntry\0222\n\014project_type\030\003 \001(\0132\034" +
-      ".google.protobuf.StringValue\022)\n\003uri\030\004 \001(" +
-      "\0132\034.google.protobuf.StringValue\022*\n\004user\030" +
-      "\005 \001(\0132\034.google.protobuf.StringValue\022.\n\010p" +
-      "assword\030\006 \001(\0132\034.google.protobuf.StringVa" +
-      "lue\0321\n\017PropertiesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005v" +
-      "alue\030\002 \001(\t:\0028\001\";\n\020ProjectListProto\022\'\n\010pr" +
-      "ojects\030\001 \003(\0132\025.ai_flow.ProjectProto\"C\n\027R" +
-      "egisterArtifactRequest\022(\n\010artifact\030\001 \001(\013" +
-      "2\026.ai_flow.ArtifactProto\"\227\003\n\025UpdateArtif" +
-      "actRequest\022\014\n\004name\030\001 \001(\t\022B\n\nproperties\030\002" +
-      " \003(\0132..ai_flow.UpdateArtifactRequest.Pro" +
-      "pertiesEntry\0221\n\013data_format\030\003 \001(\0132\034.goog" +
-      "le.protobuf.StringValue\022/\n\tbatch_uri\030\004 \001" +
-      "(\0132\034.google.protobuf.StringValue\0220\n\nstre" +
-      "am_uri\030\005 \001(\0132\034.google.protobuf.StringVal" +
-      "ue\0221\n\013description\030\006 \001(\0132\034.google.protobu" +
-      "f.StringValue\0220\n\013update_time\030\007 \001(\0132\033.goo" +
-      "gle.protobuf.Int64Value\0321\n\017PropertiesEnt" +
-      "ry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\">\n\021Ar" +
-      "tifactListProto\022)\n\tartifacts\030\001 \003(\0132\026.ai_" +
-      "flow.ArtifactProto2\351<\n\017MetadataService\022i" +
-      "\n\016getExampleById\022\022.ai_flow.IdRequest\032\021.a" +
-      "i_flow.Response\"0\202\323\344\223\002*\"%/aiflow/metadat" +
-      "a_store/example/get/id:\001*\022o\n\020getExampleB" +
-      "yName\022\024.ai_flow.NameRequest\032\021.ai_flow.Re" +
-      "sponse\"2\202\323\344\223\002,\"\'/aiflow/metadata_store/e" +
-      "xample/get/name:\001*\022f\n\013listExample\022\024.ai_f" +
-      "low.ListRequest\032\021.ai_flow.Response\".\202\323\344\223" +
-      "\002(\"#/aiflow/metadata_store/example/list:" +
-      "\001*\022u\n\017registerExample\022\037.ai_flow.Register" +
-      "ExampleRequest\032\021.ai_flow.Response\".\202\323\344\223\002" +
-      "(\"#/aiflow/metadata_store/example/save:\001" +
-      "*\022\215\001\n\032registerExampleWithCatalog\022\037.ai_fl" +
-      "ow.RegisterExampleRequest\032\021.ai_flow.Resp" +
-      "onse\";\202\323\344\223\0025\"0/aiflow/metadata_store/exa" +
-      "mple/save_with_catalog:\001*\022x\n\020registerExa" +
-      "mples\022 .ai_flow.RegisterExamplesRequest\032" +
-      "\021.ai_flow.Response\"/\202\323\344\223\002)\"$/aiflow/meta" +
-      "data_store/examples/save:\001*\022s\n\rupdateExa" +
-      "mple\022\035.ai_flow.UpdateExampleRequest\032\021.ai" +
-      "_flow.Response\"0\202\323\344\223\002*\"%/aiflow/metadata" +
-      "_store/example/update:\001*\022o\n\021deleteExampl" +
-      "eById\022\022.ai_flow.IdRequest\032\021.ai_flow.Resp" +
-      "onse\"3\202\323\344\223\002-\"(/aiflow/metadata_store/exa" +
-      "mple/delete/id:\001*\022u\n\023deleteExampleByName" +
-      "\022\024.ai_flow.NameRequest\032\021.ai_flow.Respons" +
-      "e\"5\202\323\344\223\002/\"*/aiflow/metadata_store/exampl" +
-      "e/delete/name:\001*\022v\n\024getModelRelationById" +
-      "\022\022.ai_flow.IdRequest\032\021.ai_flow.Response\"" +
-      "7\202\323\344\223\0021\",/aiflow/metadata_store/model_re" +
-      "lation/get/id:\001*\022|\n\026getModelRelationByNa" +
-      "me\022\024.ai_flow.NameRequest\032\021.ai_flow.Respo" +
-      "nse\"9\202\323\344\223\0023\"./aiflow/metadata_store/mode" +
-      "l_relation/get/name:\001*\022s\n\021listModelRelat" +
-      "ion\022\024.ai_flow.ListRequest\032\021.ai_flow.Resp" +
-      "onse\"5\202\323\344\223\002/\"*/aiflow/metadata_store/mod" +
-      "el_relation/list:\001*\022\210\001\n\025registerModelRel" +
-      "ation\022%.ai_flow.RegisterModelRelationReq" +
-      "uest\032\021.ai_flow.Response\"5\202\323\344\223\002/\"*/aiflow" +
-      "/metadata_store/model_relation/save:\001*\022|" +
-      "\n\027deleteModelRelationById\022\022.ai_flow.IdRe" +
-      "quest\032\021.ai_flow.Response\":\202\323\344\223\0024\"//aiflo" +
-      "w/metadata_store/model_relation/delete/i" +
-      "d:\001*\022\202\001\n\031deleteModelRelationByName\022\024.ai_" +
-      "flow.NameRequest\032\021.ai_flow.Response\"<\202\323\344" +
-      "\223\0026\"1/aiflow/metadata_store/model_relati" +
-      "on/delete/name:\001*\022e\n\014getModelById\022\022.ai_f" +
-      "low.IdRequest\032\021.ai_flow.Response\".\202\323\344\223\002(" +
-      "\"#/aiflow/metadata_store/model/get/id:\001*" +
-      "\022k\n\016getModelByName\022\024.ai_flow.NameRequest" +
-      "\032\021.ai_flow.Response\"0\202\323\344\223\002*\"%/aiflow/met" +
-      "adata_store/model/get/name:\001*\022o\n\rregiste" +
-      "rModel\022\035.ai_flow.RegisterModelRequest\032\021." +
-      "ai_flow.Response\",\202\323\344\223\002&\"!/aiflow/metada" +
-      "ta_store/model/save:\001*\022k\n\017deleteModelByI" +
+      ".PropertiesEntry\022)\n\003uri\030\003 \001(\0132\034.google.p" +
+      "rotobuf.StringValue\0321\n\017PropertiesEntry\022\013" +
+      "\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\";\n\020Projec" +
+      "tListProto\022\'\n\010projects\030\001 \003(\0132\025.ai_flow.P" +
+      "rojectProto\"C\n\027RegisterArtifactRequest\022(" +
+      "\n\010artifact\030\001 \001(\0132\026.ai_flow.ArtifactProto" +
+      "\"\227\003\n\025UpdateArtifactRequest\022\014\n\004name\030\001 \001(\t" +
+      "\022B\n\nproperties\030\002 \003(\0132..ai_flow.UpdateArt" +
+      "ifactRequest.PropertiesEntry\0221\n\013data_for" +
+      "mat\030\003 \001(\0132\034.google.protobuf.StringValue\022" +
+      "/\n\tbatch_uri\030\004 \001(\0132\034.google.protobuf.Str" +
+      "ingValue\0220\n\nstream_uri\030\005 \001(\0132\034.google.pr" +
+      "otobuf.StringValue\0221\n\013description\030\006 \001(\0132" +
+      "\034.google.protobuf.StringValue\0220\n\013update_" +
+      "time\030\007 \001(\0132\033.google.protobuf.Int64Value\032" +
+      "1\n\017PropertiesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value" +
+      "\030\002 \001(\t:\0028\001\">\n\021ArtifactListProto\022)\n\tartif" +
+      "acts\030\001 \003(\0132\026.ai_flow.ArtifactProto2\351<\n\017M" +
+      "etadataService\022i\n\016getExampleById\022\022.ai_fl" +
+      "ow.IdRequest\032\021.ai_flow.Response\"0\202\323\344\223\002*\"" +
+      "%/aiflow/metadata_store/example/get/id:\001" +
+      "*\022o\n\020getExampleByName\022\024.ai_flow.NameRequ" +
+      "est\032\021.ai_flow.Response\"2\202\323\344\223\002,\"\'/aiflow/" +
+      "metadata_store/example/get/name:\001*\022f\n\013li" +
+      "stExample\022\024.ai_flow.ListRequest\032\021.ai_flo" +
+      "w.Response\".\202\323\344\223\002(\"#/aiflow/metadata_sto" +
+      "re/example/list:\001*\022u\n\017registerExample\022\037." +
+      "ai_flow.RegisterExampleRequest\032\021.ai_flow" +
+      ".Response\".\202\323\344\223\002(\"#/aiflow/metadata_stor" +
+      "e/example/save:\001*\022\215\001\n\032registerExampleWit" +
+      "hCatalog\022\037.ai_flow.RegisterExampleReques" +
+      "t\032\021.ai_flow.Response\";\202\323\344\223\0025\"0/aiflow/me" +
+      "tadata_store/example/save_with_catalog:\001" +
+      "*\022x\n\020registerExamples\022 .ai_flow.Register" +
+      "ExamplesRequest\032\021.ai_flow.Response\"/\202\323\344\223" +
+      "\002)\"$/aiflow/metadata_store/examples/save" +
+      ":\001*\022s\n\rupdateExample\022\035.ai_flow.UpdateExa" +
+      "mpleRequest\032\021.ai_flow.Response\"0\202\323\344\223\002*\"%" +
+      "/aiflow/metadata_store/example/update:\001*" +
+      "\022o\n\021deleteExampleById\022\022.ai_flow.IdReques" +
+      "t\032\021.ai_flow.Response\"3\202\323\344\223\002-\"(/aiflow/me" +
+      "tadata_store/example/delete/id:\001*\022u\n\023del" +
+      "eteExampleByName\022\024.ai_flow.NameRequest\032\021" +
+      ".ai_flow.Response\"5\202\323\344\223\002/\"*/aiflow/metad" +
+      "ata_store/example/delete/name:\001*\022v\n\024getM" +
+      "odelRelationById\022\022.ai_flow.IdRequest\032\021.a" +
+      "i_flow.Response\"7\202\323\344\223\0021\",/aiflow/metadat" +
+      "a_store/model_relation/get/id:\001*\022|\n\026getM" +
+      "odelRelationByName\022\024.ai_flow.NameRequest" +
+      "\032\021.ai_flow.Response\"9\202\323\344\223\0023\"./aiflow/met" +
+      "adata_store/model_relation/get/name:\001*\022s" +
+      "\n\021listModelRelation\022\024.ai_flow.ListReques" +
+      "t\032\021.ai_flow.Response\"5\202\323\344\223\002/\"*/aiflow/me" +
+      "tadata_store/model_relation/list:\001*\022\210\001\n\025" +
+      "registerModelRelation\022%.ai_flow.Register" +
+      "ModelRelationRequest\032\021.ai_flow.Response\"" +
+      "5\202\323\344\223\002/\"*/aiflow/metadata_store/model_re" +
+      "lation/save:\001*\022|\n\027deleteModelRelationByI" +
       "d\022\022.ai_flow.IdRequest\032\021.ai_flow.Response" +
-      "\"1\202\323\344\223\002+\"&/aiflow/metadata_store/model/d" +
-      "elete/id:\001*\022q\n\021deleteModelByName\022\024.ai_fl" +
-      "ow.NameRequest\032\021.ai_flow.Response\"3\202\323\344\223\002" +
-      "-\"(/aiflow/metadata_store/model/delete/n" +
-      "ame:\001*\022\234\001\n getModelVersionRelationByVers" +
-      "ion\022 .ai_flow.ModelVersionNameRequest\032\021." +
-      "ai_flow.Response\"C\202\323\344\223\002=\"8/aiflow/metada" +
-      "ta_store/modelVersion_relation/get/versi" +
-      "on:\001*\022\225\001\n\030listModelVersionRelation\022(.ai_" +
-      "flow.ListModelVersionRelationRequest\032\021.a" +
-      "i_flow.Response\"<\202\323\344\223\0026\"1/aiflow/metadat" +
-      "a_store/modelVersion_relation/list:\001*\022\235\001" +
-      "\n\034registerModelVersionRelation\022,.ai_flow" +
-      ".RegisterModelVersionRelationRequest\032\021.a" +
-      "i_flow.Response\"<\202\323\344\223\0026\"1/aiflow/metadat" +
-      "a_store/modelVersion_relation/save:\001*\022\242\001" +
-      "\n#deleteModelVersionRelationByVersion\022 ." +
-      "ai_flow.ModelVersionNameRequest\032\021.ai_flo" +
-      "w.Response\"F\202\323\344\223\002@\";/aiflow/metadata_sto" +
-      "re/modelVersion_relation/delete/version:" +
-      "\001*\022\213\001\n\030getModelVersionByVersion\022 .ai_flo" +
-      "w.ModelVersionNameRequest\032\021.ai_flow.Resp" +
-      "onse\":\202\323\344\223\0024\"//aiflow/metadata_store/mod" +
-      "elVersion/get/version:\001*\022\204\001\n\024registerMod" +
-      "elVersion\022$.ai_flow.RegisterModelVersion" +
-      "Request\032\021.ai_flow.Response\"3\202\323\344\223\002-\"(/aif" +
-      "low/metadata_store/modelVersion/save:\001*\022" +
-      "\221\001\n\033deleteModelVersionByVersion\022 .ai_flo" +
-      "w.ModelVersionNameRequest\032\021.ai_flow.Resp" +
-      "onse\"=\202\323\344\223\0027\"2/aiflow/metadata_store/mod" +
-      "elVersion/delete/version:\001*\022\213\001\n\027getDeplo" +
-      "yedModelVersion\022\031.ai_flow.ModelNameReque" +
-      "st\032\021.ai_flow.Response\"B\202\323\344\223\002<\"7/aiflow/m" +
-      "etadata_store/modelVersion/get_serving_v" +
-      "ersion:\001*\022\241\001\n\036getLatestValidatedModelVer" +
-      "sion\022\031.ai_flow.ModelNameRequest\032\021.ai_flo" +
-      "w.Response\"Q\202\323\344\223\002K\"F/aiflow/metadata_sto" +
-      "re/modelVersion/get_latest_validated_mod" +
-      "el_version:\001*\022\241\001\n\036getLatestGeneratedMode" +
-      "lVersion\022\031.ai_flow.ModelNameRequest\032\021.ai" +
-      "_flow.Response\"Q\202\323\344\223\002K\"F/aiflow/metadata" +
-      "_store/modelVersion/get_latest_generated" +
-      "_model_version:\001*\022}\n\030getWorkFlowExecutio" +
-      "nById\022\022.ai_flow.IdRequest\032\021.ai_flow.Resp" +
-      "onse\":\202\323\344\223\0024\"//aiflow/metadata_store/wor" +
-      "kflowExecution/get/id:\001*\022\203\001\n\032getWorkFlow" +
-      "ExecutionByName\022\024.ai_flow.NameRequest\032\021." +
-      "ai_flow.Response\"<\202\323\344\223\0026\"1/aiflow/metada" +
-      "ta_store/workflowExecution/get/name:\001*\022z" +
-      "\n\025listWorkFlowExecution\022\024.ai_flow.ListRe" +
-      "quest\032\021.ai_flow.Response\"8\202\323\344\223\0022\"-/aiflo" +
-      "w/metadata_store/workflowExecution/list:" +
-      "\001*\022\223\001\n\031registerWorkFlowExecution\022).ai_fl" +
-      "ow.RegisterWorkFlowExecutionRequest\032\021.ai" +
-      "_flow.Response\"8\202\323\344\223\0022\"-/aiflow/metadata" +
-      "_store/workflowExecution/save:\001*\022\221\001\n\027upd" +
-      "ateWorkflowExecution\022\'.ai_flow.UpdateWor" +
-      "kflowExecutionRequest\032\021.ai_flow.Response" +
-      "\":\202\323\344\223\0024\"//aiflow/metadata_store/workflo" +
-      "wExecution/update:\001*\022\203\001\n\033deleteWorkflowE" +
-      "xecutionById\022\022.ai_flow.IdRequest\032\021.ai_fl" +
-      "ow.Response\"=\202\323\344\223\0027\"2/aiflow/metadata_st" +
-      "ore/workflowExecution/delete/id:\001*\022\211\001\n\035d" +
-      "eleteWorkflowExecutionByName\022\024.ai_flow.N" +
-      "ameRequest\032\021.ai_flow.Response\"?\202\323\344\223\0029\"4/" +
-      "aiflow/metadata_store/workflowExecution/" +
-      "delete/name:\001*\022\250\001\n\036updateWorkflowExecuti" +
-      "onEndTime\022..ai_flow.UpdateWorkflowExecut" +
-      "ionEndTimeRequest\032\021.ai_flow.Response\"C\202\323" +
-      "\344\223\002=\"8/aiflow/metadata_store/workflowExe" +
-      "cution/update/end_time:\001*\022\241\001\n\034updateWork" +
-      "flowExecutionState\022,.ai_flow.UpdateWorkf" +
-      "lowExecutionStateRequest\032\021.ai_flow.Respo" +
-      "nse\"@\202\323\344\223\002:\"5/aiflow/metadata_store/work" +
-      "flowExecution/update/state:\001*\022a\n\ngetJobB" +
-      "yId\022\022.ai_flow.IdRequest\032\021.ai_flow.Respon" +
-      "se\",\202\323\344\223\002&\"!/aiflow/metadata_store/job/g" +
-      "et/id:\001*\022g\n\014getJobByName\022\024.ai_flow.NameR" +
-      "equest\032\021.ai_flow.Response\".\202\323\344\223\002(\"#/aifl" +
-      "ow/metadata_store/job/get/name:\001*\022^\n\007lis" +
-      "tJob\022\024.ai_flow.ListRequest\032\021.ai_flow.Res" +
-      "ponse\"*\202\323\344\223\002$\"\037/aiflow/metadata_store/jo" +
-      "b/list:\001*\022i\n\013registerJob\022\033.ai_flow.Regis" +
-      "terJobRequest\032\021.ai_flow.Response\"*\202\323\344\223\002$" +
-      "\"\037/aiflow/metadata_store/job/save:\001*\022g\n\t" +
-      "updateJob\022\031.ai_flow.UpdateJobRequest\032\021.a" +
-      "i_flow.Response\",\202\323\344\223\002&\"!/aiflow/metadat" +
-      "a_store/job/update:\001*\022w\n\016updateJobState\022" +
-      "\036.ai_flow.UpdateJobStateRequest\032\021.ai_flo" +
-      "w.Response\"2\202\323\344\223\002,\"\'/aiflow/metadata_sto" +
-      "re/job/update/state:\001*\022~\n\020updateJobEndTi" +
-      "me\022 .ai_flow.UpdateJobEndTimeRequest\032\021.a" +
-      "i_flow.Response\"5\202\323\344\223\002/\"*/aiflow/metadat" +
-      "a_store/job/update/end_time:\001*\022g\n\rdelete" +
-      "JobById\022\022.ai_flow.IdRequest\032\021.ai_flow.Re" +
-      "sponse\"/\202\323\344\223\002)\"$/aiflow/metadata_store/j" +
-      "ob/delete/id:\001*\022m\n\017deleteJobByName\022\024.ai_" +
-      "flow.NameRequest\032\021.ai_flow.Response\"1\202\323\344" +
-      "\223\002+\"&/aiflow/metadata_store/job/delete/n" +
-      "ame:\001*\022i\n\016getProjectById\022\022.ai_flow.IdReq" +
-      "uest\032\021.ai_flow.Response\"0\202\323\344\223\002*\"%/aiflow" +
-      "/metadata_store/project/get/id:\001*\022o\n\020get" +
-      "ProjectByName\022\024.ai_flow.NameRequest\032\021.ai" +
-      "_flow.Response\"2\202\323\344\223\002,\"\'/aiflow/metadata" +
-      "_store/project/get/name:\001*\022u\n\017registerPr" +
-      "oject\022\037.ai_flow.RegisterProjectRequest\032\021" +
-      ".ai_flow.Response\".\202\323\344\223\002(\"#/aiflow/metad" +
-      "ata_store/project/save:\001*\022s\n\rupdateProje" +
-      "ct\022\035.ai_flow.UpdateProjectRequest\032\021.ai_f" +
-      "low.Response\"0\202\323\344\223\002*\"%/aiflow/metadata_s" +
-      "tore/project/update:\001*\022f\n\013listProject\022\024." +
-      "ai_flow.ListRequest\032\021.ai_flow.Response\"." +
-      "\202\323\344\223\002(\"#/aiflow/metadata_store/project/l" +
-      "ist:\001*\022o\n\021deleteProjectById\022\022.ai_flow.Id" +
-      "Request\032\021.ai_flow.Response\"3\202\323\344\223\002-\"(/aif" +
-      "low/metadata_store/project/delete/id:\001*\022" +
-      "u\n\023deleteProjectByName\022\024.ai_flow.NameReq" +
-      "uest\032\021.ai_flow.Response\"5\202\323\344\223\002/\"*/aiflow" +
-      "/metadata_store/project/delete/name:\001*\022k" +
-      "\n\017getArtifactById\022\022.ai_flow.IdRequest\032\021." +
+      "\":\202\323\344\223\0024\"//aiflow/metadata_store/model_r" +
+      "elation/delete/id:\001*\022\202\001\n\031deleteModelRela" +
+      "tionByName\022\024.ai_flow.NameRequest\032\021.ai_fl" +
+      "ow.Response\"<\202\323\344\223\0026\"1/aiflow/metadata_st" +
+      "ore/model_relation/delete/name:\001*\022e\n\014get" +
+      "ModelById\022\022.ai_flow.IdRequest\032\021.ai_flow." +
+      "Response\".\202\323\344\223\002(\"#/aiflow/metadata_store" +
+      "/model/get/id:\001*\022k\n\016getModelByName\022\024.ai_" +
+      "flow.NameRequest\032\021.ai_flow.Response\"0\202\323\344" +
+      "\223\002*\"%/aiflow/metadata_store/model/get/na" +
+      "me:\001*\022o\n\rregisterModel\022\035.ai_flow.Registe" +
+      "rModelRequest\032\021.ai_flow.Response\",\202\323\344\223\002&" +
+      "\"!/aiflow/metadata_store/model/save:\001*\022k" +
+      "\n\017deleteModelById\022\022.ai_flow.IdRequest\032\021." +
       "ai_flow.Response\"1\202\323\344\223\002+\"&/aiflow/metada" +
-      "ta_store/artifact/get/id:\001*\022q\n\021getArtifa" +
-      "ctByName\022\024.ai_flow.NameRequest\032\021.ai_flow" +
+      "ta_store/model/delete/id:\001*\022q\n\021deleteMod" +
+      "elByName\022\024.ai_flow.NameRequest\032\021.ai_flow" +
       ".Response\"3\202\323\344\223\002-\"(/aiflow/metadata_stor" +
-      "e/artifact/get/name:\001*\022v\n\016updateArtifact" +
-      "\022\036.ai_flow.UpdateArtifactRequest\032\021.ai_fl" +
+      "e/model/delete/name:\001*\022\234\001\n getModelVersi" +
+      "onRelationByVersion\022 .ai_flow.ModelVersi" +
+      "onNameRequest\032\021.ai_flow.Response\"C\202\323\344\223\002=" +
+      "\"8/aiflow/metadata_store/modelVersion_re" +
+      "lation/get/version:\001*\022\225\001\n\030listModelVersi" +
+      "onRelation\022(.ai_flow.ListModelVersionRel" +
+      "ationRequest\032\021.ai_flow.Response\"<\202\323\344\223\0026\"" +
+      "1/aiflow/metadata_store/modelVersion_rel" +
+      "ation/list:\001*\022\235\001\n\034registerModelVersionRe" +
+      "lation\022,.ai_flow.RegisterModelVersionRel" +
+      "ationRequest\032\021.ai_flow.Response\"<\202\323\344\223\0026\"" +
+      "1/aiflow/metadata_store/modelVersion_rel" +
+      "ation/save:\001*\022\242\001\n#deleteModelVersionRela" +
+      "tionByVersion\022 .ai_flow.ModelVersionName" +
+      "Request\032\021.ai_flow.Response\"F\202\323\344\223\002@\";/aif" +
+      "low/metadata_store/modelVersion_relation" +
+      "/delete/version:\001*\022\213\001\n\030getModelVersionBy" +
+      "Version\022 .ai_flow.ModelVersionNameReques" +
+      "t\032\021.ai_flow.Response\":\202\323\344\223\0024\"//aiflow/me" +
+      "tadata_store/modelVersion/get/version:\001*" +
+      "\022\204\001\n\024registerModelVersion\022$.ai_flow.Regi" +
+      "sterModelVersionRequest\032\021.ai_flow.Respon" +
+      "se\"3\202\323\344\223\002-\"(/aiflow/metadata_store/model" +
+      "Version/save:\001*\022\221\001\n\033deleteModelVersionBy" +
+      "Version\022 .ai_flow.ModelVersionNameReques" +
+      "t\032\021.ai_flow.Response\"=\202\323\344\223\0027\"2/aiflow/me" +
+      "tadata_store/modelVersion/delete/version" +
+      ":\001*\022\213\001\n\027getDeployedModelVersion\022\031.ai_flo" +
+      "w.ModelNameRequest\032\021.ai_flow.Response\"B\202" +
+      "\323\344\223\002<\"7/aiflow/metadata_store/modelVersi" +
+      "on/get_serving_version:\001*\022\241\001\n\036getLatestV" +
+      "alidatedModelVersion\022\031.ai_flow.ModelName" +
+      "Request\032\021.ai_flow.Response\"Q\202\323\344\223\002K\"F/aif" +
+      "low/metadata_store/modelVersion/get_late" +
+      "st_validated_model_version:\001*\022\241\001\n\036getLat" +
+      "estGeneratedModelVersion\022\031.ai_flow.Model" +
+      "NameRequest\032\021.ai_flow.Response\"Q\202\323\344\223\002K\"F" +
+      "/aiflow/metadata_store/modelVersion/get_" +
+      "latest_generated_model_version:\001*\022}\n\030get" +
+      "WorkFlowExecutionById\022\022.ai_flow.IdReques" +
+      "t\032\021.ai_flow.Response\":\202\323\344\223\0024\"//aiflow/me" +
+      "tadata_store/workflowExecution/get/id:\001*" +
+      "\022\203\001\n\032getWorkFlowExecutionByName\022\024.ai_flo" +
+      "w.NameRequest\032\021.ai_flow.Response\"<\202\323\344\223\0026" +
+      "\"1/aiflow/metadata_store/workflowExecuti" +
+      "on/get/name:\001*\022z\n\025listWorkFlowExecution\022" +
+      "\024.ai_flow.ListRequest\032\021.ai_flow.Response" +
+      "\"8\202\323\344\223\0022\"-/aiflow/metadata_store/workflo" +
+      "wExecution/list:\001*\022\223\001\n\031registerWorkFlowE" +
+      "xecution\022).ai_flow.RegisterWorkFlowExecu" +
+      "tionRequest\032\021.ai_flow.Response\"8\202\323\344\223\0022\"-" +
+      "/aiflow/metadata_store/workflowExecution" +
+      "/save:\001*\022\221\001\n\027updateWorkflowExecution\022\'.a" +
+      "i_flow.UpdateWorkflowExecutionRequest\032\021." +
+      "ai_flow.Response\":\202\323\344\223\0024\"//aiflow/metada" +
+      "ta_store/workflowExecution/update:\001*\022\203\001\n" +
+      "\033deleteWorkflowExecutionById\022\022.ai_flow.I" +
+      "dRequest\032\021.ai_flow.Response\"=\202\323\344\223\0027\"2/ai" +
+      "flow/metadata_store/workflowExecution/de" +
+      "lete/id:\001*\022\211\001\n\035deleteWorkflowExecutionBy" +
+      "Name\022\024.ai_flow.NameRequest\032\021.ai_flow.Res" +
+      "ponse\"?\202\323\344\223\0029\"4/aiflow/metadata_store/wo" +
+      "rkflowExecution/delete/name:\001*\022\250\001\n\036updat" +
+      "eWorkflowExecutionEndTime\022..ai_flow.Upda" +
+      "teWorkflowExecutionEndTimeRequest\032\021.ai_f" +
+      "low.Response\"C\202\323\344\223\002=\"8/aiflow/metadata_s" +
+      "tore/workflowExecution/update/end_time:\001" +
+      "*\022\241\001\n\034updateWorkflowExecutionState\022,.ai_" +
+      "flow.UpdateWorkflowExecutionStateRequest" +
+      "\032\021.ai_flow.Response\"@\202\323\344\223\002:\"5/aiflow/met" +
+      "adata_store/workflowExecution/update/sta" +
+      "te:\001*\022a\n\ngetJobById\022\022.ai_flow.IdRequest\032" +
+      "\021.ai_flow.Response\",\202\323\344\223\002&\"!/aiflow/meta" +
+      "data_store/job/get/id:\001*\022g\n\014getJobByName" +
+      "\022\024.ai_flow.NameRequest\032\021.ai_flow.Respons" +
+      "e\".\202\323\344\223\002(\"#/aiflow/metadata_store/job/ge" +
+      "t/name:\001*\022^\n\007listJob\022\024.ai_flow.ListReque" +
+      "st\032\021.ai_flow.Response\"*\202\323\344\223\002$\"\037/aiflow/m" +
+      "etadata_store/job/list:\001*\022i\n\013registerJob" +
+      "\022\033.ai_flow.RegisterJobRequest\032\021.ai_flow." +
+      "Response\"*\202\323\344\223\002$\"\037/aiflow/metadata_store" +
+      "/job/save:\001*\022g\n\tupdateJob\022\031.ai_flow.Upda" +
+      "teJobRequest\032\021.ai_flow.Response\",\202\323\344\223\002&\"" +
+      "!/aiflow/metadata_store/job/update:\001*\022w\n" +
+      "\016updateJobState\022\036.ai_flow.UpdateJobState" +
+      "Request\032\021.ai_flow.Response\"2\202\323\344\223\002,\"\'/aif" +
+      "low/metadata_store/job/update/state:\001*\022~" +
+      "\n\020updateJobEndTime\022 .ai_flow.UpdateJobEn" +
+      "dTimeRequest\032\021.ai_flow.Response\"5\202\323\344\223\002/\"" +
+      "*/aiflow/metadata_store/job/update/end_t" +
+      "ime:\001*\022g\n\rdeleteJobById\022\022.ai_flow.IdRequ" +
+      "est\032\021.ai_flow.Response\"/\202\323\344\223\002)\"$/aiflow/" +
+      "metadata_store/job/delete/id:\001*\022m\n\017delet" +
+      "eJobByName\022\024.ai_flow.NameRequest\032\021.ai_fl" +
       "ow.Response\"1\202\323\344\223\002+\"&/aiflow/metadata_st" +
-      "ore/artifact/update:\001*\022x\n\020registerArtifa" +
-      "ct\022 .ai_flow.RegisterArtifactRequest\032\021.a" +
-      "i_flow.Response\"/\202\323\344\223\002)\"$/aiflow/metadat" +
-      "a_store/artifact/save:\001*\022h\n\014listArtifact" +
-      "\022\024.ai_flow.ListRequest\032\021.ai_flow.Respons" +
-      "e\"/\202\323\344\223\002)\"$/aiflow/metadata_store/artifa" +
-      "ct/list:\001*\022q\n\022deleteArtifactById\022\022.ai_fl" +
-      "ow.IdRequest\032\021.ai_flow.Response\"4\202\323\344\223\002.\"" +
-      ")/aiflow/metadata_store/artifact/delete/" +
-      "id:\001*\022w\n\024deleteArtifactByName\022\024.ai_flow." +
-      "NameRequest\032\021.ai_flow.Response\"6\202\323\344\223\0020\"+" +
-      "/aiflow/metadata_store/artifact/delete/n" +
-      "ame:\001*B\"\n\020com.aiflow.protoZ\010/ai_flow\210\001\001\220" +
-      "\001\001b\006proto3"
+      "ore/job/delete/name:\001*\022i\n\016getProjectById" +
+      "\022\022.ai_flow.IdRequest\032\021.ai_flow.Response\"" +
+      "0\202\323\344\223\002*\"%/aiflow/metadata_store/project/" +
+      "get/id:\001*\022o\n\020getProjectByName\022\024.ai_flow." +
+      "NameRequest\032\021.ai_flow.Response\"2\202\323\344\223\002,\"\'" +
+      "/aiflow/metadata_store/project/get/name:" +
+      "\001*\022u\n\017registerProject\022\037.ai_flow.Register" +
+      "ProjectRequest\032\021.ai_flow.Response\".\202\323\344\223\002" +
+      "(\"#/aiflow/metadata_store/project/save:\001" +
+      "*\022s\n\rupdateProject\022\035.ai_flow.UpdateProje" +
+      "ctRequest\032\021.ai_flow.Response\"0\202\323\344\223\002*\"%/a" +
+      "iflow/metadata_store/project/update:\001*\022f" +
+      "\n\013listProject\022\024.ai_flow.ListRequest\032\021.ai" +
+      "_flow.Response\".\202\323\344\223\002(\"#/aiflow/metadata" +
+      "_store/project/list:\001*\022o\n\021deleteProjectB" +
+      "yId\022\022.ai_flow.IdRequest\032\021.ai_flow.Respon" +
+      "se\"3\202\323\344\223\002-\"(/aiflow/metadata_store/proje" +
+      "ct/delete/id:\001*\022u\n\023deleteProjectByName\022\024" +
+      ".ai_flow.NameRequest\032\021.ai_flow.Response\"" +
+      "5\202\323\344\223\002/\"*/aiflow/metadata_store/project/" +
+      "delete/name:\001*\022k\n\017getArtifactById\022\022.ai_f" +
+      "low.IdRequest\032\021.ai_flow.Response\"1\202\323\344\223\002+" +
+      "\"&/aiflow/metadata_store/artifact/get/id" +
+      ":\001*\022q\n\021getArtifactByName\022\024.ai_flow.NameR" +
+      "equest\032\021.ai_flow.Response\"3\202\323\344\223\002-\"(/aifl" +
+      "ow/metadata_store/artifact/get/name:\001*\022v" +
+      "\n\016updateArtifact\022\036.ai_flow.UpdateArtifac" +
+      "tRequest\032\021.ai_flow.Response\"1\202\323\344\223\002+\"&/ai" +
+      "flow/metadata_store/artifact/update:\001*\022x" +
+      "\n\020registerArtifact\022 .ai_flow.RegisterArt" +
+      "ifactRequest\032\021.ai_flow.Response\"/\202\323\344\223\002)\"" +
+      "$/aiflow/metadata_store/artifact/save:\001*" +
+      "\022h\n\014listArtifact\022\024.ai_flow.ListRequest\032\021" +
+      ".ai_flow.Response\"/\202\323\344\223\002)\"$/aiflow/metad" +
+      "ata_store/artifact/list:\001*\022q\n\022deleteArti" +
+      "factById\022\022.ai_flow.IdRequest\032\021.ai_flow.R" +
+      "esponse\"4\202\323\344\223\002.\")/aiflow/metadata_store/" +
+      "artifact/delete/id:\001*\022w\n\024deleteArtifactB" +
+      "yName\022\024.ai_flow.NameRequest\032\021.ai_flow.Re" +
+      "sponse\"6\202\323\344\223\0020\"+/aiflow/metadata_store/a" +
+      "rtifact/delete/name:\001*B\"\n\020com.aiflow.pro" +
+      "toZ\010/ai_flow\210\001\001\220\001\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -36411,7 +36076,7 @@ public final class MetadataServiceOuterClass {
     internal_static_ai_flow_UpdateProjectRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ai_flow_UpdateProjectRequest_descriptor,
-        new java.lang.String[] { "Name", "Properties", "ProjectType", "Uri", "User", "Password", });
+        new java.lang.String[] { "Name", "Properties", "Uri", });
     internal_static_ai_flow_UpdateProjectRequest_PropertiesEntry_descriptor =
       internal_static_ai_flow_UpdateProjectRequest_descriptor.getNestedTypes().get(0);
     internal_static_ai_flow_UpdateProjectRequest_PropertiesEntry_fieldAccessorTable = new

@@ -813,20 +813,14 @@ public class AIFlowClient {
    * @param name Name of project.
    * @param uri Uri of project
    * @param properties Properties of project
-   * @param user User of project
-   * @param password Password of project
-   * @param projectType Project type of project
    * @return Single ProjectMeta object registered in Metadata Store.
    */
   public ProjectMeta registerProject(
       String name,
       String uri,
-      Map<String, String> properties,
-      String user,
-      String password,
-      String projectType)
+      Map<String, String> properties)
       throws Exception {
-    return this.metadataClient.registerProject(name, uri, properties, user, password, projectType);
+    return this.metadataClient.registerProject(name, uri, properties);
   }
 
   /**
@@ -835,20 +829,14 @@ public class AIFlowClient {
    * @param name Name of project.
    * @param uri Uri of project
    * @param properties Properties of project
-   * @param user User of project
-   * @param password Password of project
-   * @param projectType Project type of project
    * @return Single ProjectMeta object registered in Metadata Store.
    */
   public ProjectMeta updateProject(
       String name,
       String uri,
-      Map<String, String> properties,
-      String user,
-      String password,
-      String projectType)
+      Map<String, String> properties)
       throws Exception {
-    return this.metadataClient.updateProject(name, uri, properties, user, password, projectType);
+    return this.metadataClient.updateProject(name, uri, properties);
   }
 
   /**

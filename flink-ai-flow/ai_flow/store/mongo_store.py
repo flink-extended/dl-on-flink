@@ -394,24 +394,20 @@ class MongoStore(AbstractStore):
             return None
         return ResultToMeta.result_to_project_meta(project_result[0])
 
-    def register_project(self, name: Text, uri: Text, properties: Properties = None,
-                         user: Text = None, password: Text = None, project_type: Text = None) -> ProjectMeta:
+    def register_project(self, name: Text, uri: Text, properties: Properties = None) -> ProjectMeta:
         """
         register a project in metadata store.
 
         :param name: the name of the project
         :param uri: the uri of the project
         :param properties: the properties of the project
-        :param user: the user of the project
-        :param password: the password of the project
-        :param project_type: the project type of the project
         :return: A single :py:class:`ai_flow.meta.project.ProjectMeta` object.
         """
         before_project = self.get_project_by_name(project_name=name)
         if before_project is not None:
             # if the user has registered exactly the same project before,
             # do nothing in metadata store and return the registered project.
-            if _compare_project_fields(uri, properties, user, password, project_type, before_project):
+            if _compare_project_fields(uri, properties, before_project):
                 return before_project
             else:
                 # if the project registered this time has the same name but different fields,
@@ -421,12 +417,9 @@ class MongoStore(AbstractStore):
 
         try:
             project = MetaToTable.project_meta_to_table(name=name, uri=uri, properties=properties,
-                                                        user=user, password=password,
-                                                        project_type=project_type,
                                                         store_type=type(self).__name__)
             project.save()
-            project_meta = ProjectMeta(uuid=project.uuid, name=name, uri=uri, properties=properties, user=user,
-                                       password=password, project_type=project_type)
+            project_meta = ProjectMeta(uuid=project.uuid, name=name, uri=uri, properties=properties)
             return project_meta
         except mongoengine.OperationError as e:
             raise AIFlowException('Registered Project (name={}) already exists. '
@@ -450,8 +443,7 @@ class MongoStore(AbstractStore):
             projects.append(ResultToMeta.result_to_project_meta(project))
         return projects
 
-    def update_project(self, project_name: Text, uri: Text = None, properties: Properties = None,
-                       user: Text = None, password: Text = None, project_type: Text = None) -> Optional[ProjectMeta]:
+    def update_project(self, project_name: Text, uri: Text = None, properties: Properties = None) -> Optional[ProjectMeta]:
         try:
             project: MongoProject = MongoProject.objects(name=project_name, is_deleted__ne=TRUE).first()
             if project is None:
@@ -460,12 +452,6 @@ class MongoStore(AbstractStore):
                 project.uri = uri
             if properties is not None:
                 project.properties = str(properties)
-            if user is not None:
-                project.user = user
-            if password is not None:
-                project.password = password
-            if project_type is not None:
-                project.project_type = project_type
             project.save()
             return ResultToMeta.result_to_project_meta(project)
         except mongoengine.OperationError as e:
@@ -1999,9 +1985,8 @@ def _compare_model_relation_fields(project_id, before_model_relation):
     return project_id == before_model_relation.project_id
 
 
-def _compare_project_fields(uri, properties, user, password, project_type, before_project):
-    return uri == before_project.uri and properties == before_project.properties and user == before_project.user \
-           and password == before_project.password and project_type == before_project.project_type
+def _compare_project_fields(uri, properties, before_project):
+    return uri == before_project.uri and properties == before_project.properties
 
 
 class MongoStoreConnManager(object):

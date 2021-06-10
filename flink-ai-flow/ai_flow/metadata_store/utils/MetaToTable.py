@@ -98,9 +98,6 @@ class MetaToTable:
     def project_meta_to_table(name,
                               uri,
                               properties,
-                              user,
-                              password,
-                              project_type,
                               store_type='SqlAlchemyStore'
                               ):
         if properties is not None:
@@ -109,8 +106,7 @@ class MetaToTable:
             _class = MongoProject
         else:
             _class = SqlProject
-        return _class(name=name, properties=properties, uri=uri, user=user, password=password,
-                      project_type=project_type)
+        return _class(name=name, properties=properties, uri=uri)
 
     @staticmethod
     def job_meta_to_table(name, job_id, properties, start_time, end_time, job_state, log_uri,
