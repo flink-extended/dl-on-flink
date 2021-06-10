@@ -29,22 +29,16 @@ public class ProjectMeta {
 
     private Long uuid;
     private String name;
-    private String projectType;
     private String uri;
-    private String user;
-    private String password;
     private Map<String, String> properties;
 
     public ProjectMeta() {
     }
 
-    public ProjectMeta(Long uuid, String name, String projectType, String uri, String user, String password, Map<String, String> properties) {
+    public ProjectMeta(Long uuid, String name, String uri, Map<String, String> properties) {
         this.uuid = uuid;
         this.name = name;
-        this.projectType = projectType;
         this.uri = uri;
-        this.user = user;
-        this.password = password;
         this.properties = properties;
     }
 
@@ -64,36 +58,12 @@ public class ProjectMeta {
         this.name = name;
     }
 
-    public String getProjectType() {
-        return projectType;
-    }
-
-    public void setProjectType(String projectType) {
-        this.projectType = projectType;
-    }
-
     public String getUri() {
         return uri;
     }
 
     public void setUri(String uri) {
         this.uri = uri;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public Map<String, String> getProperties() {
@@ -109,10 +79,7 @@ public class ProjectMeta {
         return "ProjectMeta{" +
                 "uuid=" + uuid +
                 ", name='" + name + '\'' +
-                ", projectType='" + projectType + '\'' +
                 ", uri='" + uri + '\'' +
-                ", user='" + user + '\'' +
-                ", password='" + password + '\'' +
                 ", properties=" + properties +
                 '}';
     }
@@ -120,10 +87,7 @@ public class ProjectMeta {
     public static ProjectMeta buildProjectMeta(ProjectProto projectProto) {
         return projectProto == null ? null : new ProjectMeta(projectProto.getUuid(),
                 projectProto.getName(),
-                projectProto.getProjectType().getValue(),
                 projectProto.getUri().getValue(),
-                projectProto.getUser().getValue(),
-                projectProto.getPassword().getValue(),
                 projectProto.getPropertiesMap());
     }
 
