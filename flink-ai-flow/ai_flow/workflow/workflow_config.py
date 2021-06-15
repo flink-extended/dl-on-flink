@@ -17,10 +17,9 @@
 # under the License.
 #
 from typing import Dict, Text, Any
-from ai_flow.common.json_utils import Jsonable, loads
+from ai_flow.util.json_utils import Jsonable, loads
 from ai_flow.workflow.job_config import BaseJobConfig, get_job_config_class
-from ai_flow.common import yaml_utils
-
+from ai_flow.util import yaml_utils
 
 GLOBAL_CONFIG_KEY = "global_config_key"
 WORKFLOW_NAME = "workflow_name"

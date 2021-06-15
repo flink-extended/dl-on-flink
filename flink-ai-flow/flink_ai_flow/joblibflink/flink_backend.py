@@ -27,7 +27,7 @@ from subprocess import Popen
 
 import joblib
 import pandas as pd
-from ai_flow.common.path_util import get_file_dir
+from ai_flow.util.path_util import get_file_dir
 from cloudpickle import cloudpickle
 from joblib._parallel_backends import SafeFunction
 from joblib.parallel import AutoBatchingMixin, ParallelBackendBase, register_parallel_backend, SequentialBackend

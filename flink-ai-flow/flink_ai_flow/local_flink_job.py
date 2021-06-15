@@ -27,8 +27,8 @@ from typing import Dict, Any
 import requests
 from airflow.operators.bash_operator import BashOperator
 from ai_flow.airflow.dag_generator import job_name_to_task_id
-from ai_flow.common import serialization_utils
-from ai_flow.common.json_utils import dumps
+from ai_flow.util import serialization_utils
+from ai_flow.util.json_utils import dumps
 from ai_flow.log import log_path_utils
 from ai_flow.meta.job_meta import ExecutionMode
 from ai_flow.plugins.job_plugin import AISubGraph, ProjectDesc, JobContext, \

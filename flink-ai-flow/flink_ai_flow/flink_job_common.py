@@ -17,7 +17,7 @@
 # under the License.
 #
 import os
-from ai_flow.common import serialization_utils
+from ai_flow.util import serialization_utils
 from ai_flow.plugins.job_plugin import AbstractJobConfig
 from typing import Dict, Text
 from ai_flow.plugins.language import LanguageType

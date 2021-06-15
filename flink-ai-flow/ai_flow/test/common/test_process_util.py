@@ -20,7 +20,7 @@ import os
 import unittest
 from subprocess import Popen, PIPE
 
-from ai_flow.common.process_utils import get_all_children_pids
+from ai_flow.util.process_utils import get_all_children_pids
 
 
 class TestProcessUtil(unittest.TestCase):

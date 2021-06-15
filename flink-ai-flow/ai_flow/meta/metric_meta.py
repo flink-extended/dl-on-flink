@@ -19,7 +19,7 @@
 from enum import Enum
 from typing import Text, Optional
 from ai_flow.common.properties import Properties
-from ai_flow.common.json_utils import Jsonable
+from ai_flow.util.json_utils import Jsonable
 
 
 class MetricType(str, Enum):

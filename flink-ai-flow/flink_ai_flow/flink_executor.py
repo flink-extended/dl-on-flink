@@ -18,7 +18,7 @@
 #
 from typing import Text
 from ai_flow.executor.executor import BaseExecutor, PythonObjectExecutor
-from ai_flow.common.serialization_utils import serialize
+from ai_flow.util.serialization_utils import serialize
 
 
 class FlinkJavaExecutor(BaseExecutor):

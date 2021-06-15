@@ -18,7 +18,7 @@
 #
 from airflow.models.baseoperator import BaseOperator
 from python_ai_flow.kubernetes_python_job import KubernetesPythonJobPlugin
-from ai_flow.common import json_utils
+from ai_flow.util import json_utils
 from ai_flow.plugins.kubernetes_platform import watch_k8s_job_status
 
 

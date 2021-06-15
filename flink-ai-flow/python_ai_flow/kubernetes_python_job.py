@@ -20,17 +20,17 @@ from tempfile import NamedTemporaryFile
 from kubernetes import client
 
 from ai_flow.airflow.dag_generator import job_name_to_task_id
-from ai_flow.common import json_utils
+from ai_flow.util import json_utils
 from ai_flow.plugins.engine import AbstractEngine
 from ai_flow.plugins.platform import AbstractPlatform
 from python_ai_flow.local_python_job import LocalPythonJobPlugin, LocalPythonJob, LocalPythonJobConfig
-from typing import Text, Dict, Any, Optional, Tuple, List
+from typing import Text, Dict, Optional
 from ai_flow.plugins.job_plugin import AISubGraph, ProjectDesc, JobContext, AbstractJobConfig, AbstractJob
 from ai_flow.plugins.kubernetes_platform import KubernetesPlatform, KubernetesJobHandler, DEFAULT_PROJECT_PATH, \
     ANNOTATION_WATCHED, ANNOTATION_JOB_ID, ANNOTATION_JOB_UUID, ANNOTATION_WORKFLOW_ID
 from ai_flow.plugins.kubernetes_job_plugin import KubernetesJobPlugin, KubernetesJob
 from ai_flow.meta.job_meta import ExecutionMode
-from ai_flow.common.serialization_utils import serialize
+from ai_flow.util.serialization_utils import serialize
 from python_ai_flow.python_engine import PythonEngine
 from python_ai_flow.python_job_common import RunGraph, batch_run_func, stream_run_func, BaseExampleComponent
 

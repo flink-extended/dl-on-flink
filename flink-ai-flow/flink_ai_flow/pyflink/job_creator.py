@@ -23,7 +23,7 @@ from typing import Dict, Text, List, Union
 from pyflink.table import TableEnvironment, StatementSet
 from pyflink.table.table import Table
 
-from ai_flow.common import serialization_utils
+from ai_flow.util import serialization_utils
 from ai_flow.graph.ai_nodes.executable import ExecutableNode
 from ai_flow.graph.edge import DataEdge
 from ai_flow.graph.graph import AISubGraph
