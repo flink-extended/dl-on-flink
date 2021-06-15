@@ -16,6 +16,7 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+
 from typing import Union, Text, Tuple, Optional, List
 
 from notification_service.base_notification import UNDEFINED_EVENT_TYPE
@@ -29,10 +30,10 @@ from ai_flow.graph.ai_nodes import *
 from ai_flow.graph.ai_node import AINode
 from ai_flow.graph.channel import Channel, NoneChannel
 from ai_flow.graph.edge import StartBeforeControlEdge, StopBeforeControlEdge, RestartBeforeControlEdge, \
-    ModelVersionControlEdge, ExampleControlEdge, UserDefineControlEdge, \
+    ModelVersionControlEdge, DatasetControlEdge, UserDefineControlEdge, \
     TaskAction, EventLife, MetValueCondition, MetCondition, DEFAULT_NAMESPACE
 from ai_flow.graph.graph import _default_ai_graph
-from ai_flow.meta.example_meta import ExampleMeta
+from ai_flow.meta.dataset_meta import DatasetMeta
 from ai_flow.meta.model_meta import ModelMeta, ModelVersionMeta
 
 
@@ -52,7 +53,7 @@ def _add_execute_node_to_graph(executor, node, inputs: Union[None, Channel, List
             _default_ai_graph.add_channel(instance_id=node.instance_id, channel=c)
 
 
-def _add_example_node_to_graph(node: Example, input_data: Optional[Channel] = None):
+def _add_dataset_node_to_graph(node: Dataset, input_data: Optional[Channel] = None):
     config = default_af_job_context().merge_config()
     if config.engine == NONE_ENGINE:
         default_af_job_context().job_config.engine_name = 'python'
@@ -61,68 +62,68 @@ def _add_example_node_to_graph(node: Example, input_data: Optional[Channel] = No
         _default_ai_graph.add_channel(instance_id=node.instance_id, channel=input_data)
 
 
-def read_example(example_info: Union[ExampleMeta, Text, int],
+def read_dataset(dataset_info: Union[DatasetMeta, Text, int],
                  executor: Optional[PythonObjectExecutor] = None,
                  exec_args: Optional[ExecuteArgs] = None) -> Channel:
     """
-    Read example from the example operator. It can read example from external system.
+    Read dataset from the dataset operator. It can read dataset from external system.
 
-    :param example_info: Information about the example which will be read. Its type can be ExampleMeta
-                         of py:class:`ai_flow.meta.example_meta.ExampleMeta` or Text or int. The example_info
+    :param dataset_info: Information about the dataset which will be read. Its type can be DatasetMeta
+                         of py:class:`ai_flow.meta.dataset_meta.DatasetMeta` or Text or int. The dataset_info
                          means name in the metadata service when its type is Text and it means id when its type is int.
-                         The ai flow will get the example from metadata service by name or id.
-    :param executor: The python user defined function in read example operator. User can write their own logic here.
-    :param exec_args: The properties of read example, there are batch properties, stream properties and
+                         The ai flow will get the dataset from metadata service by name or id.
+    :param executor: The python user defined function in read dataset operator. User can write their own logic here.
+    :param exec_args: The properties of read dataset, there are batch properties, stream properties and
                       common properties respectively.
     :return: Channel: data output channel.
     """
-    if isinstance(example_info, ExampleMeta):
-        example_meta = example_info
-    elif isinstance(example_info, Text):
-        example_meta = get_ai_flow_client().get_example_by_name(example_info)
+    if isinstance(dataset_info, DatasetMeta):
+        dataset_meta = dataset_info
+    elif isinstance(dataset_info, Text):
+        dataset_meta = get_ai_flow_client().get_dataset_by_name(dataset_info)
     else:
-        example_meta = get_ai_flow_client().get_example_by_id(example_info)
+        dataset_meta = get_ai_flow_client().get_dataset_by_id(dataset_info)
 
-    example_node = Example(example_meta=example_meta,
+    dataset_node = Dataset(dataset_meta=dataset_meta,
                            properties=exec_args,
                            is_source=True,
                            executor=executor)
-    _add_example_node_to_graph(example_node, None)
-    output: Channel = example_node.outputs()[0]
+    _add_dataset_node_to_graph(dataset_node, None)
+    output: Channel = dataset_node.outputs()[0]
     return output
 
 
-def write_example(input_data: Channel,
-                  example_info: Union[ExampleMeta, Text, int],
+def write_dataset(input_data: Channel,
+                  dataset_info: Union[DatasetMeta, Text, int],
                   executor: Optional[PythonObjectExecutor] = None,
                   exec_args: ExecuteArgs = None
                   ) -> NoneChannel:
     """
-    Write example to example operator. It can write example to external system.
+    Write dataset to dataset operator. It can write dataset to external system.
 
     :param input_data: Channel from the specific operator which generates data.
-    :param example_info: Information about the example which will be read. Its type can be ExampleMeta
-                         of py:class:`ai_flow.meta.example_meta.ExampleMeta` or Text or int. The example_info
+    :param dataset_info: Information about the dataset which will be read. Its type can be DatasetMeta
+                         of py:class:`ai_flow.meta.dataset_meta.DatasetMeta` or Text or int. The dataset_info
                          means name in he metadata service when its type is Text and it means id when its type is int.
-                         The ai flow will get the example from metadata service by name or id.
-    :param executor: The python user defined function in write example operator. User can write their own logic here.
-    :param exec_args: The properties of read example, there are batch properties, stream properties and
+                         The ai flow will get the dataset from metadata service by name or id.
+    :param executor: The python user defined function in write dataset operator. User can write their own logic here.
+    :param exec_args: The properties of read dataset, there are batch properties, stream properties and
                       common properties respectively.
     :return: NoneChannel.
     """
-    if isinstance(example_info, ExampleMeta):
-        example_meta = example_info
-    elif isinstance(example_info, Text):
-        example_meta = get_ai_flow_client().get_example_by_name(example_info)
+    if isinstance(dataset_info, DatasetMeta):
+        dataset_meta = dataset_info
+    elif isinstance(dataset_info, Text):
+        dataset_meta = get_ai_flow_client().get_dataset_by_name(dataset_info)
     else:
-        example_meta = get_ai_flow_client().get_example_by_id(example_info)
+        dataset_meta = get_ai_flow_client().get_dataset_by_id(dataset_info)
 
-    example_node = Example(example_meta=example_meta,
+    dataset_node = Dataset(dataset_meta=dataset_meta,
                            properties=exec_args,
                            is_source=False,
                            executor=executor)
-    _add_example_node_to_graph(example_node, input_data)
-    output: NoneChannel = example_node.outputs()[0]
+    _add_dataset_node_to_graph(dataset_node, input_data)
+    output: NoneChannel = dataset_node.outputs()[0]
     return output
 
 
@@ -132,12 +133,12 @@ def transform(input_data_list: List[Channel],
               output_num=1,
               name: Text = None) -> Union[Channel, Tuple[Channel]]:
     """
-    Transformer operator. Transform the example so that the original example can be used for trainer or other operators
+    Transformer operator. Transform the dataset so that the original dataset can be used for trainer or other operators
     after feature engineering, data cleaning or some other data transformation.
 
     :param input_data_list: List of input data. It contains multiple channels from the operators which generate data.
     :param executor: The user defined function in transform operator. User can write their own logic here.
-    :param exec_args: The properties of read example, there are batch properties, stream properties and
+    :param exec_args: The properties of read dataset, there are batch properties, stream properties and
                       common properties respectively.
     :param output_num: The output number of the operator. The default value is 1.
     :param name: Name of the transform operator.
@@ -181,7 +182,7 @@ def train(input_data_list: List[Channel],
                             of py:class:`ai_flow.meta.model_meta.ModelMeta` or Text or int. The base_model_info
                             means name in he metadata service when its type is Text and it means id when its type is
                             int. The ai flow will get the model meta from metadata service by name or id.
-    :param exec_args: The properties of read example, there are batch properties, stream properties and
+    :param exec_args: The properties of read dataset, there are batch properties, stream properties and
                       common properties respectively.
     :param output_num: The output number of the operator. The default value is 0.
     :param name: Name of the train operator.
@@ -236,7 +237,7 @@ def predict(input_data_list: List[Channel],
     """
     Predictor Operator. Do prediction job with the specific model version.
 
-    :param input_data_list: List of Channel. It contains the example data used in prediction.
+    :param input_data_list: List of Channel. It contains the dataset data used in prediction.
     :param model_info: Information about the model which is in prediction. Its type can be ModelMeta
                        of py:class:`ai_flow.meta.model_meta.ModelMeta` or Text or int. The model_info
                        means name in he metadata service when its type is Text and it means id when its type is
@@ -247,7 +248,7 @@ def predict(input_data_list: List[Channel],
                                or Text. The model_version_info means version in he metadata service
                                when its type is Text. The ai flow will get the model meta from metadata
                                service by version.
-    :param exec_args: The properties of read example, there are batch properties, stream properties and
+    :param exec_args: The properties of read dataset, there are batch properties, stream properties and
                       common properties respectively.
     :param output_num: The output number of the operator. The default value is 1.
     :param name: Name of the predict operator.
@@ -300,13 +301,13 @@ def evaluate(input_data_list: List[Channel],
     """
     Evaluate Operator. Do evaluate job with the specific model version.
 
-    :param input_data_list: List of Channel. It contains the example data used in prediction.
+    :param input_data_list: List of Channel. It contains the dataset data used in prediction.
     :param model_info: Information about the model which is in prediction. Its type can be ModelMeta
                        of py:class:`ai_flow.meta.model_meta.ModelMeta` or Text or int. The model_info
                        means name in he metadata service when its type is Text and it means id when its type is
                        int. The ai flow will get the model meta from metadata service by name or id.
     :param executor: The user defined function in evaluate operator. User can write their own logic here.
-    :param exec_args: The properties of read example, there are batch properties, stream properties and
+    :param exec_args: The properties of read dataset, there are batch properties, stream properties and
                       common properties respectively.
     :param output_num: The output number of the operator. The default value is 0.
     :param name: Name of the predict operator.
@@ -340,22 +341,22 @@ def evaluate(input_data_list: List[Channel],
         return tuple(output)
 
 
-def example_validate(input_data: Channel,
+def dataset_validate(input_data: Channel,
                      executor: BaseExecutor,
                      exec_args: ExecuteArgs = None,
                      name: Text = None
                      ) -> NoneChannel:
     """
-    Example Validator Operator. Identifies anomalies in training and serving data in this operator.
+    Dataset Validator Operator. Identifies anomalies in training and serving data in this operator.
 
-    :param input_data: Channel. It contains the example data used in evaluation.
-    :param executor: The user defined function in example validate operator. User can write their own logic here.
-    :param exec_args: The properties of read example, there are batch properties, stream properties and
+    :param input_data: Channel. It contains the dataset data used in evaluation.
+    :param executor: The user defined function in dataset validate operator. User can write their own logic here.
+    :param exec_args: The properties of read dataset, there are batch properties, stream properties and
                       common properties respectively.
-    :param name: Name of the example validate operator.
+    :param name: Name of the dataset validate operator.
     :return: NoneChannel.
     """
-    node = ExampleValidator(executor=executor,
+    node = DatasetValidator(executor=executor,
                             properties=exec_args,
                             name=name
                             )
@@ -377,7 +378,7 @@ def model_validate(input_data_list: List[Channel],
     Model Validator Operator. Compare the performance of two different versions of the same model and choose the better
     model version to make it ready to be in the stage of deployment.
 
-    :param input_data_list: List of Channel. It contains the example data used in model validation.
+    :param input_data_list: List of Channel. It contains the dataset data used in model validation.
     :param model_info: Information about the model which is in model validation. Its type can be ModelMeta
                        of py:class:`ai_flow.meta.model_meta.ModelMeta` or Text or int. The model_info
                        means name in he metadata service when its type is Text and it means id when its type is
@@ -393,7 +394,7 @@ def model_validate(input_data_list: List[Channel],
                                     or Text. The model_version_info means version in he metadata service
                                     when its type is Text. The ai flow will get the model meta from metadata
                                     service by version.
-    :param exec_args: The properties of read example, there are batch properties, stream properties and
+    :param exec_args: The properties of read dataset, there are batch properties, stream properties and
                       common properties respectively.
     :param output_num: The output number of the operator. The default value is 0.
     :param name: Name of the model validate operator.
@@ -467,7 +468,7 @@ def push_model(model_info: Union[ModelMeta, Text, int],
                                or Text. The model_version_info means version in he metadata service
                                when its type is Text. The ai flow will get the model meta from metadata
                                service by version.
-    :param exec_args: The properties of read example, there are batch properties, stream properties and
+    :param exec_args: The properties of read dataset, there are batch properties, stream properties and
                       common properties respectively.
     :param name: Name of the push operator.
     :return: NoneChannel.
@@ -525,7 +526,7 @@ def user_define_operation(
 
     :param executor: The user defined function in operator. User can write their own logic here.
     :param input_data_list: List of input data. It contains multiple channels from the operators which generate data.
-    :param exec_args: The properties of read example, there are batch properties, stream properties and
+    :param exec_args: The properties of read dataset, there are batch properties, stream properties and
                       common properties respectively.
     :param output_num: The output number of the operator. The default value is 1.
     :param name: Name of this operator.
@@ -633,22 +634,22 @@ def model_version_control_dependency(src: Channel,
     _default_ai_graph.add_edge(src.node_id, tmp)
 
 
-def example_control_dependency(src: Channel,
-                               example_name: Text,
+def dataset_control_dependency(src: Channel,
+                               dataset_name: Text,
                                dependency: Channel,
                                namespace: Text = DEFAULT_NAMESPACE
                                ) -> None:
     """
-    Add example control dependency. It means src channel will start when and only the an new example of the specific
-    example is updated in notification service.
+    Add dataset control dependency. It means src channel will start when and only the an new dataset of the specific
+    dataset is updated in notification service.
 
-    :param namespace: the namespace of the example
-    :param src: The src channel depended on the example which is updated in notification service.
-    :param example_name: Name of the example, refers to a specific example.
+    :param namespace: the namespace of the dataset
+    :param src: The src channel depended on the dataset which is updated in notification service.
+    :param dataset_name: Name of the dataset, refers to a specific dataset.
     :param dependency: The channel which is the dependency.
     :return: None.
     """
-    tmp = ExampleControlEdge(example_name=example_name,
+    tmp = DatasetControlEdge(dataset_name=dataset_name,
                              target_node_id=dependency.node_id,
                              source_node_id=src.node_id,
                              namespace=namespace)

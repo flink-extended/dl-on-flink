@@ -20,11 +20,11 @@ from typing import Optional, Text, List, Tuple, Union
 
 from ai_flow.api.configuration import get_default_project_config
 from ai_flow.api.execution import get_workflow_execution_id
-from ai_flow.client.ai_flow_client import get_ai_flow_client, get_airflow_operation_client
+from ai_flow.client.ai_flow_client import get_ai_flow_client
 from ai_flow.common.properties import Properties
 from ai_flow.common.status import Status
 from ai_flow.meta.artifact_meta import ArtifactMeta
-from ai_flow.meta.example_meta import ExampleMeta, ExampleSupportType, DataType
+from ai_flow.meta.dataset_meta import DatasetMeta, DataType
 from ai_flow.meta.job_meta import JobMeta, State
 from ai_flow.meta.metric_meta import MetricType, MetricMeta, MetricSummary
 from ai_flow.meta.model_meta import ModelMeta, ModelVersionMeta
@@ -36,67 +36,62 @@ from ai_flow.model_center.entity.model_version_stage import ModelVersionStage
 from ai_flow.model_center.entity.registered_model_detail import RegisteredModelDetail
 
 
-def get_example_by_id(example_id) -> Optional[ExampleMeta]:
-    return get_ai_flow_client().get_example_by_id(example_id)
+def get_dataset_by_id(dataset_id) -> Optional[DatasetMeta]:
+    return get_ai_flow_client().get_dataset_by_id(dataset_id)
 
 
-def get_example_by_name(example_name) -> Optional[ExampleMeta]:
-    return get_ai_flow_client().get_example_by_name(example_name)
+def get_dataset_by_name(dataset_name) -> Optional[DatasetMeta]:
+    return get_ai_flow_client().get_dataset_by_name(dataset_name)
 
 
-def register_example(name: Text, support_type: ExampleSupportType, data_type: Text = None,
-                     data_format: Text = None, description: Text = None, batch_uri: Text = None,
-                     stream_uri: Text = None, create_time: int = None, update_time: int = None,
+def register_dataset(name: Text, data_format: Text = None, description: Text = None,
+                     uri: Text = None, create_time: int = None, update_time: int = None,
                      properties: Properties = None, name_list: List[Text] = None,
-                     type_list: List[DataType] = None) -> ExampleMeta:
-    return get_ai_flow_client().register_example(name=name, support_type=support_type, data_type=data_type,
-                                                 data_format=data_format, description=description,
-                                                 batch_uri=batch_uri, stream_uri=stream_uri,
-                                                 create_time=create_time, update_time=update_time,
+                     type_list: List[DataType] = None) -> DatasetMeta:
+    return get_ai_flow_client().register_dataset(name=name, data_format=data_format, description=description,
+                                                 uri=uri, create_time=create_time, update_time=update_time,
                                                  properties=properties, name_list=name_list, type_list=type_list)
 
 
-def register_example_with_catalog(name: Text, support_type: ExampleSupportType,
+def register_dataset_with_catalog(name: Text,
                                   catalog_name: Text, catalog_type: Text,
-                                  catalog_connection_uri: Text, catalog_version: Text,
-                                  catalog_table: Text, catalog_database: Text = None) -> ExampleMeta:
-    return get_ai_flow_client().register_example_with_catalog(name=name, support_type=support_type,
+                                  catalog_connection_uri: Text,
+                                  catalog_table: Text, catalog_database: Text = None) -> DatasetMeta:
+    return get_ai_flow_client().register_dataset_with_catalog(name=name,
                                                               catalog_name=catalog_name, catalog_type=catalog_type,
                                                               catalog_connection_uri=catalog_connection_uri,
-                                                              catalog_version=catalog_version,
                                                               catalog_table=catalog_table,
                                                               catalog_database=catalog_database)
 
 
-def register_examples(examples: List[ExampleMeta]) -> List[ExampleMeta]:
-    return get_ai_flow_client().register_examples(examples)
+def register_datasets(datasets: List[DatasetMeta]) -> List[DatasetMeta]:
+    return get_ai_flow_client().register_datasets(datasets)
 
 
-def update_example(example_name: Text, support_type: ExampleSupportType = None,
+def update_dataset(dataset_name: Text,
                    data_format: Text = None, description: Text = None,
-                   batch_uri: Text = None, stream_uri: Text = None,
-                   update_time: int = None,
+                   uri: Text = None, update_time: int = None,
                    properties: Properties = None, name_list: List[Text] = None,
                    type_list: List[DataType] = None, catalog_name: Text = None,
                    catalog_type: Text = None, catalog_database: Text = None,
-                   catalog_connection_uri: Text = None, catalog_version: Text = None,
-                   catalog_table: Text = None) -> Optional[ExampleMeta]:
-    return get_ai_flow_client().update_example(example_name, support_type, data_format, description, batch_uri,
-                                               stream_uri, update_time, properties, name_list, type_list, catalog_name,
-                                               catalog_type, catalog_database, catalog_connection_uri, catalog_version,
+                   catalog_connection_uri: Text = None,
+                   catalog_table: Text = None) -> Optional[DatasetMeta]:
+    return get_ai_flow_client().update_dataset(dataset_name, data_format, description,
+                                               uri, update_time, properties, name_list, type_list, catalog_name,
+                                               catalog_type, catalog_database, catalog_connection_uri,
                                                catalog_table)
 
 
-def list_example(page_size, offset) -> Optional[List[ExampleMeta]]:
-    return get_ai_flow_client().list_example(page_size, offset)
+def list_datasets(page_size, offset) -> Optional[List[DatasetMeta]]:
+    return get_ai_flow_client().list_datasets(page_size, offset)
 
 
-def delete_example_by_name(example_name) -> Status:
-    return get_ai_flow_client().delete_example_by_name(example_name)
+def delete_dataset_by_name(dataset_name) -> Status:
+    return get_ai_flow_client().delete_dataset_by_name(dataset_name)
 
 
-def delete_example_by_id(example_id) -> Status:
-    return get_ai_flow_client().delete_example_by_id(example_id)
+def delete_dataset_by_id(dataset_id) -> Status:
+    return get_ai_flow_client().delete_dataset_by_id(dataset_id)
 
 
 def get_model_relation_by_id(model_id) -> Optional[ModelRelationMeta]:

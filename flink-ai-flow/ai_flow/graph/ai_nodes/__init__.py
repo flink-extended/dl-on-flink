@@ -16,12 +16,12 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-from ai_flow.graph.ai_nodes.example import Example
+from ai_flow.graph.ai_nodes.dataset import Dataset
 from ai_flow.graph.ai_nodes.transformer import Transformer
 from ai_flow.graph.ai_nodes.trainer import Trainer
 from ai_flow.graph.ai_nodes.predictor import Predictor
 from ai_flow.graph.ai_nodes.evaluator import Evaluator
-from ai_flow.graph.ai_nodes.example_validator import ExampleValidator
+from ai_flow.graph.ai_nodes.dataset_validator import DatasetValidator
 from ai_flow.graph.ai_nodes.model_validator import ModelValidator
 from ai_flow.graph.ai_nodes.pusher import Pusher
 from ai_flow.graph.ai_nodes.executable import ExecutableNode

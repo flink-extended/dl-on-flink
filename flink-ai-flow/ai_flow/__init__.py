@@ -24,10 +24,10 @@ from ai_flow.api.ai_flow_context import engine, config, config, global_config, g
 from ai_flow.api.configuration import set_default_project_config, set_project_config_file, set_project_master_uri, \
     ensure_project_registered, unset_project_config, project_config
 from ai_flow.api.notification import *
-from ai_flow.api.ops import read_example, write_example, transform, train, predict, evaluate, example_validate, \
+from ai_flow.api.ops import read_dataset, write_dataset, transform, train, predict, evaluate, dataset_validate, \
     model_validate, push_model, external_trigger, user_define_operation, \
     stop_before_control_dependency, model_version_control_dependency, \
-    example_control_dependency, user_define_control_dependency
+    dataset_control_dependency, user_define_control_dependency
 from ai_flow.api.project import run, submit_ai_flow, stop_execution_by_id, wait_workflow_execution_finished, \
     compile_workflow, deploy_to_airflow, generate_airflow_file_text, submit
 # ai_flow.application_master.master
@@ -40,7 +40,7 @@ from ai_flow.executor.executor import PythonFuncExecutor, PythonObjectExecutor, 
 from ai_flow.graph.graph import default_graph
 from ai_flow.meta import *
 from ai_flow.meta.artifact_meta import *
-from ai_flow.meta.example_meta import *
+from ai_flow.meta.dataset_meta import *
 from ai_flow.meta.job_meta import *
 # ai_flow.meta
 from ai_flow.meta.model_meta import *
