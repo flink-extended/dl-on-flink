@@ -18,7 +18,7 @@
 #
 from typing import List
 
-from ai_flow.common.path_util import get_file_dir, get_parent_dir
+from ai_flow.util.path_util import get_file_dir, get_parent_dir
 
 import ai_flow as af
 from ai_flow import AIFlowMaster

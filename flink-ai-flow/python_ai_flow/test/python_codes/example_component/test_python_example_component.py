@@ -28,7 +28,7 @@ import pandas as pd
 
 from ai_flow.executor.executor import PythonObjectExecutor
 from ai_flow.application_master.master import AIFlowMaster
-from ai_flow.common.path_util import get_file_dir
+from ai_flow.util.path_util import get_file_dir
 from ai_flow.meta.example_meta import ExampleSupportType, ExampleMeta
 from ai_flow.udf.function_context import FunctionContext
 from python_ai_flow.test import test_util

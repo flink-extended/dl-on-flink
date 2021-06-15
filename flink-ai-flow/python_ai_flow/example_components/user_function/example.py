@@ -18,7 +18,7 @@
 #
 from python_ai_flow.python_job_common import BaseExampleComponent
 from python_ai_flow.user_define_funcs import Executor, ExampleExecutor
-from ai_flow.common.serialization_utils import deserialize
+from ai_flow.util.serialization_utils import deserialize
 
 
 class UDFExampleComponent(BaseExampleComponent):

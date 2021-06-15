@@ -17,8 +17,8 @@
 # under the License.
 #
 from typing import Text, Union, List
-from ai_flow.common.json_utils import Jsonable
-from ai_flow.common.serialization_utils import serialize
+from ai_flow.util.json_utils import Jsonable
+from ai_flow.util.serialization_utils import serialize
 
 
 class BaseExecutor(Jsonable):

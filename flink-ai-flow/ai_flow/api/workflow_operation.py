@@ -19,7 +19,7 @@ import sys
 import os
 from typing import Text, List, Dict
 from ai_flow.project.blob_manager import BlobManagerFactory
-from ai_flow.common import json_utils
+from ai_flow.util import json_utils
 from ai_flow.graph.graph import default_graph
 from ai_flow.translator.base_translator import get_default_translator
 from ai_flow.client.ai_flow_client import get_ai_flow_client
