@@ -18,8 +18,8 @@
 #
 from typing import Text, Tuple
 import grpc
-from ai_flow.util.bool_util import str_to_bool
 from ai_flow.protobuf import deploy_service_pb2, deploy_service_pb2_grpc
+from ai_flow.util.bool_util import str_to_bool
 from ai_flow.endpoint.client.base_client import BaseClient
 
 
