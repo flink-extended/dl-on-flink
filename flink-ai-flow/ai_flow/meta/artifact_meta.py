@@ -18,7 +18,7 @@
 #
 from typing import Text
 from ai_flow.common.properties import Properties
-from ai_flow.common.json_utils import Jsonable
+from ai_flow.util.json_utils import Jsonable
 
 
 class ArtifactMeta(Jsonable):

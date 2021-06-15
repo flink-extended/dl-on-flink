@@ -19,7 +19,7 @@
 import unittest
 
 from ai_flow.common.configuration import AIFlowConfiguration
-from ai_flow.common.path_util import get_file_dir
+from ai_flow.util.path_util import get_file_dir
 
 
 class TestConfiguration(unittest.TestCase):

@@ -19,7 +19,7 @@
 from airflow.models.baseoperator import BaseOperator
 from ai_flow.plugins.kubernetes_cmd_job_plugin import KubernetesCMDJobPlugin
 from ai_flow.plugins.k8s_util import kill_job
-from ai_flow.common import json_utils
+from ai_flow.util import json_utils
 from ai_flow.plugins.kubernetes_platform import watch_k8s_job_status
 
 

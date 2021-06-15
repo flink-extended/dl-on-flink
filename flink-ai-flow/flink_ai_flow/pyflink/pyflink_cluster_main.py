@@ -20,7 +20,7 @@ import importlib
 import sys
 import argparse
 import logging
-from ai_flow.common import serialization_utils
+from ai_flow.util import serialization_utils
 from ai_flow.api.configuration import set_default_project_config
 from flink_ai_flow.local_flink_job import LocalFlinkJob
 from flink_ai_flow.pyflink import job_creator

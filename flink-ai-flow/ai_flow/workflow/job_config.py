@@ -17,7 +17,7 @@
 # under the License.
 #
 from ai_flow.meta.job_meta import ExecutionMode
-from ai_flow.common.json_utils import Jsonable
+from ai_flow.util.json_utils import Jsonable
 from ai_flow.project.project_description import ProjectDesc
 from ai_flow.common.registry import BaseRegistry
 from typing import Text, Dict, Optional, Tuple, Union

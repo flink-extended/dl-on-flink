@@ -31,7 +31,7 @@ from streamz import Stream
 import ai_flow as af
 from ai_flow.model_center.entity.model_version_stage import ModelVersionStage
 from python_ai_flow import FunctionContext, Executor, ExampleExecutor
-from ai_flow.common.path_util import get_file_dir
+from ai_flow.util.path_util import get_file_dir
 
 
 def preprocess_data(x_data, y_data=None):

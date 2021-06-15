@@ -17,10 +17,10 @@
 # under the License.
 #
 from abc import ABC
-from typing import Text, Dict, Any
+from typing import Text, Dict
 from subprocess import Popen
 from ai_flow.workflow.job_context import JobContext
-from ai_flow.common.process_utils import get_all_children_pids
+from ai_flow.util.process_utils import get_all_children_pids
 import psutil
 import os
 import logging

@@ -16,7 +16,7 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-from ai_flow.common.time_utils import generate_time_str
+from ai_flow.util.time_utils import generate_time_str
 from ai_flow.meta.job_meta import State, ExecutionMode
 from ai_flow.rest_endpoint.service.client.aiflow_client import AIFlowClient
 from ai_flow.api.configuration import project_config
@@ -27,9 +27,9 @@ from ai_flow.graph.graph import AIGraph, SplitGraph, AISubGraph
 from ai_flow.graph.ai_node import AINode
 from ai_flow.api.ai_flow_context import ENGINE_NAME
 from ai_flow.graph.edge import ControlEdge, DataEdge, JobControlEdge, control_edge_to_job_edge
-from ai_flow.common.json_utils import dumps
+from ai_flow.util.json_utils import dumps
 from ai_flow.project.project_description import ProjectDesc
-from ai_flow.common.json_utils import Jsonable
+from ai_flow.util.json_utils import Jsonable
 from typing import Dict, Text, List, Set, Tuple, Optional
 from abc import ABC, abstractmethod
 import queue
