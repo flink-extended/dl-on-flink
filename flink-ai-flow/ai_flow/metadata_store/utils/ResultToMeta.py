@@ -18,7 +18,7 @@
 #
 import ast
 from ai_flow.meta.artifact_meta import ArtifactMeta
-from ai_flow.meta.example_meta import ExampleMeta, DataType, Schema, ExampleSupportType
+from ai_flow.meta.dataset_meta import DatasetMeta, DataType, Schema
 from ai_flow.meta.job_meta import JobMeta, State
 from ai_flow.meta.model_relation_meta import ModelRelationMeta, ModelVersionRelationMeta, \
     create_model_version_relation
@@ -28,15 +28,14 @@ from ai_flow.meta.workflow_execution_meta import WorkflowExecutionMeta
 
 class ResultToMeta:
     @staticmethod
-    def result_to_example_meta(example_result) -> ExampleMeta:
-        support_type = ExampleSupportType(example_result.support_type)
-        properties = example_result.properties
+    def result_to_dataset_meta(dataset_result) -> DatasetMeta:
+        properties = dataset_result.properties
         if properties is not None:
             properties = ast.literal_eval(properties)
-        name_list = example_result.name_list
+        name_list = dataset_result.name_list
         if name_list is not None:
             name_list = ast.literal_eval(name_list)
-        type_list = example_result.type_list
+        type_list = dataset_result.type_list
         if type_list is not None:
             type_list = ast.literal_eval(type_list)
             data_type_list = []
@@ -45,18 +44,16 @@ class ResultToMeta:
         else:
             data_type_list = None
         schema = Schema(name_list=name_list, type_list=data_type_list)
-        return ExampleMeta(uuid=example_result.uuid, name=example_result.name,
-                           support_type=support_type,
-                           data_type=example_result.data_type,
-                           data_format=example_result.format,
-                           description=example_result.description,
-                           batch_uri=example_result.batch_uri, stream_uri=example_result.stream_uri,
-                           create_time=example_result.create_time,
-                           update_time=example_result.update_time, schema=schema,
-                           properties=properties, catalog_name=example_result.catalog_name,
-                           catalog_type=example_result.catalog_type, catalog_database=example_result.catalog_database,
-                           catalog_connection_uri=example_result.catalog_connection_uri,
-                           catalog_version=example_result.catalog_version, catalog_table=example_result.catalog_table)
+        return DatasetMeta(uuid=dataset_result.uuid, name=dataset_result.name,
+                           data_format=dataset_result.format,
+                           description=dataset_result.description,
+                           uri=dataset_result.uri,
+                           create_time=dataset_result.create_time,
+                           update_time=dataset_result.update_time, schema=schema,
+                           properties=properties, catalog_name=dataset_result.catalog_name,
+                           catalog_type=dataset_result.catalog_type, catalog_database=dataset_result.catalog_database,
+                           catalog_connection_uri=dataset_result.catalog_connection_uri,
+                           catalog_table=dataset_result.catalog_table)
 
     @staticmethod
     def result_to_project_meta(project_result) -> ProjectMeta:

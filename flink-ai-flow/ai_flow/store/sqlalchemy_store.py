@@ -25,7 +25,7 @@ from sqlalchemy import and_, cast, Integer
 
 from ai_flow.common.status import Status
 from ai_flow.meta.artifact_meta import ArtifactMeta
-from ai_flow.meta.example_meta import ExampleMeta, Properties, DataType, Schema, ExampleSupportType
+from ai_flow.meta.dataset_meta import DatasetMeta, Properties, DataType, Schema
 from ai_flow.meta.job_meta import JobMeta, State
 from ai_flow.meta.metric_meta import MetricMeta, MetricType, MetricSummary
 from ai_flow.meta.model_relation_meta import ModelRelationMeta, ModelVersionRelationMeta
@@ -42,7 +42,7 @@ from ai_flow.endpoint.server.exception import AIFlowException
 from ai_flow.endpoint.server.high_availability import Member
 from ai_flow.store.abstract_store import AbstractStore
 from ai_flow.store.db.base_model import base
-from ai_flow.store.db.db_model import SqlExample, SqlModelRelation, SqlModelVersionRelation, SqlProject, \
+from ai_flow.store.db.db_model import SqlDataset, SqlModelRelation, SqlModelVersionRelation, SqlProject, \
     SqlWorkflowExecution, SqlWorkflow, SqlJob, SqlEvent, SqlArtifact, SqlMember
 from ai_flow.store.db.db_model import SqlMetricMeta, SqlMetricSummary
 from ai_flow.store.db.db_model import SqlRegisteredModel, SqlModelVersion
@@ -102,7 +102,7 @@ class SqlAlchemyStore(AbstractStore):
         # Verify that sql model tables have been created.
         inspected_tables = set(sqlalchemy.inspect(db_engine).get_table_names())
         expected_tables = [
-            SqlExample.__tablename__,
+            SqlDataset.__tablename__,
             SqlModelRelation.__tablename__,
             SqlModelVersionRelation.__tablename__,
             SqlProject.__tablename__,
@@ -127,84 +127,78 @@ class SqlAlchemyStore(AbstractStore):
         else:
             session.add(objs)
 
-    """example api"""
+    """dataset api"""
 
-    def get_example_by_id(self, example_id) -> Optional[ExampleMeta]:
+    def get_dataset_by_id(self, dataset_id) -> Optional[DatasetMeta]:
         """
-        get an specific example in metadata store by example id.
+        get a specific dataset in metadata store by dataset id.
 
-        :param example_id: the example id
-        :return: A single :py:class:`ai_flow.meta.example_meta.ExampleMeta` object if the example exists,
-                 Otherwise, returns None if the example does not exist.
-        """
-        with self.ManagedSessionMaker() as session:
-            example_result = session.query(SqlExample).filter(SqlExample.uuid == example_id,
-                                                              SqlExample.is_deleted != TRUE).all()
-            if len(example_result) == 0:
-                return None
-            return ResultToMeta.result_to_example_meta(example_result[0])
-
-    def get_example_by_name(self, example_name) -> Optional[ExampleMeta]:
-        """
-        get an specific example in metadata store by example name.
-
-        :param example_name: the example name
-        :return: A single :py:class:`ai_flow.meta.example_meta.ExampleMeta` object if the example exists,,
-                 Otherwise, returns None if the example does not exist.
+        :param dataset_id: the dataset id
+        :return: A single :py:class:`ai_flow.meta.dataset_meta.DatasetMeta` object if the dataset exists,
+                 Otherwise, returns None if the dataset does not exist.
         """
         with self.ManagedSessionMaker() as session:
-            example_result = session.query(SqlExample).filter(
-                and_(SqlExample.name == example_name, SqlExample.is_deleted != TRUE)).all()
-            if len(example_result) == 0:
+            dataset_result = session.query(SqlDataset).filter(SqlDataset.uuid == dataset_id,
+                                                              SqlDataset.is_deleted != TRUE).all()
+            if len(dataset_result) == 0:
                 return None
-            return ResultToMeta.result_to_example_meta(example_result[0])
+            return ResultToMeta.result_to_dataset_meta(dataset_result[0])
 
-    def _register_example(self, name: Text, support_type: ExampleSupportType,
-                          data_type: Text = None, data_format: Text = None,
-                          description: Text = None, batch_uri: Text = None,
-                          stream_uri: Text = None, create_time: int = None,
+    def get_dataset_by_name(self, dataset_name) -> Optional[DatasetMeta]:
+        """
+        get a specific dataset in metadata store by dataset name.
+
+        :param dataset_name: the dataset name
+        :return: A single :py:class:`ai_flow.meta.dataset_meta.DatasetMeta` object if the dataset exists,,
+                 Otherwise, returns None if the dataset does not exist.
+        """
+        with self.ManagedSessionMaker() as session:
+            dataset_result = session.query(SqlDataset).filter(
+                and_(SqlDataset.name == dataset_name, SqlDataset.is_deleted != TRUE)).all()
+            if len(dataset_result) == 0:
+                return None
+            return ResultToMeta.result_to_dataset_meta(dataset_result[0])
+
+    def _register_dataset(self, name: Text, data_format: Text = None,
+                          description: Text = None, uri: Text = None, create_time: int = None,
                           update_time: int = None, properties: Properties = None,
                           name_list: List[Text] = None, type_list: List[DataType] = None,
                           catalog_name: Text = None, catalog_type: Text = None,
-                          catalog_connection_uri: Text = None, catalog_version: Text = None,
-                          catalog_table: Text = None, catalog_database: Text = None) -> ExampleMeta:
+                          catalog_connection_uri: Text = None,
+                          catalog_table: Text = None, catalog_database: Text = None) -> DatasetMeta:
         """
-        register an example in metadata store.
+        register an dataset in metadata store.
 
-        :param name: the name of the example
-        :param support_type: the example's support_type
-        :param data_type: the data type of the example
-        :param data_format: the data format of the example
-        :param description: the description of the example
-        :param batch_uri: the batch uri of the example
-        :param stream_uri: the stream uri of the example
-        :param create_time: the time when the example is created
-        :param update_time: the time when the example is updated
-        :param properties: the properties of the example
-        :param name_list: the name list of example's schema
-        :param type_list: the type list corresponded to the name list of example's schema
+        :param name: the name of the dataset
+        :param data_format: the data format of the dataset
+        :param description: the description of the dataset
+        :param uri: the batch uri of the dataset
+        :param create_time: the time when the dataset is created
+        :param update_time: the time when the dataset is updated
+        :param properties: the properties of the dataset
+        :param name_list: the name list of dataset's schema
+        :param type_list: the type list corresponded to the name list of dataset's schema
         :param catalog_name: the catalog name that will register in environment
-        :param catalog_type: the catalog type of the example
+        :param catalog_type: the catalog type of the dataset
         :param catalog_connection_uri: the connection uri of the catalog
-        :param catalog_version: the catalog version
-        :param catalog_table: the table where the example is stored in the catalog
-               if example is stored in the external catalog
-        :param catalog_database: the database where the example is stored in the catalog
-        :return: A single :py:class:`ai_flow.meta.example_meta.ExampleMeta` object.
+        :param catalog_table: the table where the dataset is stored in the catalog
+               if dataset is stored in the external catalog
+        :param catalog_database: the database where the dataset is stored in the catalog
+        :return: A single :py:class:`ai_flow.meta.dataset_meta.DatasetMeta` object.
         """
-        before_example = self.get_example_by_name(example_name=name)
-        if before_example is not None:
-            # if the user has registered exactly the same example before,
-            # do nothing in metadata store and return the registered example.
-            if _compare_example_fields(support_type, data_type, data_format, description, batch_uri, stream_uri,
+        before_dataset = self.get_dataset_by_name(dataset_name=name)
+        if before_dataset is not None:
+            # if the user has registered exactly the same dataset before,
+            # do nothing in metadata store and return the registered dataset.
+            if _compare_dataset_fields(data_format, description, uri,
                                        create_time, update_time, properties, name_list, type_list,
                                        catalog_name, catalog_type, catalog_database, catalog_connection_uri,
-                                       catalog_table, catalog_version, before_example):
-                return before_example
+                                       catalog_table, before_dataset):
+                return before_dataset
             else:
-                # if the example registered this time has the same name but different fields,
+                # if the dataset registered this time has the same name but different fields,
                 # raise the AIFlowException.
-                raise AIFlowException("You have registered the example with same name: \"{}\" "
+                raise AIFlowException("You have registered the dataset with same name: \"{}\" "
                                       "but different fields".format(name))
         with self.ManagedSessionMaker() as session:
             try:
@@ -215,211 +209,189 @@ class SqlAlchemyStore(AbstractStore):
                     raise AIFlowException("the length of name list and type list should be the same")
                 if name_list is None and type_list is not None:
                     raise AIFlowException("the length of name list and type list should be the same")
-                example = MetaToTable.example_meta_to_table(name=name, support_type=support_type,
-                                                            data_type=data_type, data_format=data_format,
-                                                            description=description, batch_uri=batch_uri,
-                                                            stream_uri=stream_uri, create_time=create_time,
+                dataset = MetaToTable.dataset_meta_to_table(name=name, data_format=data_format,
+                                                            description=description, uri=uri, create_time=create_time,
                                                             update_time=update_time, properties=properties,
                                                             name_list=name_list, type_list=type_list,
                                                             catalog_name=catalog_name, catalog_type=catalog_type,
                                                             catalog_database=catalog_database,
                                                             catalog_connection_uri=catalog_connection_uri,
-                                                            catalog_version=catalog_version,
                                                             catalog_table=catalog_table)
-                session.add(example)
+                session.add(dataset)
                 session.flush()
                 schema = Schema(name_list=name_list, type_list=type_list)
-                return ExampleMeta(uuid=example.uuid, name=name, data_type=data_type, data_format=data_format,
-                                   support_type=support_type, description=description, batch_uri=batch_uri,
-                                   stream_uri=stream_uri, create_time=create_time, update_time=update_time,
+                return DatasetMeta(uuid=dataset.uuid, name=name, data_format=data_format,
+                                   description=description, uri=uri, create_time=create_time, update_time=update_time,
                                    properties=properties, schema=schema, catalog_name=catalog_name,
                                    catalog_type=catalog_type, catalog_database=catalog_database,
-                                   catalog_connection_uri=catalog_connection_uri, catalog_table=catalog_table,
-                                   catalog_version=catalog_version)
+                                   catalog_connection_uri=catalog_connection_uri, catalog_table=catalog_table)
             except sqlalchemy.exc.IntegrityError as e:
-                raise AIFlowException('Registered Example (name={}) already exists. '
-                                      'Error: {}'.format(example.name, str(e)))
+                raise AIFlowException('Registered Dataset (name={}) already exists. '
+                                      'Error: {}'.format(dataset.name, str(e)))
 
-    def register_example(self, name: Text, support_type: ExampleSupportType,
-                         data_type: Text = None, data_format: Text = None,
-                         description: Text = None, batch_uri: Text = None,
-                         stream_uri: Text = None, create_time: int = None,
+    def register_dataset(self, name: Text, data_format: Text = None,
+                         description: Text = None, uri: Text = None, create_time: int = None,
                          update_time: int = None, properties: Properties = None,
                          name_list: List[Text] = None, type_list: List[DataType] = None):
         """
-        register an example in metadata store.
+        register an dataset in metadata store.
 
-        :param name: the name of the example
-        :param support_type: the example's support_type
-        :param data_type: the data type of the example
-        :param data_format: the data format of the example
-        :param description: the description of the example
-        :param batch_uri: the batch uri of the example
-        :param stream_uri: the stream uri of the example
-        :param create_time: the time when the example is created
-        :param update_time: the time when the example is updated
-        :param properties: the properties of the example
-        :param name_list: the name list of example's schema
-        :param type_list: the type list corresponded to the name list of example's schema
-        :return: A single :py:class:`ai_flow.meta.example_meta.ExampleMeta` object.
+        :param name: the name of the dataset
+        :param data_format: the data format of the dataset
+        :param description: the description of the dataset
+        :param uri: the uri of the dataset
+        :param create_time: the time when the dataset is created
+        :param update_time: the time when the dataset is updated
+        :param properties: the properties of the dataset
+        :param name_list: the name list of dataset's schema
+        :param type_list: the type list corresponded to the name list of dataset's schema
+        :return: A single :py:class:`ai_flow.meta.dataset_meta.DatasetMeta` object.
         """
-        return self._register_example(name=name, support_type=support_type, data_type=data_type,
-                                      data_format=data_format, description=description, batch_uri=batch_uri,
-                                      stream_uri=stream_uri, create_time=create_time, update_time=update_time,
+        return self._register_dataset(name=name, data_format=data_format, description=description,
+                                      uri=uri, create_time=create_time, update_time=update_time,
                                       properties=properties, name_list=name_list, type_list=type_list)
 
-    def register_example_with_catalog(self, name: Text, support_type: ExampleSupportType, catalog_name: Text,
-                                      catalog_type: Text, catalog_connection_uri: Text, catalog_version: Text,
+    def register_dataset_with_catalog(self, name: Text, catalog_name: Text,
+                                      catalog_type: Text, catalog_connection_uri: Text,
                                       catalog_table: Text, catalog_database: Text = None):
         """
-        register an example in metadata store with catalog.
+        register an dataset in metadata store with catalog.
 
-        :param name: the name of the example
-        :param support_type: the example's support_type
+        :param name: the name of the dataset
         :param catalog_name: the catalog name that will register in environment
-        :param catalog_type: the catalog type of the example
+        :param catalog_type: the catalog type of the dataset
         :param catalog_connection_uri: the connection uri of the catalog
-        :param catalog_version: the catalog version
-        :param catalog_table: the table where the example is stored in the catalog
-        :param catalog_database: the database where the example is stored in the catalog
-        :return: A single :py:class:`ai_flow.meta.example_meta.ExampleMeta` object.
+        :param catalog_table: the table where the dataset is stored in the catalog
+        :param catalog_database: the database where the dataset is stored in the catalog
+        :return: A single :py:class:`ai_flow.meta.dataset_meta.DatasetMeta` object.
         """
-        return self._register_example(name=name, support_type=support_type, catalog_name=catalog_name,
+        return self._register_dataset(name=name, catalog_name=catalog_name,
                                       catalog_type=catalog_type, catalog_connection_uri=catalog_connection_uri,
-                                      catalog_version=catalog_version, catalog_table=catalog_table,
-                                      catalog_database=catalog_database)
+                                      catalog_table=catalog_table, catalog_database=catalog_database)
 
-    def register_examples(self, example_meta_list: List[ExampleMeta]) -> List[ExampleMeta]:
+    def register_datasets(self, dataset_meta_list: List[DatasetMeta]) -> List[DatasetMeta]:
         """
-        register multiple examples in metadata store.
+        register multiple datasets in metadata store.
 
-        :param example_meta_list: A list of examples
-        :return: List of :py:class:`ai_flow.meta.example_meta.ExampleMeta` objects.
+        :param dataset_meta_list: A list of datasets
+        :return: List of :py:class:`ai_flow.meta.dataset_meta.DatasetMeta` objects.
         """
         with self.ManagedSessionMaker() as session:
             try:
-                examples = MetaToTable.example_meta_list_to_table(example_meta_list)
-                session.add_all(examples)
+                datasets = MetaToTable.dataset_meta_list_to_table(dataset_meta_list)
+                session.add_all(datasets)
                 session.flush()
-                for example_meta, example in zip(example_meta_list, examples):
-                    example_meta.uuid = example.uuid
-                return example_meta_list
+                for dataset_meta, dataset in zip(dataset_meta_list, datasets):
+                    dataset_meta.uuid = dataset.uuid
+                return dataset_meta_list
             except sqlalchemy.exc.IntegrityError as e:
                 raise AIFlowException(str(e))
 
-    def update_example(self, example_name: Text, support_type: ExampleSupportType, data_type: Text = None,
-                       data_format: Text = None, description: Text = None, batch_uri: Text = None,
-                       stream_uri: Text = None, update_time: int = None, properties: Properties = None,
+    def update_dataset(self, dataset_name: Text,  data_format: Text = None,
+                       description: Text = None, uri: Text = None,
+                       update_time: int = None, properties: Properties = None,
                        name_list: List[Text] = None, type_list: List[DataType] = None, catalog_name: Text = None,
                        catalog_type: Text = None, catalog_database: Text = None,
-                       catalog_connection_uri: Text = None, catalog_version: Text = None,
-                       catalog_table: Text = None) -> Optional[ExampleMeta]:
+                       catalog_connection_uri: Text = None,
+                       catalog_table: Text = None) -> Optional[DatasetMeta]:
         with self.ManagedSessionMaker() as session:
             try:
-                example: SqlExample = session.query(SqlExample).filter(SqlExample.name == example_name).first()
-                if example is None:
+                dataset: SqlDataset = session.query(SqlDataset).filter(SqlDataset.name == dataset_name).first()
+                if dataset is None:
                     return None
-                if support_type is not None:
-                    example.support_type = support_type
-                if data_type is not None:
-                    example.data_type = data_type
                 if data_format is not None:
-                    example.format = data_format
+                    dataset.format = data_format
                 if description is not None:
-                    example.description = description
-                if batch_uri is not None:
-                    example.batch_uri = batch_uri
-                if stream_uri is not None:
-                    example.stream_uri = stream_uri
+                    dataset.description = description
+                if uri is not None:
+                    dataset.uri = uri
                 if update_time is not None:
-                    example.update_time = update_time
+                    dataset.update_time = update_time
                 if properties is not None:
-                    example.properties = str(properties)
+                    dataset.properties = str(properties)
                 if name_list is not None:
-                    example.name_list = str(name_list)
+                    dataset.name_list = str(name_list)
                 if type_list is not None:
                     data_type_list = []
                     for data_type in type_list:
                         data_type_list.append(data_type.value)
                     data_type_list = str(data_type_list)
-                    example.type_list = data_type_list
+                    dataset.type_list = data_type_list
                 if catalog_name is not None:
-                    example.catalog_name = catalog_name
+                    dataset.catalog_name = catalog_name
                 if catalog_type is not None:
-                    example.catalog_type = catalog_type
+                    dataset.catalog_type = catalog_type
                 if catalog_database is not None:
-                    example.catalog_database = catalog_database
+                    dataset.catalog_database = catalog_database
                 if catalog_connection_uri is not None:
-                    example.connection_config = catalog_connection_uri
-                if catalog_version is not None:
-                    example.catalog_version = catalog_version
+                    dataset.connection_config = catalog_connection_uri
                 if catalog_table is not None:
-                    example.catalog_table = catalog_table
+                    dataset.catalog_table = catalog_table
                 session.flush()
-                return ResultToMeta.result_to_example_meta(example)
+                return ResultToMeta.result_to_dataset_meta(dataset)
             except sqlalchemy.exc.IntegrityError as e:
                 raise AIFlowException(e)
 
-    def list_example(self, page_size, offset) -> Optional[List[ExampleMeta]]:
+    def list_datasets(self, page_size, offset) -> Optional[List[DatasetMeta]]:
         """
-        List registered examples in metadata store.
+        List registered datasets in metadata store.
 
-        :param page_size: the limitation of the listed examples.
-        :param offset: the offset of listed examples.
-        :return: List of :py:class:`ai_flow.meta.example_meta.ExampleMeta` objects,
-                 return None if no examples to be listed.
+        :param page_size: the limitation of the listed datasets.
+        :param offset: the offset of listed datasets.
+        :return: List of :py:class:`ai_flow.meta.dataset_meta.DatasetMeta` objects,
+                 return None if no datasets to be listed.
         """
         with self.ManagedSessionMaker() as session:
-            example_result = session.query(SqlExample).filter(SqlExample.is_deleted != TRUE).limit(
+            dataset_result = session.query(SqlDataset).filter(SqlDataset.is_deleted != TRUE).limit(
                 page_size).offset(
                 offset).all()
-            if len(example_result) == 0:
+            if len(dataset_result) == 0:
                 return None
-            example_list = []
-            for example in example_result:
-                example_list.append(ResultToMeta.result_to_example_meta(example))
-            return example_list
+            dataset_list = []
+            for dataset in dataset_result:
+                dataset_list.append(ResultToMeta.result_to_dataset_meta(dataset))
+            return dataset_list
 
-    def delete_example_by_name(self, example_name) -> Status:
+    def delete_dataset_by_name(self, dataset_name) -> Status:
         """
-        Delete the registered example by example name .
+        Delete the registered dataset by dataset name .
 
-        :param example_name: the example name
-        :return: Status.OK if the example is successfully deleted, Status.ERROR if the example does not exist otherwise.
+        :param dataset_name: the dataset name
+        :return: Status.OK if the dataset is successfully deleted, Status.ERROR if the dataset does not exist otherwise.
         """
         with self.ManagedSessionMaker() as session:
             try:
-                example = session.query(SqlExample).filter(
-                    and_(SqlExample.name == example_name, SqlExample.is_deleted != TRUE)).first()
-                if example is None:
+                dataset = session.query(SqlDataset).filter(
+                    and_(SqlDataset.name == dataset_name, SqlDataset.is_deleted != TRUE)).first()
+                if dataset is None:
                     return Status.ERROR
-                deleted_example_counts = session.query(SqlExample).filter(
-                    and_(SqlExample.name.like(deleted_character + example_name + deleted_character + '%')),
-                    SqlExample.is_deleted == TRUE).count()
-                example.is_deleted = TRUE
-                example.name = deleted_character + example.name + deleted_character + str(deleted_example_counts + 1)
+                deleted_dataset_counts = session.query(SqlDataset).filter(
+                    and_(SqlDataset.name.like(deleted_character + dataset_name + deleted_character + '%')),
+                    SqlDataset.is_deleted == TRUE).count()
+                dataset.is_deleted = TRUE
+                dataset.name = deleted_character + dataset.name + deleted_character + str(deleted_dataset_counts + 1)
                 session.flush()
                 return Status.OK
             except sqlalchemy.exc.IntegrityError as e:
                 raise AIFlowException(str(e))
 
-    def delete_example_by_id(self, example_id) -> Status:
+    def delete_dataset_by_id(self, dataset_id) -> Status:
         """
-        Delete the registered example by example id .
+        Delete the registered dataset by dataset id .
 
-        :param example_id: the example id
-        :return: Status.OK if the example is successfully deleted, Status.ERROR if the example does not exist otherwise.
+        :param dataset_id: the dataset id
+        :return: Status.OK if the dataset is successfully deleted, Status.ERROR if the dataset does not exist otherwise.
         """
-        example = self.get_example_by_id(example_id=example_id)
-        if example is None:
+        dataset = self.get_dataset_by_id(dataset_id=dataset_id)
+        if dataset is None:
             return Status.ERROR
-        return self.delete_example_by_name(example.name)
+        return self.delete_dataset_by_name(dataset.name)
 
     """project api"""
 
     def get_project_by_id(self, project_id) -> Optional[ProjectMeta]:
         """
-        get an specific project in metadata store by project id
+        get a specific project in metadata store by project id
 
         :param project_id: the project id
         :return: A single :py:class:`ai_flow.meta.project.ProjectMeta` object if the project exists,
@@ -434,7 +406,7 @@ class SqlAlchemyStore(AbstractStore):
 
     def get_project_by_name(self, project_name) -> Optional[ProjectMeta]:
         """
-        get an specific project in metadata store by project name
+        get a specific project in metadata store by project name
         :param project_name: the project name
         :return: A single :py:class:`ai_flow.meta.project.ProjectMeta` object if the project exists,
                  Otherwise, returns None if the project does not exist.
@@ -589,7 +561,7 @@ class SqlAlchemyStore(AbstractStore):
 
     def get_model_relation_by_id(self, model_id) -> Optional[ModelRelationMeta]:
         """
-        get an specific model relation in metadata store by model id.
+        get a specific model relation in metadata store by model id.
 
         :param model_id: the model id
         :return: A single :py:class:`ai_flow.meta.model_relation_meta.ModelRelationMeta` object if the model relation
@@ -604,7 +576,7 @@ class SqlAlchemyStore(AbstractStore):
 
     def get_model_relation_by_name(self, name) -> Optional[ModelRelationMeta]:
         """
-        get an specific model relation in metadata store by model name.
+        get a specific model relation in metadata store by model name.
 
         :param name: the model name
         :return: A single :py:class:`ai_flow.meta.model_relation_meta.ModelRelationMeta` object if the model relation
@@ -633,7 +605,7 @@ class SqlAlchemyStore(AbstractStore):
             if _compare_model_relation_fields(project_id, before_model_relation):
                 return before_model_relation
             else:
-                # if the example registered this time has the same name but different fields,
+                # if the dataset registered this time has the same name but different fields,
                 # raise the AIFlowException.
                 raise AIFlowException("You have registered the model relation with same name: \"{}\" "
                                       "but different project uuid".format(name))
@@ -717,7 +689,7 @@ class SqlAlchemyStore(AbstractStore):
 
     def get_workflow_execution_by_id(self, execution_id) -> Optional[WorkflowExecutionMeta]:
         """
-        get an specific workflow execution in metadata store by workflow execution id.
+        get a specific workflow execution in metadata store by workflow execution id.
 
         :param execution_id: the workflow execution id
         :return: A single :py:class:`ai_flow.meta.workflow_execution_meta.WorkflowExecutionMeta` object
@@ -733,7 +705,7 @@ class SqlAlchemyStore(AbstractStore):
 
     def get_workflow_execution_by_name(self, execution_name) -> Optional[WorkflowExecutionMeta]:
         """
-        get an specific workflow execution in metadata store by workflow execution name.
+        get a specific workflow execution in metadata store by workflow execution name.
 
         :param execution_name: the workflow execution name
         :return: A single :py:class:`ai_flow.meta.workflow_execution_meta.WorkflowExecutionMeta` object
@@ -944,7 +916,7 @@ class SqlAlchemyStore(AbstractStore):
 
     def get_model_version_relation_by_version(self, version_name, model_id) -> Optional[ModelVersionRelationMeta]:
         """
-        get an specific model version relation in metadata store by the model version name.
+        get a specific model version relation in metadata store by the model version name.
 
         :param version_name: the model version name
         :param model_id: the model id corresponded to the model version
@@ -1036,7 +1008,7 @@ class SqlAlchemyStore(AbstractStore):
 
     def get_job_by_id(self, job_id) -> Optional[JobMeta]:
         """
-        get an specific job in metadata store by job id.
+        get a specific job in metadata store by job id.
 
         :param job_id: the job id
         :return: A single :py:class:`ai_flow.meta.job_meta.JobMeta` object
@@ -1052,7 +1024,7 @@ class SqlAlchemyStore(AbstractStore):
 
     def get_job_by_name(self, job_name) -> Optional[JobMeta]:
         """
-        get an specific job in metadata store by job name.
+        get a specific job in metadata store by job name.
 
         :param job_name: the job name
         :return: A single :py:class:`ai_flow.meta.job_meta.JobMeta` object
@@ -1234,7 +1206,7 @@ class SqlAlchemyStore(AbstractStore):
 
     def get_artifact_by_id(self, artifact_id: int) -> Optional[ArtifactMeta]:
         """
-        get an specific artifact in metadata store by artifact id.
+        get a specific artifact in metadata store by artifact id.
 
         :param artifact_id: the artifact id
         :return: A single :py:class:`ai_flow.meta.artifact_meta.ArtifactMeta` object
@@ -1250,7 +1222,7 @@ class SqlAlchemyStore(AbstractStore):
 
     def get_artifact_by_name(self, artifact_name: Text) -> Optional[ArtifactMeta]:
         """
-        get an specific artifact in metadata store by artifact name.
+        get a specific artifact in metadata store by artifact name.
 
         :param artifact_name: the artifact name
         :return: A single :py:class:`ai_flow.meta.artifact_meta.ArtifactMeta` object
@@ -2093,19 +2065,18 @@ def _gen_delete_entity_name(name, count):
     return _gen_entity_name_prefix(name) + str(count + 1)
 
 
-def _compare_example_fields(support_type, data_type, data_format, description, batch_uri, stream_uri,
+def _compare_dataset_fields(data_format, description, uri,
                             create_time, update_time, properties, name_list, type_list, catalog_name,
                             catalog_type, catalog_database, catalog_connection_uri, catalog_table,
-                            catalog_version, before_example) -> bool:
-    return support_type == before_example.support_type and data_type == before_example.data_type \
-           and data_format == before_example.data_format and description == before_example.description \
-           and batch_uri == before_example.batch_uri and stream_uri == before_example.stream_uri \
-           and create_time == before_example.create_time and update_time == before_example.update_time \
-           and properties == before_example.properties and name_list == before_example.schema.name_list \
-           and type_list == before_example.schema.type_list and catalog_name == before_example.catalog_name \
-           and catalog_type == before_example.catalog_type and catalog_database == before_example.catalog_database \
-           and catalog_connection_uri == before_example.catalog_connection_uri \
-           and catalog_table == before_example.catalog_table and catalog_version == before_example.catalog_version
+                            before_dataset) -> bool:
+    return data_format == before_dataset.data_format and description == before_dataset.description \
+           and uri == before_dataset.uri \
+           and create_time == before_dataset.create_time and update_time == before_dataset.update_time \
+           and properties == before_dataset.properties and name_list == before_dataset.schema.name_list \
+           and type_list == before_dataset.schema.type_list and catalog_name == before_dataset.catalog_name \
+           and catalog_type == before_dataset.catalog_type and catalog_database == before_dataset.catalog_database \
+           and catalog_connection_uri == before_dataset.catalog_connection_uri \
+           and catalog_table == before_dataset.catalog_table
 
 
 def _compare_artifact_fields(data_format, description, batch_uri, stream_uri, create_time,

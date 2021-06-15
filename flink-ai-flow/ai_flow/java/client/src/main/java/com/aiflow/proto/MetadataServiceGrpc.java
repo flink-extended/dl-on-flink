@@ -46,282 +46,282 @@ public final class MetadataServiceGrpc {
 
   // Static method descriptors that strictly reflect the proto.
   private static volatile io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.IdRequest,
-      com.aiflow.proto.Message.Response> getGetExampleByIdMethod;
+      com.aiflow.proto.Message.Response> getGetDatasetByIdMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "getExampleById",
+      fullMethodName = SERVICE_NAME + '/' + "getDatasetById",
       requestType = com.aiflow.proto.MetadataServiceOuterClass.IdRequest.class,
       responseType = com.aiflow.proto.Message.Response.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
   public static io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.IdRequest,
-      com.aiflow.proto.Message.Response> getGetExampleByIdMethod() {
-    io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.IdRequest, com.aiflow.proto.Message.Response> getGetExampleByIdMethod;
-    if ((getGetExampleByIdMethod = MetadataServiceGrpc.getGetExampleByIdMethod) == null) {
+      com.aiflow.proto.Message.Response> getGetDatasetByIdMethod() {
+    io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.IdRequest, com.aiflow.proto.Message.Response> getGetDatasetByIdMethod;
+    if ((getGetDatasetByIdMethod = MetadataServiceGrpc.getGetDatasetByIdMethod) == null) {
       synchronized (MetadataServiceGrpc.class) {
-        if ((getGetExampleByIdMethod = MetadataServiceGrpc.getGetExampleByIdMethod) == null) {
-          MetadataServiceGrpc.getGetExampleByIdMethod = getGetExampleByIdMethod =
+        if ((getGetDatasetByIdMethod = MetadataServiceGrpc.getGetDatasetByIdMethod) == null) {
+          MetadataServiceGrpc.getGetDatasetByIdMethod = getGetDatasetByIdMethod =
               io.grpc.MethodDescriptor.<com.aiflow.proto.MetadataServiceOuterClass.IdRequest, com.aiflow.proto.Message.Response>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "getExampleById"))
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "getDatasetById"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.aiflow.proto.MetadataServiceOuterClass.IdRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.aiflow.proto.Message.Response.getDefaultInstance()))
-              .setSchemaDescriptor(new MetadataServiceMethodDescriptorSupplier("getExampleById"))
+              .setSchemaDescriptor(new MetadataServiceMethodDescriptorSupplier("getDatasetById"))
               .build();
         }
       }
     }
-    return getGetExampleByIdMethod;
+    return getGetDatasetByIdMethod;
   }
 
   private static volatile io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.NameRequest,
-      com.aiflow.proto.Message.Response> getGetExampleByNameMethod;
+      com.aiflow.proto.Message.Response> getGetDatasetByNameMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "getExampleByName",
+      fullMethodName = SERVICE_NAME + '/' + "getDatasetByName",
       requestType = com.aiflow.proto.MetadataServiceOuterClass.NameRequest.class,
       responseType = com.aiflow.proto.Message.Response.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
   public static io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.NameRequest,
-      com.aiflow.proto.Message.Response> getGetExampleByNameMethod() {
-    io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.NameRequest, com.aiflow.proto.Message.Response> getGetExampleByNameMethod;
-    if ((getGetExampleByNameMethod = MetadataServiceGrpc.getGetExampleByNameMethod) == null) {
+      com.aiflow.proto.Message.Response> getGetDatasetByNameMethod() {
+    io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.NameRequest, com.aiflow.proto.Message.Response> getGetDatasetByNameMethod;
+    if ((getGetDatasetByNameMethod = MetadataServiceGrpc.getGetDatasetByNameMethod) == null) {
       synchronized (MetadataServiceGrpc.class) {
-        if ((getGetExampleByNameMethod = MetadataServiceGrpc.getGetExampleByNameMethod) == null) {
-          MetadataServiceGrpc.getGetExampleByNameMethod = getGetExampleByNameMethod =
+        if ((getGetDatasetByNameMethod = MetadataServiceGrpc.getGetDatasetByNameMethod) == null) {
+          MetadataServiceGrpc.getGetDatasetByNameMethod = getGetDatasetByNameMethod =
               io.grpc.MethodDescriptor.<com.aiflow.proto.MetadataServiceOuterClass.NameRequest, com.aiflow.proto.Message.Response>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "getExampleByName"))
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "getDatasetByName"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.aiflow.proto.MetadataServiceOuterClass.NameRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.aiflow.proto.Message.Response.getDefaultInstance()))
-              .setSchemaDescriptor(new MetadataServiceMethodDescriptorSupplier("getExampleByName"))
+              .setSchemaDescriptor(new MetadataServiceMethodDescriptorSupplier("getDatasetByName"))
               .build();
         }
       }
     }
-    return getGetExampleByNameMethod;
+    return getGetDatasetByNameMethod;
   }
 
   private static volatile io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.ListRequest,
-      com.aiflow.proto.Message.Response> getListExampleMethod;
+      com.aiflow.proto.Message.Response> getListDatasetsMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "listExample",
+      fullMethodName = SERVICE_NAME + '/' + "listDatasets",
       requestType = com.aiflow.proto.MetadataServiceOuterClass.ListRequest.class,
       responseType = com.aiflow.proto.Message.Response.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
   public static io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.ListRequest,
-      com.aiflow.proto.Message.Response> getListExampleMethod() {
-    io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.ListRequest, com.aiflow.proto.Message.Response> getListExampleMethod;
-    if ((getListExampleMethod = MetadataServiceGrpc.getListExampleMethod) == null) {
+      com.aiflow.proto.Message.Response> getListDatasetsMethod() {
+    io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.ListRequest, com.aiflow.proto.Message.Response> getListDatasetsMethod;
+    if ((getListDatasetsMethod = MetadataServiceGrpc.getListDatasetsMethod) == null) {
       synchronized (MetadataServiceGrpc.class) {
-        if ((getListExampleMethod = MetadataServiceGrpc.getListExampleMethod) == null) {
-          MetadataServiceGrpc.getListExampleMethod = getListExampleMethod =
+        if ((getListDatasetsMethod = MetadataServiceGrpc.getListDatasetsMethod) == null) {
+          MetadataServiceGrpc.getListDatasetsMethod = getListDatasetsMethod =
               io.grpc.MethodDescriptor.<com.aiflow.proto.MetadataServiceOuterClass.ListRequest, com.aiflow.proto.Message.Response>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "listExample"))
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "listDatasets"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.aiflow.proto.MetadataServiceOuterClass.ListRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.aiflow.proto.Message.Response.getDefaultInstance()))
-              .setSchemaDescriptor(new MetadataServiceMethodDescriptorSupplier("listExample"))
+              .setSchemaDescriptor(new MetadataServiceMethodDescriptorSupplier("listDatasets"))
               .build();
         }
       }
     }
-    return getListExampleMethod;
+    return getListDatasetsMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest,
-      com.aiflow.proto.Message.Response> getRegisterExampleMethod;
+  private static volatile io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest,
+      com.aiflow.proto.Message.Response> getRegisterDatasetMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "registerExample",
-      requestType = com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest.class,
+      fullMethodName = SERVICE_NAME + '/' + "registerDataset",
+      requestType = com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest.class,
       responseType = com.aiflow.proto.Message.Response.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest,
-      com.aiflow.proto.Message.Response> getRegisterExampleMethod() {
-    io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest, com.aiflow.proto.Message.Response> getRegisterExampleMethod;
-    if ((getRegisterExampleMethod = MetadataServiceGrpc.getRegisterExampleMethod) == null) {
+  public static io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest,
+      com.aiflow.proto.Message.Response> getRegisterDatasetMethod() {
+    io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest, com.aiflow.proto.Message.Response> getRegisterDatasetMethod;
+    if ((getRegisterDatasetMethod = MetadataServiceGrpc.getRegisterDatasetMethod) == null) {
       synchronized (MetadataServiceGrpc.class) {
-        if ((getRegisterExampleMethod = MetadataServiceGrpc.getRegisterExampleMethod) == null) {
-          MetadataServiceGrpc.getRegisterExampleMethod = getRegisterExampleMethod =
-              io.grpc.MethodDescriptor.<com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest, com.aiflow.proto.Message.Response>newBuilder()
+        if ((getRegisterDatasetMethod = MetadataServiceGrpc.getRegisterDatasetMethod) == null) {
+          MetadataServiceGrpc.getRegisterDatasetMethod = getRegisterDatasetMethod =
+              io.grpc.MethodDescriptor.<com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest, com.aiflow.proto.Message.Response>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "registerExample"))
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "registerDataset"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest.getDefaultInstance()))
+                  com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.aiflow.proto.Message.Response.getDefaultInstance()))
-              .setSchemaDescriptor(new MetadataServiceMethodDescriptorSupplier("registerExample"))
+              .setSchemaDescriptor(new MetadataServiceMethodDescriptorSupplier("registerDataset"))
               .build();
         }
       }
     }
-    return getRegisterExampleMethod;
+    return getRegisterDatasetMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest,
-      com.aiflow.proto.Message.Response> getRegisterExampleWithCatalogMethod;
+  private static volatile io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest,
+      com.aiflow.proto.Message.Response> getRegisterDatasetWithCatalogMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "registerExampleWithCatalog",
-      requestType = com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest.class,
+      fullMethodName = SERVICE_NAME + '/' + "registerDatasetWithCatalog",
+      requestType = com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest.class,
       responseType = com.aiflow.proto.Message.Response.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest,
-      com.aiflow.proto.Message.Response> getRegisterExampleWithCatalogMethod() {
-    io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest, com.aiflow.proto.Message.Response> getRegisterExampleWithCatalogMethod;
-    if ((getRegisterExampleWithCatalogMethod = MetadataServiceGrpc.getRegisterExampleWithCatalogMethod) == null) {
+  public static io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest,
+      com.aiflow.proto.Message.Response> getRegisterDatasetWithCatalogMethod() {
+    io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest, com.aiflow.proto.Message.Response> getRegisterDatasetWithCatalogMethod;
+    if ((getRegisterDatasetWithCatalogMethod = MetadataServiceGrpc.getRegisterDatasetWithCatalogMethod) == null) {
       synchronized (MetadataServiceGrpc.class) {
-        if ((getRegisterExampleWithCatalogMethod = MetadataServiceGrpc.getRegisterExampleWithCatalogMethod) == null) {
-          MetadataServiceGrpc.getRegisterExampleWithCatalogMethod = getRegisterExampleWithCatalogMethod =
-              io.grpc.MethodDescriptor.<com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest, com.aiflow.proto.Message.Response>newBuilder()
+        if ((getRegisterDatasetWithCatalogMethod = MetadataServiceGrpc.getRegisterDatasetWithCatalogMethod) == null) {
+          MetadataServiceGrpc.getRegisterDatasetWithCatalogMethod = getRegisterDatasetWithCatalogMethod =
+              io.grpc.MethodDescriptor.<com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest, com.aiflow.proto.Message.Response>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "registerExampleWithCatalog"))
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "registerDatasetWithCatalog"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest.getDefaultInstance()))
+                  com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.aiflow.proto.Message.Response.getDefaultInstance()))
-              .setSchemaDescriptor(new MetadataServiceMethodDescriptorSupplier("registerExampleWithCatalog"))
+              .setSchemaDescriptor(new MetadataServiceMethodDescriptorSupplier("registerDatasetWithCatalog"))
               .build();
         }
       }
     }
-    return getRegisterExampleWithCatalogMethod;
+    return getRegisterDatasetWithCatalogMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest,
-      com.aiflow.proto.Message.Response> getRegisterExamplesMethod;
+  private static volatile io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest,
+      com.aiflow.proto.Message.Response> getRegisterDatasetsMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "registerExamples",
-      requestType = com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest.class,
+      fullMethodName = SERVICE_NAME + '/' + "registerDatasets",
+      requestType = com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest.class,
       responseType = com.aiflow.proto.Message.Response.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest,
-      com.aiflow.proto.Message.Response> getRegisterExamplesMethod() {
-    io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest, com.aiflow.proto.Message.Response> getRegisterExamplesMethod;
-    if ((getRegisterExamplesMethod = MetadataServiceGrpc.getRegisterExamplesMethod) == null) {
+  public static io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest,
+      com.aiflow.proto.Message.Response> getRegisterDatasetsMethod() {
+    io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest, com.aiflow.proto.Message.Response> getRegisterDatasetsMethod;
+    if ((getRegisterDatasetsMethod = MetadataServiceGrpc.getRegisterDatasetsMethod) == null) {
       synchronized (MetadataServiceGrpc.class) {
-        if ((getRegisterExamplesMethod = MetadataServiceGrpc.getRegisterExamplesMethod) == null) {
-          MetadataServiceGrpc.getRegisterExamplesMethod = getRegisterExamplesMethod =
-              io.grpc.MethodDescriptor.<com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest, com.aiflow.proto.Message.Response>newBuilder()
+        if ((getRegisterDatasetsMethod = MetadataServiceGrpc.getRegisterDatasetsMethod) == null) {
+          MetadataServiceGrpc.getRegisterDatasetsMethod = getRegisterDatasetsMethod =
+              io.grpc.MethodDescriptor.<com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest, com.aiflow.proto.Message.Response>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "registerExamples"))
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "registerDatasets"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest.getDefaultInstance()))
+                  com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.aiflow.proto.Message.Response.getDefaultInstance()))
-              .setSchemaDescriptor(new MetadataServiceMethodDescriptorSupplier("registerExamples"))
+              .setSchemaDescriptor(new MetadataServiceMethodDescriptorSupplier("registerDatasets"))
               .build();
         }
       }
     }
-    return getRegisterExamplesMethod;
+    return getRegisterDatasetsMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest,
-      com.aiflow.proto.Message.Response> getUpdateExampleMethod;
+  private static volatile io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest,
+      com.aiflow.proto.Message.Response> getUpdateDatasetMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "updateExample",
-      requestType = com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest.class,
+      fullMethodName = SERVICE_NAME + '/' + "updateDataset",
+      requestType = com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest.class,
       responseType = com.aiflow.proto.Message.Response.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest,
-      com.aiflow.proto.Message.Response> getUpdateExampleMethod() {
-    io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest, com.aiflow.proto.Message.Response> getUpdateExampleMethod;
-    if ((getUpdateExampleMethod = MetadataServiceGrpc.getUpdateExampleMethod) == null) {
+  public static io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest,
+      com.aiflow.proto.Message.Response> getUpdateDatasetMethod() {
+    io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest, com.aiflow.proto.Message.Response> getUpdateDatasetMethod;
+    if ((getUpdateDatasetMethod = MetadataServiceGrpc.getUpdateDatasetMethod) == null) {
       synchronized (MetadataServiceGrpc.class) {
-        if ((getUpdateExampleMethod = MetadataServiceGrpc.getUpdateExampleMethod) == null) {
-          MetadataServiceGrpc.getUpdateExampleMethod = getUpdateExampleMethod =
-              io.grpc.MethodDescriptor.<com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest, com.aiflow.proto.Message.Response>newBuilder()
+        if ((getUpdateDatasetMethod = MetadataServiceGrpc.getUpdateDatasetMethod) == null) {
+          MetadataServiceGrpc.getUpdateDatasetMethod = getUpdateDatasetMethod =
+              io.grpc.MethodDescriptor.<com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest, com.aiflow.proto.Message.Response>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "updateExample"))
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "updateDataset"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest.getDefaultInstance()))
+                  com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.aiflow.proto.Message.Response.getDefaultInstance()))
-              .setSchemaDescriptor(new MetadataServiceMethodDescriptorSupplier("updateExample"))
+              .setSchemaDescriptor(new MetadataServiceMethodDescriptorSupplier("updateDataset"))
               .build();
         }
       }
     }
-    return getUpdateExampleMethod;
+    return getUpdateDatasetMethod;
   }
 
   private static volatile io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.IdRequest,
-      com.aiflow.proto.Message.Response> getDeleteExampleByIdMethod;
+      com.aiflow.proto.Message.Response> getDeleteDatasetByIdMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "deleteExampleById",
+      fullMethodName = SERVICE_NAME + '/' + "deleteDatasetById",
       requestType = com.aiflow.proto.MetadataServiceOuterClass.IdRequest.class,
       responseType = com.aiflow.proto.Message.Response.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
   public static io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.IdRequest,
-      com.aiflow.proto.Message.Response> getDeleteExampleByIdMethod() {
-    io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.IdRequest, com.aiflow.proto.Message.Response> getDeleteExampleByIdMethod;
-    if ((getDeleteExampleByIdMethod = MetadataServiceGrpc.getDeleteExampleByIdMethod) == null) {
+      com.aiflow.proto.Message.Response> getDeleteDatasetByIdMethod() {
+    io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.IdRequest, com.aiflow.proto.Message.Response> getDeleteDatasetByIdMethod;
+    if ((getDeleteDatasetByIdMethod = MetadataServiceGrpc.getDeleteDatasetByIdMethod) == null) {
       synchronized (MetadataServiceGrpc.class) {
-        if ((getDeleteExampleByIdMethod = MetadataServiceGrpc.getDeleteExampleByIdMethod) == null) {
-          MetadataServiceGrpc.getDeleteExampleByIdMethod = getDeleteExampleByIdMethod =
+        if ((getDeleteDatasetByIdMethod = MetadataServiceGrpc.getDeleteDatasetByIdMethod) == null) {
+          MetadataServiceGrpc.getDeleteDatasetByIdMethod = getDeleteDatasetByIdMethod =
               io.grpc.MethodDescriptor.<com.aiflow.proto.MetadataServiceOuterClass.IdRequest, com.aiflow.proto.Message.Response>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "deleteExampleById"))
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "deleteDatasetById"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.aiflow.proto.MetadataServiceOuterClass.IdRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.aiflow.proto.Message.Response.getDefaultInstance()))
-              .setSchemaDescriptor(new MetadataServiceMethodDescriptorSupplier("deleteExampleById"))
+              .setSchemaDescriptor(new MetadataServiceMethodDescriptorSupplier("deleteDatasetById"))
               .build();
         }
       }
     }
-    return getDeleteExampleByIdMethod;
+    return getDeleteDatasetByIdMethod;
   }
 
   private static volatile io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.NameRequest,
-      com.aiflow.proto.Message.Response> getDeleteExampleByNameMethod;
+      com.aiflow.proto.Message.Response> getDeleteDatasetByNameMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "deleteExampleByName",
+      fullMethodName = SERVICE_NAME + '/' + "deleteDatasetByName",
       requestType = com.aiflow.proto.MetadataServiceOuterClass.NameRequest.class,
       responseType = com.aiflow.proto.Message.Response.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
   public static io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.NameRequest,
-      com.aiflow.proto.Message.Response> getDeleteExampleByNameMethod() {
-    io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.NameRequest, com.aiflow.proto.Message.Response> getDeleteExampleByNameMethod;
-    if ((getDeleteExampleByNameMethod = MetadataServiceGrpc.getDeleteExampleByNameMethod) == null) {
+      com.aiflow.proto.Message.Response> getDeleteDatasetByNameMethod() {
+    io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.NameRequest, com.aiflow.proto.Message.Response> getDeleteDatasetByNameMethod;
+    if ((getDeleteDatasetByNameMethod = MetadataServiceGrpc.getDeleteDatasetByNameMethod) == null) {
       synchronized (MetadataServiceGrpc.class) {
-        if ((getDeleteExampleByNameMethod = MetadataServiceGrpc.getDeleteExampleByNameMethod) == null) {
-          MetadataServiceGrpc.getDeleteExampleByNameMethod = getDeleteExampleByNameMethod =
+        if ((getDeleteDatasetByNameMethod = MetadataServiceGrpc.getDeleteDatasetByNameMethod) == null) {
+          MetadataServiceGrpc.getDeleteDatasetByNameMethod = getDeleteDatasetByNameMethod =
               io.grpc.MethodDescriptor.<com.aiflow.proto.MetadataServiceOuterClass.NameRequest, com.aiflow.proto.Message.Response>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "deleteExampleByName"))
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "deleteDatasetByName"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.aiflow.proto.MetadataServiceOuterClass.NameRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.aiflow.proto.Message.Response.getDefaultInstance()))
-              .setSchemaDescriptor(new MetadataServiceMethodDescriptorSupplier("deleteExampleByName"))
+              .setSchemaDescriptor(new MetadataServiceMethodDescriptorSupplier("deleteDatasetByName"))
               .build();
         }
       }
     }
-    return getDeleteExampleByNameMethod;
+    return getDeleteDatasetByNameMethod;
   }
 
   private static volatile io.grpc.MethodDescriptor<com.aiflow.proto.MetadataServiceOuterClass.IdRequest,
@@ -2017,68 +2017,68 @@ public final class MetadataServiceGrpc {
 
     /**
      * <pre>
-     *example api
+     *dataset api
      * </pre>
      */
-    public void getExampleById(com.aiflow.proto.MetadataServiceOuterClass.IdRequest request,
+    public void getDatasetById(com.aiflow.proto.MetadataServiceOuterClass.IdRequest request,
         io.grpc.stub.StreamObserver<com.aiflow.proto.Message.Response> responseObserver) {
-      asyncUnimplementedUnaryCall(getGetExampleByIdMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getGetDatasetByIdMethod(), responseObserver);
     }
 
     /**
      */
-    public void getExampleByName(com.aiflow.proto.MetadataServiceOuterClass.NameRequest request,
+    public void getDatasetByName(com.aiflow.proto.MetadataServiceOuterClass.NameRequest request,
         io.grpc.stub.StreamObserver<com.aiflow.proto.Message.Response> responseObserver) {
-      asyncUnimplementedUnaryCall(getGetExampleByNameMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getGetDatasetByNameMethod(), responseObserver);
     }
 
     /**
      */
-    public void listExample(com.aiflow.proto.MetadataServiceOuterClass.ListRequest request,
+    public void listDatasets(com.aiflow.proto.MetadataServiceOuterClass.ListRequest request,
         io.grpc.stub.StreamObserver<com.aiflow.proto.Message.Response> responseObserver) {
-      asyncUnimplementedUnaryCall(getListExampleMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getListDatasetsMethod(), responseObserver);
     }
 
     /**
      */
-    public void registerExample(com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest request,
+    public void registerDataset(com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest request,
         io.grpc.stub.StreamObserver<com.aiflow.proto.Message.Response> responseObserver) {
-      asyncUnimplementedUnaryCall(getRegisterExampleMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getRegisterDatasetMethod(), responseObserver);
     }
 
     /**
      */
-    public void registerExampleWithCatalog(com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest request,
+    public void registerDatasetWithCatalog(com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest request,
         io.grpc.stub.StreamObserver<com.aiflow.proto.Message.Response> responseObserver) {
-      asyncUnimplementedUnaryCall(getRegisterExampleWithCatalogMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getRegisterDatasetWithCatalogMethod(), responseObserver);
     }
 
     /**
      */
-    public void registerExamples(com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest request,
+    public void registerDatasets(com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest request,
         io.grpc.stub.StreamObserver<com.aiflow.proto.Message.Response> responseObserver) {
-      asyncUnimplementedUnaryCall(getRegisterExamplesMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getRegisterDatasetsMethod(), responseObserver);
     }
 
     /**
      */
-    public void updateExample(com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest request,
+    public void updateDataset(com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest request,
         io.grpc.stub.StreamObserver<com.aiflow.proto.Message.Response> responseObserver) {
-      asyncUnimplementedUnaryCall(getUpdateExampleMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getUpdateDatasetMethod(), responseObserver);
     }
 
     /**
      */
-    public void deleteExampleById(com.aiflow.proto.MetadataServiceOuterClass.IdRequest request,
+    public void deleteDatasetById(com.aiflow.proto.MetadataServiceOuterClass.IdRequest request,
         io.grpc.stub.StreamObserver<com.aiflow.proto.Message.Response> responseObserver) {
-      asyncUnimplementedUnaryCall(getDeleteExampleByIdMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getDeleteDatasetByIdMethod(), responseObserver);
     }
 
     /**
      */
-    public void deleteExampleByName(com.aiflow.proto.MetadataServiceOuterClass.NameRequest request,
+    public void deleteDatasetByName(com.aiflow.proto.MetadataServiceOuterClass.NameRequest request,
         io.grpc.stub.StreamObserver<com.aiflow.proto.Message.Response> responseObserver) {
-      asyncUnimplementedUnaryCall(getDeleteExampleByNameMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getDeleteDatasetByNameMethod(), responseObserver);
     }
 
     /**
@@ -2479,68 +2479,68 @@ public final class MetadataServiceGrpc {
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
-            getGetExampleByIdMethod(),
+            getGetDatasetByIdMethod(),
             asyncUnaryCall(
               new MethodHandlers<
                 com.aiflow.proto.MetadataServiceOuterClass.IdRequest,
                 com.aiflow.proto.Message.Response>(
-                  this, METHODID_GET_EXAMPLE_BY_ID)))
+                  this, METHODID_GET_DATASET_BY_ID)))
           .addMethod(
-            getGetExampleByNameMethod(),
+            getGetDatasetByNameMethod(),
             asyncUnaryCall(
               new MethodHandlers<
                 com.aiflow.proto.MetadataServiceOuterClass.NameRequest,
                 com.aiflow.proto.Message.Response>(
-                  this, METHODID_GET_EXAMPLE_BY_NAME)))
+                  this, METHODID_GET_DATASET_BY_NAME)))
           .addMethod(
-            getListExampleMethod(),
+            getListDatasetsMethod(),
             asyncUnaryCall(
               new MethodHandlers<
                 com.aiflow.proto.MetadataServiceOuterClass.ListRequest,
                 com.aiflow.proto.Message.Response>(
-                  this, METHODID_LIST_EXAMPLE)))
+                  this, METHODID_LIST_DATASETS)))
           .addMethod(
-            getRegisterExampleMethod(),
+            getRegisterDatasetMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest,
+                com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest,
                 com.aiflow.proto.Message.Response>(
-                  this, METHODID_REGISTER_EXAMPLE)))
+                  this, METHODID_REGISTER_DATASET)))
           .addMethod(
-            getRegisterExampleWithCatalogMethod(),
+            getRegisterDatasetWithCatalogMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest,
+                com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest,
                 com.aiflow.proto.Message.Response>(
-                  this, METHODID_REGISTER_EXAMPLE_WITH_CATALOG)))
+                  this, METHODID_REGISTER_DATASET_WITH_CATALOG)))
           .addMethod(
-            getRegisterExamplesMethod(),
+            getRegisterDatasetsMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest,
+                com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest,
                 com.aiflow.proto.Message.Response>(
-                  this, METHODID_REGISTER_EXAMPLES)))
+                  this, METHODID_REGISTER_DATASETS)))
           .addMethod(
-            getUpdateExampleMethod(),
+            getUpdateDatasetMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest,
+                com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest,
                 com.aiflow.proto.Message.Response>(
-                  this, METHODID_UPDATE_EXAMPLE)))
+                  this, METHODID_UPDATE_DATASET)))
           .addMethod(
-            getDeleteExampleByIdMethod(),
+            getDeleteDatasetByIdMethod(),
             asyncUnaryCall(
               new MethodHandlers<
                 com.aiflow.proto.MetadataServiceOuterClass.IdRequest,
                 com.aiflow.proto.Message.Response>(
-                  this, METHODID_DELETE_EXAMPLE_BY_ID)))
+                  this, METHODID_DELETE_DATASET_BY_ID)))
           .addMethod(
-            getDeleteExampleByNameMethod(),
+            getDeleteDatasetByNameMethod(),
             asyncUnaryCall(
               new MethodHandlers<
                 com.aiflow.proto.MetadataServiceOuterClass.NameRequest,
                 com.aiflow.proto.Message.Response>(
-                  this, METHODID_DELETE_EXAMPLE_BY_NAME)))
+                  this, METHODID_DELETE_DATASET_BY_NAME)))
           .addMethod(
             getGetModelRelationByIdMethod(),
             asyncUnaryCall(
@@ -2932,77 +2932,77 @@ public final class MetadataServiceGrpc {
 
     /**
      * <pre>
-     *example api
+     *dataset api
      * </pre>
      */
-    public void getExampleById(com.aiflow.proto.MetadataServiceOuterClass.IdRequest request,
+    public void getDatasetById(com.aiflow.proto.MetadataServiceOuterClass.IdRequest request,
         io.grpc.stub.StreamObserver<com.aiflow.proto.Message.Response> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getGetExampleByIdMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getGetDatasetByIdMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
      */
-    public void getExampleByName(com.aiflow.proto.MetadataServiceOuterClass.NameRequest request,
+    public void getDatasetByName(com.aiflow.proto.MetadataServiceOuterClass.NameRequest request,
         io.grpc.stub.StreamObserver<com.aiflow.proto.Message.Response> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getGetExampleByNameMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getGetDatasetByNameMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
      */
-    public void listExample(com.aiflow.proto.MetadataServiceOuterClass.ListRequest request,
+    public void listDatasets(com.aiflow.proto.MetadataServiceOuterClass.ListRequest request,
         io.grpc.stub.StreamObserver<com.aiflow.proto.Message.Response> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getListExampleMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getListDatasetsMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
      */
-    public void registerExample(com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest request,
+    public void registerDataset(com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest request,
         io.grpc.stub.StreamObserver<com.aiflow.proto.Message.Response> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getRegisterExampleMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getRegisterDatasetMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
      */
-    public void registerExampleWithCatalog(com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest request,
+    public void registerDatasetWithCatalog(com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest request,
         io.grpc.stub.StreamObserver<com.aiflow.proto.Message.Response> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getRegisterExampleWithCatalogMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getRegisterDatasetWithCatalogMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
      */
-    public void registerExamples(com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest request,
+    public void registerDatasets(com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest request,
         io.grpc.stub.StreamObserver<com.aiflow.proto.Message.Response> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getRegisterExamplesMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getRegisterDatasetsMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
      */
-    public void updateExample(com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest request,
+    public void updateDataset(com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest request,
         io.grpc.stub.StreamObserver<com.aiflow.proto.Message.Response> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getUpdateExampleMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getUpdateDatasetMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
      */
-    public void deleteExampleById(com.aiflow.proto.MetadataServiceOuterClass.IdRequest request,
+    public void deleteDatasetById(com.aiflow.proto.MetadataServiceOuterClass.IdRequest request,
         io.grpc.stub.StreamObserver<com.aiflow.proto.Message.Response> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getDeleteExampleByIdMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getDeleteDatasetByIdMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
      */
-    public void deleteExampleByName(com.aiflow.proto.MetadataServiceOuterClass.NameRequest request,
+    public void deleteDatasetByName(com.aiflow.proto.MetadataServiceOuterClass.NameRequest request,
         io.grpc.stub.StreamObserver<com.aiflow.proto.Message.Response> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getDeleteExampleByNameMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getDeleteDatasetByNameMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -3470,68 +3470,68 @@ public final class MetadataServiceGrpc {
 
     /**
      * <pre>
-     *example api
+     *dataset api
      * </pre>
      */
-    public com.aiflow.proto.Message.Response getExampleById(com.aiflow.proto.MetadataServiceOuterClass.IdRequest request) {
+    public com.aiflow.proto.Message.Response getDatasetById(com.aiflow.proto.MetadataServiceOuterClass.IdRequest request) {
       return blockingUnaryCall(
-          getChannel(), getGetExampleByIdMethod(), getCallOptions(), request);
+          getChannel(), getGetDatasetByIdMethod(), getCallOptions(), request);
     }
 
     /**
      */
-    public com.aiflow.proto.Message.Response getExampleByName(com.aiflow.proto.MetadataServiceOuterClass.NameRequest request) {
+    public com.aiflow.proto.Message.Response getDatasetByName(com.aiflow.proto.MetadataServiceOuterClass.NameRequest request) {
       return blockingUnaryCall(
-          getChannel(), getGetExampleByNameMethod(), getCallOptions(), request);
+          getChannel(), getGetDatasetByNameMethod(), getCallOptions(), request);
     }
 
     /**
      */
-    public com.aiflow.proto.Message.Response listExample(com.aiflow.proto.MetadataServiceOuterClass.ListRequest request) {
+    public com.aiflow.proto.Message.Response listDatasets(com.aiflow.proto.MetadataServiceOuterClass.ListRequest request) {
       return blockingUnaryCall(
-          getChannel(), getListExampleMethod(), getCallOptions(), request);
+          getChannel(), getListDatasetsMethod(), getCallOptions(), request);
     }
 
     /**
      */
-    public com.aiflow.proto.Message.Response registerExample(com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest request) {
+    public com.aiflow.proto.Message.Response registerDataset(com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest request) {
       return blockingUnaryCall(
-          getChannel(), getRegisterExampleMethod(), getCallOptions(), request);
+          getChannel(), getRegisterDatasetMethod(), getCallOptions(), request);
     }
 
     /**
      */
-    public com.aiflow.proto.Message.Response registerExampleWithCatalog(com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest request) {
+    public com.aiflow.proto.Message.Response registerDatasetWithCatalog(com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest request) {
       return blockingUnaryCall(
-          getChannel(), getRegisterExampleWithCatalogMethod(), getCallOptions(), request);
+          getChannel(), getRegisterDatasetWithCatalogMethod(), getCallOptions(), request);
     }
 
     /**
      */
-    public com.aiflow.proto.Message.Response registerExamples(com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest request) {
+    public com.aiflow.proto.Message.Response registerDatasets(com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest request) {
       return blockingUnaryCall(
-          getChannel(), getRegisterExamplesMethod(), getCallOptions(), request);
+          getChannel(), getRegisterDatasetsMethod(), getCallOptions(), request);
     }
 
     /**
      */
-    public com.aiflow.proto.Message.Response updateExample(com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest request) {
+    public com.aiflow.proto.Message.Response updateDataset(com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest request) {
       return blockingUnaryCall(
-          getChannel(), getUpdateExampleMethod(), getCallOptions(), request);
+          getChannel(), getUpdateDatasetMethod(), getCallOptions(), request);
     }
 
     /**
      */
-    public com.aiflow.proto.Message.Response deleteExampleById(com.aiflow.proto.MetadataServiceOuterClass.IdRequest request) {
+    public com.aiflow.proto.Message.Response deleteDatasetById(com.aiflow.proto.MetadataServiceOuterClass.IdRequest request) {
       return blockingUnaryCall(
-          getChannel(), getDeleteExampleByIdMethod(), getCallOptions(), request);
+          getChannel(), getDeleteDatasetByIdMethod(), getCallOptions(), request);
     }
 
     /**
      */
-    public com.aiflow.proto.Message.Response deleteExampleByName(com.aiflow.proto.MetadataServiceOuterClass.NameRequest request) {
+    public com.aiflow.proto.Message.Response deleteDatasetByName(com.aiflow.proto.MetadataServiceOuterClass.NameRequest request) {
       return blockingUnaryCall(
-          getChannel(), getDeleteExampleByNameMethod(), getCallOptions(), request);
+          getChannel(), getDeleteDatasetByNameMethod(), getCallOptions(), request);
     }
 
     /**
@@ -3946,77 +3946,77 @@ public final class MetadataServiceGrpc {
 
     /**
      * <pre>
-     *example api
+     *dataset api
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.aiflow.proto.Message.Response> getExampleById(
+    public com.google.common.util.concurrent.ListenableFuture<com.aiflow.proto.Message.Response> getDatasetById(
         com.aiflow.proto.MetadataServiceOuterClass.IdRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getGetExampleByIdMethod(), getCallOptions()), request);
+          getChannel().newCall(getGetDatasetByIdMethod(), getCallOptions()), request);
     }
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.aiflow.proto.Message.Response> getExampleByName(
+    public com.google.common.util.concurrent.ListenableFuture<com.aiflow.proto.Message.Response> getDatasetByName(
         com.aiflow.proto.MetadataServiceOuterClass.NameRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getGetExampleByNameMethod(), getCallOptions()), request);
+          getChannel().newCall(getGetDatasetByNameMethod(), getCallOptions()), request);
     }
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.aiflow.proto.Message.Response> listExample(
+    public com.google.common.util.concurrent.ListenableFuture<com.aiflow.proto.Message.Response> listDatasets(
         com.aiflow.proto.MetadataServiceOuterClass.ListRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getListExampleMethod(), getCallOptions()), request);
+          getChannel().newCall(getListDatasetsMethod(), getCallOptions()), request);
     }
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.aiflow.proto.Message.Response> registerExample(
-        com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.aiflow.proto.Message.Response> registerDataset(
+        com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getRegisterExampleMethod(), getCallOptions()), request);
+          getChannel().newCall(getRegisterDatasetMethod(), getCallOptions()), request);
     }
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.aiflow.proto.Message.Response> registerExampleWithCatalog(
-        com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.aiflow.proto.Message.Response> registerDatasetWithCatalog(
+        com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getRegisterExampleWithCatalogMethod(), getCallOptions()), request);
+          getChannel().newCall(getRegisterDatasetWithCatalogMethod(), getCallOptions()), request);
     }
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.aiflow.proto.Message.Response> registerExamples(
-        com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.aiflow.proto.Message.Response> registerDatasets(
+        com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getRegisterExamplesMethod(), getCallOptions()), request);
+          getChannel().newCall(getRegisterDatasetsMethod(), getCallOptions()), request);
     }
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.aiflow.proto.Message.Response> updateExample(
-        com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.aiflow.proto.Message.Response> updateDataset(
+        com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getUpdateExampleMethod(), getCallOptions()), request);
+          getChannel().newCall(getUpdateDatasetMethod(), getCallOptions()), request);
     }
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.aiflow.proto.Message.Response> deleteExampleById(
+    public com.google.common.util.concurrent.ListenableFuture<com.aiflow.proto.Message.Response> deleteDatasetById(
         com.aiflow.proto.MetadataServiceOuterClass.IdRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getDeleteExampleByIdMethod(), getCallOptions()), request);
+          getChannel().newCall(getDeleteDatasetByIdMethod(), getCallOptions()), request);
     }
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.aiflow.proto.Message.Response> deleteExampleByName(
+    public com.google.common.util.concurrent.ListenableFuture<com.aiflow.proto.Message.Response> deleteDatasetByName(
         com.aiflow.proto.MetadataServiceOuterClass.NameRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getDeleteExampleByNameMethod(), getCallOptions()), request);
+          getChannel().newCall(getDeleteDatasetByNameMethod(), getCallOptions()), request);
     }
 
     /**
@@ -4468,15 +4468,15 @@ public final class MetadataServiceGrpc {
     }
   }
 
-  private static final int METHODID_GET_EXAMPLE_BY_ID = 0;
-  private static final int METHODID_GET_EXAMPLE_BY_NAME = 1;
-  private static final int METHODID_LIST_EXAMPLE = 2;
-  private static final int METHODID_REGISTER_EXAMPLE = 3;
-  private static final int METHODID_REGISTER_EXAMPLE_WITH_CATALOG = 4;
-  private static final int METHODID_REGISTER_EXAMPLES = 5;
-  private static final int METHODID_UPDATE_EXAMPLE = 6;
-  private static final int METHODID_DELETE_EXAMPLE_BY_ID = 7;
-  private static final int METHODID_DELETE_EXAMPLE_BY_NAME = 8;
+  private static final int METHODID_GET_DATASET_BY_ID = 0;
+  private static final int METHODID_GET_DATASET_BY_NAME = 1;
+  private static final int METHODID_LIST_DATASETS = 2;
+  private static final int METHODID_REGISTER_DATASET = 3;
+  private static final int METHODID_REGISTER_DATASET_WITH_CATALOG = 4;
+  private static final int METHODID_REGISTER_DATASETS = 5;
+  private static final int METHODID_UPDATE_DATASET = 6;
+  private static final int METHODID_DELETE_DATASET_BY_ID = 7;
+  private static final int METHODID_DELETE_DATASET_BY_NAME = 8;
   private static final int METHODID_GET_MODEL_RELATION_BY_ID = 9;
   private static final int METHODID_GET_MODEL_RELATION_BY_NAME = 10;
   private static final int METHODID_LIST_MODEL_RELATION = 11;
@@ -4548,40 +4548,40 @@ public final class MetadataServiceGrpc {
     @java.lang.SuppressWarnings("unchecked")
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
-        case METHODID_GET_EXAMPLE_BY_ID:
-          serviceImpl.getExampleById((com.aiflow.proto.MetadataServiceOuterClass.IdRequest) request,
+        case METHODID_GET_DATASET_BY_ID:
+          serviceImpl.getDatasetById((com.aiflow.proto.MetadataServiceOuterClass.IdRequest) request,
               (io.grpc.stub.StreamObserver<com.aiflow.proto.Message.Response>) responseObserver);
           break;
-        case METHODID_GET_EXAMPLE_BY_NAME:
-          serviceImpl.getExampleByName((com.aiflow.proto.MetadataServiceOuterClass.NameRequest) request,
+        case METHODID_GET_DATASET_BY_NAME:
+          serviceImpl.getDatasetByName((com.aiflow.proto.MetadataServiceOuterClass.NameRequest) request,
               (io.grpc.stub.StreamObserver<com.aiflow.proto.Message.Response>) responseObserver);
           break;
-        case METHODID_LIST_EXAMPLE:
-          serviceImpl.listExample((com.aiflow.proto.MetadataServiceOuterClass.ListRequest) request,
+        case METHODID_LIST_DATASETS:
+          serviceImpl.listDatasets((com.aiflow.proto.MetadataServiceOuterClass.ListRequest) request,
               (io.grpc.stub.StreamObserver<com.aiflow.proto.Message.Response>) responseObserver);
           break;
-        case METHODID_REGISTER_EXAMPLE:
-          serviceImpl.registerExample((com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest) request,
+        case METHODID_REGISTER_DATASET:
+          serviceImpl.registerDataset((com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest) request,
               (io.grpc.stub.StreamObserver<com.aiflow.proto.Message.Response>) responseObserver);
           break;
-        case METHODID_REGISTER_EXAMPLE_WITH_CATALOG:
-          serviceImpl.registerExampleWithCatalog((com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest) request,
+        case METHODID_REGISTER_DATASET_WITH_CATALOG:
+          serviceImpl.registerDatasetWithCatalog((com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest) request,
               (io.grpc.stub.StreamObserver<com.aiflow.proto.Message.Response>) responseObserver);
           break;
-        case METHODID_REGISTER_EXAMPLES:
-          serviceImpl.registerExamples((com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest) request,
+        case METHODID_REGISTER_DATASETS:
+          serviceImpl.registerDatasets((com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest) request,
               (io.grpc.stub.StreamObserver<com.aiflow.proto.Message.Response>) responseObserver);
           break;
-        case METHODID_UPDATE_EXAMPLE:
-          serviceImpl.updateExample((com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest) request,
+        case METHODID_UPDATE_DATASET:
+          serviceImpl.updateDataset((com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest) request,
               (io.grpc.stub.StreamObserver<com.aiflow.proto.Message.Response>) responseObserver);
           break;
-        case METHODID_DELETE_EXAMPLE_BY_ID:
-          serviceImpl.deleteExampleById((com.aiflow.proto.MetadataServiceOuterClass.IdRequest) request,
+        case METHODID_DELETE_DATASET_BY_ID:
+          serviceImpl.deleteDatasetById((com.aiflow.proto.MetadataServiceOuterClass.IdRequest) request,
               (io.grpc.stub.StreamObserver<com.aiflow.proto.Message.Response>) responseObserver);
           break;
-        case METHODID_DELETE_EXAMPLE_BY_NAME:
-          serviceImpl.deleteExampleByName((com.aiflow.proto.MetadataServiceOuterClass.NameRequest) request,
+        case METHODID_DELETE_DATASET_BY_NAME:
+          serviceImpl.deleteDatasetByName((com.aiflow.proto.MetadataServiceOuterClass.NameRequest) request,
               (io.grpc.stub.StreamObserver<com.aiflow.proto.Message.Response>) responseObserver);
           break;
         case METHODID_GET_MODEL_RELATION_BY_ID:
@@ -4857,15 +4857,15 @@ public final class MetadataServiceGrpc {
         if (result == null) {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new MetadataServiceFileDescriptorSupplier())
-              .addMethod(getGetExampleByIdMethod())
-              .addMethod(getGetExampleByNameMethod())
-              .addMethod(getListExampleMethod())
-              .addMethod(getRegisterExampleMethod())
-              .addMethod(getRegisterExampleWithCatalogMethod())
-              .addMethod(getRegisterExamplesMethod())
-              .addMethod(getUpdateExampleMethod())
-              .addMethod(getDeleteExampleByIdMethod())
-              .addMethod(getDeleteExampleByNameMethod())
+              .addMethod(getGetDatasetByIdMethod())
+              .addMethod(getGetDatasetByNameMethod())
+              .addMethod(getListDatasetsMethod())
+              .addMethod(getRegisterDatasetMethod())
+              .addMethod(getRegisterDatasetWithCatalogMethod())
+              .addMethod(getRegisterDatasetsMethod())
+              .addMethod(getUpdateDatasetMethod())
+              .addMethod(getDeleteDatasetByIdMethod())
+              .addMethod(getDeleteDatasetByNameMethod())
               .addMethod(getGetModelRelationByIdMethod())
               .addMethod(getGetModelRelationByNameMethod())
               .addMethod(getListModelRelationMethod())

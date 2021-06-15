@@ -22,7 +22,7 @@ from google.protobuf.json_format import MessageToJson, Parse
 
 from ai_flow.common.status import Status
 from ai_flow.meta.artifact_meta import ArtifactMeta
-from ai_flow.meta.example_meta import DataType, Schema, ExampleMeta, ExampleSupportType
+from ai_flow.meta.dataset_meta import DataType, Schema, DatasetMeta
 from ai_flow.meta.job_meta import State, JobMeta
 from ai_flow.meta.model_meta import ModelMeta, ModelVersionMeta
 from ai_flow.meta.model_relation_meta import ModelRelationMeta, ModelVersionRelationMeta
@@ -31,9 +31,9 @@ from ai_flow.meta.workflow_execution_meta import WorkflowExecutionMeta
 from ai_flow.metadata_store.utils.MetaToProto import MetaToProto
 from ai_flow.metadata_store.utils.ProtoToMeta import ProtoToMeta
 from ai_flow.protobuf.message_pb2 import Response, SUCCESS, ReturnCode, RESOURCE_DOES_NOT_EXIST, \
-    ExampleProto, ModelProto, ModelVersionProto, WorkflowExecutionProto, JobProto, ProjectProto, INTERNAL_ERROR, \
-    DataTypeProto, ExampleSupportTypeProto, StateProto, ArtifactProto
-from ai_flow.protobuf.metadata_service_pb2 import ExampleListProto, WorkFlowExecutionListProto, \
+    DatasetProto, ModelProto, ModelVersionProto, WorkflowExecutionProto, JobProto, ProjectProto, INTERNAL_ERROR, \
+    DataTypeProto, StateProto, ArtifactProto
+from ai_flow.protobuf.metadata_service_pb2 import DatasetListProto, WorkFlowExecutionListProto, \
     JobListProto, ProjectListProto, ModelVersionRelationListProto, ModelRelationListProto, ModelVersionListProto, \
     ArtifactListProto
 from ai_flow.endpoint.server.exception import AIFlowException
@@ -69,19 +69,19 @@ def _parse_response(response, message):
         raise AIFlowException(error_code=response.return_code, error_msg=response.return_msg)
 
 
-def _unwrap_example_response(response):
+def _unwrap_dataset_response(response):
     if response.return_code == str(SUCCESS):
-        return ProtoToMeta.proto_to_example_meta(Parse(response.data, ExampleProto()))
+        return ProtoToMeta.proto_to_dataset_meta(Parse(response.data, DatasetProto()))
     elif response.return_code == str(RESOURCE_DOES_NOT_EXIST):
         return None
     else:
         raise AIFlowException(response.return_msg)
 
 
-def _unwrap_example_list_response(response):
+def _unwrap_dataset_list_response(response):
     if response.return_code == str(SUCCESS):
-        example_proto_list = Parse(response.data, ExampleListProto())
-        return ProtoToMeta.proto_to_example_meta_list(example_proto_list.examples)
+        dataset_proto_list = Parse(response.data, DatasetListProto())
+        return ProtoToMeta.proto_to_dataset_meta_list(dataset_proto_list.datasets)
     elif response.return_code == str(RESOURCE_DOES_NOT_EXIST):
         return None
     else:
@@ -248,7 +248,7 @@ def _unwrap_update_response(response):
         raise AIFlowException(response.return_msg)
 
 
-def transform_example_type_list_to_proto(type_list):
+def transform_dataset_type_list_to_proto(type_list):
     data_type_list = []
     if type_list is not None:
         for data_type in type_list:
@@ -284,11 +284,11 @@ def _wrap_update_response(uuid):
                         data=None)
 
 
-def _warp_example_list_response(example_meta_list):
-    if example_meta_list is not None:
-        example_proto_list = MetaToProto.example_meta_list_to_proto(example_meta_list)
+def _warp_dataset_list_response(dataset_meta_list):
+    if dataset_meta_list is not None:
+        dataset_proto_list = MetaToProto.dataset_meta_list_to_proto(dataset_meta_list)
         return Response(return_code=str(SUCCESS), return_msg=ReturnCode.Name(SUCCESS).lower(),
-                        data=MessageToJson(ExampleListProto(examples=example_proto_list),
+                        data=MessageToJson(DatasetListProto(datasets=dataset_proto_list),
                                            preserving_proto_field_name=True))
     else:
         return Response(return_code=str(RESOURCE_DOES_NOT_EXIST),
@@ -368,13 +368,12 @@ def _warp_artifact_list_response(artifact_list):
                         data=None)
 
 
-def transform_example_meta(example_proto):
-    support_type = ExampleSupportType(ExampleSupportTypeProto.Name(example_proto.support_type))
-    properties = example_proto.properties
+def transform_dataset_meta(dataset_proto):
+    properties = dataset_proto.properties
     if properties == {}:
         properties = None
-    name_list = example_proto.schema.name_list
-    type_list = example_proto.schema.type_list
+    name_list = dataset_proto.schema.name_list
+    type_list = dataset_proto.schema.type_list
     if not name_list:
         name_list = None
     if not type_list:
@@ -384,27 +383,23 @@ def transform_example_meta(example_proto):
         for c in type_list:
             data_type_list.append(DataType(DataTypeProto.Name(c)))
     schema = Schema(name_list=name_list, type_list=data_type_list)
-    return ExampleMeta(name=example_proto.name,
-                       support_type=support_type,
-                       data_type=example_proto.data_type.value if example_proto.HasField('data_type') else None,
-                       data_format=example_proto.data_format.value if example_proto.HasField('data_format') else None,
-                       description=example_proto.description.value if example_proto.HasField('description') else None,
-                       batch_uri=example_proto.batch_uri.value if example_proto.HasField('batch_uri') else None,
-                       stream_uri=example_proto.stream_uri.value if example_proto.HasField('stream_uri') else None,
-                       create_time=example_proto.create_time.value if example_proto.HasField('create_time') else None,
-                       update_time=example_proto.update_time.value if example_proto.HasField('update_time') else None,
-                       properties=properties, schema=schema,
-                       catalog_name=example_proto.catalog_name.value if example_proto.HasField(
+    return DatasetMeta(name=dataset_proto.name,
+                       data_format=dataset_proto.data_format.value if dataset_proto.HasField('data_format') else None,
+                       description=dataset_proto.description.value if dataset_proto.HasField('description') else None,
+                       uri=dataset_proto.uri.value if dataset_proto.HasField('uri') else None,
+                       create_time=dataset_proto.create_time.value if dataset_proto.HasField('create_time') else None,
+                       update_time=dataset_proto.update_time.value if dataset_proto.HasField('update_time') else None,
+                       properties=properties,
+                       schema=schema,
+                       catalog_name=dataset_proto.catalog_name.value if dataset_proto.HasField(
                            'catalog_name') else None,
-                       catalog_type=example_proto.catalog_type.value if example_proto.HasField(
+                       catalog_type=dataset_proto.catalog_type.value if dataset_proto.HasField(
                            'catalog_type') else None,
-                       catalog_database=example_proto.catalog_database.value if example_proto.HasField(
+                       catalog_database=dataset_proto.catalog_database.value if dataset_proto.HasField(
                            'catalog_database') else None,
-                       catalog_version=example_proto.catalog_version.value if example_proto.HasField(
-                           'catalog_version') else None,
-                       catalog_connection_uri=example_proto.catalog_connection_uri.value \
-                           if example_proto.HasField('catalog_connection_uri') else None,
-                       catalog_table=example_proto.catalog_table.value if example_proto.HasField(
+                       catalog_connection_uri=dataset_proto.catalog_connection_uri.value \
+                           if dataset_proto.HasField('catalog_connection_uri') else None,
+                       catalog_table=dataset_proto.catalog_table.value if dataset_proto.HasField(
                            'catalog_table') else None)
 
 

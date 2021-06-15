@@ -2517,49 +2517,49 @@ public final class MetadataServiceOuterClass {
 
   }
 
-  public interface RegisterExampleRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ai_flow.RegisterExampleRequest)
+  public interface RegisterDatasetRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ai_flow.RegisterDatasetRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.ai_flow.ExampleProto example = 1;</code>
-     * @return Whether the example field is set.
+     * <code>.ai_flow.DatasetProto dataset = 1;</code>
+     * @return Whether the dataset field is set.
      */
-    boolean hasExample();
+    boolean hasDataset();
     /**
-     * <code>.ai_flow.ExampleProto example = 1;</code>
-     * @return The example.
+     * <code>.ai_flow.DatasetProto dataset = 1;</code>
+     * @return The dataset.
      */
-    com.aiflow.proto.Message.ExampleProto getExample();
+    com.aiflow.proto.Message.DatasetProto getDataset();
     /**
-     * <code>.ai_flow.ExampleProto example = 1;</code>
+     * <code>.ai_flow.DatasetProto dataset = 1;</code>
      */
-    com.aiflow.proto.Message.ExampleProtoOrBuilder getExampleOrBuilder();
+    com.aiflow.proto.Message.DatasetProtoOrBuilder getDatasetOrBuilder();
   }
   /**
    * <pre>
-   *example
+   *dataset
    * </pre>
    *
-   * Protobuf type {@code ai_flow.RegisterExampleRequest}
+   * Protobuf type {@code ai_flow.RegisterDatasetRequest}
    */
-  public static final class RegisterExampleRequest extends
+  public static final class RegisterDatasetRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:ai_flow.RegisterExampleRequest)
-      RegisterExampleRequestOrBuilder {
+      // @@protoc_insertion_point(message_implements:ai_flow.RegisterDatasetRequest)
+      RegisterDatasetRequestOrBuilder {
   private static final long serialVersionUID = 0L;
-    // Use RegisterExampleRequest.newBuilder() to construct.
-    private RegisterExampleRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use RegisterDatasetRequest.newBuilder() to construct.
+    private RegisterDatasetRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private RegisterExampleRequest() {
+    private RegisterDatasetRequest() {
     }
 
     @java.lang.Override
     @SuppressWarnings({"unused"})
     protected java.lang.Object newInstance(
         UnusedPrivateParameter unused) {
-      return new RegisterExampleRequest();
+      return new RegisterDatasetRequest();
     }
 
     @java.lang.Override
@@ -2567,7 +2567,7 @@ public final class MetadataServiceOuterClass {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private RegisterExampleRequest(
+    private RegisterDatasetRequest(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -2586,14 +2586,14 @@ public final class MetadataServiceOuterClass {
               done = true;
               break;
             case 10: {
-              com.aiflow.proto.Message.ExampleProto.Builder subBuilder = null;
-              if (example_ != null) {
-                subBuilder = example_.toBuilder();
+              com.aiflow.proto.Message.DatasetProto.Builder subBuilder = null;
+              if (dataset_ != null) {
+                subBuilder = dataset_.toBuilder();
               }
-              example_ = input.readMessage(com.aiflow.proto.Message.ExampleProto.parser(), extensionRegistry);
+              dataset_ = input.readMessage(com.aiflow.proto.Message.DatasetProto.parser(), extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom(example_);
-                example_ = subBuilder.buildPartial();
+                subBuilder.mergeFrom(dataset_);
+                dataset_ = subBuilder.buildPartial();
               }
 
               break;
@@ -2619,41 +2619,41 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterExampleRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterDatasetRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterExampleRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterDatasetRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest.Builder.class);
+              com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest.Builder.class);
     }
 
-    public static final int EXAMPLE_FIELD_NUMBER = 1;
-    private com.aiflow.proto.Message.ExampleProto example_;
+    public static final int DATASET_FIELD_NUMBER = 1;
+    private com.aiflow.proto.Message.DatasetProto dataset_;
     /**
-     * <code>.ai_flow.ExampleProto example = 1;</code>
-     * @return Whether the example field is set.
+     * <code>.ai_flow.DatasetProto dataset = 1;</code>
+     * @return Whether the dataset field is set.
      */
     @java.lang.Override
-    public boolean hasExample() {
-      return example_ != null;
+    public boolean hasDataset() {
+      return dataset_ != null;
     }
     /**
-     * <code>.ai_flow.ExampleProto example = 1;</code>
-     * @return The example.
+     * <code>.ai_flow.DatasetProto dataset = 1;</code>
+     * @return The dataset.
      */
     @java.lang.Override
-    public com.aiflow.proto.Message.ExampleProto getExample() {
-      return example_ == null ? com.aiflow.proto.Message.ExampleProto.getDefaultInstance() : example_;
+    public com.aiflow.proto.Message.DatasetProto getDataset() {
+      return dataset_ == null ? com.aiflow.proto.Message.DatasetProto.getDefaultInstance() : dataset_;
     }
     /**
-     * <code>.ai_flow.ExampleProto example = 1;</code>
+     * <code>.ai_flow.DatasetProto dataset = 1;</code>
      */
     @java.lang.Override
-    public com.aiflow.proto.Message.ExampleProtoOrBuilder getExampleOrBuilder() {
-      return getExample();
+    public com.aiflow.proto.Message.DatasetProtoOrBuilder getDatasetOrBuilder() {
+      return getDataset();
     }
 
     private byte memoizedIsInitialized = -1;
@@ -2670,8 +2670,8 @@ public final class MetadataServiceOuterClass {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (example_ != null) {
-        output.writeMessage(1, getExample());
+      if (dataset_ != null) {
+        output.writeMessage(1, getDataset());
       }
       unknownFields.writeTo(output);
     }
@@ -2682,9 +2682,9 @@ public final class MetadataServiceOuterClass {
       if (size != -1) return size;
 
       size = 0;
-      if (example_ != null) {
+      if (dataset_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, getExample());
+          .computeMessageSize(1, getDataset());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -2696,15 +2696,15 @@ public final class MetadataServiceOuterClass {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest)) {
+      if (!(obj instanceof com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest)) {
         return super.equals(obj);
       }
-      com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest other = (com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest) obj;
+      com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest other = (com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest) obj;
 
-      if (hasExample() != other.hasExample()) return false;
-      if (hasExample()) {
-        if (!getExample()
-            .equals(other.getExample())) return false;
+      if (hasDataset() != other.hasDataset()) return false;
+      if (hasDataset()) {
+        if (!getDataset()
+            .equals(other.getDataset())) return false;
       }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
@@ -2717,78 +2717,78 @@ public final class MetadataServiceOuterClass {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasExample()) {
-        hash = (37 * hash) + EXAMPLE_FIELD_NUMBER;
-        hash = (53 * hash) + getExample().hashCode();
+      if (hasDataset()) {
+        hash = (37 * hash) + DATASET_FIELD_NUMBER;
+        hash = (53 * hash) + getDataset().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
-    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest parseFrom(byte[] data)
+    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest parseFrom(java.io.InputStream input)
+    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest parseDelimitedFrom(java.io.InputStream input)
+    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest parseDelimitedFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -2801,7 +2801,7 @@ public final class MetadataServiceOuterClass {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest prototype) {
+    public static Builder newBuilder(com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -2818,29 +2818,29 @@ public final class MetadataServiceOuterClass {
     }
     /**
      * <pre>
-     *example
+     *dataset
      * </pre>
      *
-     * Protobuf type {@code ai_flow.RegisterExampleRequest}
+     * Protobuf type {@code ai_flow.RegisterDatasetRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ai_flow.RegisterExampleRequest)
-        com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequestOrBuilder {
+        // @@protoc_insertion_point(builder_implements:ai_flow.RegisterDatasetRequest)
+        com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterExampleRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterDatasetRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterExampleRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterDatasetRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest.Builder.class);
+                com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest.Builder.class);
       }
 
-      // Construct using com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest.newBuilder()
+      // Construct using com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -2858,11 +2858,11 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (exampleBuilder_ == null) {
-          example_ = null;
+        if (datasetBuilder_ == null) {
+          dataset_ = null;
         } else {
-          example_ = null;
-          exampleBuilder_ = null;
+          dataset_ = null;
+          datasetBuilder_ = null;
         }
         return this;
       }
@@ -2870,17 +2870,17 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterExampleRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterDatasetRequest_descriptor;
       }
 
       @java.lang.Override
-      public com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest getDefaultInstanceForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest.getDefaultInstance();
+      public com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest getDefaultInstanceForType() {
+        return com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest build() {
-        com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest result = buildPartial();
+      public com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest build() {
+        com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -2888,12 +2888,12 @@ public final class MetadataServiceOuterClass {
       }
 
       @java.lang.Override
-      public com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest buildPartial() {
-        com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest result = new com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest(this);
-        if (exampleBuilder_ == null) {
-          result.example_ = example_;
+      public com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest buildPartial() {
+        com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest result = new com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest(this);
+        if (datasetBuilder_ == null) {
+          result.dataset_ = dataset_;
         } else {
-          result.example_ = exampleBuilder_.build();
+          result.dataset_ = datasetBuilder_.build();
         }
         onBuilt();
         return result;
@@ -2933,18 +2933,18 @@ public final class MetadataServiceOuterClass {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest) {
-          return mergeFrom((com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest)other);
+        if (other instanceof com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest) {
+          return mergeFrom((com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest other) {
-        if (other == com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest.getDefaultInstance()) return this;
-        if (other.hasExample()) {
-          mergeExample(other.getExample());
+      public Builder mergeFrom(com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest other) {
+        if (other == com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest.getDefaultInstance()) return this;
+        if (other.hasDataset()) {
+          mergeDataset(other.getDataset());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -2961,11 +2961,11 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest parsedMessage = null;
+        com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest) e.getUnfinishedMessage();
+          parsedMessage = (com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -2975,123 +2975,123 @@ public final class MetadataServiceOuterClass {
         return this;
       }
 
-      private com.aiflow.proto.Message.ExampleProto example_;
+      private com.aiflow.proto.Message.DatasetProto dataset_;
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.aiflow.proto.Message.ExampleProto, com.aiflow.proto.Message.ExampleProto.Builder, com.aiflow.proto.Message.ExampleProtoOrBuilder> exampleBuilder_;
+          com.aiflow.proto.Message.DatasetProto, com.aiflow.proto.Message.DatasetProto.Builder, com.aiflow.proto.Message.DatasetProtoOrBuilder> datasetBuilder_;
       /**
-       * <code>.ai_flow.ExampleProto example = 1;</code>
-       * @return Whether the example field is set.
+       * <code>.ai_flow.DatasetProto dataset = 1;</code>
+       * @return Whether the dataset field is set.
        */
-      public boolean hasExample() {
-        return exampleBuilder_ != null || example_ != null;
+      public boolean hasDataset() {
+        return datasetBuilder_ != null || dataset_ != null;
       }
       /**
-       * <code>.ai_flow.ExampleProto example = 1;</code>
-       * @return The example.
+       * <code>.ai_flow.DatasetProto dataset = 1;</code>
+       * @return The dataset.
        */
-      public com.aiflow.proto.Message.ExampleProto getExample() {
-        if (exampleBuilder_ == null) {
-          return example_ == null ? com.aiflow.proto.Message.ExampleProto.getDefaultInstance() : example_;
+      public com.aiflow.proto.Message.DatasetProto getDataset() {
+        if (datasetBuilder_ == null) {
+          return dataset_ == null ? com.aiflow.proto.Message.DatasetProto.getDefaultInstance() : dataset_;
         } else {
-          return exampleBuilder_.getMessage();
+          return datasetBuilder_.getMessage();
         }
       }
       /**
-       * <code>.ai_flow.ExampleProto example = 1;</code>
+       * <code>.ai_flow.DatasetProto dataset = 1;</code>
        */
-      public Builder setExample(com.aiflow.proto.Message.ExampleProto value) {
-        if (exampleBuilder_ == null) {
+      public Builder setDataset(com.aiflow.proto.Message.DatasetProto value) {
+        if (datasetBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          example_ = value;
+          dataset_ = value;
           onChanged();
         } else {
-          exampleBuilder_.setMessage(value);
+          datasetBuilder_.setMessage(value);
         }
 
         return this;
       }
       /**
-       * <code>.ai_flow.ExampleProto example = 1;</code>
+       * <code>.ai_flow.DatasetProto dataset = 1;</code>
        */
-      public Builder setExample(
-          com.aiflow.proto.Message.ExampleProto.Builder builderForValue) {
-        if (exampleBuilder_ == null) {
-          example_ = builderForValue.build();
+      public Builder setDataset(
+          com.aiflow.proto.Message.DatasetProto.Builder builderForValue) {
+        if (datasetBuilder_ == null) {
+          dataset_ = builderForValue.build();
           onChanged();
         } else {
-          exampleBuilder_.setMessage(builderForValue.build());
+          datasetBuilder_.setMessage(builderForValue.build());
         }
 
         return this;
       }
       /**
-       * <code>.ai_flow.ExampleProto example = 1;</code>
+       * <code>.ai_flow.DatasetProto dataset = 1;</code>
        */
-      public Builder mergeExample(com.aiflow.proto.Message.ExampleProto value) {
-        if (exampleBuilder_ == null) {
-          if (example_ != null) {
-            example_ =
-              com.aiflow.proto.Message.ExampleProto.newBuilder(example_).mergeFrom(value).buildPartial();
+      public Builder mergeDataset(com.aiflow.proto.Message.DatasetProto value) {
+        if (datasetBuilder_ == null) {
+          if (dataset_ != null) {
+            dataset_ =
+              com.aiflow.proto.Message.DatasetProto.newBuilder(dataset_).mergeFrom(value).buildPartial();
           } else {
-            example_ = value;
+            dataset_ = value;
           }
           onChanged();
         } else {
-          exampleBuilder_.mergeFrom(value);
+          datasetBuilder_.mergeFrom(value);
         }
 
         return this;
       }
       /**
-       * <code>.ai_flow.ExampleProto example = 1;</code>
+       * <code>.ai_flow.DatasetProto dataset = 1;</code>
        */
-      public Builder clearExample() {
-        if (exampleBuilder_ == null) {
-          example_ = null;
+      public Builder clearDataset() {
+        if (datasetBuilder_ == null) {
+          dataset_ = null;
           onChanged();
         } else {
-          example_ = null;
-          exampleBuilder_ = null;
+          dataset_ = null;
+          datasetBuilder_ = null;
         }
 
         return this;
       }
       /**
-       * <code>.ai_flow.ExampleProto example = 1;</code>
+       * <code>.ai_flow.DatasetProto dataset = 1;</code>
        */
-      public com.aiflow.proto.Message.ExampleProto.Builder getExampleBuilder() {
+      public com.aiflow.proto.Message.DatasetProto.Builder getDatasetBuilder() {
         
         onChanged();
-        return getExampleFieldBuilder().getBuilder();
+        return getDatasetFieldBuilder().getBuilder();
       }
       /**
-       * <code>.ai_flow.ExampleProto example = 1;</code>
+       * <code>.ai_flow.DatasetProto dataset = 1;</code>
        */
-      public com.aiflow.proto.Message.ExampleProtoOrBuilder getExampleOrBuilder() {
-        if (exampleBuilder_ != null) {
-          return exampleBuilder_.getMessageOrBuilder();
+      public com.aiflow.proto.Message.DatasetProtoOrBuilder getDatasetOrBuilder() {
+        if (datasetBuilder_ != null) {
+          return datasetBuilder_.getMessageOrBuilder();
         } else {
-          return example_ == null ?
-              com.aiflow.proto.Message.ExampleProto.getDefaultInstance() : example_;
+          return dataset_ == null ?
+              com.aiflow.proto.Message.DatasetProto.getDefaultInstance() : dataset_;
         }
       }
       /**
-       * <code>.ai_flow.ExampleProto example = 1;</code>
+       * <code>.ai_flow.DatasetProto dataset = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.aiflow.proto.Message.ExampleProto, com.aiflow.proto.Message.ExampleProto.Builder, com.aiflow.proto.Message.ExampleProtoOrBuilder> 
-          getExampleFieldBuilder() {
-        if (exampleBuilder_ == null) {
-          exampleBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.aiflow.proto.Message.ExampleProto, com.aiflow.proto.Message.ExampleProto.Builder, com.aiflow.proto.Message.ExampleProtoOrBuilder>(
-                  getExample(),
+          com.aiflow.proto.Message.DatasetProto, com.aiflow.proto.Message.DatasetProto.Builder, com.aiflow.proto.Message.DatasetProtoOrBuilder> 
+          getDatasetFieldBuilder() {
+        if (datasetBuilder_ == null) {
+          datasetBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.aiflow.proto.Message.DatasetProto, com.aiflow.proto.Message.DatasetProto.Builder, com.aiflow.proto.Message.DatasetProtoOrBuilder>(
+                  getDataset(),
                   getParentForChildren(),
                   isClean());
-          example_ = null;
+          dataset_ = null;
         }
-        return exampleBuilder_;
+        return datasetBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -3106,95 +3106,95 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:ai_flow.RegisterExampleRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.RegisterDatasetRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:ai_flow.RegisterExampleRequest)
-    private static final com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:ai_flow.RegisterDatasetRequest)
+    private static final com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest();
+      DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest();
     }
 
-    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest getDefaultInstance() {
+    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<RegisterExampleRequest>
-        PARSER = new com.google.protobuf.AbstractParser<RegisterExampleRequest>() {
+    private static final com.google.protobuf.Parser<RegisterDatasetRequest>
+        PARSER = new com.google.protobuf.AbstractParser<RegisterDatasetRequest>() {
       @java.lang.Override
-      public RegisterExampleRequest parsePartialFrom(
+      public RegisterDatasetRequest parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new RegisterExampleRequest(input, extensionRegistry);
+        return new RegisterDatasetRequest(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<RegisterExampleRequest> parser() {
+    public static com.google.protobuf.Parser<RegisterDatasetRequest> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<RegisterExampleRequest> getParserForType() {
+    public com.google.protobuf.Parser<RegisterDatasetRequest> getParserForType() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest getDefaultInstanceForType() {
+    public com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
   }
 
-  public interface RegisterExamplesRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ai_flow.RegisterExamplesRequest)
+  public interface RegisterDatasetsRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ai_flow.RegisterDatasetsRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
      */
-    java.util.List<com.aiflow.proto.Message.ExampleProto> 
-        getExamplesList();
+    java.util.List<com.aiflow.proto.Message.DatasetProto> 
+        getDatasetsList();
     /**
-     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
      */
-    com.aiflow.proto.Message.ExampleProto getExamples(int index);
+    com.aiflow.proto.Message.DatasetProto getDatasets(int index);
     /**
-     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
      */
-    int getExamplesCount();
+    int getDatasetsCount();
     /**
-     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
      */
-    java.util.List<? extends com.aiflow.proto.Message.ExampleProtoOrBuilder> 
-        getExamplesOrBuilderList();
+    java.util.List<? extends com.aiflow.proto.Message.DatasetProtoOrBuilder> 
+        getDatasetsOrBuilderList();
     /**
-     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
      */
-    com.aiflow.proto.Message.ExampleProtoOrBuilder getExamplesOrBuilder(
+    com.aiflow.proto.Message.DatasetProtoOrBuilder getDatasetsOrBuilder(
         int index);
   }
   /**
-   * Protobuf type {@code ai_flow.RegisterExamplesRequest}
+   * Protobuf type {@code ai_flow.RegisterDatasetsRequest}
    */
-  public static final class RegisterExamplesRequest extends
+  public static final class RegisterDatasetsRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:ai_flow.RegisterExamplesRequest)
-      RegisterExamplesRequestOrBuilder {
+      // @@protoc_insertion_point(message_implements:ai_flow.RegisterDatasetsRequest)
+      RegisterDatasetsRequestOrBuilder {
   private static final long serialVersionUID = 0L;
-    // Use RegisterExamplesRequest.newBuilder() to construct.
-    private RegisterExamplesRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use RegisterDatasetsRequest.newBuilder() to construct.
+    private RegisterDatasetsRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private RegisterExamplesRequest() {
-      examples_ = java.util.Collections.emptyList();
+    private RegisterDatasetsRequest() {
+      datasets_ = java.util.Collections.emptyList();
     }
 
     @java.lang.Override
     @SuppressWarnings({"unused"})
     protected java.lang.Object newInstance(
         UnusedPrivateParameter unused) {
-      return new RegisterExamplesRequest();
+      return new RegisterDatasetsRequest();
     }
 
     @java.lang.Override
@@ -3202,7 +3202,7 @@ public final class MetadataServiceOuterClass {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private RegisterExamplesRequest(
+    private RegisterDatasetsRequest(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -3223,11 +3223,11 @@ public final class MetadataServiceOuterClass {
               break;
             case 10: {
               if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-                examples_ = new java.util.ArrayList<com.aiflow.proto.Message.ExampleProto>();
+                datasets_ = new java.util.ArrayList<com.aiflow.proto.Message.DatasetProto>();
                 mutable_bitField0_ |= 0x00000001;
               }
-              examples_.add(
-                  input.readMessage(com.aiflow.proto.Message.ExampleProto.parser(), extensionRegistry));
+              datasets_.add(
+                  input.readMessage(com.aiflow.proto.Message.DatasetProto.parser(), extensionRegistry));
               break;
             }
             default: {
@@ -3246,7 +3246,7 @@ public final class MetadataServiceOuterClass {
             e).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000001) != 0)) {
-          examples_ = java.util.Collections.unmodifiableList(examples_);
+          datasets_ = java.util.Collections.unmodifiableList(datasets_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -3254,55 +3254,55 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterExamplesRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterDatasetsRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterExamplesRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterDatasetsRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest.Builder.class);
+              com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest.Builder.class);
     }
 
-    public static final int EXAMPLES_FIELD_NUMBER = 1;
-    private java.util.List<com.aiflow.proto.Message.ExampleProto> examples_;
+    public static final int DATASETS_FIELD_NUMBER = 1;
+    private java.util.List<com.aiflow.proto.Message.DatasetProto> datasets_;
     /**
-     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
      */
     @java.lang.Override
-    public java.util.List<com.aiflow.proto.Message.ExampleProto> getExamplesList() {
-      return examples_;
+    public java.util.List<com.aiflow.proto.Message.DatasetProto> getDatasetsList() {
+      return datasets_;
     }
     /**
-     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
      */
     @java.lang.Override
-    public java.util.List<? extends com.aiflow.proto.Message.ExampleProtoOrBuilder> 
-        getExamplesOrBuilderList() {
-      return examples_;
+    public java.util.List<? extends com.aiflow.proto.Message.DatasetProtoOrBuilder> 
+        getDatasetsOrBuilderList() {
+      return datasets_;
     }
     /**
-     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
      */
     @java.lang.Override
-    public int getExamplesCount() {
-      return examples_.size();
+    public int getDatasetsCount() {
+      return datasets_.size();
     }
     /**
-     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
      */
     @java.lang.Override
-    public com.aiflow.proto.Message.ExampleProto getExamples(int index) {
-      return examples_.get(index);
+    public com.aiflow.proto.Message.DatasetProto getDatasets(int index) {
+      return datasets_.get(index);
     }
     /**
-     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
      */
     @java.lang.Override
-    public com.aiflow.proto.Message.ExampleProtoOrBuilder getExamplesOrBuilder(
+    public com.aiflow.proto.Message.DatasetProtoOrBuilder getDatasetsOrBuilder(
         int index) {
-      return examples_.get(index);
+      return datasets_.get(index);
     }
 
     private byte memoizedIsInitialized = -1;
@@ -3319,8 +3319,8 @@ public final class MetadataServiceOuterClass {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      for (int i = 0; i < examples_.size(); i++) {
-        output.writeMessage(1, examples_.get(i));
+      for (int i = 0; i < datasets_.size(); i++) {
+        output.writeMessage(1, datasets_.get(i));
       }
       unknownFields.writeTo(output);
     }
@@ -3331,9 +3331,9 @@ public final class MetadataServiceOuterClass {
       if (size != -1) return size;
 
       size = 0;
-      for (int i = 0; i < examples_.size(); i++) {
+      for (int i = 0; i < datasets_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, examples_.get(i));
+          .computeMessageSize(1, datasets_.get(i));
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -3345,13 +3345,13 @@ public final class MetadataServiceOuterClass {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest)) {
+      if (!(obj instanceof com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest)) {
         return super.equals(obj);
       }
-      com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest other = (com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest) obj;
+      com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest other = (com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest) obj;
 
-      if (!getExamplesList()
-          .equals(other.getExamplesList())) return false;
+      if (!getDatasetsList()
+          .equals(other.getDatasetsList())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -3363,78 +3363,78 @@ public final class MetadataServiceOuterClass {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (getExamplesCount() > 0) {
-        hash = (37 * hash) + EXAMPLES_FIELD_NUMBER;
-        hash = (53 * hash) + getExamplesList().hashCode();
+      if (getDatasetsCount() > 0) {
+        hash = (37 * hash) + DATASETS_FIELD_NUMBER;
+        hash = (53 * hash) + getDatasetsList().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
-    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest parseFrom(byte[] data)
+    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest parseFrom(java.io.InputStream input)
+    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest parseDelimitedFrom(java.io.InputStream input)
+    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest parseDelimitedFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -3447,7 +3447,7 @@ public final class MetadataServiceOuterClass {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest prototype) {
+    public static Builder newBuilder(com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -3463,26 +3463,26 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code ai_flow.RegisterExamplesRequest}
+     * Protobuf type {@code ai_flow.RegisterDatasetsRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ai_flow.RegisterExamplesRequest)
-        com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequestOrBuilder {
+        // @@protoc_insertion_point(builder_implements:ai_flow.RegisterDatasetsRequest)
+        com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterExamplesRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterDatasetsRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterExamplesRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterDatasetsRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest.Builder.class);
+                com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest.class, com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest.Builder.class);
       }
 
-      // Construct using com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest.newBuilder()
+      // Construct using com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -3495,17 +3495,17 @@ public final class MetadataServiceOuterClass {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessageV3
                 .alwaysUseFieldBuilders) {
-          getExamplesFieldBuilder();
+          getDatasetsFieldBuilder();
         }
       }
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (examplesBuilder_ == null) {
-          examples_ = java.util.Collections.emptyList();
+        if (datasetsBuilder_ == null) {
+          datasets_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000001);
         } else {
-          examplesBuilder_.clear();
+          datasetsBuilder_.clear();
         }
         return this;
       }
@@ -3513,17 +3513,17 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterExamplesRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_RegisterDatasetsRequest_descriptor;
       }
 
       @java.lang.Override
-      public com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest getDefaultInstanceForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest.getDefaultInstance();
+      public com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest getDefaultInstanceForType() {
+        return com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest build() {
-        com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest result = buildPartial();
+      public com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest build() {
+        com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -3531,17 +3531,17 @@ public final class MetadataServiceOuterClass {
       }
 
       @java.lang.Override
-      public com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest buildPartial() {
-        com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest result = new com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest(this);
+      public com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest buildPartial() {
+        com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest result = new com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest(this);
         int from_bitField0_ = bitField0_;
-        if (examplesBuilder_ == null) {
+        if (datasetsBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0)) {
-            examples_ = java.util.Collections.unmodifiableList(examples_);
+            datasets_ = java.util.Collections.unmodifiableList(datasets_);
             bitField0_ = (bitField0_ & ~0x00000001);
           }
-          result.examples_ = examples_;
+          result.datasets_ = datasets_;
         } else {
-          result.examples_ = examplesBuilder_.build();
+          result.datasets_ = datasetsBuilder_.build();
         }
         onBuilt();
         return result;
@@ -3581,39 +3581,39 @@ public final class MetadataServiceOuterClass {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest) {
-          return mergeFrom((com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest)other);
+        if (other instanceof com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest) {
+          return mergeFrom((com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest other) {
-        if (other == com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest.getDefaultInstance()) return this;
-        if (examplesBuilder_ == null) {
-          if (!other.examples_.isEmpty()) {
-            if (examples_.isEmpty()) {
-              examples_ = other.examples_;
+      public Builder mergeFrom(com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest other) {
+        if (other == com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest.getDefaultInstance()) return this;
+        if (datasetsBuilder_ == null) {
+          if (!other.datasets_.isEmpty()) {
+            if (datasets_.isEmpty()) {
+              datasets_ = other.datasets_;
               bitField0_ = (bitField0_ & ~0x00000001);
             } else {
-              ensureExamplesIsMutable();
-              examples_.addAll(other.examples_);
+              ensureDatasetsIsMutable();
+              datasets_.addAll(other.datasets_);
             }
             onChanged();
           }
         } else {
-          if (!other.examples_.isEmpty()) {
-            if (examplesBuilder_.isEmpty()) {
-              examplesBuilder_.dispose();
-              examplesBuilder_ = null;
-              examples_ = other.examples_;
+          if (!other.datasets_.isEmpty()) {
+            if (datasetsBuilder_.isEmpty()) {
+              datasetsBuilder_.dispose();
+              datasetsBuilder_ = null;
+              datasets_ = other.datasets_;
               bitField0_ = (bitField0_ & ~0x00000001);
-              examplesBuilder_ = 
+              datasetsBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                   getExamplesFieldBuilder() : null;
+                   getDatasetsFieldBuilder() : null;
             } else {
-              examplesBuilder_.addAllMessages(other.examples_);
+              datasetsBuilder_.addAllMessages(other.datasets_);
             }
           }
         }
@@ -3632,11 +3632,11 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest parsedMessage = null;
+        com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest) e.getUnfinishedMessage();
+          parsedMessage = (com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -3647,244 +3647,244 @@ public final class MetadataServiceOuterClass {
       }
       private int bitField0_;
 
-      private java.util.List<com.aiflow.proto.Message.ExampleProto> examples_ =
+      private java.util.List<com.aiflow.proto.Message.DatasetProto> datasets_ =
         java.util.Collections.emptyList();
-      private void ensureExamplesIsMutable() {
+      private void ensureDatasetsIsMutable() {
         if (!((bitField0_ & 0x00000001) != 0)) {
-          examples_ = new java.util.ArrayList<com.aiflow.proto.Message.ExampleProto>(examples_);
+          datasets_ = new java.util.ArrayList<com.aiflow.proto.Message.DatasetProto>(datasets_);
           bitField0_ |= 0x00000001;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.aiflow.proto.Message.ExampleProto, com.aiflow.proto.Message.ExampleProto.Builder, com.aiflow.proto.Message.ExampleProtoOrBuilder> examplesBuilder_;
+          com.aiflow.proto.Message.DatasetProto, com.aiflow.proto.Message.DatasetProto.Builder, com.aiflow.proto.Message.DatasetProtoOrBuilder> datasetsBuilder_;
 
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public java.util.List<com.aiflow.proto.Message.ExampleProto> getExamplesList() {
-        if (examplesBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(examples_);
+      public java.util.List<com.aiflow.proto.Message.DatasetProto> getDatasetsList() {
+        if (datasetsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(datasets_);
         } else {
-          return examplesBuilder_.getMessageList();
+          return datasetsBuilder_.getMessageList();
         }
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public int getExamplesCount() {
-        if (examplesBuilder_ == null) {
-          return examples_.size();
+      public int getDatasetsCount() {
+        if (datasetsBuilder_ == null) {
+          return datasets_.size();
         } else {
-          return examplesBuilder_.getCount();
+          return datasetsBuilder_.getCount();
         }
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public com.aiflow.proto.Message.ExampleProto getExamples(int index) {
-        if (examplesBuilder_ == null) {
-          return examples_.get(index);
+      public com.aiflow.proto.Message.DatasetProto getDatasets(int index) {
+        if (datasetsBuilder_ == null) {
+          return datasets_.get(index);
         } else {
-          return examplesBuilder_.getMessage(index);
+          return datasetsBuilder_.getMessage(index);
         }
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public Builder setExamples(
-          int index, com.aiflow.proto.Message.ExampleProto value) {
-        if (examplesBuilder_ == null) {
+      public Builder setDatasets(
+          int index, com.aiflow.proto.Message.DatasetProto value) {
+        if (datasetsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureExamplesIsMutable();
-          examples_.set(index, value);
+          ensureDatasetsIsMutable();
+          datasets_.set(index, value);
           onChanged();
         } else {
-          examplesBuilder_.setMessage(index, value);
+          datasetsBuilder_.setMessage(index, value);
         }
         return this;
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public Builder setExamples(
-          int index, com.aiflow.proto.Message.ExampleProto.Builder builderForValue) {
-        if (examplesBuilder_ == null) {
-          ensureExamplesIsMutable();
-          examples_.set(index, builderForValue.build());
+      public Builder setDatasets(
+          int index, com.aiflow.proto.Message.DatasetProto.Builder builderForValue) {
+        if (datasetsBuilder_ == null) {
+          ensureDatasetsIsMutable();
+          datasets_.set(index, builderForValue.build());
           onChanged();
         } else {
-          examplesBuilder_.setMessage(index, builderForValue.build());
+          datasetsBuilder_.setMessage(index, builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public Builder addExamples(com.aiflow.proto.Message.ExampleProto value) {
-        if (examplesBuilder_ == null) {
+      public Builder addDatasets(com.aiflow.proto.Message.DatasetProto value) {
+        if (datasetsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureExamplesIsMutable();
-          examples_.add(value);
+          ensureDatasetsIsMutable();
+          datasets_.add(value);
           onChanged();
         } else {
-          examplesBuilder_.addMessage(value);
+          datasetsBuilder_.addMessage(value);
         }
         return this;
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public Builder addExamples(
-          int index, com.aiflow.proto.Message.ExampleProto value) {
-        if (examplesBuilder_ == null) {
+      public Builder addDatasets(
+          int index, com.aiflow.proto.Message.DatasetProto value) {
+        if (datasetsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureExamplesIsMutable();
-          examples_.add(index, value);
+          ensureDatasetsIsMutable();
+          datasets_.add(index, value);
           onChanged();
         } else {
-          examplesBuilder_.addMessage(index, value);
+          datasetsBuilder_.addMessage(index, value);
         }
         return this;
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public Builder addExamples(
-          com.aiflow.proto.Message.ExampleProto.Builder builderForValue) {
-        if (examplesBuilder_ == null) {
-          ensureExamplesIsMutable();
-          examples_.add(builderForValue.build());
+      public Builder addDatasets(
+          com.aiflow.proto.Message.DatasetProto.Builder builderForValue) {
+        if (datasetsBuilder_ == null) {
+          ensureDatasetsIsMutable();
+          datasets_.add(builderForValue.build());
           onChanged();
         } else {
-          examplesBuilder_.addMessage(builderForValue.build());
+          datasetsBuilder_.addMessage(builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public Builder addExamples(
-          int index, com.aiflow.proto.Message.ExampleProto.Builder builderForValue) {
-        if (examplesBuilder_ == null) {
-          ensureExamplesIsMutable();
-          examples_.add(index, builderForValue.build());
+      public Builder addDatasets(
+          int index, com.aiflow.proto.Message.DatasetProto.Builder builderForValue) {
+        if (datasetsBuilder_ == null) {
+          ensureDatasetsIsMutable();
+          datasets_.add(index, builderForValue.build());
           onChanged();
         } else {
-          examplesBuilder_.addMessage(index, builderForValue.build());
+          datasetsBuilder_.addMessage(index, builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public Builder addAllExamples(
-          java.lang.Iterable<? extends com.aiflow.proto.Message.ExampleProto> values) {
-        if (examplesBuilder_ == null) {
-          ensureExamplesIsMutable();
+      public Builder addAllDatasets(
+          java.lang.Iterable<? extends com.aiflow.proto.Message.DatasetProto> values) {
+        if (datasetsBuilder_ == null) {
+          ensureDatasetsIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, examples_);
+              values, datasets_);
           onChanged();
         } else {
-          examplesBuilder_.addAllMessages(values);
+          datasetsBuilder_.addAllMessages(values);
         }
         return this;
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public Builder clearExamples() {
-        if (examplesBuilder_ == null) {
-          examples_ = java.util.Collections.emptyList();
+      public Builder clearDatasets() {
+        if (datasetsBuilder_ == null) {
+          datasets_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000001);
           onChanged();
         } else {
-          examplesBuilder_.clear();
+          datasetsBuilder_.clear();
         }
         return this;
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public Builder removeExamples(int index) {
-        if (examplesBuilder_ == null) {
-          ensureExamplesIsMutable();
-          examples_.remove(index);
+      public Builder removeDatasets(int index) {
+        if (datasetsBuilder_ == null) {
+          ensureDatasetsIsMutable();
+          datasets_.remove(index);
           onChanged();
         } else {
-          examplesBuilder_.remove(index);
+          datasetsBuilder_.remove(index);
         }
         return this;
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public com.aiflow.proto.Message.ExampleProto.Builder getExamplesBuilder(
+      public com.aiflow.proto.Message.DatasetProto.Builder getDatasetsBuilder(
           int index) {
-        return getExamplesFieldBuilder().getBuilder(index);
+        return getDatasetsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public com.aiflow.proto.Message.ExampleProtoOrBuilder getExamplesOrBuilder(
+      public com.aiflow.proto.Message.DatasetProtoOrBuilder getDatasetsOrBuilder(
           int index) {
-        if (examplesBuilder_ == null) {
-          return examples_.get(index);  } else {
-          return examplesBuilder_.getMessageOrBuilder(index);
+        if (datasetsBuilder_ == null) {
+          return datasets_.get(index);  } else {
+          return datasetsBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public java.util.List<? extends com.aiflow.proto.Message.ExampleProtoOrBuilder> 
-           getExamplesOrBuilderList() {
-        if (examplesBuilder_ != null) {
-          return examplesBuilder_.getMessageOrBuilderList();
+      public java.util.List<? extends com.aiflow.proto.Message.DatasetProtoOrBuilder> 
+           getDatasetsOrBuilderList() {
+        if (datasetsBuilder_ != null) {
+          return datasetsBuilder_.getMessageOrBuilderList();
         } else {
-          return java.util.Collections.unmodifiableList(examples_);
+          return java.util.Collections.unmodifiableList(datasets_);
         }
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public com.aiflow.proto.Message.ExampleProto.Builder addExamplesBuilder() {
-        return getExamplesFieldBuilder().addBuilder(
-            com.aiflow.proto.Message.ExampleProto.getDefaultInstance());
+      public com.aiflow.proto.Message.DatasetProto.Builder addDatasetsBuilder() {
+        return getDatasetsFieldBuilder().addBuilder(
+            com.aiflow.proto.Message.DatasetProto.getDefaultInstance());
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public com.aiflow.proto.Message.ExampleProto.Builder addExamplesBuilder(
+      public com.aiflow.proto.Message.DatasetProto.Builder addDatasetsBuilder(
           int index) {
-        return getExamplesFieldBuilder().addBuilder(
-            index, com.aiflow.proto.Message.ExampleProto.getDefaultInstance());
+        return getDatasetsFieldBuilder().addBuilder(
+            index, com.aiflow.proto.Message.DatasetProto.getDefaultInstance());
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public java.util.List<com.aiflow.proto.Message.ExampleProto.Builder> 
-           getExamplesBuilderList() {
-        return getExamplesFieldBuilder().getBuilderList();
+      public java.util.List<com.aiflow.proto.Message.DatasetProto.Builder> 
+           getDatasetsBuilderList() {
+        return getDatasetsFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.aiflow.proto.Message.ExampleProto, com.aiflow.proto.Message.ExampleProto.Builder, com.aiflow.proto.Message.ExampleProtoOrBuilder> 
-          getExamplesFieldBuilder() {
-        if (examplesBuilder_ == null) {
-          examplesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              com.aiflow.proto.Message.ExampleProto, com.aiflow.proto.Message.ExampleProto.Builder, com.aiflow.proto.Message.ExampleProtoOrBuilder>(
-                  examples_,
+          com.aiflow.proto.Message.DatasetProto, com.aiflow.proto.Message.DatasetProto.Builder, com.aiflow.proto.Message.DatasetProtoOrBuilder> 
+          getDatasetsFieldBuilder() {
+        if (datasetsBuilder_ == null) {
+          datasetsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              com.aiflow.proto.Message.DatasetProto, com.aiflow.proto.Message.DatasetProto.Builder, com.aiflow.proto.Message.DatasetProtoOrBuilder>(
+                  datasets_,
                   ((bitField0_ & 0x00000001) != 0),
                   getParentForChildren(),
                   isClean());
-          examples_ = null;
+          datasets_ = null;
         }
-        return examplesBuilder_;
+        return datasetsBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -3899,95 +3899,95 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:ai_flow.RegisterExamplesRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.RegisterDatasetsRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:ai_flow.RegisterExamplesRequest)
-    private static final com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:ai_flow.RegisterDatasetsRequest)
+    private static final com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest();
+      DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest();
     }
 
-    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest getDefaultInstance() {
+    public static com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<RegisterExamplesRequest>
-        PARSER = new com.google.protobuf.AbstractParser<RegisterExamplesRequest>() {
+    private static final com.google.protobuf.Parser<RegisterDatasetsRequest>
+        PARSER = new com.google.protobuf.AbstractParser<RegisterDatasetsRequest>() {
       @java.lang.Override
-      public RegisterExamplesRequest parsePartialFrom(
+      public RegisterDatasetsRequest parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new RegisterExamplesRequest(input, extensionRegistry);
+        return new RegisterDatasetsRequest(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<RegisterExamplesRequest> parser() {
+    public static com.google.protobuf.Parser<RegisterDatasetsRequest> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<RegisterExamplesRequest> getParserForType() {
+    public com.google.protobuf.Parser<RegisterDatasetsRequest> getParserForType() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest getDefaultInstanceForType() {
+    public com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
   }
 
-  public interface ExampleListProtoOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ai_flow.ExampleListProto)
+  public interface DatasetListProtoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ai_flow.DatasetListProto)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
      */
-    java.util.List<com.aiflow.proto.Message.ExampleProto> 
-        getExamplesList();
+    java.util.List<com.aiflow.proto.Message.DatasetProto> 
+        getDatasetsList();
     /**
-     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
      */
-    com.aiflow.proto.Message.ExampleProto getExamples(int index);
+    com.aiflow.proto.Message.DatasetProto getDatasets(int index);
     /**
-     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
      */
-    int getExamplesCount();
+    int getDatasetsCount();
     /**
-     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
      */
-    java.util.List<? extends com.aiflow.proto.Message.ExampleProtoOrBuilder> 
-        getExamplesOrBuilderList();
+    java.util.List<? extends com.aiflow.proto.Message.DatasetProtoOrBuilder> 
+        getDatasetsOrBuilderList();
     /**
-     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
      */
-    com.aiflow.proto.Message.ExampleProtoOrBuilder getExamplesOrBuilder(
+    com.aiflow.proto.Message.DatasetProtoOrBuilder getDatasetsOrBuilder(
         int index);
   }
   /**
-   * Protobuf type {@code ai_flow.ExampleListProto}
+   * Protobuf type {@code ai_flow.DatasetListProto}
    */
-  public static final class ExampleListProto extends
+  public static final class DatasetListProto extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:ai_flow.ExampleListProto)
-      ExampleListProtoOrBuilder {
+      // @@protoc_insertion_point(message_implements:ai_flow.DatasetListProto)
+      DatasetListProtoOrBuilder {
   private static final long serialVersionUID = 0L;
-    // Use ExampleListProto.newBuilder() to construct.
-    private ExampleListProto(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use DatasetListProto.newBuilder() to construct.
+    private DatasetListProto(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private ExampleListProto() {
-      examples_ = java.util.Collections.emptyList();
+    private DatasetListProto() {
+      datasets_ = java.util.Collections.emptyList();
     }
 
     @java.lang.Override
     @SuppressWarnings({"unused"})
     protected java.lang.Object newInstance(
         UnusedPrivateParameter unused) {
-      return new ExampleListProto();
+      return new DatasetListProto();
     }
 
     @java.lang.Override
@@ -3995,7 +3995,7 @@ public final class MetadataServiceOuterClass {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private ExampleListProto(
+    private DatasetListProto(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -4016,11 +4016,11 @@ public final class MetadataServiceOuterClass {
               break;
             case 10: {
               if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-                examples_ = new java.util.ArrayList<com.aiflow.proto.Message.ExampleProto>();
+                datasets_ = new java.util.ArrayList<com.aiflow.proto.Message.DatasetProto>();
                 mutable_bitField0_ |= 0x00000001;
               }
-              examples_.add(
-                  input.readMessage(com.aiflow.proto.Message.ExampleProto.parser(), extensionRegistry));
+              datasets_.add(
+                  input.readMessage(com.aiflow.proto.Message.DatasetProto.parser(), extensionRegistry));
               break;
             }
             default: {
@@ -4039,7 +4039,7 @@ public final class MetadataServiceOuterClass {
             e).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000001) != 0)) {
-          examples_ = java.util.Collections.unmodifiableList(examples_);
+          datasets_ = java.util.Collections.unmodifiableList(datasets_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -4047,55 +4047,55 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ExampleListProto_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_DatasetListProto_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ExampleListProto_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_DatasetListProto_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto.class, com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto.Builder.class);
+              com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto.class, com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto.Builder.class);
     }
 
-    public static final int EXAMPLES_FIELD_NUMBER = 1;
-    private java.util.List<com.aiflow.proto.Message.ExampleProto> examples_;
+    public static final int DATASETS_FIELD_NUMBER = 1;
+    private java.util.List<com.aiflow.proto.Message.DatasetProto> datasets_;
     /**
-     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
      */
     @java.lang.Override
-    public java.util.List<com.aiflow.proto.Message.ExampleProto> getExamplesList() {
-      return examples_;
+    public java.util.List<com.aiflow.proto.Message.DatasetProto> getDatasetsList() {
+      return datasets_;
     }
     /**
-     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
      */
     @java.lang.Override
-    public java.util.List<? extends com.aiflow.proto.Message.ExampleProtoOrBuilder> 
-        getExamplesOrBuilderList() {
-      return examples_;
+    public java.util.List<? extends com.aiflow.proto.Message.DatasetProtoOrBuilder> 
+        getDatasetsOrBuilderList() {
+      return datasets_;
     }
     /**
-     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
      */
     @java.lang.Override
-    public int getExamplesCount() {
-      return examples_.size();
+    public int getDatasetsCount() {
+      return datasets_.size();
     }
     /**
-     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
      */
     @java.lang.Override
-    public com.aiflow.proto.Message.ExampleProto getExamples(int index) {
-      return examples_.get(index);
+    public com.aiflow.proto.Message.DatasetProto getDatasets(int index) {
+      return datasets_.get(index);
     }
     /**
-     * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+     * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
      */
     @java.lang.Override
-    public com.aiflow.proto.Message.ExampleProtoOrBuilder getExamplesOrBuilder(
+    public com.aiflow.proto.Message.DatasetProtoOrBuilder getDatasetsOrBuilder(
         int index) {
-      return examples_.get(index);
+      return datasets_.get(index);
     }
 
     private byte memoizedIsInitialized = -1;
@@ -4112,8 +4112,8 @@ public final class MetadataServiceOuterClass {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      for (int i = 0; i < examples_.size(); i++) {
-        output.writeMessage(1, examples_.get(i));
+      for (int i = 0; i < datasets_.size(); i++) {
+        output.writeMessage(1, datasets_.get(i));
       }
       unknownFields.writeTo(output);
     }
@@ -4124,9 +4124,9 @@ public final class MetadataServiceOuterClass {
       if (size != -1) return size;
 
       size = 0;
-      for (int i = 0; i < examples_.size(); i++) {
+      for (int i = 0; i < datasets_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, examples_.get(i));
+          .computeMessageSize(1, datasets_.get(i));
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -4138,13 +4138,13 @@ public final class MetadataServiceOuterClass {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto)) {
+      if (!(obj instanceof com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto)) {
         return super.equals(obj);
       }
-      com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto other = (com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto) obj;
+      com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto other = (com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto) obj;
 
-      if (!getExamplesList()
-          .equals(other.getExamplesList())) return false;
+      if (!getDatasetsList()
+          .equals(other.getDatasetsList())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -4156,78 +4156,78 @@ public final class MetadataServiceOuterClass {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (getExamplesCount() > 0) {
-        hash = (37 * hash) + EXAMPLES_FIELD_NUMBER;
-        hash = (53 * hash) + getExamplesList().hashCode();
+      if (getDatasetsCount() > 0) {
+        hash = (37 * hash) + DATASETS_FIELD_NUMBER;
+        hash = (53 * hash) + getDatasetsList().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
-    public static com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto parseFrom(byte[] data)
+    public static com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto parseFrom(java.io.InputStream input)
+    public static com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto parseDelimitedFrom(java.io.InputStream input)
+    public static com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto parseDelimitedFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -4240,7 +4240,7 @@ public final class MetadataServiceOuterClass {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto prototype) {
+    public static Builder newBuilder(com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -4256,26 +4256,26 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code ai_flow.ExampleListProto}
+     * Protobuf type {@code ai_flow.DatasetListProto}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ai_flow.ExampleListProto)
-        com.aiflow.proto.MetadataServiceOuterClass.ExampleListProtoOrBuilder {
+        // @@protoc_insertion_point(builder_implements:ai_flow.DatasetListProto)
+        com.aiflow.proto.MetadataServiceOuterClass.DatasetListProtoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ExampleListProto_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_DatasetListProto_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ExampleListProto_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_DatasetListProto_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto.class, com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto.Builder.class);
+                com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto.class, com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto.Builder.class);
       }
 
-      // Construct using com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto.newBuilder()
+      // Construct using com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -4288,17 +4288,17 @@ public final class MetadataServiceOuterClass {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessageV3
                 .alwaysUseFieldBuilders) {
-          getExamplesFieldBuilder();
+          getDatasetsFieldBuilder();
         }
       }
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (examplesBuilder_ == null) {
-          examples_ = java.util.Collections.emptyList();
+        if (datasetsBuilder_ == null) {
+          datasets_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000001);
         } else {
-          examplesBuilder_.clear();
+          datasetsBuilder_.clear();
         }
         return this;
       }
@@ -4306,17 +4306,17 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_ExampleListProto_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_DatasetListProto_descriptor;
       }
 
       @java.lang.Override
-      public com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto getDefaultInstanceForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto.getDefaultInstance();
+      public com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto getDefaultInstanceForType() {
+        return com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto build() {
-        com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto result = buildPartial();
+      public com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto build() {
+        com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -4324,17 +4324,17 @@ public final class MetadataServiceOuterClass {
       }
 
       @java.lang.Override
-      public com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto buildPartial() {
-        com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto result = new com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto(this);
+      public com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto buildPartial() {
+        com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto result = new com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto(this);
         int from_bitField0_ = bitField0_;
-        if (examplesBuilder_ == null) {
+        if (datasetsBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0)) {
-            examples_ = java.util.Collections.unmodifiableList(examples_);
+            datasets_ = java.util.Collections.unmodifiableList(datasets_);
             bitField0_ = (bitField0_ & ~0x00000001);
           }
-          result.examples_ = examples_;
+          result.datasets_ = datasets_;
         } else {
-          result.examples_ = examplesBuilder_.build();
+          result.datasets_ = datasetsBuilder_.build();
         }
         onBuilt();
         return result;
@@ -4374,39 +4374,39 @@ public final class MetadataServiceOuterClass {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto) {
-          return mergeFrom((com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto)other);
+        if (other instanceof com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto) {
+          return mergeFrom((com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto other) {
-        if (other == com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto.getDefaultInstance()) return this;
-        if (examplesBuilder_ == null) {
-          if (!other.examples_.isEmpty()) {
-            if (examples_.isEmpty()) {
-              examples_ = other.examples_;
+      public Builder mergeFrom(com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto other) {
+        if (other == com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto.getDefaultInstance()) return this;
+        if (datasetsBuilder_ == null) {
+          if (!other.datasets_.isEmpty()) {
+            if (datasets_.isEmpty()) {
+              datasets_ = other.datasets_;
               bitField0_ = (bitField0_ & ~0x00000001);
             } else {
-              ensureExamplesIsMutable();
-              examples_.addAll(other.examples_);
+              ensureDatasetsIsMutable();
+              datasets_.addAll(other.datasets_);
             }
             onChanged();
           }
         } else {
-          if (!other.examples_.isEmpty()) {
-            if (examplesBuilder_.isEmpty()) {
-              examplesBuilder_.dispose();
-              examplesBuilder_ = null;
-              examples_ = other.examples_;
+          if (!other.datasets_.isEmpty()) {
+            if (datasetsBuilder_.isEmpty()) {
+              datasetsBuilder_.dispose();
+              datasetsBuilder_ = null;
+              datasets_ = other.datasets_;
               bitField0_ = (bitField0_ & ~0x00000001);
-              examplesBuilder_ = 
+              datasetsBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                   getExamplesFieldBuilder() : null;
+                   getDatasetsFieldBuilder() : null;
             } else {
-              examplesBuilder_.addAllMessages(other.examples_);
+              datasetsBuilder_.addAllMessages(other.datasets_);
             }
           }
         }
@@ -4425,11 +4425,11 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto parsedMessage = null;
+        com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto) e.getUnfinishedMessage();
+          parsedMessage = (com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -4440,244 +4440,244 @@ public final class MetadataServiceOuterClass {
       }
       private int bitField0_;
 
-      private java.util.List<com.aiflow.proto.Message.ExampleProto> examples_ =
+      private java.util.List<com.aiflow.proto.Message.DatasetProto> datasets_ =
         java.util.Collections.emptyList();
-      private void ensureExamplesIsMutable() {
+      private void ensureDatasetsIsMutable() {
         if (!((bitField0_ & 0x00000001) != 0)) {
-          examples_ = new java.util.ArrayList<com.aiflow.proto.Message.ExampleProto>(examples_);
+          datasets_ = new java.util.ArrayList<com.aiflow.proto.Message.DatasetProto>(datasets_);
           bitField0_ |= 0x00000001;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.aiflow.proto.Message.ExampleProto, com.aiflow.proto.Message.ExampleProto.Builder, com.aiflow.proto.Message.ExampleProtoOrBuilder> examplesBuilder_;
+          com.aiflow.proto.Message.DatasetProto, com.aiflow.proto.Message.DatasetProto.Builder, com.aiflow.proto.Message.DatasetProtoOrBuilder> datasetsBuilder_;
 
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public java.util.List<com.aiflow.proto.Message.ExampleProto> getExamplesList() {
-        if (examplesBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(examples_);
+      public java.util.List<com.aiflow.proto.Message.DatasetProto> getDatasetsList() {
+        if (datasetsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(datasets_);
         } else {
-          return examplesBuilder_.getMessageList();
+          return datasetsBuilder_.getMessageList();
         }
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public int getExamplesCount() {
-        if (examplesBuilder_ == null) {
-          return examples_.size();
+      public int getDatasetsCount() {
+        if (datasetsBuilder_ == null) {
+          return datasets_.size();
         } else {
-          return examplesBuilder_.getCount();
+          return datasetsBuilder_.getCount();
         }
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public com.aiflow.proto.Message.ExampleProto getExamples(int index) {
-        if (examplesBuilder_ == null) {
-          return examples_.get(index);
+      public com.aiflow.proto.Message.DatasetProto getDatasets(int index) {
+        if (datasetsBuilder_ == null) {
+          return datasets_.get(index);
         } else {
-          return examplesBuilder_.getMessage(index);
+          return datasetsBuilder_.getMessage(index);
         }
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public Builder setExamples(
-          int index, com.aiflow.proto.Message.ExampleProto value) {
-        if (examplesBuilder_ == null) {
+      public Builder setDatasets(
+          int index, com.aiflow.proto.Message.DatasetProto value) {
+        if (datasetsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureExamplesIsMutable();
-          examples_.set(index, value);
+          ensureDatasetsIsMutable();
+          datasets_.set(index, value);
           onChanged();
         } else {
-          examplesBuilder_.setMessage(index, value);
+          datasetsBuilder_.setMessage(index, value);
         }
         return this;
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public Builder setExamples(
-          int index, com.aiflow.proto.Message.ExampleProto.Builder builderForValue) {
-        if (examplesBuilder_ == null) {
-          ensureExamplesIsMutable();
-          examples_.set(index, builderForValue.build());
+      public Builder setDatasets(
+          int index, com.aiflow.proto.Message.DatasetProto.Builder builderForValue) {
+        if (datasetsBuilder_ == null) {
+          ensureDatasetsIsMutable();
+          datasets_.set(index, builderForValue.build());
           onChanged();
         } else {
-          examplesBuilder_.setMessage(index, builderForValue.build());
+          datasetsBuilder_.setMessage(index, builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public Builder addExamples(com.aiflow.proto.Message.ExampleProto value) {
-        if (examplesBuilder_ == null) {
+      public Builder addDatasets(com.aiflow.proto.Message.DatasetProto value) {
+        if (datasetsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureExamplesIsMutable();
-          examples_.add(value);
+          ensureDatasetsIsMutable();
+          datasets_.add(value);
           onChanged();
         } else {
-          examplesBuilder_.addMessage(value);
+          datasetsBuilder_.addMessage(value);
         }
         return this;
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public Builder addExamples(
-          int index, com.aiflow.proto.Message.ExampleProto value) {
-        if (examplesBuilder_ == null) {
+      public Builder addDatasets(
+          int index, com.aiflow.proto.Message.DatasetProto value) {
+        if (datasetsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureExamplesIsMutable();
-          examples_.add(index, value);
+          ensureDatasetsIsMutable();
+          datasets_.add(index, value);
           onChanged();
         } else {
-          examplesBuilder_.addMessage(index, value);
+          datasetsBuilder_.addMessage(index, value);
         }
         return this;
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public Builder addExamples(
-          com.aiflow.proto.Message.ExampleProto.Builder builderForValue) {
-        if (examplesBuilder_ == null) {
-          ensureExamplesIsMutable();
-          examples_.add(builderForValue.build());
+      public Builder addDatasets(
+          com.aiflow.proto.Message.DatasetProto.Builder builderForValue) {
+        if (datasetsBuilder_ == null) {
+          ensureDatasetsIsMutable();
+          datasets_.add(builderForValue.build());
           onChanged();
         } else {
-          examplesBuilder_.addMessage(builderForValue.build());
+          datasetsBuilder_.addMessage(builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public Builder addExamples(
-          int index, com.aiflow.proto.Message.ExampleProto.Builder builderForValue) {
-        if (examplesBuilder_ == null) {
-          ensureExamplesIsMutable();
-          examples_.add(index, builderForValue.build());
+      public Builder addDatasets(
+          int index, com.aiflow.proto.Message.DatasetProto.Builder builderForValue) {
+        if (datasetsBuilder_ == null) {
+          ensureDatasetsIsMutable();
+          datasets_.add(index, builderForValue.build());
           onChanged();
         } else {
-          examplesBuilder_.addMessage(index, builderForValue.build());
+          datasetsBuilder_.addMessage(index, builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public Builder addAllExamples(
-          java.lang.Iterable<? extends com.aiflow.proto.Message.ExampleProto> values) {
-        if (examplesBuilder_ == null) {
-          ensureExamplesIsMutable();
+      public Builder addAllDatasets(
+          java.lang.Iterable<? extends com.aiflow.proto.Message.DatasetProto> values) {
+        if (datasetsBuilder_ == null) {
+          ensureDatasetsIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, examples_);
+              values, datasets_);
           onChanged();
         } else {
-          examplesBuilder_.addAllMessages(values);
+          datasetsBuilder_.addAllMessages(values);
         }
         return this;
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public Builder clearExamples() {
-        if (examplesBuilder_ == null) {
-          examples_ = java.util.Collections.emptyList();
+      public Builder clearDatasets() {
+        if (datasetsBuilder_ == null) {
+          datasets_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000001);
           onChanged();
         } else {
-          examplesBuilder_.clear();
+          datasetsBuilder_.clear();
         }
         return this;
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public Builder removeExamples(int index) {
-        if (examplesBuilder_ == null) {
-          ensureExamplesIsMutable();
-          examples_.remove(index);
+      public Builder removeDatasets(int index) {
+        if (datasetsBuilder_ == null) {
+          ensureDatasetsIsMutable();
+          datasets_.remove(index);
           onChanged();
         } else {
-          examplesBuilder_.remove(index);
+          datasetsBuilder_.remove(index);
         }
         return this;
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public com.aiflow.proto.Message.ExampleProto.Builder getExamplesBuilder(
+      public com.aiflow.proto.Message.DatasetProto.Builder getDatasetsBuilder(
           int index) {
-        return getExamplesFieldBuilder().getBuilder(index);
+        return getDatasetsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public com.aiflow.proto.Message.ExampleProtoOrBuilder getExamplesOrBuilder(
+      public com.aiflow.proto.Message.DatasetProtoOrBuilder getDatasetsOrBuilder(
           int index) {
-        if (examplesBuilder_ == null) {
-          return examples_.get(index);  } else {
-          return examplesBuilder_.getMessageOrBuilder(index);
+        if (datasetsBuilder_ == null) {
+          return datasets_.get(index);  } else {
+          return datasetsBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public java.util.List<? extends com.aiflow.proto.Message.ExampleProtoOrBuilder> 
-           getExamplesOrBuilderList() {
-        if (examplesBuilder_ != null) {
-          return examplesBuilder_.getMessageOrBuilderList();
+      public java.util.List<? extends com.aiflow.proto.Message.DatasetProtoOrBuilder> 
+           getDatasetsOrBuilderList() {
+        if (datasetsBuilder_ != null) {
+          return datasetsBuilder_.getMessageOrBuilderList();
         } else {
-          return java.util.Collections.unmodifiableList(examples_);
+          return java.util.Collections.unmodifiableList(datasets_);
         }
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public com.aiflow.proto.Message.ExampleProto.Builder addExamplesBuilder() {
-        return getExamplesFieldBuilder().addBuilder(
-            com.aiflow.proto.Message.ExampleProto.getDefaultInstance());
+      public com.aiflow.proto.Message.DatasetProto.Builder addDatasetsBuilder() {
+        return getDatasetsFieldBuilder().addBuilder(
+            com.aiflow.proto.Message.DatasetProto.getDefaultInstance());
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public com.aiflow.proto.Message.ExampleProto.Builder addExamplesBuilder(
+      public com.aiflow.proto.Message.DatasetProto.Builder addDatasetsBuilder(
           int index) {
-        return getExamplesFieldBuilder().addBuilder(
-            index, com.aiflow.proto.Message.ExampleProto.getDefaultInstance());
+        return getDatasetsFieldBuilder().addBuilder(
+            index, com.aiflow.proto.Message.DatasetProto.getDefaultInstance());
       }
       /**
-       * <code>repeated .ai_flow.ExampleProto examples = 1;</code>
+       * <code>repeated .ai_flow.DatasetProto datasets = 1;</code>
        */
-      public java.util.List<com.aiflow.proto.Message.ExampleProto.Builder> 
-           getExamplesBuilderList() {
-        return getExamplesFieldBuilder().getBuilderList();
+      public java.util.List<com.aiflow.proto.Message.DatasetProto.Builder> 
+           getDatasetsBuilderList() {
+        return getDatasetsFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.aiflow.proto.Message.ExampleProto, com.aiflow.proto.Message.ExampleProto.Builder, com.aiflow.proto.Message.ExampleProtoOrBuilder> 
-          getExamplesFieldBuilder() {
-        if (examplesBuilder_ == null) {
-          examplesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              com.aiflow.proto.Message.ExampleProto, com.aiflow.proto.Message.ExampleProto.Builder, com.aiflow.proto.Message.ExampleProtoOrBuilder>(
-                  examples_,
+          com.aiflow.proto.Message.DatasetProto, com.aiflow.proto.Message.DatasetProto.Builder, com.aiflow.proto.Message.DatasetProtoOrBuilder> 
+          getDatasetsFieldBuilder() {
+        if (datasetsBuilder_ == null) {
+          datasetsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              com.aiflow.proto.Message.DatasetProto, com.aiflow.proto.Message.DatasetProto.Builder, com.aiflow.proto.Message.DatasetProtoOrBuilder>(
+                  datasets_,
                   ((bitField0_ & 0x00000001) != 0),
                   getParentForChildren(),
                   isClean());
-          examples_ = null;
+          datasets_ = null;
         }
-        return examplesBuilder_;
+        return datasetsBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -4692,48 +4692,48 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:ai_flow.ExampleListProto)
+      // @@protoc_insertion_point(builder_scope:ai_flow.DatasetListProto)
     }
 
-    // @@protoc_insertion_point(class_scope:ai_flow.ExampleListProto)
-    private static final com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:ai_flow.DatasetListProto)
+    private static final com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto();
+      DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto();
     }
 
-    public static com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto getDefaultInstance() {
+    public static com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<ExampleListProto>
-        PARSER = new com.google.protobuf.AbstractParser<ExampleListProto>() {
+    private static final com.google.protobuf.Parser<DatasetListProto>
+        PARSER = new com.google.protobuf.AbstractParser<DatasetListProto>() {
       @java.lang.Override
-      public ExampleListProto parsePartialFrom(
+      public DatasetListProto parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ExampleListProto(input, extensionRegistry);
+        return new DatasetListProto(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<ExampleListProto> parser() {
+    public static com.google.protobuf.Parser<DatasetListProto> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<ExampleListProto> getParserForType() {
+    public com.google.protobuf.Parser<DatasetListProto> getParserForType() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.aiflow.proto.MetadataServiceOuterClass.ExampleListProto getDefaultInstanceForType() {
+    public com.aiflow.proto.MetadataServiceOuterClass.DatasetListProto getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
   }
 
-  public interface UpdateExampleRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ai_flow.UpdateExampleRequest)
+  public interface UpdateDatasetRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ai_flow.UpdateDatasetRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -4783,35 +4783,24 @@ public final class MetadataServiceOuterClass {
         java.lang.String key);
 
     /**
-     * <code>.ai_flow.ExampleSupportTypeProto support_type = 3;</code>
-     * @return The enum numeric value on the wire for supportType.
-     */
-    int getSupportTypeValue();
-    /**
-     * <code>.ai_flow.ExampleSupportTypeProto support_type = 3;</code>
-     * @return The supportType.
-     */
-    com.aiflow.proto.Message.ExampleSupportTypeProto getSupportType();
-
-    /**
-     * <code>repeated string name_list = 4;</code>
+     * <code>repeated string name_list = 3;</code>
      * @return A list containing the nameList.
      */
     java.util.List<java.lang.String>
         getNameListList();
     /**
-     * <code>repeated string name_list = 4;</code>
+     * <code>repeated string name_list = 3;</code>
      * @return The count of nameList.
      */
     int getNameListCount();
     /**
-     * <code>repeated string name_list = 4;</code>
+     * <code>repeated string name_list = 3;</code>
      * @param index The index of the element to return.
      * @return The nameList at the given index.
      */
     java.lang.String getNameList(int index);
     /**
-     * <code>repeated string name_list = 4;</code>
+     * <code>repeated string name_list = 3;</code>
      * @param index The index of the value to return.
      * @return The bytes of the nameList at the given index.
      */
@@ -4819,229 +4808,183 @@ public final class MetadataServiceOuterClass {
         getNameListBytes(int index);
 
     /**
-     * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
+     * <code>repeated .ai_flow.DataTypeProto type_list = 4;</code>
      * @return A list containing the typeList.
      */
     java.util.List<com.aiflow.proto.Message.DataTypeProto> getTypeListList();
     /**
-     * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
+     * <code>repeated .ai_flow.DataTypeProto type_list = 4;</code>
      * @return The count of typeList.
      */
     int getTypeListCount();
     /**
-     * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
+     * <code>repeated .ai_flow.DataTypeProto type_list = 4;</code>
      * @param index The index of the element to return.
      * @return The typeList at the given index.
      */
     com.aiflow.proto.Message.DataTypeProto getTypeList(int index);
     /**
-     * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
+     * <code>repeated .ai_flow.DataTypeProto type_list = 4;</code>
      * @return A list containing the enum numeric values on the wire for typeList.
      */
     java.util.List<java.lang.Integer>
     getTypeListValueList();
     /**
-     * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
+     * <code>repeated .ai_flow.DataTypeProto type_list = 4;</code>
      * @param index The index of the value to return.
      * @return The enum numeric value on the wire of typeList at the given index.
      */
     int getTypeListValue(int index);
 
     /**
-     * <code>.google.protobuf.StringValue data_type = 6;</code>
-     * @return Whether the dataType field is set.
-     */
-    boolean hasDataType();
-    /**
-     * <code>.google.protobuf.StringValue data_type = 6;</code>
-     * @return The dataType.
-     */
-    com.google.protobuf.StringValue getDataType();
-    /**
-     * <code>.google.protobuf.StringValue data_type = 6;</code>
-     */
-    com.google.protobuf.StringValueOrBuilder getDataTypeOrBuilder();
-
-    /**
-     * <code>.google.protobuf.StringValue data_format = 7;</code>
+     * <code>.google.protobuf.StringValue data_format = 5;</code>
      * @return Whether the dataFormat field is set.
      */
     boolean hasDataFormat();
     /**
-     * <code>.google.protobuf.StringValue data_format = 7;</code>
+     * <code>.google.protobuf.StringValue data_format = 5;</code>
      * @return The dataFormat.
      */
     com.google.protobuf.StringValue getDataFormat();
     /**
-     * <code>.google.protobuf.StringValue data_format = 7;</code>
+     * <code>.google.protobuf.StringValue data_format = 5;</code>
      */
     com.google.protobuf.StringValueOrBuilder getDataFormatOrBuilder();
 
     /**
-     * <code>.google.protobuf.StringValue batch_uri = 8;</code>
-     * @return Whether the batchUri field is set.
+     * <code>.google.protobuf.StringValue uri = 6;</code>
+     * @return Whether the uri field is set.
      */
-    boolean hasBatchUri();
+    boolean hasUri();
     /**
-     * <code>.google.protobuf.StringValue batch_uri = 8;</code>
-     * @return The batchUri.
+     * <code>.google.protobuf.StringValue uri = 6;</code>
+     * @return The uri.
      */
-    com.google.protobuf.StringValue getBatchUri();
+    com.google.protobuf.StringValue getUri();
     /**
-     * <code>.google.protobuf.StringValue batch_uri = 8;</code>
+     * <code>.google.protobuf.StringValue uri = 6;</code>
      */
-    com.google.protobuf.StringValueOrBuilder getBatchUriOrBuilder();
+    com.google.protobuf.StringValueOrBuilder getUriOrBuilder();
 
     /**
-     * <code>.google.protobuf.StringValue stream_uri = 9;</code>
-     * @return Whether the streamUri field is set.
-     */
-    boolean hasStreamUri();
-    /**
-     * <code>.google.protobuf.StringValue stream_uri = 9;</code>
-     * @return The streamUri.
-     */
-    com.google.protobuf.StringValue getStreamUri();
-    /**
-     * <code>.google.protobuf.StringValue stream_uri = 9;</code>
-     */
-    com.google.protobuf.StringValueOrBuilder getStreamUriOrBuilder();
-
-    /**
-     * <code>.google.protobuf.StringValue description = 10;</code>
+     * <code>.google.protobuf.StringValue description = 7;</code>
      * @return Whether the description field is set.
      */
     boolean hasDescription();
     /**
-     * <code>.google.protobuf.StringValue description = 10;</code>
+     * <code>.google.protobuf.StringValue description = 7;</code>
      * @return The description.
      */
     com.google.protobuf.StringValue getDescription();
     /**
-     * <code>.google.protobuf.StringValue description = 10;</code>
+     * <code>.google.protobuf.StringValue description = 7;</code>
      */
     com.google.protobuf.StringValueOrBuilder getDescriptionOrBuilder();
 
     /**
-     * <code>.google.protobuf.Int64Value update_time = 11;</code>
+     * <code>.google.protobuf.Int64Value update_time = 8;</code>
      * @return Whether the updateTime field is set.
      */
     boolean hasUpdateTime();
     /**
-     * <code>.google.protobuf.Int64Value update_time = 11;</code>
+     * <code>.google.protobuf.Int64Value update_time = 8;</code>
      * @return The updateTime.
      */
     com.google.protobuf.Int64Value getUpdateTime();
     /**
-     * <code>.google.protobuf.Int64Value update_time = 11;</code>
+     * <code>.google.protobuf.Int64Value update_time = 8;</code>
      */
     com.google.protobuf.Int64ValueOrBuilder getUpdateTimeOrBuilder();
 
     /**
-     * <code>.google.protobuf.StringValue catalog_name = 12;</code>
+     * <code>.google.protobuf.StringValue catalog_name = 9;</code>
      * @return Whether the catalogName field is set.
      */
     boolean hasCatalogName();
     /**
-     * <code>.google.protobuf.StringValue catalog_name = 12;</code>
+     * <code>.google.protobuf.StringValue catalog_name = 9;</code>
      * @return The catalogName.
      */
     com.google.protobuf.StringValue getCatalogName();
     /**
-     * <code>.google.protobuf.StringValue catalog_name = 12;</code>
+     * <code>.google.protobuf.StringValue catalog_name = 9;</code>
      */
     com.google.protobuf.StringValueOrBuilder getCatalogNameOrBuilder();
 
     /**
-     * <code>.google.protobuf.StringValue catalog_type = 13;</code>
+     * <code>.google.protobuf.StringValue catalog_type = 10;</code>
      * @return Whether the catalogType field is set.
      */
     boolean hasCatalogType();
     /**
-     * <code>.google.protobuf.StringValue catalog_type = 13;</code>
+     * <code>.google.protobuf.StringValue catalog_type = 10;</code>
      * @return The catalogType.
      */
     com.google.protobuf.StringValue getCatalogType();
     /**
-     * <code>.google.protobuf.StringValue catalog_type = 13;</code>
+     * <code>.google.protobuf.StringValue catalog_type = 10;</code>
      */
     com.google.protobuf.StringValueOrBuilder getCatalogTypeOrBuilder();
 
     /**
-     * <code>.google.protobuf.StringValue catalog_database = 14;</code>
+     * <code>.google.protobuf.StringValue catalog_database = 11;</code>
      * @return Whether the catalogDatabase field is set.
      */
     boolean hasCatalogDatabase();
     /**
-     * <code>.google.protobuf.StringValue catalog_database = 14;</code>
+     * <code>.google.protobuf.StringValue catalog_database = 11;</code>
      * @return The catalogDatabase.
      */
     com.google.protobuf.StringValue getCatalogDatabase();
     /**
-     * <code>.google.protobuf.StringValue catalog_database = 14;</code>
+     * <code>.google.protobuf.StringValue catalog_database = 11;</code>
      */
     com.google.protobuf.StringValueOrBuilder getCatalogDatabaseOrBuilder();
 
     /**
-     * <code>.google.protobuf.StringValue catalog_connection_uri = 15;</code>
+     * <code>.google.protobuf.StringValue catalog_connection_uri = 12;</code>
      * @return Whether the catalogConnectionUri field is set.
      */
     boolean hasCatalogConnectionUri();
     /**
-     * <code>.google.protobuf.StringValue catalog_connection_uri = 15;</code>
+     * <code>.google.protobuf.StringValue catalog_connection_uri = 12;</code>
      * @return The catalogConnectionUri.
      */
     com.google.protobuf.StringValue getCatalogConnectionUri();
     /**
-     * <code>.google.protobuf.StringValue catalog_connection_uri = 15;</code>
+     * <code>.google.protobuf.StringValue catalog_connection_uri = 12;</code>
      */
     com.google.protobuf.StringValueOrBuilder getCatalogConnectionUriOrBuilder();
 
     /**
-     * <code>.google.protobuf.StringValue catalog_version = 16;</code>
-     * @return Whether the catalogVersion field is set.
-     */
-    boolean hasCatalogVersion();
-    /**
-     * <code>.google.protobuf.StringValue catalog_version = 16;</code>
-     * @return The catalogVersion.
-     */
-    com.google.protobuf.StringValue getCatalogVersion();
-    /**
-     * <code>.google.protobuf.StringValue catalog_version = 16;</code>
-     */
-    com.google.protobuf.StringValueOrBuilder getCatalogVersionOrBuilder();
-
-    /**
-     * <code>.google.protobuf.StringValue catalog_table = 17;</code>
+     * <code>.google.protobuf.StringValue catalog_table = 13;</code>
      * @return Whether the catalogTable field is set.
      */
     boolean hasCatalogTable();
     /**
-     * <code>.google.protobuf.StringValue catalog_table = 17;</code>
+     * <code>.google.protobuf.StringValue catalog_table = 13;</code>
      * @return The catalogTable.
      */
     com.google.protobuf.StringValue getCatalogTable();
     /**
-     * <code>.google.protobuf.StringValue catalog_table = 17;</code>
+     * <code>.google.protobuf.StringValue catalog_table = 13;</code>
      */
     com.google.protobuf.StringValueOrBuilder getCatalogTableOrBuilder();
   }
   /**
-   * Protobuf type {@code ai_flow.UpdateExampleRequest}
+   * Protobuf type {@code ai_flow.UpdateDatasetRequest}
    */
-  public static final class UpdateExampleRequest extends
+  public static final class UpdateDatasetRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:ai_flow.UpdateExampleRequest)
-      UpdateExampleRequestOrBuilder {
+      // @@protoc_insertion_point(message_implements:ai_flow.UpdateDatasetRequest)
+      UpdateDatasetRequestOrBuilder {
   private static final long serialVersionUID = 0L;
-    // Use UpdateExampleRequest.newBuilder() to construct.
-    private UpdateExampleRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use UpdateDatasetRequest.newBuilder() to construct.
+    private UpdateDatasetRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private UpdateExampleRequest() {
+    private UpdateDatasetRequest() {
       name_ = "";
-      supportType_ = 0;
       nameList_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       typeList_ = java.util.Collections.emptyList();
     }
@@ -5050,7 +4993,7 @@ public final class MetadataServiceOuterClass {
     @SuppressWarnings({"unused"})
     protected java.lang.Object newInstance(
         UnusedPrivateParameter unused) {
-      return new UpdateExampleRequest();
+      return new UpdateDatasetRequest();
     }
 
     @java.lang.Override
@@ -5058,7 +5001,7 @@ public final class MetadataServiceOuterClass {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private UpdateExampleRequest(
+    private UpdateDatasetRequest(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -5096,13 +5039,7 @@ public final class MetadataServiceOuterClass {
                   properties__.getKey(), properties__.getValue());
               break;
             }
-            case 24: {
-              int rawValue = input.readEnum();
-
-              supportType_ = rawValue;
-              break;
-            }
-            case 34: {
+            case 26: {
               java.lang.String s = input.readStringRequireUtf8();
               if (!((mutable_bitField0_ & 0x00000002) != 0)) {
                 nameList_ = new com.google.protobuf.LazyStringArrayList();
@@ -5111,7 +5048,7 @@ public final class MetadataServiceOuterClass {
               nameList_.add(s);
               break;
             }
-            case 40: {
+            case 32: {
               int rawValue = input.readEnum();
               if (!((mutable_bitField0_ & 0x00000004) != 0)) {
                 typeList_ = new java.util.ArrayList<java.lang.Integer>();
@@ -5120,7 +5057,7 @@ public final class MetadataServiceOuterClass {
               typeList_.add(rawValue);
               break;
             }
-            case 42: {
+            case 34: {
               int length = input.readRawVarint32();
               int oldLimit = input.pushLimit(length);
               while(input.getBytesUntilLimit() > 0) {
@@ -5134,20 +5071,7 @@ public final class MetadataServiceOuterClass {
               input.popLimit(oldLimit);
               break;
             }
-            case 50: {
-              com.google.protobuf.StringValue.Builder subBuilder = null;
-              if (dataType_ != null) {
-                subBuilder = dataType_.toBuilder();
-              }
-              dataType_ = input.readMessage(com.google.protobuf.StringValue.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(dataType_);
-                dataType_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            case 58: {
+            case 42: {
               com.google.protobuf.StringValue.Builder subBuilder = null;
               if (dataFormat_ != null) {
                 subBuilder = dataFormat_.toBuilder();
@@ -5160,33 +5084,20 @@ public final class MetadataServiceOuterClass {
 
               break;
             }
-            case 66: {
+            case 50: {
               com.google.protobuf.StringValue.Builder subBuilder = null;
-              if (batchUri_ != null) {
-                subBuilder = batchUri_.toBuilder();
+              if (uri_ != null) {
+                subBuilder = uri_.toBuilder();
               }
-              batchUri_ = input.readMessage(com.google.protobuf.StringValue.parser(), extensionRegistry);
+              uri_ = input.readMessage(com.google.protobuf.StringValue.parser(), extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom(batchUri_);
-                batchUri_ = subBuilder.buildPartial();
+                subBuilder.mergeFrom(uri_);
+                uri_ = subBuilder.buildPartial();
               }
 
               break;
             }
-            case 74: {
-              com.google.protobuf.StringValue.Builder subBuilder = null;
-              if (streamUri_ != null) {
-                subBuilder = streamUri_.toBuilder();
-              }
-              streamUri_ = input.readMessage(com.google.protobuf.StringValue.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(streamUri_);
-                streamUri_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            case 82: {
+            case 58: {
               com.google.protobuf.StringValue.Builder subBuilder = null;
               if (description_ != null) {
                 subBuilder = description_.toBuilder();
@@ -5199,7 +5110,7 @@ public final class MetadataServiceOuterClass {
 
               break;
             }
-            case 90: {
+            case 66: {
               com.google.protobuf.Int64Value.Builder subBuilder = null;
               if (updateTime_ != null) {
                 subBuilder = updateTime_.toBuilder();
@@ -5212,7 +5123,7 @@ public final class MetadataServiceOuterClass {
 
               break;
             }
-            case 98: {
+            case 74: {
               com.google.protobuf.StringValue.Builder subBuilder = null;
               if (catalogName_ != null) {
                 subBuilder = catalogName_.toBuilder();
@@ -5225,7 +5136,7 @@ public final class MetadataServiceOuterClass {
 
               break;
             }
-            case 106: {
+            case 82: {
               com.google.protobuf.StringValue.Builder subBuilder = null;
               if (catalogType_ != null) {
                 subBuilder = catalogType_.toBuilder();
@@ -5238,7 +5149,7 @@ public final class MetadataServiceOuterClass {
 
               break;
             }
-            case 114: {
+            case 90: {
               com.google.protobuf.StringValue.Builder subBuilder = null;
               if (catalogDatabase_ != null) {
                 subBuilder = catalogDatabase_.toBuilder();
@@ -5251,7 +5162,7 @@ public final class MetadataServiceOuterClass {
 
               break;
             }
-            case 122: {
+            case 98: {
               com.google.protobuf.StringValue.Builder subBuilder = null;
               if (catalogConnectionUri_ != null) {
                 subBuilder = catalogConnectionUri_.toBuilder();
@@ -5264,20 +5175,7 @@ public final class MetadataServiceOuterClass {
 
               break;
             }
-            case 130: {
-              com.google.protobuf.StringValue.Builder subBuilder = null;
-              if (catalogVersion_ != null) {
-                subBuilder = catalogVersion_.toBuilder();
-              }
-              catalogVersion_ = input.readMessage(com.google.protobuf.StringValue.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(catalogVersion_);
-                catalogVersion_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            case 138: {
+            case 106: {
               com.google.protobuf.StringValue.Builder subBuilder = null;
               if (catalogTable_ != null) {
                 subBuilder = catalogTable_.toBuilder();
@@ -5317,7 +5215,7 @@ public final class MetadataServiceOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateExampleRequest_descriptor;
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateDatasetRequest_descriptor;
     }
 
     @SuppressWarnings({"rawtypes"})
@@ -5335,9 +5233,9 @@ public final class MetadataServiceOuterClass {
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateExampleRequest_fieldAccessorTable
+      return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateDatasetRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest.class, com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest.Builder.class);
+              com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest.class, com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest.Builder.class);
     }
 
     public static final int NAME_FIELD_NUMBER = 1;
@@ -5384,7 +5282,7 @@ public final class MetadataServiceOuterClass {
           java.lang.String, java.lang.String> defaultEntry =
               com.google.protobuf.MapEntry
               .<java.lang.String, java.lang.String>newDefaultInstance(
-                  com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateExampleRequest_PropertiesEntry_descriptor, 
+                  com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateDatasetRequest_PropertiesEntry_descriptor, 
                   com.google.protobuf.WireFormat.FieldType.STRING,
                   "",
                   com.google.protobuf.WireFormat.FieldType.STRING,
@@ -5459,29 +5357,10 @@ public final class MetadataServiceOuterClass {
       return map.get(key);
     }
 
-    public static final int SUPPORT_TYPE_FIELD_NUMBER = 3;
-    private int supportType_;
-    /**
-     * <code>.ai_flow.ExampleSupportTypeProto support_type = 3;</code>
-     * @return The enum numeric value on the wire for supportType.
-     */
-    @java.lang.Override public int getSupportTypeValue() {
-      return supportType_;
-    }
-    /**
-     * <code>.ai_flow.ExampleSupportTypeProto support_type = 3;</code>
-     * @return The supportType.
-     */
-    @java.lang.Override public com.aiflow.proto.Message.ExampleSupportTypeProto getSupportType() {
-      @SuppressWarnings("deprecation")
-      com.aiflow.proto.Message.ExampleSupportTypeProto result = com.aiflow.proto.Message.ExampleSupportTypeProto.valueOf(supportType_);
-      return result == null ? com.aiflow.proto.Message.ExampleSupportTypeProto.UNRECOGNIZED : result;
-    }
-
-    public static final int NAME_LIST_FIELD_NUMBER = 4;
+    public static final int NAME_LIST_FIELD_NUMBER = 3;
     private com.google.protobuf.LazyStringList nameList_;
     /**
-     * <code>repeated string name_list = 4;</code>
+     * <code>repeated string name_list = 3;</code>
      * @return A list containing the nameList.
      */
     public com.google.protobuf.ProtocolStringList
@@ -5489,14 +5368,14 @@ public final class MetadataServiceOuterClass {
       return nameList_;
     }
     /**
-     * <code>repeated string name_list = 4;</code>
+     * <code>repeated string name_list = 3;</code>
      * @return The count of nameList.
      */
     public int getNameListCount() {
       return nameList_.size();
     }
     /**
-     * <code>repeated string name_list = 4;</code>
+     * <code>repeated string name_list = 3;</code>
      * @param index The index of the element to return.
      * @return The nameList at the given index.
      */
@@ -5504,7 +5383,7 @@ public final class MetadataServiceOuterClass {
       return nameList_.get(index);
     }
     /**
-     * <code>repeated string name_list = 4;</code>
+     * <code>repeated string name_list = 3;</code>
      * @param index The index of the value to return.
      * @return The bytes of the nameList at the given index.
      */
@@ -5513,7 +5392,7 @@ public final class MetadataServiceOuterClass {
       return nameList_.getByteString(index);
     }
 
-    public static final int TYPE_LIST_FIELD_NUMBER = 5;
+    public static final int TYPE_LIST_FIELD_NUMBER = 4;
     private java.util.List<java.lang.Integer> typeList_;
     private static final com.google.protobuf.Internal.ListAdapter.Converter<
         java.lang.Integer, com.aiflow.proto.Message.DataTypeProto> typeList_converter_ =
@@ -5526,7 +5405,7 @@ public final class MetadataServiceOuterClass {
               }
             };
     /**
-     * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
+     * <code>repeated .ai_flow.DataTypeProto type_list = 4;</code>
      * @return A list containing the typeList.
      */
     @java.lang.Override
@@ -5535,7 +5414,7 @@ public final class MetadataServiceOuterClass {
           java.lang.Integer, com.aiflow.proto.Message.DataTypeProto>(typeList_, typeList_converter_);
     }
     /**
-     * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
+     * <code>repeated .ai_flow.DataTypeProto type_list = 4;</code>
      * @return The count of typeList.
      */
     @java.lang.Override
@@ -5543,7 +5422,7 @@ public final class MetadataServiceOuterClass {
       return typeList_.size();
     }
     /**
-     * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
+     * <code>repeated .ai_flow.DataTypeProto type_list = 4;</code>
      * @param index The index of the element to return.
      * @return The typeList at the given index.
      */
@@ -5552,7 +5431,7 @@ public final class MetadataServiceOuterClass {
       return typeList_converter_.convert(typeList_.get(index));
     }
     /**
-     * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
+     * <code>repeated .ai_flow.DataTypeProto type_list = 4;</code>
      * @return A list containing the enum numeric values on the wire for typeList.
      */
     @java.lang.Override
@@ -5561,7 +5440,7 @@ public final class MetadataServiceOuterClass {
       return typeList_;
     }
     /**
-     * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
+     * <code>repeated .ai_flow.DataTypeProto type_list = 4;</code>
      * @param index The index of the value to return.
      * @return The enum numeric value on the wire of typeList at the given index.
      */
@@ -5571,36 +5450,10 @@ public final class MetadataServiceOuterClass {
     }
     private int typeListMemoizedSerializedSize;
 
-    public static final int DATA_TYPE_FIELD_NUMBER = 6;
-    private com.google.protobuf.StringValue dataType_;
-    /**
-     * <code>.google.protobuf.StringValue data_type = 6;</code>
-     * @return Whether the dataType field is set.
-     */
-    @java.lang.Override
-    public boolean hasDataType() {
-      return dataType_ != null;
-    }
-    /**
-     * <code>.google.protobuf.StringValue data_type = 6;</code>
-     * @return The dataType.
-     */
-    @java.lang.Override
-    public com.google.protobuf.StringValue getDataType() {
-      return dataType_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : dataType_;
-    }
-    /**
-     * <code>.google.protobuf.StringValue data_type = 6;</code>
-     */
-    @java.lang.Override
-    public com.google.protobuf.StringValueOrBuilder getDataTypeOrBuilder() {
-      return getDataType();
-    }
-
-    public static final int DATA_FORMAT_FIELD_NUMBER = 7;
+    public static final int DATA_FORMAT_FIELD_NUMBER = 5;
     private com.google.protobuf.StringValue dataFormat_;
     /**
-     * <code>.google.protobuf.StringValue data_format = 7;</code>
+     * <code>.google.protobuf.StringValue data_format = 5;</code>
      * @return Whether the dataFormat field is set.
      */
     @java.lang.Override
@@ -5608,7 +5461,7 @@ public final class MetadataServiceOuterClass {
       return dataFormat_ != null;
     }
     /**
-     * <code>.google.protobuf.StringValue data_format = 7;</code>
+     * <code>.google.protobuf.StringValue data_format = 5;</code>
      * @return The dataFormat.
      */
     @java.lang.Override
@@ -5616,69 +5469,43 @@ public final class MetadataServiceOuterClass {
       return dataFormat_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : dataFormat_;
     }
     /**
-     * <code>.google.protobuf.StringValue data_format = 7;</code>
+     * <code>.google.protobuf.StringValue data_format = 5;</code>
      */
     @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getDataFormatOrBuilder() {
       return getDataFormat();
     }
 
-    public static final int BATCH_URI_FIELD_NUMBER = 8;
-    private com.google.protobuf.StringValue batchUri_;
+    public static final int URI_FIELD_NUMBER = 6;
+    private com.google.protobuf.StringValue uri_;
     /**
-     * <code>.google.protobuf.StringValue batch_uri = 8;</code>
-     * @return Whether the batchUri field is set.
+     * <code>.google.protobuf.StringValue uri = 6;</code>
+     * @return Whether the uri field is set.
      */
     @java.lang.Override
-    public boolean hasBatchUri() {
-      return batchUri_ != null;
+    public boolean hasUri() {
+      return uri_ != null;
     }
     /**
-     * <code>.google.protobuf.StringValue batch_uri = 8;</code>
-     * @return The batchUri.
+     * <code>.google.protobuf.StringValue uri = 6;</code>
+     * @return The uri.
      */
     @java.lang.Override
-    public com.google.protobuf.StringValue getBatchUri() {
-      return batchUri_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : batchUri_;
+    public com.google.protobuf.StringValue getUri() {
+      return uri_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : uri_;
     }
     /**
-     * <code>.google.protobuf.StringValue batch_uri = 8;</code>
+     * <code>.google.protobuf.StringValue uri = 6;</code>
      */
     @java.lang.Override
-    public com.google.protobuf.StringValueOrBuilder getBatchUriOrBuilder() {
-      return getBatchUri();
-    }
-
-    public static final int STREAM_URI_FIELD_NUMBER = 9;
-    private com.google.protobuf.StringValue streamUri_;
-    /**
-     * <code>.google.protobuf.StringValue stream_uri = 9;</code>
-     * @return Whether the streamUri field is set.
-     */
-    @java.lang.Override
-    public boolean hasStreamUri() {
-      return streamUri_ != null;
-    }
-    /**
-     * <code>.google.protobuf.StringValue stream_uri = 9;</code>
-     * @return The streamUri.
-     */
-    @java.lang.Override
-    public com.google.protobuf.StringValue getStreamUri() {
-      return streamUri_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : streamUri_;
-    }
-    /**
-     * <code>.google.protobuf.StringValue stream_uri = 9;</code>
-     */
-    @java.lang.Override
-    public com.google.protobuf.StringValueOrBuilder getStreamUriOrBuilder() {
-      return getStreamUri();
+    public com.google.protobuf.StringValueOrBuilder getUriOrBuilder() {
+      return getUri();
     }
 
-    public static final int DESCRIPTION_FIELD_NUMBER = 10;
+    public static final int DESCRIPTION_FIELD_NUMBER = 7;
     private com.google.protobuf.StringValue description_;
     /**
-     * <code>.google.protobuf.StringValue description = 10;</code>
+     * <code>.google.protobuf.StringValue description = 7;</code>
      * @return Whether the description field is set.
      */
     @java.lang.Override
@@ -5686,7 +5513,7 @@ public final class MetadataServiceOuterClass {
       return description_ != null;
     }
     /**
-     * <code>.google.protobuf.StringValue description = 10;</code>
+     * <code>.google.protobuf.StringValue description = 7;</code>
      * @return The description.
      */
     @java.lang.Override
@@ -5694,17 +5521,17 @@ public final class MetadataServiceOuterClass {
       return description_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : description_;
     }
     /**
-     * <code>.google.protobuf.StringValue description = 10;</code>
+     * <code>.google.protobuf.StringValue description = 7;</code>
      */
     @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getDescriptionOrBuilder() {
       return getDescription();
     }
 
-    public static final int UPDATE_TIME_FIELD_NUMBER = 11;
+    public static final int UPDATE_TIME_FIELD_NUMBER = 8;
     private com.google.protobuf.Int64Value updateTime_;
     /**
-     * <code>.google.protobuf.Int64Value update_time = 11;</code>
+     * <code>.google.protobuf.Int64Value update_time = 8;</code>
      * @return Whether the updateTime field is set.
      */
     @java.lang.Override
@@ -5712,7 +5539,7 @@ public final class MetadataServiceOuterClass {
       return updateTime_ != null;
     }
     /**
-     * <code>.google.protobuf.Int64Value update_time = 11;</code>
+     * <code>.google.protobuf.Int64Value update_time = 8;</code>
      * @return The updateTime.
      */
     @java.lang.Override
@@ -5720,17 +5547,17 @@ public final class MetadataServiceOuterClass {
       return updateTime_ == null ? com.google.protobuf.Int64Value.getDefaultInstance() : updateTime_;
     }
     /**
-     * <code>.google.protobuf.Int64Value update_time = 11;</code>
+     * <code>.google.protobuf.Int64Value update_time = 8;</code>
      */
     @java.lang.Override
     public com.google.protobuf.Int64ValueOrBuilder getUpdateTimeOrBuilder() {
       return getUpdateTime();
     }
 
-    public static final int CATALOG_NAME_FIELD_NUMBER = 12;
+    public static final int CATALOG_NAME_FIELD_NUMBER = 9;
     private com.google.protobuf.StringValue catalogName_;
     /**
-     * <code>.google.protobuf.StringValue catalog_name = 12;</code>
+     * <code>.google.protobuf.StringValue catalog_name = 9;</code>
      * @return Whether the catalogName field is set.
      */
     @java.lang.Override
@@ -5738,7 +5565,7 @@ public final class MetadataServiceOuterClass {
       return catalogName_ != null;
     }
     /**
-     * <code>.google.protobuf.StringValue catalog_name = 12;</code>
+     * <code>.google.protobuf.StringValue catalog_name = 9;</code>
      * @return The catalogName.
      */
     @java.lang.Override
@@ -5746,17 +5573,17 @@ public final class MetadataServiceOuterClass {
       return catalogName_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : catalogName_;
     }
     /**
-     * <code>.google.protobuf.StringValue catalog_name = 12;</code>
+     * <code>.google.protobuf.StringValue catalog_name = 9;</code>
      */
     @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getCatalogNameOrBuilder() {
       return getCatalogName();
     }
 
-    public static final int CATALOG_TYPE_FIELD_NUMBER = 13;
+    public static final int CATALOG_TYPE_FIELD_NUMBER = 10;
     private com.google.protobuf.StringValue catalogType_;
     /**
-     * <code>.google.protobuf.StringValue catalog_type = 13;</code>
+     * <code>.google.protobuf.StringValue catalog_type = 10;</code>
      * @return Whether the catalogType field is set.
      */
     @java.lang.Override
@@ -5764,7 +5591,7 @@ public final class MetadataServiceOuterClass {
       return catalogType_ != null;
     }
     /**
-     * <code>.google.protobuf.StringValue catalog_type = 13;</code>
+     * <code>.google.protobuf.StringValue catalog_type = 10;</code>
      * @return The catalogType.
      */
     @java.lang.Override
@@ -5772,17 +5599,17 @@ public final class MetadataServiceOuterClass {
       return catalogType_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : catalogType_;
     }
     /**
-     * <code>.google.protobuf.StringValue catalog_type = 13;</code>
+     * <code>.google.protobuf.StringValue catalog_type = 10;</code>
      */
     @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getCatalogTypeOrBuilder() {
       return getCatalogType();
     }
 
-    public static final int CATALOG_DATABASE_FIELD_NUMBER = 14;
+    public static final int CATALOG_DATABASE_FIELD_NUMBER = 11;
     private com.google.protobuf.StringValue catalogDatabase_;
     /**
-     * <code>.google.protobuf.StringValue catalog_database = 14;</code>
+     * <code>.google.protobuf.StringValue catalog_database = 11;</code>
      * @return Whether the catalogDatabase field is set.
      */
     @java.lang.Override
@@ -5790,7 +5617,7 @@ public final class MetadataServiceOuterClass {
       return catalogDatabase_ != null;
     }
     /**
-     * <code>.google.protobuf.StringValue catalog_database = 14;</code>
+     * <code>.google.protobuf.StringValue catalog_database = 11;</code>
      * @return The catalogDatabase.
      */
     @java.lang.Override
@@ -5798,17 +5625,17 @@ public final class MetadataServiceOuterClass {
       return catalogDatabase_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : catalogDatabase_;
     }
     /**
-     * <code>.google.protobuf.StringValue catalog_database = 14;</code>
+     * <code>.google.protobuf.StringValue catalog_database = 11;</code>
      */
     @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getCatalogDatabaseOrBuilder() {
       return getCatalogDatabase();
     }
 
-    public static final int CATALOG_CONNECTION_URI_FIELD_NUMBER = 15;
+    public static final int CATALOG_CONNECTION_URI_FIELD_NUMBER = 12;
     private com.google.protobuf.StringValue catalogConnectionUri_;
     /**
-     * <code>.google.protobuf.StringValue catalog_connection_uri = 15;</code>
+     * <code>.google.protobuf.StringValue catalog_connection_uri = 12;</code>
      * @return Whether the catalogConnectionUri field is set.
      */
     @java.lang.Override
@@ -5816,7 +5643,7 @@ public final class MetadataServiceOuterClass {
       return catalogConnectionUri_ != null;
     }
     /**
-     * <code>.google.protobuf.StringValue catalog_connection_uri = 15;</code>
+     * <code>.google.protobuf.StringValue catalog_connection_uri = 12;</code>
      * @return The catalogConnectionUri.
      */
     @java.lang.Override
@@ -5824,43 +5651,17 @@ public final class MetadataServiceOuterClass {
       return catalogConnectionUri_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : catalogConnectionUri_;
     }
     /**
-     * <code>.google.protobuf.StringValue catalog_connection_uri = 15;</code>
+     * <code>.google.protobuf.StringValue catalog_connection_uri = 12;</code>
      */
     @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getCatalogConnectionUriOrBuilder() {
       return getCatalogConnectionUri();
     }
 
-    public static final int CATALOG_VERSION_FIELD_NUMBER = 16;
-    private com.google.protobuf.StringValue catalogVersion_;
-    /**
-     * <code>.google.protobuf.StringValue catalog_version = 16;</code>
-     * @return Whether the catalogVersion field is set.
-     */
-    @java.lang.Override
-    public boolean hasCatalogVersion() {
-      return catalogVersion_ != null;
-    }
-    /**
-     * <code>.google.protobuf.StringValue catalog_version = 16;</code>
-     * @return The catalogVersion.
-     */
-    @java.lang.Override
-    public com.google.protobuf.StringValue getCatalogVersion() {
-      return catalogVersion_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : catalogVersion_;
-    }
-    /**
-     * <code>.google.protobuf.StringValue catalog_version = 16;</code>
-     */
-    @java.lang.Override
-    public com.google.protobuf.StringValueOrBuilder getCatalogVersionOrBuilder() {
-      return getCatalogVersion();
-    }
-
-    public static final int CATALOG_TABLE_FIELD_NUMBER = 17;
+    public static final int CATALOG_TABLE_FIELD_NUMBER = 13;
     private com.google.protobuf.StringValue catalogTable_;
     /**
-     * <code>.google.protobuf.StringValue catalog_table = 17;</code>
+     * <code>.google.protobuf.StringValue catalog_table = 13;</code>
      * @return Whether the catalogTable field is set.
      */
     @java.lang.Override
@@ -5868,7 +5669,7 @@ public final class MetadataServiceOuterClass {
       return catalogTable_ != null;
     }
     /**
-     * <code>.google.protobuf.StringValue catalog_table = 17;</code>
+     * <code>.google.protobuf.StringValue catalog_table = 13;</code>
      * @return The catalogTable.
      */
     @java.lang.Override
@@ -5876,7 +5677,7 @@ public final class MetadataServiceOuterClass {
       return catalogTable_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : catalogTable_;
     }
     /**
-     * <code>.google.protobuf.StringValue catalog_table = 17;</code>
+     * <code>.google.protobuf.StringValue catalog_table = 13;</code>
      */
     @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getCatalogTableOrBuilder() {
@@ -5907,54 +5708,42 @@ public final class MetadataServiceOuterClass {
           internalGetProperties(),
           PropertiesDefaultEntryHolder.defaultEntry,
           2);
-      if (supportType_ != com.aiflow.proto.Message.ExampleSupportTypeProto.EXAMPLE_SUPPORT_TYPE_UNSPECIFIED.getNumber()) {
-        output.writeEnum(3, supportType_);
-      }
       for (int i = 0; i < nameList_.size(); i++) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, nameList_.getRaw(i));
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, nameList_.getRaw(i));
       }
       if (getTypeListList().size() > 0) {
-        output.writeUInt32NoTag(42);
+        output.writeUInt32NoTag(34);
         output.writeUInt32NoTag(typeListMemoizedSerializedSize);
       }
       for (int i = 0; i < typeList_.size(); i++) {
         output.writeEnumNoTag(typeList_.get(i));
       }
-      if (dataType_ != null) {
-        output.writeMessage(6, getDataType());
-      }
       if (dataFormat_ != null) {
-        output.writeMessage(7, getDataFormat());
+        output.writeMessage(5, getDataFormat());
       }
-      if (batchUri_ != null) {
-        output.writeMessage(8, getBatchUri());
-      }
-      if (streamUri_ != null) {
-        output.writeMessage(9, getStreamUri());
+      if (uri_ != null) {
+        output.writeMessage(6, getUri());
       }
       if (description_ != null) {
-        output.writeMessage(10, getDescription());
+        output.writeMessage(7, getDescription());
       }
       if (updateTime_ != null) {
-        output.writeMessage(11, getUpdateTime());
+        output.writeMessage(8, getUpdateTime());
       }
       if (catalogName_ != null) {
-        output.writeMessage(12, getCatalogName());
+        output.writeMessage(9, getCatalogName());
       }
       if (catalogType_ != null) {
-        output.writeMessage(13, getCatalogType());
+        output.writeMessage(10, getCatalogType());
       }
       if (catalogDatabase_ != null) {
-        output.writeMessage(14, getCatalogDatabase());
+        output.writeMessage(11, getCatalogDatabase());
       }
       if (catalogConnectionUri_ != null) {
-        output.writeMessage(15, getCatalogConnectionUri());
-      }
-      if (catalogVersion_ != null) {
-        output.writeMessage(16, getCatalogVersion());
+        output.writeMessage(12, getCatalogConnectionUri());
       }
       if (catalogTable_ != null) {
-        output.writeMessage(17, getCatalogTable());
+        output.writeMessage(13, getCatalogTable());
       }
       unknownFields.writeTo(output);
     }
@@ -5978,10 +5767,6 @@ public final class MetadataServiceOuterClass {
         size += com.google.protobuf.CodedOutputStream
             .computeMessageSize(2, properties__);
       }
-      if (supportType_ != com.aiflow.proto.Message.ExampleSupportTypeProto.EXAMPLE_SUPPORT_TYPE_UNSPECIFIED.getNumber()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(3, supportType_);
-      }
       {
         int dataSize = 0;
         for (int i = 0; i < nameList_.size(); i++) {
@@ -6002,53 +5787,41 @@ public final class MetadataServiceOuterClass {
             .computeUInt32SizeNoTag(dataSize);
         }typeListMemoizedSerializedSize = dataSize;
       }
-      if (dataType_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(6, getDataType());
-      }
       if (dataFormat_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(7, getDataFormat());
+          .computeMessageSize(5, getDataFormat());
       }
-      if (batchUri_ != null) {
+      if (uri_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(8, getBatchUri());
-      }
-      if (streamUri_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(9, getStreamUri());
+          .computeMessageSize(6, getUri());
       }
       if (description_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(10, getDescription());
+          .computeMessageSize(7, getDescription());
       }
       if (updateTime_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(11, getUpdateTime());
+          .computeMessageSize(8, getUpdateTime());
       }
       if (catalogName_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(12, getCatalogName());
+          .computeMessageSize(9, getCatalogName());
       }
       if (catalogType_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(13, getCatalogType());
+          .computeMessageSize(10, getCatalogType());
       }
       if (catalogDatabase_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(14, getCatalogDatabase());
+          .computeMessageSize(11, getCatalogDatabase());
       }
       if (catalogConnectionUri_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(15, getCatalogConnectionUri());
-      }
-      if (catalogVersion_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(16, getCatalogVersion());
+          .computeMessageSize(12, getCatalogConnectionUri());
       }
       if (catalogTable_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(17, getCatalogTable());
+          .computeMessageSize(13, getCatalogTable());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -6060,38 +5833,27 @@ public final class MetadataServiceOuterClass {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest)) {
+      if (!(obj instanceof com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest)) {
         return super.equals(obj);
       }
-      com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest other = (com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest) obj;
+      com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest other = (com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest) obj;
 
       if (!getName()
           .equals(other.getName())) return false;
       if (!internalGetProperties().equals(
           other.internalGetProperties())) return false;
-      if (supportType_ != other.supportType_) return false;
       if (!getNameListList()
           .equals(other.getNameListList())) return false;
       if (!typeList_.equals(other.typeList_)) return false;
-      if (hasDataType() != other.hasDataType()) return false;
-      if (hasDataType()) {
-        if (!getDataType()
-            .equals(other.getDataType())) return false;
-      }
       if (hasDataFormat() != other.hasDataFormat()) return false;
       if (hasDataFormat()) {
         if (!getDataFormat()
             .equals(other.getDataFormat())) return false;
       }
-      if (hasBatchUri() != other.hasBatchUri()) return false;
-      if (hasBatchUri()) {
-        if (!getBatchUri()
-            .equals(other.getBatchUri())) return false;
-      }
-      if (hasStreamUri() != other.hasStreamUri()) return false;
-      if (hasStreamUri()) {
-        if (!getStreamUri()
-            .equals(other.getStreamUri())) return false;
+      if (hasUri() != other.hasUri()) return false;
+      if (hasUri()) {
+        if (!getUri()
+            .equals(other.getUri())) return false;
       }
       if (hasDescription() != other.hasDescription()) return false;
       if (hasDescription()) {
@@ -6123,11 +5885,6 @@ public final class MetadataServiceOuterClass {
         if (!getCatalogConnectionUri()
             .equals(other.getCatalogConnectionUri())) return false;
       }
-      if (hasCatalogVersion() != other.hasCatalogVersion()) return false;
-      if (hasCatalogVersion()) {
-        if (!getCatalogVersion()
-            .equals(other.getCatalogVersion())) return false;
-      }
       if (hasCatalogTable() != other.hasCatalogTable()) return false;
       if (hasCatalogTable()) {
         if (!getCatalogTable()
@@ -6150,8 +5907,6 @@ public final class MetadataServiceOuterClass {
         hash = (37 * hash) + PROPERTIES_FIELD_NUMBER;
         hash = (53 * hash) + internalGetProperties().hashCode();
       }
-      hash = (37 * hash) + SUPPORT_TYPE_FIELD_NUMBER;
-      hash = (53 * hash) + supportType_;
       if (getNameListCount() > 0) {
         hash = (37 * hash) + NAME_LIST_FIELD_NUMBER;
         hash = (53 * hash) + getNameListList().hashCode();
@@ -6160,21 +5915,13 @@ public final class MetadataServiceOuterClass {
         hash = (37 * hash) + TYPE_LIST_FIELD_NUMBER;
         hash = (53 * hash) + typeList_.hashCode();
       }
-      if (hasDataType()) {
-        hash = (37 * hash) + DATA_TYPE_FIELD_NUMBER;
-        hash = (53 * hash) + getDataType().hashCode();
-      }
       if (hasDataFormat()) {
         hash = (37 * hash) + DATA_FORMAT_FIELD_NUMBER;
         hash = (53 * hash) + getDataFormat().hashCode();
       }
-      if (hasBatchUri()) {
-        hash = (37 * hash) + BATCH_URI_FIELD_NUMBER;
-        hash = (53 * hash) + getBatchUri().hashCode();
-      }
-      if (hasStreamUri()) {
-        hash = (37 * hash) + STREAM_URI_FIELD_NUMBER;
-        hash = (53 * hash) + getStreamUri().hashCode();
+      if (hasUri()) {
+        hash = (37 * hash) + URI_FIELD_NUMBER;
+        hash = (53 * hash) + getUri().hashCode();
       }
       if (hasDescription()) {
         hash = (37 * hash) + DESCRIPTION_FIELD_NUMBER;
@@ -6200,10 +5947,6 @@ public final class MetadataServiceOuterClass {
         hash = (37 * hash) + CATALOG_CONNECTION_URI_FIELD_NUMBER;
         hash = (53 * hash) + getCatalogConnectionUri().hashCode();
       }
-      if (hasCatalogVersion()) {
-        hash = (37 * hash) + CATALOG_VERSION_FIELD_NUMBER;
-        hash = (53 * hash) + getCatalogVersion().hashCode();
-      }
       if (hasCatalogTable()) {
         hash = (37 * hash) + CATALOG_TABLE_FIELD_NUMBER;
         hash = (53 * hash) + getCatalogTable().hashCode();
@@ -6213,69 +5956,69 @@ public final class MetadataServiceOuterClass {
       return hash;
     }
 
-    public static com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest parseFrom(byte[] data)
+    public static com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest parseFrom(java.io.InputStream input)
+    public static com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest parseDelimitedFrom(java.io.InputStream input)
+    public static com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest parseDelimitedFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest parseFrom(
+    public static com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -6288,7 +6031,7 @@ public final class MetadataServiceOuterClass {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest prototype) {
+    public static Builder newBuilder(com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -6304,15 +6047,15 @@ public final class MetadataServiceOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code ai_flow.UpdateExampleRequest}
+     * Protobuf type {@code ai_flow.UpdateDatasetRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ai_flow.UpdateExampleRequest)
-        com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequestOrBuilder {
+        // @@protoc_insertion_point(builder_implements:ai_flow.UpdateDatasetRequest)
+        com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateExampleRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateDatasetRequest_descriptor;
       }
 
       @SuppressWarnings({"rawtypes"})
@@ -6340,12 +6083,12 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateExampleRequest_fieldAccessorTable
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateDatasetRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest.class, com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest.Builder.class);
+                com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest.class, com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest.Builder.class);
       }
 
-      // Construct using com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest.newBuilder()
+      // Construct using com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -6366,35 +6109,21 @@ public final class MetadataServiceOuterClass {
         name_ = "";
 
         internalGetMutableProperties().clear();
-        supportType_ = 0;
-
         nameList_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000002);
         typeList_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000004);
-        if (dataTypeBuilder_ == null) {
-          dataType_ = null;
-        } else {
-          dataType_ = null;
-          dataTypeBuilder_ = null;
-        }
         if (dataFormatBuilder_ == null) {
           dataFormat_ = null;
         } else {
           dataFormat_ = null;
           dataFormatBuilder_ = null;
         }
-        if (batchUriBuilder_ == null) {
-          batchUri_ = null;
+        if (uriBuilder_ == null) {
+          uri_ = null;
         } else {
-          batchUri_ = null;
-          batchUriBuilder_ = null;
-        }
-        if (streamUriBuilder_ == null) {
-          streamUri_ = null;
-        } else {
-          streamUri_ = null;
-          streamUriBuilder_ = null;
+          uri_ = null;
+          uriBuilder_ = null;
         }
         if (descriptionBuilder_ == null) {
           description_ = null;
@@ -6432,12 +6161,6 @@ public final class MetadataServiceOuterClass {
           catalogConnectionUri_ = null;
           catalogConnectionUriBuilder_ = null;
         }
-        if (catalogVersionBuilder_ == null) {
-          catalogVersion_ = null;
-        } else {
-          catalogVersion_ = null;
-          catalogVersionBuilder_ = null;
-        }
         if (catalogTableBuilder_ == null) {
           catalogTable_ = null;
         } else {
@@ -6450,17 +6173,17 @@ public final class MetadataServiceOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateExampleRequest_descriptor;
+        return com.aiflow.proto.MetadataServiceOuterClass.internal_static_ai_flow_UpdateDatasetRequest_descriptor;
       }
 
       @java.lang.Override
-      public com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest getDefaultInstanceForType() {
-        return com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest.getDefaultInstance();
+      public com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest getDefaultInstanceForType() {
+        return com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest build() {
-        com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest result = buildPartial();
+      public com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest build() {
+        com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -6468,13 +6191,12 @@ public final class MetadataServiceOuterClass {
       }
 
       @java.lang.Override
-      public com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest buildPartial() {
-        com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest result = new com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest(this);
+      public com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest buildPartial() {
+        com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest result = new com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest(this);
         int from_bitField0_ = bitField0_;
         result.name_ = name_;
         result.properties_ = internalGetProperties();
         result.properties_.makeImmutable();
-        result.supportType_ = supportType_;
         if (((bitField0_ & 0x00000002) != 0)) {
           nameList_ = nameList_.getUnmodifiableView();
           bitField0_ = (bitField0_ & ~0x00000002);
@@ -6485,25 +6207,15 @@ public final class MetadataServiceOuterClass {
           bitField0_ = (bitField0_ & ~0x00000004);
         }
         result.typeList_ = typeList_;
-        if (dataTypeBuilder_ == null) {
-          result.dataType_ = dataType_;
-        } else {
-          result.dataType_ = dataTypeBuilder_.build();
-        }
         if (dataFormatBuilder_ == null) {
           result.dataFormat_ = dataFormat_;
         } else {
           result.dataFormat_ = dataFormatBuilder_.build();
         }
-        if (batchUriBuilder_ == null) {
-          result.batchUri_ = batchUri_;
+        if (uriBuilder_ == null) {
+          result.uri_ = uri_;
         } else {
-          result.batchUri_ = batchUriBuilder_.build();
-        }
-        if (streamUriBuilder_ == null) {
-          result.streamUri_ = streamUri_;
-        } else {
-          result.streamUri_ = streamUriBuilder_.build();
+          result.uri_ = uriBuilder_.build();
         }
         if (descriptionBuilder_ == null) {
           result.description_ = description_;
@@ -6534,11 +6246,6 @@ public final class MetadataServiceOuterClass {
           result.catalogConnectionUri_ = catalogConnectionUri_;
         } else {
           result.catalogConnectionUri_ = catalogConnectionUriBuilder_.build();
-        }
-        if (catalogVersionBuilder_ == null) {
-          result.catalogVersion_ = catalogVersion_;
-        } else {
-          result.catalogVersion_ = catalogVersionBuilder_.build();
         }
         if (catalogTableBuilder_ == null) {
           result.catalogTable_ = catalogTable_;
@@ -6583,25 +6290,22 @@ public final class MetadataServiceOuterClass {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest) {
-          return mergeFrom((com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest)other);
+        if (other instanceof com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest) {
+          return mergeFrom((com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest other) {
-        if (other == com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest other) {
+        if (other == com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest.getDefaultInstance()) return this;
         if (!other.getName().isEmpty()) {
           name_ = other.name_;
           onChanged();
         }
         internalGetMutableProperties().mergeFrom(
             other.internalGetProperties());
-        if (other.supportType_ != 0) {
-          setSupportTypeValue(other.getSupportTypeValue());
-        }
         if (!other.nameList_.isEmpty()) {
           if (nameList_.isEmpty()) {
             nameList_ = other.nameList_;
@@ -6622,17 +6326,11 @@ public final class MetadataServiceOuterClass {
           }
           onChanged();
         }
-        if (other.hasDataType()) {
-          mergeDataType(other.getDataType());
-        }
         if (other.hasDataFormat()) {
           mergeDataFormat(other.getDataFormat());
         }
-        if (other.hasBatchUri()) {
-          mergeBatchUri(other.getBatchUri());
-        }
-        if (other.hasStreamUri()) {
-          mergeStreamUri(other.getStreamUri());
+        if (other.hasUri()) {
+          mergeUri(other.getUri());
         }
         if (other.hasDescription()) {
           mergeDescription(other.getDescription());
@@ -6652,9 +6350,6 @@ public final class MetadataServiceOuterClass {
         if (other.hasCatalogConnectionUri()) {
           mergeCatalogConnectionUri(other.getCatalogConnectionUri());
         }
-        if (other.hasCatalogVersion()) {
-          mergeCatalogVersion(other.getCatalogVersion());
-        }
         if (other.hasCatalogTable()) {
           mergeCatalogTable(other.getCatalogTable());
         }
@@ -6673,11 +6368,11 @@ public final class MetadataServiceOuterClass {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest parsedMessage = null;
+        com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest) e.getUnfinishedMessage();
+          parsedMessage = (com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -6892,60 +6587,6 @@ public final class MetadataServiceOuterClass {
         return this;
       }
 
-      private int supportType_ = 0;
-      /**
-       * <code>.ai_flow.ExampleSupportTypeProto support_type = 3;</code>
-       * @return The enum numeric value on the wire for supportType.
-       */
-      @java.lang.Override public int getSupportTypeValue() {
-        return supportType_;
-      }
-      /**
-       * <code>.ai_flow.ExampleSupportTypeProto support_type = 3;</code>
-       * @param value The enum numeric value on the wire for supportType to set.
-       * @return This builder for chaining.
-       */
-      public Builder setSupportTypeValue(int value) {
-        
-        supportType_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>.ai_flow.ExampleSupportTypeProto support_type = 3;</code>
-       * @return The supportType.
-       */
-      @java.lang.Override
-      public com.aiflow.proto.Message.ExampleSupportTypeProto getSupportType() {
-        @SuppressWarnings("deprecation")
-        com.aiflow.proto.Message.ExampleSupportTypeProto result = com.aiflow.proto.Message.ExampleSupportTypeProto.valueOf(supportType_);
-        return result == null ? com.aiflow.proto.Message.ExampleSupportTypeProto.UNRECOGNIZED : result;
-      }
-      /**
-       * <code>.ai_flow.ExampleSupportTypeProto support_type = 3;</code>
-       * @param value The supportType to set.
-       * @return This builder for chaining.
-       */
-      public Builder setSupportType(com.aiflow.proto.Message.ExampleSupportTypeProto value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        
-        supportType_ = value.getNumber();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>.ai_flow.ExampleSupportTypeProto support_type = 3;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearSupportType() {
-        
-        supportType_ = 0;
-        onChanged();
-        return this;
-      }
-
       private com.google.protobuf.LazyStringList nameList_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       private void ensureNameListIsMutable() {
         if (!((bitField0_ & 0x00000002) != 0)) {
@@ -6954,7 +6595,7 @@ public final class MetadataServiceOuterClass {
          }
       }
       /**
-       * <code>repeated string name_list = 4;</code>
+       * <code>repeated string name_list = 3;</code>
        * @return A list containing the nameList.
        */
       public com.google.protobuf.ProtocolStringList
@@ -6962,14 +6603,14 @@ public final class MetadataServiceOuterClass {
         return nameList_.getUnmodifiableView();
       }
       /**
-       * <code>repeated string name_list = 4;</code>
+       * <code>repeated string name_list = 3;</code>
        * @return The count of nameList.
        */
       public int getNameListCount() {
         return nameList_.size();
       }
       /**
-       * <code>repeated string name_list = 4;</code>
+       * <code>repeated string name_list = 3;</code>
        * @param index The index of the element to return.
        * @return The nameList at the given index.
        */
@@ -6977,7 +6618,7 @@ public final class MetadataServiceOuterClass {
         return nameList_.get(index);
       }
       /**
-       * <code>repeated string name_list = 4;</code>
+       * <code>repeated string name_list = 3;</code>
        * @param index The index of the value to return.
        * @return The bytes of the nameList at the given index.
        */
@@ -6986,7 +6627,7 @@ public final class MetadataServiceOuterClass {
         return nameList_.getByteString(index);
       }
       /**
-       * <code>repeated string name_list = 4;</code>
+       * <code>repeated string name_list = 3;</code>
        * @param index The index to set the value at.
        * @param value The nameList to set.
        * @return This builder for chaining.
@@ -7002,7 +6643,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated string name_list = 4;</code>
+       * <code>repeated string name_list = 3;</code>
        * @param value The nameList to add.
        * @return This builder for chaining.
        */
@@ -7017,7 +6658,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated string name_list = 4;</code>
+       * <code>repeated string name_list = 3;</code>
        * @param values The nameList to add.
        * @return This builder for chaining.
        */
@@ -7030,7 +6671,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated string name_list = 4;</code>
+       * <code>repeated string name_list = 3;</code>
        * @return This builder for chaining.
        */
       public Builder clearNameList() {
@@ -7040,7 +6681,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated string name_list = 4;</code>
+       * <code>repeated string name_list = 3;</code>
        * @param value The bytes of the nameList to add.
        * @return This builder for chaining.
        */
@@ -7065,7 +6706,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
+       * <code>repeated .ai_flow.DataTypeProto type_list = 4;</code>
        * @return A list containing the typeList.
        */
       public java.util.List<com.aiflow.proto.Message.DataTypeProto> getTypeListList() {
@@ -7073,14 +6714,14 @@ public final class MetadataServiceOuterClass {
             java.lang.Integer, com.aiflow.proto.Message.DataTypeProto>(typeList_, typeList_converter_);
       }
       /**
-       * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
+       * <code>repeated .ai_flow.DataTypeProto type_list = 4;</code>
        * @return The count of typeList.
        */
       public int getTypeListCount() {
         return typeList_.size();
       }
       /**
-       * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
+       * <code>repeated .ai_flow.DataTypeProto type_list = 4;</code>
        * @param index The index of the element to return.
        * @return The typeList at the given index.
        */
@@ -7088,7 +6729,7 @@ public final class MetadataServiceOuterClass {
         return typeList_converter_.convert(typeList_.get(index));
       }
       /**
-       * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
+       * <code>repeated .ai_flow.DataTypeProto type_list = 4;</code>
        * @param index The index to set the value at.
        * @param value The typeList to set.
        * @return This builder for chaining.
@@ -7104,7 +6745,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
+       * <code>repeated .ai_flow.DataTypeProto type_list = 4;</code>
        * @param value The typeList to add.
        * @return This builder for chaining.
        */
@@ -7118,7 +6759,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
+       * <code>repeated .ai_flow.DataTypeProto type_list = 4;</code>
        * @param values The typeList to add.
        * @return This builder for chaining.
        */
@@ -7132,7 +6773,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
+       * <code>repeated .ai_flow.DataTypeProto type_list = 4;</code>
        * @return This builder for chaining.
        */
       public Builder clearTypeList() {
@@ -7142,7 +6783,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
+       * <code>repeated .ai_flow.DataTypeProto type_list = 4;</code>
        * @return A list containing the enum numeric values on the wire for typeList.
        */
       public java.util.List<java.lang.Integer>
@@ -7150,7 +6791,7 @@ public final class MetadataServiceOuterClass {
         return java.util.Collections.unmodifiableList(typeList_);
       }
       /**
-       * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
+       * <code>repeated .ai_flow.DataTypeProto type_list = 4;</code>
        * @param index The index of the value to return.
        * @return The enum numeric value on the wire of typeList at the given index.
        */
@@ -7158,7 +6799,7 @@ public final class MetadataServiceOuterClass {
         return typeList_.get(index);
       }
       /**
-       * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
+       * <code>repeated .ai_flow.DataTypeProto type_list = 4;</code>
        * @param index The index of the value to return.
        * @return The enum numeric value on the wire of typeList at the given index.
        * @return This builder for chaining.
@@ -7171,7 +6812,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
+       * <code>repeated .ai_flow.DataTypeProto type_list = 4;</code>
        * @param value The enum numeric value on the wire for typeList to add.
        * @return This builder for chaining.
        */
@@ -7182,7 +6823,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>repeated .ai_flow.DataTypeProto type_list = 5;</code>
+       * <code>repeated .ai_flow.DataTypeProto type_list = 4;</code>
        * @param values The enum numeric values on the wire for typeList to add.
        * @return This builder for chaining.
        */
@@ -7196,137 +6837,18 @@ public final class MetadataServiceOuterClass {
         return this;
       }
 
-      private com.google.protobuf.StringValue dataType_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> dataTypeBuilder_;
-      /**
-       * <code>.google.protobuf.StringValue data_type = 6;</code>
-       * @return Whether the dataType field is set.
-       */
-      public boolean hasDataType() {
-        return dataTypeBuilder_ != null || dataType_ != null;
-      }
-      /**
-       * <code>.google.protobuf.StringValue data_type = 6;</code>
-       * @return The dataType.
-       */
-      public com.google.protobuf.StringValue getDataType() {
-        if (dataTypeBuilder_ == null) {
-          return dataType_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : dataType_;
-        } else {
-          return dataTypeBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>.google.protobuf.StringValue data_type = 6;</code>
-       */
-      public Builder setDataType(com.google.protobuf.StringValue value) {
-        if (dataTypeBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          dataType_ = value;
-          onChanged();
-        } else {
-          dataTypeBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue data_type = 6;</code>
-       */
-      public Builder setDataType(
-          com.google.protobuf.StringValue.Builder builderForValue) {
-        if (dataTypeBuilder_ == null) {
-          dataType_ = builderForValue.build();
-          onChanged();
-        } else {
-          dataTypeBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue data_type = 6;</code>
-       */
-      public Builder mergeDataType(com.google.protobuf.StringValue value) {
-        if (dataTypeBuilder_ == null) {
-          if (dataType_ != null) {
-            dataType_ =
-              com.google.protobuf.StringValue.newBuilder(dataType_).mergeFrom(value).buildPartial();
-          } else {
-            dataType_ = value;
-          }
-          onChanged();
-        } else {
-          dataTypeBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue data_type = 6;</code>
-       */
-      public Builder clearDataType() {
-        if (dataTypeBuilder_ == null) {
-          dataType_ = null;
-          onChanged();
-        } else {
-          dataType_ = null;
-          dataTypeBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue data_type = 6;</code>
-       */
-      public com.google.protobuf.StringValue.Builder getDataTypeBuilder() {
-        
-        onChanged();
-        return getDataTypeFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>.google.protobuf.StringValue data_type = 6;</code>
-       */
-      public com.google.protobuf.StringValueOrBuilder getDataTypeOrBuilder() {
-        if (dataTypeBuilder_ != null) {
-          return dataTypeBuilder_.getMessageOrBuilder();
-        } else {
-          return dataType_ == null ?
-              com.google.protobuf.StringValue.getDefaultInstance() : dataType_;
-        }
-      }
-      /**
-       * <code>.google.protobuf.StringValue data_type = 6;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> 
-          getDataTypeFieldBuilder() {
-        if (dataTypeBuilder_ == null) {
-          dataTypeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder>(
-                  getDataType(),
-                  getParentForChildren(),
-                  isClean());
-          dataType_ = null;
-        }
-        return dataTypeBuilder_;
-      }
-
       private com.google.protobuf.StringValue dataFormat_;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> dataFormatBuilder_;
       /**
-       * <code>.google.protobuf.StringValue data_format = 7;</code>
+       * <code>.google.protobuf.StringValue data_format = 5;</code>
        * @return Whether the dataFormat field is set.
        */
       public boolean hasDataFormat() {
         return dataFormatBuilder_ != null || dataFormat_ != null;
       }
       /**
-       * <code>.google.protobuf.StringValue data_format = 7;</code>
+       * <code>.google.protobuf.StringValue data_format = 5;</code>
        * @return The dataFormat.
        */
       public com.google.protobuf.StringValue getDataFormat() {
@@ -7337,7 +6859,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.google.protobuf.StringValue data_format = 7;</code>
+       * <code>.google.protobuf.StringValue data_format = 5;</code>
        */
       public Builder setDataFormat(com.google.protobuf.StringValue value) {
         if (dataFormatBuilder_ == null) {
@@ -7353,7 +6875,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue data_format = 7;</code>
+       * <code>.google.protobuf.StringValue data_format = 5;</code>
        */
       public Builder setDataFormat(
           com.google.protobuf.StringValue.Builder builderForValue) {
@@ -7367,7 +6889,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue data_format = 7;</code>
+       * <code>.google.protobuf.StringValue data_format = 5;</code>
        */
       public Builder mergeDataFormat(com.google.protobuf.StringValue value) {
         if (dataFormatBuilder_ == null) {
@@ -7385,7 +6907,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue data_format = 7;</code>
+       * <code>.google.protobuf.StringValue data_format = 5;</code>
        */
       public Builder clearDataFormat() {
         if (dataFormatBuilder_ == null) {
@@ -7399,7 +6921,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue data_format = 7;</code>
+       * <code>.google.protobuf.StringValue data_format = 5;</code>
        */
       public com.google.protobuf.StringValue.Builder getDataFormatBuilder() {
         
@@ -7407,7 +6929,7 @@ public final class MetadataServiceOuterClass {
         return getDataFormatFieldBuilder().getBuilder();
       }
       /**
-       * <code>.google.protobuf.StringValue data_format = 7;</code>
+       * <code>.google.protobuf.StringValue data_format = 5;</code>
        */
       public com.google.protobuf.StringValueOrBuilder getDataFormatOrBuilder() {
         if (dataFormatBuilder_ != null) {
@@ -7418,7 +6940,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.google.protobuf.StringValue data_format = 7;</code>
+       * <code>.google.protobuf.StringValue data_format = 5;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> 
@@ -7434,256 +6956,137 @@ public final class MetadataServiceOuterClass {
         return dataFormatBuilder_;
       }
 
-      private com.google.protobuf.StringValue batchUri_;
+      private com.google.protobuf.StringValue uri_;
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> batchUriBuilder_;
+          com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> uriBuilder_;
       /**
-       * <code>.google.protobuf.StringValue batch_uri = 8;</code>
-       * @return Whether the batchUri field is set.
+       * <code>.google.protobuf.StringValue uri = 6;</code>
+       * @return Whether the uri field is set.
        */
-      public boolean hasBatchUri() {
-        return batchUriBuilder_ != null || batchUri_ != null;
+      public boolean hasUri() {
+        return uriBuilder_ != null || uri_ != null;
       }
       /**
-       * <code>.google.protobuf.StringValue batch_uri = 8;</code>
-       * @return The batchUri.
+       * <code>.google.protobuf.StringValue uri = 6;</code>
+       * @return The uri.
        */
-      public com.google.protobuf.StringValue getBatchUri() {
-        if (batchUriBuilder_ == null) {
-          return batchUri_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : batchUri_;
+      public com.google.protobuf.StringValue getUri() {
+        if (uriBuilder_ == null) {
+          return uri_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : uri_;
         } else {
-          return batchUriBuilder_.getMessage();
+          return uriBuilder_.getMessage();
         }
       }
       /**
-       * <code>.google.protobuf.StringValue batch_uri = 8;</code>
+       * <code>.google.protobuf.StringValue uri = 6;</code>
        */
-      public Builder setBatchUri(com.google.protobuf.StringValue value) {
-        if (batchUriBuilder_ == null) {
+      public Builder setUri(com.google.protobuf.StringValue value) {
+        if (uriBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          batchUri_ = value;
+          uri_ = value;
           onChanged();
         } else {
-          batchUriBuilder_.setMessage(value);
+          uriBuilder_.setMessage(value);
         }
 
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue batch_uri = 8;</code>
+       * <code>.google.protobuf.StringValue uri = 6;</code>
        */
-      public Builder setBatchUri(
+      public Builder setUri(
           com.google.protobuf.StringValue.Builder builderForValue) {
-        if (batchUriBuilder_ == null) {
-          batchUri_ = builderForValue.build();
+        if (uriBuilder_ == null) {
+          uri_ = builderForValue.build();
           onChanged();
         } else {
-          batchUriBuilder_.setMessage(builderForValue.build());
+          uriBuilder_.setMessage(builderForValue.build());
         }
 
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue batch_uri = 8;</code>
+       * <code>.google.protobuf.StringValue uri = 6;</code>
        */
-      public Builder mergeBatchUri(com.google.protobuf.StringValue value) {
-        if (batchUriBuilder_ == null) {
-          if (batchUri_ != null) {
-            batchUri_ =
-              com.google.protobuf.StringValue.newBuilder(batchUri_).mergeFrom(value).buildPartial();
+      public Builder mergeUri(com.google.protobuf.StringValue value) {
+        if (uriBuilder_ == null) {
+          if (uri_ != null) {
+            uri_ =
+              com.google.protobuf.StringValue.newBuilder(uri_).mergeFrom(value).buildPartial();
           } else {
-            batchUri_ = value;
+            uri_ = value;
           }
           onChanged();
         } else {
-          batchUriBuilder_.mergeFrom(value);
+          uriBuilder_.mergeFrom(value);
         }
 
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue batch_uri = 8;</code>
+       * <code>.google.protobuf.StringValue uri = 6;</code>
        */
-      public Builder clearBatchUri() {
-        if (batchUriBuilder_ == null) {
-          batchUri_ = null;
+      public Builder clearUri() {
+        if (uriBuilder_ == null) {
+          uri_ = null;
           onChanged();
         } else {
-          batchUri_ = null;
-          batchUriBuilder_ = null;
+          uri_ = null;
+          uriBuilder_ = null;
         }
 
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue batch_uri = 8;</code>
+       * <code>.google.protobuf.StringValue uri = 6;</code>
        */
-      public com.google.protobuf.StringValue.Builder getBatchUriBuilder() {
+      public com.google.protobuf.StringValue.Builder getUriBuilder() {
         
         onChanged();
-        return getBatchUriFieldBuilder().getBuilder();
+        return getUriFieldBuilder().getBuilder();
       }
       /**
-       * <code>.google.protobuf.StringValue batch_uri = 8;</code>
+       * <code>.google.protobuf.StringValue uri = 6;</code>
        */
-      public com.google.protobuf.StringValueOrBuilder getBatchUriOrBuilder() {
-        if (batchUriBuilder_ != null) {
-          return batchUriBuilder_.getMessageOrBuilder();
+      public com.google.protobuf.StringValueOrBuilder getUriOrBuilder() {
+        if (uriBuilder_ != null) {
+          return uriBuilder_.getMessageOrBuilder();
         } else {
-          return batchUri_ == null ?
-              com.google.protobuf.StringValue.getDefaultInstance() : batchUri_;
+          return uri_ == null ?
+              com.google.protobuf.StringValue.getDefaultInstance() : uri_;
         }
       }
       /**
-       * <code>.google.protobuf.StringValue batch_uri = 8;</code>
+       * <code>.google.protobuf.StringValue uri = 6;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> 
-          getBatchUriFieldBuilder() {
-        if (batchUriBuilder_ == null) {
-          batchUriBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+          getUriFieldBuilder() {
+        if (uriBuilder_ == null) {
+          uriBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
               com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder>(
-                  getBatchUri(),
+                  getUri(),
                   getParentForChildren(),
                   isClean());
-          batchUri_ = null;
+          uri_ = null;
         }
-        return batchUriBuilder_;
-      }
-
-      private com.google.protobuf.StringValue streamUri_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> streamUriBuilder_;
-      /**
-       * <code>.google.protobuf.StringValue stream_uri = 9;</code>
-       * @return Whether the streamUri field is set.
-       */
-      public boolean hasStreamUri() {
-        return streamUriBuilder_ != null || streamUri_ != null;
-      }
-      /**
-       * <code>.google.protobuf.StringValue stream_uri = 9;</code>
-       * @return The streamUri.
-       */
-      public com.google.protobuf.StringValue getStreamUri() {
-        if (streamUriBuilder_ == null) {
-          return streamUri_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : streamUri_;
-        } else {
-          return streamUriBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>.google.protobuf.StringValue stream_uri = 9;</code>
-       */
-      public Builder setStreamUri(com.google.protobuf.StringValue value) {
-        if (streamUriBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          streamUri_ = value;
-          onChanged();
-        } else {
-          streamUriBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue stream_uri = 9;</code>
-       */
-      public Builder setStreamUri(
-          com.google.protobuf.StringValue.Builder builderForValue) {
-        if (streamUriBuilder_ == null) {
-          streamUri_ = builderForValue.build();
-          onChanged();
-        } else {
-          streamUriBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue stream_uri = 9;</code>
-       */
-      public Builder mergeStreamUri(com.google.protobuf.StringValue value) {
-        if (streamUriBuilder_ == null) {
-          if (streamUri_ != null) {
-            streamUri_ =
-              com.google.protobuf.StringValue.newBuilder(streamUri_).mergeFrom(value).buildPartial();
-          } else {
-            streamUri_ = value;
-          }
-          onChanged();
-        } else {
-          streamUriBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue stream_uri = 9;</code>
-       */
-      public Builder clearStreamUri() {
-        if (streamUriBuilder_ == null) {
-          streamUri_ = null;
-          onChanged();
-        } else {
-          streamUri_ = null;
-          streamUriBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue stream_uri = 9;</code>
-       */
-      public com.google.protobuf.StringValue.Builder getStreamUriBuilder() {
-        
-        onChanged();
-        return getStreamUriFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>.google.protobuf.StringValue stream_uri = 9;</code>
-       */
-      public com.google.protobuf.StringValueOrBuilder getStreamUriOrBuilder() {
-        if (streamUriBuilder_ != null) {
-          return streamUriBuilder_.getMessageOrBuilder();
-        } else {
-          return streamUri_ == null ?
-              com.google.protobuf.StringValue.getDefaultInstance() : streamUri_;
-        }
-      }
-      /**
-       * <code>.google.protobuf.StringValue stream_uri = 9;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> 
-          getStreamUriFieldBuilder() {
-        if (streamUriBuilder_ == null) {
-          streamUriBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder>(
-                  getStreamUri(),
-                  getParentForChildren(),
-                  isClean());
-          streamUri_ = null;
-        }
-        return streamUriBuilder_;
+        return uriBuilder_;
       }
 
       private com.google.protobuf.StringValue description_;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> descriptionBuilder_;
       /**
-       * <code>.google.protobuf.StringValue description = 10;</code>
+       * <code>.google.protobuf.StringValue description = 7;</code>
        * @return Whether the description field is set.
        */
       public boolean hasDescription() {
         return descriptionBuilder_ != null || description_ != null;
       }
       /**
-       * <code>.google.protobuf.StringValue description = 10;</code>
+       * <code>.google.protobuf.StringValue description = 7;</code>
        * @return The description.
        */
       public com.google.protobuf.StringValue getDescription() {
@@ -7694,7 +7097,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.google.protobuf.StringValue description = 10;</code>
+       * <code>.google.protobuf.StringValue description = 7;</code>
        */
       public Builder setDescription(com.google.protobuf.StringValue value) {
         if (descriptionBuilder_ == null) {
@@ -7710,7 +7113,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue description = 10;</code>
+       * <code>.google.protobuf.StringValue description = 7;</code>
        */
       public Builder setDescription(
           com.google.protobuf.StringValue.Builder builderForValue) {
@@ -7724,7 +7127,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue description = 10;</code>
+       * <code>.google.protobuf.StringValue description = 7;</code>
        */
       public Builder mergeDescription(com.google.protobuf.StringValue value) {
         if (descriptionBuilder_ == null) {
@@ -7742,7 +7145,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue description = 10;</code>
+       * <code>.google.protobuf.StringValue description = 7;</code>
        */
       public Builder clearDescription() {
         if (descriptionBuilder_ == null) {
@@ -7756,7 +7159,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue description = 10;</code>
+       * <code>.google.protobuf.StringValue description = 7;</code>
        */
       public com.google.protobuf.StringValue.Builder getDescriptionBuilder() {
         
@@ -7764,7 +7167,7 @@ public final class MetadataServiceOuterClass {
         return getDescriptionFieldBuilder().getBuilder();
       }
       /**
-       * <code>.google.protobuf.StringValue description = 10;</code>
+       * <code>.google.protobuf.StringValue description = 7;</code>
        */
       public com.google.protobuf.StringValueOrBuilder getDescriptionOrBuilder() {
         if (descriptionBuilder_ != null) {
@@ -7775,7 +7178,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.google.protobuf.StringValue description = 10;</code>
+       * <code>.google.protobuf.StringValue description = 7;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> 
@@ -7795,14 +7198,14 @@ public final class MetadataServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.Int64Value, com.google.protobuf.Int64Value.Builder, com.google.protobuf.Int64ValueOrBuilder> updateTimeBuilder_;
       /**
-       * <code>.google.protobuf.Int64Value update_time = 11;</code>
+       * <code>.google.protobuf.Int64Value update_time = 8;</code>
        * @return Whether the updateTime field is set.
        */
       public boolean hasUpdateTime() {
         return updateTimeBuilder_ != null || updateTime_ != null;
       }
       /**
-       * <code>.google.protobuf.Int64Value update_time = 11;</code>
+       * <code>.google.protobuf.Int64Value update_time = 8;</code>
        * @return The updateTime.
        */
       public com.google.protobuf.Int64Value getUpdateTime() {
@@ -7813,7 +7216,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.google.protobuf.Int64Value update_time = 11;</code>
+       * <code>.google.protobuf.Int64Value update_time = 8;</code>
        */
       public Builder setUpdateTime(com.google.protobuf.Int64Value value) {
         if (updateTimeBuilder_ == null) {
@@ -7829,7 +7232,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.Int64Value update_time = 11;</code>
+       * <code>.google.protobuf.Int64Value update_time = 8;</code>
        */
       public Builder setUpdateTime(
           com.google.protobuf.Int64Value.Builder builderForValue) {
@@ -7843,7 +7246,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.Int64Value update_time = 11;</code>
+       * <code>.google.protobuf.Int64Value update_time = 8;</code>
        */
       public Builder mergeUpdateTime(com.google.protobuf.Int64Value value) {
         if (updateTimeBuilder_ == null) {
@@ -7861,7 +7264,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.Int64Value update_time = 11;</code>
+       * <code>.google.protobuf.Int64Value update_time = 8;</code>
        */
       public Builder clearUpdateTime() {
         if (updateTimeBuilder_ == null) {
@@ -7875,7 +7278,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.Int64Value update_time = 11;</code>
+       * <code>.google.protobuf.Int64Value update_time = 8;</code>
        */
       public com.google.protobuf.Int64Value.Builder getUpdateTimeBuilder() {
         
@@ -7883,7 +7286,7 @@ public final class MetadataServiceOuterClass {
         return getUpdateTimeFieldBuilder().getBuilder();
       }
       /**
-       * <code>.google.protobuf.Int64Value update_time = 11;</code>
+       * <code>.google.protobuf.Int64Value update_time = 8;</code>
        */
       public com.google.protobuf.Int64ValueOrBuilder getUpdateTimeOrBuilder() {
         if (updateTimeBuilder_ != null) {
@@ -7894,7 +7297,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.google.protobuf.Int64Value update_time = 11;</code>
+       * <code>.google.protobuf.Int64Value update_time = 8;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.Int64Value, com.google.protobuf.Int64Value.Builder, com.google.protobuf.Int64ValueOrBuilder> 
@@ -7914,14 +7317,14 @@ public final class MetadataServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> catalogNameBuilder_;
       /**
-       * <code>.google.protobuf.StringValue catalog_name = 12;</code>
+       * <code>.google.protobuf.StringValue catalog_name = 9;</code>
        * @return Whether the catalogName field is set.
        */
       public boolean hasCatalogName() {
         return catalogNameBuilder_ != null || catalogName_ != null;
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_name = 12;</code>
+       * <code>.google.protobuf.StringValue catalog_name = 9;</code>
        * @return The catalogName.
        */
       public com.google.protobuf.StringValue getCatalogName() {
@@ -7932,7 +7335,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_name = 12;</code>
+       * <code>.google.protobuf.StringValue catalog_name = 9;</code>
        */
       public Builder setCatalogName(com.google.protobuf.StringValue value) {
         if (catalogNameBuilder_ == null) {
@@ -7948,7 +7351,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_name = 12;</code>
+       * <code>.google.protobuf.StringValue catalog_name = 9;</code>
        */
       public Builder setCatalogName(
           com.google.protobuf.StringValue.Builder builderForValue) {
@@ -7962,7 +7365,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_name = 12;</code>
+       * <code>.google.protobuf.StringValue catalog_name = 9;</code>
        */
       public Builder mergeCatalogName(com.google.protobuf.StringValue value) {
         if (catalogNameBuilder_ == null) {
@@ -7980,7 +7383,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_name = 12;</code>
+       * <code>.google.protobuf.StringValue catalog_name = 9;</code>
        */
       public Builder clearCatalogName() {
         if (catalogNameBuilder_ == null) {
@@ -7994,7 +7397,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_name = 12;</code>
+       * <code>.google.protobuf.StringValue catalog_name = 9;</code>
        */
       public com.google.protobuf.StringValue.Builder getCatalogNameBuilder() {
         
@@ -8002,7 +7405,7 @@ public final class MetadataServiceOuterClass {
         return getCatalogNameFieldBuilder().getBuilder();
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_name = 12;</code>
+       * <code>.google.protobuf.StringValue catalog_name = 9;</code>
        */
       public com.google.protobuf.StringValueOrBuilder getCatalogNameOrBuilder() {
         if (catalogNameBuilder_ != null) {
@@ -8013,7 +7416,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_name = 12;</code>
+       * <code>.google.protobuf.StringValue catalog_name = 9;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> 
@@ -8033,14 +7436,14 @@ public final class MetadataServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> catalogTypeBuilder_;
       /**
-       * <code>.google.protobuf.StringValue catalog_type = 13;</code>
+       * <code>.google.protobuf.StringValue catalog_type = 10;</code>
        * @return Whether the catalogType field is set.
        */
       public boolean hasCatalogType() {
         return catalogTypeBuilder_ != null || catalogType_ != null;
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_type = 13;</code>
+       * <code>.google.protobuf.StringValue catalog_type = 10;</code>
        * @return The catalogType.
        */
       public com.google.protobuf.StringValue getCatalogType() {
@@ -8051,7 +7454,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_type = 13;</code>
+       * <code>.google.protobuf.StringValue catalog_type = 10;</code>
        */
       public Builder setCatalogType(com.google.protobuf.StringValue value) {
         if (catalogTypeBuilder_ == null) {
@@ -8067,7 +7470,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_type = 13;</code>
+       * <code>.google.protobuf.StringValue catalog_type = 10;</code>
        */
       public Builder setCatalogType(
           com.google.protobuf.StringValue.Builder builderForValue) {
@@ -8081,7 +7484,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_type = 13;</code>
+       * <code>.google.protobuf.StringValue catalog_type = 10;</code>
        */
       public Builder mergeCatalogType(com.google.protobuf.StringValue value) {
         if (catalogTypeBuilder_ == null) {
@@ -8099,7 +7502,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_type = 13;</code>
+       * <code>.google.protobuf.StringValue catalog_type = 10;</code>
        */
       public Builder clearCatalogType() {
         if (catalogTypeBuilder_ == null) {
@@ -8113,7 +7516,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_type = 13;</code>
+       * <code>.google.protobuf.StringValue catalog_type = 10;</code>
        */
       public com.google.protobuf.StringValue.Builder getCatalogTypeBuilder() {
         
@@ -8121,7 +7524,7 @@ public final class MetadataServiceOuterClass {
         return getCatalogTypeFieldBuilder().getBuilder();
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_type = 13;</code>
+       * <code>.google.protobuf.StringValue catalog_type = 10;</code>
        */
       public com.google.protobuf.StringValueOrBuilder getCatalogTypeOrBuilder() {
         if (catalogTypeBuilder_ != null) {
@@ -8132,7 +7535,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_type = 13;</code>
+       * <code>.google.protobuf.StringValue catalog_type = 10;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> 
@@ -8152,14 +7555,14 @@ public final class MetadataServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> catalogDatabaseBuilder_;
       /**
-       * <code>.google.protobuf.StringValue catalog_database = 14;</code>
+       * <code>.google.protobuf.StringValue catalog_database = 11;</code>
        * @return Whether the catalogDatabase field is set.
        */
       public boolean hasCatalogDatabase() {
         return catalogDatabaseBuilder_ != null || catalogDatabase_ != null;
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_database = 14;</code>
+       * <code>.google.protobuf.StringValue catalog_database = 11;</code>
        * @return The catalogDatabase.
        */
       public com.google.protobuf.StringValue getCatalogDatabase() {
@@ -8170,7 +7573,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_database = 14;</code>
+       * <code>.google.protobuf.StringValue catalog_database = 11;</code>
        */
       public Builder setCatalogDatabase(com.google.protobuf.StringValue value) {
         if (catalogDatabaseBuilder_ == null) {
@@ -8186,7 +7589,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_database = 14;</code>
+       * <code>.google.protobuf.StringValue catalog_database = 11;</code>
        */
       public Builder setCatalogDatabase(
           com.google.protobuf.StringValue.Builder builderForValue) {
@@ -8200,7 +7603,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_database = 14;</code>
+       * <code>.google.protobuf.StringValue catalog_database = 11;</code>
        */
       public Builder mergeCatalogDatabase(com.google.protobuf.StringValue value) {
         if (catalogDatabaseBuilder_ == null) {
@@ -8218,7 +7621,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_database = 14;</code>
+       * <code>.google.protobuf.StringValue catalog_database = 11;</code>
        */
       public Builder clearCatalogDatabase() {
         if (catalogDatabaseBuilder_ == null) {
@@ -8232,7 +7635,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_database = 14;</code>
+       * <code>.google.protobuf.StringValue catalog_database = 11;</code>
        */
       public com.google.protobuf.StringValue.Builder getCatalogDatabaseBuilder() {
         
@@ -8240,7 +7643,7 @@ public final class MetadataServiceOuterClass {
         return getCatalogDatabaseFieldBuilder().getBuilder();
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_database = 14;</code>
+       * <code>.google.protobuf.StringValue catalog_database = 11;</code>
        */
       public com.google.protobuf.StringValueOrBuilder getCatalogDatabaseOrBuilder() {
         if (catalogDatabaseBuilder_ != null) {
@@ -8251,7 +7654,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_database = 14;</code>
+       * <code>.google.protobuf.StringValue catalog_database = 11;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> 
@@ -8271,14 +7674,14 @@ public final class MetadataServiceOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> catalogConnectionUriBuilder_;
       /**
-       * <code>.google.protobuf.StringValue catalog_connection_uri = 15;</code>
+       * <code>.google.protobuf.StringValue catalog_connection_uri = 12;</code>
        * @return Whether the catalogConnectionUri field is set.
        */
       public boolean hasCatalogConnectionUri() {
         return catalogConnectionUriBuilder_ != null || catalogConnectionUri_ != null;
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_connection_uri = 15;</code>
+       * <code>.google.protobuf.StringValue catalog_connection_uri = 12;</code>
        * @return The catalogConnectionUri.
        */
       public com.google.protobuf.StringValue getCatalogConnectionUri() {
@@ -8289,7 +7692,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_connection_uri = 15;</code>
+       * <code>.google.protobuf.StringValue catalog_connection_uri = 12;</code>
        */
       public Builder setCatalogConnectionUri(com.google.protobuf.StringValue value) {
         if (catalogConnectionUriBuilder_ == null) {
@@ -8305,7 +7708,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_connection_uri = 15;</code>
+       * <code>.google.protobuf.StringValue catalog_connection_uri = 12;</code>
        */
       public Builder setCatalogConnectionUri(
           com.google.protobuf.StringValue.Builder builderForValue) {
@@ -8319,7 +7722,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_connection_uri = 15;</code>
+       * <code>.google.protobuf.StringValue catalog_connection_uri = 12;</code>
        */
       public Builder mergeCatalogConnectionUri(com.google.protobuf.StringValue value) {
         if (catalogConnectionUriBuilder_ == null) {
@@ -8337,7 +7740,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_connection_uri = 15;</code>
+       * <code>.google.protobuf.StringValue catalog_connection_uri = 12;</code>
        */
       public Builder clearCatalogConnectionUri() {
         if (catalogConnectionUriBuilder_ == null) {
@@ -8351,7 +7754,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_connection_uri = 15;</code>
+       * <code>.google.protobuf.StringValue catalog_connection_uri = 12;</code>
        */
       public com.google.protobuf.StringValue.Builder getCatalogConnectionUriBuilder() {
         
@@ -8359,7 +7762,7 @@ public final class MetadataServiceOuterClass {
         return getCatalogConnectionUriFieldBuilder().getBuilder();
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_connection_uri = 15;</code>
+       * <code>.google.protobuf.StringValue catalog_connection_uri = 12;</code>
        */
       public com.google.protobuf.StringValueOrBuilder getCatalogConnectionUriOrBuilder() {
         if (catalogConnectionUriBuilder_ != null) {
@@ -8370,7 +7773,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_connection_uri = 15;</code>
+       * <code>.google.protobuf.StringValue catalog_connection_uri = 12;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> 
@@ -8386,137 +7789,18 @@ public final class MetadataServiceOuterClass {
         return catalogConnectionUriBuilder_;
       }
 
-      private com.google.protobuf.StringValue catalogVersion_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> catalogVersionBuilder_;
-      /**
-       * <code>.google.protobuf.StringValue catalog_version = 16;</code>
-       * @return Whether the catalogVersion field is set.
-       */
-      public boolean hasCatalogVersion() {
-        return catalogVersionBuilder_ != null || catalogVersion_ != null;
-      }
-      /**
-       * <code>.google.protobuf.StringValue catalog_version = 16;</code>
-       * @return The catalogVersion.
-       */
-      public com.google.protobuf.StringValue getCatalogVersion() {
-        if (catalogVersionBuilder_ == null) {
-          return catalogVersion_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : catalogVersion_;
-        } else {
-          return catalogVersionBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>.google.protobuf.StringValue catalog_version = 16;</code>
-       */
-      public Builder setCatalogVersion(com.google.protobuf.StringValue value) {
-        if (catalogVersionBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          catalogVersion_ = value;
-          onChanged();
-        } else {
-          catalogVersionBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue catalog_version = 16;</code>
-       */
-      public Builder setCatalogVersion(
-          com.google.protobuf.StringValue.Builder builderForValue) {
-        if (catalogVersionBuilder_ == null) {
-          catalogVersion_ = builderForValue.build();
-          onChanged();
-        } else {
-          catalogVersionBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue catalog_version = 16;</code>
-       */
-      public Builder mergeCatalogVersion(com.google.protobuf.StringValue value) {
-        if (catalogVersionBuilder_ == null) {
-          if (catalogVersion_ != null) {
-            catalogVersion_ =
-              com.google.protobuf.StringValue.newBuilder(catalogVersion_).mergeFrom(value).buildPartial();
-          } else {
-            catalogVersion_ = value;
-          }
-          onChanged();
-        } else {
-          catalogVersionBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue catalog_version = 16;</code>
-       */
-      public Builder clearCatalogVersion() {
-        if (catalogVersionBuilder_ == null) {
-          catalogVersion_ = null;
-          onChanged();
-        } else {
-          catalogVersion_ = null;
-          catalogVersionBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue catalog_version = 16;</code>
-       */
-      public com.google.protobuf.StringValue.Builder getCatalogVersionBuilder() {
-        
-        onChanged();
-        return getCatalogVersionFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>.google.protobuf.StringValue catalog_version = 16;</code>
-       */
-      public com.google.protobuf.StringValueOrBuilder getCatalogVersionOrBuilder() {
-        if (catalogVersionBuilder_ != null) {
-          return catalogVersionBuilder_.getMessageOrBuilder();
-        } else {
-          return catalogVersion_ == null ?
-              com.google.protobuf.StringValue.getDefaultInstance() : catalogVersion_;
-        }
-      }
-      /**
-       * <code>.google.protobuf.StringValue catalog_version = 16;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> 
-          getCatalogVersionFieldBuilder() {
-        if (catalogVersionBuilder_ == null) {
-          catalogVersionBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder>(
-                  getCatalogVersion(),
-                  getParentForChildren(),
-                  isClean());
-          catalogVersion_ = null;
-        }
-        return catalogVersionBuilder_;
-      }
-
       private com.google.protobuf.StringValue catalogTable_;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> catalogTableBuilder_;
       /**
-       * <code>.google.protobuf.StringValue catalog_table = 17;</code>
+       * <code>.google.protobuf.StringValue catalog_table = 13;</code>
        * @return Whether the catalogTable field is set.
        */
       public boolean hasCatalogTable() {
         return catalogTableBuilder_ != null || catalogTable_ != null;
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_table = 17;</code>
+       * <code>.google.protobuf.StringValue catalog_table = 13;</code>
        * @return The catalogTable.
        */
       public com.google.protobuf.StringValue getCatalogTable() {
@@ -8527,7 +7811,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_table = 17;</code>
+       * <code>.google.protobuf.StringValue catalog_table = 13;</code>
        */
       public Builder setCatalogTable(com.google.protobuf.StringValue value) {
         if (catalogTableBuilder_ == null) {
@@ -8543,7 +7827,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_table = 17;</code>
+       * <code>.google.protobuf.StringValue catalog_table = 13;</code>
        */
       public Builder setCatalogTable(
           com.google.protobuf.StringValue.Builder builderForValue) {
@@ -8557,7 +7841,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_table = 17;</code>
+       * <code>.google.protobuf.StringValue catalog_table = 13;</code>
        */
       public Builder mergeCatalogTable(com.google.protobuf.StringValue value) {
         if (catalogTableBuilder_ == null) {
@@ -8575,7 +7859,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_table = 17;</code>
+       * <code>.google.protobuf.StringValue catalog_table = 13;</code>
        */
       public Builder clearCatalogTable() {
         if (catalogTableBuilder_ == null) {
@@ -8589,7 +7873,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_table = 17;</code>
+       * <code>.google.protobuf.StringValue catalog_table = 13;</code>
        */
       public com.google.protobuf.StringValue.Builder getCatalogTableBuilder() {
         
@@ -8597,7 +7881,7 @@ public final class MetadataServiceOuterClass {
         return getCatalogTableFieldBuilder().getBuilder();
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_table = 17;</code>
+       * <code>.google.protobuf.StringValue catalog_table = 13;</code>
        */
       public com.google.protobuf.StringValueOrBuilder getCatalogTableOrBuilder() {
         if (catalogTableBuilder_ != null) {
@@ -8608,7 +7892,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.google.protobuf.StringValue catalog_table = 17;</code>
+       * <code>.google.protobuf.StringValue catalog_table = 13;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> 
@@ -8636,41 +7920,41 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:ai_flow.UpdateExampleRequest)
+      // @@protoc_insertion_point(builder_scope:ai_flow.UpdateDatasetRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:ai_flow.UpdateExampleRequest)
-    private static final com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:ai_flow.UpdateDatasetRequest)
+    private static final com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest();
+      DEFAULT_INSTANCE = new com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest();
     }
 
-    public static com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest getDefaultInstance() {
+    public static com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<UpdateExampleRequest>
-        PARSER = new com.google.protobuf.AbstractParser<UpdateExampleRequest>() {
+    private static final com.google.protobuf.Parser<UpdateDatasetRequest>
+        PARSER = new com.google.protobuf.AbstractParser<UpdateDatasetRequest>() {
       @java.lang.Override
-      public UpdateExampleRequest parsePartialFrom(
+      public UpdateDatasetRequest parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new UpdateExampleRequest(input, extensionRegistry);
+        return new UpdateDatasetRequest(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<UpdateExampleRequest> parser() {
+    public static com.google.protobuf.Parser<UpdateDatasetRequest> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<UpdateExampleRequest> getParserForType() {
+    public com.google.protobuf.Parser<UpdateDatasetRequest> getParserForType() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest getDefaultInstanceForType() {
+    public com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -30733,76 +30017,76 @@ public final class MetadataServiceOuterClass {
     public interface Interface {
       /**
        * <pre>
-       *example api
+       *dataset api
        * </pre>
        *
-       * <code>rpc getExampleById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
+       * <code>rpc getDatasetById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
        */
-      public abstract void getExampleById(
+      public abstract void getDatasetById(
           com.google.protobuf.RpcController controller,
           com.aiflow.proto.MetadataServiceOuterClass.IdRequest request,
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc getExampleByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
+       * <code>rpc getDatasetByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
        */
-      public abstract void getExampleByName(
+      public abstract void getDatasetByName(
           com.google.protobuf.RpcController controller,
           com.aiflow.proto.MetadataServiceOuterClass.NameRequest request,
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc listExample(.ai_flow.ListRequest) returns (.ai_flow.Response) { ... }</code>
+       * <code>rpc listDatasets(.ai_flow.ListRequest) returns (.ai_flow.Response) { ... }</code>
        */
-      public abstract void listExample(
+      public abstract void listDatasets(
           com.google.protobuf.RpcController controller,
           com.aiflow.proto.MetadataServiceOuterClass.ListRequest request,
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc registerExample(.ai_flow.RegisterExampleRequest) returns (.ai_flow.Response) { ... }</code>
+       * <code>rpc registerDataset(.ai_flow.RegisterDatasetRequest) returns (.ai_flow.Response) { ... }</code>
        */
-      public abstract void registerExample(
+      public abstract void registerDataset(
           com.google.protobuf.RpcController controller,
-          com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest request,
+          com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest request,
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc registerExampleWithCatalog(.ai_flow.RegisterExampleRequest) returns (.ai_flow.Response) { ... }</code>
+       * <code>rpc registerDatasetWithCatalog(.ai_flow.RegisterDatasetRequest) returns (.ai_flow.Response) { ... }</code>
        */
-      public abstract void registerExampleWithCatalog(
+      public abstract void registerDatasetWithCatalog(
           com.google.protobuf.RpcController controller,
-          com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest request,
+          com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest request,
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc registerExamples(.ai_flow.RegisterExamplesRequest) returns (.ai_flow.Response) { ... }</code>
+       * <code>rpc registerDatasets(.ai_flow.RegisterDatasetsRequest) returns (.ai_flow.Response) { ... }</code>
        */
-      public abstract void registerExamples(
+      public abstract void registerDatasets(
           com.google.protobuf.RpcController controller,
-          com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest request,
+          com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest request,
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc updateExample(.ai_flow.UpdateExampleRequest) returns (.ai_flow.Response) { ... }</code>
+       * <code>rpc updateDataset(.ai_flow.UpdateDatasetRequest) returns (.ai_flow.Response) { ... }</code>
        */
-      public abstract void updateExample(
+      public abstract void updateDataset(
           com.google.protobuf.RpcController controller,
-          com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest request,
+          com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest request,
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc deleteExampleById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
+       * <code>rpc deleteDatasetById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
        */
-      public abstract void deleteExampleById(
+      public abstract void deleteDatasetById(
           com.google.protobuf.RpcController controller,
           com.aiflow.proto.MetadataServiceOuterClass.IdRequest request,
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
       /**
-       * <code>rpc deleteExampleByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
+       * <code>rpc deleteDatasetByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
        */
-      public abstract void deleteExampleByName(
+      public abstract void deleteDatasetByName(
           com.google.protobuf.RpcController controller,
           com.aiflow.proto.MetadataServiceOuterClass.NameRequest request,
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
@@ -31269,75 +30553,75 @@ public final class MetadataServiceOuterClass {
         final Interface impl) {
       return new MetadataService() {
         @java.lang.Override
-        public  void getExampleById(
+        public  void getDatasetById(
             com.google.protobuf.RpcController controller,
             com.aiflow.proto.MetadataServiceOuterClass.IdRequest request,
             com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done) {
-          impl.getExampleById(controller, request, done);
+          impl.getDatasetById(controller, request, done);
         }
 
         @java.lang.Override
-        public  void getExampleByName(
+        public  void getDatasetByName(
             com.google.protobuf.RpcController controller,
             com.aiflow.proto.MetadataServiceOuterClass.NameRequest request,
             com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done) {
-          impl.getExampleByName(controller, request, done);
+          impl.getDatasetByName(controller, request, done);
         }
 
         @java.lang.Override
-        public  void listExample(
+        public  void listDatasets(
             com.google.protobuf.RpcController controller,
             com.aiflow.proto.MetadataServiceOuterClass.ListRequest request,
             com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done) {
-          impl.listExample(controller, request, done);
+          impl.listDatasets(controller, request, done);
         }
 
         @java.lang.Override
-        public  void registerExample(
+        public  void registerDataset(
             com.google.protobuf.RpcController controller,
-            com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest request,
+            com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest request,
             com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done) {
-          impl.registerExample(controller, request, done);
+          impl.registerDataset(controller, request, done);
         }
 
         @java.lang.Override
-        public  void registerExampleWithCatalog(
+        public  void registerDatasetWithCatalog(
             com.google.protobuf.RpcController controller,
-            com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest request,
+            com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest request,
             com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done) {
-          impl.registerExampleWithCatalog(controller, request, done);
+          impl.registerDatasetWithCatalog(controller, request, done);
         }
 
         @java.lang.Override
-        public  void registerExamples(
+        public  void registerDatasets(
             com.google.protobuf.RpcController controller,
-            com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest request,
+            com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest request,
             com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done) {
-          impl.registerExamples(controller, request, done);
+          impl.registerDatasets(controller, request, done);
         }
 
         @java.lang.Override
-        public  void updateExample(
+        public  void updateDataset(
             com.google.protobuf.RpcController controller,
-            com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest request,
+            com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest request,
             com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done) {
-          impl.updateExample(controller, request, done);
+          impl.updateDataset(controller, request, done);
         }
 
         @java.lang.Override
-        public  void deleteExampleById(
+        public  void deleteDatasetById(
             com.google.protobuf.RpcController controller,
             com.aiflow.proto.MetadataServiceOuterClass.IdRequest request,
             com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done) {
-          impl.deleteExampleById(controller, request, done);
+          impl.deleteDatasetById(controller, request, done);
         }
 
         @java.lang.Override
-        public  void deleteExampleByName(
+        public  void deleteDatasetByName(
             com.google.protobuf.RpcController controller,
             com.aiflow.proto.MetadataServiceOuterClass.NameRequest request,
             com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done) {
-          impl.deleteExampleByName(controller, request, done);
+          impl.deleteDatasetByName(controller, request, done);
         }
 
         @java.lang.Override
@@ -31787,23 +31071,23 @@ public final class MetadataServiceOuterClass {
           }
           switch(method.getIndex()) {
             case 0:
-              return impl.getExampleById(controller, (com.aiflow.proto.MetadataServiceOuterClass.IdRequest)request);
+              return impl.getDatasetById(controller, (com.aiflow.proto.MetadataServiceOuterClass.IdRequest)request);
             case 1:
-              return impl.getExampleByName(controller, (com.aiflow.proto.MetadataServiceOuterClass.NameRequest)request);
+              return impl.getDatasetByName(controller, (com.aiflow.proto.MetadataServiceOuterClass.NameRequest)request);
             case 2:
-              return impl.listExample(controller, (com.aiflow.proto.MetadataServiceOuterClass.ListRequest)request);
+              return impl.listDatasets(controller, (com.aiflow.proto.MetadataServiceOuterClass.ListRequest)request);
             case 3:
-              return impl.registerExample(controller, (com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest)request);
+              return impl.registerDataset(controller, (com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest)request);
             case 4:
-              return impl.registerExampleWithCatalog(controller, (com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest)request);
+              return impl.registerDatasetWithCatalog(controller, (com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest)request);
             case 5:
-              return impl.registerExamples(controller, (com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest)request);
+              return impl.registerDatasets(controller, (com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest)request);
             case 6:
-              return impl.updateExample(controller, (com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest)request);
+              return impl.updateDataset(controller, (com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest)request);
             case 7:
-              return impl.deleteExampleById(controller, (com.aiflow.proto.MetadataServiceOuterClass.IdRequest)request);
+              return impl.deleteDatasetById(controller, (com.aiflow.proto.MetadataServiceOuterClass.IdRequest)request);
             case 8:
-              return impl.deleteExampleByName(controller, (com.aiflow.proto.MetadataServiceOuterClass.NameRequest)request);
+              return impl.deleteDatasetByName(controller, (com.aiflow.proto.MetadataServiceOuterClass.NameRequest)request);
             case 9:
               return impl.getModelRelationById(controller, (com.aiflow.proto.MetadataServiceOuterClass.IdRequest)request);
             case 10:
@@ -31931,13 +31215,13 @@ public final class MetadataServiceOuterClass {
             case 2:
               return com.aiflow.proto.MetadataServiceOuterClass.ListRequest.getDefaultInstance();
             case 3:
-              return com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest.getDefaultInstance();
+              return com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest.getDefaultInstance();
             case 4:
-              return com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest.getDefaultInstance();
+              return com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest.getDefaultInstance();
             case 5:
-              return com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest.getDefaultInstance();
+              return com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest.getDefaultInstance();
             case 6:
-              return com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest.getDefaultInstance();
+              return com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest.getDefaultInstance();
             case 7:
               return com.aiflow.proto.MetadataServiceOuterClass.IdRequest.getDefaultInstance();
             case 8:
@@ -32196,76 +31480,76 @@ public final class MetadataServiceOuterClass {
 
     /**
      * <pre>
-     *example api
+     *dataset api
      * </pre>
      *
-     * <code>rpc getExampleById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
+     * <code>rpc getDatasetById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
      */
-    public abstract void getExampleById(
+    public abstract void getDatasetById(
         com.google.protobuf.RpcController controller,
         com.aiflow.proto.MetadataServiceOuterClass.IdRequest request,
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc getExampleByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
+     * <code>rpc getDatasetByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
      */
-    public abstract void getExampleByName(
+    public abstract void getDatasetByName(
         com.google.protobuf.RpcController controller,
         com.aiflow.proto.MetadataServiceOuterClass.NameRequest request,
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc listExample(.ai_flow.ListRequest) returns (.ai_flow.Response) { ... }</code>
+     * <code>rpc listDatasets(.ai_flow.ListRequest) returns (.ai_flow.Response) { ... }</code>
      */
-    public abstract void listExample(
+    public abstract void listDatasets(
         com.google.protobuf.RpcController controller,
         com.aiflow.proto.MetadataServiceOuterClass.ListRequest request,
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc registerExample(.ai_flow.RegisterExampleRequest) returns (.ai_flow.Response) { ... }</code>
+     * <code>rpc registerDataset(.ai_flow.RegisterDatasetRequest) returns (.ai_flow.Response) { ... }</code>
      */
-    public abstract void registerExample(
+    public abstract void registerDataset(
         com.google.protobuf.RpcController controller,
-        com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest request,
+        com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest request,
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc registerExampleWithCatalog(.ai_flow.RegisterExampleRequest) returns (.ai_flow.Response) { ... }</code>
+     * <code>rpc registerDatasetWithCatalog(.ai_flow.RegisterDatasetRequest) returns (.ai_flow.Response) { ... }</code>
      */
-    public abstract void registerExampleWithCatalog(
+    public abstract void registerDatasetWithCatalog(
         com.google.protobuf.RpcController controller,
-        com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest request,
+        com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest request,
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc registerExamples(.ai_flow.RegisterExamplesRequest) returns (.ai_flow.Response) { ... }</code>
+     * <code>rpc registerDatasets(.ai_flow.RegisterDatasetsRequest) returns (.ai_flow.Response) { ... }</code>
      */
-    public abstract void registerExamples(
+    public abstract void registerDatasets(
         com.google.protobuf.RpcController controller,
-        com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest request,
+        com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest request,
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc updateExample(.ai_flow.UpdateExampleRequest) returns (.ai_flow.Response) { ... }</code>
+     * <code>rpc updateDataset(.ai_flow.UpdateDatasetRequest) returns (.ai_flow.Response) { ... }</code>
      */
-    public abstract void updateExample(
+    public abstract void updateDataset(
         com.google.protobuf.RpcController controller,
-        com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest request,
+        com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest request,
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc deleteExampleById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
+     * <code>rpc deleteDatasetById(.ai_flow.IdRequest) returns (.ai_flow.Response) { ... }</code>
      */
-    public abstract void deleteExampleById(
+    public abstract void deleteDatasetById(
         com.google.protobuf.RpcController controller,
         com.aiflow.proto.MetadataServiceOuterClass.IdRequest request,
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
 
     /**
-     * <code>rpc deleteExampleByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
+     * <code>rpc deleteDatasetByName(.ai_flow.NameRequest) returns (.ai_flow.Response) { ... }</code>
      */
-    public abstract void deleteExampleByName(
+    public abstract void deleteDatasetByName(
         com.google.protobuf.RpcController controller,
         com.aiflow.proto.MetadataServiceOuterClass.NameRequest request,
         com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done);
@@ -32749,47 +32033,47 @@ public final class MetadataServiceOuterClass {
       }
       switch(method.getIndex()) {
         case 0:
-          this.getExampleById(controller, (com.aiflow.proto.MetadataServiceOuterClass.IdRequest)request,
+          this.getDatasetById(controller, (com.aiflow.proto.MetadataServiceOuterClass.IdRequest)request,
             com.google.protobuf.RpcUtil.<com.aiflow.proto.Message.Response>specializeCallback(
               done));
           return;
         case 1:
-          this.getExampleByName(controller, (com.aiflow.proto.MetadataServiceOuterClass.NameRequest)request,
+          this.getDatasetByName(controller, (com.aiflow.proto.MetadataServiceOuterClass.NameRequest)request,
             com.google.protobuf.RpcUtil.<com.aiflow.proto.Message.Response>specializeCallback(
               done));
           return;
         case 2:
-          this.listExample(controller, (com.aiflow.proto.MetadataServiceOuterClass.ListRequest)request,
+          this.listDatasets(controller, (com.aiflow.proto.MetadataServiceOuterClass.ListRequest)request,
             com.google.protobuf.RpcUtil.<com.aiflow.proto.Message.Response>specializeCallback(
               done));
           return;
         case 3:
-          this.registerExample(controller, (com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest)request,
+          this.registerDataset(controller, (com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest)request,
             com.google.protobuf.RpcUtil.<com.aiflow.proto.Message.Response>specializeCallback(
               done));
           return;
         case 4:
-          this.registerExampleWithCatalog(controller, (com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest)request,
+          this.registerDatasetWithCatalog(controller, (com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest)request,
             com.google.protobuf.RpcUtil.<com.aiflow.proto.Message.Response>specializeCallback(
               done));
           return;
         case 5:
-          this.registerExamples(controller, (com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest)request,
+          this.registerDatasets(controller, (com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest)request,
             com.google.protobuf.RpcUtil.<com.aiflow.proto.Message.Response>specializeCallback(
               done));
           return;
         case 6:
-          this.updateExample(controller, (com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest)request,
+          this.updateDataset(controller, (com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest)request,
             com.google.protobuf.RpcUtil.<com.aiflow.proto.Message.Response>specializeCallback(
               done));
           return;
         case 7:
-          this.deleteExampleById(controller, (com.aiflow.proto.MetadataServiceOuterClass.IdRequest)request,
+          this.deleteDatasetById(controller, (com.aiflow.proto.MetadataServiceOuterClass.IdRequest)request,
             com.google.protobuf.RpcUtil.<com.aiflow.proto.Message.Response>specializeCallback(
               done));
           return;
         case 8:
-          this.deleteExampleByName(controller, (com.aiflow.proto.MetadataServiceOuterClass.NameRequest)request,
+          this.deleteDatasetByName(controller, (com.aiflow.proto.MetadataServiceOuterClass.NameRequest)request,
             com.google.protobuf.RpcUtil.<com.aiflow.proto.Message.Response>specializeCallback(
               done));
           return;
@@ -33079,13 +32363,13 @@ public final class MetadataServiceOuterClass {
         case 2:
           return com.aiflow.proto.MetadataServiceOuterClass.ListRequest.getDefaultInstance();
         case 3:
-          return com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest.getDefaultInstance();
+          return com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest.getDefaultInstance();
         case 4:
-          return com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest.getDefaultInstance();
+          return com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest.getDefaultInstance();
         case 5:
-          return com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest.getDefaultInstance();
+          return com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest.getDefaultInstance();
         case 6:
-          return com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest.getDefaultInstance();
+          return com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest.getDefaultInstance();
         case 7:
           return com.aiflow.proto.MetadataServiceOuterClass.IdRequest.getDefaultInstance();
         case 8:
@@ -33355,7 +32639,7 @@ public final class MetadataServiceOuterClass {
         return channel;
       }
 
-      public  void getExampleById(
+      public  void getDatasetById(
           com.google.protobuf.RpcController controller,
           com.aiflow.proto.MetadataServiceOuterClass.IdRequest request,
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done) {
@@ -33370,7 +32654,7 @@ public final class MetadataServiceOuterClass {
             com.aiflow.proto.Message.Response.getDefaultInstance()));
       }
 
-      public  void getExampleByName(
+      public  void getDatasetByName(
           com.google.protobuf.RpcController controller,
           com.aiflow.proto.MetadataServiceOuterClass.NameRequest request,
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done) {
@@ -33385,7 +32669,7 @@ public final class MetadataServiceOuterClass {
             com.aiflow.proto.Message.Response.getDefaultInstance()));
       }
 
-      public  void listExample(
+      public  void listDatasets(
           com.google.protobuf.RpcController controller,
           com.aiflow.proto.MetadataServiceOuterClass.ListRequest request,
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done) {
@@ -33400,9 +32684,9 @@ public final class MetadataServiceOuterClass {
             com.aiflow.proto.Message.Response.getDefaultInstance()));
       }
 
-      public  void registerExample(
+      public  void registerDataset(
           com.google.protobuf.RpcController controller,
-          com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest request,
+          com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest request,
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done) {
         channel.callMethod(
           getDescriptor().getMethods().get(3),
@@ -33415,9 +32699,9 @@ public final class MetadataServiceOuterClass {
             com.aiflow.proto.Message.Response.getDefaultInstance()));
       }
 
-      public  void registerExampleWithCatalog(
+      public  void registerDatasetWithCatalog(
           com.google.protobuf.RpcController controller,
-          com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest request,
+          com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest request,
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done) {
         channel.callMethod(
           getDescriptor().getMethods().get(4),
@@ -33430,9 +32714,9 @@ public final class MetadataServiceOuterClass {
             com.aiflow.proto.Message.Response.getDefaultInstance()));
       }
 
-      public  void registerExamples(
+      public  void registerDatasets(
           com.google.protobuf.RpcController controller,
-          com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest request,
+          com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest request,
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done) {
         channel.callMethod(
           getDescriptor().getMethods().get(5),
@@ -33445,9 +32729,9 @@ public final class MetadataServiceOuterClass {
             com.aiflow.proto.Message.Response.getDefaultInstance()));
       }
 
-      public  void updateExample(
+      public  void updateDataset(
           com.google.protobuf.RpcController controller,
-          com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest request,
+          com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest request,
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done) {
         channel.callMethod(
           getDescriptor().getMethods().get(6),
@@ -33460,7 +32744,7 @@ public final class MetadataServiceOuterClass {
             com.aiflow.proto.Message.Response.getDefaultInstance()));
       }
 
-      public  void deleteExampleById(
+      public  void deleteDatasetById(
           com.google.protobuf.RpcController controller,
           com.aiflow.proto.MetadataServiceOuterClass.IdRequest request,
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done) {
@@ -33475,7 +32759,7 @@ public final class MetadataServiceOuterClass {
             com.aiflow.proto.Message.Response.getDefaultInstance()));
       }
 
-      public  void deleteExampleByName(
+      public  void deleteDatasetByName(
           com.google.protobuf.RpcController controller,
           com.aiflow.proto.MetadataServiceOuterClass.NameRequest request,
           com.google.protobuf.RpcCallback<com.aiflow.proto.Message.Response> done) {
@@ -34292,47 +33576,47 @@ public final class MetadataServiceOuterClass {
     }
 
     public interface BlockingInterface {
-      public com.aiflow.proto.Message.Response getExampleById(
+      public com.aiflow.proto.Message.Response getDatasetById(
           com.google.protobuf.RpcController controller,
           com.aiflow.proto.MetadataServiceOuterClass.IdRequest request)
           throws com.google.protobuf.ServiceException;
 
-      public com.aiflow.proto.Message.Response getExampleByName(
+      public com.aiflow.proto.Message.Response getDatasetByName(
           com.google.protobuf.RpcController controller,
           com.aiflow.proto.MetadataServiceOuterClass.NameRequest request)
           throws com.google.protobuf.ServiceException;
 
-      public com.aiflow.proto.Message.Response listExample(
+      public com.aiflow.proto.Message.Response listDatasets(
           com.google.protobuf.RpcController controller,
           com.aiflow.proto.MetadataServiceOuterClass.ListRequest request)
           throws com.google.protobuf.ServiceException;
 
-      public com.aiflow.proto.Message.Response registerExample(
+      public com.aiflow.proto.Message.Response registerDataset(
           com.google.protobuf.RpcController controller,
-          com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest request)
+          com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest request)
           throws com.google.protobuf.ServiceException;
 
-      public com.aiflow.proto.Message.Response registerExampleWithCatalog(
+      public com.aiflow.proto.Message.Response registerDatasetWithCatalog(
           com.google.protobuf.RpcController controller,
-          com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest request)
+          com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest request)
           throws com.google.protobuf.ServiceException;
 
-      public com.aiflow.proto.Message.Response registerExamples(
+      public com.aiflow.proto.Message.Response registerDatasets(
           com.google.protobuf.RpcController controller,
-          com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest request)
+          com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest request)
           throws com.google.protobuf.ServiceException;
 
-      public com.aiflow.proto.Message.Response updateExample(
+      public com.aiflow.proto.Message.Response updateDataset(
           com.google.protobuf.RpcController controller,
-          com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest request)
+          com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest request)
           throws com.google.protobuf.ServiceException;
 
-      public com.aiflow.proto.Message.Response deleteExampleById(
+      public com.aiflow.proto.Message.Response deleteDatasetById(
           com.google.protobuf.RpcController controller,
           com.aiflow.proto.MetadataServiceOuterClass.IdRequest request)
           throws com.google.protobuf.ServiceException;
 
-      public com.aiflow.proto.Message.Response deleteExampleByName(
+      public com.aiflow.proto.Message.Response deleteDatasetByName(
           com.google.protobuf.RpcController controller,
           com.aiflow.proto.MetadataServiceOuterClass.NameRequest request)
           throws com.google.protobuf.ServiceException;
@@ -34610,7 +33894,7 @@ public final class MetadataServiceOuterClass {
 
       private final com.google.protobuf.BlockingRpcChannel channel;
 
-      public com.aiflow.proto.Message.Response getExampleById(
+      public com.aiflow.proto.Message.Response getDatasetById(
           com.google.protobuf.RpcController controller,
           com.aiflow.proto.MetadataServiceOuterClass.IdRequest request)
           throws com.google.protobuf.ServiceException {
@@ -34622,7 +33906,7 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      public com.aiflow.proto.Message.Response getExampleByName(
+      public com.aiflow.proto.Message.Response getDatasetByName(
           com.google.protobuf.RpcController controller,
           com.aiflow.proto.MetadataServiceOuterClass.NameRequest request)
           throws com.google.protobuf.ServiceException {
@@ -34634,7 +33918,7 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      public com.aiflow.proto.Message.Response listExample(
+      public com.aiflow.proto.Message.Response listDatasets(
           com.google.protobuf.RpcController controller,
           com.aiflow.proto.MetadataServiceOuterClass.ListRequest request)
           throws com.google.protobuf.ServiceException {
@@ -34646,9 +33930,9 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      public com.aiflow.proto.Message.Response registerExample(
+      public com.aiflow.proto.Message.Response registerDataset(
           com.google.protobuf.RpcController controller,
-          com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest request)
+          com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest request)
           throws com.google.protobuf.ServiceException {
         return (com.aiflow.proto.Message.Response) channel.callBlockingMethod(
           getDescriptor().getMethods().get(3),
@@ -34658,9 +33942,9 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      public com.aiflow.proto.Message.Response registerExampleWithCatalog(
+      public com.aiflow.proto.Message.Response registerDatasetWithCatalog(
           com.google.protobuf.RpcController controller,
-          com.aiflow.proto.MetadataServiceOuterClass.RegisterExampleRequest request)
+          com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetRequest request)
           throws com.google.protobuf.ServiceException {
         return (com.aiflow.proto.Message.Response) channel.callBlockingMethod(
           getDescriptor().getMethods().get(4),
@@ -34670,9 +33954,9 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      public com.aiflow.proto.Message.Response registerExamples(
+      public com.aiflow.proto.Message.Response registerDatasets(
           com.google.protobuf.RpcController controller,
-          com.aiflow.proto.MetadataServiceOuterClass.RegisterExamplesRequest request)
+          com.aiflow.proto.MetadataServiceOuterClass.RegisterDatasetsRequest request)
           throws com.google.protobuf.ServiceException {
         return (com.aiflow.proto.Message.Response) channel.callBlockingMethod(
           getDescriptor().getMethods().get(5),
@@ -34682,9 +33966,9 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      public com.aiflow.proto.Message.Response updateExample(
+      public com.aiflow.proto.Message.Response updateDataset(
           com.google.protobuf.RpcController controller,
-          com.aiflow.proto.MetadataServiceOuterClass.UpdateExampleRequest request)
+          com.aiflow.proto.MetadataServiceOuterClass.UpdateDatasetRequest request)
           throws com.google.protobuf.ServiceException {
         return (com.aiflow.proto.Message.Response) channel.callBlockingMethod(
           getDescriptor().getMethods().get(6),
@@ -34694,7 +33978,7 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      public com.aiflow.proto.Message.Response deleteExampleById(
+      public com.aiflow.proto.Message.Response deleteDatasetById(
           com.google.protobuf.RpcController controller,
           com.aiflow.proto.MetadataServiceOuterClass.IdRequest request)
           throws com.google.protobuf.ServiceException {
@@ -34706,7 +33990,7 @@ public final class MetadataServiceOuterClass {
       }
 
 
-      public com.aiflow.proto.Message.Response deleteExampleByName(
+      public com.aiflow.proto.Message.Response deleteDatasetByName(
           com.google.protobuf.RpcController controller,
           com.aiflow.proto.MetadataServiceOuterClass.NameRequest request)
           throws com.google.protobuf.ServiceException {
@@ -35379,30 +34663,30 @@ public final class MetadataServiceOuterClass {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_ai_flow_MetaResponse_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ai_flow_RegisterExampleRequest_descriptor;
+    internal_static_ai_flow_RegisterDatasetRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_ai_flow_RegisterExampleRequest_fieldAccessorTable;
+      internal_static_ai_flow_RegisterDatasetRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ai_flow_RegisterExamplesRequest_descriptor;
+    internal_static_ai_flow_RegisterDatasetsRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_ai_flow_RegisterExamplesRequest_fieldAccessorTable;
+      internal_static_ai_flow_RegisterDatasetsRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ai_flow_ExampleListProto_descriptor;
+    internal_static_ai_flow_DatasetListProto_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_ai_flow_ExampleListProto_fieldAccessorTable;
+      internal_static_ai_flow_DatasetListProto_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ai_flow_UpdateExampleRequest_descriptor;
+    internal_static_ai_flow_UpdateDatasetRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_ai_flow_UpdateExampleRequest_fieldAccessorTable;
+      internal_static_ai_flow_UpdateDatasetRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ai_flow_UpdateExampleRequest_PropertiesEntry_descriptor;
+    internal_static_ai_flow_UpdateDatasetRequest_PropertiesEntry_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_ai_flow_UpdateExampleRequest_PropertiesEntry_fieldAccessorTable;
+      internal_static_ai_flow_UpdateDatasetRequest_PropertiesEntry_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ai_flow_RegisterModelRelationRequest_descriptor;
   private static final 
@@ -35569,308 +34853,303 @@ public final class MetadataServiceOuterClass {
       " \001(\t\"0\n\013ListRequest\022\021\n\tpage_size\030\001 \001(\003\022\016" +
       "\n\006offset\030\002 \001(\003\"E\n\014MetaResponse\022\023\n\013return" +
       "_code\030\001 \001(\t\022\022\n\nreturn_msg\030\002 \001(\t\022\014\n\004data\030" +
-      "\003 \001(\t\"@\n\026RegisterExampleRequest\022&\n\007examp" +
-      "le\030\001 \001(\0132\025.ai_flow.ExampleProto\"B\n\027Regis" +
-      "terExamplesRequest\022\'\n\010examples\030\001 \003(\0132\025.a" +
-      "i_flow.ExampleProto\";\n\020ExampleListProto\022" +
-      "\'\n\010examples\030\001 \003(\0132\025.ai_flow.ExampleProto" +
-      "\"\206\007\n\024UpdateExampleRequest\022\014\n\004name\030\001 \001(\t\022" +
-      "A\n\nproperties\030\002 \003(\0132-.ai_flow.UpdateExam" +
-      "pleRequest.PropertiesEntry\0226\n\014support_ty" +
-      "pe\030\003 \001(\0162 .ai_flow.ExampleSupportTypePro" +
-      "to\022\021\n\tname_list\030\004 \003(\t\022)\n\ttype_list\030\005 \003(\016" +
-      "2\026.ai_flow.DataTypeProto\022/\n\tdata_type\030\006 " +
-      "\001(\0132\034.google.protobuf.StringValue\0221\n\013dat" +
-      "a_format\030\007 \001(\0132\034.google.protobuf.StringV" +
-      "alue\022/\n\tbatch_uri\030\010 \001(\0132\034.google.protobu" +
-      "f.StringValue\0220\n\nstream_uri\030\t \001(\0132\034.goog" +
-      "le.protobuf.StringValue\0221\n\013description\030\n" +
-      " \001(\0132\034.google.protobuf.StringValue\0220\n\013up" +
-      "date_time\030\013 \001(\0132\033.google.protobuf.Int64V" +
-      "alue\0222\n\014catalog_name\030\014 \001(\0132\034.google.prot" +
-      "obuf.StringValue\0222\n\014catalog_type\030\r \001(\0132\034" +
-      ".google.protobuf.StringValue\0226\n\020catalog_" +
-      "database\030\016 \001(\0132\034.google.protobuf.StringV" +
-      "alue\022<\n\026catalog_connection_uri\030\017 \001(\0132\034.g" +
-      "oogle.protobuf.StringValue\0225\n\017catalog_ve" +
-      "rsion\030\020 \001(\0132\034.google.protobuf.StringValu" +
-      "e\0223\n\rcatalog_table\030\021 \001(\0132\034.google.protob" +
-      "uf.StringValue\0321\n\017PropertiesEntry\022\013\n\003key" +
-      "\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"S\n\034RegisterMod" +
-      "elRelationRequest\0223\n\016model_relation\030\001 \001(" +
-      "\0132\033.ai_flow.ModelRelationProto\":\n\024Regist" +
-      "erModelRequest\022\"\n\005model\030\001 \001(\0132\023.ai_flow." +
-      "ModelProto\"N\n\026ModelRelationListProto\0224\n\017" +
-      "model_relations\030\001 \003(\0132\033.ai_flow.ModelRel" +
-      "ationProto\"9\n\027ModelVersionNameRequest\022\014\n" +
-      "\004name\030\001 \001(\t\022\020\n\010model_id\030\002 \001(\003\"i\n#Registe" +
-      "rModelVersionRelationRequest\022B\n\026model_ve" +
-      "rsion_relation\030\001 \001(\0132\".ai_flow.ModelVers" +
-      "ionRelationProto\"P\n\033RegisterModelVersion" +
-      "Request\0221\n\rmodel_version\030\001 \001(\0132\032.ai_flow" +
-      ".ModelVersionProto\"V\n\037ListModelVersionRe" +
-      "lationRequest\022\020\n\010model_id\030\001 \001(\003\022\021\n\tpage_" +
-      "size\030\002 \001(\003\022\016\n\006offset\030\003 \001(\003\"[\n\035ModelVersi" +
-      "onRelationListProto\022:\n\016model_versions\030\001 " +
-      "\003(\0132\".ai_flow.ModelVersionRelationProto\"" +
-      "K\n\025ModelVersionListProto\0222\n\016model_versio" +
-      "ns\030\001 \003(\0132\032.ai_flow.ModelVersionProto\" \n\020" +
-      "ModelNameRequest\022\014\n\004name\030\001 \001(\t\"4\n\022Regist" +
-      "erJobRequest\022\036\n\003job\030\001 \001(\0132\021.ai_flow.JobP" +
-      "roto\"\263\003\n\020UpdateJobRequest\022\014\n\004name\030\001 \001(\t\022" +
-      ":\n\025workflow_execution_id\030\002 \001(\0132\033.google." +
-      "protobuf.Int64Value\022&\n\tjob_state\030\003 \001(\0162\023" +
-      ".ai_flow.StateProto\022=\n\nproperties\030\004 \003(\0132" +
-      ").ai_flow.UpdateJobRequest.PropertiesEnt" +
-      "ry\022,\n\006job_id\030\005 \001(\0132\034.google.protobuf.Str" +
-      "ingValue\022-\n\010end_time\030\006 \001(\0132\033.google.prot" +
-      "obuf.Int64Value\022-\n\007log_uri\030\007 \001(\0132\034.googl" +
-      "e.protobuf.StringValue\022/\n\tsignature\030\010 \001(" +
-      "\0132\034.google.protobuf.StringValue\0321\n\017Prope" +
-      "rtiesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\002" +
-      "8\001\"I\n\025UpdateJobStateRequest\022\"\n\005state\030\001 \001" +
-      "(\0162\023.ai_flow.StateProto\022\014\n\004name\030\002 \001(\t\"9\n" +
-      "\027UpdateJobEndTimeRequest\022\020\n\010end_time\030\001 \001" +
-      "(\003\022\014\n\004name\030\002 \001(\t\"/\n\014JobListProto\022\037\n\004jobs" +
-      "\030\001 \003(\0132\021.ai_flow.JobProto\"_\n RegisterWor" +
-      "kFlowExecutionRequest\022;\n\022workflow_execut" +
-      "ion\030\001 \001(\0132\037.ai_flow.WorkflowExecutionPro" +
-      "to\"\321\003\n\036UpdateWorkflowExecutionRequest\022\014\n" +
-      "\004name\030\001 \001(\t\022/\n\nproject_id\030\002 \001(\0132\033.google" +
-      ".protobuf.Int64Value\022,\n\017execution_state\030" +
-      "\004 \001(\0162\023.ai_flow.StateProto\022K\n\nproperties" +
-      "\030\005 \003(\01327.ai_flow.UpdateWorkflowExecution" +
-      "Request.PropertiesEntry\022-\n\010end_time\030\006 \001(" +
-      "\0132\033.google.protobuf.Int64Value\022-\n\007log_ur" +
-      "i\030\007 \001(\0132\034.google.protobuf.StringValue\0223\n" +
-      "\rworkflow_json\030\010 \001(\0132\034.google.protobuf.S" +
-      "tringValue\022/\n\tsignature\030\t \001(\0132\034.google.p" +
-      "rotobuf.StringValue\0321\n\017PropertiesEntry\022\013" +
-      "\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"Z\n\032WorkFl" +
-      "owExecutionListProto\022<\n\023workflow_executi" +
-      "ons\030\001 \003(\0132\037.ai_flow.WorkflowExecutionPro" +
-      "to\"G\n%UpdateWorkflowExecutionEndTimeRequ" +
-      "est\022\020\n\010end_time\030\001 \001(\003\022\014\n\004name\030\002 \001(\t\"W\n#U" +
-      "pdateWorkflowExecutionStateRequest\022\"\n\005st" +
-      "ate\030\001 \001(\0162\023.ai_flow.StateProto\022\014\n\004name\030\002" +
-      " \001(\t\"@\n\026RegisterProjectRequest\022&\n\007projec" +
-      "t\030\001 \001(\0132\025.ai_flow.ProjectProto\"\305\001\n\024Updat" +
-      "eProjectRequest\022\014\n\004name\030\001 \001(\t\022A\n\npropert" +
-      "ies\030\002 \003(\0132-.ai_flow.UpdateProjectRequest" +
-      ".PropertiesEntry\022)\n\003uri\030\003 \001(\0132\034.google.p" +
-      "rotobuf.StringValue\0321\n\017PropertiesEntry\022\013" +
-      "\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\";\n\020Projec" +
-      "tListProto\022\'\n\010projects\030\001 \003(\0132\025.ai_flow.P" +
-      "rojectProto\"C\n\027RegisterArtifactRequest\022(" +
-      "\n\010artifact\030\001 \001(\0132\026.ai_flow.ArtifactProto" +
-      "\"\227\003\n\025UpdateArtifactRequest\022\014\n\004name\030\001 \001(\t" +
-      "\022B\n\nproperties\030\002 \003(\0132..ai_flow.UpdateArt" +
-      "ifactRequest.PropertiesEntry\0221\n\013data_for" +
-      "mat\030\003 \001(\0132\034.google.protobuf.StringValue\022" +
-      "/\n\tbatch_uri\030\004 \001(\0132\034.google.protobuf.Str" +
-      "ingValue\0220\n\nstream_uri\030\005 \001(\0132\034.google.pr" +
-      "otobuf.StringValue\0221\n\013description\030\006 \001(\0132" +
-      "\034.google.protobuf.StringValue\0220\n\013update_" +
-      "time\030\007 \001(\0132\033.google.protobuf.Int64Value\032" +
-      "1\n\017PropertiesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value" +
-      "\030\002 \001(\t:\0028\001\">\n\021ArtifactListProto\022)\n\tartif" +
-      "acts\030\001 \003(\0132\026.ai_flow.ArtifactProto2\351<\n\017M" +
-      "etadataService\022i\n\016getExampleById\022\022.ai_fl" +
-      "ow.IdRequest\032\021.ai_flow.Response\"0\202\323\344\223\002*\"" +
-      "%/aiflow/metadata_store/example/get/id:\001" +
-      "*\022o\n\020getExampleByName\022\024.ai_flow.NameRequ" +
-      "est\032\021.ai_flow.Response\"2\202\323\344\223\002,\"\'/aiflow/" +
-      "metadata_store/example/get/name:\001*\022f\n\013li" +
-      "stExample\022\024.ai_flow.ListRequest\032\021.ai_flo" +
-      "w.Response\".\202\323\344\223\002(\"#/aiflow/metadata_sto" +
-      "re/example/list:\001*\022u\n\017registerExample\022\037." +
-      "ai_flow.RegisterExampleRequest\032\021.ai_flow" +
-      ".Response\".\202\323\344\223\002(\"#/aiflow/metadata_stor" +
-      "e/example/save:\001*\022\215\001\n\032registerExampleWit" +
-      "hCatalog\022\037.ai_flow.RegisterExampleReques" +
-      "t\032\021.ai_flow.Response\";\202\323\344\223\0025\"0/aiflow/me" +
-      "tadata_store/example/save_with_catalog:\001" +
-      "*\022x\n\020registerExamples\022 .ai_flow.Register" +
-      "ExamplesRequest\032\021.ai_flow.Response\"/\202\323\344\223" +
-      "\002)\"$/aiflow/metadata_store/examples/save" +
-      ":\001*\022s\n\rupdateExample\022\035.ai_flow.UpdateExa" +
-      "mpleRequest\032\021.ai_flow.Response\"0\202\323\344\223\002*\"%" +
-      "/aiflow/metadata_store/example/update:\001*" +
-      "\022o\n\021deleteExampleById\022\022.ai_flow.IdReques" +
-      "t\032\021.ai_flow.Response\"3\202\323\344\223\002-\"(/aiflow/me" +
-      "tadata_store/example/delete/id:\001*\022u\n\023del" +
-      "eteExampleByName\022\024.ai_flow.NameRequest\032\021" +
-      ".ai_flow.Response\"5\202\323\344\223\002/\"*/aiflow/metad" +
-      "ata_store/example/delete/name:\001*\022v\n\024getM" +
-      "odelRelationById\022\022.ai_flow.IdRequest\032\021.a" +
-      "i_flow.Response\"7\202\323\344\223\0021\",/aiflow/metadat" +
-      "a_store/model_relation/get/id:\001*\022|\n\026getM" +
-      "odelRelationByName\022\024.ai_flow.NameRequest" +
-      "\032\021.ai_flow.Response\"9\202\323\344\223\0023\"./aiflow/met" +
-      "adata_store/model_relation/get/name:\001*\022s" +
-      "\n\021listModelRelation\022\024.ai_flow.ListReques" +
-      "t\032\021.ai_flow.Response\"5\202\323\344\223\002/\"*/aiflow/me" +
-      "tadata_store/model_relation/list:\001*\022\210\001\n\025" +
-      "registerModelRelation\022%.ai_flow.Register" +
-      "ModelRelationRequest\032\021.ai_flow.Response\"" +
-      "5\202\323\344\223\002/\"*/aiflow/metadata_store/model_re" +
-      "lation/save:\001*\022|\n\027deleteModelRelationByI" +
-      "d\022\022.ai_flow.IdRequest\032\021.ai_flow.Response" +
-      "\":\202\323\344\223\0024\"//aiflow/metadata_store/model_r" +
-      "elation/delete/id:\001*\022\202\001\n\031deleteModelRela" +
-      "tionByName\022\024.ai_flow.NameRequest\032\021.ai_fl" +
-      "ow.Response\"<\202\323\344\223\0026\"1/aiflow/metadata_st" +
-      "ore/model_relation/delete/name:\001*\022e\n\014get" +
-      "ModelById\022\022.ai_flow.IdRequest\032\021.ai_flow." +
-      "Response\".\202\323\344\223\002(\"#/aiflow/metadata_store" +
-      "/model/get/id:\001*\022k\n\016getModelByName\022\024.ai_" +
-      "flow.NameRequest\032\021.ai_flow.Response\"0\202\323\344" +
-      "\223\002*\"%/aiflow/metadata_store/model/get/na" +
-      "me:\001*\022o\n\rregisterModel\022\035.ai_flow.Registe" +
-      "rModelRequest\032\021.ai_flow.Response\",\202\323\344\223\002&" +
-      "\"!/aiflow/metadata_store/model/save:\001*\022k" +
-      "\n\017deleteModelById\022\022.ai_flow.IdRequest\032\021." +
-      "ai_flow.Response\"1\202\323\344\223\002+\"&/aiflow/metada" +
-      "ta_store/model/delete/id:\001*\022q\n\021deleteMod" +
-      "elByName\022\024.ai_flow.NameRequest\032\021.ai_flow" +
-      ".Response\"3\202\323\344\223\002-\"(/aiflow/metadata_stor" +
-      "e/model/delete/name:\001*\022\234\001\n getModelVersi" +
-      "onRelationByVersion\022 .ai_flow.ModelVersi" +
-      "onNameRequest\032\021.ai_flow.Response\"C\202\323\344\223\002=" +
-      "\"8/aiflow/metadata_store/modelVersion_re" +
-      "lation/get/version:\001*\022\225\001\n\030listModelVersi" +
-      "onRelation\022(.ai_flow.ListModelVersionRel" +
-      "ationRequest\032\021.ai_flow.Response\"<\202\323\344\223\0026\"" +
-      "1/aiflow/metadata_store/modelVersion_rel" +
-      "ation/list:\001*\022\235\001\n\034registerModelVersionRe" +
-      "lation\022,.ai_flow.RegisterModelVersionRel" +
-      "ationRequest\032\021.ai_flow.Response\"<\202\323\344\223\0026\"" +
-      "1/aiflow/metadata_store/modelVersion_rel" +
-      "ation/save:\001*\022\242\001\n#deleteModelVersionRela" +
-      "tionByVersion\022 .ai_flow.ModelVersionName" +
-      "Request\032\021.ai_flow.Response\"F\202\323\344\223\002@\";/aif" +
-      "low/metadata_store/modelVersion_relation" +
-      "/delete/version:\001*\022\213\001\n\030getModelVersionBy" +
-      "Version\022 .ai_flow.ModelVersionNameReques" +
-      "t\032\021.ai_flow.Response\":\202\323\344\223\0024\"//aiflow/me" +
-      "tadata_store/modelVersion/get/version:\001*" +
-      "\022\204\001\n\024registerModelVersion\022$.ai_flow.Regi" +
-      "sterModelVersionRequest\032\021.ai_flow.Respon" +
-      "se\"3\202\323\344\223\002-\"(/aiflow/metadata_store/model" +
-      "Version/save:\001*\022\221\001\n\033deleteModelVersionBy" +
-      "Version\022 .ai_flow.ModelVersionNameReques" +
-      "t\032\021.ai_flow.Response\"=\202\323\344\223\0027\"2/aiflow/me" +
-      "tadata_store/modelVersion/delete/version" +
-      ":\001*\022\213\001\n\027getDeployedModelVersion\022\031.ai_flo" +
-      "w.ModelNameRequest\032\021.ai_flow.Response\"B\202" +
-      "\323\344\223\002<\"7/aiflow/metadata_store/modelVersi" +
-      "on/get_serving_version:\001*\022\241\001\n\036getLatestV" +
-      "alidatedModelVersion\022\031.ai_flow.ModelName" +
-      "Request\032\021.ai_flow.Response\"Q\202\323\344\223\002K\"F/aif" +
-      "low/metadata_store/modelVersion/get_late" +
-      "st_validated_model_version:\001*\022\241\001\n\036getLat" +
-      "estGeneratedModelVersion\022\031.ai_flow.Model" +
-      "NameRequest\032\021.ai_flow.Response\"Q\202\323\344\223\002K\"F" +
-      "/aiflow/metadata_store/modelVersion/get_" +
-      "latest_generated_model_version:\001*\022}\n\030get" +
-      "WorkFlowExecutionById\022\022.ai_flow.IdReques" +
-      "t\032\021.ai_flow.Response\":\202\323\344\223\0024\"//aiflow/me" +
-      "tadata_store/workflowExecution/get/id:\001*" +
-      "\022\203\001\n\032getWorkFlowExecutionByName\022\024.ai_flo" +
-      "w.NameRequest\032\021.ai_flow.Response\"<\202\323\344\223\0026" +
-      "\"1/aiflow/metadata_store/workflowExecuti" +
-      "on/get/name:\001*\022z\n\025listWorkFlowExecution\022" +
-      "\024.ai_flow.ListRequest\032\021.ai_flow.Response" +
-      "\"8\202\323\344\223\0022\"-/aiflow/metadata_store/workflo" +
-      "wExecution/list:\001*\022\223\001\n\031registerWorkFlowE" +
-      "xecution\022).ai_flow.RegisterWorkFlowExecu" +
-      "tionRequest\032\021.ai_flow.Response\"8\202\323\344\223\0022\"-" +
-      "/aiflow/metadata_store/workflowExecution" +
-      "/save:\001*\022\221\001\n\027updateWorkflowExecution\022\'.a" +
-      "i_flow.UpdateWorkflowExecutionRequest\032\021." +
-      "ai_flow.Response\":\202\323\344\223\0024\"//aiflow/metada" +
-      "ta_store/workflowExecution/update:\001*\022\203\001\n" +
-      "\033deleteWorkflowExecutionById\022\022.ai_flow.I" +
-      "dRequest\032\021.ai_flow.Response\"=\202\323\344\223\0027\"2/ai" +
-      "flow/metadata_store/workflowExecution/de" +
-      "lete/id:\001*\022\211\001\n\035deleteWorkflowExecutionBy" +
-      "Name\022\024.ai_flow.NameRequest\032\021.ai_flow.Res" +
-      "ponse\"?\202\323\344\223\0029\"4/aiflow/metadata_store/wo" +
-      "rkflowExecution/delete/name:\001*\022\250\001\n\036updat" +
-      "eWorkflowExecutionEndTime\022..ai_flow.Upda" +
-      "teWorkflowExecutionEndTimeRequest\032\021.ai_f" +
-      "low.Response\"C\202\323\344\223\002=\"8/aiflow/metadata_s" +
-      "tore/workflowExecution/update/end_time:\001" +
-      "*\022\241\001\n\034updateWorkflowExecutionState\022,.ai_" +
-      "flow.UpdateWorkflowExecutionStateRequest" +
-      "\032\021.ai_flow.Response\"@\202\323\344\223\002:\"5/aiflow/met" +
-      "adata_store/workflowExecution/update/sta" +
-      "te:\001*\022a\n\ngetJobById\022\022.ai_flow.IdRequest\032" +
-      "\021.ai_flow.Response\",\202\323\344\223\002&\"!/aiflow/meta" +
-      "data_store/job/get/id:\001*\022g\n\014getJobByName" +
-      "\022\024.ai_flow.NameRequest\032\021.ai_flow.Respons" +
-      "e\".\202\323\344\223\002(\"#/aiflow/metadata_store/job/ge" +
-      "t/name:\001*\022^\n\007listJob\022\024.ai_flow.ListReque" +
-      "st\032\021.ai_flow.Response\"*\202\323\344\223\002$\"\037/aiflow/m" +
-      "etadata_store/job/list:\001*\022i\n\013registerJob" +
-      "\022\033.ai_flow.RegisterJobRequest\032\021.ai_flow." +
-      "Response\"*\202\323\344\223\002$\"\037/aiflow/metadata_store" +
-      "/job/save:\001*\022g\n\tupdateJob\022\031.ai_flow.Upda" +
-      "teJobRequest\032\021.ai_flow.Response\",\202\323\344\223\002&\"" +
-      "!/aiflow/metadata_store/job/update:\001*\022w\n" +
-      "\016updateJobState\022\036.ai_flow.UpdateJobState" +
-      "Request\032\021.ai_flow.Response\"2\202\323\344\223\002,\"\'/aif" +
-      "low/metadata_store/job/update/state:\001*\022~" +
-      "\n\020updateJobEndTime\022 .ai_flow.UpdateJobEn" +
-      "dTimeRequest\032\021.ai_flow.Response\"5\202\323\344\223\002/\"" +
-      "*/aiflow/metadata_store/job/update/end_t" +
-      "ime:\001*\022g\n\rdeleteJobById\022\022.ai_flow.IdRequ" +
-      "est\032\021.ai_flow.Response\"/\202\323\344\223\002)\"$/aiflow/" +
-      "metadata_store/job/delete/id:\001*\022m\n\017delet" +
-      "eJobByName\022\024.ai_flow.NameRequest\032\021.ai_fl" +
-      "ow.Response\"1\202\323\344\223\002+\"&/aiflow/metadata_st" +
-      "ore/job/delete/name:\001*\022i\n\016getProjectById" +
-      "\022\022.ai_flow.IdRequest\032\021.ai_flow.Response\"" +
-      "0\202\323\344\223\002*\"%/aiflow/metadata_store/project/" +
-      "get/id:\001*\022o\n\020getProjectByName\022\024.ai_flow." +
-      "NameRequest\032\021.ai_flow.Response\"2\202\323\344\223\002,\"\'" +
-      "/aiflow/metadata_store/project/get/name:" +
-      "\001*\022u\n\017registerProject\022\037.ai_flow.Register" +
-      "ProjectRequest\032\021.ai_flow.Response\".\202\323\344\223\002" +
-      "(\"#/aiflow/metadata_store/project/save:\001" +
-      "*\022s\n\rupdateProject\022\035.ai_flow.UpdateProje" +
-      "ctRequest\032\021.ai_flow.Response\"0\202\323\344\223\002*\"%/a" +
-      "iflow/metadata_store/project/update:\001*\022f" +
-      "\n\013listProject\022\024.ai_flow.ListRequest\032\021.ai" +
-      "_flow.Response\".\202\323\344\223\002(\"#/aiflow/metadata" +
-      "_store/project/list:\001*\022o\n\021deleteProjectB" +
-      "yId\022\022.ai_flow.IdRequest\032\021.ai_flow.Respon" +
-      "se\"3\202\323\344\223\002-\"(/aiflow/metadata_store/proje" +
-      "ct/delete/id:\001*\022u\n\023deleteProjectByName\022\024" +
-      ".ai_flow.NameRequest\032\021.ai_flow.Response\"" +
-      "5\202\323\344\223\002/\"*/aiflow/metadata_store/project/" +
-      "delete/name:\001*\022k\n\017getArtifactById\022\022.ai_f" +
-      "low.IdRequest\032\021.ai_flow.Response\"1\202\323\344\223\002+" +
-      "\"&/aiflow/metadata_store/artifact/get/id" +
-      ":\001*\022q\n\021getArtifactByName\022\024.ai_flow.NameR" +
-      "equest\032\021.ai_flow.Response\"3\202\323\344\223\002-\"(/aifl" +
-      "ow/metadata_store/artifact/get/name:\001*\022v" +
-      "\n\016updateArtifact\022\036.ai_flow.UpdateArtifac" +
-      "tRequest\032\021.ai_flow.Response\"1\202\323\344\223\002+\"&/ai" +
-      "flow/metadata_store/artifact/update:\001*\022x" +
-      "\n\020registerArtifact\022 .ai_flow.RegisterArt" +
-      "ifactRequest\032\021.ai_flow.Response\"/\202\323\344\223\002)\"" +
-      "$/aiflow/metadata_store/artifact/save:\001*" +
-      "\022h\n\014listArtifact\022\024.ai_flow.ListRequest\032\021" +
-      ".ai_flow.Response\"/\202\323\344\223\002)\"$/aiflow/metad" +
-      "ata_store/artifact/list:\001*\022q\n\022deleteArti" +
-      "factById\022\022.ai_flow.IdRequest\032\021.ai_flow.R" +
-      "esponse\"4\202\323\344\223\002.\")/aiflow/metadata_store/" +
-      "artifact/delete/id:\001*\022w\n\024deleteArtifactB" +
+      "\003 \001(\t\"@\n\026RegisterDatasetRequest\022&\n\007datas" +
+      "et\030\001 \001(\0132\025.ai_flow.DatasetProto\"B\n\027Regis" +
+      "terDatasetsRequest\022\'\n\010datasets\030\001 \003(\0132\025.a" +
+      "i_flow.DatasetProto\";\n\020DatasetListProto\022" +
+      "\'\n\010datasets\030\001 \003(\0132\025.ai_flow.DatasetProto" +
+      "\"\256\005\n\024UpdateDatasetRequest\022\014\n\004name\030\001 \001(\t\022" +
+      "A\n\nproperties\030\002 \003(\0132-.ai_flow.UpdateData" +
+      "setRequest.PropertiesEntry\022\021\n\tname_list\030" +
+      "\003 \003(\t\022)\n\ttype_list\030\004 \003(\0162\026.ai_flow.DataT" +
+      "ypeProto\0221\n\013data_format\030\005 \001(\0132\034.google.p" +
+      "rotobuf.StringValue\022)\n\003uri\030\006 \001(\0132\034.googl" +
+      "e.protobuf.StringValue\0221\n\013description\030\007 " +
+      "\001(\0132\034.google.protobuf.StringValue\0220\n\013upd" +
+      "ate_time\030\010 \001(\0132\033.google.protobuf.Int64Va" +
+      "lue\0222\n\014catalog_name\030\t \001(\0132\034.google.proto" +
+      "buf.StringValue\0222\n\014catalog_type\030\n \001(\0132\034." +
+      "google.protobuf.StringValue\0226\n\020catalog_d" +
+      "atabase\030\013 \001(\0132\034.google.protobuf.StringVa" +
+      "lue\022<\n\026catalog_connection_uri\030\014 \001(\0132\034.go" +
+      "ogle.protobuf.StringValue\0223\n\rcatalog_tab" +
+      "le\030\r \001(\0132\034.google.protobuf.StringValue\0321" +
+      "\n\017PropertiesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030" +
+      "\002 \001(\t:\0028\001\"S\n\034RegisterModelRelationReques" +
+      "t\0223\n\016model_relation\030\001 \001(\0132\033.ai_flow.Mode" +
+      "lRelationProto\":\n\024RegisterModelRequest\022\"" +
+      "\n\005model\030\001 \001(\0132\023.ai_flow.ModelProto\"N\n\026Mo" +
+      "delRelationListProto\0224\n\017model_relations\030" +
+      "\001 \003(\0132\033.ai_flow.ModelRelationProto\"9\n\027Mo" +
+      "delVersionNameRequest\022\014\n\004name\030\001 \001(\t\022\020\n\010m" +
+      "odel_id\030\002 \001(\003\"i\n#RegisterModelVersionRel" +
+      "ationRequest\022B\n\026model_version_relation\030\001" +
+      " \001(\0132\".ai_flow.ModelVersionRelationProto" +
+      "\"P\n\033RegisterModelVersionRequest\0221\n\rmodel" +
+      "_version\030\001 \001(\0132\032.ai_flow.ModelVersionPro" +
+      "to\"V\n\037ListModelVersionRelationRequest\022\020\n" +
+      "\010model_id\030\001 \001(\003\022\021\n\tpage_size\030\002 \001(\003\022\016\n\006of" +
+      "fset\030\003 \001(\003\"[\n\035ModelVersionRelationListPr" +
+      "oto\022:\n\016model_versions\030\001 \003(\0132\".ai_flow.Mo" +
+      "delVersionRelationProto\"K\n\025ModelVersionL" +
+      "istProto\0222\n\016model_versions\030\001 \003(\0132\032.ai_fl" +
+      "ow.ModelVersionProto\" \n\020ModelNameRequest" +
+      "\022\014\n\004name\030\001 \001(\t\"4\n\022RegisterJobRequest\022\036\n\003" +
+      "job\030\001 \001(\0132\021.ai_flow.JobProto\"\263\003\n\020UpdateJ" +
+      "obRequest\022\014\n\004name\030\001 \001(\t\022:\n\025workflow_exec" +
+      "ution_id\030\002 \001(\0132\033.google.protobuf.Int64Va" +
+      "lue\022&\n\tjob_state\030\003 \001(\0162\023.ai_flow.StatePr" +
+      "oto\022=\n\nproperties\030\004 \003(\0132).ai_flow.Update" +
+      "JobRequest.PropertiesEntry\022,\n\006job_id\030\005 \001" +
+      "(\0132\034.google.protobuf.StringValue\022-\n\010end_" +
+      "time\030\006 \001(\0132\033.google.protobuf.Int64Value\022" +
+      "-\n\007log_uri\030\007 \001(\0132\034.google.protobuf.Strin" +
+      "gValue\022/\n\tsignature\030\010 \001(\0132\034.google.proto" +
+      "buf.StringValue\0321\n\017PropertiesEntry\022\013\n\003ke" +
+      "y\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"I\n\025UpdateJobS" +
+      "tateRequest\022\"\n\005state\030\001 \001(\0162\023.ai_flow.Sta" +
+      "teProto\022\014\n\004name\030\002 \001(\t\"9\n\027UpdateJobEndTim" +
+      "eRequest\022\020\n\010end_time\030\001 \001(\003\022\014\n\004name\030\002 \001(\t" +
+      "\"/\n\014JobListProto\022\037\n\004jobs\030\001 \003(\0132\021.ai_flow" +
+      ".JobProto\"_\n RegisterWorkFlowExecutionRe" +
+      "quest\022;\n\022workflow_execution\030\001 \001(\0132\037.ai_f" +
+      "low.WorkflowExecutionProto\"\321\003\n\036UpdateWor" +
+      "kflowExecutionRequest\022\014\n\004name\030\001 \001(\t\022/\n\np" +
+      "roject_id\030\002 \001(\0132\033.google.protobuf.Int64V" +
+      "alue\022,\n\017execution_state\030\004 \001(\0162\023.ai_flow." +
+      "StateProto\022K\n\nproperties\030\005 \003(\01327.ai_flow" +
+      ".UpdateWorkflowExecutionRequest.Properti" +
+      "esEntry\022-\n\010end_time\030\006 \001(\0132\033.google.proto" +
+      "buf.Int64Value\022-\n\007log_uri\030\007 \001(\0132\034.google" +
+      ".protobuf.StringValue\0223\n\rworkflow_json\030\010" +
+      " \001(\0132\034.google.protobuf.StringValue\022/\n\tsi" +
+      "gnature\030\t \001(\0132\034.google.protobuf.StringVa" +
+      "lue\0321\n\017PropertiesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005v" +
+      "alue\030\002 \001(\t:\0028\001\"Z\n\032WorkFlowExecutionListP" +
+      "roto\022<\n\023workflow_executions\030\001 \003(\0132\037.ai_f" +
+      "low.WorkflowExecutionProto\"G\n%UpdateWork" +
+      "flowExecutionEndTimeRequest\022\020\n\010end_time\030" +
+      "\001 \001(\003\022\014\n\004name\030\002 \001(\t\"W\n#UpdateWorkflowExe" +
+      "cutionStateRequest\022\"\n\005state\030\001 \001(\0162\023.ai_f" +
+      "low.StateProto\022\014\n\004name\030\002 \001(\t\"@\n\026Register" +
+      "ProjectRequest\022&\n\007project\030\001 \001(\0132\025.ai_flo" +
+      "w.ProjectProto\"\305\001\n\024UpdateProjectRequest\022" +
+      "\014\n\004name\030\001 \001(\t\022A\n\nproperties\030\002 \003(\0132-.ai_f" +
+      "low.UpdateProjectRequest.PropertiesEntry" +
+      "\022)\n\003uri\030\003 \001(\0132\034.google.protobuf.StringVa" +
+      "lue\0321\n\017PropertiesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005v" +
+      "alue\030\002 \001(\t:\0028\001\";\n\020ProjectListProto\022\'\n\010pr" +
+      "ojects\030\001 \003(\0132\025.ai_flow.ProjectProto\"C\n\027R" +
+      "egisterArtifactRequest\022(\n\010artifact\030\001 \001(\013" +
+      "2\026.ai_flow.ArtifactProto\"\227\003\n\025UpdateArtif" +
+      "actRequest\022\014\n\004name\030\001 \001(\t\022B\n\nproperties\030\002" +
+      " \003(\0132..ai_flow.UpdateArtifactRequest.Pro" +
+      "pertiesEntry\0221\n\013data_format\030\003 \001(\0132\034.goog" +
+      "le.protobuf.StringValue\022/\n\tbatch_uri\030\004 \001" +
+      "(\0132\034.google.protobuf.StringValue\0220\n\nstre" +
+      "am_uri\030\005 \001(\0132\034.google.protobuf.StringVal" +
+      "ue\0221\n\013description\030\006 \001(\0132\034.google.protobu" +
+      "f.StringValue\0220\n\013update_time\030\007 \001(\0132\033.goo" +
+      "gle.protobuf.Int64Value\0321\n\017PropertiesEnt" +
+      "ry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\">\n\021Ar" +
+      "tifactListProto\022)\n\tartifacts\030\001 \003(\0132\026.ai_" +
+      "flow.ArtifactProto2\351<\n\017MetadataService\022i" +
+      "\n\016getDatasetById\022\022.ai_flow.IdRequest\032\021.a" +
+      "i_flow.Response\"0\202\323\344\223\002*\"%/aiflow/metadat" +
+      "a_store/dataset/get/id:\001*\022o\n\020getDatasetB" +
       "yName\022\024.ai_flow.NameRequest\032\021.ai_flow.Re" +
-      "sponse\"6\202\323\344\223\0020\"+/aiflow/metadata_store/a" +
-      "rtifact/delete/name:\001*B\"\n\020com.aiflow.pro" +
-      "toZ\010/ai_flow\210\001\001\220\001\001b\006proto3"
+      "sponse\"2\202\323\344\223\002,\"\'/aiflow/metadata_store/d" +
+      "ataset/get/name:\001*\022g\n\014listDatasets\022\024.ai_" +
+      "flow.ListRequest\032\021.ai_flow.Response\".\202\323\344" +
+      "\223\002(\"#/aiflow/metadata_store/dataset/list" +
+      ":\001*\022u\n\017registerDataset\022\037.ai_flow.Registe" +
+      "rDatasetRequest\032\021.ai_flow.Response\".\202\323\344\223" +
+      "\002(\"#/aiflow/metadata_store/dataset/save:" +
+      "\001*\022\215\001\n\032registerDatasetWithCatalog\022\037.ai_f" +
+      "low.RegisterDatasetRequest\032\021.ai_flow.Res" +
+      "ponse\";\202\323\344\223\0025\"0/aiflow/metadata_store/da" +
+      "taset/save_with_catalog:\001*\022w\n\020registerDa" +
+      "tasets\022 .ai_flow.RegisterDatasetsRequest" +
+      "\032\021.ai_flow.Response\".\202\323\344\223\002(\"#/aiflow/met" +
+      "adata_store/dataset/save:\001*\022s\n\rupdateDat" +
+      "aset\022\035.ai_flow.UpdateDatasetRequest\032\021.ai" +
+      "_flow.Response\"0\202\323\344\223\002*\"%/aiflow/metadata" +
+      "_store/dataset/update:\001*\022o\n\021deleteDatase" +
+      "tById\022\022.ai_flow.IdRequest\032\021.ai_flow.Resp" +
+      "onse\"3\202\323\344\223\002-\"(/aiflow/metadata_store/dat" +
+      "aset/delete/id:\001*\022u\n\023deleteDatasetByName" +
+      "\022\024.ai_flow.NameRequest\032\021.ai_flow.Respons" +
+      "e\"5\202\323\344\223\002/\"*/aiflow/metadata_store/datase" +
+      "t/delete/name:\001*\022v\n\024getModelRelationById" +
+      "\022\022.ai_flow.IdRequest\032\021.ai_flow.Response\"" +
+      "7\202\323\344\223\0021\",/aiflow/metadata_store/model_re" +
+      "lation/get/id:\001*\022|\n\026getModelRelationByNa" +
+      "me\022\024.ai_flow.NameRequest\032\021.ai_flow.Respo" +
+      "nse\"9\202\323\344\223\0023\"./aiflow/metadata_store/mode" +
+      "l_relation/get/name:\001*\022s\n\021listModelRelat" +
+      "ion\022\024.ai_flow.ListRequest\032\021.ai_flow.Resp" +
+      "onse\"5\202\323\344\223\002/\"*/aiflow/metadata_store/mod" +
+      "el_relation/list:\001*\022\210\001\n\025registerModelRel" +
+      "ation\022%.ai_flow.RegisterModelRelationReq" +
+      "uest\032\021.ai_flow.Response\"5\202\323\344\223\002/\"*/aiflow" +
+      "/metadata_store/model_relation/save:\001*\022|" +
+      "\n\027deleteModelRelationById\022\022.ai_flow.IdRe" +
+      "quest\032\021.ai_flow.Response\":\202\323\344\223\0024\"//aiflo" +
+      "w/metadata_store/model_relation/delete/i" +
+      "d:\001*\022\202\001\n\031deleteModelRelationByName\022\024.ai_" +
+      "flow.NameRequest\032\021.ai_flow.Response\"<\202\323\344" +
+      "\223\0026\"1/aiflow/metadata_store/model_relati" +
+      "on/delete/name:\001*\022e\n\014getModelById\022\022.ai_f" +
+      "low.IdRequest\032\021.ai_flow.Response\".\202\323\344\223\002(" +
+      "\"#/aiflow/metadata_store/model/get/id:\001*" +
+      "\022k\n\016getModelByName\022\024.ai_flow.NameRequest" +
+      "\032\021.ai_flow.Response\"0\202\323\344\223\002*\"%/aiflow/met" +
+      "adata_store/model/get/name:\001*\022o\n\rregiste" +
+      "rModel\022\035.ai_flow.RegisterModelRequest\032\021." +
+      "ai_flow.Response\",\202\323\344\223\002&\"!/aiflow/metada" +
+      "ta_store/model/save:\001*\022k\n\017deleteModelByI" +
+      "d\022\022.ai_flow.IdRequest\032\021.ai_flow.Response" +
+      "\"1\202\323\344\223\002+\"&/aiflow/metadata_store/model/d" +
+      "elete/id:\001*\022q\n\021deleteModelByName\022\024.ai_fl" +
+      "ow.NameRequest\032\021.ai_flow.Response\"3\202\323\344\223\002" +
+      "-\"(/aiflow/metadata_store/model/delete/n" +
+      "ame:\001*\022\234\001\n getModelVersionRelationByVers" +
+      "ion\022 .ai_flow.ModelVersionNameRequest\032\021." +
+      "ai_flow.Response\"C\202\323\344\223\002=\"8/aiflow/metada" +
+      "ta_store/modelVersion_relation/get/versi" +
+      "on:\001*\022\225\001\n\030listModelVersionRelation\022(.ai_" +
+      "flow.ListModelVersionRelationRequest\032\021.a" +
+      "i_flow.Response\"<\202\323\344\223\0026\"1/aiflow/metadat" +
+      "a_store/modelVersion_relation/list:\001*\022\235\001" +
+      "\n\034registerModelVersionRelation\022,.ai_flow" +
+      ".RegisterModelVersionRelationRequest\032\021.a" +
+      "i_flow.Response\"<\202\323\344\223\0026\"1/aiflow/metadat" +
+      "a_store/modelVersion_relation/save:\001*\022\242\001" +
+      "\n#deleteModelVersionRelationByVersion\022 ." +
+      "ai_flow.ModelVersionNameRequest\032\021.ai_flo" +
+      "w.Response\"F\202\323\344\223\002@\";/aiflow/metadata_sto" +
+      "re/modelVersion_relation/delete/version:" +
+      "\001*\022\213\001\n\030getModelVersionByVersion\022 .ai_flo" +
+      "w.ModelVersionNameRequest\032\021.ai_flow.Resp" +
+      "onse\":\202\323\344\223\0024\"//aiflow/metadata_store/mod" +
+      "elVersion/get/version:\001*\022\204\001\n\024registerMod" +
+      "elVersion\022$.ai_flow.RegisterModelVersion" +
+      "Request\032\021.ai_flow.Response\"3\202\323\344\223\002-\"(/aif" +
+      "low/metadata_store/modelVersion/save:\001*\022" +
+      "\221\001\n\033deleteModelVersionByVersion\022 .ai_flo" +
+      "w.ModelVersionNameRequest\032\021.ai_flow.Resp" +
+      "onse\"=\202\323\344\223\0027\"2/aiflow/metadata_store/mod" +
+      "elVersion/delete/version:\001*\022\213\001\n\027getDeplo" +
+      "yedModelVersion\022\031.ai_flow.ModelNameReque" +
+      "st\032\021.ai_flow.Response\"B\202\323\344\223\002<\"7/aiflow/m" +
+      "etadata_store/modelVersion/get_serving_v" +
+      "ersion:\001*\022\241\001\n\036getLatestValidatedModelVer" +
+      "sion\022\031.ai_flow.ModelNameRequest\032\021.ai_flo" +
+      "w.Response\"Q\202\323\344\223\002K\"F/aiflow/metadata_sto" +
+      "re/modelVersion/get_latest_validated_mod" +
+      "el_version:\001*\022\241\001\n\036getLatestGeneratedMode" +
+      "lVersion\022\031.ai_flow.ModelNameRequest\032\021.ai" +
+      "_flow.Response\"Q\202\323\344\223\002K\"F/aiflow/metadata" +
+      "_store/modelVersion/get_latest_generated" +
+      "_model_version:\001*\022}\n\030getWorkFlowExecutio" +
+      "nById\022\022.ai_flow.IdRequest\032\021.ai_flow.Resp" +
+      "onse\":\202\323\344\223\0024\"//aiflow/metadata_store/wor" +
+      "kflowExecution/get/id:\001*\022\203\001\n\032getWorkFlow" +
+      "ExecutionByName\022\024.ai_flow.NameRequest\032\021." +
+      "ai_flow.Response\"<\202\323\344\223\0026\"1/aiflow/metada" +
+      "ta_store/workflowExecution/get/name:\001*\022z" +
+      "\n\025listWorkFlowExecution\022\024.ai_flow.ListRe" +
+      "quest\032\021.ai_flow.Response\"8\202\323\344\223\0022\"-/aiflo" +
+      "w/metadata_store/workflowExecution/list:" +
+      "\001*\022\223\001\n\031registerWorkFlowExecution\022).ai_fl" +
+      "ow.RegisterWorkFlowExecutionRequest\032\021.ai" +
+      "_flow.Response\"8\202\323\344\223\0022\"-/aiflow/metadata" +
+      "_store/workflowExecution/save:\001*\022\221\001\n\027upd" +
+      "ateWorkflowExecution\022\'.ai_flow.UpdateWor" +
+      "kflowExecutionRequest\032\021.ai_flow.Response" +
+      "\":\202\323\344\223\0024\"//aiflow/metadata_store/workflo" +
+      "wExecution/update:\001*\022\203\001\n\033deleteWorkflowE" +
+      "xecutionById\022\022.ai_flow.IdRequest\032\021.ai_fl" +
+      "ow.Response\"=\202\323\344\223\0027\"2/aiflow/metadata_st" +
+      "ore/workflowExecution/delete/id:\001*\022\211\001\n\035d" +
+      "eleteWorkflowExecutionByName\022\024.ai_flow.N" +
+      "ameRequest\032\021.ai_flow.Response\"?\202\323\344\223\0029\"4/" +
+      "aiflow/metadata_store/workflowExecution/" +
+      "delete/name:\001*\022\250\001\n\036updateWorkflowExecuti" +
+      "onEndTime\022..ai_flow.UpdateWorkflowExecut" +
+      "ionEndTimeRequest\032\021.ai_flow.Response\"C\202\323" +
+      "\344\223\002=\"8/aiflow/metadata_store/workflowExe" +
+      "cution/update/end_time:\001*\022\241\001\n\034updateWork" +
+      "flowExecutionState\022,.ai_flow.UpdateWorkf" +
+      "lowExecutionStateRequest\032\021.ai_flow.Respo" +
+      "nse\"@\202\323\344\223\002:\"5/aiflow/metadata_store/work" +
+      "flowExecution/update/state:\001*\022a\n\ngetJobB" +
+      "yId\022\022.ai_flow.IdRequest\032\021.ai_flow.Respon" +
+      "se\",\202\323\344\223\002&\"!/aiflow/metadata_store/job/g" +
+      "et/id:\001*\022g\n\014getJobByName\022\024.ai_flow.NameR" +
+      "equest\032\021.ai_flow.Response\".\202\323\344\223\002(\"#/aifl" +
+      "ow/metadata_store/job/get/name:\001*\022^\n\007lis" +
+      "tJob\022\024.ai_flow.ListRequest\032\021.ai_flow.Res" +
+      "ponse\"*\202\323\344\223\002$\"\037/aiflow/metadata_store/jo" +
+      "b/list:\001*\022i\n\013registerJob\022\033.ai_flow.Regis" +
+      "terJobRequest\032\021.ai_flow.Response\"*\202\323\344\223\002$" +
+      "\"\037/aiflow/metadata_store/job/save:\001*\022g\n\t" +
+      "updateJob\022\031.ai_flow.UpdateJobRequest\032\021.a" +
+      "i_flow.Response\",\202\323\344\223\002&\"!/aiflow/metadat" +
+      "a_store/job/update:\001*\022w\n\016updateJobState\022" +
+      "\036.ai_flow.UpdateJobStateRequest\032\021.ai_flo" +
+      "w.Response\"2\202\323\344\223\002,\"\'/aiflow/metadata_sto" +
+      "re/job/update/state:\001*\022~\n\020updateJobEndTi" +
+      "me\022 .ai_flow.UpdateJobEndTimeRequest\032\021.a" +
+      "i_flow.Response\"5\202\323\344\223\002/\"*/aiflow/metadat" +
+      "a_store/job/update/end_time:\001*\022g\n\rdelete" +
+      "JobById\022\022.ai_flow.IdRequest\032\021.ai_flow.Re" +
+      "sponse\"/\202\323\344\223\002)\"$/aiflow/metadata_store/j" +
+      "ob/delete/id:\001*\022m\n\017deleteJobByName\022\024.ai_" +
+      "flow.NameRequest\032\021.ai_flow.Response\"1\202\323\344" +
+      "\223\002+\"&/aiflow/metadata_store/job/delete/n" +
+      "ame:\001*\022i\n\016getProjectById\022\022.ai_flow.IdReq" +
+      "uest\032\021.ai_flow.Response\"0\202\323\344\223\002*\"%/aiflow" +
+      "/metadata_store/project/get/id:\001*\022o\n\020get" +
+      "ProjectByName\022\024.ai_flow.NameRequest\032\021.ai" +
+      "_flow.Response\"2\202\323\344\223\002,\"\'/aiflow/metadata" +
+      "_store/project/get/name:\001*\022u\n\017registerPr" +
+      "oject\022\037.ai_flow.RegisterProjectRequest\032\021" +
+      ".ai_flow.Response\".\202\323\344\223\002(\"#/aiflow/metad" +
+      "ata_store/project/save:\001*\022s\n\rupdateProje" +
+      "ct\022\035.ai_flow.UpdateProjectRequest\032\021.ai_f" +
+      "low.Response\"0\202\323\344\223\002*\"%/aiflow/metadata_s" +
+      "tore/project/update:\001*\022f\n\013listProject\022\024." +
+      "ai_flow.ListRequest\032\021.ai_flow.Response\"." +
+      "\202\323\344\223\002(\"#/aiflow/metadata_store/project/l" +
+      "ist:\001*\022o\n\021deleteProjectById\022\022.ai_flow.Id" +
+      "Request\032\021.ai_flow.Response\"3\202\323\344\223\002-\"(/aif" +
+      "low/metadata_store/project/delete/id:\001*\022" +
+      "u\n\023deleteProjectByName\022\024.ai_flow.NameReq" +
+      "uest\032\021.ai_flow.Response\"5\202\323\344\223\002/\"*/aiflow" +
+      "/metadata_store/project/delete/name:\001*\022k" +
+      "\n\017getArtifactById\022\022.ai_flow.IdRequest\032\021." +
+      "ai_flow.Response\"1\202\323\344\223\002+\"&/aiflow/metada" +
+      "ta_store/artifact/get/id:\001*\022q\n\021getArtifa" +
+      "ctByName\022\024.ai_flow.NameRequest\032\021.ai_flow" +
+      ".Response\"3\202\323\344\223\002-\"(/aiflow/metadata_stor" +
+      "e/artifact/get/name:\001*\022v\n\016updateArtifact" +
+      "\022\036.ai_flow.UpdateArtifactRequest\032\021.ai_fl" +
+      "ow.Response\"1\202\323\344\223\002+\"&/aiflow/metadata_st" +
+      "ore/artifact/update:\001*\022x\n\020registerArtifa" +
+      "ct\022 .ai_flow.RegisterArtifactRequest\032\021.a" +
+      "i_flow.Response\"/\202\323\344\223\002)\"$/aiflow/metadat" +
+      "a_store/artifact/save:\001*\022h\n\014listArtifact" +
+      "\022\024.ai_flow.ListRequest\032\021.ai_flow.Respons" +
+      "e\"/\202\323\344\223\002)\"$/aiflow/metadata_store/artifa" +
+      "ct/list:\001*\022q\n\022deleteArtifactById\022\022.ai_fl" +
+      "ow.IdRequest\032\021.ai_flow.Response\"4\202\323\344\223\002.\"" +
+      ")/aiflow/metadata_store/artifact/delete/" +
+      "id:\001*\022w\n\024deleteArtifactByName\022\024.ai_flow." +
+      "NameRequest\032\021.ai_flow.Response\"6\202\323\344\223\0020\"+" +
+      "/aiflow/metadata_store/artifact/delete/n" +
+      "ame:\001*B\"\n\020com.aiflow.protoZ\010/ai_flow\210\001\001\220" +
+      "\001\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -35903,35 +35182,35 @@ public final class MetadataServiceOuterClass {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ai_flow_MetaResponse_descriptor,
         new java.lang.String[] { "ReturnCode", "ReturnMsg", "Data", });
-    internal_static_ai_flow_RegisterExampleRequest_descriptor =
+    internal_static_ai_flow_RegisterDatasetRequest_descriptor =
       getDescriptor().getMessageTypes().get(4);
-    internal_static_ai_flow_RegisterExampleRequest_fieldAccessorTable = new
+    internal_static_ai_flow_RegisterDatasetRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_ai_flow_RegisterExampleRequest_descriptor,
-        new java.lang.String[] { "Example", });
-    internal_static_ai_flow_RegisterExamplesRequest_descriptor =
+        internal_static_ai_flow_RegisterDatasetRequest_descriptor,
+        new java.lang.String[] { "Dataset", });
+    internal_static_ai_flow_RegisterDatasetsRequest_descriptor =
       getDescriptor().getMessageTypes().get(5);
-    internal_static_ai_flow_RegisterExamplesRequest_fieldAccessorTable = new
+    internal_static_ai_flow_RegisterDatasetsRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_ai_flow_RegisterExamplesRequest_descriptor,
-        new java.lang.String[] { "Examples", });
-    internal_static_ai_flow_ExampleListProto_descriptor =
+        internal_static_ai_flow_RegisterDatasetsRequest_descriptor,
+        new java.lang.String[] { "Datasets", });
+    internal_static_ai_flow_DatasetListProto_descriptor =
       getDescriptor().getMessageTypes().get(6);
-    internal_static_ai_flow_ExampleListProto_fieldAccessorTable = new
+    internal_static_ai_flow_DatasetListProto_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_ai_flow_ExampleListProto_descriptor,
-        new java.lang.String[] { "Examples", });
-    internal_static_ai_flow_UpdateExampleRequest_descriptor =
+        internal_static_ai_flow_DatasetListProto_descriptor,
+        new java.lang.String[] { "Datasets", });
+    internal_static_ai_flow_UpdateDatasetRequest_descriptor =
       getDescriptor().getMessageTypes().get(7);
-    internal_static_ai_flow_UpdateExampleRequest_fieldAccessorTable = new
+    internal_static_ai_flow_UpdateDatasetRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_ai_flow_UpdateExampleRequest_descriptor,
-        new java.lang.String[] { "Name", "Properties", "SupportType", "NameList", "TypeList", "DataType", "DataFormat", "BatchUri", "StreamUri", "Description", "UpdateTime", "CatalogName", "CatalogType", "CatalogDatabase", "CatalogConnectionUri", "CatalogVersion", "CatalogTable", });
-    internal_static_ai_flow_UpdateExampleRequest_PropertiesEntry_descriptor =
-      internal_static_ai_flow_UpdateExampleRequest_descriptor.getNestedTypes().get(0);
-    internal_static_ai_flow_UpdateExampleRequest_PropertiesEntry_fieldAccessorTable = new
+        internal_static_ai_flow_UpdateDatasetRequest_descriptor,
+        new java.lang.String[] { "Name", "Properties", "NameList", "TypeList", "DataFormat", "Uri", "Description", "UpdateTime", "CatalogName", "CatalogType", "CatalogDatabase", "CatalogConnectionUri", "CatalogTable", });
+    internal_static_ai_flow_UpdateDatasetRequest_PropertiesEntry_descriptor =
+      internal_static_ai_flow_UpdateDatasetRequest_descriptor.getNestedTypes().get(0);
+    internal_static_ai_flow_UpdateDatasetRequest_PropertiesEntry_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_ai_flow_UpdateExampleRequest_PropertiesEntry_descriptor,
+        internal_static_ai_flow_UpdateDatasetRequest_PropertiesEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
     internal_static_ai_flow_RegisterModelRelationRequest_descriptor =
       getDescriptor().getMessageTypes().get(8);

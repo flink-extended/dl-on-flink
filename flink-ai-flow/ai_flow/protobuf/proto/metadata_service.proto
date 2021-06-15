@@ -30,66 +30,66 @@ import "google/api/annotations.proto";
 package ai_flow;
 
 service MetadataService {
-    //example api
-    rpc getExampleById (IdRequest) returns (Response) {
+    //dataset api
+    rpc getDatasetById (IdRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/example/get/id"
+        post: "/aiflow/metadata_store/dataset/get/id"
         body: "*"
         };
     };
 
-    rpc getExampleByName (NameRequest) returns (Response) {
+    rpc getDatasetByName (NameRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/example/get/name"
+        post: "/aiflow/metadata_store/dataset/get/name"
         body: "*"
         };
     };
 
-    rpc listExample (ListRequest) returns (Response) {
+    rpc listDatasets (ListRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/example/list"
+        post: "/aiflow/metadata_store/dataset/list"
         body: "*"
         };
     };
 
-    rpc registerExample (RegisterExampleRequest) returns (Response) {
+    rpc registerDataset (RegisterDatasetRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/example/save"
+        post: "/aiflow/metadata_store/dataset/save"
         body: "*"
         };
     };
 
-    rpc registerExampleWithCatalog (RegisterExampleRequest) returns (Response) {
+    rpc registerDatasetWithCatalog (RegisterDatasetRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/example/save_with_catalog"
+        post: "/aiflow/metadata_store/dataset/save_with_catalog"
         body: "*"
         };
     };
 
-    rpc registerExamples (RegisterExamplesRequest) returns (Response) {
+    rpc registerDatasets (RegisterDatasetsRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/examples/save"
+        post: "/aiflow/metadata_store/dataset/save"
         body: "*"
         };
     };
 
-    rpc updateExample (UpdateExampleRequest) returns (Response) {
+    rpc updateDataset (UpdateDatasetRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/example/update"
+        post: "/aiflow/metadata_store/dataset/update"
         body: "*"
         };
     };
 
-    rpc deleteExampleById (IdRequest) returns (Response) {
+    rpc deleteDatasetById (IdRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/example/delete/id"
+        post: "/aiflow/metadata_store/dataset/delete/id"
         body: "*"
         };
     };
 
-    rpc deleteExampleByName (NameRequest) returns (Response) {
+    rpc deleteDatasetByName (NameRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/example/delete/name"
+        post: "/aiflow/metadata_store/dataset/delete/name"
         body: "*"
         };
     };
@@ -440,37 +440,33 @@ message MetaResponse {
     string data = 3;
 }
 
-//example
-message RegisterExampleRequest {
-    ExampleProto example = 1;
+//dataset
+message RegisterDatasetRequest {
+    DatasetProto dataset = 1;
 }
 
-message RegisterExamplesRequest {
-    repeated ExampleProto examples = 1;
+message RegisterDatasetsRequest {
+    repeated DatasetProto datasets = 1;
 }
 
-message ExampleListProto {
-    repeated ExampleProto examples = 1;
+message DatasetListProto {
+    repeated DatasetProto datasets = 1;
 }
 
-message UpdateExampleRequest {
+message UpdateDatasetRequest {
     string name = 1;
     map<string, string> properties = 2;
-    ExampleSupportTypeProto support_type = 3;
-    repeated string name_list = 4;
-    repeated DataTypeProto type_list = 5;
-    google.protobuf.StringValue data_type = 6;
-    google.protobuf.StringValue data_format = 7;
-    google.protobuf.StringValue batch_uri = 8;
-    google.protobuf.StringValue stream_uri = 9;
-    google.protobuf.StringValue description = 10;
-    google.protobuf.Int64Value update_time = 11;
-    google.protobuf.StringValue catalog_name = 12;
-    google.protobuf.StringValue catalog_type = 13;
-    google.protobuf.StringValue catalog_database = 14;
-    google.protobuf.StringValue catalog_connection_uri = 15;
-    google.protobuf.StringValue catalog_version = 16;
-    google.protobuf.StringValue catalog_table = 17;
+    repeated string name_list = 3;
+    repeated DataTypeProto type_list = 4;
+    google.protobuf.StringValue data_format = 5;
+    google.protobuf.StringValue uri = 6;
+    google.protobuf.StringValue description = 7;
+    google.protobuf.Int64Value update_time = 8;
+    google.protobuf.StringValue catalog_name = 9;
+    google.protobuf.StringValue catalog_type = 10;
+    google.protobuf.StringValue catalog_database = 11;
+    google.protobuf.StringValue catalog_connection_uri = 12;
+    google.protobuf.StringValue catalog_table = 13;
 }
 
 //model

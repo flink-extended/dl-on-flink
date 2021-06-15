@@ -31,25 +31,21 @@ message SchemaProto {
     repeated DataTypeProto type_list = 2;
 }
 
-message ExampleProto {
+message DatasetProto {
     int64 uuid = 1;
     string name = 2;
     map<string, string> properties = 3;
-    ExampleSupportTypeProto support_type = 4;
-    SchemaProto schema = 5;
-    google.protobuf.StringValue data_type = 6;
-    google.protobuf.StringValue data_format = 7;
-    google.protobuf.StringValue batch_uri = 8;
-    google.protobuf.StringValue stream_uri = 9;
-    google.protobuf.StringValue description = 10;
-    google.protobuf.Int64Value create_time = 11;
-    google.protobuf.Int64Value update_time = 12;
-    google.protobuf.StringValue catalog_name = 13;
-    google.protobuf.StringValue catalog_type = 14;
-    google.protobuf.StringValue catalog_database = 15;
-    google.protobuf.StringValue catalog_connection_uri = 16;
-    google.protobuf.StringValue catalog_version = 17;
-    google.protobuf.StringValue catalog_table = 18;
+    SchemaProto schema = 4;
+    google.protobuf.StringValue data_format = 5;
+    google.protobuf.StringValue uri = 6;
+    google.protobuf.StringValue description = 7;
+    google.protobuf.Int64Value create_time = 8;
+    google.protobuf.Int64Value update_time = 9;
+    google.protobuf.StringValue catalog_name = 10;
+    google.protobuf.StringValue catalog_type = 11;
+    google.protobuf.StringValue catalog_database = 12;
+    google.protobuf.StringValue catalog_connection_uri = 13;
+    google.protobuf.StringValue catalog_table = 14;
 }
 
 message ModelRelationProto {
@@ -260,13 +256,6 @@ enum DataTypeProto {
     STRINGARRAY = 10;
     BYTES = 11;
     BYTESARRAY = 12;
-}
-
-enum ExampleSupportTypeProto {
-    EXAMPLE_SUPPORT_TYPE_UNSPECIFIED = 0;
-    EXAMPLE_STREAM = 1;
-    EXAMPLE_BATCH = 2;
-    EXAMPLE_BOTH = 3;
 }
 
 enum StateProto {

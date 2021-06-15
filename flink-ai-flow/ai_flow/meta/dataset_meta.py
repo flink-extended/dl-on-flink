@@ -23,12 +23,6 @@ from ai_flow.common.properties import Properties
 from ai_flow.util.json_utils import Jsonable
 
 
-class ExampleSupportType(str, Enum):
-    EXAMPLE_STREAM = 'EXAMPLE_STREAM'
-    EXAMPLE_BATCH = 'EXAMPLE_BATCH'
-    EXAMPLE_BOTH = 'EXAMPLE_BOTH'
-
-
 class DataType(str, Enum):
     INT32 = 'INT32'
     INT64 = 'INT64'
@@ -59,17 +53,14 @@ class Schema(Jsonable):
                '>'.format(self.name_list, self.type_list)
 
 
-class ExampleMeta(Jsonable):
-    """define example meta """
+class DatasetMeta(Jsonable):
+    """define dataset meta """
 
     def __init__(self,
                  name: Text,
-                 support_type: ExampleSupportType,
-                 data_type: Text = None,
                  data_format: Text = None,
                  description: Text = None,
-                 batch_uri: Text = None,
-                 stream_uri: Text = None,
+                 uri: Text = None,
                  create_time: int = None,
                  update_time: int = None,
                  properties: Properties = None,
@@ -78,29 +69,23 @@ class ExampleMeta(Jsonable):
                  catalog_type: Text = None,
                  catalog_database: Text = None,
                  catalog_connection_uri: Text = None,
-                 catalog_version: Text = None,
                  catalog_table: Text = None,
                  uuid: int = None) -> None:
-        """ create example meta
+        """ create dataset meta
         Args:
-            name: example name
-            support_type: BATCH, STREAM or BOTH execution mode
-            data_type: numpy, pandas, etc.
+            name: dataset name
             data_format: csv, json, etc.
-            description: example description
-            batch_uri: batch data persistent storage
-            stream_uri: stream data persistent storage
-            create_time: create example datetime
-            update_time: update example datetime
-            properties: properties for the example
+            description: dataset description
+            uri: data persistent storage
+            create_time: create dataset datetime
+            update_time: update dataset datetime
+            properties: properties for the dataset
+            schema: column list
         """
         self.name = name
-        self.support_type = support_type
-        self.data_type = data_type
         self.data_format = data_format
         self.description = description
-        self.batch_uri = batch_uri
-        self.stream_uri = stream_uri
+        self.uri = uri
         self.create_time = create_time
         self.update_time = update_time
         self.properties = properties
@@ -109,40 +94,38 @@ class ExampleMeta(Jsonable):
         self.catalog_type = catalog_type
         self.catalog_database = catalog_database
         self.catalog_connection_uri = catalog_connection_uri
-        self.catalog_version = catalog_version
         self.catalog_table = catalog_table
         self.uuid = uuid
 
     def __str__(self):
         return '<\n' \
-               'ExampleMeta\n' \
+               'DatasetMeta\n' \
                'uuid:{},\n' \
                'name:{},\n' \
-               'support_type:{},\n' \
                'data_format:{}, \n' \
                'description:{},\n' \
-               'batch_uri:{},\n' \
-               'stream_uri:{},\n' \
+               'uri:{},\n' \
                'create_time:{},\n' \
                'update_time:{},\n' \
-               'properties:{},\nschema:{},\n' \
-               'catalog_type:{},\ncatalog_connection_uri:{}' \
+               'properties:{},\n' \
+               'schema:{},\n' \
+               'catalog_name:{},\n'\
+               'catalog_type:{},\n' \
+               'catalog_database:{},\n' \
+               'catalog_connection_uri:{},\n' \
+               'catalog_table:{}' \
                '\n>'.format(
-            self.uuid, self.name, self.support_type, self.data_format,
-            self.description, self.batch_uri, self.stream_uri,
+            self.uuid, self.name, self.data_format, self.description, self.uri,
             self.create_time, self.update_time, self.properties, self.schema,
             self.catalog_name, self.catalog_type, self.catalog_database,
-            self.catalog_connection_uri, self.catalog_version, self.catalog_table)
+            self.catalog_connection_uri, self.catalog_table)
 
 
-# example api
-def create_example(name: Text,
-                   support_type: ExampleSupportType,
-                   data_type: Text = None,
+# dataset api
+def create_dataset(name: Text,
                    data_format: Text = None,
                    description: Text = None,
-                   batch_uri: Text = None,
-                   stream_uri: Text = None,
+                   uri: Text = None,
                    create_time: int = None,
                    update_time: int = None,
                    properties: Properties = None,
@@ -152,15 +135,12 @@ def create_example(name: Text,
                    catalog_type: Text = None,
                    catalog_database: Text = None,
                    catalog_connection_uri: Text = None,
-                   catalog_version: Text = None,
                    catalog_table: Text = None,
-                   ) -> ExampleMeta:
+                   ) -> DatasetMeta:
     schema = Schema(name_list=name_list, type_list=type_list)
-    return ExampleMeta(name=name, support_type=support_type, data_type=data_type,
-                       data_format=data_format, description=description,
-                       batch_uri=batch_uri, stream_uri=stream_uri, schema=schema,
-                       create_time=create_time, update_time=update_time, properties=properties,
-                       catalog_name=catalog_name, catalog_type=catalog_type, catalog_database=catalog_database,
-                       catalog_connection_uri=catalog_connection_uri, catalog_version=catalog_version,
+    return DatasetMeta(name=name, data_format=data_format, description=description,
+                       uri=uri, schema=schema, create_time=create_time, update_time=update_time,
+                       properties=properties, catalog_name=catalog_name, catalog_type=catalog_type,
+                       catalog_database=catalog_database, catalog_connection_uri=catalog_connection_uri,
                        catalog_table=catalog_table
                        )

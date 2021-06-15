@@ -57,17 +57,17 @@ class Test_Rest_Api(unittest.TestCase):
             }
         }
         data = json.dumps(example)
-        response = requests.post(HEADER + '/aiflow/metadata_store/example/save', data=data, verify=False)
+        response = requests.post(HEADER + '/aiflow/metadata_store/dataset/save', data=data, verify=False)
         result_data = json.loads(json.loads(response.text).get('data'))
         self.assertEqual(int(result_data.get('uuid')), 1)
 
         data = '{"id":1}'
-        response = requests.post(HEADER + '/aiflow/metadata_store/example/get/id', data=data, verify=False)
+        response = requests.post(HEADER + '/aiflow/metadata_store/dataset/get/id', data=data, verify=False)
         result_data = json.loads(json.loads(response.text).get('data'))
         self.assertEqual(result_data.get('name'), 'example')
 
         data = '{"name":"example"}'
-        response = requests.post(HEADER + '/aiflow/metadata_store/example/get/name', data=data, verify=False)
+        response = requests.post(HEADER + '/aiflow/metadata_store/dataset/get/name', data=data, verify=False)
         result_data = json.loads(json.loads(response.text).get('data'))
         self.assertEqual(result_data.get('name'), 'example')
 
@@ -79,12 +79,12 @@ class Test_Rest_Api(unittest.TestCase):
             }]
         }
         data = json.dumps(examples)
-        response = requests.post(HEADER + '/aiflow/metadata_store/examples/save', data=data, verify=False)
+        response = requests.post(HEADER + '/aiflow/metadata_store/dataset/save', data=data, verify=False)
         result_data = json.loads(json.loads(response.text).get('data'))
         self.assertEqual(len(result_data.get('examples')), 2)
 
         data = '{"pageSize":2,"offset":1}'
-        response = requests.post(HEADER + '/aiflow/metadata_store/example/list', data=data, verify=False)
+        response = requests.post(HEADER + '/aiflow/metadata_store/dataset/list', data=data, verify=False)
         result_data = json.loads(json.loads(response.text).get('data'))
         self.assertEqual(2, len(result_data.get('examples')))
 
@@ -253,15 +253,15 @@ class Test_delete_rest_api(unittest.TestCase):
             }
         }
         data = json.dumps(example)
-        response = requests.post(HEADER + '/aiflow/metadata_store/example/save', data=data, verify=False)
+        response = requests.post(HEADER + '/aiflow/metadata_store/dataset/save', data=data, verify=False)
         result_data = json.loads(json.loads(response.text).get('data'))
         uuid = int(result_data.get('uuid'))
 
         data = '{"id":' + str(uuid) + '}'
-        requests.post(HEADER + '/aiflow/metadata_store/example/delete/id', data=data, verify=False)
+        requests.post(HEADER + '/aiflow/metadata_store/dataset/delete/id', data=data, verify=False)
 
         data = '{"id":1}'
-        response = requests.post(HEADER + '/aiflow/metadata_store/example/get/id', data=data, verify=False)
+        response = requests.post(HEADER + '/aiflow/metadata_store/dataset/get/id', data=data, verify=False)
         return_code = json.loads(response.text).get('return_code')
         self.assertEqual(return_code, '2002')
 
@@ -277,12 +277,12 @@ class Test_delete_rest_api(unittest.TestCase):
             }
         }
         data = json.dumps(example)
-        requests.post(HEADER + '/aiflow/metadata_store/example/save', data=data, verify=False)
+        requests.post(HEADER + '/aiflow/metadata_store/dataset/save', data=data, verify=False)
 
         data = '{"name":"example1"}'
-        requests.post(HEADER + '/aiflow/metadata_store/example/delete/name', data=data, verify=False)
+        requests.post(HEADER + '/aiflow/metadata_store/dataset/delete/name', data=data, verify=False)
 
-        response = requests.post(HEADER + '/aiflow/metadata_store/example/get/name', data=data, verify=False)
+        response = requests.post(HEADER + '/aiflow/metadata_store/dataset/get/name', data=data, verify=False)
         return_code = json.loads(response.text).get('return_code')
         self.assertEqual(return_code, '2002')
 

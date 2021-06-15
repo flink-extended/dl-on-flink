@@ -17,58 +17,51 @@
 # under the License.
 #
 from ai_flow.meta.artifact_meta import ArtifactMeta
-from ai_flow.meta.example_meta import ExampleMeta, List, DataType, Schema, ExampleSupportType
+from ai_flow.meta.dataset_meta import DatasetMeta, List, DataType, Schema
 from ai_flow.meta.job_meta import JobMeta, State
 from ai_flow.meta.model_meta import ModelMeta, ModelVersionMeta
 from ai_flow.meta.model_relation_meta import ModelRelationMeta, ModelVersionRelationMeta
 from ai_flow.meta.project_meta import ProjectMeta
 from ai_flow.meta.workflow_execution_meta import WorkflowExecutionMeta
-from ai_flow.protobuf.message_pb2 import ExampleProto, ProjectProto, JobProto, \
+from ai_flow.protobuf.message_pb2 import DatasetProto, ProjectProto, JobProto, \
     WorkflowExecutionProto, StateProto, ModelRelationProto, ModelVersionRelationProto, ModelProto, ModelVersionProto, \
-    ArtifactProto, ModelVersionStage, DataTypeProto, ExampleSupportTypeProto, ModelType
+    ArtifactProto, ModelVersionStage, DataTypeProto, ModelType
 
 
 class ProtoToMeta:
 
     @staticmethod
-    def proto_to_example_meta(example_proto: ExampleProto) -> ExampleMeta:
-        support_type = ExampleSupportType(ExampleSupportTypeProto.Name(example_proto.support_type))
-        properties = example_proto.properties
+    def proto_to_dataset_meta(dataset_proto: DatasetProto) -> DatasetMeta:
+        properties = dataset_proto.properties
         if properties == {}:
             properties = None
-        name_list = example_proto.schema.name_list
+        name_list = dataset_proto.schema.name_list
         if not name_list:
             name_list = None
-        type_list = example_proto.schema.type_list
+        type_list = dataset_proto.schema.type_list
         if not type_list:
             data_type_list = None
         else:
             data_type_list = []
             for c in type_list:
                 data_type_list.append(DataType(DataTypeProto.Name(c)))
-        data_type = example_proto.data_type.value if example_proto.HasField('data_type') else None
-        data_format = example_proto.data_format.value if example_proto.HasField('data_format') else None
-        description = example_proto.description.value if example_proto.HasField('description') else None
-        batch_uri = example_proto.batch_uri.value if example_proto.HasField('batch_uri') else None
-        stream_uri = example_proto.stream_uri.value if example_proto.HasField('stream_uri') else None
-        create_time = example_proto.create_time.value if example_proto.HasField('create_time') else None
-        update_time = example_proto.update_time.value if example_proto.HasField('update_time') else None
-        catalog_name = example_proto.catalog_name.value if example_proto.HasField('catalog_name') else None
-        catalog_type = example_proto.catalog_type.value if example_proto.HasField('catalog_type') else None
-        catalog_database = example_proto.catalog_database.value if example_proto.HasField('catalog_database') else None
-        catalog_version = example_proto.catalog_version.value if example_proto.HasField('catalog_version') else None
-        catalog_connection_uri = example_proto.catalog_connection_uri.value \
-            if example_proto.HasField('catalog_connection_uri') else None
-        catalog_table = example_proto.catalog_table.value if example_proto.HasField('catalog_table') else None
+        data_format = dataset_proto.data_format.value if dataset_proto.HasField('data_format') else None
+        description = dataset_proto.description.value if dataset_proto.HasField('description') else None
+        uri = dataset_proto.uri.value if dataset_proto.HasField('uri') else None
+        create_time = dataset_proto.create_time.value if dataset_proto.HasField('create_time') else None
+        update_time = dataset_proto.update_time.value if dataset_proto.HasField('update_time') else None
+        catalog_name = dataset_proto.catalog_name.value if dataset_proto.HasField('catalog_name') else None
+        catalog_type = dataset_proto.catalog_type.value if dataset_proto.HasField('catalog_type') else None
+        catalog_database = dataset_proto.catalog_database.value if dataset_proto.HasField('catalog_database') else None
+        catalog_connection_uri = dataset_proto.catalog_connection_uri.value \
+            if dataset_proto.HasField('catalog_connection_uri') else None
+        catalog_table = dataset_proto.catalog_table.value if dataset_proto.HasField('catalog_table') else None
         schema = Schema(name_list=name_list, type_list=data_type_list)
-        return ExampleMeta(uuid=example_proto.uuid,
-                           name=example_proto.name,
-                           support_type=support_type,
-                           data_type=data_type,
+        return DatasetMeta(uuid=dataset_proto.uuid,
+                           name=dataset_proto.name,
                            data_format=data_format,
                            description=description,
-                           batch_uri=batch_uri,
-                           stream_uri=stream_uri,
+                           uri=uri,
                            create_time=create_time,
                            update_time=update_time,
                            properties=properties,
@@ -76,16 +69,15 @@ class ProtoToMeta:
                            catalog_name=catalog_name,
                            catalog_type=catalog_type,
                            catalog_database=catalog_database,
-                           catalog_version=catalog_version,
                            catalog_connection_uri=catalog_connection_uri,
                            catalog_table=catalog_table)
 
     @staticmethod
-    def proto_to_example_meta_list(example_proto_list: List[ExampleProto]) -> List[ExampleMeta]:
-        list_example_meta = []
-        for example_proto in example_proto_list:
-            list_example_meta.append(ProtoToMeta.proto_to_example_meta(example_proto))
-        return list_example_meta
+    def proto_to_dataset_meta_list(dataset_proto_list: List[DatasetProto]) -> List[DatasetMeta]:
+        list_dataset_meta = []
+        for dataset_proto in dataset_proto_list:
+            list_dataset_meta.append(ProtoToMeta.proto_to_dataset_meta(dataset_proto))
+        return list_dataset_meta
 
     @staticmethod
     def proto_to_project_meta(project_proto: ProjectProto) -> ProjectMeta:
