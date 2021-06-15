@@ -19,7 +19,7 @@
 import os
 from typing import List, Text
 from ai_flow.project.project_config import ProjectConfig, _default_project_config
-from ai_flow.common.json_utils import Jsonable
+from ai_flow.util.json_utils import Jsonable
 from pathlib import Path
 import logging
 

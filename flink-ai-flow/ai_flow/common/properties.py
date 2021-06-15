@@ -17,7 +17,7 @@
 # under the License.
 #
 from typing import Dict, Text
-from ai_flow.common.json_utils import Jsonable
+from ai_flow.util.json_utils import Jsonable
 
 
 class Properties(Dict[Text, Jsonable]):

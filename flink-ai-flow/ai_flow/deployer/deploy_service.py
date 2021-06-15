@@ -21,7 +21,7 @@ from ai_flow.rest_endpoint.protobuf.deploy_service_pb2 import ScheduleResponse, 
 from ai_flow.rest_endpoint.service.client.aiflow_client import _SERVER_URI
 from ai_flow.deployer.scheduler import SchedulerManager
 from ai_flow.workflow.workflow import Workflow
-from ai_flow.common.json_utils import loads
+from ai_flow.util.json_utils import loads
 import logging
 
 

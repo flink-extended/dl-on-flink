@@ -21,7 +21,7 @@ from ai_flow.graph.channel import Channel
 from ai_flow.graph.ai_node import AINode
 from typing import Dict, List, Text, Optional
 from ai_flow.graph.edge import Edge, DataEdge, ControlEdge
-from ai_flow.common.json_utils import Jsonable, loads, dumps
+from ai_flow.util.json_utils import Jsonable, loads, dumps
 import networkx as nx
 import matplotlib.pyplot as plt
 from ai_flow.api.ai_flow_context import default_af_job_context, ENGINE_NAME

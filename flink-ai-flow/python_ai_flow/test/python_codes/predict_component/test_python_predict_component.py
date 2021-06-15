@@ -23,7 +23,7 @@ import time
 import unittest
 from typing import List
 
-from ai_flow.common.path_util import get_file_dir
+from ai_flow.util.path_util import get_file_dir
 from streamz import Stream
 from ai_flow.meta.model_meta import ModelType, ModelMeta
 from ai_flow.executor.executor import PythonObjectExecutor
