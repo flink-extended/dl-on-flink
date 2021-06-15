@@ -27,7 +27,7 @@ def send_event(key: str, value: str, event_type: str = UNDEFINED_EVENT_TYPE):
     :param event_type: the event type.
     :param key: Key of events updated in Notification Service.
     :param value: Value of events updated in Notification Service.
-    :return: A single object of :py:class:`ai_flow.notification.base_notification.Event`
+    :return: A single object of :py:class:`notification_service.base_notification.BaseEvent`
     created in notification service.
     """
     return get_ai_flow_client().send_event(BaseEvent(key=key, value=value, event_type=event_type))
