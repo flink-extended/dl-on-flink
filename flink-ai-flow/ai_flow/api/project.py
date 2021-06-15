@@ -26,7 +26,7 @@ from typing import Optional, Tuple, Text
 from tempfile import NamedTemporaryFile
 from ai_flow.airflow.dag_generator import DAGGenerator
 from ai_flow.api.configuration import project_config
-from ai_flow.common import json_utils
+from ai_flow.util import json_utils
 from ai_flow.common.scheduler_type import SchedulerType
 from ai_flow.graph.graph import default_graph, AIGraph
 from ai_flow.project.blob_manager import BlobManagerFactory

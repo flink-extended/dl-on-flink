@@ -26,7 +26,7 @@ from streamz import Stream
 
 from ai_flow import ModelMeta, ExampleSupportType, PythonObjectExecutor, ModelType, ExecutionMode
 from ai_flow.application_master.master import AIFlowMaster
-from ai_flow.common.path_util import get_file_dir
+from ai_flow.util.path_util import get_file_dir
 from ai_flow.model_center.entity.model_version_stage import ModelVersionStage
 from ai_flow.udf.function_context import FunctionContext
 from python_ai_flow import ExampleExecutor, Executor

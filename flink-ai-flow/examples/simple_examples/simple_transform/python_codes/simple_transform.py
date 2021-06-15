@@ -6,7 +6,7 @@ from ai_flow.plugins.engine import CMDEngine
 from ai_flow.plugins.local_platform import LocalPlatform
 from python_ai_flow import Executor, FunctionContext
 from python_ai_flow.python_engine import PythonEngine
-from ai_flow.common.path_util import get_file_dir
+from ai_flow.util.path_util import get_file_dir
 
 
 # Transform Executor class

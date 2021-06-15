@@ -21,7 +21,7 @@ import os
 import ai_flow as af
 from ai_flow.application_master.master import AIFlowMaster
 from ai_flow.common.properties import ExecuteProperties, Properties
-from ai_flow.common import json_utils
+from ai_flow.util import json_utils
 import flink_ai_flow as faf
 import test_util
 

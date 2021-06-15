@@ -1299,7 +1299,7 @@ def stop_execution_by_id(workflow_execution_id: int) -> Tuple[int, int, Text]:
 ```python
 import ai_flow as af
 from ai_flow import ExampleSupportType, PythonObjectExecutor, ModelType
-from ai_flow.common import path_util
+from ai_flow.util import path_util
 
 from remote_example_executor import *
 

@@ -29,7 +29,7 @@ from ai_flow.plugins.kubernetes_job_plugin import KubernetesJob, KubernetesJobPl
 from ai_flow.meta.job_meta import ExecutionMode
 from ai_flow.graph.ai_nodes.executable import ExecutableNode
 from ai_flow.executor.executor import CmdExecutor
-from ai_flow.common import json_utils
+from ai_flow.util import json_utils
 
 
 class KubernetesCMDJobConfig(KubernetesJobConfig):

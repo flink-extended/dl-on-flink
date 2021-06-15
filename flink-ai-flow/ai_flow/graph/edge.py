@@ -19,7 +19,7 @@
 from enum import Enum
 from typing import Text
 
-from ai_flow.common.json_utils import Jsonable
+from ai_flow.util.json_utils import Jsonable
 from notification_service.base_notification import UNDEFINED_EVENT_TYPE, ANY_CONDITION, DEFAULT_NAMESPACE
 
 

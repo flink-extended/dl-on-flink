@@ -22,7 +22,7 @@ import ai_flow as af
 from ai_flow import ExampleSupportType, PythonObjectExecutor, ModelType
 from ai_flow.common.scheduler_type import SchedulerType
 from ai_flow.model_center.entity.model_version_stage import ModelVersionEventType
-from ai_flow.common.path_util import get_file_dir
+from ai_flow.util.path_util import get_file_dir
 from stream_train_batch_predict_executor import TrainExampleReader, TrainExampleTransformer, ModelTrainer, \
     ValidateExampleReader, ValidateTransformer, ModelValidator, PredictExampleReader, PredictTransformer, \
     ModelPredictor, ExampleWriter, ModelPusher

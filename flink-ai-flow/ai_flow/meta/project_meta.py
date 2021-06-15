@@ -16,7 +16,7 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-from ai_flow.common.json_utils import Jsonable
+from ai_flow.util.json_utils import Jsonable
 from typing import Text
 from ai_flow.common.properties import Properties
 
