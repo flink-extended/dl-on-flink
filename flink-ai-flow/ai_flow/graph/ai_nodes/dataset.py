@@ -18,30 +18,30 @@
 #
 from typing import List, Optional
 from ai_flow.graph.ai_node import AINode
-from ai_flow.meta.example_meta import ExampleMeta
+from ai_flow.meta.dataset_meta import DatasetMeta
 from ai_flow.graph.channel import Channel
 from ai_flow.common.properties import ExecuteProperties
 from ai_flow.executor.executor import PythonObjectExecutor
 
 
-class Example(AINode):
-    """define example node """
+class Dataset(AINode):
+    """define dataset node """
 
     def __init__(self,
-                 example_meta: ExampleMeta,
+                 dataset_meta: DatasetMeta,
                  executor: Optional[PythonObjectExecutor] = None,
                  is_source: bool = True,
                  instance_id=None,
                  properties: ExecuteProperties = None) -> None:
-        """ create example object
+        """ create dataset object
         Args:
-            example_meta:
+            dataset_meta:
         """
         super().__init__(properties=properties,
-                         name=example_meta.name,
+                         name=dataset_meta.name,
                          instance_id=instance_id,
                          output_num=1)
-        self.example_meta = example_meta
+        self.dataset_meta = dataset_meta
         self.is_source = is_source
         self.executor = executor
 

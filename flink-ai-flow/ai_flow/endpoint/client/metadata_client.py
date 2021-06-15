@@ -22,7 +22,7 @@ import grpc
 
 from ai_flow.common.status import Status
 from ai_flow.meta.artifact_meta import ArtifactMeta
-from ai_flow.meta.example_meta import ExampleMeta, Properties, DataType, ExampleSupportType
+from ai_flow.meta.dataset_meta import DatasetMeta, Properties, DataType
 from ai_flow.meta.job_meta import JobMeta, State
 from ai_flow.meta.model_meta import ModelMeta, ModelVersionMeta
 from ai_flow.meta.model_relation_meta import ModelRelationMeta, ModelVersionRelationMeta
@@ -30,14 +30,14 @@ from ai_flow.meta.project_meta import ProjectMeta
 from ai_flow.meta.workflow_execution_meta import WorkflowExecutionMeta
 from ai_flow.metadata_store.utils.MetaToProto import MetaToProto
 from ai_flow.protobuf import metadata_service_pb2_grpc, metadata_service_pb2
-from ai_flow.protobuf.message_pb2 import ExampleProto, SchemaProto, ModelRelationProto, ModelProto, \
+from ai_flow.protobuf.message_pb2 import DatasetProto, SchemaProto, ModelRelationProto, ModelProto, \
     ModelVersionRelationProto, ModelVersionProto, WorkflowExecutionProto, StateProto, JobProto, ProjectProto, \
-    ArtifactProto, ModelVersionStage, ExampleSupportTypeProto, ModelType
+    ArtifactProto, ModelVersionStage, ModelType
 from ai_flow.protobuf.metadata_service_pb2 import ModelNameRequest
 from ai_flow.endpoint.server import stringValue, int64Value
 from ai_flow.endpoint.client.base_client import BaseClient
-from ai_flow.endpoint.server.util import _unwrap_example_response, \
-    transform_example_type_list_to_proto, _unwrap_example_list_response, _unwrap_delete_response, \
+from ai_flow.endpoint.server.util import _unwrap_dataset_response, \
+    transform_dataset_type_list_to_proto, _unwrap_dataset_list_response, _unwrap_delete_response, \
     _unwrap_model_relation_response, _unwrap_model_relation_list_response, _unwrap_model_response, \
     _unwrap_model_version_relation_response, _unwrap_model_version_relation_list_response, \
     _unwrap_model_version_response, _unwrap_workflow_execution_response, \
@@ -52,205 +52,187 @@ class MetadataClient(BaseClient):
         channel = grpc.insecure_channel(server_uri)
         self.metadata_store_stub = metadata_service_pb2_grpc.MetadataServiceStub(channel)
 
-    '''example api'''
+    '''dataset api'''
 
-    def get_example_by_id(self, example_id) -> Optional[ExampleMeta]:
+    def get_dataset_by_id(self, dataset_id) -> Optional[DatasetMeta]:
         """
-        get an specific example in metadata store by example id.
+        get a specific dataset in metadata store by dataset id.
 
-        :param example_id: the example id
-        :return: A single :py:class:`ai_flow.meta.example_meta.ExampleMeta` object if the example exists,
-                 Otherwise, returns None if the example does not exist.
+        :param dataset_id: the dataset id
+        :return: A single :py:class:`ai_flow.meta.dataset_meta.DatasetMeta` object if the dataset exists,
+                 Otherwise, returns None if the dataset does not exist.
         """
-        request = metadata_service_pb2.IdRequest(id=example_id)
-        response = self.metadata_store_stub.getExampleById(request)
-        return _unwrap_example_response(response)
+        request = metadata_service_pb2.IdRequest(id=dataset_id)
+        response = self.metadata_store_stub.getDatasetById(request)
+        return _unwrap_dataset_response(response)
 
-    def get_example_by_name(self, example_name) -> Optional[ExampleMeta]:
+    def get_dataset_by_name(self, dataset_name) -> Optional[DatasetMeta]:
         """
-        get an specific example in metadata store by example name.
+        get a specific dataset in metadata store by dataset name.
 
-        :param example_name: the example name
-        :return: A single :py:class:`ai_flow.meta.example_meta.ExampleMeta` object if the example exists,,
-                 Otherwise, returns None if the example does not exist.
+        :param dataset_name: the dataset name
+        :return: A single :py:class:`ai_flow.meta.dataset_meta.DatasetMeta` object if the dataset exists,,
+                 Otherwise, returns None if the dataset does not exist.
         """
-        request = metadata_service_pb2.NameRequest(name=example_name)
-        response = self.metadata_store_stub.getExampleByName(request)
-        return _unwrap_example_response(response)
+        request = metadata_service_pb2.NameRequest(name=dataset_name)
+        response = self.metadata_store_stub.getDatasetByName(request)
+        return _unwrap_dataset_response(response)
 
-    def register_example(self, name: Text, support_type: ExampleSupportType, data_type: Text = None,
-                         data_format: Text = None, description: Text = None, batch_uri: Text = None,
-                         stream_uri: Text = None, create_time: int = None, update_time: int = None,
+    def register_dataset(self, name: Text, data_format: Text = None, description: Text = None,
+                         uri: Text = None, create_time: int = None, update_time: int = None,
                          properties: Properties = None, name_list: List[Text] = None,
-                         type_list: List[DataType] = None) -> ExampleMeta:
+                         type_list: List[DataType] = None) -> DatasetMeta:
         """
-        register an example in metadata store.
+        register an dataset in metadata store.
 
-        :param name: the name of the example
-        :param support_type: the example's support_type
-        :param data_type: the data type of the example
-        :param data_format: the data format of the example
-        :param description: the description of the example
-        :param batch_uri: the batch uri of the example
-        :param stream_uri: the stream uri of the example
-        :param create_time: the time when the example is created
-        :param update_time: the time when the example is updated
-        :param properties: the properties of the example
-        :param name_list: the name list of example's schema
-        :param type_list: the type list corresponded to the name list of example's schema
-        :return: A single :py:class:`ai_flow.meta.example_meta.ExampleMeta` object.
+        :param name: the name of the dataset
+        :param data_format: the data format of the dataset
+        :param description: the description of the dataset
+        :param uri: the uri of the dataset
+        :param create_time: the time when the dataset is created
+        :param update_time: the time when the dataset is updated
+        :param properties: the properties of the dataset
+        :param name_list: the name list of dataset's schema
+        :param type_list: the type list corresponded to the name list of dataset's schema
+        :return: A single :py:class:`ai_flow.meta.dataset_meta.DatasetMeta` object.
         """
-        request = metadata_service_pb2.RegisterExampleRequest(
-            example=ExampleProto(name=name, support_type=ExampleSupportTypeProto.Value(support_type),
-                                 data_type=stringValue(data_type), data_format=stringValue(data_format),
-                                 description=stringValue(description), batch_uri=stringValue(batch_uri),
-                                 stream_uri=stringValue(stream_uri), create_time=int64Value(create_time),
+        request = metadata_service_pb2.RegisterDatasetRequest(
+            dataset=DatasetProto(name=name,  data_format=stringValue(data_format),
+                                 description=stringValue(description), uri=stringValue(uri),
+                                 create_time=int64Value(create_time),
                                  update_time=int64Value(update_time), properties=properties,
-                                 schema=SchemaProto(name_list=name_list, type_list=transform_example_type_list_to_proto(
+                                 schema=SchemaProto(name_list=name_list, type_list=transform_dataset_type_list_to_proto(
                                      type_list)),
                                  catalog_name=stringValue(None), catalog_type=stringValue(None),
                                  catalog_database=stringValue(None), catalog_connection_uri=stringValue(None),
-                                 catalog_version=stringValue(None), catalog_table=stringValue(None)))
-        response = self.metadata_store_stub.registerExample(request)
-        return _unwrap_example_response(response)
+                                 catalog_table=stringValue(None)))
+        response = self.metadata_store_stub.registerDataset(request)
+        return _unwrap_dataset_response(response)
 
-    def register_example_with_catalog(self, name: Text, support_type: ExampleSupportType,
+    def register_dataset_with_catalog(self, name: Text,
                                       catalog_name: Text, catalog_type: Text,
-                                      catalog_connection_uri: Text, catalog_version: Text,
-                                      catalog_table: Text, catalog_database: Text = None) -> ExampleMeta:
+                                      catalog_connection_uri: Text,
+                                      catalog_table: Text, catalog_database: Text = None) -> DatasetMeta:
         """
-        register example with catalog in metadata store.
+        register dataset with catalog in metadata store.
 
-        :param name: the name of the example
-        :param support_type: the example's support_type
-        :param catalog_name: the name of the example catalog
-        :param catalog_type: the type of the example catalog
-        :param catalog_connection_uri: the connection uri of the example catalog
-        :param catalog_version: the version of the example catalog
-        :param catalog_table: the table of the example catalog
-        :param catalog_database: the database of the example catalog
-        :return: A single :py:class:`ai_flow.meta.example_meta.ExampleMeta` object.
+        :param name: the name of the dataset
+        :param catalog_name: the name of the dataset catalog
+        :param catalog_type: the type of the dataset catalog
+        :param catalog_connection_uri: the connection uri of the dataset catalog
+        :param catalog_table: the table of the dataset catalog
+        :param catalog_database: the database of the dataset catalog
+        :return: A single :py:class:`ai_flow.meta.dataset_meta.DatasetMeta` object.
         """
-        request = metadata_service_pb2.RegisterExampleRequest(
-            example=ExampleProto(name=name, support_type=ExampleSupportTypeProto.Value(support_type),
+        request = metadata_service_pb2.RegisterDatasetRequest(
+            dataset=DatasetProto(name=name,
                                  data_format=stringValue(None), description=stringValue(None),
-                                 batch_uri=stringValue(None), stream_uri=stringValue(None),
+                                 uri=stringValue(None),
                                  create_time=int64Value(None), update_time=int64Value(None),
                                  properties=None,
-                                 schema=SchemaProto(name_list=None, type_list=transform_example_type_list_to_proto(
+                                 schema=SchemaProto(name_list=None, type_list=transform_dataset_type_list_to_proto(
                                      None)),
                                  catalog_name=stringValue(catalog_name), catalog_type=stringValue(catalog_type),
                                  catalog_database=stringValue(catalog_database),
                                  catalog_connection_uri=stringValue(catalog_connection_uri),
-                                 catalog_version=stringValue(catalog_version),
                                  catalog_table=stringValue(catalog_table)))
-        response = self.metadata_store_stub.registerExampleWithCatalog(request)
-        return _unwrap_example_response(response)
+        response = self.metadata_store_stub.registerDatasetWithCatalog(request)
+        return _unwrap_dataset_response(response)
 
-    def register_examples(self, examples: List[ExampleMeta]) -> List[ExampleMeta]:
+    def register_datasets(self, datasets: List[DatasetMeta]) -> List[DatasetMeta]:
         """
-        register multiple examples in metadata store.
+        register multiple datasets in metadata store.
 
-        :param examples: A list of examples
-        :return: List of :py:class:`ai_flow.meta.example_meta.ExampleMeta` objects.
+        :param datasets: A list of datasets
+        :return: List of :py:class:`ai_flow.meta.dataset_meta.DatasetMeta` objects.
         """
-        request = metadata_service_pb2.RegisterExamplesRequest(
-            examples=MetaToProto.example_meta_list_to_proto(examples))
-        response = self.metadata_store_stub.registerExamples(request)
-        return _unwrap_example_list_response(response)
+        request = metadata_service_pb2.RegisterDatasetsRequest(
+            datasets=MetaToProto.dataset_meta_list_to_proto(datasets))
+        response = self.metadata_store_stub.registerDatasets(request)
+        return _unwrap_dataset_list_response(response)
 
-    def update_example(self, example_name: Text, support_type: ExampleSupportType = None,
-                       data_type: Text = None, data_format: Text = None,
-                       description: Text = None, batch_uri: Text = None,
-                       stream_uri: Text = None, update_time: int = None,
+    def update_dataset(self, dataset_name: Text, data_format: Text = None,
+                       description: Text = None, uri: Text = None, update_time: int = None,
                        properties: Properties = None, name_list: List[Text] = None,
                        type_list: List[DataType] = None, catalog_name: Text = None,
                        catalog_type: Text = None, catalog_database: Text = None,
-                       catalog_connection_uri: Text = None, catalog_version: Text = None,
-                       catalog_table: Text = None) -> Optional[ExampleMeta]:
+                       catalog_connection_uri: Text = None,
+                       catalog_table: Text = None) -> Optional[DatasetMeta]:
         """
-        update example in metadata store.
+        update dataset in metadata store.
 
-        :param example_name: the name of the example
-        :param support_type: the example's support_type
-        :param data_type: the data type of the example
-        :param data_format: the data format of the example
-        :param description: the description of the example
-        :param batch_uri: the batch uri of the example
-        :param stream_uri: the stream uri of the example
-        :param update_time: the time when the example is updated
-        :param properties: the properties of the example
-        :param name_list: the name list of example's schema
-        :param type_list: the type list corresponded to the name list of example's schema
-        :param catalog_name: the name of the example catalog
-        :param catalog_type: the type of the example catalog
-        :param catalog_database: :param catalog_database: the database of the example catalog
-        :param catalog_connection_uri: the connection uri of the example catalog
-        :param catalog_version: the version of the example catalog
-        :param catalog_table: the table of the example catalog
-        :return: A single :py:class:`ai_flow.meta.example_meta.ExampleMeta` object if update successfully.
+        :param dataset_name: the name of the dataset
+        :param data_format: the data format of the dataset
+        :param description: the description of the dataset
+        :param uri: the uri of the dataset
+        :param update_time: the time when the dataset is updated
+        :param properties: the properties of the dataset
+        :param name_list: the name list of dataset's schema
+        :param type_list: the type list corresponded to the name list of dataset's schema
+        :param catalog_name: the name of the dataset catalog
+        :param catalog_type: the type of the dataset catalog
+        :param catalog_database: :param catalog_database: the database of the dataset catalog
+        :param catalog_connection_uri: the connection uri of the dataset catalog
+        :param catalog_table: the table of the dataset catalog
+        :return: A single :py:class:`ai_flow.meta.dataset_meta.DatasetMeta` object if update successfully.
         """
-        support_type = 0 if support_type is None else ExampleSupportTypeProto.Value(support_type)
-        request = metadata_service_pb2.UpdateExampleRequest(name=example_name, support_type=support_type,
-                                                            data_type=stringValue(data_type),
+        request = metadata_service_pb2.UpdateDatasetRequest(name=dataset_name,
                                                             data_format=stringValue(data_format),
                                                             description=stringValue(description),
-                                                            batch_uri=stringValue(batch_uri),
-                                                            stream_uri=stringValue(stream_uri),
+                                                            uri=stringValue(uri),
                                                             update_time=int64Value(update_time),
                                                             properties=properties,
                                                             name_list=name_list,
-                                                            type_list=transform_example_type_list_to_proto(
+                                                            type_list=transform_dataset_type_list_to_proto(
                                                                 type_list),
                                                             catalog_name=stringValue(catalog_name),
                                                             catalog_type=stringValue(catalog_type),
                                                             catalog_database=stringValue(catalog_database),
                                                             catalog_connection_uri=stringValue(catalog_connection_uri),
-                                                            catalog_version=stringValue(catalog_version),
                                                             catalog_table=stringValue(catalog_table))
-        response = self.metadata_store_stub.updateExample(request)
-        return _unwrap_example_response(response)
+        response = self.metadata_store_stub.updateDataset(request)
+        return _unwrap_dataset_response(response)
 
-    def list_example(self, page_size, offset) -> Optional[List[ExampleMeta]]:
+    def list_datasets(self, page_size, offset) -> Optional[List[DatasetMeta]]:
         """
-        List registered examples in metadata store.
+        List registered datasets in metadata store.
 
-        :param page_size: the limitation of the listed examples.
-        :param offset: the offset of listed examples.
-        :return: List of :py:class:`ai_flow.meta.example_meta.ExampleMeta` objects,
-                 return None if no examples to be listed.
+        :param page_size: the limitation of the listed datasets.
+        :param offset: the offset of listed datasets.
+        :return: List of :py:class:`ai_flow.meta.dataset_meta.DatasetMeta` objects,
+                 return None if no datasets to be listed.
         """
         request = metadata_service_pb2.ListRequest(page_size=page_size, offset=offset)
-        response = self.metadata_store_stub.listExample(request)
-        return _unwrap_example_list_response(response)
+        response = self.metadata_store_stub.listDatasets(request)
+        return _unwrap_dataset_list_response(response)
 
-    def delete_example_by_name(self, example_name) -> Status:
+    def delete_dataset_by_name(self, dataset_name) -> Status:
         """
-        Delete the registered example by example name .
+        Delete the registered dataset by dataset name .
 
-        :param example_name: the example name
-        :return: Status.OK if the example is successfully deleted, Status.ERROR if the example does not exist otherwise.
+        :param dataset_name: the dataset name
+        :return: Status.OK if the dataset is successfully deleted, Status.ERROR if the dataset does not exist otherwise.
         """
-        request = metadata_service_pb2.NameRequest(name=example_name)
-        response = self.metadata_store_stub.deleteExampleByName(request)
+        request = metadata_service_pb2.NameRequest(name=dataset_name)
+        response = self.metadata_store_stub.deleteDatasetByName(request)
         return _unwrap_delete_response(response)
 
-    def delete_example_by_id(self, example_id):
+    def delete_dataset_by_id(self, dataset_id):
         """
-        Delete the registered example by example id .
+        Delete the registered dataset by dataset id .
 
-        :param example_id: the example id
-        :return: Status.OK if the example is successfully deleted, Status.ERROR if the example does not exist otherwise.
+        :param dataset_id: the dataset id
+        :return: Status.OK if the dataset is successfully deleted, Status.ERROR if the dataset does not exist otherwise.
         """
-        request = metadata_service_pb2.IdRequest(id=example_id)
-        response = self.metadata_store_stub.deleteExampleByName(request)
+        request = metadata_service_pb2.IdRequest(id=dataset_id)
+        response = self.metadata_store_stub.deleteDatasetByName(request)
         return _unwrap_delete_response(response)
 
     '''model relation api'''
 
     def get_model_relation_by_id(self, model_id) -> Optional[ModelRelationMeta]:
         """
-        get an specific model relation in metadata store by model id.
+        get a specific model relation in metadata store by model id.
 
         :param model_id: the model id
         :return: A single :py:class:`ai_flow.meta.model_relation_meta.ModelRelationMeta` object if the model relation
@@ -262,7 +244,7 @@ class MetadataClient(BaseClient):
 
     def get_model_relation_by_name(self, model_name) -> Optional[ModelRelationMeta]:
         """
-        get an specific model relation in metadata store by model name.
+        get a specific model relation in metadata store by model name.
 
         :param model_name: the model name
         :return: A single :py:class:`ai_flow.meta.model_relation_meta.ModelRelationMeta` object if the model relation
@@ -324,7 +306,7 @@ class MetadataClient(BaseClient):
 
     def get_model_by_id(self, model_id) -> Optional[ModelMeta]:
         """
-        get an specific model in metadata store by model id.
+        get a specific model in metadata store by model id.
 
         :param model_id: Id of registered model
         :return: A single :py:class:`ai_flow.meta.model_meta.ModelMeta` object if the model relation exists,
@@ -336,7 +318,7 @@ class MetadataClient(BaseClient):
 
     def get_model_by_name(self, model_name) -> Optional[ModelMeta]:
         """
-        get an specific model in metadata store by model name.
+        get a specific model in metadata store by model name.
 
         :param model_name: Name of registered model
         :return: A single :py:class:`ai_flow.meta.model_meta.ModelMeta` object if the model relation exists,
@@ -391,7 +373,7 @@ class MetadataClient(BaseClient):
 
     def get_model_version_relation_by_version(self, version, model_id) -> Optional[ModelVersionRelationMeta]:
         """
-        get an specific model version relation in metadata store by the model version name.
+        get a specific model version relation in metadata store by the model version name.
 
         :param version: the model version name
         :param model_id: the model id corresponded to the model version
@@ -450,7 +432,7 @@ class MetadataClient(BaseClient):
 
     def get_model_version_by_version(self, version, model_id) -> Optional[ModelVersionMeta]:
         """
-        get an specific model version in metadata store by model version name.
+        get a specific model version in metadata store by model version name.
 
         :param version: User-defined version of registered model
         :param model_id: the model id corresponded to the model version
@@ -527,7 +509,7 @@ class MetadataClient(BaseClient):
 
     def get_workflow_execution_by_id(self, execution_id) -> Optional[WorkflowExecutionMeta]:
         """
-        get an specific workflow execution in metadata store by workflow execution id.
+        get a specific workflow execution in metadata store by workflow execution id.
 
         :param execution_id: the workflow execution id
         :return: A single :py:class:`ai_flow.meta.workflow_execution_meta.WorkflowExecutionMeta` object
@@ -539,7 +521,7 @@ class MetadataClient(BaseClient):
 
     def get_workflow_execution_by_name(self, execution_name) -> Optional[WorkflowExecutionMeta]:
         """
-        get an specific workflow execution in metadata store by workflow execution name.
+        get a specific workflow execution in metadata store by workflow execution name.
 
         :param execution_name: the workflow execution name
         :return: A single :py:class:`ai_flow.meta.workflow_execution_meta.WorkflowExecutionMeta` object
@@ -675,7 +657,7 @@ class MetadataClient(BaseClient):
 
     def get_job_by_id(self, job_id) -> Optional[JobMeta]:
         """
-        get an specific job in metadata store by job id.
+        get a specific job in metadata store by job id.
 
         :param job_id: the job id
         :return: A single :py:class:`ai_flow.meta.job_meta.JobMeta` object
@@ -687,7 +669,7 @@ class MetadataClient(BaseClient):
 
     def get_job_by_name(self, job_name) -> Optional[JobMeta]:
         """
-        get an specific job in metadata store by job name.
+        get a specific job in metadata store by job name.
 
         :param job_name: the job name
         :return: A single :py:class:`ai_flow.meta.job_meta.JobMeta` object
@@ -813,7 +795,7 @@ class MetadataClient(BaseClient):
 
     def get_project_by_id(self, project_id) -> Optional[ProjectMeta]:
         """
-        get an specific project in metadata store by project id
+        get a specific project in metadata store by project id
 
         :param project_id: the project id
         :return: A single :py:class:`ai_flow.meta.project.ProjectMeta` object if the project exists,
@@ -825,7 +807,7 @@ class MetadataClient(BaseClient):
 
     def get_project_by_name(self, project_name) -> Optional[ProjectMeta]:
         """
-        get an specific project in metadata store by project name
+        get a specific project in metadata store by project name
         :param project_name: the project name
         :return: A single :py:class:`ai_flow.meta.project.ProjectMeta` object if the project exists,
                  Otherwise, returns None if the project does not exist.
@@ -901,7 +883,7 @@ class MetadataClient(BaseClient):
 
     def get_artifact_by_id(self, artifact_id) -> Optional[ArtifactMeta]:
         """
-        get an specific artifact in metadata store by artifact id.
+        get a specific artifact in metadata store by artifact id.
 
         :param artifact_id: the artifact id
         :return: A single :py:class:`ai_flow.meta.artifact_meta.ArtifactMeta` object
@@ -913,7 +895,7 @@ class MetadataClient(BaseClient):
 
     def get_artifact_by_name(self, artifact_name) -> Optional[ArtifactMeta]:
         """
-        get an specific artifact in metadata store by artifact name.
+        get a specific artifact in metadata store by artifact name.
 
         :param artifact_name: the artifact name
         :return: A single :py:class:`ai_flow.meta.artifact_meta.ArtifactMeta` object

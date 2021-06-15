@@ -27,7 +27,6 @@ import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -79,63 +78,57 @@ public class AIFlowClient {
   }
 
   /**
-   * Get a specific example in Metadata Store by example id.
+   * Get a specific dataset in Metadata Store by dataset id.
    *
-   * @param exampleId Id of example.
-   * @return Single ExampleMeta object if example exists, otherwise returns None if example does not
+   * @param datasetId Id of dataset.
+   * @return Single DatasetMeta object if dataset exists, otherwise returns None if dataset does not
    *     exist.
    */
-  public ExampleMeta getExampleById(Long exampleId) throws Exception {
-    return this.metadataClient.getExampleById(exampleId);
+  public DatasetMeta getDatasetById(Long datasetId) throws Exception {
+    return this.metadataClient.getDatasetById(datasetId);
   }
 
   /**
-   * Get a specific example in Metadata Store by example name.
+   * Get a specific dataset in Metadata Store by dataset name.
    *
-   * @param exampleName Name of example.
-   * @return Single ExampleMeta object if example exists, otherwise returns None if example does not
+   * @param datasetName Name of dataset.
+   * @return Single DatasetMeta object if dataset exists, otherwise returns None if dataset does not
    *     exist.
    */
-  public ExampleMeta getExampleByName(String exampleName) throws Exception {
-    return this.metadataClient.getExampleByName(exampleName);
+  public DatasetMeta getDatasetByName(String datasetName) throws Exception {
+    return this.metadataClient.getDatasetByName(datasetName);
   }
 
   /**
-   * Register a example in Metadata Store.
+   * Register a dataset in Metadata Store.
    *
-   * @param name Name of example.
-   * @param supportType Example's support type.
-   * @param dataFormat Data format of example.
-   * @param description Description of example.
-   * @param batchUri Batch uri of example.
-   * @param streamUri Stream uri of example.
-   * @param createTime Time when example is created.
-   * @param updateTime Time when example is updated.
-   * @param properties Properties of example.
-   * @param nameList Name list of example's schema.
-   * @param typeList Type list corresponded to name list of example's schema.
-   * @return Single ExampleMeta object registered in Metadata Store.
+   * @param name Name of dataset.
+   * @param dataFormat Data format of dataset.
+   * @param description Description of dataset.
+   * @param uri Uri of dataset.
+   * @param createTime Time when dataset is created.
+   * @param updateTime Time when dataset is updated.
+   * @param properties Properties of dataset.
+   * @param nameList Name list of dataset's schema.
+   * @param typeList Type list corresponded to name list of dataset's schema.
+   * @return Single DatasetMeta object registered in Metadata Store.
    */
-  public ExampleMeta registerExample(
+  public DatasetMeta registerDataset(
       String name,
-      ExecutionType supportType,
       String dataFormat,
       String description,
-      String batchUri,
-      String streamUri,
+      String uri,
       Long createTime,
       Long updateTime,
       Map<String, String> properties,
       List<String> nameList,
       List<DataType> typeList)
       throws Exception {
-    return this.metadataClient.registerExample(
+    return this.metadataClient.registerDataset(
         name,
-        supportType,
         dataFormat,
         description,
-        batchUri,
-        streamUri,
+        uri,
         createTime,
         updateTime,
         properties,
@@ -144,77 +137,66 @@ public class AIFlowClient {
   }
 
   /**
-   * Register a example in Metadata Store.
+   * Register a dataset in Metadata Store.
    *
-   * @param name Name of example.
-   * @param supportType Example's support type.
-   * @param catalogName Name of example catalog.
-   * @param catalogType Type of example catalog.
-   * @param catalogConnectionUri Connection URI of example catalog.
-   * @param catalogVersion Version of example catalog.
-   * @param catalogTable Table of example catalog.
-   * @param catalogDatabase Database of example catalog.
-   * @return Single ExampleMeta object registered in Metadata Store.
+   * @param name Name of dataset.
+   * @param catalogName Name of dataset catalog.
+   * @param catalogType Type of dataset catalog.
+   * @param catalogConnectionUri Connection URI of dataset catalog.
+   * @param catalogTable Table of dataset catalog.
+   * @param catalogDatabase Database of dataset catalog.
+   * @return Single DatasetMeta object registered in Metadata Store.
    */
-  public ExampleMeta registerExampleWithCatalog(
+  public DatasetMeta registerDatasetWithCatalog(
       String name,
-      ExecutionType supportType,
       String catalogName,
       String catalogType,
       String catalogConnectionUri,
-      String catalogVersion,
       String catalogTable,
       String catalogDatabase)
       throws Exception {
-    return this.metadataClient.registerExampleWithCatalog(
+    return this.metadataClient.registerDatasetWithCatalog(
         name,
-        supportType,
         catalogName,
         catalogType,
         catalogConnectionUri,
-        catalogVersion,
         catalogTable,
         catalogDatabase);
   }
 
   /**
-   * Register multiple examples in Metadata Store.
+   * Register multiple datasets in Metadata Store.
    *
-   * @param examples List of example registered
-   * @return List of ExampleMeta object registered in Metadata Store.
+   * @param datasets List of dataset registered
+   * @return List of DatasetMeta object registered in Metadata Store.
    */
-  public List<ExampleMeta> registerExamples(List<ExampleMeta> examples) throws Exception {
-    return this.metadataClient.registerExamples(examples);
+  public List<DatasetMeta> registerDatasets(List<DatasetMeta> datasets) throws Exception {
+    return this.metadataClient.registerDatasets(datasets);
   }
 
   /**
-   * Update a example in Metadata Store.
+   * Update a dataset in Metadata Store.
    *
-   * @param name Name of example.
-   * @param supportType Example's support type.
-   * @param dataFormat Data format of example.
-   * @param description Description of example.
-   * @param batchUri Batch uri of example.
-   * @param streamUri Stream uri of example.
-   * @param updateTime Time when example is updated.
-   * @param properties Properties of example.
-   * @param nameList Name list of example's schema.
-   * @param typeList Type list corresponded to name list of example's schema.
-   * @param catalogName Name of example catalog.
-   * @param catalogType Type of example catalog.
-   * @param catalogConnectionUri Connection URI of example catalog.
-   * @param catalogVersion Version of example catalog.
-   * @param catalogTable Table of example catalog.
-   * @param catalogDatabase Database of example catalog.
-   * @return Single ExampleMeta object registered in Metadata Store.
+   * @param name Name of dataset.
+   * @param dataFormat Data format of dataset.
+   * @param description Description of dataset.
+   * @param uri uri of dataset.
+   * @param updateTime Time when dataset is updated.
+   * @param properties Properties of dataset.
+   * @param nameList Name list of dataset's schema.
+   * @param typeList Type list corresponded to name list of dataset's schema.
+   * @param catalogName Name of dataset catalog.
+   * @param catalogType Type of dataset catalog.
+   * @param catalogConnectionUri Connection URI of dataset catalog.
+   * @param catalogTable Table of dataset catalog.
+   * @param catalogDatabase Database of dataset catalog.
+   * @return Single DatasetMeta object registered in Metadata Store.
    */
-  public ExampleMeta updateExample(
+  public DatasetMeta updateDataset(
       String name,
-      ExecutionType supportType,
       String dataFormat,
       String description,
-      String batchUri,
-      String streamUri,
+      String uri,
       Long updateTime,
       Map<String, String> properties,
       List<String> nameList,
@@ -222,17 +204,14 @@ public class AIFlowClient {
       String catalogName,
       String catalogType,
       String catalogConnectionUri,
-      String catalogVersion,
       String catalogTable,
       String catalogDatabase)
       throws Exception {
-    return this.metadataClient.updateExample(
+    return this.metadataClient.updateDataset(
         name,
-        supportType,
         dataFormat,
         description,
-        batchUri,
-        streamUri,
+        uri,
         updateTime,
         properties,
         nameList,
@@ -240,42 +219,41 @@ public class AIFlowClient {
         catalogName,
         catalogType,
         catalogConnectionUri,
-        catalogVersion,
         catalogTable,
         catalogDatabase);
   }
 
   /**
-   * List registered examples in Metadata Store.
+   * List registered datasets in Metadata Store.
    *
-   * @param pageSize Limitation of listed examples.
-   * @param offset Offset of listed examples.
-   * @return List of ExampleMeta object registered in Metadata Store.
+   * @param pageSize Limitation of listed datasets.
+   * @param offset Offset of listed datasets.
+   * @return List of DatasetMeta object registered in Metadata Store.
    */
-  public List<ExampleMeta> listExample(Long pageSize, Long offset) throws Exception {
-    return this.metadataClient.listExample(pageSize, offset);
+  public List<DatasetMeta> listDatasets(Long pageSize, Long offset) throws Exception {
+    return this.metadataClient.listDatasets(pageSize, offset);
   }
 
   /**
-   * Delete registered example by example id.
+   * Delete registered dataset by dataset id.
    *
-   * @param exampleId Id of example.
-   * @return Status.OK if example is successfully deleted, Status.ERROR if example does not exist
+   * @param datasetId Id of dataset.
+   * @return Status.OK if dataset is successfully deleted, Status.ERROR if dataset does not exist
    *     otherwise.
    */
-  public Status deleteExampleById(Long exampleId) throws Exception {
-    return this.metadataClient.deleteExampleById(exampleId);
+  public Status deleteDatasetById(Long datasetId) throws Exception {
+    return this.metadataClient.deleteDatasetById(datasetId);
   }
 
   /**
-   * Delete registered example by example name.
+   * Delete registered dataset by dataset name.
    *
-   * @param exampleName Name of example.
-   * @return Status.OK if example is successfully deleted, Status.ERROR if example does not exist
+   * @param datasetName Name of dataset.
+   * @return Status.OK if dataset is successfully deleted, Status.ERROR if dataset does not exist
    *     otherwise.
    */
-  public Status deleteExampleByName(String exampleName) throws Exception {
-    return this.metadataClient.deleteExampleByName(exampleName);
+  public Status deleteDatasetByName(String datasetName) throws Exception {
+    return this.metadataClient.deleteDatasetByName(datasetName);
   }
 
   /**

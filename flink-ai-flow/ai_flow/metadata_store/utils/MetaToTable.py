@@ -18,11 +18,11 @@
 #
 from typing import List, Text
 
-from ai_flow.meta.example_meta import ExampleMeta
+from ai_flow.meta.dataset_meta import DatasetMeta
 from ai_flow.endpoint.server.exception import AIFlowException
-from ai_flow.store.db.db_model import SqlExample, SqlProject, SqlJob, SqlWorkflowExecution, SqlModelRelation, \
+from ai_flow.store.db.db_model import SqlDataset, SqlProject, SqlJob, SqlWorkflowExecution, SqlModelRelation, \
     SqlModelVersionRelation, SqlArtifact
-from ai_flow.store.db.db_model import (MongoProject, MongoExample, MongoJob,
+from ai_flow.store.db.db_model import (MongoProject, MongoDataset, MongoJob,
                                        MongoArtifact, MongoWorkflowExecution,
                                        MongoModelRelation, MongoModelVersionRelation)
 
@@ -30,9 +30,9 @@ from ai_flow.store.db.db_model import (MongoProject, MongoExample, MongoJob,
 class MetaToTable:
 
     @staticmethod
-    def example_meta_to_table(name, support_type, data_type, data_format, description, batch_uri, stream_uri,
+    def dataset_meta_to_table(name, data_format, description, uri,
                               create_time, update_time, properties, name_list, type_list, catalog_name,
-                              catalog_type, catalog_database, catalog_connection_uri, catalog_version, catalog_table,
+                              catalog_type, catalog_database, catalog_connection_uri, catalog_table,
                               store_type='SqlAlchemyStore'):
         if properties is not None:
             properties = str(properties)
@@ -46,23 +46,22 @@ class MetaToTable:
         else:
             data_type_list = None
         if store_type == 'MongoStore':
-            _class = MongoExample
+            _class = MongoDataset
         else:
-            _class = SqlExample
-        return _class(name=name, support_type=support_type, data_type=data_type, format=data_format,
-                      description=description, batch_uri=batch_uri, stream_uri=stream_uri, create_time=create_time,
+            _class = SqlDataset
+        return _class(name=name, format=data_format,
+                      description=description, uri=uri, create_time=create_time,
                       update_time=update_time, properties=properties, name_list=name_list, type_list=data_type_list,
                       catalog_name=catalog_name, catalog_type=catalog_type, catalog_database=catalog_database,
-                      catalog_connection_uri=catalog_connection_uri, catalog_version=catalog_version,
-                      catalog_table=catalog_table)
+                      catalog_connection_uri=catalog_connection_uri, catalog_table=catalog_table)
 
     @staticmethod
-    def example_meta_list_to_table(example_meta_list: List[ExampleMeta], store_type='SqlAlchemyStore'):
-        list_example_table = []
-        for example_meta in example_meta_list:
-            if example_meta.schema is not None:
-                name_list = example_meta.schema.name_list
-                type_list = example_meta.schema.type_list
+    def dataset_meta_list_to_table(dataset_meta_list: List[DatasetMeta], store_type='SqlAlchemyStore'):
+        list_dataset_table = []
+        for dataset_meta in dataset_meta_list:
+            if dataset_meta.schema is not None:
+                name_list = dataset_meta.schema.name_list
+                type_list = dataset_meta.schema.type_list
                 if name_list is not None and type_list is not None:
                     if len(name_list) != len(type_list):
                         raise AIFlowException("the length of name list and type list should be the same")
@@ -73,26 +72,22 @@ class MetaToTable:
             else:
                 name_list = None
                 type_list = None
-            list_example_table.append(MetaToTable.example_meta_to_table(name=example_meta.name,
-                                                                        support_type=example_meta.support_type,
-                                                                        data_type=example_meta.data_type,
-                                                                        data_format=example_meta.data_format,
-                                                                        description=example_meta.description,
-                                                                        batch_uri=example_meta.batch_uri,
-                                                                        stream_uri=example_meta.stream_uri,
-                                                                        create_time=example_meta.create_time,
-                                                                        update_time=example_meta.update_time,
-                                                                        properties=example_meta.properties,
+            list_dataset_table.append(MetaToTable.dataset_meta_to_table(name=dataset_meta.name,
+                                                                        data_format=dataset_meta.data_format,
+                                                                        description=dataset_meta.description,
+                                                                        uri=dataset_meta.uri,
+                                                                        create_time=dataset_meta.create_time,
+                                                                        update_time=dataset_meta.update_time,
+                                                                        properties=dataset_meta.properties,
                                                                         name_list=name_list,
                                                                         type_list=type_list,
-                                                                        catalog_name=example_meta.catalog_name,
-                                                                        catalog_type=example_meta.catalog_type,
-                                                                        catalog_database=example_meta.catalog_database,
-                                                                        catalog_connection_uri=example_meta.catalog_connection_uri,
-                                                                        catalog_table=example_meta.catalog_table,
-                                                                        catalog_version=example_meta.catalog_version,
+                                                                        catalog_name=dataset_meta.catalog_name,
+                                                                        catalog_type=dataset_meta.catalog_type,
+                                                                        catalog_database=dataset_meta.catalog_database,
+                                                                        catalog_connection_uri=dataset_meta.catalog_connection_uri,
+                                                                        catalog_table=dataset_meta.catalog_table,
                                                                         store_type=store_type))
-        return list_example_table
+        return list_dataset_table
 
     @staticmethod
     def project_meta_to_table(name,

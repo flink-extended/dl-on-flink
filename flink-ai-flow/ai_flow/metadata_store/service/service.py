@@ -17,16 +17,15 @@
 # under the License.
 #
 from ai_flow.common.status import Status
-from ai_flow.meta.example_meta import DataType, ExampleSupportType
+from ai_flow.meta.dataset_meta import DataType
 from ai_flow.meta.job_meta import State
 from ai_flow.metadata_store.utils.MetaToProto import MetaToProto
 from ai_flow.metadata_store.utils.ProtoToMeta import ProtoToMeta
 from ai_flow.protobuf import metadata_service_pb2_grpc
-from ai_flow.protobuf.message_pb2 import ExampleSupportTypeProto, DataTypeProto, StateProto, \
-    ModelType
+from ai_flow.protobuf.message_pb2 import DataTypeProto, StateProto, ModelType
 from ai_flow.endpoint.client.model_center_client import ModelCenterClient
-from ai_flow.endpoint.server.util import _wrap_meta_response, transform_example_meta, \
-    _warp_example_list_response, _wrap_delete_response, transform_model_relation_meta, \
+from ai_flow.endpoint.server.util import _wrap_meta_response, transform_dataset_meta, \
+    _warp_dataset_list_response, _wrap_delete_response, transform_model_relation_meta, \
     _warp_model_relation_list_response, _warp_model_version_relation_list_response, \
     transform_model_version_relation_meta, _warp_job_list_response, \
     transform_job_meta, _wrap_update_response, _warp_workflow_execution_list_response, \
@@ -52,58 +51,51 @@ class MetadataService(metadata_service_pb2_grpc.MetadataServiceServicer):
             self.store = SqlAlchemyStore(db_uri)
         self.model_center_client = ModelCenterClient(server_uri)
 
-    '''example api'''
+    '''dataset api'''
 
     @catch_exception
-    def getExampleById(self, request, context):
-        example = self.store.get_example_by_id(request.id)
-        return _wrap_meta_response(MetaToProto.example_meta_to_proto(example))
+    def getDatasetById(self, request, context):
+        dataset = self.store.get_dataset_by_id(request.id)
+        return _wrap_meta_response(MetaToProto.dataset_meta_to_proto(dataset))
 
     @catch_exception
-    def getExampleByName(self, request, context):
-        example = self.store.get_example_by_name(request.name)
-        return _wrap_meta_response(MetaToProto.example_meta_to_proto(example))
+    def getDatasetByName(self, request, context):
+        dataset = self.store.get_dataset_by_name(request.name)
+        return _wrap_meta_response(MetaToProto.dataset_meta_to_proto(dataset))
 
     @catch_exception
-    def registerExample(self, request, context):
-        example = transform_example_meta(request.example)
-        example_meta = self.store.register_example(name=example.name,
-                                                   support_type=example.support_type,
-                                                   data_type=example.data_type,
-                                                   data_format=example.data_format,
-                                                   description=example.description,
-                                                   batch_uri=example.batch_uri,
-                                                   stream_uri=example.stream_uri,
-                                                   create_time=example.create_time,
-                                                   update_time=example.update_time,
-                                                   properties=example.properties,
-                                                   name_list=example.schema.name_list,
-                                                   type_list=example.schema.type_list)
-        return _wrap_meta_response(MetaToProto.example_meta_to_proto(example_meta))
+    def registerDataset(self, request, context):
+        dataset = transform_dataset_meta(request.dataset)
+        dataset_meta = self.store.register_dataset(name=dataset.name,
+                                                   data_format=dataset.data_format,
+                                                   description=dataset.description,
+                                                   uri=dataset.uri,
+                                                   create_time=dataset.create_time,
+                                                   update_time=dataset.update_time,
+                                                   properties=dataset.properties,
+                                                   name_list=dataset.schema.name_list,
+                                                   type_list=dataset.schema.type_list)
+        return _wrap_meta_response(MetaToProto.dataset_meta_to_proto(dataset_meta))
 
     @catch_exception
-    def registerExampleWithCatalog(self, request, context):
-        example = transform_example_meta(request.example)
-        example_meta = self.store.register_example_with_catalog(name=example.name,
-                                                                support_type=example.support_type,
-                                                                catalog_name=example.catalog_name,
-                                                                catalog_type=example.catalog_type,
-                                                                catalog_database=example.catalog_database,
-                                                                catalog_connection_uri=example.catalog_connection_uri,
-                                                                catalog_version=example.catalog_version,
-                                                                catalog_table=example.catalog_table)
-        return _wrap_meta_response(MetaToProto.example_meta_to_proto(example_meta))
+    def registerDatasetWithCatalog(self, request, context):
+        dataset = transform_dataset_meta(request.dataset)
+        dataset_meta = self.store.register_dataset_with_catalog(name=dataset.name,
+                                                                catalog_name=dataset.catalog_name,
+                                                                catalog_type=dataset.catalog_type,
+                                                                catalog_database=dataset.catalog_database,
+                                                                catalog_connection_uri=dataset.catalog_connection_uri,
+                                                                catalog_table=dataset.catalog_table)
+        return _wrap_meta_response(MetaToProto.dataset_meta_to_proto(dataset_meta))
 
     @catch_exception
-    def registerExamples(self, request, context):
-        _examples = ProtoToMeta.proto_to_example_meta_list(request.examples)
-        response = self.store.register_examples(_examples)
-        return _warp_example_list_response(response)
+    def registerDatasets(self, request, context):
+        _datasets = ProtoToMeta.proto_to_dataset_meta_list(request.datasets)
+        response = self.store.register_datasets(_datasets)
+        return _warp_dataset_list_response(response)
 
     @catch_exception
-    def updateExample(self, request, context):
-        support_type = None if request.support_type == 0 else ExampleSupportType(
-            ExampleSupportTypeProto.Name(request.support_type))
+    def updateDataset(self, request, context):
         properties = None if request.properties == {} else request.properties
         name_list = request.name_list
         type_list = request.type_list
@@ -115,18 +107,12 @@ class MetadataService(metadata_service_pb2_grpc.MetadataServiceServicer):
             data_type_list = []
             for data_type in type_list:
                 data_type_list.append(DataType(DataTypeProto.Name(data_type)))
-        example_meta = self.store.update_example(example_name=request.name,
-                                                 support_type=support_type,
-                                                 data_type=request.data_type.value if request.HasField(
-                                                     'data_type') else None,
+        dataset_meta = self.store.update_dataset(dataset_name=request.name,
                                                  data_format=request.data_format.value if request.HasField(
                                                      'data_format') else None,
                                                  description=request.description.value if request.HasField(
                                                      'description') else None,
-                                                 batch_uri=request.batch_uri.value if request.HasField(
-                                                     'batch_uri') else None,
-                                                 stream_uri=request.stream_uri.value if request.HasField(
-                                                     'stream_uri') else None,
+                                                 uri=request.uri.value if request.HasField('uri') else None,
                                                  update_time=request.update_time.value if request.HasField(
                                                      'update_time') else None,
                                                  properties=properties,
@@ -138,27 +124,25 @@ class MetadataService(metadata_service_pb2_grpc.MetadataServiceServicer):
                                                      'catalog_type') else None,
                                                  catalog_database=request.catalog_database.value if request.HasField(
                                                      'catalog_database') else None,
-                                                 catalog_version=request.catalog_version.value if request.HasField(
-                                                     'catalog_version') else None,
                                                  catalog_connection_uri=request.catalog_connection_uri.value \
                                                      if request.HasField('catalog_connection_uri') else None,
                                                  catalog_table=request.catalog_table.value if request.HasField(
                                                      'catalog_table') else None)
-        return _wrap_meta_response(MetaToProto.example_meta_to_proto(example_meta))
+        return _wrap_meta_response(MetaToProto.dataset_meta_to_proto(dataset_meta))
 
     @catch_exception
-    def listExample(self, request, context):
-        example_meta_list = self.store.list_example(request.page_size, request.offset)
-        return _warp_example_list_response(example_meta_list)
+    def listDatasets(self, request, context):
+        dataset_meta_list = self.store.list_datasets(request.page_size, request.offset)
+        return _warp_dataset_list_response(dataset_meta_list)
 
     @catch_exception
-    def deleteExampleById(self, request, context):
-        status = self.store.delete_example_by_id(request.id)
+    def deleteDatasetById(self, request, context):
+        status = self.store.delete_dataset_by_id(request.id)
         return _wrap_delete_response(status)
 
     @catch_exception
-    def deleteExampleByName(self, request, context):
-        status = self.store.delete_example_by_name(request.name)
+    def deleteDatasetByName(self, request, context):
+        status = self.store.delete_dataset_by_name(request.name)
         return _wrap_delete_response(status)
 
     '''model relation api'''

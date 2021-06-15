@@ -19,12 +19,12 @@
 from typing import List
 
 from ai_flow.meta.artifact_meta import ArtifactMeta
-from ai_flow.meta.example_meta import ExampleMeta
+from ai_flow.meta.dataset_meta import DatasetMeta
 from ai_flow.meta.job_meta import JobMeta
 from ai_flow.meta.model_relation_meta import ModelRelationMeta, ModelVersionRelationMeta
 from ai_flow.meta.project_meta import ProjectMeta
 from ai_flow.meta.workflow_execution_meta import WorkflowExecutionMeta
-from ai_flow.protobuf.message_pb2 import ExampleProto, ExampleSupportTypeProto, DataTypeProto, \
+from ai_flow.protobuf.message_pb2 import DatasetProto, DataTypeProto, \
     SchemaProto, ProjectProto, JobProto, WorkflowExecutionProto, \
     ModelRelationProto, ModelVersionRelationProto, ModelProto, ModelVersionProto, StateProto, ArtifactProto, \
     ModelVersionStage
@@ -33,14 +33,13 @@ from ai_flow.endpoint.server import stringValue, int64Value
 
 class MetaToProto:
     @staticmethod
-    def example_meta_to_proto(example_mata) -> ExampleProto:
-        if example_mata is None:
+    def dataset_meta_to_proto(dataset_mata) -> DatasetMeta:
+        if dataset_mata is None:
             return None
         else:
-            example_support_type = ExampleSupportTypeProto.Value(example_mata.support_type)
-            if example_mata.schema is not None:
-                name_list = example_mata.schema.name_list
-                type_list = example_mata.schema.type_list
+            if dataset_mata.schema is not None:
+                name_list = dataset_mata.schema.name_list
+                type_list = dataset_mata.schema.type_list
                 data_type_list = []
                 if type_list is not None:
                     for data_type in type_list:
@@ -52,32 +51,28 @@ class MetaToProto:
                 data_type_list = None
             schema = SchemaProto(name_list=name_list,
                                  type_list=data_type_list)
-        return ExampleProto(
-            uuid=example_mata.uuid,
-            name=example_mata.name,
-            support_type=example_support_type,
-            properties=example_mata.properties,
-            data_type=stringValue(example_mata.data_type),
-            data_format=stringValue(example_mata.data_format),
-            description=stringValue(example_mata.description),
-            batch_uri=stringValue(example_mata.batch_uri),
-            stream_uri=stringValue(example_mata.stream_uri),
-            create_time=int64Value(example_mata.create_time),
-            update_time=int64Value(example_mata.update_time),
+        return DatasetProto(
+            uuid=dataset_mata.uuid,
+            name=dataset_mata.name,
+            properties=dataset_mata.properties,
+            data_format=stringValue(dataset_mata.data_format),
+            description=stringValue(dataset_mata.description),
+            uri=stringValue(dataset_mata.uri),
+            create_time=int64Value(dataset_mata.create_time),
+            update_time=int64Value(dataset_mata.update_time),
             schema=schema,
-            catalog_name=stringValue(example_mata.catalog_name),
-            catalog_type=stringValue(example_mata.catalog_type),
-            catalog_database=stringValue(example_mata.catalog_database),
-            catalog_connection_uri=stringValue(example_mata.catalog_connection_uri),
-            catalog_version=stringValue(example_mata.catalog_version),
-            catalog_table=stringValue(example_mata.catalog_table))
+            catalog_name=stringValue(dataset_mata.catalog_name),
+            catalog_type=stringValue(dataset_mata.catalog_type),
+            catalog_database=stringValue(dataset_mata.catalog_database),
+            catalog_connection_uri=stringValue(dataset_mata.catalog_connection_uri),
+            catalog_table=stringValue(dataset_mata.catalog_table))
 
     @staticmethod
-    def example_meta_list_to_proto(examples: List[ExampleMeta]) -> List[ExampleProto]:
-        list_example_proto = []
-        for example in examples:
-            list_example_proto.append(MetaToProto.example_meta_to_proto(example))
-        return list_example_proto
+    def dataset_meta_list_to_proto(datasets: List[DatasetMeta]) -> List[DatasetProto]:
+        list_dataset_proto = []
+        for dataset in datasets:
+            list_dataset_proto.append(MetaToProto.dataset_meta_to_proto(dataset))
+        return list_dataset_proto
 
     @staticmethod
     def project_meta_to_proto(project_meta: ProjectMeta) -> ProjectProto:

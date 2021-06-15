@@ -169,11 +169,11 @@ class TestProject(unittest.TestCase):
     def test_project_register(self):
         print(sys._getframe().f_code.co_name)
         TestProject.build_ai_graph(1)
-        af.register_example(name="a", support_type=af.ExampleSupportType.EXAMPLE_BOTH)
+        af.register_dataset(name="a")
         w_id = af.submit_ai_flow()
         res = af.wait_workflow_execution_finished(w_id)
         self.assertEqual(0, res)
-        e_meta = af.get_example_by_name("a")
+        e_meta = af.get_dataset_by_name("a")
         self.assertEqual("a", e_meta.name)
 
     def test_periodic_job(self):
