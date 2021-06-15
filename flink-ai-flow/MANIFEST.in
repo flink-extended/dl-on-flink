@@ -28,6 +28,6 @@ include airflow/alembic.ini
 include airflow/git_version
 include airflow/serialization/schema.json
 graft airflow/config_templates
-graft ai_flow/bin/
+graft bin/
 recursive-exclude airflow/www_rbac/node_modules *
 global-exclude __pycache__  *.pyc
