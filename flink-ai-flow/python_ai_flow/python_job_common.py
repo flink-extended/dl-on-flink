@@ -25,10 +25,10 @@ from ai_flow.common.registry import BaseRegistry
 from ai_flow.graph.ai_node import AINode
 from ai_flow.graph.ai_nodes import Example
 from ai_flow.graph.edge import DataEdge
-from ai_flow.common.json_utils import Jsonable
+from ai_flow.util.json_utils import Jsonable
 from ai_flow.workflow.job_context import JobContext
 from ai_flow.udf.function_context import FunctionContext
-from ai_flow.common.serialization_utils import deserialize
+from ai_flow.util.serialization_utils import deserialize
 from python_ai_flow.user_define_funcs import Executor
 
 

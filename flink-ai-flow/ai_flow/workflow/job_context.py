@@ -18,7 +18,7 @@
 #
 from typing import Dict, Text, Optional
 from ai_flow.meta.job_meta import ExecutionMode
-from ai_flow.common.json_utils import Jsonable
+from ai_flow.util.json_utils import Jsonable
 from ai_flow.project.project_config import ProjectConfig
 
 

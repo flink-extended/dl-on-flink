@@ -18,7 +18,7 @@
 #
 from typing import Text
 import logging
-from ai_flow.common.json_utils import Jsonable
+from ai_flow.util.json_utils import Jsonable
 from ai_flow.deployer.listener import register_job_status_listener, BaseJobStatusListener
 from ai_flow.workflow.job_handler import BaseJobHandler
 

@@ -22,7 +22,7 @@ from typing import Text, List
 
 from ai_flow.workflow.job import BaseJob
 
-from ai_flow.common import json_utils
+from ai_flow.util import json_utils
 from ai_flow.common.registry import BaseRegistry
 from ai_flow.graph.edge import MetConfig, MetCondition, EventLife, MetValueCondition, TaskAction
 from ai_flow.plugins.engine import DummyEngine

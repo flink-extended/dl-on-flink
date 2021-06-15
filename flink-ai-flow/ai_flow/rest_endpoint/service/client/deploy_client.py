@@ -19,7 +19,7 @@
 from typing import Text, Tuple
 import grpc
 from ai_flow.rest_endpoint.protobuf import deploy_service_pb2, deploy_service_pb2_grpc
-from ai_flow.common.bool_util import str_to_bool
+from ai_flow.util.bool_util import str_to_bool
 from ai_flow.rest_endpoint.service.client.base_client import BaseClient
 
 

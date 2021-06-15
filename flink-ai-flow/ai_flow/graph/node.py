@@ -18,7 +18,7 @@
 #
 from typing import Text, List
 from ai_flow.common.properties import Properties
-from ai_flow.common.json_utils import Jsonable
+from ai_flow.util.json_utils import Jsonable
 from ai_flow.graph.channel import Channel, NoneChannel
 
 

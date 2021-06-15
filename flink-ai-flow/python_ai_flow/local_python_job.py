@@ -25,7 +25,7 @@ from pathlib import Path
 import logging
 
 from ai_flow.airflow.dag_generator import job_name_to_task_id
-from ai_flow.common.json_utils import Jsonable
+from ai_flow.util.json_utils import Jsonable
 
 from ai_flow.workflow.job_config import PeriodicConfig
 
@@ -41,7 +41,7 @@ from ai_flow.plugins.local_platform import LocalPlatform
 from ai_flow.meta.job_meta import ExecutionMode
 from ai_flow.graph.ai_nodes.executable import ExecutableNode
 from ai_flow.project.blob_manager import BlobManagerFactory
-from ai_flow.common.serialization_utils import serialize
+from ai_flow.util.serialization_utils import serialize
 from python_ai_flow.user_define_funcs import Executor
 from python_ai_flow.python_engine import PythonEngine
 from python_ai_flow.python_job_common import RunGraph, batch_run_func, stream_run_func, RunArgs, BaseComponent, \

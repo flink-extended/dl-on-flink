@@ -19,7 +19,7 @@
 import ai_flow as af
 from ai_flow import ExecuteArgs, Properties
 from ai_flow.application_master.master import AIFlowMaster
-from ai_flow.common.json_utils import dumps
+from ai_flow.util.json_utils import dumps
 import flink_ai_flow as faf
 import test_util
 
