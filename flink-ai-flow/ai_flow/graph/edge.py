@@ -245,16 +245,16 @@ class ModelVersionControlEdge(ControlEdge):
                          sender=ANY_CONDITION)
 
 
-class ExampleControlEdge(ControlEdge):
-    def __init__(self, example_name: Text,
+class DatasetControlEdge(ControlEdge):
+    def __init__(self, dataset_name: Text,
                  target_node_id: Text,
                  source_node_id: Text = None,
                  namespace: Text = DEFAULT_NAMESPACE) -> None:
         super().__init__(target_node_id, source_node_id, namespace)
-        self.example_name = example_name
+        self.dataset_name = dataset_name
 
     def generate_met_config(self) -> MetConfig:
-        return MetConfig(event_key="example." + self.example_name,
+        return MetConfig(event_key="dataset." + self.dataset_name,
                          event_value="created",
                          namespace=self.namespace,
                          sender=ANY_CONDITION)

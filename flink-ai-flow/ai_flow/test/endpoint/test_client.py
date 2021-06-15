@@ -27,7 +27,7 @@ from notification_service.base_notification import EventWatcher
 
 from ai_flow.common.properties import Properties
 from ai_flow.common.status import Status
-from ai_flow.meta.example_meta import ExampleMeta, DataType, Schema, ExampleSupportType
+from ai_flow.meta.dataset_meta import DatasetMeta, DataType, Schema
 from ai_flow.meta.job_meta import State
 from ai_flow.meta.metric_meta import MetricType, MetricMeta, MetricSummary
 from ai_flow.meta.model_meta import ModelType
@@ -50,120 +50,107 @@ client2 = None
 
 class AIFlowClientTestCases(object):
 
-    """test example"""
+    """test dataset"""
 
-    def test_save_example_get_example_by_id_and_name(self):
-        example = client.register_example(name='example', support_type=ExampleSupportType.EXAMPLE_BATCH,
-                                          data_type='pandas', data_format='csv', description='it is mq data',
-                                          stream_uri='mysql://', batch_uri='mysql://', create_time=None,
+    def test_save_dataset_get_dataset_by_id_and_name(self):
+        dataset = client.register_dataset(name='dataset', data_format='csv', description='it is mq data',
+                                          uri='mysql://', create_time=None,
                                           update_time=1000,
                                           properties=Properties({'a': 'b'}), name_list=['a'],
                                           type_list=[DataType.INT32])
-        example_id = client.get_example_by_id(2)
-        self.assertIsNone(example_id)
-        example_name = client.get_example_by_name('example')
-        self.assertEqual('example', example.name)
-        self.assertEqual('example', example_name.name)
-        self.assertEqual('pandas', example.data_type)
-        self.assertEqual('pandas', example_name.data_type)
+        dataset_id = client.get_dataset_by_id(2)
+        self.assertIsNone(dataset_id)
+        dataset_name = client.get_dataset_by_name('dataset')
+        self.assertEqual('dataset', dataset.name)
+        self.assertEqual('dataset', dataset_name.name)
 
-    def test_save_example_with_catalog_by_id_and_name(self):
-        client.register_example_with_catalog(name='example', support_type=ExampleSupportType.EXAMPLE_BATCH,
+    def test_save_dataset_with_catalog_by_id_and_name(self):
+        client.register_dataset_with_catalog(name='dataset',
                                              catalog_name='my_hive', catalog_connection_uri='/path/to/conf',
-                                             catalog_type='hive', catalog_database='my_db', catalog_table='my_table',
-                                             catalog_version='2.3.4')
-        example_id = client.get_example_by_id(2)
-        self.assertIsNone(example_id)
-        example_name = client.get_example_by_name('example')
-        self.assertEqual('my_hive', example_name.catalog_name)
-        self.assertEqual('hive', example_name.catalog_type)
-        self.assertEqual('my_db', example_name.catalog_database)
-        self.assertEqual('my_table', example_name.catalog_table)
-        self.assertEqual('/path/to/conf', example_name.catalog_connection_uri)
-        self.assertEqual('2.3.4', example_name.catalog_version)
+                                             catalog_type='hive', catalog_database='my_db', catalog_table='my_table')
+        dataset_id = client.get_dataset_by_id(2)
+        self.assertIsNone(dataset_id)
+        dataset_name = client.get_dataset_by_name('dataset')
+        self.assertEqual('my_hive', dataset_name.catalog_name)
+        self.assertEqual('hive', dataset_name.catalog_type)
+        self.assertEqual('my_db', dataset_name.catalog_database)
+        self.assertEqual('my_table', dataset_name.catalog_table)
+        self.assertEqual('/path/to/conf', dataset_name.catalog_connection_uri)
 
-    def test_double_register_example(self):
-        example_1 = client.register_example(name='example', support_type=ExampleSupportType.EXAMPLE_BATCH,
-                                            data_type='pandas', data_format='csv', description='it is mq data',
-                                            stream_uri='mysql://', properties=Properties({'a': 'b'}), name_list=['a'],
+    def test_double_register_dataset(self):
+        dataset_1 = client.register_dataset(name='dataset', data_format='csv', description='it is mq data',
+                                            uri='mysql://', properties=Properties({'a': 'b'}), name_list=['a'],
                                             type_list=[DataType.INT32])
-        example_2 = client.register_example(name='example', support_type=ExampleSupportType.EXAMPLE_BATCH,
-                                            data_type='pandas', data_format='csv', description='it is mq data',
-                                            stream_uri='mysql://', properties=Properties({'a': 'b'}), name_list=['a'],
+        dataset_2 = client.register_dataset(name='dataset', data_format='csv', description='it is mq data',
+                                            uri='mysql://', properties=Properties({'a': 'b'}), name_list=['a'],
                                             type_list=[DataType.INT32])
-        self.assertEqual(example_1.uuid, example_2.uuid)
-        self.assertEqual(example_1.schema.to_json_dict(), example_2.schema.to_json_dict())
-        self.assertRaises(AIFlowException, client.register_example, name='example',
-                          support_type=ExampleSupportType.EXAMPLE_BATCH, data_format='csv',
-                          description='it is mq data', stream_uri='mysql://', create_time=round(time.time()),
+        self.assertEqual(dataset_1.uuid, dataset_2.uuid)
+        self.assertEqual(dataset_1.schema.to_json_dict(), dataset_2.schema.to_json_dict())
+        self.assertRaises(AIFlowException, client.register_dataset, name='dataset',
+                          data_format='csv',
+                          description='it is mq data', uri='mysql://', create_time=round(time.time()),
                           properties=Properties({'a': 'b'}), name_list=['a'], type_list=[DataType.INT32])
 
-    def test_list_examples(self):
-        client.register_example(name='example_1', support_type=ExampleSupportType.EXAMPLE_BATCH,
-                                data_type='pandas', data_format='csv', description='it is mq data',
-                                stream_uri='mysql://', properties=Properties({'a': 'b'}), name_list=['a'],
+    def test_list_datasets(self):
+        client.register_dataset(name='dataset_1', data_format='csv', description='it is mq data',
+                                uri='mysql://', properties=Properties({'a': 'b'}), name_list=['a'],
                                 type_list=[DataType.INT32])
-        client.register_example(name='example_2', support_type=ExampleSupportType.EXAMPLE_STREAM,
-                                data_type='numpy', data_format='npz', description='it is',
-                                stream_uri='mysql://', properties=Properties({'a': 'b'}), name_list=['a'],
+        client.register_dataset(name='dataset_2', data_format='npz', description='it is',
+                                uri='mysql://', properties=Properties({'a': 'b'}), name_list=['a'],
                                 type_list=[DataType.INT32])
-        response_list = client.list_example(5, 0)
+        response_list = client.list_datasets(5, 0)
         self.assertEqual(len(response_list), 2)
-        self.assertEqual('example_1', response_list[0].name)
-        self.assertEqual('example_2', response_list[1].name)
+        self.assertEqual('dataset_1', response_list[0].name)
+        self.assertEqual('dataset_2', response_list[1].name)
 
-    def test_save_examples_list_example(self):
-        example_1 = ExampleMeta(name='example1', support_type=ExampleSupportType.EXAMPLE_BATCH,
+    def test_save_datasets_list_datasets(self):
+        dataset_1 = DatasetMeta(name='dataset1',
                                 data_format='csv',
                                 create_time=None, update_time=1000,
                                 properties=Properties({'a': 'b'}))
         schema = Schema(name_list=['a', 'b'],
                         type_list=[DataType.STRING, DataType.INT32])
-        example_2 = ExampleMeta(name='example2', support_type=ExampleSupportType.EXAMPLE_BATCH,
+        dataset_2 = DatasetMeta(name='dataset2',
                                 data_format='csv',
                                 create_time=None, update_time=1000,
                                 properties=Properties({'a': 'b'}), schema=schema)
-        response = client.register_examples([example_1, example_2])
+        response = client.register_datasets([dataset_1, dataset_2])
         self.assertEqual(len(response), 2)
         self.assertEqual(1, response[0].uuid)
         self.assertEqual(2, response[1].uuid)
-        response_list = client.list_example(2, 0)
+        response_list = client.list_datasets(2, 0)
         self.assertEqual(2, len(response_list))
-        self.assertEqual('example1', response_list[0].name)
-        self.assertEqual('example2', response_list[1].name)
+        self.assertEqual('dataset1', response_list[0].name)
+        self.assertEqual('dataset2', response_list[1].name)
 
-    def test_delete_example(self):
-        example = client.register_example(name='example', support_type=ExampleSupportType.EXAMPLE_BATCH,
+    def test_delete_dataset(self):
+        dataset = client.register_dataset(name='dataset',
                                           data_format='csv',
                                           description='it is mq data',
-                                          stream_uri='mysql://',
-                                          batch_uri='mysql://',
+                                          uri='mysql://',
                                           create_time=None, update_time=1000,
                                           properties=Properties({'a': 'b'}), name_list=['a'],
                                           type_list=[DataType.INT32])
-        self.assertEqual(Status.OK, client.delete_example_by_name(example.name))
-        self.assertIsNone(client.get_example_by_name(example.name))
-        self.assertIsNone(client.list_example(1, 0))
+        self.assertEqual(Status.OK, client.delete_dataset_by_name(dataset.name))
+        self.assertIsNone(client.get_dataset_by_name(dataset.name))
+        self.assertIsNone(client.list_datasets(1, 0))
 
-    def test_update_example(self):
-        client.register_example(name='example', support_type=ExampleSupportType.EXAMPLE_BATCH,
-                                data_type='pandas', data_format='csv', description='it is mq data',
-                                stream_uri='mysql://', batch_uri='mysql://', create_time=None, update_time=1000,
+    def test_update_dataset(self):
+        client.register_dataset(name='dataset', data_format='csv', description='it is mq data',
+                                uri='mysql://', create_time=None, update_time=1000,
                                 properties=Properties({'a': 'b'}), name_list=['a'], type_list=[DataType.INT32])
-        update_example = client.update_example(example_name='example', data_type='numpy', data_format='npz',
+        update_dataset = client.update_dataset(dataset_name='dataset', data_format='npz',
                                                properties=Properties({'kafka': 'localhost:9092'}),
                                                name_list=['b'], type_list=[DataType.STRING])
-        example = client.get_example_by_name('example')
-        self.assertEqual(example.support_type, update_example.support_type)
-        self.assertEqual(example.schema.name_list, update_example.schema.name_list)
-        self.assertEqual(example.schema.type_list, update_example.schema.type_list)
-        self.assertEqual(example.data_type, 'numpy')
-        update_example_1 = client.update_example(example_name='example', catalog_type='hive', catalog_name='my_hive',
+        dataset = client.get_dataset_by_name('dataset')
+        self.assertEqual(dataset.schema.name_list, update_dataset.schema.name_list)
+        self.assertEqual(dataset.schema.type_list, update_dataset.schema.type_list)
+        update_dataset_1 = client.update_dataset(dataset_name='dataset', catalog_type='hive', catalog_name='my_hive',
                                                  catalog_database='my_db', catalog_table='my_table')
-        self.assertEqual(update_example_1.catalog_type, 'hive')
-        self.assertEqual(update_example_1.catalog_name, 'my_hive')
-        self.assertEqual(update_example_1.catalog_database, 'my_db')
-        self.assertEqual(update_example_1.catalog_table, 'my_table')
+        self.assertEqual(update_dataset_1.catalog_type, 'hive')
+        self.assertEqual(update_dataset_1.catalog_name, 'my_hive')
+        self.assertEqual(update_dataset_1.catalog_database, 'my_db')
+        self.assertEqual(update_dataset_1.catalog_table, 'my_table')
 
     """test project"""
 

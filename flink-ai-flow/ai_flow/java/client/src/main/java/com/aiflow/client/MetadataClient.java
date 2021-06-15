@@ -36,7 +36,7 @@ import java.util.Map;
 import static com.aiflow.common.Constant.SERVER_URI;
 import static com.aiflow.entity.ArtifactMeta.buildArtifactMeta;
 import static com.aiflow.entity.ArtifactMeta.buildArtifactMetas;
-import static com.aiflow.entity.ExampleMeta.*;
+import static com.aiflow.entity.DatasetMeta.*;
 import static com.aiflow.entity.JobMeta.buildJobMeta;
 import static com.aiflow.entity.JobMeta.buildJobMetas;
 import static com.aiflow.entity.ModelMeta.buildModelMeta;
@@ -74,180 +74,164 @@ public class MetadataClient {
     }
 
     /**
-     * Get a specific example in Metadata Store by example id.
+     * Get a specific dataset in Metadata Store by dataset id.
      *
-     * @param exampleId Id of example.
-     * @return Single ExampleMeta object if example exists, otherwise returns None if example does not exist.
+     * @param datasetId Id of dataset.
+     * @return Single DatasetMeta object if dataset exists, otherwise returns None if dataset does not exist.
      */
-    public ExampleMeta getExampleById(Long exampleId) throws Exception {
-        IdRequest request = IdRequest.newBuilder().setId(exampleId).build();
-        Response response = metadataServiceStub.getExampleById(request);
-        ExampleProto.Builder builder = ExampleProto.newBuilder();
-        return StringUtils.isEmpty(metadataDetailResponse(response, this.parser, builder)) ? null : buildExampleMeta(builder.build());
+    public DatasetMeta getDatasetById(Long datasetId) throws Exception {
+        IdRequest request = IdRequest.newBuilder().setId(datasetId).build();
+        Response response = metadataServiceStub.getDatasetById(request);
+        DatasetProto.Builder builder = DatasetProto.newBuilder();
+        return StringUtils.isEmpty(metadataDetailResponse(response, this.parser, builder)) ? null : buildDatasetMeta(builder.build());
     }
 
     /**
-     * Get a specific example in Metadata Store by example name.
+     * Get a specific dataset in Metadata Store by dataset name.
      *
-     * @param exampleName Name of example.
-     * @return Single ExampleMeta object if example exists, otherwise returns None if example does not exist.
+     * @param datasetName Name of dataset.
+     * @return Single DatasetMeta object if dataset exists, otherwise returns None if dataset does not exist.
      */
-    public ExampleMeta getExampleByName(String exampleName) throws Exception {
-        NameRequest request = NameRequest.newBuilder().setName(exampleName).build();
-        Response response = metadataServiceStub.getExampleByName(request);
-        ExampleProto.Builder builder = ExampleProto.newBuilder();
-        return StringUtils.isEmpty(metadataDetailResponse(response, this.parser, builder)) ? null : buildExampleMeta(builder.build());
+    public DatasetMeta getDatasetByName(String datasetName) throws Exception {
+        NameRequest request = NameRequest.newBuilder().setName(datasetName).build();
+        Response response = metadataServiceStub.getDatasetByName(request);
+        DatasetProto.Builder builder = DatasetProto.newBuilder();
+        return StringUtils.isEmpty(metadataDetailResponse(response, this.parser, builder)) ? null : buildDatasetMeta(builder.build());
     }
 
     /**
-     * Register a example in Metadata Store.
+     * Register a dataset in Metadata Store.
      *
-     * @param name        Name of example.
-     * @param supportType Example's support type.
-     * @param dataFormat  Data format of example.
-     * @param description Description of example.
-     * @param batchUri    Batch uri of example.
-     * @param streamUri   Stream uri of example.
-     * @param createTime  Time when example is created.
-     * @param updateTime  Time when example is updated.
-     * @param properties  Properties of example.
-     * @param nameList    Name list of example's schema.
-     * @param typeList    Type list corresponded to name list of example's schema.
-     * @return Single ExampleMeta object registered in Metadata Store.
+     * @param name        Name of dataset.
+     * @param dataFormat  Data format of dataset.
+     * @param description Description of dataset.
+     * @param uri    Uri of dataset.
+     * @param createTime  Time when dataset is created.
+     * @param updateTime  Time when dataset is updated.
+     * @param properties  Properties of dataset.
+     * @param nameList    Name list of dataset's schema.
+     * @param typeList    Type list corresponded to name list of dataset's schema.
+     * @return Single DatasetMeta object registered in Metadata Store.
      */
-    public ExampleMeta registerExample(String name, ExecutionType supportType, String dataFormat, String description,
-                                       String batchUri, String streamUri, Long createTime, Long updateTime, Map<String, String> properties,
+    public DatasetMeta registerDataset(String name, String dataFormat, String description,
+                                       String uri, Long createTime, Long updateTime, Map<String, String> properties,
                                        List<String> nameList, List<DataType> typeList) throws Exception {
-        ExampleProto.Builder example = ExampleProto.newBuilder().setName(name).setDataFormat(stringValue(dataFormat)).setDescription(stringValue(description))
-                .setBatchUri(stringValue(batchUri)).setStreamUri(stringValue(streamUri)).setCreateTime(int64Value(createTime)).setUpdateTime(int64Value(updateTime))
+        DatasetProto.Builder dataset = DatasetProto.newBuilder().setName(name).setDataFormat(stringValue(dataFormat)).setDescription(stringValue(description))
+                .setUri(stringValue(uri)).setCreateTime(int64Value(createTime)).setUpdateTime(int64Value(updateTime))
                 .putAllProperties(properties).setSchema(SchemaProto.newBuilder().addAllNameList(nameList).addAllTypeList(dataTypeList(typeList)))
                 .setCatalogName(stringValue(null)).setCatalogType(stringValue(null)).setCatalogDatabase(stringValue(null))
-                .setCatalogConnectionUri(stringValue(null)).setCatalogVersion(stringValue(null)).setCatalogTable(stringValue(null));
-        if (supportType != null) {
-            example.setSupportType(supportType.getExecutionType());
-        }
-        RegisterExampleRequest request = RegisterExampleRequest.newBuilder().setExample(example).build();
-        Response response = metadataServiceStub.registerExample(request);
-        ExampleProto.Builder builder = ExampleProto.newBuilder();
-        return StringUtils.isEmpty(metadataDetailResponse(response, this.parser, builder)) ? null : buildExampleMeta(builder.build());
+                .setCatalogConnectionUri(stringValue(null)).setCatalogTable(stringValue(null));
+        RegisterDatasetRequest request = RegisterDatasetRequest.newBuilder().setDataset(dataset).build();
+        Response response = metadataServiceStub.registerDataset(request);
+        DatasetProto.Builder builder = DatasetProto.newBuilder();
+        return StringUtils.isEmpty(metadataDetailResponse(response, this.parser, builder)) ? null : buildDatasetMeta(builder.build());
     }
 
     /**
-     * Register a example in Metadata Store.
+     * Register a dataset in Metadata Store.
      *
-     * @param name                 Name of example.
-     * @param supportType          Example's support type.
-     * @param catalogName          Name of example catalog.
-     * @param catalogType          Type of example catalog.
-     * @param catalogConnectionUri Connection URI of example catalog.
-     * @param catalogVersion       Version of example catalog.
-     * @param catalogTable         Table of example catalog.
-     * @param catalogDatabase      Database of example catalog.
-     * @return Single ExampleMeta object registered in Metadata Store.
+     * @param name                 Name of dataset.
+     * @param catalogName          Name of dataset catalog.
+     * @param catalogType          Type of dataset catalog.
+     * @param catalogConnectionUri Connection URI of dataset catalog.
+     * @param catalogTable         Table of dataset catalog.
+     * @param catalogDatabase      Database of dataset catalog.
+     * @return Single DatasetMeta object registered in Metadata Store.
      */
-    public ExampleMeta registerExampleWithCatalog(String name, ExecutionType supportType, String catalogName, String catalogType,
-                                                  String catalogConnectionUri, String catalogVersion, String catalogTable, String catalogDatabase) throws Exception {
-        ExampleProto.Builder example = ExampleProto.newBuilder().setName(name).setDataFormat(stringValue(null)).setDescription(stringValue(null))
-                .setBatchUri(stringValue(null)).setStreamUri(stringValue(null)).setCreateTime(int64Value(null)).setUpdateTime(int64Value(null))
+    public DatasetMeta registerDatasetWithCatalog(String name, String catalogName, String catalogType,
+                                                  String catalogConnectionUri, String catalogTable, String catalogDatabase) throws Exception {
+        DatasetProto.Builder dataset = DatasetProto.newBuilder().setName(name).setDataFormat(stringValue(null)).setDescription(stringValue(null))
+                .setUri(stringValue(null)).setCreateTime(int64Value(null)).setUpdateTime(int64Value(null))
                 .putAllProperties(null).setSchema(SchemaProto.newBuilder().addAllNameList(null).addAllTypeList(null))
                 .setCatalogName(stringValue(catalogName)).setCatalogType(stringValue(catalogType)).setCatalogDatabase(stringValue(catalogDatabase))
-                .setCatalogConnectionUri(stringValue(catalogConnectionUri)).setCatalogVersion(stringValue(catalogVersion)).setCatalogTable(stringValue(catalogTable));
-        if (supportType != null) {
-            example.setSupportType(supportType.getExecutionType());
-        }
-        RegisterExampleRequest request = RegisterExampleRequest.newBuilder().setExample(example).build();
-        Response response = metadataServiceStub.registerExample(request);
-        ExampleProto.Builder builder = ExampleProto.newBuilder();
-        return StringUtils.isEmpty(metadataDetailResponse(response, this.parser, builder)) ? null : buildExampleMeta(builder.build());
+                .setCatalogConnectionUri(stringValue(catalogConnectionUri)).setCatalogTable(stringValue(catalogTable));
+        RegisterDatasetRequest request = RegisterDatasetRequest.newBuilder().setDataset(dataset).build();
+        Response response = metadataServiceStub.registerDataset(request);
+        DatasetProto.Builder builder = DatasetProto.newBuilder();
+        return StringUtils.isEmpty(metadataDetailResponse(response, this.parser, builder)) ? null : buildDatasetMeta(builder.build());
     }
 
     /**
-     * Register multiple examples in Metadata Store.
+     * Register multiple datasets in Metadata Store.
      *
-     * @param examples List of example registered
-     * @return List of ExampleMeta object registered in Metadata Store.
+     * @param datasets List of dataset registered
+     * @return List of DatasetMeta object registered in Metadata Store.
      */
-    public List<ExampleMeta> registerExamples(List<ExampleMeta> examples) throws Exception {
-        RegisterExamplesRequest request = RegisterExamplesRequest.newBuilder().addAllExamples(buildExampleProtos(examples)).build();
-        Response response = metadataServiceStub.registerExamples(request);
-        ExampleListProto.Builder builder = ExampleListProto.newBuilder();
-        return StringUtils.isEmpty(metadataDetailResponse(response, this.parser, builder)) ? null : buildExampleMetas(builder.build());
+    public List<DatasetMeta> registerDatasets(List<DatasetMeta> datasets) throws Exception {
+        RegisterDatasetsRequest request = RegisterDatasetsRequest.newBuilder().addAllDatasets(buildDatasetProtos(datasets)).build();
+        Response response = metadataServiceStub.registerDatasets(request);
+        DatasetListProto.Builder builder = DatasetListProto.newBuilder();
+        return StringUtils.isEmpty(metadataDetailResponse(response, this.parser, builder)) ? null : buildDatasetMetas(builder.build());
     }
 
     /**
-     * Update a example in Metadata Store.
+     * Update a dataset in Metadata Store.
      *
-     * @param name                 Name of example.
-     * @param supportType          Example's support type.
-     * @param dataFormat           Data format of example.
-     * @param description          Description of example.
-     * @param batchUri             Batch uri of example.
-     * @param streamUri            Stream uri of example.
-     * @param updateTime           Time when example is updated.
-     * @param properties           Properties of example.
-     * @param nameList             Name list of example's schema.
-     * @param typeList             Type list corresponded to name list of example's schema.
-     * @param catalogName          Name of example catalog.
-     * @param catalogType          Type of example catalog.
-     * @param catalogConnectionUri Connection URI of example catalog.
-     * @param catalogVersion       Version of example catalog.
-     * @param catalogTable         Table of example catalog.
-     * @param catalogDatabase      Database of example catalog.
-     * @return Single ExampleMeta object registered in Metadata Store.
+     * @param name                 Name of dataset.
+     * @param dataFormat           Data format of dataset.
+     * @param description          Description of dataset.
+     * @param uri                  Uri of dataset.
+     * @param updateTime           Time when dataset is updated.
+     * @param properties           Properties of dataset.
+     * @param nameList             Name list of dataset's schema.
+     * @param typeList             Type list corresponded to name list of dataset's schema.
+     * @param catalogName          Name of dataset catalog.
+     * @param catalogType          Type of dataset catalog.
+     * @param catalogConnectionUri Connection URI of dataset catalog.
+     * @param catalogTable         Table of dataset catalog.
+     * @param catalogDatabase      Database of dataset catalog.
+     * @return Single DatasetMeta object registered in Metadata Store.
      */
-    public ExampleMeta updateExample(String name, ExecutionType supportType, String dataFormat, String description,
-                                     String batchUri, String streamUri, Long updateTime, Map<String, String> properties,
+    public DatasetMeta updateDataset(String name, String dataFormat, String description,
+                                     String uri, Long updateTime, Map<String, String> properties,
                                      List<String> nameList, List<DataType> typeList, String catalogName, String catalogType,
-                                     String catalogConnectionUri, String catalogVersion, String catalogTable, String catalogDatabase) throws Exception {
-        UpdateExampleRequest.Builder example = UpdateExampleRequest.newBuilder().setName(name).setDataFormat(stringValue(dataFormat)).setDescription(stringValue(description))
-                .setBatchUri(stringValue(batchUri)).setStreamUri(stringValue(streamUri)).setUpdateTime(int64Value(updateTime)).putAllProperties(properties)
+                                     String catalogConnectionUri, String catalogTable, String catalogDatabase) throws Exception {
+        UpdateDatasetRequest.Builder dataset = UpdateDatasetRequest.newBuilder().setName(name).setDataFormat(stringValue(dataFormat)).setDescription(stringValue(description))
+                .setUri(stringValue(uri)).setUpdateTime(int64Value(updateTime)).putAllProperties(properties)
                 .addAllNameList(nameList).addAllTypeList(dataTypeList(typeList)).setCatalogName(stringValue(catalogName)).setCatalogType(stringValue(catalogType))
-                .setCatalogDatabase(stringValue(catalogDatabase)).setCatalogConnectionUri(stringValue(catalogConnectionUri)).setCatalogVersion(stringValue(catalogVersion))
+                .setCatalogDatabase(stringValue(catalogDatabase)).setCatalogConnectionUri(stringValue(catalogConnectionUri))
                 .setCatalogTable(stringValue(catalogTable));
-        if (supportType != null) {
-            example.setSupportType(supportType.getExecutionType());
-        }
-        UpdateExampleRequest request = example.build();
-        Response response = metadataServiceStub.updateExample(request);
-        ExampleProto.Builder builder = ExampleProto.newBuilder();
-        return StringUtils.isEmpty(metadataDetailResponse(response, this.parser, builder)) ? null : buildExampleMeta(builder.build());
+        UpdateDatasetRequest request = dataset.build();
+        Response response = metadataServiceStub.updateDataset(request);
+        DatasetProto.Builder builder = DatasetProto.newBuilder();
+        return StringUtils.isEmpty(metadataDetailResponse(response, this.parser, builder)) ? null : buildDatasetMeta(builder.build());
     }
 
     /**
-     * List registered examples in Metadata Store.
+     * List registered datasets in Metadata Store.
      *
-     * @param pageSize Limitation of listed examples.
-     * @param offset   Offset of listed examples.
-     * @return List of ExampleMeta object registered in Metadata Store.
+     * @param pageSize Limitation of listed datasets.
+     * @param offset   Offset of listed datasets.
+     * @return List of DatasetMeta object registered in Metadata Store.
      */
-    public List<ExampleMeta> listExample(Long pageSize, Long offset) throws Exception {
+    public List<DatasetMeta> listDatasets(Long pageSize, Long offset) throws Exception {
         ListRequest request = ListRequest.newBuilder().setPageSize(pageSize).setOffset(offset).build();
-        Response response = metadataServiceStub.listExample(request);
-        ExampleListProto.Builder builder = ExampleListProto.newBuilder();
-        return StringUtils.isEmpty(metadataDetailResponse(response, this.parser, builder)) ? null : buildExampleMetas(builder.build());
+        Response response = metadataServiceStub.listDatasets(request);
+        DatasetListProto.Builder builder = DatasetListProto.newBuilder();
+        return StringUtils.isEmpty(metadataDetailResponse(response, this.parser, builder)) ? null : buildDatasetMetas(builder.build());
     }
 
     /**
-     * Delete registered example by example id.
+     * Delete registered dataset by dataset id.
      *
-     * @param exampleId Id of example.
-     * @return Status.OK if example is successfully deleted, Status.ERROR if example does not exist otherwise.
+     * @param datasetId Id of dataset.
+     * @return Status.OK if dataset is successfully deleted, Status.ERROR if dataset does not exist otherwise.
      */
-    public Status deleteExampleById(Long exampleId) throws Exception {
-        IdRequest request = IdRequest.newBuilder().setId(exampleId).build();
-        Response response = metadataServiceStub.deleteExampleById(request);
+    public Status deleteDatasetById(Long datasetId) throws Exception {
+        IdRequest request = IdRequest.newBuilder().setId(datasetId).build();
+        Response response = metadataServiceStub.deleteDatasetById(request);
         return metadataDeleteResponse(response);
     }
 
     /**
-     * Delete registered example by example name.
+     * Delete registered dataset by dataset name.
      *
-     * @param exampleName Name of example.
-     * @return Status.OK if example is successfully deleted, Status.ERROR if example does not exist otherwise.
+     * @param datasetName Name of dataset.
+     * @return Status.OK if dataset is successfully deleted, Status.ERROR if dataset does not exist otherwise.
      */
-    public Status deleteExampleByName(String exampleName) throws Exception {
-        NameRequest request = NameRequest.newBuilder().setName(exampleName).build();
-        Response response = metadataServiceStub.deleteExampleByName(request);
+    public Status deleteDatasetByName(String datasetName) throws Exception {
+        NameRequest request = NameRequest.newBuilder().setName(datasetName).build();
+        Response response = metadataServiceStub.deleteDatasetByName(request);
         return metadataDeleteResponse(response);
     }
 

@@ -34,48 +34,48 @@ class MetadataServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.getExampleById = channel.unary_unary(
-                '/ai_flow.MetadataService/getExampleById',
+        self.getDatasetById = channel.unary_unary(
+                '/ai_flow.MetadataService/getDatasetById',
                 request_serializer=metadata__service__pb2.IdRequest.SerializeToString,
                 response_deserializer=message__pb2.Response.FromString,
                 )
-        self.getExampleByName = channel.unary_unary(
-                '/ai_flow.MetadataService/getExampleByName',
+        self.getDatasetByName = channel.unary_unary(
+                '/ai_flow.MetadataService/getDatasetByName',
                 request_serializer=metadata__service__pb2.NameRequest.SerializeToString,
                 response_deserializer=message__pb2.Response.FromString,
                 )
-        self.listExample = channel.unary_unary(
-                '/ai_flow.MetadataService/listExample',
+        self.listDatasets = channel.unary_unary(
+                '/ai_flow.MetadataService/listDatasets',
                 request_serializer=metadata__service__pb2.ListRequest.SerializeToString,
                 response_deserializer=message__pb2.Response.FromString,
                 )
-        self.registerExample = channel.unary_unary(
-                '/ai_flow.MetadataService/registerExample',
-                request_serializer=metadata__service__pb2.RegisterExampleRequest.SerializeToString,
+        self.registerDataset = channel.unary_unary(
+                '/ai_flow.MetadataService/registerDataset',
+                request_serializer=metadata__service__pb2.RegisterDatasetRequest.SerializeToString,
                 response_deserializer=message__pb2.Response.FromString,
                 )
-        self.registerExampleWithCatalog = channel.unary_unary(
-                '/ai_flow.MetadataService/registerExampleWithCatalog',
-                request_serializer=metadata__service__pb2.RegisterExampleRequest.SerializeToString,
+        self.registerDatasetWithCatalog = channel.unary_unary(
+                '/ai_flow.MetadataService/registerDatasetWithCatalog',
+                request_serializer=metadata__service__pb2.RegisterDatasetRequest.SerializeToString,
                 response_deserializer=message__pb2.Response.FromString,
                 )
-        self.registerExamples = channel.unary_unary(
-                '/ai_flow.MetadataService/registerExamples',
-                request_serializer=metadata__service__pb2.RegisterExamplesRequest.SerializeToString,
+        self.registerDatasets = channel.unary_unary(
+                '/ai_flow.MetadataService/registerDatasets',
+                request_serializer=metadata__service__pb2.RegisterDatasetsRequest.SerializeToString,
                 response_deserializer=message__pb2.Response.FromString,
                 )
-        self.updateExample = channel.unary_unary(
-                '/ai_flow.MetadataService/updateExample',
-                request_serializer=metadata__service__pb2.UpdateExampleRequest.SerializeToString,
+        self.updateDataset = channel.unary_unary(
+                '/ai_flow.MetadataService/updateDataset',
+                request_serializer=metadata__service__pb2.UpdateDatasetRequest.SerializeToString,
                 response_deserializer=message__pb2.Response.FromString,
                 )
-        self.deleteExampleById = channel.unary_unary(
-                '/ai_flow.MetadataService/deleteExampleById',
+        self.deleteDatasetById = channel.unary_unary(
+                '/ai_flow.MetadataService/deleteDatasetById',
                 request_serializer=metadata__service__pb2.IdRequest.SerializeToString,
                 response_deserializer=message__pb2.Response.FromString,
                 )
-        self.deleteExampleByName = channel.unary_unary(
-                '/ai_flow.MetadataService/deleteExampleByName',
+        self.deleteDatasetByName = channel.unary_unary(
+                '/ai_flow.MetadataService/deleteDatasetByName',
                 request_serializer=metadata__service__pb2.NameRequest.SerializeToString,
                 response_deserializer=message__pb2.Response.FromString,
                 )
@@ -349,56 +349,56 @@ class MetadataServiceStub(object):
 class MetadataServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def getExampleById(self, request, context):
-        """example api
+    def getDatasetById(self, request, context):
+        """dataset api
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def getExampleByName(self, request, context):
+    def getDatasetByName(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def listExample(self, request, context):
+    def listDatasets(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def registerExample(self, request, context):
+    def registerDataset(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def registerExampleWithCatalog(self, request, context):
+    def registerDatasetWithCatalog(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def registerExamples(self, request, context):
+    def registerDatasets(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def updateExample(self, request, context):
+    def updateDataset(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def deleteExampleById(self, request, context):
+    def deleteDatasetById(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def deleteExampleByName(self, request, context):
+    def deleteDatasetByName(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -733,48 +733,48 @@ class MetadataServiceServicer(object):
 
 def add_MetadataServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'getExampleById': grpc.unary_unary_rpc_method_handler(
-                    servicer.getExampleById,
+            'getDatasetById': grpc.unary_unary_rpc_method_handler(
+                    servicer.getDatasetById,
                     request_deserializer=metadata__service__pb2.IdRequest.FromString,
                     response_serializer=message__pb2.Response.SerializeToString,
             ),
-            'getExampleByName': grpc.unary_unary_rpc_method_handler(
-                    servicer.getExampleByName,
+            'getDatasetByName': grpc.unary_unary_rpc_method_handler(
+                    servicer.getDatasetByName,
                     request_deserializer=metadata__service__pb2.NameRequest.FromString,
                     response_serializer=message__pb2.Response.SerializeToString,
             ),
-            'listExample': grpc.unary_unary_rpc_method_handler(
-                    servicer.listExample,
+            'listDatasets': grpc.unary_unary_rpc_method_handler(
+                    servicer.listDatasets,
                     request_deserializer=metadata__service__pb2.ListRequest.FromString,
                     response_serializer=message__pb2.Response.SerializeToString,
             ),
-            'registerExample': grpc.unary_unary_rpc_method_handler(
-                    servicer.registerExample,
-                    request_deserializer=metadata__service__pb2.RegisterExampleRequest.FromString,
+            'registerDataset': grpc.unary_unary_rpc_method_handler(
+                    servicer.registerDataset,
+                    request_deserializer=metadata__service__pb2.RegisterDatasetRequest.FromString,
                     response_serializer=message__pb2.Response.SerializeToString,
             ),
-            'registerExampleWithCatalog': grpc.unary_unary_rpc_method_handler(
-                    servicer.registerExampleWithCatalog,
-                    request_deserializer=metadata__service__pb2.RegisterExampleRequest.FromString,
+            'registerDatasetWithCatalog': grpc.unary_unary_rpc_method_handler(
+                    servicer.registerDatasetWithCatalog,
+                    request_deserializer=metadata__service__pb2.RegisterDatasetRequest.FromString,
                     response_serializer=message__pb2.Response.SerializeToString,
             ),
-            'registerExamples': grpc.unary_unary_rpc_method_handler(
-                    servicer.registerExamples,
-                    request_deserializer=metadata__service__pb2.RegisterExamplesRequest.FromString,
+            'registerDatasets': grpc.unary_unary_rpc_method_handler(
+                    servicer.registerDatasets,
+                    request_deserializer=metadata__service__pb2.RegisterDatasetsRequest.FromString,
                     response_serializer=message__pb2.Response.SerializeToString,
             ),
-            'updateExample': grpc.unary_unary_rpc_method_handler(
-                    servicer.updateExample,
-                    request_deserializer=metadata__service__pb2.UpdateExampleRequest.FromString,
+            'updateDataset': grpc.unary_unary_rpc_method_handler(
+                    servicer.updateDataset,
+                    request_deserializer=metadata__service__pb2.UpdateDatasetRequest.FromString,
                     response_serializer=message__pb2.Response.SerializeToString,
             ),
-            'deleteExampleById': grpc.unary_unary_rpc_method_handler(
-                    servicer.deleteExampleById,
+            'deleteDatasetById': grpc.unary_unary_rpc_method_handler(
+                    servicer.deleteDatasetById,
                     request_deserializer=metadata__service__pb2.IdRequest.FromString,
                     response_serializer=message__pb2.Response.SerializeToString,
             ),
-            'deleteExampleByName': grpc.unary_unary_rpc_method_handler(
-                    servicer.deleteExampleByName,
+            'deleteDatasetByName': grpc.unary_unary_rpc_method_handler(
+                    servicer.deleteDatasetByName,
                     request_deserializer=metadata__service__pb2.NameRequest.FromString,
                     response_serializer=message__pb2.Response.SerializeToString,
             ),
@@ -1054,7 +1054,7 @@ class MetadataService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def getExampleById(request,
+    def getDatasetById(request,
             target,
             options=(),
             channel_credentials=None,
@@ -1064,14 +1064,14 @@ class MetadataService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetadataService/getExampleById',
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetadataService/getDatasetById',
             metadata__service__pb2.IdRequest.SerializeToString,
             message__pb2.Response.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def getExampleByName(request,
+    def getDatasetByName(request,
             target,
             options=(),
             channel_credentials=None,
@@ -1081,14 +1081,14 @@ class MetadataService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetadataService/getExampleByName',
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetadataService/getDatasetByName',
             metadata__service__pb2.NameRequest.SerializeToString,
             message__pb2.Response.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def listExample(request,
+    def listDatasets(request,
             target,
             options=(),
             channel_credentials=None,
@@ -1098,14 +1098,14 @@ class MetadataService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetadataService/listExample',
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetadataService/listDatasets',
             metadata__service__pb2.ListRequest.SerializeToString,
             message__pb2.Response.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def registerExample(request,
+    def registerDataset(request,
             target,
             options=(),
             channel_credentials=None,
@@ -1115,14 +1115,14 @@ class MetadataService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetadataService/registerExample',
-            metadata__service__pb2.RegisterExampleRequest.SerializeToString,
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetadataService/registerDataset',
+            metadata__service__pb2.RegisterDatasetRequest.SerializeToString,
             message__pb2.Response.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def registerExampleWithCatalog(request,
+    def registerDatasetWithCatalog(request,
             target,
             options=(),
             channel_credentials=None,
@@ -1132,14 +1132,14 @@ class MetadataService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetadataService/registerExampleWithCatalog',
-            metadata__service__pb2.RegisterExampleRequest.SerializeToString,
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetadataService/registerDatasetWithCatalog',
+            metadata__service__pb2.RegisterDatasetRequest.SerializeToString,
             message__pb2.Response.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def registerExamples(request,
+    def registerDatasets(request,
             target,
             options=(),
             channel_credentials=None,
@@ -1149,14 +1149,14 @@ class MetadataService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetadataService/registerExamples',
-            metadata__service__pb2.RegisterExamplesRequest.SerializeToString,
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetadataService/registerDatasets',
+            metadata__service__pb2.RegisterDatasetsRequest.SerializeToString,
             message__pb2.Response.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def updateExample(request,
+    def updateDataset(request,
             target,
             options=(),
             channel_credentials=None,
@@ -1166,14 +1166,14 @@ class MetadataService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetadataService/updateExample',
-            metadata__service__pb2.UpdateExampleRequest.SerializeToString,
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetadataService/updateDataset',
+            metadata__service__pb2.UpdateDatasetRequest.SerializeToString,
             message__pb2.Response.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def deleteExampleById(request,
+    def deleteDatasetById(request,
             target,
             options=(),
             channel_credentials=None,
@@ -1183,14 +1183,14 @@ class MetadataService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetadataService/deleteExampleById',
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetadataService/deleteDatasetById',
             metadata__service__pb2.IdRequest.SerializeToString,
             message__pb2.Response.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def deleteExampleByName(request,
+    def deleteDatasetByName(request,
             target,
             options=(),
             channel_credentials=None,
@@ -1200,7 +1200,7 @@ class MetadataService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetadataService/deleteExampleByName',
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetadataService/deleteDatasetByName',
             metadata__service__pb2.NameRequest.SerializeToString,
             message__pb2.Response.FromString,
             options, channel_credentials,

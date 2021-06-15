@@ -20,12 +20,9 @@ import os
 import time
 from unittest import mock
 
-import pytest
-from notification_service.base_notification import BaseEvent
-
 from ai_flow.common.properties import Properties
 from ai_flow.common.status import Status
-from ai_flow.meta.example_meta import DataType, ExampleMeta, Schema, ExampleSupportType
+from ai_flow.meta.dataset_meta import DataType, DatasetMeta, Schema
 from ai_flow.meta.job_meta import State
 from ai_flow.meta.metric_meta import MetricType
 from ai_flow.model_center.entity.registered_model_detail import RegisteredModelDetail
@@ -37,139 +34,121 @@ from ai_flow.test.endpoint import random_str
 
 class AbstractTestStore(object):
 
-    """test example"""
+    """test dataset"""
 
-    def test_save_example_get_example_by_id_and_name(self):
-        response = self.store.register_example(name='example', support_type=ExampleSupportType.EXAMPLE_BATCH,
-                                               data_type='pandas', data_format='csv',
+    def test_save_dataset_get_dataset_by_id_and_name(self):
+        response = self.store.register_dataset(name='dataset', data_format='csv',
                                                properties=Properties({'a': 'b'}),
                                                name_list=['a'], type_list=[DataType.STRING])
-        self.assertEqual(response.name, 'example')
-        response_id = self.store.get_example_by_id(response.uuid)
-        self.assertEqual('example', response_id.name)
-        response_by_name = self.store.get_example_by_name('example')
-        self.assertEqual(response_by_name.name, 'example')
-        self.assertEqual(response.data_type, 'pandas')
-        self.assertEqual(response_id.data_type, 'pandas')
-        self.assertEqual(response_by_name.data_type, 'pandas')
+        self.assertEqual(response.name, 'dataset')
+        response_id = self.store.get_dataset_by_id(response.uuid)
+        self.assertEqual('dataset', response_id.name)
+        response_by_name = self.store.get_dataset_by_name('dataset')
+        self.assertEqual(response_by_name.name, 'dataset')
 
-    def test_save_example_with_catalog_by_id_and_name(self):
-        response = self.store.register_example_with_catalog(name='example',
-                                                            support_type=ExampleSupportType.EXAMPLE_STREAM,
+    def test_save_dataset_with_catalog_by_id_and_name(self):
+        response = self.store.register_dataset_with_catalog(name='dataset',
                                                             catalog_name='catalog', catalog_type='kafka',
-                                                            catalog_version='1.10', catalog_database='my_db',
+                                                            catalog_database='my_db',
                                                             catalog_table='my_table', catalog_connection_uri='/path')
         print(response.to_json_dict())
-        response_id = self.store.get_example_by_id(response.uuid)
-        self.assertEqual('example', response_id.name)
-        response_by_name = self.store.get_example_by_name('example')
-        self.assertEqual(response_by_name.name, 'example')
+        response_id = self.store.get_dataset_by_id(response.uuid)
+        self.assertEqual('dataset', response_id.name)
+        response_by_name = self.store.get_dataset_by_name('dataset')
+        self.assertEqual(response_by_name.name, 'dataset')
         print(response_by_name.to_json_dict(), response_id.to_json_dict())
 
-    def test_double_register_example(self):
-        example_1 = self.store.register_example(name='example', support_type=ExampleSupportType.EXAMPLE_BOTH,
-                                                data_type='pandas',data_format='csv', properties=Properties({'a': 'b'}),
+    def test_double_register_dataset(self):
+        dataset_1 = self.store.register_dataset(name='dataset', data_format='csv', properties=Properties({'a': 'b'}),
                                                 name_list=['a'], type_list=[DataType.STRING])
-        example_2 = self.store.register_example(name='example', support_type=ExampleSupportType.EXAMPLE_BOTH,
-                                                data_type='pandas',data_format='csv', properties=Properties({'a': 'b'}),
+        dataset_2 = self.store.register_dataset(name='dataset', data_format='csv', properties=Properties({'a': 'b'}),
                                                 name_list=['a'], type_list=[DataType.STRING])
-        self.assertEqual(example_1.uuid, example_2.uuid)
-        self.assertEqual(example_1.schema.to_json_dict(), example_2.schema.to_json_dict())
-        self.assertEqual(example_1.schema.to_json_dict(), example_2.schema.to_json_dict())
-        self.assertRaises(AIFlowException, self.store.register_example, name='example',
-                          support_type=ExampleSupportType.EXAMPLE_BOTH, data_format='csv',
+        self.assertEqual(dataset_1.uuid, dataset_2.uuid)
+        self.assertEqual(dataset_1.schema.to_json_dict(), dataset_2.schema.to_json_dict())
+        self.assertEqual(dataset_1.schema.to_json_dict(), dataset_2.schema.to_json_dict())
+        self.assertRaises(AIFlowException, self.store.register_dataset, name='dataset',
+                          data_format='csv',
                           create_time=round(time.time()), properties=Properties({'a': 'b'}),
                           name_list=['a'], type_list=[DataType.STRING])
 
-    def test_double_register_example_with_catalog(self):
-        example_1 = self.store.register_example_with_catalog(name='example',
-                                                             support_type=ExampleSupportType.EXAMPLE_BOTH,
+    def test_double_register_dataset_with_catalog(self):
+        dataset_1 = self.store.register_dataset_with_catalog(name='dataset',
                                                              catalog_name='catalog', catalog_type='kafka',
-                                                             catalog_version='1.10', catalog_database='my_db',
+                                                             catalog_database='my_db',
                                                              catalog_table='my_table', catalog_connection_uri='/path')
-        example_2 = self.store.register_example_with_catalog(name='example',
-                                                             support_type=ExampleSupportType.EXAMPLE_BOTH,
+        dataset_2 = self.store.register_dataset_with_catalog(name='dataset',
                                                              catalog_name='catalog', catalog_type='kafka',
-                                                             catalog_version='1.10', catalog_database='my_db',
+                                                             catalog_database='my_db',
                                                              catalog_table='my_table', catalog_connection_uri='/path')
-        self.assertEqual(example_1.uuid, example_2.uuid)
-        self.assertEqual(example_1.schema.to_json_dict(), example_2.schema.to_json_dict())
-        self.assertEqual(example_1.schema.to_json_dict(), example_2.schema.to_json_dict())
-        self.assertRaises(AIFlowException, self.store.register_example, name='example',
-                          support_type=ExampleSupportType.EXAMPLE_BOTH, data_format='csv',
+        self.assertEqual(dataset_1.uuid, dataset_2.uuid)
+        self.assertEqual(dataset_1.schema.to_json_dict(), dataset_2.schema.to_json_dict())
+        self.assertEqual(dataset_1.schema.to_json_dict(), dataset_2.schema.to_json_dict())
+        self.assertRaises(AIFlowException, self.store.register_dataset, name='dataset',
+                          data_format='csv',
                           create_time=round(time.time()), properties=Properties({'a': 'b'}),
                           name_list=['a'], type_list=[DataType.STRING])
 
-    def test_list_examples(self):
-        self.store.register_example(name='example_1', support_type=ExampleSupportType.EXAMPLE_BATCH,
-                                data_type='pandas', data_format='csv', description='it is mq data',
-                                stream_uri='mysql://', properties=Properties({'a': 'b'}), name_list=['a'],
-                                type_list=[DataType.INT32])
-        self.store.register_example(name='example_2', support_type=ExampleSupportType.EXAMPLE_STREAM,
-                                data_type='numpy', data_format='npz', description='it is',
-                                stream_uri='mysql://', properties=Properties({'a': 'b'}), name_list=['a'],
-                                type_list=[DataType.INT32])
-        response_list = self.store.list_example(5, 0)
+    def test_list_datasets(self):
+        self.store.register_dataset(name='dataset_1', data_format='csv', description='it is mq data',
+                                    uri='mysql://', properties=Properties({'a': 'b'}), name_list=['a'],
+                                    type_list=[DataType.INT32])
+        self.store.register_dataset(name='dataset_2', data_format='npz', description='it is',
+                                    uri='mysql://', properties=Properties({'a': 'b'}), name_list=['a'],
+                                    type_list=[DataType.INT32])
+        response_list = self.store.list_datasets(5, 0)
         self.assertEqual(len(response_list), 2)
-        self.assertEqual('example_1', response_list[0].name)
-        self.assertEqual('example_2', response_list[1].name)
+        self.assertEqual('dataset_1', response_list[0].name)
+        self.assertEqual('dataset_2', response_list[1].name)
 
-    def test_save_examples_list_example(self):
+    def test_save_datasets_list_datasets(self):
         schema = Schema(name_list=['a'],
                         type_list=[DataType.STRING])
-        example_1 = ExampleMeta(name='example1', support_type=ExampleSupportType.EXAMPLE_BATCH, data_format='csv',
+        dataset_1 = DatasetMeta(name='dataset1', data_format='csv',
                                 properties=Properties({'a': 'b'}), schema=schema)
-        example_2 = ExampleMeta(name='example2', support_type=ExampleSupportType.EXAMPLE_BATCH)
-        response = self.store.register_examples([example_1, example_2])
+        dataset_2 = DatasetMeta(name='dataset2')
+        response = self.store.register_datasets([dataset_1, dataset_2])
         self.assertEqual(len(response), 2)
         self.assertEqual(1, response[0].uuid)
         self.assertEqual(2, response[1].uuid)
-        response_list = self.store.list_example(2, 0)
+        response_list = self.store.list_datasets(2, 0)
         self.assertEqual(2, len(response_list))
-        self.assertEqual('example1', response_list[0].name)
-        self.assertEqual('example2', response_list[1].name)
+        self.assertEqual('dataset1', response_list[0].name)
+        self.assertEqual('dataset2', response_list[1].name)
 
-    def test_delete_example(self):
-        self.store.register_example(name='example', support_type=ExampleSupportType.EXAMPLE_BATCH, data_format='csv')
-        self.assertEqual(Status.OK, self.store.delete_example_by_id(1))
-        self.assertIsNone(self.store.get_example_by_name(example_name='example'))
-        self.store.register_example(name='example', support_type=ExampleSupportType.EXAMPLE_BATCH, data_format='csv')
-        self.assertEqual(Status.OK, self.store.delete_example_by_id(2))
-        self.assertIsNone(self.store.get_example_by_name(example_name='example'))
-        self.store.register_example(name='example', support_type=ExampleSupportType.EXAMPLE_BATCH, data_format='csv')
-        self.assertEqual(Status.OK, self.store.delete_example_by_name('example'))
-        self.assertIsNone(self.store.get_example_by_name(example_name='example'))
-        self.store.register_example(name='another_example', support_type=ExampleSupportType.EXAMPLE_BATCH,
+    def test_delete_dataset(self):
+        self.store.register_dataset(name='dataset', data_format='csv')
+        self.assertEqual(Status.OK, self.store.delete_dataset_by_id(1))
+        self.assertIsNone(self.store.get_dataset_by_name(dataset_name='dataset'))
+        self.store.register_dataset(name='dataset', data_format='csv')
+        self.assertEqual(Status.OK, self.store.delete_dataset_by_id(2))
+        self.assertIsNone(self.store.get_dataset_by_name(dataset_name='dataset'))
+        self.store.register_dataset(name='dataset', data_format='csv')
+        self.assertEqual(Status.OK, self.store.delete_dataset_by_name('dataset'))
+        self.assertIsNone(self.store.get_dataset_by_name(dataset_name='dataset'))
+        self.store.register_dataset(name='another_dataset',
                                     data_format='csv')
-        self.assertEqual(Status.OK, self.store.delete_example_by_name('another_example'))
-        self.store.register_example(name='another_example', support_type=ExampleSupportType.EXAMPLE_BATCH,
+        self.assertEqual(Status.OK, self.store.delete_dataset_by_name('another_dataset'))
+        self.store.register_dataset(name='another_dataset',
                                     data_format='csv')
-        self.assertEqual(Status.OK, self.store.delete_example_by_name('another_example'))
-        self.assertIsNone(self.store.get_example_by_name(example_name='another_example'))
+        self.assertEqual(Status.OK, self.store.delete_dataset_by_name('another_dataset'))
+        self.assertIsNone(self.store.get_dataset_by_name(dataset_name='another_dataset'))
 
-    def test_update_example(self):
-        self.store.register_example(name='example', support_type=ExampleSupportType.EXAMPLE_BATCH, data_format='csv')
-        update_example = self.store.update_example(example_name='example',
-                                                   support_type=ExampleSupportType.EXAMPLE_BATCH,
-                                                   data_type='pandas',
+    def test_update_dataset(self):
+        self.store.register_dataset(name='dataset', data_format='csv')
+        update_dataset = self.store.update_dataset(dataset_name='dataset',
                                                    data_format='json',
-                                                   description='it is a training example',
+                                                   description='it is a training dataset',
                                                    properties=Properties({'title': 'iris_training'}),
                                                    name_list=['a'], type_list=[DataType.FLOAT32])
-        self.store.register_example_with_catalog(name='example_withcatalog',
-                                                 support_type=ExampleSupportType.EXAMPLE_STREAM,
+        self.store.register_dataset_with_catalog(name='dataset_withcatalog',
                                                  catalog_name='my_hive', catalog_database='default',
-                                                 catalog_version='2.3.4',
                                                  catalog_connection_uri='/path/to/conf', catalog_type='hive',
                                                  catalog_table='my_table')
-        update_example_1 = self.store.update_example(example_name='example_withcatalog',
-                                                     support_type=ExampleSupportType.EXAMPLE_STREAM,
+        update_dataset_1 = self.store.update_dataset(dataset_name='dataset_withcatalog',
                                                      catalog_name='my_hive', catalog_database='my_db',
-                                                     catalog_version='2.3.4',
                                                      catalog_connection_uri='/path/to/conf', catalog_type='hive')
-        self.assertEqual(update_example.schema.name_list, ['a'])
-        self.assertEqual(update_example.data_type, 'pandas')
-        self.assertEqual(update_example_1.catalog_database, 'my_db')
+        self.assertEqual(update_dataset.schema.name_list, ['a'])
+        self.assertEqual(update_dataset_1.catalog_database, 'my_db')
 
     """test project"""
 
