@@ -33,6 +33,8 @@ from grpc._server import _serialize_response, _status, _abort, _Context, _unary_
     _select_thread_pool_for_behavior, _unary_response_in_pool
 from typing import Dict
 
+from notification_service.service import NotificationService
+
 from ai_flow.protobuf.high_availability_pb2_grpc import add_HighAvailabilityManagerServicer_to_server
 from ai_flow.endpoint.server.high_availability import SimpleAIFlowServerHaManager, HighAvailableService
 from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
@@ -43,7 +45,6 @@ from notification_service.proto import notification_service_pb2_grpc
 
 from ai_flow.metadata_store.service.service import MetadataService
 from ai_flow.model_center.service.service import ModelCenterService
-from ai_flow.notification.service.service import NotificationService
 from ai_flow.metric.service.metric_service import MetricService
 from ai_flow.scheduler.scheduling_service import SchedulingService, SchedulerConfig
 
