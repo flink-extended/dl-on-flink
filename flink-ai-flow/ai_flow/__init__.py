@@ -32,6 +32,8 @@ from ai_flow.api.project import run, submit_ai_flow, stop_execution_by_id, wait_
     compile_workflow, deploy_to_airflow, generate_airflow_file_text, submit
 # ai_flow.application_master.master
 from ai_flow.application_master.master import AIFlowMaster, set_master_config
+# ai_flow.client
+from ai_flow.client import *
 # ai_flow.common
 from ai_flow.common.args import Args, ExecuteArgs
 from ai_flow.common.properties import Properties, ExecuteProperties
