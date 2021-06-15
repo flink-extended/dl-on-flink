@@ -18,7 +18,7 @@
 #
 import unittest
 
-from ai_flow.common import json_utils
+from ai_flow.util import json_utils
 from ai_flow.graph.edge import DataEdge
 
 

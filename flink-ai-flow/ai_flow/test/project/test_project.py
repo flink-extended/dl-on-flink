@@ -20,7 +20,7 @@ import unittest
 
 from ai_flow.application_master.master import AIFlowMaster
 
-from ai_flow.common.path_util import get_file_dir
+from ai_flow.util.path_util import get_file_dir
 from ai_flow.project.project_description import get_project_description_from
 from ai_flow.api.configuration import set_project_config_file
 

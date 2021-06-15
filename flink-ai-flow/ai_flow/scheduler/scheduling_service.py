@@ -18,7 +18,7 @@ from typing import Text
 import traceback
 from ai_flow.project.blob_manager import BlobManagerFactory
 
-from ai_flow.common import json_utils
+from ai_flow.util import json_utils
 from ai_flow.project.project_description import ProjectDesc, get_project_description_from
 from ai_flow.rest_endpoint.protobuf.message_pb2 import ResultProto, StatusProto
 from ai_flow.rest_endpoint.protobuf.scheduling_service_pb2_grpc import SchedulingServiceServicer

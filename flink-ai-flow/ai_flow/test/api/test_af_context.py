@@ -20,7 +20,7 @@ import unittest
 
 import ai_flow as af
 from ai_flow.api.ai_flow_context import ENGINE_NAME
-from ai_flow.common import path_util, json_utils
+from ai_flow.util import path_util, json_utils
 from ai_flow.graph.graph import _default_ai_graph
 from ai_flow.test import test_util
 from ai_flow.workflow.workflow_config import WorkFlowConfig

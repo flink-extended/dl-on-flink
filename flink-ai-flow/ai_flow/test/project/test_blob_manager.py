@@ -20,7 +20,7 @@ import unittest
 import os
 from typing import Text
 
-from ai_flow.common.path_util import get_file_dir
+from ai_flow.util.path_util import get_file_dir
 from ai_flow.project.blob_manager import BlobManagerFactory, BlobManager
 from ai_flow.project.project_description import get_project_description_from
 

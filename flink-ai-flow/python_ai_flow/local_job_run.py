@@ -22,7 +22,7 @@ import sys
 
 from ai_flow.api.execution import set_workflow_execution_id
 from ai_flow.api.configuration import set_default_project_config
-from ai_flow.common.serialization_utils import deserialize
+from ai_flow.util.serialization_utils import deserialize
 from python_ai_flow.python_job_common import RunArgs
 
 

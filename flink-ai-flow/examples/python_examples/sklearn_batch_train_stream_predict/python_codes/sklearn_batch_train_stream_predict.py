@@ -24,7 +24,7 @@ from ai_flow.common.scheduler_type import SchedulerType
 from batch_train_stream_predict_executor import ExampleReader, ExampleTransformer, ModelTrainer, \
     ValidateExampleReader, ValidateTransformer, ModelValidator, ModelPusher, \
     PredictExampleReader, PredictTransformer, ModelPredictor, ExampleWriter
-from ai_flow.common.path_util import get_file_dir
+from ai_flow.util.path_util import get_file_dir
 from ai_flow.model_center.entity.model_version_stage import ModelVersionEventType
 
 EXAMPLE_URI = os.path.abspath(os.path.join(__file__, "../../../..")) + '/example_data/mnist_{}.npz'
