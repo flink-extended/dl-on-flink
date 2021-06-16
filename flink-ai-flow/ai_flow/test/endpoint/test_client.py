@@ -33,7 +33,7 @@ from ai_flow.meta.metric_meta import MetricType, MetricMeta, MetricSummary
 from ai_flow.meta.model_meta import ModelType
 from ai_flow.model_center.entity.model_version_stage import ModelVersionStage
 from ai_flow.protobuf.message_pb2 import RESOURCE_ALREADY_EXISTS
-from ai_flow.endpoint.client.aiflow_client import AIFlowClient
+from ai_flow.client.ai_flow_client import AIFlowClient
 from ai_flow.endpoint.server.exception import AIFlowException
 from ai_flow.endpoint.server.server import AIFlowServer, HighAvailableAIFlowServer
 from ai_flow.store.db.base_model import base

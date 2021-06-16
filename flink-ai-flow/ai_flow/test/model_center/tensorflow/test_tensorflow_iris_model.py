@@ -33,7 +33,7 @@ from tensorflow.python.saved_model import tag_constants
 
 from ai_flow import ModelType
 from ai_flow.model_center.model import tensorflow
-from ai_flow.endpoint.client.aiflow_client import AIFlowClient
+from ai_flow.client.ai_flow_client import AIFlowClient
 from ai_flow.endpoint.server.server import AIFlowServer
 from ai_flow.test.model_center.tensorflow import iris_data_utils
 
