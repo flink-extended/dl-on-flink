@@ -35,7 +35,7 @@ from ai_flow.model_center.entity.model_version_stage import ModelVersionStage
 from ai_flow.protobuf.message_pb2 import RESOURCE_ALREADY_EXISTS
 from ai_flow.client.ai_flow_client import AIFlowClient
 from ai_flow.endpoint.server.exception import AIFlowException
-from ai_flow.endpoint.server.server import AIFlowServer, HighAvailableAIFlowServer
+from ai_flow.endpoint.server.server import AIFlowServer
 from ai_flow.store.db.base_model import base
 from ai_flow.test.store.test_sqlalchemy_store import _get_store
 
@@ -1024,8 +1024,8 @@ class TestAIFlowClientSqliteWithSingleHighAvailableServer(
         print("TestAIFlowClientSqlite setUpClass")
         if os.path.exists(_SQLITE_DB_FILE):
             os.remove(_SQLITE_DB_FILE)
-        cls.server = HighAvailableAIFlowServer(store_uri=_SQLITE_DB_URI, port=_PORT,
-                                               server_uri='localhost:' + _PORT)
+        cls.server = AIFlowServer(store_uri=_SQLITE_DB_URI, port=_PORT, enabled_ha=True,
+                                  ha_server_uri='localhost:' + _PORT)
         cls.server.run()
         config = ProjectConfig()
         config.set_master_ip('localhost')

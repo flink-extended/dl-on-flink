@@ -48,7 +48,6 @@ from ai_flow.model_center.service.service import ModelCenterService
 from ai_flow.metric.service.metric_service import MetricService
 from ai_flow.scheduler.scheduling_service import SchedulingService, SchedulerConfig
 
-
 sys.path.append(os.path.abspath(os.path.join(os.getcwd(), "../../..")))
 
 from ai_flow.protobuf import model_center_service_pb2_grpc, \
@@ -70,7 +69,12 @@ class AIFlowServer(object):
                  start_model_center_service: bool = True,
                  start_metric_service: bool = True,
                  start_scheduling_service: bool = True,
-                 scheduler_config: Dict = None):
+                 scheduler_config: Dict = None,
+                 enabled_ha: bool = False,
+                 ha_manager=None,
+                 ha_server_uri=None,
+                 ha_storage=None,
+                 ttl_ms: int = 10000):
         self.executor = Executor(futures.ThreadPoolExecutor(max_workers=10))
         self.server = grpc.server(self.executor)
         self.start_default_notification = start_default_notification
@@ -94,30 +98,57 @@ class AIFlowServer(object):
             metric_service_pb2_grpc.add_MetricServiceServicer_to_server(MetricService(db_uri=store_uri), self.server)
 
         if start_scheduling_service:
-            logging.info("start scheduling service.")
-            if scheduler_config is None:
-                nf_uri = server_uri if start_default_notification else notification_uri
-                scheduler_config = SchedulerConfig()
-                scheduler_config.set_notification_service_uri(nf_uri)
-                scheduler_config.\
-                    set_scheduler_class_name('ai_flow.scheduler.implements.airflow_scheduler.AirFlowScheduler')
-                scheduler_config.set_repository('/tmp/airflow')
-            real_config = SchedulerConfig()
-            if scheduler_config.get('notification_uri') is None:
-                nf_uri = server_uri if start_default_notification else notification_uri
-                real_config.set_notification_service_uri(nf_uri)
-            else:
-                real_config.set_notification_service_uri(scheduler_config.get('notification_uri'))
-            real_config.set_properties(scheduler_config.get('properties'))
-            real_config.set_repository(scheduler_config.get('repository'))
-            real_config.set_scheduler_class_name(scheduler_config.get('scheduler_class_name'))
-            self.scheduling_service = SchedulingService(real_config)
-            scheduling_service_pb2_grpc.add_SchedulingServiceServicer_to_server(self.scheduling_service,
-                                                                                self.server)
+            self._add_scheduling_service(notification_uri, scheduler_config, server_uri, start_default_notification)
+
+        if enabled_ha:
+            self._add_ha_service(ha_manager, ha_server_uri, ha_storage, store_uri, ttl_ms)
 
         self.server.add_insecure_port('[::]:' + str(port))
 
+    def _add_scheduling_service(self, notification_uri, scheduler_config, server_uri, start_default_notification):
+        logging.info("start scheduling service.")
+        if scheduler_config is None:
+            nf_uri = server_uri if start_default_notification else notification_uri
+            scheduler_config = SchedulerConfig()
+            scheduler_config.set_notification_service_uri(nf_uri)
+            scheduler_config. \
+                set_scheduler_class_name('ai_flow.scheduler.implements.airflow_scheduler.AirFlowScheduler')
+            scheduler_config.set_repository('/tmp/airflow')
+        real_config = SchedulerConfig()
+        if scheduler_config.get('notification_uri') is None:
+            nf_uri = server_uri if start_default_notification else notification_uri
+            real_config.set_notification_service_uri(nf_uri)
+        else:
+            real_config.set_notification_service_uri(scheduler_config.get('notification_uri'))
+        real_config.set_properties(scheduler_config.get('properties'))
+        real_config.set_repository(scheduler_config.get('repository'))
+        real_config.set_scheduler_class_name(scheduler_config.get('scheduler_class_name'))
+        self.scheduling_service = SchedulingService(real_config)
+        scheduling_service_pb2_grpc.add_SchedulingServiceServicer_to_server(self.scheduling_service,
+                                                                            self.server)
+
+    def _add_ha_service(self, ha_manager, ha_server_uri, ha_storage, store_uri, ttl_ms):
+        if ha_manager is None:
+            ha_manager = SimpleAIFlowServerHaManager()
+        if ha_server_uri is None:
+            raise ValueError("ha_server_uri is required with ha enabled!")
+        if ha_storage is None:
+            db_engine = extract_db_engine_from_uri(store_uri)
+            if DBType.value_of(db_engine) == DBType.MONGODB:
+                username, password, host, port, db = parse_mongo_uri(store_uri)
+                ha_storage = MongoStore(host=host,
+                                        port=int(port),
+                                        username=username,
+                                        password=password,
+                                        db=db)
+            else:
+                ha_storage = SqlAlchemyStore(store_uri)
+        self.ha_service = HighAvailableService(ha_manager, ha_server_uri, ha_storage, ttl_ms)
+        add_HighAvailabilityManagerServicer_to_server(self.ha_service, self.server)
+
     def run(self, is_block=False):
+        if self.ha_service is not None:
+            self.ha_service.start()
         self.server.start()
         logging.info('AIFlow server started.')
         if is_block:
@@ -132,52 +163,9 @@ class AIFlowServer(object):
     def stop(self):
         self.executor.shutdown()
         self.server.stop(0)
+        if self.ha_service is not None:
+            self.ha_service.stop()
         logging.info('AIFlow server stopped.')
-
-
-class HighAvailableAIFlowServer(AIFlowServer):
-    """
-    High available AIFlow server.
-    """
-
-    def __init__(self,
-                 store_uri=None,
-                 port=_PORT,
-                 start_default_notification: bool = True,
-                 notification_uri=None,
-                 ha_manager=None,
-                 server_uri=None,
-                 ha_storage=None,
-                 ttl_ms: int = 10000):
-        super(HighAvailableAIFlowServer, self).__init__(
-            store_uri, port, start_default_notification, notification_uri)
-        if ha_manager is None:
-            ha_manager = SimpleAIFlowServerHaManager()
-        if server_uri is None:
-            raise ValueError("server_uri is required!")
-        if ha_storage is None:
-            db_engine = extract_db_engine_from_uri(store_uri)
-            if DBType.value_of(db_engine) == DBType.MONGODB:
-                username, password, host, port, db = parse_mongo_uri(store_uri)
-                ha_storage = MongoStore(host=host,
-                                        port=int(port),
-                                        username=username,
-                                        password=password,
-                                        db=db)
-            else:
-                ha_storage = SqlAlchemyStore(store_uri)
-        self.ha_service = HighAvailableService(ha_manager, server_uri, ha_storage, ttl_ms)
-        add_HighAvailabilityManagerServicer_to_server(self.ha_service, self.server)
-
-    def run(self, is_block=False):
-        self.ha_service.start()
-        logging.info('HA service started.')
-        super(HighAvailableAIFlowServer, self).run(is_block)
-
-    def stop(self):
-        super(HighAvailableAIFlowServer, self).stop()
-        logging.info('HA service stopped.')
-        self.ha_service.stop()
 
 
 def _loop(loop: asyncio.AbstractEventLoop):
