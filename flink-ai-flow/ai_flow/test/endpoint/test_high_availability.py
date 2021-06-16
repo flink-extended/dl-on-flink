@@ -19,6 +19,10 @@
 import time
 import unittest
 
+from notification_service.event_storage import MemoryEventStorage
+from notification_service.master import NotificationMaster
+from notification_service.service import NotificationService
+
 from ai_flow.project.project_config import ProjectConfig
 from ai_flow.client.ai_flow_client import AIFlowClient
 from ai_flow.endpoint.server.server import HighAvailableAIFlowServer
@@ -37,28 +41,31 @@ class TestHighAvailableAIFlowServer(unittest.TestCase):
         server_uri = host + ":" + port
         server = HighAvailableAIFlowServer(
             store_uri=_SQLITE_DB_URI, port=port,
-            server_uri=server_uri)
+            server_uri=server_uri, notification_uri='localhost:30031', start_default_notification=False)
         server.run()
         return server
 
     def wait_for_new_members_detected(self, new_member_uri):
-        for i in range(100):
+        while True:
             living_member = self.client.living_aiflow_members
             if new_member_uri in living_member:
                 break
             else:
-                time.sleep(0.1)
+                time.sleep(1)
 
     def setUp(self) -> None:
         SqlAlchemyStore(_SQLITE_DB_URI)
+        self.notification = NotificationMaster(service=NotificationService(storage=MemoryEventStorage()), port=30031)
+        self.notification.run()
         self.server1 = HighAvailableAIFlowServer(
             store_uri=_SQLITE_DB_URI, port=50051,
-            server_uri='localhost:50051')
+            server_uri='localhost:50051', notification_uri='localhost:30031', start_default_notification=False)
         self.server1.run()
         self.server2 = None
         self.server3 = None
         self.config = ProjectConfig()
         self.config.set_enable_ha(True)
+        self.config.set_notification_service_uri('localhost:30031')
         self.client = AIFlowClient(server_uri='localhost:50052,localhost:50051', project_config=self.config)
 
     def tearDown(self) -> None:
@@ -70,6 +77,8 @@ class TestHighAvailableAIFlowServer(unittest.TestCase):
             self.server2.stop()
         if self.server3 is not None:
             self.server3.stop()
+        if self.notification is not None:
+            self.notification.stop()
         store = SqlAlchemyStore(_SQLITE_DB_URI)
         base.metadata.drop_all(store.db_engine)
 
