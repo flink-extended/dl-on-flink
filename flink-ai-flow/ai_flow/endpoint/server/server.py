@@ -77,8 +77,9 @@ class AIFlowServer(object):
         server_uri = 'localhost:{}'.format(port)
         if start_default_notification:
             logging.info("start default notification service.")
-            notification_service_pb2_grpc.add_NotificationServiceServicer_to_server(NotificationService(store_uri),
-                                                                                    self.server)
+            notification_service_pb2_grpc.add_NotificationServiceServicer_to_server(
+                NotificationService.from_storage_uri(store_uri),
+                self.server)
         if start_model_center_service:
             logging.info("start model center service.")
             model_center_service_pb2_grpc.add_ModelCenterServiceServicer_to_server(

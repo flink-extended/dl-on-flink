@@ -17,16 +17,17 @@
 # under the License.
 #
 import asyncio
-import logging
 import time
 import traceback
 
 from notification_service.base_notification import BaseEvent
-from notification_service.event_storage import BaseEventStorage
+from notification_service.event_storage import BaseEventStorage, DbEventStorage
 from notification_service.high_availability import NotificationServerHaManager
+from notification_service.mongo_event_storage import MongoEventStorage
 from notification_service.proto import notification_service_pb2_grpc, notification_service_pb2
 from notification_service.util.utils import event_to_proto, event_list_to_proto, member_to_proto, event_proto_to_event, \
     proto_to_member
+from notification_service.util.db import extract_db_engine_from_uri, DBType, parse_mongo_uri
 
 
 class NotificationService(notification_service_pb2_grpc.NotificationServiceServicer):
@@ -36,6 +37,26 @@ class NotificationService(notification_service_pb2_grpc.NotificationServiceServi
         self.notification_conditions = {}
         self.lock = asyncio.Lock()
         self.write_condition = asyncio.Condition()
+
+    @classmethod
+    def from_storage_uri(cls, storage_uri: str) -> 'NotificationService':
+        """
+        Construct the notification service with the given storage uri
+        :param storage_uri: uri of the backend storage to use
+        :type storage_uri: str
+        :rtype: NotificationService
+        """
+        db_engine = extract_db_engine_from_uri(storage_uri)
+        if DBType.value_of(db_engine) == DBType.MONGODB:
+            username, password, host, port, db = parse_mongo_uri(storage_uri)
+            storage = MongoEventStorage(host=host,
+                                        port=int(port),
+                                        username=username,
+                                        password=password,
+                                        db=db)
+            return cls(storage=storage)
+        else:
+            return cls(storage=DbEventStorage(storage_uri))
 
     def start(self):
         pass
