@@ -18,7 +18,7 @@
 #
 import os
 from typing import Text
-from ai_flow.endpoint.server.server import AIFlowServer, HighAvailableAIFlowServer
+from ai_flow.endpoint.server.server import AIFlowServer
 from ai_flow.store.db.base_model import base
 from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
 from ai_flow.store.mongo_store import MongoStoreConnManager
@@ -65,25 +65,19 @@ class AIFlowMaster(object):
         global GLOBAL_MASTER_CONFIG
         GLOBAL_MASTER_CONFIG = self.master_config
         logging.info("AI Flow Master Config {}".format(GLOBAL_MASTER_CONFIG))
-        if not self.master_config.get_enable_ha():
-            self.server = AIFlowServer(
-                store_uri=self.master_config.get_db_uri(),
-                port=str(self.master_config.get_master_port()),
-                start_default_notification=self.master_config.start_default_notification(),
-                notification_uri=self.master_config.get_notification_uri(),
-                start_meta_service=self.master_config.start_meta_service(),
-                start_model_center_service=self.master_config.start_model_center_service(),
-                start_metric_service=self.master_config.start_metric_service(),
-                start_scheduling_service=self.master_config.start_scheduling_service(),
-                scheduler_config=self.master_config.get_scheduler_config())
-        else:
-            self.server = HighAvailableAIFlowServer(
-                store_uri=self.master_config.get_db_uri(),
-                port=str(self.master_config.get_master_port()),
-                start_default_notification=self.master_config.start_default_notification(),
-                notification_uri=self.master_config.get_notification_uri(),
-                server_uri=self.master_config.get_master_ip() + ":" + str(self.master_config.get_master_port()),
-                ttl_ms=self.master_config.get_ha_ttl_ms())
+        self.server = AIFlowServer(
+            store_uri=self.master_config.get_db_uri(),
+            port=str(self.master_config.get_master_port()),
+            start_default_notification=self.master_config.start_default_notification(),
+            notification_uri=self.master_config.get_notification_uri(),
+            start_meta_service=self.master_config.start_meta_service(),
+            start_model_center_service=self.master_config.start_model_center_service(),
+            start_metric_service=self.master_config.start_metric_service(),
+            start_scheduling_service=self.master_config.start_scheduling_service(),
+            scheduler_config=self.master_config.get_scheduler_config(),
+            enabled_ha=self.master_config.get_enable_ha(),
+            ha_server_uri=self.master_config.get_master_ip() + ":" + str(self.master_config.get_master_port()),
+            ttl_ms=self.master_config.get_ha_ttl_ms())
         self.server.run(is_block=is_block)
 
     def stop(self, clear_sql_lite_db_file=True) -> None:
