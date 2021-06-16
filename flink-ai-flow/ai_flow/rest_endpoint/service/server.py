@@ -19,32 +19,29 @@
 import asyncio
 import functools
 import inspect
+import logging
 import os
 import sys
 import tempfile
 import threading
 import time
 from concurrent import futures
-import logging
+
 import grpc
 from grpc import _common, _server
 from grpc._cython.cygrpc import StatusCode
 from grpc._server import _serialize_response, _status, _abort, _Context, _unary_request, \
     _select_thread_pool_for_behavior, _unary_response_in_pool
 
+from ai_flow.deployer.deploy_service import DeployService
+from ai_flow.metadata_store.service.service import MetadataService
+from ai_flow.metric.service.metric_service import MetricService
+from ai_flow.model_center.service.service import ModelCenterService
+from ai_flow.notification.service.service import NotificationService
 from ai_flow.rest_endpoint.protobuf.high_availability_pb2_grpc import add_HighAvailabilityManagerServicer_to_server
 from ai_flow.rest_endpoint.service.high_availability import SimpleAIFlowServerHaManager, HighAvailableService
 from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
-from ai_flow.store.mongo_store import MongoStore
-from ai_flow.store.db.db_util import extract_db_engine_from_uri, parse_mongo_uri
-from ai_flow.application_master.master_config import DBType
 from notification_service.proto import notification_service_pb2_grpc
-
-from ai_flow.deployer.deploy_service import DeployService
-from ai_flow.metadata_store.service.service import MetadataService
-from ai_flow.model_center.service.service import ModelCenterService
-from ai_flow.notification.service.service import NotificationService
-from ai_flow.metric.service.metric_service import MetricService
 
 sys.path.append(os.path.abspath(os.path.join(os.getcwd(), "../../..")))
 
@@ -121,16 +118,7 @@ class HighAvailableAIFlowServer(AIFlowServer):
         if server_uri is None:
             raise ValueError("server_uri is required!")
         if ha_storage is None:
-            db_engine = extract_db_engine_from_uri(store_uri)
-            if DBType.value_of(db_engine) == DBType.MONGODB:
-                username, password, host, port, db = parse_mongo_uri(store_uri)
-                ha_storage = MongoStore(host=host,
-                                        port=int(port),
-                                        username=username,
-                                        password=password,
-                                        db=db)
-            else:
-                ha_storage = SqlAlchemyStore(store_uri)
+            ha_storage = SqlAlchemyStore(store_uri)
         self.ha_service = HighAvailableService(ha_manager, server_uri, ha_storage, ttl_ms)
         add_HighAvailabilityManagerServicer_to_server(self.ha_service, self.server)
 

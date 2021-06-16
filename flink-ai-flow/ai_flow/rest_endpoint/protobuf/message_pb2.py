@@ -37,9 +37,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='message.proto',
   package='ai_flow',
   syntax='proto3',
-  serialized_options=b'\n\020com.aiflow.proto\210\001\001\220\001\001',
+  serialized_options=b'\n\020com.aiflow.protoZ\010/ai_flow\210\001\001\220\001\001',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\rmessage.proto\x12\x07\x61i_flow\x1a\x1egoogle/protobuf/wrappers.proto\"K\n\x0bSchemaProto\x12\x11\n\tname_list\x18\x01 \x03(\t\x12)\n\ttype_list\x18\x02 \x03(\x0e\x32\x16.ai_flow.DataTypeProto\"\x9e\x07\n\x0c\x45xampleProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x39\n\nproperties\x18\x03 \x03(\x0b\x32%.ai_flow.ExampleProto.PropertiesEntry\x12\x36\n\x0csupport_type\x18\x04 \x01(\x0e\x32 .ai_flow.ExampleSupportTypeProto\x12$\n\x06schema\x18\x05 \x01(\x0b\x32\x14.ai_flow.SchemaProto\x12/\n\tdata_type\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\x0b\x64\x61ta_format\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tbatch_uri\x18\x08 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x30\n\nstream_uri\x18\t \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\x0b\x64\x65scription\x18\n \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x30\n\x0b\x63reate_time\x18\x0b \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x30\n\x0bupdate_time\x18\x0c \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x32\n\x0c\x63\x61talog_name\x18\r \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0c\x63\x61talog_type\x18\x0e \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x36\n\x10\x63\x61talog_database\x18\x0f \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12<\n\x16\x63\x61talog_connection_uri\x18\x10 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x35\n\x0f\x63\x61talog_version\x18\x11 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x33\n\rcatalog_table\x18\x12 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"a\n\x12ModelRelationProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12/\n\nproject_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\"\xb3\x01\n\nModelProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12/\n\nproject_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12&\n\nmodel_type\x18\x04 \x01(\x0e\x32\x12.ai_flow.ModelType\x12\x30\n\nmodel_desc\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\"\xb5\x01\n\x19ModelVersionRelationProto\x12-\n\x07version\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12-\n\x08model_id\x18\x02 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12:\n\x15workflow_execution_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\"\xae\x03\n\x11ModelVersionProto\x12-\n\x07version\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12-\n\x08model_id\x18\x02 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12:\n\x15workflow_execution_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x30\n\nmodel_path\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmodel_metric\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmodel_flavor\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cversion_desc\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\rcurrent_stage\x18\x08 \x01(\x0e\x32\x1a.ai_flow.ModelVersionStage\"\xe2\x03\n\x08JobProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12:\n\x15workflow_execution_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12&\n\tjob_state\x18\x04 \x01(\x0e\x32\x13.ai_flow.StateProto\x12\x35\n\nproperties\x18\x05 \x03(\x0b\x32!.ai_flow.JobProto.PropertiesEntry\x12,\n\x06job_id\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\nstart_time\x18\x07 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x08\x65nd_time\x18\x08 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x07log_uri\x18\t \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tsignature\x18\n \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\x80\x04\n\x16WorkflowExecutionProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12/\n\nproject_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12,\n\x0f\x65xecution_state\x18\x04 \x01(\x0e\x32\x13.ai_flow.StateProto\x12\x43\n\nproperties\x18\x05 \x03(\x0b\x32/.ai_flow.WorkflowExecutionProto.PropertiesEntry\x12/\n\nstart_time\x18\x06 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x08\x65nd_time\x18\x07 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x07log_uri\x18\x08 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x33\n\rworkflow_json\x18\t \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tsignature\x18\n \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xd3\x02\n\x0cProjectProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x39\n\nproperties\x18\x03 \x03(\x0b\x32%.ai_flow.ProjectProto.PropertiesEntry\x12\x32\n\x0cproject_type\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12)\n\x03uri\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12*\n\x04user\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12.\n\x08password\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xc7\x03\n\rArtifactProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12:\n\nproperties\x18\x03 \x03(\x0b\x32&.ai_flow.ArtifactProto.PropertiesEntry\x12\x31\n\x0b\x64\x61ta_format\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tbatch_uri\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x30\n\nstream_uri\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\x0b\x64\x65scription\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x30\n\x0b\x63reate_time\x18\x08 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x30\n\x0bupdate_time\x18\t \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xa2\x01\n\x14RegisteredModelParam\x12\x30\n\nmodel_name\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12&\n\nmodel_type\x18\x02 \x01(\x0e\x32\x12.ai_flow.ModelType\x12\x30\n\nmodel_desc\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\"\x94\x02\n\x11ModelVersionParam\x12\x30\n\nmodel_path\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmodel_metric\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmodel_flavor\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cversion_desc\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\rcurrent_stage\x18\x05 \x01(\x0e\x32\x1a.ai_flow.ModelVersionStage\"w\n\x0eModelMetaParam\x12\x30\n\nmodel_name\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x33\n\rmodel_version\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.StringValue\"A\n\x08Response\x12\x13\n\x0breturn_code\x18\x01 \x01(\t\x12\x12\n\nreturn_msg\x18\x02 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x03 \x01(\t\"\x83\x01\n\x13RegisteredModelMeta\x12\x12\n\nmodel_name\x18\x01 \x01(\t\x12&\n\nmodel_type\x18\x02 \x01(\x0e\x32\x12.ai_flow.ModelType\x12\x30\n\nmodel_desc\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\"\xf3\x02\n\x10ModelVersionMeta\x12\x12\n\nmodel_name\x18\x01 \x01(\t\x12\x15\n\rmodel_version\x18\x02 \x01(\t\x12\x30\n\nmodel_path\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmodel_metric\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmodel_flavor\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cversion_desc\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x33\n\x0eversion_status\x18\x07 \x01(\x0e\x32\x1b.ai_flow.ModelVersionStatus\x12\x31\n\rcurrent_stage\x18\x08 \x01(\x0e\x32\x1a.ai_flow.ModelVersionStage\"\x81\x01\n\x15RegisteredModelDetail\x12\x36\n\x10registered_model\x18\x01 \x01(\x0b\x32\x1c.ai_flow.RegisteredModelMeta\x12\x30\n\rmodel_version\x18\x02 \x01(\x0b\x32\x19.ai_flow.ModelVersionMeta\"O\n\x14RegisteredModelMetas\x12\x37\n\x11registered_models\x18\x01 \x03(\x0b\x32\x1c.ai_flow.RegisteredModelMeta\"\xa1\x05\n\x0fMetricMetaProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12*\n\x04name\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\ndataset_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x30\n\nmodel_name\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x33\n\rmodel_version\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12+\n\x06job_id\x18\x06 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12/\n\nstart_time\x18\x07 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x08\x65nd_time\x18\x08 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x0bmetric_type\x18\t \x01(\x0e\x32\x18.ai_flow.MetricTypeProto\x12)\n\x03uri\x18\n \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12*\n\x04tags\x18\x0b \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x38\n\x12metric_description\x18\x0c \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12<\n\nproperties\x18\r \x03(\x0b\x32(.ai_flow.MetricMetaProto.PropertiesEntry\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xb8\x01\n\x12MetricSummaryProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12.\n\tmetric_id\x18\x02 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x30\n\nmetric_key\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmetric_value\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue*\xc0\x03\n\nReturnCode\x12\x0b\n\x07SUCCESS\x10\x00\x12\x12\n\x0eINTERNAL_ERROR\x10\x01\x12\x1b\n\x17TEMPORARILY_UNAVAILABLE\x10\x02\x12\x0c\n\x08IO_ERROR\x10\x03\x12\x0f\n\x0b\x42\x41\x44_REQUEST\x10\x04\x12\x1c\n\x17INVALID_PARAMETER_VALUE\x10\xe8\x07\x12\x17\n\x12\x45NDPOINT_NOT_FOUND\x10\xe9\x07\x12\x16\n\x11MALFORMED_REQUEST\x10\xea\x07\x12\x12\n\rINVALID_STATE\x10\xeb\x07\x12\x16\n\x11PERMISSION_DENIED\x10\xec\x07\x12\x15\n\x10\x46\x45\x41TURE_DISABLED\x10\xed\x07\x12\x1a\n\x15\x43USTOMER_UNAUTHORIZED\x10\xee\x07\x12\x1b\n\x16REQUEST_LIMIT_EXCEEDED\x10\xef\x07\x12\x1c\n\x17RESOURCE_ALREADY_EXISTS\x10\xd1\x0f\x12\x1c\n\x17RESOURCE_DOES_NOT_EXIST\x10\xd2\x0f\x12\x13\n\x0eQUOTA_EXCEEDED\x10\xb9\x17\x12\x1c\n\x17MAX_BLOCK_SIZE_EXCEEDED\x10\xba\x17\x12\x1b\n\x16MAX_READ_SIZE_EXCEEDED\x10\xbb\x17*\xd6\x01\n\rDataTypeProto\x12\x19\n\x15\x44\x41TA_TYPE_UNSPECIFIED\x10\x00\x12\t\n\x05INT32\x10\x01\x12\t\n\x05INT64\x10\x02\x12\x0b\n\x07\x46LOAT32\x10\x03\x12\x0b\n\x07\x46LOAT64\x10\x04\x12\n\n\x06STRING\x10\x05\x12\x0e\n\nINT32ARRAY\x10\x06\x12\x0e\n\nINT64ARRAY\x10\x07\x12\x10\n\x0c\x46lOAT32ARRAY\x10\x08\x12\x10\n\x0c\x46LOAT64ARRAY\x10\t\x12\x0f\n\x0bSTRINGARRAY\x10\n\x12\t\n\x05\x42YTES\x10\x0b\x12\x0e\n\nBYTESARRAY\x10\x0c*x\n\x17\x45xampleSupportTypeProto\x12$\n EXAMPLE_SUPPORT_TYPE_UNSPECIFIED\x10\x00\x12\x12\n\x0e\x45XAMPLE_STREAM\x10\x01\x12\x11\n\rEXAMPLE_BATCH\x10\x02\x12\x10\n\x0c\x45XAMPLE_BOTH\x10\x03*b\n\nStateProto\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x08\n\x04INIT\x10\x01\x12\x0c\n\x08STARTING\x10\x02\x12\x0b\n\x07RUNNING\x10\x03\x12\x0c\n\x08\x46INISHED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05*F\n\rExecutionMode\x12\x1e\n\x1a\x45XECUTION_MODE_UNSPECIFIED\x10\x00\x12\t\n\x05\x42\x41TCH\x10\x01\x12\n\n\x06STREAM\x10\x02*C\n\tModelType\x12\r\n\tNONE_TYPE\x10\x00\x12\x0e\n\nCHECKPOINT\x10\x01\x12\x0f\n\x0bSAVED_MODEL\x10\x02\x12\x06\n\x02H5\x10\x03*}\n\x12ModelVersionStatus\x12\x18\n\x14PENDING_REGISTRATION\x10\x00\x12\x17\n\x13\x46\x41ILED_REGISTRATION\x10\x01\x12\t\n\x05READY\x10\x03\x12\x14\n\x10PENDING_DELETION\x10\x04\x12\x13\n\x0f\x46\x41ILED_DELETION\x10\x05*\\\n\x11ModelVersionStage\x12\r\n\tGENERATED\x10\x00\x12\r\n\tVALIDATED\x10\x01\x12\x0c\n\x08\x44\x45PLOYED\x10\x02\x12\x0e\n\nDEPRECATED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04*)\n\x0fMetricTypeProto\x12\x0b\n\x07\x44\x41TASET\x10\x00\x12\t\n\x05MODEL\x10\x01\x42\x18\n\x10\x63om.aiflow.proto\x88\x01\x01\x90\x01\x01\x62\x06proto3'
+  serialized_pb=b'\n\rmessage.proto\x12\x07\x61i_flow\x1a\x1egoogle/protobuf/wrappers.proto\"K\n\x0bSchemaProto\x12\x11\n\tname_list\x18\x01 \x03(\t\x12)\n\ttype_list\x18\x02 \x03(\x0e\x32\x16.ai_flow.DataTypeProto\"\x9e\x07\n\x0c\x45xampleProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x39\n\nproperties\x18\x03 \x03(\x0b\x32%.ai_flow.ExampleProto.PropertiesEntry\x12\x36\n\x0csupport_type\x18\x04 \x01(\x0e\x32 .ai_flow.ExampleSupportTypeProto\x12$\n\x06schema\x18\x05 \x01(\x0b\x32\x14.ai_flow.SchemaProto\x12/\n\tdata_type\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\x0b\x64\x61ta_format\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tbatch_uri\x18\x08 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x30\n\nstream_uri\x18\t \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\x0b\x64\x65scription\x18\n \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x30\n\x0b\x63reate_time\x18\x0b \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x30\n\x0bupdate_time\x18\x0c \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x32\n\x0c\x63\x61talog_name\x18\r \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0c\x63\x61talog_type\x18\x0e \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x36\n\x10\x63\x61talog_database\x18\x0f \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12<\n\x16\x63\x61talog_connection_uri\x18\x10 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x35\n\x0f\x63\x61talog_version\x18\x11 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x33\n\rcatalog_table\x18\x12 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"a\n\x12ModelRelationProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12/\n\nproject_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\"\xb3\x01\n\nModelProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12/\n\nproject_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12&\n\nmodel_type\x18\x04 \x01(\x0e\x32\x12.ai_flow.ModelType\x12\x30\n\nmodel_desc\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\"\xb5\x01\n\x19ModelVersionRelationProto\x12-\n\x07version\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12-\n\x08model_id\x18\x02 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12:\n\x15workflow_execution_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\"\xae\x03\n\x11ModelVersionProto\x12-\n\x07version\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12-\n\x08model_id\x18\x02 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12:\n\x15workflow_execution_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x30\n\nmodel_path\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmodel_metric\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmodel_flavor\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cversion_desc\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\rcurrent_stage\x18\x08 \x01(\x0e\x32\x1a.ai_flow.ModelVersionStage\"\xe2\x03\n\x08JobProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12:\n\x15workflow_execution_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12&\n\tjob_state\x18\x04 \x01(\x0e\x32\x13.ai_flow.StateProto\x12\x35\n\nproperties\x18\x05 \x03(\x0b\x32!.ai_flow.JobProto.PropertiesEntry\x12,\n\x06job_id\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\nstart_time\x18\x07 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x08\x65nd_time\x18\x08 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x07log_uri\x18\t \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tsignature\x18\n \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\x80\x04\n\x16WorkflowExecutionProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12/\n\nproject_id\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12,\n\x0f\x65xecution_state\x18\x04 \x01(\x0e\x32\x13.ai_flow.StateProto\x12\x43\n\nproperties\x18\x05 \x03(\x0b\x32/.ai_flow.WorkflowExecutionProto.PropertiesEntry\x12/\n\nstart_time\x18\x06 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x08\x65nd_time\x18\x07 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x07log_uri\x18\x08 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x33\n\rworkflow_json\x18\t \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tsignature\x18\n \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xd3\x02\n\x0cProjectProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x39\n\nproperties\x18\x03 \x03(\x0b\x32%.ai_flow.ProjectProto.PropertiesEntry\x12\x32\n\x0cproject_type\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12)\n\x03uri\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12*\n\x04user\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12.\n\x08password\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xc7\x03\n\rArtifactProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12:\n\nproperties\x18\x03 \x03(\x0b\x32&.ai_flow.ArtifactProto.PropertiesEntry\x12\x31\n\x0b\x64\x61ta_format\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tbatch_uri\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x30\n\nstream_uri\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\x0b\x64\x65scription\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x30\n\x0b\x63reate_time\x18\x08 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x30\n\x0bupdate_time\x18\t \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xa2\x01\n\x14RegisteredModelParam\x12\x30\n\nmodel_name\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12&\n\nmodel_type\x18\x02 \x01(\x0e\x32\x12.ai_flow.ModelType\x12\x30\n\nmodel_desc\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\"\x94\x02\n\x11ModelVersionParam\x12\x30\n\nmodel_path\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmodel_metric\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmodel_flavor\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cversion_desc\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\rcurrent_stage\x18\x05 \x01(\x0e\x32\x1a.ai_flow.ModelVersionStage\"w\n\x0eModelMetaParam\x12\x30\n\nmodel_name\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x33\n\rmodel_version\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.StringValue\"A\n\x08Response\x12\x13\n\x0breturn_code\x18\x01 \x01(\t\x12\x12\n\nreturn_msg\x18\x02 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x03 \x01(\t\"\x83\x01\n\x13RegisteredModelMeta\x12\x12\n\nmodel_name\x18\x01 \x01(\t\x12&\n\nmodel_type\x18\x02 \x01(\x0e\x32\x12.ai_flow.ModelType\x12\x30\n\nmodel_desc\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\"\xf3\x02\n\x10ModelVersionMeta\x12\x12\n\nmodel_name\x18\x01 \x01(\t\x12\x15\n\rmodel_version\x18\x02 \x01(\t\x12\x30\n\nmodel_path\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmodel_metric\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmodel_flavor\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cversion_desc\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x33\n\x0eversion_status\x18\x07 \x01(\x0e\x32\x1b.ai_flow.ModelVersionStatus\x12\x31\n\rcurrent_stage\x18\x08 \x01(\x0e\x32\x1a.ai_flow.ModelVersionStage\"\x81\x01\n\x15RegisteredModelDetail\x12\x36\n\x10registered_model\x18\x01 \x01(\x0b\x32\x1c.ai_flow.RegisteredModelMeta\x12\x30\n\rmodel_version\x18\x02 \x01(\x0b\x32\x19.ai_flow.ModelVersionMeta\"O\n\x14RegisteredModelMetas\x12\x37\n\x11registered_models\x18\x01 \x03(\x0b\x32\x1c.ai_flow.RegisteredModelMeta\"\x98\x05\n\x0fMetricMetaProto\x12\x31\n\x0bmetric_name\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12-\n\x0bmetric_type\x18\x02 \x01(\x0e\x32\x18.ai_flow.MetricTypeProto\x12\x31\n\x0bmetric_desc\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cproject_name\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0c\x64\x61taset_name\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x30\n\nmodel_name\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12.\n\x08job_name\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\nstart_time\x18\x08 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x08\x65nd_time\x18\t \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12)\n\x03uri\x18\n \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12*\n\x04tags\x18\x0b \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12<\n\nproperties\x18\x0c \x03(\x0b\x32(.ai_flow.MetricMetaProto.PropertiesEntry\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xdf\x02\n\x12MetricSummaryProto\x12\x0c\n\x04uuid\x18\x01 \x01(\x03\x12\x31\n\x0bmetric_name\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x30\n\nmetric_key\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0cmetric_value\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x35\n\x10metric_timestamp\x18\x05 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x33\n\rmodel_version\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x36\n\x10job_execution_id\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue*\xc0\x03\n\nReturnCode\x12\x0b\n\x07SUCCESS\x10\x00\x12\x12\n\x0eINTERNAL_ERROR\x10\x01\x12\x1b\n\x17TEMPORARILY_UNAVAILABLE\x10\x02\x12\x0c\n\x08IO_ERROR\x10\x03\x12\x0f\n\x0b\x42\x41\x44_REQUEST\x10\x04\x12\x1c\n\x17INVALID_PARAMETER_VALUE\x10\xe8\x07\x12\x17\n\x12\x45NDPOINT_NOT_FOUND\x10\xe9\x07\x12\x16\n\x11MALFORMED_REQUEST\x10\xea\x07\x12\x12\n\rINVALID_STATE\x10\xeb\x07\x12\x16\n\x11PERMISSION_DENIED\x10\xec\x07\x12\x15\n\x10\x46\x45\x41TURE_DISABLED\x10\xed\x07\x12\x1a\n\x15\x43USTOMER_UNAUTHORIZED\x10\xee\x07\x12\x1b\n\x16REQUEST_LIMIT_EXCEEDED\x10\xef\x07\x12\x1c\n\x17RESOURCE_ALREADY_EXISTS\x10\xd1\x0f\x12\x1c\n\x17RESOURCE_DOES_NOT_EXIST\x10\xd2\x0f\x12\x13\n\x0eQUOTA_EXCEEDED\x10\xb9\x17\x12\x1c\n\x17MAX_BLOCK_SIZE_EXCEEDED\x10\xba\x17\x12\x1b\n\x16MAX_READ_SIZE_EXCEEDED\x10\xbb\x17*\xd6\x01\n\rDataTypeProto\x12\x19\n\x15\x44\x41TA_TYPE_UNSPECIFIED\x10\x00\x12\t\n\x05INT32\x10\x01\x12\t\n\x05INT64\x10\x02\x12\x0b\n\x07\x46LOAT32\x10\x03\x12\x0b\n\x07\x46LOAT64\x10\x04\x12\n\n\x06STRING\x10\x05\x12\x0e\n\nINT32ARRAY\x10\x06\x12\x0e\n\nINT64ARRAY\x10\x07\x12\x10\n\x0c\x46lOAT32ARRAY\x10\x08\x12\x10\n\x0c\x46LOAT64ARRAY\x10\t\x12\x0f\n\x0bSTRINGARRAY\x10\n\x12\t\n\x05\x42YTES\x10\x0b\x12\x0e\n\nBYTESARRAY\x10\x0c*x\n\x17\x45xampleSupportTypeProto\x12$\n EXAMPLE_SUPPORT_TYPE_UNSPECIFIED\x10\x00\x12\x12\n\x0e\x45XAMPLE_STREAM\x10\x01\x12\x11\n\rEXAMPLE_BATCH\x10\x02\x12\x10\n\x0c\x45XAMPLE_BOTH\x10\x03*b\n\nStateProto\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x08\n\x04INIT\x10\x01\x12\x0c\n\x08STARTING\x10\x02\x12\x0b\n\x07RUNNING\x10\x03\x12\x0c\n\x08\x46INISHED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05*F\n\rExecutionMode\x12\x1e\n\x1a\x45XECUTION_MODE_UNSPECIFIED\x10\x00\x12\t\n\x05\x42\x41TCH\x10\x01\x12\n\n\x06STREAM\x10\x02*C\n\tModelType\x12\r\n\tNONE_TYPE\x10\x00\x12\x0e\n\nCHECKPOINT\x10\x01\x12\x0f\n\x0bSAVED_MODEL\x10\x02\x12\x06\n\x02H5\x10\x03*}\n\x12ModelVersionStatus\x12\x18\n\x14PENDING_REGISTRATION\x10\x00\x12\x17\n\x13\x46\x41ILED_REGISTRATION\x10\x01\x12\t\n\x05READY\x10\x03\x12\x14\n\x10PENDING_DELETION\x10\x04\x12\x13\n\x0f\x46\x41ILED_DELETION\x10\x05*\\\n\x11ModelVersionStage\x12\r\n\tGENERATED\x10\x00\x12\r\n\tVALIDATED\x10\x01\x12\x0c\n\x08\x44\x45PLOYED\x10\x02\x12\x0e\n\nDEPRECATED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04*)\n\x0fMetricTypeProto\x12\x0b\n\x07\x44\x41TASET\x10\x00\x12\t\n\x05MODEL\x10\x01\x42\"\n\x10\x63om.aiflow.protoZ\x08/ai_flow\x88\x01\x01\x90\x01\x01\x62\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,])
 
@@ -143,8 +143,8 @@ _RETURNCODE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=5979,
-  serialized_end=6427,
+  serialized_start=6137,
+  serialized_end=6585,
 )
 _sym_db.RegisterEnumDescriptor(_RETURNCODE)
 
@@ -224,8 +224,8 @@ _DATATYPEPROTO = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=6430,
-  serialized_end=6644,
+  serialized_start=6588,
+  serialized_end=6802,
 )
 _sym_db.RegisterEnumDescriptor(_DATATYPEPROTO)
 
@@ -260,8 +260,8 @@ _EXAMPLESUPPORTTYPEPROTO = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=6646,
-  serialized_end=6766,
+  serialized_start=6804,
+  serialized_end=6924,
 )
 _sym_db.RegisterEnumDescriptor(_EXAMPLESUPPORTTYPEPROTO)
 
@@ -306,8 +306,8 @@ _STATEPROTO = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=6768,
-  serialized_end=6866,
+  serialized_start=6926,
+  serialized_end=7024,
 )
 _sym_db.RegisterEnumDescriptor(_STATEPROTO)
 
@@ -337,8 +337,8 @@ _EXECUTIONMODE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=6868,
-  serialized_end=6938,
+  serialized_start=7026,
+  serialized_end=7096,
 )
 _sym_db.RegisterEnumDescriptor(_EXECUTIONMODE)
 
@@ -373,8 +373,8 @@ _MODELTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=6940,
-  serialized_end=7007,
+  serialized_start=7098,
+  serialized_end=7165,
 )
 _sym_db.RegisterEnumDescriptor(_MODELTYPE)
 
@@ -414,8 +414,8 @@ _MODELVERSIONSTATUS = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=7009,
-  serialized_end=7134,
+  serialized_start=7167,
+  serialized_end=7292,
 )
 _sym_db.RegisterEnumDescriptor(_MODELVERSIONSTATUS)
 
@@ -455,8 +455,8 @@ _MODELVERSIONSTAGE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=7136,
-  serialized_end=7228,
+  serialized_start=7294,
+  serialized_end=7386,
 )
 _sym_db.RegisterEnumDescriptor(_MODELVERSIONSTAGE)
 
@@ -481,8 +481,8 @@ _METRICTYPEPROTO = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=7230,
-  serialized_end=7271,
+  serialized_start=7388,
+  serialized_end=7429,
 )
 _sym_db.RegisterEnumDescriptor(_METRICTYPEPROTO)
 
@@ -1951,65 +1951,65 @@ _METRICMETAPROTO = _descriptor.Descriptor(
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='uuid', full_name='ai_flow.MetricMetaProto.uuid', index=0,
-      number=1, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='name', full_name='ai_flow.MetricMetaProto.name', index=1,
-      number=2, type=11, cpp_type=10, label=1,
+      name='metric_name', full_name='ai_flow.MetricMetaProto.metric_name', index=0,
+      number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='dataset_id', full_name='ai_flow.MetricMetaProto.dataset_id', index=2,
+      name='metric_type', full_name='ai_flow.MetricMetaProto.metric_type', index=1,
+      number=2, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='metric_desc', full_name='ai_flow.MetricMetaProto.metric_desc', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model_name', full_name='ai_flow.MetricMetaProto.model_name', index=3,
+      name='project_name', full_name='ai_flow.MetricMetaProto.project_name', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model_version', full_name='ai_flow.MetricMetaProto.model_version', index=4,
+      name='dataset_name', full_name='ai_flow.MetricMetaProto.dataset_name', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='job_id', full_name='ai_flow.MetricMetaProto.job_id', index=5,
+      name='model_name', full_name='ai_flow.MetricMetaProto.model_name', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='start_time', full_name='ai_flow.MetricMetaProto.start_time', index=6,
+      name='job_name', full_name='ai_flow.MetricMetaProto.job_name', index=6,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='end_time', full_name='ai_flow.MetricMetaProto.end_time', index=7,
+      name='start_time', full_name='ai_flow.MetricMetaProto.start_time', index=7,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='metric_type', full_name='ai_flow.MetricMetaProto.metric_type', index=8,
-      number=9, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
+      name='end_time', full_name='ai_flow.MetricMetaProto.end_time', index=8,
+      number=9, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -2028,15 +2028,8 @@ _METRICMETAPROTO = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='metric_description', full_name='ai_flow.MetricMetaProto.metric_description', index=11,
-      number=12, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='properties', full_name='ai_flow.MetricMetaProto.properties', index=12,
-      number=13, type=11, cpp_type=10, label=3,
+      name='properties', full_name='ai_flow.MetricMetaProto.properties', index=11,
+      number=12, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -2054,7 +2047,7 @@ _METRICMETAPROTO = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=5116,
-  serialized_end=5789,
+  serialized_end=5780,
 )
 
 
@@ -2074,7 +2067,7 @@ _METRICSUMMARYPROTO = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='metric_id', full_name='ai_flow.MetricSummaryProto.metric_id', index=1,
+      name='metric_name', full_name='ai_flow.MetricSummaryProto.metric_name', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -2094,6 +2087,27 @@ _METRICSUMMARYPROTO = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='metric_timestamp', full_name='ai_flow.MetricSummaryProto.metric_timestamp', index=4,
+      number=5, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='model_version', full_name='ai_flow.MetricSummaryProto.model_version', index=5,
+      number=6, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='job_execution_id', full_name='ai_flow.MetricSummaryProto.job_execution_id', index=6,
+      number=7, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -2106,8 +2120,8 @@ _METRICSUMMARYPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5792,
-  serialized_end=5976,
+  serialized_start=5783,
+  serialized_end=6134,
 )
 
 _SCHEMAPROTO.fields_by_name['type_list'].enum_type = _DATATYPEPROTO
@@ -2197,21 +2211,24 @@ _REGISTEREDMODELDETAIL.fields_by_name['registered_model'].message_type = _REGIST
 _REGISTEREDMODELDETAIL.fields_by_name['model_version'].message_type = _MODELVERSIONMETA
 _REGISTEREDMODELMETAS.fields_by_name['registered_models'].message_type = _REGISTEREDMODELMETA
 _METRICMETAPROTO_PROPERTIESENTRY.containing_type = _METRICMETAPROTO
-_METRICMETAPROTO.fields_by_name['name'].message_type = google_dot_protobuf_dot_wrappers__pb2._STRINGVALUE
-_METRICMETAPROTO.fields_by_name['dataset_id'].message_type = google_dot_protobuf_dot_wrappers__pb2._INT64VALUE
+_METRICMETAPROTO.fields_by_name['metric_name'].message_type = google_dot_protobuf_dot_wrappers__pb2._STRINGVALUE
+_METRICMETAPROTO.fields_by_name['metric_type'].enum_type = _METRICTYPEPROTO
+_METRICMETAPROTO.fields_by_name['metric_desc'].message_type = google_dot_protobuf_dot_wrappers__pb2._STRINGVALUE
+_METRICMETAPROTO.fields_by_name['project_name'].message_type = google_dot_protobuf_dot_wrappers__pb2._STRINGVALUE
+_METRICMETAPROTO.fields_by_name['dataset_name'].message_type = google_dot_protobuf_dot_wrappers__pb2._STRINGVALUE
 _METRICMETAPROTO.fields_by_name['model_name'].message_type = google_dot_protobuf_dot_wrappers__pb2._STRINGVALUE
-_METRICMETAPROTO.fields_by_name['model_version'].message_type = google_dot_protobuf_dot_wrappers__pb2._STRINGVALUE
-_METRICMETAPROTO.fields_by_name['job_id'].message_type = google_dot_protobuf_dot_wrappers__pb2._INT64VALUE
+_METRICMETAPROTO.fields_by_name['job_name'].message_type = google_dot_protobuf_dot_wrappers__pb2._STRINGVALUE
 _METRICMETAPROTO.fields_by_name['start_time'].message_type = google_dot_protobuf_dot_wrappers__pb2._INT64VALUE
 _METRICMETAPROTO.fields_by_name['end_time'].message_type = google_dot_protobuf_dot_wrappers__pb2._INT64VALUE
-_METRICMETAPROTO.fields_by_name['metric_type'].enum_type = _METRICTYPEPROTO
 _METRICMETAPROTO.fields_by_name['uri'].message_type = google_dot_protobuf_dot_wrappers__pb2._STRINGVALUE
 _METRICMETAPROTO.fields_by_name['tags'].message_type = google_dot_protobuf_dot_wrappers__pb2._STRINGVALUE
-_METRICMETAPROTO.fields_by_name['metric_description'].message_type = google_dot_protobuf_dot_wrappers__pb2._STRINGVALUE
 _METRICMETAPROTO.fields_by_name['properties'].message_type = _METRICMETAPROTO_PROPERTIESENTRY
-_METRICSUMMARYPROTO.fields_by_name['metric_id'].message_type = google_dot_protobuf_dot_wrappers__pb2._INT64VALUE
+_METRICSUMMARYPROTO.fields_by_name['metric_name'].message_type = google_dot_protobuf_dot_wrappers__pb2._STRINGVALUE
 _METRICSUMMARYPROTO.fields_by_name['metric_key'].message_type = google_dot_protobuf_dot_wrappers__pb2._STRINGVALUE
 _METRICSUMMARYPROTO.fields_by_name['metric_value'].message_type = google_dot_protobuf_dot_wrappers__pb2._STRINGVALUE
+_METRICSUMMARYPROTO.fields_by_name['metric_timestamp'].message_type = google_dot_protobuf_dot_wrappers__pb2._INT64VALUE
+_METRICSUMMARYPROTO.fields_by_name['model_version'].message_type = google_dot_protobuf_dot_wrappers__pb2._STRINGVALUE
+_METRICSUMMARYPROTO.fields_by_name['job_execution_id'].message_type = google_dot_protobuf_dot_wrappers__pb2._STRINGVALUE
 DESCRIPTOR.message_types_by_name['SchemaProto'] = _SCHEMAPROTO
 DESCRIPTOR.message_types_by_name['ExampleProto'] = _EXAMPLEPROTO
 DESCRIPTOR.message_types_by_name['ModelRelationProto'] = _MODELRELATIONPROTO

@@ -38,45 +38,50 @@ class MetricServiceStub(object):
                 request_serializer=metric__service__pb2.MetricMetaRequest.SerializeToString,
                 response_deserializer=metric__service__pb2.MetricMetaResponse.FromString,
                 )
-        self.registerMetricSummary = channel.unary_unary(
-                '/ai_flow.MetricService/registerMetricSummary',
-                request_serializer=metric__service__pb2.MetricSummaryRequest.SerializeToString,
-                response_deserializer=metric__service__pb2.MetricSummaryResponse.FromString,
-                )
         self.updateMetricMeta = channel.unary_unary(
                 '/ai_flow.MetricService/updateMetricMeta',
                 request_serializer=metric__service__pb2.MetricMetaRequest.SerializeToString,
                 response_deserializer=metric__service__pb2.MetricMetaResponse.FromString,
                 )
+        self.deleteMetricMeta = channel.unary_unary(
+                '/ai_flow.MetricService/deleteMetricMeta',
+                request_serializer=metric__service__pb2.MetricNameRequest.SerializeToString,
+                response_deserializer=message__pb2.Response.FromString,
+                )
         self.getMetricMeta = channel.unary_unary(
                 '/ai_flow.MetricService/getMetricMeta',
-                request_serializer=metric__service__pb2.GetMetricMetaRequest.SerializeToString,
+                request_serializer=metric__service__pb2.MetricNameRequest.SerializeToString,
                 response_deserializer=metric__service__pb2.MetricMetaResponse.FromString,
+                )
+        self.listDatasetMetricMetas = channel.unary_unary(
+                '/ai_flow.MetricService/listDatasetMetricMetas',
+                request_serializer=metric__service__pb2.ListDatasetMetricMetasRequest.SerializeToString,
+                response_deserializer=metric__service__pb2.ListMetricMetasResponse.FromString,
+                )
+        self.listModelMetricMetas = channel.unary_unary(
+                '/ai_flow.MetricService/listModelMetricMetas',
+                request_serializer=metric__service__pb2.ListModelMetricMetasRequest.SerializeToString,
+                response_deserializer=metric__service__pb2.ListMetricMetasResponse.FromString,
+                )
+        self.registerMetricSummary = channel.unary_unary(
+                '/ai_flow.MetricService/registerMetricSummary',
+                request_serializer=metric__service__pb2.MetricSummaryRequest.SerializeToString,
+                response_deserializer=metric__service__pb2.MetricSummaryResponse.FromString,
                 )
         self.updateMetricSummary = channel.unary_unary(
                 '/ai_flow.MetricService/updateMetricSummary',
                 request_serializer=metric__service__pb2.MetricSummaryRequest.SerializeToString,
                 response_deserializer=metric__service__pb2.MetricSummaryResponse.FromString,
                 )
-        self.getDatasetMetricMeta = channel.unary_unary(
-                '/ai_flow.MetricService/getDatasetMetricMeta',
-                request_serializer=metric__service__pb2.GetDataSetMetricMetaRequest.SerializeToString,
-                response_deserializer=metric__service__pb2.ListMetricMetaResponse.FromString,
-                )
-        self.getModelMetricMeta = channel.unary_unary(
-                '/ai_flow.MetricService/getModelMetricMeta',
-                request_serializer=metric__service__pb2.GetModelMetricMetaRequest.SerializeToString,
-                response_deserializer=metric__service__pb2.ListMetricMetaResponse.FromString,
-                )
         self.getMetricSummary = channel.unary_unary(
                 '/ai_flow.MetricService/getMetricSummary',
-                request_serializer=metric__service__pb2.GetMetricSummaryRequest.SerializeToString,
-                response_deserializer=metric__service__pb2.ListMetricSummaryResponse.FromString,
-                )
-        self.deleteMetricMeta = channel.unary_unary(
-                '/ai_flow.MetricService/deleteMetricMeta',
                 request_serializer=metric__service__pb2.UuidRequest.SerializeToString,
-                response_deserializer=message__pb2.Response.FromString,
+                response_deserializer=metric__service__pb2.MetricSummaryResponse.FromString,
+                )
+        self.listMetricSummaries = channel.unary_unary(
+                '/ai_flow.MetricService/listMetricSummaries',
+                request_serializer=metric__service__pb2.ListMetricSummariesRequest.SerializeToString,
+                response_deserializer=metric__service__pb2.ListMetricSummariesResponse.FromString,
                 )
         self.deleteMetricSummary = channel.unary_unary(
                 '/ai_flow.MetricService/deleteMetricSummary',
@@ -94,13 +99,13 @@ class MetricServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def registerMetricSummary(self, request, context):
+    def updateMetricMeta(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def updateMetricMeta(self, request, context):
+    def deleteMetricMeta(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -112,19 +117,25 @@ class MetricServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def listDatasetMetricMetas(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def listModelMetricMetas(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def registerMetricSummary(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def updateMetricSummary(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def getDatasetMetricMeta(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def getModelMetricMeta(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -136,7 +147,7 @@ class MetricServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def deleteMetricMeta(self, request, context):
+    def listMetricSummaries(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -156,45 +167,50 @@ def add_MetricServiceServicer_to_server(servicer, server):
                     request_deserializer=metric__service__pb2.MetricMetaRequest.FromString,
                     response_serializer=metric__service__pb2.MetricMetaResponse.SerializeToString,
             ),
-            'registerMetricSummary': grpc.unary_unary_rpc_method_handler(
-                    servicer.registerMetricSummary,
-                    request_deserializer=metric__service__pb2.MetricSummaryRequest.FromString,
-                    response_serializer=metric__service__pb2.MetricSummaryResponse.SerializeToString,
-            ),
             'updateMetricMeta': grpc.unary_unary_rpc_method_handler(
                     servicer.updateMetricMeta,
                     request_deserializer=metric__service__pb2.MetricMetaRequest.FromString,
                     response_serializer=metric__service__pb2.MetricMetaResponse.SerializeToString,
             ),
+            'deleteMetricMeta': grpc.unary_unary_rpc_method_handler(
+                    servicer.deleteMetricMeta,
+                    request_deserializer=metric__service__pb2.MetricNameRequest.FromString,
+                    response_serializer=message__pb2.Response.SerializeToString,
+            ),
             'getMetricMeta': grpc.unary_unary_rpc_method_handler(
                     servicer.getMetricMeta,
-                    request_deserializer=metric__service__pb2.GetMetricMetaRequest.FromString,
+                    request_deserializer=metric__service__pb2.MetricNameRequest.FromString,
                     response_serializer=metric__service__pb2.MetricMetaResponse.SerializeToString,
+            ),
+            'listDatasetMetricMetas': grpc.unary_unary_rpc_method_handler(
+                    servicer.listDatasetMetricMetas,
+                    request_deserializer=metric__service__pb2.ListDatasetMetricMetasRequest.FromString,
+                    response_serializer=metric__service__pb2.ListMetricMetasResponse.SerializeToString,
+            ),
+            'listModelMetricMetas': grpc.unary_unary_rpc_method_handler(
+                    servicer.listModelMetricMetas,
+                    request_deserializer=metric__service__pb2.ListModelMetricMetasRequest.FromString,
+                    response_serializer=metric__service__pb2.ListMetricMetasResponse.SerializeToString,
+            ),
+            'registerMetricSummary': grpc.unary_unary_rpc_method_handler(
+                    servicer.registerMetricSummary,
+                    request_deserializer=metric__service__pb2.MetricSummaryRequest.FromString,
+                    response_serializer=metric__service__pb2.MetricSummaryResponse.SerializeToString,
             ),
             'updateMetricSummary': grpc.unary_unary_rpc_method_handler(
                     servicer.updateMetricSummary,
                     request_deserializer=metric__service__pb2.MetricSummaryRequest.FromString,
                     response_serializer=metric__service__pb2.MetricSummaryResponse.SerializeToString,
             ),
-            'getDatasetMetricMeta': grpc.unary_unary_rpc_method_handler(
-                    servicer.getDatasetMetricMeta,
-                    request_deserializer=metric__service__pb2.GetDataSetMetricMetaRequest.FromString,
-                    response_serializer=metric__service__pb2.ListMetricMetaResponse.SerializeToString,
-            ),
-            'getModelMetricMeta': grpc.unary_unary_rpc_method_handler(
-                    servicer.getModelMetricMeta,
-                    request_deserializer=metric__service__pb2.GetModelMetricMetaRequest.FromString,
-                    response_serializer=metric__service__pb2.ListMetricMetaResponse.SerializeToString,
-            ),
             'getMetricSummary': grpc.unary_unary_rpc_method_handler(
                     servicer.getMetricSummary,
-                    request_deserializer=metric__service__pb2.GetMetricSummaryRequest.FromString,
-                    response_serializer=metric__service__pb2.ListMetricSummaryResponse.SerializeToString,
-            ),
-            'deleteMetricMeta': grpc.unary_unary_rpc_method_handler(
-                    servicer.deleteMetricMeta,
                     request_deserializer=metric__service__pb2.UuidRequest.FromString,
-                    response_serializer=message__pb2.Response.SerializeToString,
+                    response_serializer=metric__service__pb2.MetricSummaryResponse.SerializeToString,
+            ),
+            'listMetricSummaries': grpc.unary_unary_rpc_method_handler(
+                    servicer.listMetricSummaries,
+                    request_deserializer=metric__service__pb2.ListMetricSummariesRequest.FromString,
+                    response_serializer=metric__service__pb2.ListMetricSummariesResponse.SerializeToString,
             ),
             'deleteMetricSummary': grpc.unary_unary_rpc_method_handler(
                     servicer.deleteMetricSummary,
@@ -229,23 +245,6 @@ class MetricService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def registerMetricSummary(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetricService/registerMetricSummary',
-            metric__service__pb2.MetricSummaryRequest.SerializeToString,
-            metric__service__pb2.MetricSummaryResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
     def updateMetricMeta(request,
             target,
             options=(),
@@ -263,6 +262,23 @@ class MetricService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
+    def deleteMetricMeta(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetricService/deleteMetricMeta',
+            metric__service__pb2.MetricNameRequest.SerializeToString,
+            message__pb2.Response.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
     def getMetricMeta(request,
             target,
             options=(),
@@ -274,8 +290,59 @@ class MetricService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/ai_flow.MetricService/getMetricMeta',
-            metric__service__pb2.GetMetricMetaRequest.SerializeToString,
+            metric__service__pb2.MetricNameRequest.SerializeToString,
             metric__service__pb2.MetricMetaResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def listDatasetMetricMetas(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetricService/listDatasetMetricMetas',
+            metric__service__pb2.ListDatasetMetricMetasRequest.SerializeToString,
+            metric__service__pb2.ListMetricMetasResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def listModelMetricMetas(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetricService/listModelMetricMetas',
+            metric__service__pb2.ListModelMetricMetasRequest.SerializeToString,
+            metric__service__pb2.ListMetricMetasResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def registerMetricSummary(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetricService/registerMetricSummary',
+            metric__service__pb2.MetricSummaryRequest.SerializeToString,
+            metric__service__pb2.MetricSummaryResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -297,40 +364,6 @@ class MetricService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def getDatasetMetricMeta(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetricService/getDatasetMetricMeta',
-            metric__service__pb2.GetDataSetMetricMetaRequest.SerializeToString,
-            metric__service__pb2.ListMetricMetaResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def getModelMetricMeta(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetricService/getModelMetricMeta',
-            metric__service__pb2.GetModelMetricMetaRequest.SerializeToString,
-            metric__service__pb2.ListMetricMetaResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
     def getMetricSummary(request,
             target,
             options=(),
@@ -342,13 +375,13 @@ class MetricService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/ai_flow.MetricService/getMetricSummary',
-            metric__service__pb2.GetMetricSummaryRequest.SerializeToString,
-            metric__service__pb2.ListMetricSummaryResponse.FromString,
+            metric__service__pb2.UuidRequest.SerializeToString,
+            metric__service__pb2.MetricSummaryResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def deleteMetricMeta(request,
+    def listMetricSummaries(request,
             target,
             options=(),
             channel_credentials=None,
@@ -358,9 +391,9 @@ class MetricService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetricService/deleteMetricMeta',
-            metric__service__pb2.UuidRequest.SerializeToString,
-            message__pb2.Response.FromString,
+        return grpc.experimental.unary_unary(request, target, '/ai_flow.MetricService/listMetricSummaries',
+            metric__service__pb2.ListMetricSummariesRequest.SerializeToString,
+            metric__service__pb2.ListMetricSummariesResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

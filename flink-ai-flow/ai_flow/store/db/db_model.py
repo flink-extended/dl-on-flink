@@ -320,33 +320,25 @@ class SqlMetricMeta(base, Base):
     SQL model of metric meta
     """
     __tablename__ = 'metric_meta'
-    name = Column(String(255), unique=True, nullable=False)
-    dataset_id = Column(BigInteger, nullable=True)
-    model_name = Column(String(256), nullable=True)
-    model_version = Column(String(500), nullable=True)
-    job_id = Column(BigInteger, nullable=True)
+
+    metric_name = Column(String(256), unique=True, nullable=False)
+    metric_type = Column(String(256), default=MetricType.DATASET.value)
+    metric_desc = Column(String(4096))
+    project_name = Column(String(256), nullable=False)
+    dataset_name = Column(String(256))
+    model_name = Column(String(256))
+    job_name = Column(String(256))
     start_time = Column(BigInteger)
     end_time = Column(BigInteger)
-    metric_type = Column(String(256), default=MetricType.DATASET.value)
-    uri = Column(String(1000))
+    uri = Column(String(1024))
     tags = Column(String(256))
-    metric_description = Column(String(4096))
-    properties = Column(String(1000))
+    properties = Column(String(1024))
     is_deleted = Column(String(128), default='False')
 
     def __repr__(self):
         return '<SqlMetricMeta ({}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {})>' \
-            .format(self.name,
-                    self.dataset_id,
-                    self.model_name,
-                    self.model_version,
-                    self.job_id,
-                    self.start_time,
-                    self.end_time,
-                    self.metric_type,
-                    self.metric_description,
-                    self.uri,
-                    self.tags,
+            .format(self.uuid, self.metric_name, self.metric_type, self.metric_desc, self.project_name,
+                    self.dataset_name, self.model_name, self.start_time, self.end_time, self.uri, self.tags,
                     self.properties)
 
 
@@ -355,13 +347,19 @@ class SqlMetricSummary(base, Base):
     SQL model of metric summary
     """
     __tablename__ = 'metric_summary'
-    metric_id = Column(BigInteger, nullable=False)
-    metric_key = Column(String(128), unique=True, nullable=False)
+
+    metric_name = Column(String(256), nullable=False)
+    metric_key = Column(String(256), nullable=False)
     metric_value = Column(String(2048), nullable=False)
+    metric_timestamp = Column(BigInteger, nullable=False)
+    model_version = Column(String(256))
+    job_execution_id = Column(String(256))
     is_deleted = Column(String(128), default='False')
 
     def __repr__(self):
-        return '<SqlMetricSummary ({}, {}, {})>'.format(self.metric_id, self.metric_key, self.metric_value)
+        return '<SqlMetricSummary ({}, {}, {}, {}, {}, {}, {})>'.format(self.uuid, self.metric_name, self.metric_key,
+                                                                        self.metric_value, self.metric_timestamp,
+                                                                        self.model_version, self.job_execution_id)
 
 
 class SqlMember(base):
@@ -647,7 +645,6 @@ class MongoRegisteredModel(Document):
     model_name = StringField(max_length=255, required=True, unique=True)
     model_type = StringField(max_length=500)
     model_desc = StringField(max_length=1000)
-
     model_version = ListField(ReferenceField(MongoModelVersion))
 
     meta = {'db_alias': MONGO_DB_ALIAS_META_SERVICE}
@@ -700,60 +697,6 @@ class MongoArtifact(Document):
             self.update_time,
             self.properties,
             self.is_deleted)
-
-
-class MongoMetricMeta(Document):
-    """
-    Document of metric meta
-    """
-
-    uuid = SequenceField(db_alias=MONGO_DB_ALIAS_META_SERVICE)
-    name = StringField(max_length=255, required=True, unique=True)
-    dataset_id = IntField()
-    model_name = StringField(max_length=256)
-    model_version = StringField(max_length=500)
-    job_id = IntField()
-    start_time = LongField()
-    end_time = LongField()
-    metric_type = StringField(max_length=256, default=MetricType.DATASET.value)
-    uri = StringField(max_length=1000)
-    tags = StringField(max_length=256)
-    metric_description = StringField(max_length=4096)
-    properties = StringField(max_length=1000)
-    is_deleted = BooleanField(default=False)
-
-    meta = {'db_alias': MONGO_DB_ALIAS_META_SERVICE}
-
-    def __repr__(self):
-        return '<Document MetricMeta ({}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {})>' \
-            .format(self.name,
-                    self.dataset_id,
-                    self.model_id,
-                    self.job_id,
-                    self.start_time,
-                    self.end_time,
-                    self.metric_type,
-                    self.metric_description,
-                    self.uri,
-                    self.tags,
-                    self.properties)
-
-
-class MongoMetricSummary(Document):
-    """
-    Document of metric summary
-    """
-
-    uuid = SequenceField(db_alias=MONGO_DB_ALIAS_META_SERVICE)
-    metric_id = IntField()
-    metric_key = StringField(max_length=128, required=True)
-    metric_value = StringField(max_length=2048, required=True)
-    is_deleted = BooleanField(default=False)
-
-    meta = {'db_alias': MONGO_DB_ALIAS_META_SERVICE}
-
-    def __repr__(self):
-        return '<Document MetricSummary ({}, {}, {})>'.format(self.metric_id, self.metric_key, self.metric_value)
 
 
 class MongoMember(Document):

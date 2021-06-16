@@ -18,9 +18,6 @@
 #
 import json
 
-from notification_service.base_notification import BaseEvent, DEFAULT_NAMESPACE
-from notification_service.client import NotificationClient
-
 from ai_flow.model_center.entity.model_version import ModelVersion
 from ai_flow.model_center.entity.model_version_param import ModelVersionParam
 from ai_flow.model_center.entity.model_version_stage import MODEL_VERSION_TO_EVENT_TYPE, ModelVersionEventType, \
@@ -31,24 +28,14 @@ from ai_flow.rest_endpoint.protobuf import model_center_service_pb2_grpc
 from ai_flow.rest_endpoint.protobuf.message_pb2 import ModelType, RegisteredModelMetas
 from ai_flow.rest_endpoint.service.util import catch_exception, _wrap_response
 from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
-from ai_flow.store.mongo_store import MongoStore
-from ai_flow.store.db.db_util import extract_db_engine_from_uri, parse_mongo_uri
-from ai_flow.application_master.master_config import DBType
+from notification_service.base_notification import BaseEvent, DEFAULT_NAMESPACE
+from notification_service.client import NotificationClient
 
 
 class ModelCenterService(model_center_service_pb2_grpc.ModelCenterServiceServicer):
 
     def __init__(self, store_uri, server_uri, notification_uri=None):
-        db_engine = extract_db_engine_from_uri(store_uri)
-        if DBType.value_of(db_engine) == DBType.MONGODB:
-            username, password, host, port, db = parse_mongo_uri(store_uri)
-            self.model_repo_store = MongoStore(host=host,
-                                               port=int(port),
-                                               username=username,
-                                               password=password,
-                                               db=db)
-        else:
-            self.model_repo_store = SqlAlchemyStore(store_uri)
+        self.model_repo_store = SqlAlchemyStore(store_uri)
         if notification_uri is None:
             self.notification_client = NotificationClient(server_uri, default_namespace=DEFAULT_NAMESPACE)
         else:

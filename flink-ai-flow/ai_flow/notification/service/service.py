@@ -18,22 +18,9 @@
 #
 from notification_service import service
 from notification_service.event_storage import DbEventStorage
-from notification_service.mongo_event_storage import MongoEventStorage
-from ai_flow.store.mongo_store import MongoStore
-from ai_flow.store.db.db_util import extract_db_engine_from_uri, parse_mongo_uri
-from ai_flow.application_master.master_config import DBType
 
 
 class NotificationService(service.NotificationService):
 
     def __init__(self, backend_store_uri):
-        db_engine = extract_db_engine_from_uri(backend_store_uri)
-        if DBType.value_of(db_engine) == DBType.MONGODB:
-            username, password, host, port, db = parse_mongo_uri(backend_store_uri)
-            super().__init__(storage=MongoEventStorage(host=host,
-                                                       port=int(port),
-                                                       username=username,
-                                                       password=password,
-                                                       db=db))
-        else:
-            super().__init__(storage=DbEventStorage(backend_store_uri))
+        super().__init__(storage=DbEventStorage(backend_store_uri))
