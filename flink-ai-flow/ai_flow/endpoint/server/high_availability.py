@@ -162,9 +162,12 @@ class HighAvailableService(HighAvailabilityManagerServicer):
         self.ha_manager.start(self.server_uri,
                               self.ha_storage,
                               self.ttl_ms)
+        logging.info("High available service started")
 
     def stop(self):
         self.ha_manager.stop()
+        logging.info("High available service stopped")
+
 
     @asyncio.coroutine
     def listMembers(self, request, context):

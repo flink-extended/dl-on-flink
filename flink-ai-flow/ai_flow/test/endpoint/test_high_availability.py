@@ -25,7 +25,7 @@ from notification_service.service import NotificationService
 
 from ai_flow.project.project_config import ProjectConfig
 from ai_flow.client.ai_flow_client import AIFlowClient
-from ai_flow.endpoint.server.server import HighAvailableAIFlowServer
+from ai_flow.endpoint.server.server import AIFlowServer
 from ai_flow.store.db.base_model import base
 from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
 
@@ -39,9 +39,9 @@ class TestHighAvailableAIFlowServer(unittest.TestCase):
     def start_aiflow_server(host, port):
         port = str(port)
         server_uri = host + ":" + port
-        server = HighAvailableAIFlowServer(
-            store_uri=_SQLITE_DB_URI, port=port,
-            server_uri=server_uri, notification_uri='localhost:30031', start_default_notification=False)
+        server = AIFlowServer(
+            store_uri=_SQLITE_DB_URI, port=port, enabled_ha=True,
+            ha_server_uri=server_uri, notification_uri='localhost:30031', start_default_notification=False)
         server.run()
         return server
 
@@ -57,9 +57,9 @@ class TestHighAvailableAIFlowServer(unittest.TestCase):
         SqlAlchemyStore(_SQLITE_DB_URI)
         self.notification = NotificationMaster(service=NotificationService(storage=MemoryEventStorage()), port=30031)
         self.notification.run()
-        self.server1 = HighAvailableAIFlowServer(
-            store_uri=_SQLITE_DB_URI, port=50051,
-            server_uri='localhost:50051', notification_uri='localhost:30031', start_default_notification=False)
+        self.server1 = AIFlowServer(
+            store_uri=_SQLITE_DB_URI, port=50051, enabled_ha=True,
+            ha_server_uri='localhost:50051', notification_uri='localhost:30031', start_default_notification=False)
         self.server1.run()
         self.server2 = None
         self.server3 = None
