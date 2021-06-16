@@ -123,12 +123,6 @@ class MasterConfig(AIFlowConfiguration):
         else:
             return True
 
-    def start_deploy_service(self):
-        if "start_deploy_service" in self and self['start_deploy_service'] is False:
-            return False
-        else:
-            return True
-
     def start_scheduling_service(self):
         if "start_scheduling_service" in self and self['start_scheduling_service'] is False:
             return False
