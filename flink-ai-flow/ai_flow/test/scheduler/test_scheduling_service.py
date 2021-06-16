@@ -92,7 +92,6 @@ class TestSchedulingService(unittest.TestCase):
             os.remove(_SQLITE_DB_FILE)
         self.server = AIFlowServer(store_uri=_SQLITE_DB_URI, port=_PORT,
                                    start_default_notification=False,
-                                   start_deploy_service=False,
                                    start_meta_service=False,
                                    start_metric_service=False,
                                    start_model_center_service=False,

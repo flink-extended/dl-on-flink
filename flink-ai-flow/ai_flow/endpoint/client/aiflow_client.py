@@ -25,7 +25,6 @@ import time
 from functools import wraps
 
 from ai_flow.project.project_config import ProjectConfig
-from ai_flow.protobuf.deploy_service_pb2_grpc import DeployServiceStub
 from ai_flow.protobuf.high_availability_pb2 import ListMembersRequest, ReturnStatus
 from ai_flow.protobuf.high_availability_pb2_grpc import HighAvailabilityManagerStub
 from ai_flow.protobuf.metadata_service_pb2_grpc import MetadataServiceStub
@@ -35,7 +34,6 @@ from ai_flow.protobuf.scheduling_service_pb2_grpc import SchedulingServiceStub
 from ai_flow.endpoint.server.high_availability import proto_to_member, sleep_and_detecting_running
 from notification_service.base_notification import BaseEvent
 from ai_flow.notification.event_types import AI_FLOW_TYPE
-from ai_flow.endpoint.client.deploy_client import DeployClient
 from ai_flow.endpoint.client.metadata_client import MetadataClient
 from ai_flow.endpoint.client.model_center_client import ModelCenterClient
 from notification_service.client import NotificationClient
@@ -49,7 +47,7 @@ if not hasattr(time, 'time_ns'):
 _SERVER_URI = 'localhost:50051'
 
 
-class AIFlowClient(MetadataClient, ModelCenterClient, NotificationClient, DeployClient, MetricClient, SchedulingClient):
+class AIFlowClient(MetadataClient, ModelCenterClient, NotificationClient, MetricClient, SchedulingClient):
     """
     Client of an AIFlow Server that manages metadata store, model center and notification service.
     """
@@ -60,7 +58,6 @@ class AIFlowClient(MetadataClient, ModelCenterClient, NotificationClient, Deploy
                  project_config: ProjectConfig = None):
         MetadataClient.__init__(self, server_uri)
         ModelCenterClient.__init__(self, server_uri)
-        DeployClient.__init__(self, server_uri)
         MetricClient.__init__(self, server_uri)
         SchedulingClient.__init__(self, server_uri)
         self.enable_ha = False
@@ -213,13 +210,6 @@ class AIFlowClient(MetadataClient, ModelCenterClient, NotificationClient, Deploy
             server_uri,
             "model_center_stub")
         self.model_center_stub = model_center_stub
-
-        deploy_channel = grpc.insecure_channel(server_uri)
-        deploy_stub = self._wrap_aiflow_rpcs(
-            DeployServiceStub(deploy_channel),
-            server_uri,
-            "deploy_stub")
-        self.deploy_stub = deploy_stub
 
         metric_channel = grpc.insecure_channel(server_uri)
         metric_stub = self._wrap_aiflow_rpcs(
