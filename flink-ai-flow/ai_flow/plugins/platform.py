@@ -19,11 +19,9 @@
 from typing import Text
 import logging
 from ai_flow.util.json_utils import Jsonable
-from ai_flow.deployer.listener import register_job_status_listener, BaseJobStatusListener
 from ai_flow.workflow.job_handler import BaseJobHandler
 
 AbstractJobHandler = BaseJobHandler
-AbstractJobStatusListener = BaseJobStatusListener
 
 
 class AbstractPlatform(Jsonable):
@@ -41,14 +39,6 @@ class AbstractPlatform(Jsonable):
         """
         raise NotImplementedError("not implement platform")
 
-    @staticmethod
-    def job_status_listener() -> type(AbstractJobStatusListener):
-        """
-        :return AbstractJobStatusListener class:
-        """
-        raise NotImplementedError("not implement AbstractJobStatusListener")
-
 
 def register_platform(platform: type(AbstractPlatform)):
     logging.debug('register platform {}'.format(platform.platform()))
-    register_job_status_listener(platform.job_status_listener()())

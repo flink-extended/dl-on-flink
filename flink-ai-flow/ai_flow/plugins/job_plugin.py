@@ -20,7 +20,6 @@ from ai_flow.airflow.dag_generator import AirflowCodeGenerator, register_airflow
 from ai_flow.translator.base_translator import BaseJobGenerator, register_job_generator
 from ai_flow.workflow.job import BaseJob, JobContext
 from ai_flow.workflow.job_config import BaseJobConfig, register_job_config
-from ai_flow.deployer.job_submitter import BaseJobSubmitter, register_job_submitter
 from ai_flow.graph.graph import AISubGraph
 from ai_flow.project.project_description import ProjectDesc
 from ai_flow.plugins.platform import AbstractPlatform, AbstractJobHandler
@@ -32,10 +31,9 @@ import logging
 AbstractJobGenerator = BaseJobGenerator
 AbstractJob = BaseJob
 AbstractJobConfig = BaseJobConfig
-AbstractJobSubmitter = BaseJobSubmitter
 
 
-class AbstractJobPlugin(AbstractJobGenerator, AbstractJobSubmitter, AirflowCodeGenerator):
+class AbstractJobPlugin(AbstractJobGenerator, AirflowCodeGenerator):
 
     def __init__(self) -> None:
         super().__init__()
@@ -118,7 +116,6 @@ def register_job_plugin(plugin: AbstractJobPlugin):
                                                         plugin.platform().platform(),
                                                         plugin.engine().engine()))
     register_job_generator(platform=plugin.platform().platform(), engine=plugin.engine().engine(), generator=plugin)
-    register_job_submitter(platform=plugin.platform().platform(), engine=plugin.engine().engine(), job_submitter=plugin)
     register_job_config(platform=plugin.platform().platform(), engine=plugin.engine().engine(),
                         job_config_class=plugin.job_config_type())
     register_airflow_code_generator(plugin.platform().platform(), plugin.engine().engine(), plugin)

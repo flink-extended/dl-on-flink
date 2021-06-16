@@ -27,58 +27,6 @@ class AbstractPlatform(Jsonable):
         :return platform name:
         """
         raise NotImplementedError("not implement platform")
-
-    @staticmethod
-    def job_status_listener() -> type(AbstractJobStatusListener):
-        """
-        :return AbstractJobStatusListener class:
-        """
-        raise NotImplementedError("not implement AbstractJobStatusListener")
-```
-**JobStatusListener:**
-
-Jobstatuslistener listens for the status of running jobs on a particular platform.
-You must inherit the JobStatusListener abstract class:
-
-```python
-class BaseJobStatusListener(Thread):
-
-    def __init__(self, platform) -> None:
-        """
-        :param platform:
-        """
-        super().__init__()
-        self.platform = platform
-        self.message_queue: MessageQueue = None
-
-    def set_message_queue(self, message_queue: MessageQueue):
-        self.message_queue = message_queue
-
-    def start_listen(self):
-        """
-        start listen jobs status.
-        """
-        pass
-
-    def stop_listen(self):
-        """
-        stop listen jobs status.
-        """
-        pass
-
-    def register_job_listening(self, job_handler: BaseJobHandler):
-        """
-        listen a job status. 
-        :param job_handler:
-        """
-        pass
-
-    def stop_job_listening(self, job_id: int):
-        """
-        stop listen a job status. 
-        :param job_id:
-        """
-        pass
 ```
 Then call register_platform function to register the platform.
 ```python
