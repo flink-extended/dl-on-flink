@@ -17,8 +17,11 @@
 # under the License.
 #
 import contextlib
+import re
 import time
+import urllib.parse
 from collections import Iterable
+from enum import Enum
 from functools import wraps
 from typing import Tuple, Union
 
@@ -36,6 +39,83 @@ if not hasattr(time, 'time_ns'):
 SQL_ALCHEMY_CONN = "sqlite:///notification_service.db"
 engine = None
 Session = None
+
+"""
+List of SQLAlchemy database engines for notification backend storage.
+"""
+
+MYSQL = 'mysql'
+SQLITE = 'sqlite'
+POSTGRES = 'postgresql'
+MSSQL = 'mssql'
+MONGODB = 'mongodb'
+
+DATABASE_ENGINES = [
+    MYSQL,
+    SQLITE,
+    POSTGRES,
+    MSSQL,
+    MONGODB,
+]
+
+
+class DBType(str, Enum):
+    SQLITE = "sql_lite"
+    MYSQL = "mysql"
+    MONGODB = "mongodb"
+
+    @staticmethod
+    def value_of(db_type):
+        if db_type in ('SQL_LITE', 'sql_lite', 'sqlite'):
+            return DBType.SQLITE
+        elif db_type in ('MYSQL', 'mysql'):
+            return DBType.MYSQL
+        elif db_type in ('MONGODB', 'mongodb'):
+            return DBType.MONGODB
+        else:
+            raise NotImplementedError
+
+
+def extract_db_engine_from_uri(db_uri):
+    """
+    Parse specified database URI to extract database type. Confirm extracted database engine is
+    supported. If database driver is specified, confirm driver passes a plausible regex.
+    """
+    scheme = urllib.parse.urlparse(db_uri).scheme
+    scheme_plus_count = scheme.count('+')
+
+    """validates scheme parsed from DB URI is supported"""
+    if scheme_plus_count == 0:
+        db_engine = scheme
+    elif scheme_plus_count == 1:
+        db_engine, _ = scheme.split('+')
+    else:
+        error_msg = "Invalid database URI: '%s'." % db_uri
+        raise Exception(error_msg)
+
+    """validates db_engine parsed from DB URI is supported"""
+    if db_engine not in DATABASE_ENGINES:
+        error_msg = "Invalid database engine: '%s'." % db_engine
+        raise Exception(error_msg)
+
+    return db_engine
+
+
+def parse_mongo_uri(db_uri):
+    """
+    Parse MongoDB URI-style string to split up and return credentials
+
+    Args:
+        db_uri (string): MongoDB URI-style string
+    Return:
+
+    """
+    regex_str = r'^(?P<schema>(mongodb:(?:\/{2})?))((?P<user>\w+?):(?P<pwd>(\w+?))@|:@?)(?P<host>(\S+?)):(?P<port>(\d+))(\/(?P<db>(\S+?)))$'
+    pattern = re.compile(regex_str)
+    m = pattern.match(db_uri)
+    if m is None:
+        raise Exception('The URI of MongoDB is invalid')
+    return m.group('user'), m.group('pwd'), m.group('host'), m.group('port'), m.group('db')
 
 
 def prepare_db(user_engine=None, user_session=None, print_sql=False):
