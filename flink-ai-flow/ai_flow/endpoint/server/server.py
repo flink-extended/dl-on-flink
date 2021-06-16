@@ -41,7 +41,6 @@ from ai_flow.store.db.db_util import extract_db_engine_from_uri, parse_mongo_uri
 from ai_flow.application_master.master_config import DBType
 from notification_service.proto import notification_service_pb2_grpc
 
-from ai_flow.deployer.deploy_service import DeployService
 from ai_flow.metadata_store.service.service import MetadataService
 from ai_flow.model_center.service.service import ModelCenterService
 from ai_flow.notification.service.service import NotificationService
@@ -52,7 +51,7 @@ from ai_flow.scheduler.scheduling_service import SchedulingService, SchedulerCon
 sys.path.append(os.path.abspath(os.path.join(os.getcwd(), "../../..")))
 
 from ai_flow.protobuf import model_center_service_pb2_grpc, \
-    metadata_service_pb2_grpc, deploy_service_pb2_grpc, metric_service_pb2_grpc, scheduling_service_pb2_grpc
+    metadata_service_pb2_grpc, metric_service_pb2_grpc, scheduling_service_pb2_grpc
 
 _PORT = '50051'
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24
@@ -69,7 +68,6 @@ class AIFlowServer(object):
                  start_meta_service: bool = True,
                  start_model_center_service: bool = True,
                  start_metric_service: bool = True,
-                 start_deploy_service: bool = True,
                  start_scheduling_service: bool = True,
                  scheduler_config: Dict = None):
         self.executor = Executor(futures.ThreadPoolExecutor(max_workers=10))
@@ -92,14 +90,6 @@ class AIFlowServer(object):
         if start_metric_service:
             logging.info("start metric service.")
             metric_service_pb2_grpc.add_MetricServiceServicer_to_server(MetricService(db_uri=store_uri), self.server)
-
-        if start_deploy_service:
-            logging.info("start deploy service.")
-            self.start_deploy_service = True
-            self.deploy_service = DeployService(server_uri=server_uri)
-            deploy_service_pb2_grpc.add_DeployServiceServicer_to_server(self.deploy_service, self.server)
-        else:
-            self.start_deploy_service = False
 
         if start_scheduling_service:
             logging.info("start scheduling service.")
@@ -128,9 +118,6 @@ class AIFlowServer(object):
     def run(self, is_block=False):
         self.server.start()
         logging.info('AIFlow server started.')
-        if self.start_deploy_service:
-            self.deploy_service.start_scheduler_manager()
-            logging.info('Deploy service started.')
         if is_block:
             try:
                 while True:
@@ -141,8 +128,6 @@ class AIFlowServer(object):
             pass
 
     def stop(self):
-        if self.start_deploy_service:
-            self.deploy_service.stop_scheduler_manager()
         self.executor.shutdown()
         self.server.stop(0)
         logging.info('AIFlow server stopped.')

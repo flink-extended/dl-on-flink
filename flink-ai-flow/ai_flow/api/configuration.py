@@ -37,7 +37,6 @@ def ensure_project_registered():
     if project_meta is None:
         project_meta = client.register_project(name=_default_project_config.get_project_name(),
                                                properties=pp)
-    else:
         project_meta = client.update_project(project_name=_default_project_config.get_project_name(), properties=pp)
 
     _default_project_config.set_project_uuid(str(project_meta.uuid))
