@@ -20,14 +20,14 @@ from typing import Text, Optional
 import os
 from ai_flow.project.project_description import get_project_description_from, ProjectDesc
 
-from ai_flow.project.project_config import ProjectConfig
-from ai_flow.client.ai_flow_client import AIFlowClient
+from ai_flow.project.project_config import ProjectConfig, _default_project_config
 
 _default_project_config_set_flag = False
 
 
 def ensure_project_registered():
     """ Ensure the project configured in project.yaml has been registered. """
+    from ai_flow.client.ai_flow_client import AIFlowClient
 
     client = AIFlowClient(server_uri=_default_project_config.get_master_uri())
     project_meta = client.get_project_by_name(_default_project_config.get_project_name())
