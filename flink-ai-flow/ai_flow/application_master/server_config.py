@@ -38,7 +38,7 @@ class DBType(str, Enum):
             raise NotImplementedError
 
 
-class MasterConfig(AIFlowConfiguration):
+class AIFlowServerConfig(AIFlowConfiguration):
     def get_sql_lite_db_file(self):
         db_uri = self.get_db_uri()
         return db_uri[10:]

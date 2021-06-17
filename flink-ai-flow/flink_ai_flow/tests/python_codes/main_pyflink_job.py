@@ -21,7 +21,7 @@ from typing import List
 from ai_flow.util.path_util import get_file_dir, get_parent_dir
 
 import ai_flow as af
-from ai_flow import AIFlowMaster
+from ai_flow import AIFlowServerRunner
 from flink_ai_flow.pyflink import Executor, FlinkFunctionContext, SourceExecutor, SinkExecutor, TableEnvCreator
 import test_util
 from pyflink.table import DataTypes
@@ -74,17 +74,17 @@ class TestPyFlinkJob():
     @classmethod
     def setUpClass(cls) -> None:
         config_file = test_util.get_master_config_file()
-        cls.master = AIFlowMaster(config_file=config_file)
-        cls.master.start()
+        cls.server_runner = AIFlowServerRunner(config_file=config_file)
+        cls.server_runner.start()
         test_util.set_project_config(__file__)
 
     @classmethod
     def tearDownClass(cls) -> None:
-        cls.master.stop()
+        cls.server_runner.stop()
         af.unset_project_config()
 
     def tearDown(self):
-        TestPyFlinkJob.master._clear_db()
+        TestPyFlinkJob.server_runner._clear_db()
 
     def test_run_pyflink_job(self):
         project_path = os.path.dirname(__file__) + '/../'

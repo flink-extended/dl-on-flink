@@ -73,9 +73,9 @@ def create_workflow_config(root_dir_path):
 
 def start_master(master_yaml_path):
     configure_logging()
-    master = ai_flow.AIFlowMaster(config_file=master_yaml_path)
-    master.start(is_block=False)
-    return master
+    server_runner = ai_flow.AIFlowServerRunner(config_file=master_yaml_path)
+    server_runner.start(is_block=False)
+    return server_runner
 
 
 class PrintHelloExecutor(Executor):

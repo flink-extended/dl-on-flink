@@ -26,7 +26,7 @@ from ai_flow.endpoint.server.util import catch_exception
 from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
 from ai_flow.store.mongo_store import MongoStore
 from ai_flow.store.db.db_util import extract_db_engine_from_uri, parse_mongo_uri
-from ai_flow.application_master.master_config import DBType
+from ai_flow.application_master.server_config import DBType
 
 
 class MetricService(MetricServiceServicer):

@@ -19,7 +19,7 @@
 import os
 
 import ai_flow as af
-from ai_flow.application_master.master import AIFlowMaster
+from ai_flow.application_master.server_runner import AIFlowServerRunner
 from ai_flow.common.properties import ExecuteProperties, Properties
 from ai_flow.util import json_utils
 import flink_ai_flow as faf
@@ -89,9 +89,9 @@ def run_flink_job():
 
 if __name__ == '__main__':
     config_file = test_util.get_master_config_file()
-    master = AIFlowMaster(
+    server_runner = AIFlowServerRunner(
         config_file=config_file)
-    master.start()
+    server_runner.start()
     test_util.set_project_config(__file__)
     run_flink_job()
-    master.stop()
+    server_runner.stop()
