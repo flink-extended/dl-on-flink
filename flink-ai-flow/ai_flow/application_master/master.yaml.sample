@@ -1,5 +1,0 @@
-master_ip: localhost
-master_port: 50052
-db_uri: sqlite:///aiflow.db
-db_type: sql_lite
-k8s_namespace: ai-flow

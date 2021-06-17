@@ -18,8 +18,8 @@
 #
 import unittest
 
-from ai_flow.application_master.server_runner import AIFlowServerRunner
-from ai_flow.application_master.server_config import AIFlowServerConfig, DBType
+from ai_flow.endpoint.server.server_runner import AIFlowServerRunner
+from ai_flow.endpoint.server.server_config import AIFlowServerConfig, DBType
 from ai_flow.test import test_util
 
 

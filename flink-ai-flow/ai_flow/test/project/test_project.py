@@ -18,7 +18,7 @@
 #
 import unittest
 
-from ai_flow.application_master.server_runner import AIFlowServerRunner
+from ai_flow.endpoint.server.server_runner import AIFlowServerRunner
 
 from ai_flow.common.path_util import get_file_dir
 from ai_flow.project.blob_manager import BlobManagerFactory

@@ -19,7 +19,7 @@
 import unittest
 
 from ai_flow.project.project_description import get_project_description_from
-from ai_flow.application_master.server_runner import AIFlowServerRunner
+from ai_flow.endpoint.server.server_runner import AIFlowServerRunner
 from ai_flow.test import test_util
 from ai_flow.workflow.job_config import PeriodicConfig
 from ai_flow.graph.graph import default_graph

@@ -19,7 +19,7 @@
 import os
 
 import ai_flow as af
-from ai_flow.application_master.server_runner import AIFlowServerRunner
+from ai_flow.endpoint.server.server_runner import AIFlowServerRunner
 from ai_flow.common.properties import ExecuteProperties, Properties
 from ai_flow.util import json_utils
 import flink_ai_flow as faf
