@@ -27362,79 +27362,49 @@ public final class MetadataServiceOuterClass {
         java.lang.String key);
 
     /**
-     * <code>.google.protobuf.StringValue data_format = 3;</code>
-     * @return Whether the dataFormat field is set.
+     * <code>.google.protobuf.StringValue artifact_type = 3;</code>
+     * @return Whether the artifactType field is set.
      */
-    boolean hasDataFormat();
+    boolean hasArtifactType();
     /**
-     * <code>.google.protobuf.StringValue data_format = 3;</code>
-     * @return The dataFormat.
+     * <code>.google.protobuf.StringValue artifact_type = 3;</code>
+     * @return The artifactType.
      */
-    com.google.protobuf.StringValue getDataFormat();
+    com.google.protobuf.StringValue getArtifactType();
     /**
-     * <code>.google.protobuf.StringValue data_format = 3;</code>
+     * <code>.google.protobuf.StringValue artifact_type = 3;</code>
      */
-    com.google.protobuf.StringValueOrBuilder getDataFormatOrBuilder();
+    com.google.protobuf.StringValueOrBuilder getArtifactTypeOrBuilder();
 
     /**
-     * <code>.google.protobuf.StringValue batch_uri = 4;</code>
-     * @return Whether the batchUri field is set.
+     * <code>.google.protobuf.StringValue uri = 4;</code>
+     * @return Whether the uri field is set.
      */
-    boolean hasBatchUri();
+    boolean hasUri();
     /**
-     * <code>.google.protobuf.StringValue batch_uri = 4;</code>
-     * @return The batchUri.
+     * <code>.google.protobuf.StringValue uri = 4;</code>
+     * @return The uri.
      */
-    com.google.protobuf.StringValue getBatchUri();
+    com.google.protobuf.StringValue getUri();
     /**
-     * <code>.google.protobuf.StringValue batch_uri = 4;</code>
+     * <code>.google.protobuf.StringValue uri = 4;</code>
      */
-    com.google.protobuf.StringValueOrBuilder getBatchUriOrBuilder();
+    com.google.protobuf.StringValueOrBuilder getUriOrBuilder();
 
     /**
-     * <code>.google.protobuf.StringValue stream_uri = 5;</code>
-     * @return Whether the streamUri field is set.
-     */
-    boolean hasStreamUri();
-    /**
-     * <code>.google.protobuf.StringValue stream_uri = 5;</code>
-     * @return The streamUri.
-     */
-    com.google.protobuf.StringValue getStreamUri();
-    /**
-     * <code>.google.protobuf.StringValue stream_uri = 5;</code>
-     */
-    com.google.protobuf.StringValueOrBuilder getStreamUriOrBuilder();
-
-    /**
-     * <code>.google.protobuf.StringValue description = 6;</code>
+     * <code>.google.protobuf.StringValue description = 5;</code>
      * @return Whether the description field is set.
      */
     boolean hasDescription();
     /**
-     * <code>.google.protobuf.StringValue description = 6;</code>
+     * <code>.google.protobuf.StringValue description = 5;</code>
      * @return The description.
      */
     com.google.protobuf.StringValue getDescription();
     /**
-     * <code>.google.protobuf.StringValue description = 6;</code>
+     * <code>.google.protobuf.StringValue description = 5;</code>
      */
     com.google.protobuf.StringValueOrBuilder getDescriptionOrBuilder();
-
-    /**
-     * <code>.google.protobuf.Int64Value update_time = 7;</code>
-     * @return Whether the updateTime field is set.
-     */
-    boolean hasUpdateTime();
-    /**
-     * <code>.google.protobuf.Int64Value update_time = 7;</code>
-     * @return The updateTime.
-     */
-    com.google.protobuf.Int64Value getUpdateTime();
-    /**
-     * <code>.google.protobuf.Int64Value update_time = 7;</code>
-     */
-    com.google.protobuf.Int64ValueOrBuilder getUpdateTimeOrBuilder();
   }
   /**
    * Protobuf type {@code ai_flow.UpdateArtifactRequest}
@@ -27504,44 +27474,31 @@ public final class MetadataServiceOuterClass {
             }
             case 26: {
               com.google.protobuf.StringValue.Builder subBuilder = null;
-              if (dataFormat_ != null) {
-                subBuilder = dataFormat_.toBuilder();
+              if (artifactType_ != null) {
+                subBuilder = artifactType_.toBuilder();
               }
-              dataFormat_ = input.readMessage(com.google.protobuf.StringValue.parser(), extensionRegistry);
+              artifactType_ = input.readMessage(com.google.protobuf.StringValue.parser(), extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom(dataFormat_);
-                dataFormat_ = subBuilder.buildPartial();
+                subBuilder.mergeFrom(artifactType_);
+                artifactType_ = subBuilder.buildPartial();
               }
 
               break;
             }
             case 34: {
               com.google.protobuf.StringValue.Builder subBuilder = null;
-              if (batchUri_ != null) {
-                subBuilder = batchUri_.toBuilder();
+              if (uri_ != null) {
+                subBuilder = uri_.toBuilder();
               }
-              batchUri_ = input.readMessage(com.google.protobuf.StringValue.parser(), extensionRegistry);
+              uri_ = input.readMessage(com.google.protobuf.StringValue.parser(), extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom(batchUri_);
-                batchUri_ = subBuilder.buildPartial();
+                subBuilder.mergeFrom(uri_);
+                uri_ = subBuilder.buildPartial();
               }
 
               break;
             }
             case 42: {
-              com.google.protobuf.StringValue.Builder subBuilder = null;
-              if (streamUri_ != null) {
-                subBuilder = streamUri_.toBuilder();
-              }
-              streamUri_ = input.readMessage(com.google.protobuf.StringValue.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(streamUri_);
-                streamUri_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            case 50: {
               com.google.protobuf.StringValue.Builder subBuilder = null;
               if (description_ != null) {
                 subBuilder = description_.toBuilder();
@@ -27550,19 +27507,6 @@ public final class MetadataServiceOuterClass {
               if (subBuilder != null) {
                 subBuilder.mergeFrom(description_);
                 description_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            case 58: {
-              com.google.protobuf.Int64Value.Builder subBuilder = null;
-              if (updateTime_ != null) {
-                subBuilder = updateTime_.toBuilder();
-              }
-              updateTime_ = input.readMessage(com.google.protobuf.Int64Value.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(updateTime_);
-                updateTime_ = subBuilder.buildPartial();
               }
 
               break;
@@ -27730,88 +27674,62 @@ public final class MetadataServiceOuterClass {
       return map.get(key);
     }
 
-    public static final int DATA_FORMAT_FIELD_NUMBER = 3;
-    private com.google.protobuf.StringValue dataFormat_;
+    public static final int ARTIFACT_TYPE_FIELD_NUMBER = 3;
+    private com.google.protobuf.StringValue artifactType_;
     /**
-     * <code>.google.protobuf.StringValue data_format = 3;</code>
-     * @return Whether the dataFormat field is set.
+     * <code>.google.protobuf.StringValue artifact_type = 3;</code>
+     * @return Whether the artifactType field is set.
      */
     @java.lang.Override
-    public boolean hasDataFormat() {
-      return dataFormat_ != null;
+    public boolean hasArtifactType() {
+      return artifactType_ != null;
     }
     /**
-     * <code>.google.protobuf.StringValue data_format = 3;</code>
-     * @return The dataFormat.
+     * <code>.google.protobuf.StringValue artifact_type = 3;</code>
+     * @return The artifactType.
      */
     @java.lang.Override
-    public com.google.protobuf.StringValue getDataFormat() {
-      return dataFormat_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : dataFormat_;
+    public com.google.protobuf.StringValue getArtifactType() {
+      return artifactType_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : artifactType_;
     }
     /**
-     * <code>.google.protobuf.StringValue data_format = 3;</code>
+     * <code>.google.protobuf.StringValue artifact_type = 3;</code>
      */
     @java.lang.Override
-    public com.google.protobuf.StringValueOrBuilder getDataFormatOrBuilder() {
-      return getDataFormat();
-    }
-
-    public static final int BATCH_URI_FIELD_NUMBER = 4;
-    private com.google.protobuf.StringValue batchUri_;
-    /**
-     * <code>.google.protobuf.StringValue batch_uri = 4;</code>
-     * @return Whether the batchUri field is set.
-     */
-    @java.lang.Override
-    public boolean hasBatchUri() {
-      return batchUri_ != null;
-    }
-    /**
-     * <code>.google.protobuf.StringValue batch_uri = 4;</code>
-     * @return The batchUri.
-     */
-    @java.lang.Override
-    public com.google.protobuf.StringValue getBatchUri() {
-      return batchUri_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : batchUri_;
-    }
-    /**
-     * <code>.google.protobuf.StringValue batch_uri = 4;</code>
-     */
-    @java.lang.Override
-    public com.google.protobuf.StringValueOrBuilder getBatchUriOrBuilder() {
-      return getBatchUri();
+    public com.google.protobuf.StringValueOrBuilder getArtifactTypeOrBuilder() {
+      return getArtifactType();
     }
 
-    public static final int STREAM_URI_FIELD_NUMBER = 5;
-    private com.google.protobuf.StringValue streamUri_;
+    public static final int URI_FIELD_NUMBER = 4;
+    private com.google.protobuf.StringValue uri_;
     /**
-     * <code>.google.protobuf.StringValue stream_uri = 5;</code>
-     * @return Whether the streamUri field is set.
+     * <code>.google.protobuf.StringValue uri = 4;</code>
+     * @return Whether the uri field is set.
      */
     @java.lang.Override
-    public boolean hasStreamUri() {
-      return streamUri_ != null;
+    public boolean hasUri() {
+      return uri_ != null;
     }
     /**
-     * <code>.google.protobuf.StringValue stream_uri = 5;</code>
-     * @return The streamUri.
+     * <code>.google.protobuf.StringValue uri = 4;</code>
+     * @return The uri.
      */
     @java.lang.Override
-    public com.google.protobuf.StringValue getStreamUri() {
-      return streamUri_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : streamUri_;
+    public com.google.protobuf.StringValue getUri() {
+      return uri_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : uri_;
     }
     /**
-     * <code>.google.protobuf.StringValue stream_uri = 5;</code>
+     * <code>.google.protobuf.StringValue uri = 4;</code>
      */
     @java.lang.Override
-    public com.google.protobuf.StringValueOrBuilder getStreamUriOrBuilder() {
-      return getStreamUri();
+    public com.google.protobuf.StringValueOrBuilder getUriOrBuilder() {
+      return getUri();
     }
 
-    public static final int DESCRIPTION_FIELD_NUMBER = 6;
+    public static final int DESCRIPTION_FIELD_NUMBER = 5;
     private com.google.protobuf.StringValue description_;
     /**
-     * <code>.google.protobuf.StringValue description = 6;</code>
+     * <code>.google.protobuf.StringValue description = 5;</code>
      * @return Whether the description field is set.
      */
     @java.lang.Override
@@ -27819,7 +27737,7 @@ public final class MetadataServiceOuterClass {
       return description_ != null;
     }
     /**
-     * <code>.google.protobuf.StringValue description = 6;</code>
+     * <code>.google.protobuf.StringValue description = 5;</code>
      * @return The description.
      */
     @java.lang.Override
@@ -27827,37 +27745,11 @@ public final class MetadataServiceOuterClass {
       return description_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : description_;
     }
     /**
-     * <code>.google.protobuf.StringValue description = 6;</code>
+     * <code>.google.protobuf.StringValue description = 5;</code>
      */
     @java.lang.Override
     public com.google.protobuf.StringValueOrBuilder getDescriptionOrBuilder() {
       return getDescription();
-    }
-
-    public static final int UPDATE_TIME_FIELD_NUMBER = 7;
-    private com.google.protobuf.Int64Value updateTime_;
-    /**
-     * <code>.google.protobuf.Int64Value update_time = 7;</code>
-     * @return Whether the updateTime field is set.
-     */
-    @java.lang.Override
-    public boolean hasUpdateTime() {
-      return updateTime_ != null;
-    }
-    /**
-     * <code>.google.protobuf.Int64Value update_time = 7;</code>
-     * @return The updateTime.
-     */
-    @java.lang.Override
-    public com.google.protobuf.Int64Value getUpdateTime() {
-      return updateTime_ == null ? com.google.protobuf.Int64Value.getDefaultInstance() : updateTime_;
-    }
-    /**
-     * <code>.google.protobuf.Int64Value update_time = 7;</code>
-     */
-    @java.lang.Override
-    public com.google.protobuf.Int64ValueOrBuilder getUpdateTimeOrBuilder() {
-      return getUpdateTime();
     }
 
     private byte memoizedIsInitialized = -1;
@@ -27883,20 +27775,14 @@ public final class MetadataServiceOuterClass {
           internalGetProperties(),
           PropertiesDefaultEntryHolder.defaultEntry,
           2);
-      if (dataFormat_ != null) {
-        output.writeMessage(3, getDataFormat());
+      if (artifactType_ != null) {
+        output.writeMessage(3, getArtifactType());
       }
-      if (batchUri_ != null) {
-        output.writeMessage(4, getBatchUri());
-      }
-      if (streamUri_ != null) {
-        output.writeMessage(5, getStreamUri());
+      if (uri_ != null) {
+        output.writeMessage(4, getUri());
       }
       if (description_ != null) {
-        output.writeMessage(6, getDescription());
-      }
-      if (updateTime_ != null) {
-        output.writeMessage(7, getUpdateTime());
+        output.writeMessage(5, getDescription());
       }
       unknownFields.writeTo(output);
     }
@@ -27920,25 +27806,17 @@ public final class MetadataServiceOuterClass {
         size += com.google.protobuf.CodedOutputStream
             .computeMessageSize(2, properties__);
       }
-      if (dataFormat_ != null) {
+      if (artifactType_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, getDataFormat());
+          .computeMessageSize(3, getArtifactType());
       }
-      if (batchUri_ != null) {
+      if (uri_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, getBatchUri());
-      }
-      if (streamUri_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, getStreamUri());
+          .computeMessageSize(4, getUri());
       }
       if (description_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(6, getDescription());
-      }
-      if (updateTime_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(7, getUpdateTime());
+          .computeMessageSize(5, getDescription());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -27959,30 +27837,20 @@ public final class MetadataServiceOuterClass {
           .equals(other.getName())) return false;
       if (!internalGetProperties().equals(
           other.internalGetProperties())) return false;
-      if (hasDataFormat() != other.hasDataFormat()) return false;
-      if (hasDataFormat()) {
-        if (!getDataFormat()
-            .equals(other.getDataFormat())) return false;
+      if (hasArtifactType() != other.hasArtifactType()) return false;
+      if (hasArtifactType()) {
+        if (!getArtifactType()
+            .equals(other.getArtifactType())) return false;
       }
-      if (hasBatchUri() != other.hasBatchUri()) return false;
-      if (hasBatchUri()) {
-        if (!getBatchUri()
-            .equals(other.getBatchUri())) return false;
-      }
-      if (hasStreamUri() != other.hasStreamUri()) return false;
-      if (hasStreamUri()) {
-        if (!getStreamUri()
-            .equals(other.getStreamUri())) return false;
+      if (hasUri() != other.hasUri()) return false;
+      if (hasUri()) {
+        if (!getUri()
+            .equals(other.getUri())) return false;
       }
       if (hasDescription() != other.hasDescription()) return false;
       if (hasDescription()) {
         if (!getDescription()
             .equals(other.getDescription())) return false;
-      }
-      if (hasUpdateTime() != other.hasUpdateTime()) return false;
-      if (hasUpdateTime()) {
-        if (!getUpdateTime()
-            .equals(other.getUpdateTime())) return false;
       }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
@@ -28001,25 +27869,17 @@ public final class MetadataServiceOuterClass {
         hash = (37 * hash) + PROPERTIES_FIELD_NUMBER;
         hash = (53 * hash) + internalGetProperties().hashCode();
       }
-      if (hasDataFormat()) {
-        hash = (37 * hash) + DATA_FORMAT_FIELD_NUMBER;
-        hash = (53 * hash) + getDataFormat().hashCode();
+      if (hasArtifactType()) {
+        hash = (37 * hash) + ARTIFACT_TYPE_FIELD_NUMBER;
+        hash = (53 * hash) + getArtifactType().hashCode();
       }
-      if (hasBatchUri()) {
-        hash = (37 * hash) + BATCH_URI_FIELD_NUMBER;
-        hash = (53 * hash) + getBatchUri().hashCode();
-      }
-      if (hasStreamUri()) {
-        hash = (37 * hash) + STREAM_URI_FIELD_NUMBER;
-        hash = (53 * hash) + getStreamUri().hashCode();
+      if (hasUri()) {
+        hash = (37 * hash) + URI_FIELD_NUMBER;
+        hash = (53 * hash) + getUri().hashCode();
       }
       if (hasDescription()) {
         hash = (37 * hash) + DESCRIPTION_FIELD_NUMBER;
         hash = (53 * hash) + getDescription().hashCode();
-      }
-      if (hasUpdateTime()) {
-        hash = (37 * hash) + UPDATE_TIME_FIELD_NUMBER;
-        hash = (53 * hash) + getUpdateTime().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -28179,35 +28039,23 @@ public final class MetadataServiceOuterClass {
         name_ = "";
 
         internalGetMutableProperties().clear();
-        if (dataFormatBuilder_ == null) {
-          dataFormat_ = null;
+        if (artifactTypeBuilder_ == null) {
+          artifactType_ = null;
         } else {
-          dataFormat_ = null;
-          dataFormatBuilder_ = null;
+          artifactType_ = null;
+          artifactTypeBuilder_ = null;
         }
-        if (batchUriBuilder_ == null) {
-          batchUri_ = null;
+        if (uriBuilder_ == null) {
+          uri_ = null;
         } else {
-          batchUri_ = null;
-          batchUriBuilder_ = null;
-        }
-        if (streamUriBuilder_ == null) {
-          streamUri_ = null;
-        } else {
-          streamUri_ = null;
-          streamUriBuilder_ = null;
+          uri_ = null;
+          uriBuilder_ = null;
         }
         if (descriptionBuilder_ == null) {
           description_ = null;
         } else {
           description_ = null;
           descriptionBuilder_ = null;
-        }
-        if (updateTimeBuilder_ == null) {
-          updateTime_ = null;
-        } else {
-          updateTime_ = null;
-          updateTimeBuilder_ = null;
         }
         return this;
       }
@@ -28239,30 +28087,20 @@ public final class MetadataServiceOuterClass {
         result.name_ = name_;
         result.properties_ = internalGetProperties();
         result.properties_.makeImmutable();
-        if (dataFormatBuilder_ == null) {
-          result.dataFormat_ = dataFormat_;
+        if (artifactTypeBuilder_ == null) {
+          result.artifactType_ = artifactType_;
         } else {
-          result.dataFormat_ = dataFormatBuilder_.build();
+          result.artifactType_ = artifactTypeBuilder_.build();
         }
-        if (batchUriBuilder_ == null) {
-          result.batchUri_ = batchUri_;
+        if (uriBuilder_ == null) {
+          result.uri_ = uri_;
         } else {
-          result.batchUri_ = batchUriBuilder_.build();
-        }
-        if (streamUriBuilder_ == null) {
-          result.streamUri_ = streamUri_;
-        } else {
-          result.streamUri_ = streamUriBuilder_.build();
+          result.uri_ = uriBuilder_.build();
         }
         if (descriptionBuilder_ == null) {
           result.description_ = description_;
         } else {
           result.description_ = descriptionBuilder_.build();
-        }
-        if (updateTimeBuilder_ == null) {
-          result.updateTime_ = updateTime_;
-        } else {
-          result.updateTime_ = updateTimeBuilder_.build();
         }
         onBuilt();
         return result;
@@ -28318,20 +28156,14 @@ public final class MetadataServiceOuterClass {
         }
         internalGetMutableProperties().mergeFrom(
             other.internalGetProperties());
-        if (other.hasDataFormat()) {
-          mergeDataFormat(other.getDataFormat());
+        if (other.hasArtifactType()) {
+          mergeArtifactType(other.getArtifactType());
         }
-        if (other.hasBatchUri()) {
-          mergeBatchUri(other.getBatchUri());
-        }
-        if (other.hasStreamUri()) {
-          mergeStreamUri(other.getStreamUri());
+        if (other.hasUri()) {
+          mergeUri(other.getUri());
         }
         if (other.hasDescription()) {
           mergeDescription(other.getDescription());
-        }
-        if (other.hasUpdateTime()) {
-          mergeUpdateTime(other.getUpdateTime());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -28567,375 +28399,256 @@ public final class MetadataServiceOuterClass {
         return this;
       }
 
-      private com.google.protobuf.StringValue dataFormat_;
+      private com.google.protobuf.StringValue artifactType_;
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> dataFormatBuilder_;
+          com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> artifactTypeBuilder_;
       /**
-       * <code>.google.protobuf.StringValue data_format = 3;</code>
-       * @return Whether the dataFormat field is set.
+       * <code>.google.protobuf.StringValue artifact_type = 3;</code>
+       * @return Whether the artifactType field is set.
        */
-      public boolean hasDataFormat() {
-        return dataFormatBuilder_ != null || dataFormat_ != null;
+      public boolean hasArtifactType() {
+        return artifactTypeBuilder_ != null || artifactType_ != null;
       }
       /**
-       * <code>.google.protobuf.StringValue data_format = 3;</code>
-       * @return The dataFormat.
+       * <code>.google.protobuf.StringValue artifact_type = 3;</code>
+       * @return The artifactType.
        */
-      public com.google.protobuf.StringValue getDataFormat() {
-        if (dataFormatBuilder_ == null) {
-          return dataFormat_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : dataFormat_;
+      public com.google.protobuf.StringValue getArtifactType() {
+        if (artifactTypeBuilder_ == null) {
+          return artifactType_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : artifactType_;
         } else {
-          return dataFormatBuilder_.getMessage();
+          return artifactTypeBuilder_.getMessage();
         }
       }
       /**
-       * <code>.google.protobuf.StringValue data_format = 3;</code>
+       * <code>.google.protobuf.StringValue artifact_type = 3;</code>
        */
-      public Builder setDataFormat(com.google.protobuf.StringValue value) {
-        if (dataFormatBuilder_ == null) {
+      public Builder setArtifactType(com.google.protobuf.StringValue value) {
+        if (artifactTypeBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          dataFormat_ = value;
+          artifactType_ = value;
           onChanged();
         } else {
-          dataFormatBuilder_.setMessage(value);
+          artifactTypeBuilder_.setMessage(value);
         }
 
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue data_format = 3;</code>
+       * <code>.google.protobuf.StringValue artifact_type = 3;</code>
        */
-      public Builder setDataFormat(
+      public Builder setArtifactType(
           com.google.protobuf.StringValue.Builder builderForValue) {
-        if (dataFormatBuilder_ == null) {
-          dataFormat_ = builderForValue.build();
+        if (artifactTypeBuilder_ == null) {
+          artifactType_ = builderForValue.build();
           onChanged();
         } else {
-          dataFormatBuilder_.setMessage(builderForValue.build());
+          artifactTypeBuilder_.setMessage(builderForValue.build());
         }
 
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue data_format = 3;</code>
+       * <code>.google.protobuf.StringValue artifact_type = 3;</code>
        */
-      public Builder mergeDataFormat(com.google.protobuf.StringValue value) {
-        if (dataFormatBuilder_ == null) {
-          if (dataFormat_ != null) {
-            dataFormat_ =
-              com.google.protobuf.StringValue.newBuilder(dataFormat_).mergeFrom(value).buildPartial();
+      public Builder mergeArtifactType(com.google.protobuf.StringValue value) {
+        if (artifactTypeBuilder_ == null) {
+          if (artifactType_ != null) {
+            artifactType_ =
+              com.google.protobuf.StringValue.newBuilder(artifactType_).mergeFrom(value).buildPartial();
           } else {
-            dataFormat_ = value;
+            artifactType_ = value;
           }
           onChanged();
         } else {
-          dataFormatBuilder_.mergeFrom(value);
+          artifactTypeBuilder_.mergeFrom(value);
         }
 
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue data_format = 3;</code>
+       * <code>.google.protobuf.StringValue artifact_type = 3;</code>
        */
-      public Builder clearDataFormat() {
-        if (dataFormatBuilder_ == null) {
-          dataFormat_ = null;
+      public Builder clearArtifactType() {
+        if (artifactTypeBuilder_ == null) {
+          artifactType_ = null;
           onChanged();
         } else {
-          dataFormat_ = null;
-          dataFormatBuilder_ = null;
+          artifactType_ = null;
+          artifactTypeBuilder_ = null;
         }
 
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue data_format = 3;</code>
+       * <code>.google.protobuf.StringValue artifact_type = 3;</code>
        */
-      public com.google.protobuf.StringValue.Builder getDataFormatBuilder() {
+      public com.google.protobuf.StringValue.Builder getArtifactTypeBuilder() {
         
         onChanged();
-        return getDataFormatFieldBuilder().getBuilder();
+        return getArtifactTypeFieldBuilder().getBuilder();
       }
       /**
-       * <code>.google.protobuf.StringValue data_format = 3;</code>
+       * <code>.google.protobuf.StringValue artifact_type = 3;</code>
        */
-      public com.google.protobuf.StringValueOrBuilder getDataFormatOrBuilder() {
-        if (dataFormatBuilder_ != null) {
-          return dataFormatBuilder_.getMessageOrBuilder();
+      public com.google.protobuf.StringValueOrBuilder getArtifactTypeOrBuilder() {
+        if (artifactTypeBuilder_ != null) {
+          return artifactTypeBuilder_.getMessageOrBuilder();
         } else {
-          return dataFormat_ == null ?
-              com.google.protobuf.StringValue.getDefaultInstance() : dataFormat_;
+          return artifactType_ == null ?
+              com.google.protobuf.StringValue.getDefaultInstance() : artifactType_;
         }
       }
       /**
-       * <code>.google.protobuf.StringValue data_format = 3;</code>
+       * <code>.google.protobuf.StringValue artifact_type = 3;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> 
-          getDataFormatFieldBuilder() {
-        if (dataFormatBuilder_ == null) {
-          dataFormatBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+          getArtifactTypeFieldBuilder() {
+        if (artifactTypeBuilder_ == null) {
+          artifactTypeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
               com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder>(
-                  getDataFormat(),
+                  getArtifactType(),
                   getParentForChildren(),
                   isClean());
-          dataFormat_ = null;
+          artifactType_ = null;
         }
-        return dataFormatBuilder_;
+        return artifactTypeBuilder_;
       }
 
-      private com.google.protobuf.StringValue batchUri_;
+      private com.google.protobuf.StringValue uri_;
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> batchUriBuilder_;
+          com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> uriBuilder_;
       /**
-       * <code>.google.protobuf.StringValue batch_uri = 4;</code>
-       * @return Whether the batchUri field is set.
+       * <code>.google.protobuf.StringValue uri = 4;</code>
+       * @return Whether the uri field is set.
        */
-      public boolean hasBatchUri() {
-        return batchUriBuilder_ != null || batchUri_ != null;
+      public boolean hasUri() {
+        return uriBuilder_ != null || uri_ != null;
       }
       /**
-       * <code>.google.protobuf.StringValue batch_uri = 4;</code>
-       * @return The batchUri.
+       * <code>.google.protobuf.StringValue uri = 4;</code>
+       * @return The uri.
        */
-      public com.google.protobuf.StringValue getBatchUri() {
-        if (batchUriBuilder_ == null) {
-          return batchUri_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : batchUri_;
+      public com.google.protobuf.StringValue getUri() {
+        if (uriBuilder_ == null) {
+          return uri_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : uri_;
         } else {
-          return batchUriBuilder_.getMessage();
+          return uriBuilder_.getMessage();
         }
       }
       /**
-       * <code>.google.protobuf.StringValue batch_uri = 4;</code>
+       * <code>.google.protobuf.StringValue uri = 4;</code>
        */
-      public Builder setBatchUri(com.google.protobuf.StringValue value) {
-        if (batchUriBuilder_ == null) {
+      public Builder setUri(com.google.protobuf.StringValue value) {
+        if (uriBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          batchUri_ = value;
+          uri_ = value;
           onChanged();
         } else {
-          batchUriBuilder_.setMessage(value);
+          uriBuilder_.setMessage(value);
         }
 
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue batch_uri = 4;</code>
+       * <code>.google.protobuf.StringValue uri = 4;</code>
        */
-      public Builder setBatchUri(
+      public Builder setUri(
           com.google.protobuf.StringValue.Builder builderForValue) {
-        if (batchUriBuilder_ == null) {
-          batchUri_ = builderForValue.build();
+        if (uriBuilder_ == null) {
+          uri_ = builderForValue.build();
           onChanged();
         } else {
-          batchUriBuilder_.setMessage(builderForValue.build());
+          uriBuilder_.setMessage(builderForValue.build());
         }
 
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue batch_uri = 4;</code>
+       * <code>.google.protobuf.StringValue uri = 4;</code>
        */
-      public Builder mergeBatchUri(com.google.protobuf.StringValue value) {
-        if (batchUriBuilder_ == null) {
-          if (batchUri_ != null) {
-            batchUri_ =
-              com.google.protobuf.StringValue.newBuilder(batchUri_).mergeFrom(value).buildPartial();
+      public Builder mergeUri(com.google.protobuf.StringValue value) {
+        if (uriBuilder_ == null) {
+          if (uri_ != null) {
+            uri_ =
+              com.google.protobuf.StringValue.newBuilder(uri_).mergeFrom(value).buildPartial();
           } else {
-            batchUri_ = value;
+            uri_ = value;
           }
           onChanged();
         } else {
-          batchUriBuilder_.mergeFrom(value);
+          uriBuilder_.mergeFrom(value);
         }
 
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue batch_uri = 4;</code>
+       * <code>.google.protobuf.StringValue uri = 4;</code>
        */
-      public Builder clearBatchUri() {
-        if (batchUriBuilder_ == null) {
-          batchUri_ = null;
+      public Builder clearUri() {
+        if (uriBuilder_ == null) {
+          uri_ = null;
           onChanged();
         } else {
-          batchUri_ = null;
-          batchUriBuilder_ = null;
+          uri_ = null;
+          uriBuilder_ = null;
         }
 
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue batch_uri = 4;</code>
+       * <code>.google.protobuf.StringValue uri = 4;</code>
        */
-      public com.google.protobuf.StringValue.Builder getBatchUriBuilder() {
+      public com.google.protobuf.StringValue.Builder getUriBuilder() {
         
         onChanged();
-        return getBatchUriFieldBuilder().getBuilder();
+        return getUriFieldBuilder().getBuilder();
       }
       /**
-       * <code>.google.protobuf.StringValue batch_uri = 4;</code>
+       * <code>.google.protobuf.StringValue uri = 4;</code>
        */
-      public com.google.protobuf.StringValueOrBuilder getBatchUriOrBuilder() {
-        if (batchUriBuilder_ != null) {
-          return batchUriBuilder_.getMessageOrBuilder();
+      public com.google.protobuf.StringValueOrBuilder getUriOrBuilder() {
+        if (uriBuilder_ != null) {
+          return uriBuilder_.getMessageOrBuilder();
         } else {
-          return batchUri_ == null ?
-              com.google.protobuf.StringValue.getDefaultInstance() : batchUri_;
+          return uri_ == null ?
+              com.google.protobuf.StringValue.getDefaultInstance() : uri_;
         }
       }
       /**
-       * <code>.google.protobuf.StringValue batch_uri = 4;</code>
+       * <code>.google.protobuf.StringValue uri = 4;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> 
-          getBatchUriFieldBuilder() {
-        if (batchUriBuilder_ == null) {
-          batchUriBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+          getUriFieldBuilder() {
+        if (uriBuilder_ == null) {
+          uriBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
               com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder>(
-                  getBatchUri(),
+                  getUri(),
                   getParentForChildren(),
                   isClean());
-          batchUri_ = null;
+          uri_ = null;
         }
-        return batchUriBuilder_;
-      }
-
-      private com.google.protobuf.StringValue streamUri_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> streamUriBuilder_;
-      /**
-       * <code>.google.protobuf.StringValue stream_uri = 5;</code>
-       * @return Whether the streamUri field is set.
-       */
-      public boolean hasStreamUri() {
-        return streamUriBuilder_ != null || streamUri_ != null;
-      }
-      /**
-       * <code>.google.protobuf.StringValue stream_uri = 5;</code>
-       * @return The streamUri.
-       */
-      public com.google.protobuf.StringValue getStreamUri() {
-        if (streamUriBuilder_ == null) {
-          return streamUri_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : streamUri_;
-        } else {
-          return streamUriBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>.google.protobuf.StringValue stream_uri = 5;</code>
-       */
-      public Builder setStreamUri(com.google.protobuf.StringValue value) {
-        if (streamUriBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          streamUri_ = value;
-          onChanged();
-        } else {
-          streamUriBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue stream_uri = 5;</code>
-       */
-      public Builder setStreamUri(
-          com.google.protobuf.StringValue.Builder builderForValue) {
-        if (streamUriBuilder_ == null) {
-          streamUri_ = builderForValue.build();
-          onChanged();
-        } else {
-          streamUriBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue stream_uri = 5;</code>
-       */
-      public Builder mergeStreamUri(com.google.protobuf.StringValue value) {
-        if (streamUriBuilder_ == null) {
-          if (streamUri_ != null) {
-            streamUri_ =
-              com.google.protobuf.StringValue.newBuilder(streamUri_).mergeFrom(value).buildPartial();
-          } else {
-            streamUri_ = value;
-          }
-          onChanged();
-        } else {
-          streamUriBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue stream_uri = 5;</code>
-       */
-      public Builder clearStreamUri() {
-        if (streamUriBuilder_ == null) {
-          streamUri_ = null;
-          onChanged();
-        } else {
-          streamUri_ = null;
-          streamUriBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.StringValue stream_uri = 5;</code>
-       */
-      public com.google.protobuf.StringValue.Builder getStreamUriBuilder() {
-        
-        onChanged();
-        return getStreamUriFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>.google.protobuf.StringValue stream_uri = 5;</code>
-       */
-      public com.google.protobuf.StringValueOrBuilder getStreamUriOrBuilder() {
-        if (streamUriBuilder_ != null) {
-          return streamUriBuilder_.getMessageOrBuilder();
-        } else {
-          return streamUri_ == null ?
-              com.google.protobuf.StringValue.getDefaultInstance() : streamUri_;
-        }
-      }
-      /**
-       * <code>.google.protobuf.StringValue stream_uri = 5;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> 
-          getStreamUriFieldBuilder() {
-        if (streamUriBuilder_ == null) {
-          streamUriBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder>(
-                  getStreamUri(),
-                  getParentForChildren(),
-                  isClean());
-          streamUri_ = null;
-        }
-        return streamUriBuilder_;
+        return uriBuilder_;
       }
 
       private com.google.protobuf.StringValue description_;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> descriptionBuilder_;
       /**
-       * <code>.google.protobuf.StringValue description = 6;</code>
+       * <code>.google.protobuf.StringValue description = 5;</code>
        * @return Whether the description field is set.
        */
       public boolean hasDescription() {
         return descriptionBuilder_ != null || description_ != null;
       }
       /**
-       * <code>.google.protobuf.StringValue description = 6;</code>
+       * <code>.google.protobuf.StringValue description = 5;</code>
        * @return The description.
        */
       public com.google.protobuf.StringValue getDescription() {
@@ -28946,7 +28659,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.google.protobuf.StringValue description = 6;</code>
+       * <code>.google.protobuf.StringValue description = 5;</code>
        */
       public Builder setDescription(com.google.protobuf.StringValue value) {
         if (descriptionBuilder_ == null) {
@@ -28962,7 +28675,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue description = 6;</code>
+       * <code>.google.protobuf.StringValue description = 5;</code>
        */
       public Builder setDescription(
           com.google.protobuf.StringValue.Builder builderForValue) {
@@ -28976,7 +28689,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue description = 6;</code>
+       * <code>.google.protobuf.StringValue description = 5;</code>
        */
       public Builder mergeDescription(com.google.protobuf.StringValue value) {
         if (descriptionBuilder_ == null) {
@@ -28994,7 +28707,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue description = 6;</code>
+       * <code>.google.protobuf.StringValue description = 5;</code>
        */
       public Builder clearDescription() {
         if (descriptionBuilder_ == null) {
@@ -29008,7 +28721,7 @@ public final class MetadataServiceOuterClass {
         return this;
       }
       /**
-       * <code>.google.protobuf.StringValue description = 6;</code>
+       * <code>.google.protobuf.StringValue description = 5;</code>
        */
       public com.google.protobuf.StringValue.Builder getDescriptionBuilder() {
         
@@ -29016,7 +28729,7 @@ public final class MetadataServiceOuterClass {
         return getDescriptionFieldBuilder().getBuilder();
       }
       /**
-       * <code>.google.protobuf.StringValue description = 6;</code>
+       * <code>.google.protobuf.StringValue description = 5;</code>
        */
       public com.google.protobuf.StringValueOrBuilder getDescriptionOrBuilder() {
         if (descriptionBuilder_ != null) {
@@ -29027,7 +28740,7 @@ public final class MetadataServiceOuterClass {
         }
       }
       /**
-       * <code>.google.protobuf.StringValue description = 6;</code>
+       * <code>.google.protobuf.StringValue description = 5;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> 
@@ -29041,125 +28754,6 @@ public final class MetadataServiceOuterClass {
           description_ = null;
         }
         return descriptionBuilder_;
-      }
-
-      private com.google.protobuf.Int64Value updateTime_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.google.protobuf.Int64Value, com.google.protobuf.Int64Value.Builder, com.google.protobuf.Int64ValueOrBuilder> updateTimeBuilder_;
-      /**
-       * <code>.google.protobuf.Int64Value update_time = 7;</code>
-       * @return Whether the updateTime field is set.
-       */
-      public boolean hasUpdateTime() {
-        return updateTimeBuilder_ != null || updateTime_ != null;
-      }
-      /**
-       * <code>.google.protobuf.Int64Value update_time = 7;</code>
-       * @return The updateTime.
-       */
-      public com.google.protobuf.Int64Value getUpdateTime() {
-        if (updateTimeBuilder_ == null) {
-          return updateTime_ == null ? com.google.protobuf.Int64Value.getDefaultInstance() : updateTime_;
-        } else {
-          return updateTimeBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>.google.protobuf.Int64Value update_time = 7;</code>
-       */
-      public Builder setUpdateTime(com.google.protobuf.Int64Value value) {
-        if (updateTimeBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          updateTime_ = value;
-          onChanged();
-        } else {
-          updateTimeBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.Int64Value update_time = 7;</code>
-       */
-      public Builder setUpdateTime(
-          com.google.protobuf.Int64Value.Builder builderForValue) {
-        if (updateTimeBuilder_ == null) {
-          updateTime_ = builderForValue.build();
-          onChanged();
-        } else {
-          updateTimeBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.Int64Value update_time = 7;</code>
-       */
-      public Builder mergeUpdateTime(com.google.protobuf.Int64Value value) {
-        if (updateTimeBuilder_ == null) {
-          if (updateTime_ != null) {
-            updateTime_ =
-              com.google.protobuf.Int64Value.newBuilder(updateTime_).mergeFrom(value).buildPartial();
-          } else {
-            updateTime_ = value;
-          }
-          onChanged();
-        } else {
-          updateTimeBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.Int64Value update_time = 7;</code>
-       */
-      public Builder clearUpdateTime() {
-        if (updateTimeBuilder_ == null) {
-          updateTime_ = null;
-          onChanged();
-        } else {
-          updateTime_ = null;
-          updateTimeBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <code>.google.protobuf.Int64Value update_time = 7;</code>
-       */
-      public com.google.protobuf.Int64Value.Builder getUpdateTimeBuilder() {
-        
-        onChanged();
-        return getUpdateTimeFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>.google.protobuf.Int64Value update_time = 7;</code>
-       */
-      public com.google.protobuf.Int64ValueOrBuilder getUpdateTimeOrBuilder() {
-        if (updateTimeBuilder_ != null) {
-          return updateTimeBuilder_.getMessageOrBuilder();
-        } else {
-          return updateTime_ == null ?
-              com.google.protobuf.Int64Value.getDefaultInstance() : updateTime_;
-        }
-      }
-      /**
-       * <code>.google.protobuf.Int64Value update_time = 7;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.google.protobuf.Int64Value, com.google.protobuf.Int64Value.Builder, com.google.protobuf.Int64ValueOrBuilder> 
-          getUpdateTimeFieldBuilder() {
-        if (updateTimeBuilder_ == null) {
-          updateTimeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.google.protobuf.Int64Value, com.google.protobuf.Int64Value.Builder, com.google.protobuf.Int64ValueOrBuilder>(
-                  getUpdateTime(),
-                  getParentForChildren(),
-                  isClean());
-          updateTime_ = null;
-        }
-        return updateTimeBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -34941,215 +34535,212 @@ public final class MetadataServiceOuterClass {
       "alue\030\002 \001(\t:\0028\001\";\n\020ProjectListProto\022\'\n\010pr" +
       "ojects\030\001 \003(\0132\025.ai_flow.ProjectProto\"C\n\027R" +
       "egisterArtifactRequest\022(\n\010artifact\030\001 \001(\013" +
-      "2\026.ai_flow.ArtifactProto\"\227\003\n\025UpdateArtif" +
+      "2\026.ai_flow.ArtifactProto\"\257\002\n\025UpdateArtif" +
       "actRequest\022\014\n\004name\030\001 \001(\t\022B\n\nproperties\030\002" +
       " \003(\0132..ai_flow.UpdateArtifactRequest.Pro" +
-      "pertiesEntry\0221\n\013data_format\030\003 \001(\0132\034.goog" +
-      "le.protobuf.StringValue\022/\n\tbatch_uri\030\004 \001" +
-      "(\0132\034.google.protobuf.StringValue\0220\n\nstre" +
-      "am_uri\030\005 \001(\0132\034.google.protobuf.StringVal" +
-      "ue\0221\n\013description\030\006 \001(\0132\034.google.protobu" +
-      "f.StringValue\0220\n\013update_time\030\007 \001(\0132\033.goo" +
-      "gle.protobuf.Int64Value\0321\n\017PropertiesEnt" +
-      "ry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\">\n\021Ar" +
-      "tifactListProto\022)\n\tartifacts\030\001 \003(\0132\026.ai_" +
-      "flow.ArtifactProto2\351<\n\017MetadataService\022i" +
-      "\n\016getDatasetById\022\022.ai_flow.IdRequest\032\021.a" +
-      "i_flow.Response\"0\202\323\344\223\002*\"%/aiflow/metadat" +
-      "a_store/dataset/get/id:\001*\022o\n\020getDatasetB" +
-      "yName\022\024.ai_flow.NameRequest\032\021.ai_flow.Re" +
-      "sponse\"2\202\323\344\223\002,\"\'/aiflow/metadata_store/d" +
-      "ataset/get/name:\001*\022g\n\014listDatasets\022\024.ai_" +
-      "flow.ListRequest\032\021.ai_flow.Response\".\202\323\344" +
-      "\223\002(\"#/aiflow/metadata_store/dataset/list" +
-      ":\001*\022u\n\017registerDataset\022\037.ai_flow.Registe" +
-      "rDatasetRequest\032\021.ai_flow.Response\".\202\323\344\223" +
-      "\002(\"#/aiflow/metadata_store/dataset/save:" +
-      "\001*\022\215\001\n\032registerDatasetWithCatalog\022\037.ai_f" +
-      "low.RegisterDatasetRequest\032\021.ai_flow.Res" +
-      "ponse\";\202\323\344\223\0025\"0/aiflow/metadata_store/da" +
-      "taset/save_with_catalog:\001*\022w\n\020registerDa" +
-      "tasets\022 .ai_flow.RegisterDatasetsRequest" +
-      "\032\021.ai_flow.Response\".\202\323\344\223\002(\"#/aiflow/met" +
-      "adata_store/dataset/save:\001*\022s\n\rupdateDat" +
-      "aset\022\035.ai_flow.UpdateDatasetRequest\032\021.ai" +
-      "_flow.Response\"0\202\323\344\223\002*\"%/aiflow/metadata" +
-      "_store/dataset/update:\001*\022o\n\021deleteDatase" +
-      "tById\022\022.ai_flow.IdRequest\032\021.ai_flow.Resp" +
-      "onse\"3\202\323\344\223\002-\"(/aiflow/metadata_store/dat" +
-      "aset/delete/id:\001*\022u\n\023deleteDatasetByName" +
-      "\022\024.ai_flow.NameRequest\032\021.ai_flow.Respons" +
-      "e\"5\202\323\344\223\002/\"*/aiflow/metadata_store/datase" +
-      "t/delete/name:\001*\022v\n\024getModelRelationById" +
-      "\022\022.ai_flow.IdRequest\032\021.ai_flow.Response\"" +
-      "7\202\323\344\223\0021\",/aiflow/metadata_store/model_re" +
-      "lation/get/id:\001*\022|\n\026getModelRelationByNa" +
-      "me\022\024.ai_flow.NameRequest\032\021.ai_flow.Respo" +
-      "nse\"9\202\323\344\223\0023\"./aiflow/metadata_store/mode" +
-      "l_relation/get/name:\001*\022s\n\021listModelRelat" +
-      "ion\022\024.ai_flow.ListRequest\032\021.ai_flow.Resp" +
-      "onse\"5\202\323\344\223\002/\"*/aiflow/metadata_store/mod" +
-      "el_relation/list:\001*\022\210\001\n\025registerModelRel" +
-      "ation\022%.ai_flow.RegisterModelRelationReq" +
-      "uest\032\021.ai_flow.Response\"5\202\323\344\223\002/\"*/aiflow" +
-      "/metadata_store/model_relation/save:\001*\022|" +
-      "\n\027deleteModelRelationById\022\022.ai_flow.IdRe" +
-      "quest\032\021.ai_flow.Response\":\202\323\344\223\0024\"//aiflo" +
-      "w/metadata_store/model_relation/delete/i" +
-      "d:\001*\022\202\001\n\031deleteModelRelationByName\022\024.ai_" +
-      "flow.NameRequest\032\021.ai_flow.Response\"<\202\323\344" +
-      "\223\0026\"1/aiflow/metadata_store/model_relati" +
-      "on/delete/name:\001*\022e\n\014getModelById\022\022.ai_f" +
-      "low.IdRequest\032\021.ai_flow.Response\".\202\323\344\223\002(" +
-      "\"#/aiflow/metadata_store/model/get/id:\001*" +
-      "\022k\n\016getModelByName\022\024.ai_flow.NameRequest" +
-      "\032\021.ai_flow.Response\"0\202\323\344\223\002*\"%/aiflow/met" +
-      "adata_store/model/get/name:\001*\022o\n\rregiste" +
-      "rModel\022\035.ai_flow.RegisterModelRequest\032\021." +
-      "ai_flow.Response\",\202\323\344\223\002&\"!/aiflow/metada" +
-      "ta_store/model/save:\001*\022k\n\017deleteModelByI" +
+      "pertiesEntry\0223\n\rartifact_type\030\003 \001(\0132\034.go" +
+      "ogle.protobuf.StringValue\022)\n\003uri\030\004 \001(\0132\034" +
+      ".google.protobuf.StringValue\0221\n\013descript" +
+      "ion\030\005 \001(\0132\034.google.protobuf.StringValue\032" +
+      "1\n\017PropertiesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value" +
+      "\030\002 \001(\t:\0028\001\">\n\021ArtifactListProto\022)\n\tartif" +
+      "acts\030\001 \003(\0132\026.ai_flow.ArtifactProto2\351<\n\017M" +
+      "etadataService\022i\n\016getDatasetById\022\022.ai_fl" +
+      "ow.IdRequest\032\021.ai_flow.Response\"0\202\323\344\223\002*\"" +
+      "%/aiflow/metadata_store/dataset/get/id:\001" +
+      "*\022o\n\020getDatasetByName\022\024.ai_flow.NameRequ" +
+      "est\032\021.ai_flow.Response\"2\202\323\344\223\002,\"\'/aiflow/" +
+      "metadata_store/dataset/get/name:\001*\022g\n\014li" +
+      "stDatasets\022\024.ai_flow.ListRequest\032\021.ai_fl" +
+      "ow.Response\".\202\323\344\223\002(\"#/aiflow/metadata_st" +
+      "ore/dataset/list:\001*\022u\n\017registerDataset\022\037" +
+      ".ai_flow.RegisterDatasetRequest\032\021.ai_flo" +
+      "w.Response\".\202\323\344\223\002(\"#/aiflow/metadata_sto" +
+      "re/dataset/save:\001*\022\215\001\n\032registerDatasetWi" +
+      "thCatalog\022\037.ai_flow.RegisterDatasetReque" +
+      "st\032\021.ai_flow.Response\";\202\323\344\223\0025\"0/aiflow/m" +
+      "etadata_store/dataset/save_with_catalog:" +
+      "\001*\022w\n\020registerDatasets\022 .ai_flow.Registe" +
+      "rDatasetsRequest\032\021.ai_flow.Response\".\202\323\344" +
+      "\223\002(\"#/aiflow/metadata_store/dataset/save" +
+      ":\001*\022s\n\rupdateDataset\022\035.ai_flow.UpdateDat" +
+      "asetRequest\032\021.ai_flow.Response\"0\202\323\344\223\002*\"%" +
+      "/aiflow/metadata_store/dataset/update:\001*" +
+      "\022o\n\021deleteDatasetById\022\022.ai_flow.IdReques" +
+      "t\032\021.ai_flow.Response\"3\202\323\344\223\002-\"(/aiflow/me" +
+      "tadata_store/dataset/delete/id:\001*\022u\n\023del" +
+      "eteDatasetByName\022\024.ai_flow.NameRequest\032\021" +
+      ".ai_flow.Response\"5\202\323\344\223\002/\"*/aiflow/metad" +
+      "ata_store/dataset/delete/name:\001*\022v\n\024getM" +
+      "odelRelationById\022\022.ai_flow.IdRequest\032\021.a" +
+      "i_flow.Response\"7\202\323\344\223\0021\",/aiflow/metadat" +
+      "a_store/model_relation/get/id:\001*\022|\n\026getM" +
+      "odelRelationByName\022\024.ai_flow.NameRequest" +
+      "\032\021.ai_flow.Response\"9\202\323\344\223\0023\"./aiflow/met" +
+      "adata_store/model_relation/get/name:\001*\022s" +
+      "\n\021listModelRelation\022\024.ai_flow.ListReques" +
+      "t\032\021.ai_flow.Response\"5\202\323\344\223\002/\"*/aiflow/me" +
+      "tadata_store/model_relation/list:\001*\022\210\001\n\025" +
+      "registerModelRelation\022%.ai_flow.Register" +
+      "ModelRelationRequest\032\021.ai_flow.Response\"" +
+      "5\202\323\344\223\002/\"*/aiflow/metadata_store/model_re" +
+      "lation/save:\001*\022|\n\027deleteModelRelationByI" +
       "d\022\022.ai_flow.IdRequest\032\021.ai_flow.Response" +
-      "\"1\202\323\344\223\002+\"&/aiflow/metadata_store/model/d" +
-      "elete/id:\001*\022q\n\021deleteModelByName\022\024.ai_fl" +
-      "ow.NameRequest\032\021.ai_flow.Response\"3\202\323\344\223\002" +
-      "-\"(/aiflow/metadata_store/model/delete/n" +
-      "ame:\001*\022\234\001\n getModelVersionRelationByVers" +
-      "ion\022 .ai_flow.ModelVersionNameRequest\032\021." +
-      "ai_flow.Response\"C\202\323\344\223\002=\"8/aiflow/metada" +
-      "ta_store/modelVersion_relation/get/versi" +
-      "on:\001*\022\225\001\n\030listModelVersionRelation\022(.ai_" +
-      "flow.ListModelVersionRelationRequest\032\021.a" +
-      "i_flow.Response\"<\202\323\344\223\0026\"1/aiflow/metadat" +
-      "a_store/modelVersion_relation/list:\001*\022\235\001" +
-      "\n\034registerModelVersionRelation\022,.ai_flow" +
-      ".RegisterModelVersionRelationRequest\032\021.a" +
-      "i_flow.Response\"<\202\323\344\223\0026\"1/aiflow/metadat" +
-      "a_store/modelVersion_relation/save:\001*\022\242\001" +
-      "\n#deleteModelVersionRelationByVersion\022 ." +
-      "ai_flow.ModelVersionNameRequest\032\021.ai_flo" +
-      "w.Response\"F\202\323\344\223\002@\";/aiflow/metadata_sto" +
-      "re/modelVersion_relation/delete/version:" +
-      "\001*\022\213\001\n\030getModelVersionByVersion\022 .ai_flo" +
-      "w.ModelVersionNameRequest\032\021.ai_flow.Resp" +
-      "onse\":\202\323\344\223\0024\"//aiflow/metadata_store/mod" +
-      "elVersion/get/version:\001*\022\204\001\n\024registerMod" +
-      "elVersion\022$.ai_flow.RegisterModelVersion" +
-      "Request\032\021.ai_flow.Response\"3\202\323\344\223\002-\"(/aif" +
-      "low/metadata_store/modelVersion/save:\001*\022" +
-      "\221\001\n\033deleteModelVersionByVersion\022 .ai_flo" +
-      "w.ModelVersionNameRequest\032\021.ai_flow.Resp" +
-      "onse\"=\202\323\344\223\0027\"2/aiflow/metadata_store/mod" +
-      "elVersion/delete/version:\001*\022\213\001\n\027getDeplo" +
-      "yedModelVersion\022\031.ai_flow.ModelNameReque" +
-      "st\032\021.ai_flow.Response\"B\202\323\344\223\002<\"7/aiflow/m" +
-      "etadata_store/modelVersion/get_serving_v" +
-      "ersion:\001*\022\241\001\n\036getLatestValidatedModelVer" +
-      "sion\022\031.ai_flow.ModelNameRequest\032\021.ai_flo" +
-      "w.Response\"Q\202\323\344\223\002K\"F/aiflow/metadata_sto" +
-      "re/modelVersion/get_latest_validated_mod" +
-      "el_version:\001*\022\241\001\n\036getLatestGeneratedMode" +
-      "lVersion\022\031.ai_flow.ModelNameRequest\032\021.ai" +
-      "_flow.Response\"Q\202\323\344\223\002K\"F/aiflow/metadata" +
-      "_store/modelVersion/get_latest_generated" +
-      "_model_version:\001*\022}\n\030getWorkFlowExecutio" +
-      "nById\022\022.ai_flow.IdRequest\032\021.ai_flow.Resp" +
-      "onse\":\202\323\344\223\0024\"//aiflow/metadata_store/wor" +
-      "kflowExecution/get/id:\001*\022\203\001\n\032getWorkFlow" +
-      "ExecutionByName\022\024.ai_flow.NameRequest\032\021." +
-      "ai_flow.Response\"<\202\323\344\223\0026\"1/aiflow/metada" +
-      "ta_store/workflowExecution/get/name:\001*\022z" +
-      "\n\025listWorkFlowExecution\022\024.ai_flow.ListRe" +
-      "quest\032\021.ai_flow.Response\"8\202\323\344\223\0022\"-/aiflo" +
-      "w/metadata_store/workflowExecution/list:" +
-      "\001*\022\223\001\n\031registerWorkFlowExecution\022).ai_fl" +
-      "ow.RegisterWorkFlowExecutionRequest\032\021.ai" +
-      "_flow.Response\"8\202\323\344\223\0022\"-/aiflow/metadata" +
-      "_store/workflowExecution/save:\001*\022\221\001\n\027upd" +
-      "ateWorkflowExecution\022\'.ai_flow.UpdateWor" +
-      "kflowExecutionRequest\032\021.ai_flow.Response" +
-      "\":\202\323\344\223\0024\"//aiflow/metadata_store/workflo" +
-      "wExecution/update:\001*\022\203\001\n\033deleteWorkflowE" +
-      "xecutionById\022\022.ai_flow.IdRequest\032\021.ai_fl" +
-      "ow.Response\"=\202\323\344\223\0027\"2/aiflow/metadata_st" +
-      "ore/workflowExecution/delete/id:\001*\022\211\001\n\035d" +
-      "eleteWorkflowExecutionByName\022\024.ai_flow.N" +
-      "ameRequest\032\021.ai_flow.Response\"?\202\323\344\223\0029\"4/" +
-      "aiflow/metadata_store/workflowExecution/" +
-      "delete/name:\001*\022\250\001\n\036updateWorkflowExecuti" +
-      "onEndTime\022..ai_flow.UpdateWorkflowExecut" +
-      "ionEndTimeRequest\032\021.ai_flow.Response\"C\202\323" +
-      "\344\223\002=\"8/aiflow/metadata_store/workflowExe" +
-      "cution/update/end_time:\001*\022\241\001\n\034updateWork" +
-      "flowExecutionState\022,.ai_flow.UpdateWorkf" +
-      "lowExecutionStateRequest\032\021.ai_flow.Respo" +
-      "nse\"@\202\323\344\223\002:\"5/aiflow/metadata_store/work" +
-      "flowExecution/update/state:\001*\022a\n\ngetJobB" +
-      "yId\022\022.ai_flow.IdRequest\032\021.ai_flow.Respon" +
-      "se\",\202\323\344\223\002&\"!/aiflow/metadata_store/job/g" +
-      "et/id:\001*\022g\n\014getJobByName\022\024.ai_flow.NameR" +
-      "equest\032\021.ai_flow.Response\".\202\323\344\223\002(\"#/aifl" +
-      "ow/metadata_store/job/get/name:\001*\022^\n\007lis" +
-      "tJob\022\024.ai_flow.ListRequest\032\021.ai_flow.Res" +
-      "ponse\"*\202\323\344\223\002$\"\037/aiflow/metadata_store/jo" +
-      "b/list:\001*\022i\n\013registerJob\022\033.ai_flow.Regis" +
-      "terJobRequest\032\021.ai_flow.Response\"*\202\323\344\223\002$" +
-      "\"\037/aiflow/metadata_store/job/save:\001*\022g\n\t" +
-      "updateJob\022\031.ai_flow.UpdateJobRequest\032\021.a" +
-      "i_flow.Response\",\202\323\344\223\002&\"!/aiflow/metadat" +
-      "a_store/job/update:\001*\022w\n\016updateJobState\022" +
-      "\036.ai_flow.UpdateJobStateRequest\032\021.ai_flo" +
-      "w.Response\"2\202\323\344\223\002,\"\'/aiflow/metadata_sto" +
-      "re/job/update/state:\001*\022~\n\020updateJobEndTi" +
-      "me\022 .ai_flow.UpdateJobEndTimeRequest\032\021.a" +
-      "i_flow.Response\"5\202\323\344\223\002/\"*/aiflow/metadat" +
-      "a_store/job/update/end_time:\001*\022g\n\rdelete" +
-      "JobById\022\022.ai_flow.IdRequest\032\021.ai_flow.Re" +
-      "sponse\"/\202\323\344\223\002)\"$/aiflow/metadata_store/j" +
-      "ob/delete/id:\001*\022m\n\017deleteJobByName\022\024.ai_" +
-      "flow.NameRequest\032\021.ai_flow.Response\"1\202\323\344" +
-      "\223\002+\"&/aiflow/metadata_store/job/delete/n" +
-      "ame:\001*\022i\n\016getProjectById\022\022.ai_flow.IdReq" +
-      "uest\032\021.ai_flow.Response\"0\202\323\344\223\002*\"%/aiflow" +
-      "/metadata_store/project/get/id:\001*\022o\n\020get" +
-      "ProjectByName\022\024.ai_flow.NameRequest\032\021.ai" +
-      "_flow.Response\"2\202\323\344\223\002,\"\'/aiflow/metadata" +
-      "_store/project/get/name:\001*\022u\n\017registerPr" +
-      "oject\022\037.ai_flow.RegisterProjectRequest\032\021" +
-      ".ai_flow.Response\".\202\323\344\223\002(\"#/aiflow/metad" +
-      "ata_store/project/save:\001*\022s\n\rupdateProje" +
-      "ct\022\035.ai_flow.UpdateProjectRequest\032\021.ai_f" +
-      "low.Response\"0\202\323\344\223\002*\"%/aiflow/metadata_s" +
-      "tore/project/update:\001*\022f\n\013listProject\022\024." +
-      "ai_flow.ListRequest\032\021.ai_flow.Response\"." +
-      "\202\323\344\223\002(\"#/aiflow/metadata_store/project/l" +
-      "ist:\001*\022o\n\021deleteProjectById\022\022.ai_flow.Id" +
-      "Request\032\021.ai_flow.Response\"3\202\323\344\223\002-\"(/aif" +
-      "low/metadata_store/project/delete/id:\001*\022" +
-      "u\n\023deleteProjectByName\022\024.ai_flow.NameReq" +
-      "uest\032\021.ai_flow.Response\"5\202\323\344\223\002/\"*/aiflow" +
-      "/metadata_store/project/delete/name:\001*\022k" +
-      "\n\017getArtifactById\022\022.ai_flow.IdRequest\032\021." +
+      "\":\202\323\344\223\0024\"//aiflow/metadata_store/model_r" +
+      "elation/delete/id:\001*\022\202\001\n\031deleteModelRela" +
+      "tionByName\022\024.ai_flow.NameRequest\032\021.ai_fl" +
+      "ow.Response\"<\202\323\344\223\0026\"1/aiflow/metadata_st" +
+      "ore/model_relation/delete/name:\001*\022e\n\014get" +
+      "ModelById\022\022.ai_flow.IdRequest\032\021.ai_flow." +
+      "Response\".\202\323\344\223\002(\"#/aiflow/metadata_store" +
+      "/model/get/id:\001*\022k\n\016getModelByName\022\024.ai_" +
+      "flow.NameRequest\032\021.ai_flow.Response\"0\202\323\344" +
+      "\223\002*\"%/aiflow/metadata_store/model/get/na" +
+      "me:\001*\022o\n\rregisterModel\022\035.ai_flow.Registe" +
+      "rModelRequest\032\021.ai_flow.Response\",\202\323\344\223\002&" +
+      "\"!/aiflow/metadata_store/model/save:\001*\022k" +
+      "\n\017deleteModelById\022\022.ai_flow.IdRequest\032\021." +
       "ai_flow.Response\"1\202\323\344\223\002+\"&/aiflow/metada" +
-      "ta_store/artifact/get/id:\001*\022q\n\021getArtifa" +
-      "ctByName\022\024.ai_flow.NameRequest\032\021.ai_flow" +
+      "ta_store/model/delete/id:\001*\022q\n\021deleteMod" +
+      "elByName\022\024.ai_flow.NameRequest\032\021.ai_flow" +
       ".Response\"3\202\323\344\223\002-\"(/aiflow/metadata_stor" +
-      "e/artifact/get/name:\001*\022v\n\016updateArtifact" +
-      "\022\036.ai_flow.UpdateArtifactRequest\032\021.ai_fl" +
+      "e/model/delete/name:\001*\022\234\001\n getModelVersi" +
+      "onRelationByVersion\022 .ai_flow.ModelVersi" +
+      "onNameRequest\032\021.ai_flow.Response\"C\202\323\344\223\002=" +
+      "\"8/aiflow/metadata_store/modelVersion_re" +
+      "lation/get/version:\001*\022\225\001\n\030listModelVersi" +
+      "onRelation\022(.ai_flow.ListModelVersionRel" +
+      "ationRequest\032\021.ai_flow.Response\"<\202\323\344\223\0026\"" +
+      "1/aiflow/metadata_store/modelVersion_rel" +
+      "ation/list:\001*\022\235\001\n\034registerModelVersionRe" +
+      "lation\022,.ai_flow.RegisterModelVersionRel" +
+      "ationRequest\032\021.ai_flow.Response\"<\202\323\344\223\0026\"" +
+      "1/aiflow/metadata_store/modelVersion_rel" +
+      "ation/save:\001*\022\242\001\n#deleteModelVersionRela" +
+      "tionByVersion\022 .ai_flow.ModelVersionName" +
+      "Request\032\021.ai_flow.Response\"F\202\323\344\223\002@\";/aif" +
+      "low/metadata_store/modelVersion_relation" +
+      "/delete/version:\001*\022\213\001\n\030getModelVersionBy" +
+      "Version\022 .ai_flow.ModelVersionNameReques" +
+      "t\032\021.ai_flow.Response\":\202\323\344\223\0024\"//aiflow/me" +
+      "tadata_store/modelVersion/get/version:\001*" +
+      "\022\204\001\n\024registerModelVersion\022$.ai_flow.Regi" +
+      "sterModelVersionRequest\032\021.ai_flow.Respon" +
+      "se\"3\202\323\344\223\002-\"(/aiflow/metadata_store/model" +
+      "Version/save:\001*\022\221\001\n\033deleteModelVersionBy" +
+      "Version\022 .ai_flow.ModelVersionNameReques" +
+      "t\032\021.ai_flow.Response\"=\202\323\344\223\0027\"2/aiflow/me" +
+      "tadata_store/modelVersion/delete/version" +
+      ":\001*\022\213\001\n\027getDeployedModelVersion\022\031.ai_flo" +
+      "w.ModelNameRequest\032\021.ai_flow.Response\"B\202" +
+      "\323\344\223\002<\"7/aiflow/metadata_store/modelVersi" +
+      "on/get_serving_version:\001*\022\241\001\n\036getLatestV" +
+      "alidatedModelVersion\022\031.ai_flow.ModelName" +
+      "Request\032\021.ai_flow.Response\"Q\202\323\344\223\002K\"F/aif" +
+      "low/metadata_store/modelVersion/get_late" +
+      "st_validated_model_version:\001*\022\241\001\n\036getLat" +
+      "estGeneratedModelVersion\022\031.ai_flow.Model" +
+      "NameRequest\032\021.ai_flow.Response\"Q\202\323\344\223\002K\"F" +
+      "/aiflow/metadata_store/modelVersion/get_" +
+      "latest_generated_model_version:\001*\022}\n\030get" +
+      "WorkFlowExecutionById\022\022.ai_flow.IdReques" +
+      "t\032\021.ai_flow.Response\":\202\323\344\223\0024\"//aiflow/me" +
+      "tadata_store/workflowExecution/get/id:\001*" +
+      "\022\203\001\n\032getWorkFlowExecutionByName\022\024.ai_flo" +
+      "w.NameRequest\032\021.ai_flow.Response\"<\202\323\344\223\0026" +
+      "\"1/aiflow/metadata_store/workflowExecuti" +
+      "on/get/name:\001*\022z\n\025listWorkFlowExecution\022" +
+      "\024.ai_flow.ListRequest\032\021.ai_flow.Response" +
+      "\"8\202\323\344\223\0022\"-/aiflow/metadata_store/workflo" +
+      "wExecution/list:\001*\022\223\001\n\031registerWorkFlowE" +
+      "xecution\022).ai_flow.RegisterWorkFlowExecu" +
+      "tionRequest\032\021.ai_flow.Response\"8\202\323\344\223\0022\"-" +
+      "/aiflow/metadata_store/workflowExecution" +
+      "/save:\001*\022\221\001\n\027updateWorkflowExecution\022\'.a" +
+      "i_flow.UpdateWorkflowExecutionRequest\032\021." +
+      "ai_flow.Response\":\202\323\344\223\0024\"//aiflow/metada" +
+      "ta_store/workflowExecution/update:\001*\022\203\001\n" +
+      "\033deleteWorkflowExecutionById\022\022.ai_flow.I" +
+      "dRequest\032\021.ai_flow.Response\"=\202\323\344\223\0027\"2/ai" +
+      "flow/metadata_store/workflowExecution/de" +
+      "lete/id:\001*\022\211\001\n\035deleteWorkflowExecutionBy" +
+      "Name\022\024.ai_flow.NameRequest\032\021.ai_flow.Res" +
+      "ponse\"?\202\323\344\223\0029\"4/aiflow/metadata_store/wo" +
+      "rkflowExecution/delete/name:\001*\022\250\001\n\036updat" +
+      "eWorkflowExecutionEndTime\022..ai_flow.Upda" +
+      "teWorkflowExecutionEndTimeRequest\032\021.ai_f" +
+      "low.Response\"C\202\323\344\223\002=\"8/aiflow/metadata_s" +
+      "tore/workflowExecution/update/end_time:\001" +
+      "*\022\241\001\n\034updateWorkflowExecutionState\022,.ai_" +
+      "flow.UpdateWorkflowExecutionStateRequest" +
+      "\032\021.ai_flow.Response\"@\202\323\344\223\002:\"5/aiflow/met" +
+      "adata_store/workflowExecution/update/sta" +
+      "te:\001*\022a\n\ngetJobById\022\022.ai_flow.IdRequest\032" +
+      "\021.ai_flow.Response\",\202\323\344\223\002&\"!/aiflow/meta" +
+      "data_store/job/get/id:\001*\022g\n\014getJobByName" +
+      "\022\024.ai_flow.NameRequest\032\021.ai_flow.Respons" +
+      "e\".\202\323\344\223\002(\"#/aiflow/metadata_store/job/ge" +
+      "t/name:\001*\022^\n\007listJob\022\024.ai_flow.ListReque" +
+      "st\032\021.ai_flow.Response\"*\202\323\344\223\002$\"\037/aiflow/m" +
+      "etadata_store/job/list:\001*\022i\n\013registerJob" +
+      "\022\033.ai_flow.RegisterJobRequest\032\021.ai_flow." +
+      "Response\"*\202\323\344\223\002$\"\037/aiflow/metadata_store" +
+      "/job/save:\001*\022g\n\tupdateJob\022\031.ai_flow.Upda" +
+      "teJobRequest\032\021.ai_flow.Response\",\202\323\344\223\002&\"" +
+      "!/aiflow/metadata_store/job/update:\001*\022w\n" +
+      "\016updateJobState\022\036.ai_flow.UpdateJobState" +
+      "Request\032\021.ai_flow.Response\"2\202\323\344\223\002,\"\'/aif" +
+      "low/metadata_store/job/update/state:\001*\022~" +
+      "\n\020updateJobEndTime\022 .ai_flow.UpdateJobEn" +
+      "dTimeRequest\032\021.ai_flow.Response\"5\202\323\344\223\002/\"" +
+      "*/aiflow/metadata_store/job/update/end_t" +
+      "ime:\001*\022g\n\rdeleteJobById\022\022.ai_flow.IdRequ" +
+      "est\032\021.ai_flow.Response\"/\202\323\344\223\002)\"$/aiflow/" +
+      "metadata_store/job/delete/id:\001*\022m\n\017delet" +
+      "eJobByName\022\024.ai_flow.NameRequest\032\021.ai_fl" +
       "ow.Response\"1\202\323\344\223\002+\"&/aiflow/metadata_st" +
-      "ore/artifact/update:\001*\022x\n\020registerArtifa" +
-      "ct\022 .ai_flow.RegisterArtifactRequest\032\021.a" +
-      "i_flow.Response\"/\202\323\344\223\002)\"$/aiflow/metadat" +
-      "a_store/artifact/save:\001*\022h\n\014listArtifact" +
-      "\022\024.ai_flow.ListRequest\032\021.ai_flow.Respons" +
-      "e\"/\202\323\344\223\002)\"$/aiflow/metadata_store/artifa" +
-      "ct/list:\001*\022q\n\022deleteArtifactById\022\022.ai_fl" +
-      "ow.IdRequest\032\021.ai_flow.Response\"4\202\323\344\223\002.\"" +
-      ")/aiflow/metadata_store/artifact/delete/" +
-      "id:\001*\022w\n\024deleteArtifactByName\022\024.ai_flow." +
-      "NameRequest\032\021.ai_flow.Response\"6\202\323\344\223\0020\"+" +
-      "/aiflow/metadata_store/artifact/delete/n" +
-      "ame:\001*B\"\n\020com.aiflow.protoZ\010/ai_flow\210\001\001\220" +
-      "\001\001b\006proto3"
+      "ore/job/delete/name:\001*\022i\n\016getProjectById" +
+      "\022\022.ai_flow.IdRequest\032\021.ai_flow.Response\"" +
+      "0\202\323\344\223\002*\"%/aiflow/metadata_store/project/" +
+      "get/id:\001*\022o\n\020getProjectByName\022\024.ai_flow." +
+      "NameRequest\032\021.ai_flow.Response\"2\202\323\344\223\002,\"\'" +
+      "/aiflow/metadata_store/project/get/name:" +
+      "\001*\022u\n\017registerProject\022\037.ai_flow.Register" +
+      "ProjectRequest\032\021.ai_flow.Response\".\202\323\344\223\002" +
+      "(\"#/aiflow/metadata_store/project/save:\001" +
+      "*\022s\n\rupdateProject\022\035.ai_flow.UpdateProje" +
+      "ctRequest\032\021.ai_flow.Response\"0\202\323\344\223\002*\"%/a" +
+      "iflow/metadata_store/project/update:\001*\022f" +
+      "\n\013listProject\022\024.ai_flow.ListRequest\032\021.ai" +
+      "_flow.Response\".\202\323\344\223\002(\"#/aiflow/metadata" +
+      "_store/project/list:\001*\022o\n\021deleteProjectB" +
+      "yId\022\022.ai_flow.IdRequest\032\021.ai_flow.Respon" +
+      "se\"3\202\323\344\223\002-\"(/aiflow/metadata_store/proje" +
+      "ct/delete/id:\001*\022u\n\023deleteProjectByName\022\024" +
+      ".ai_flow.NameRequest\032\021.ai_flow.Response\"" +
+      "5\202\323\344\223\002/\"*/aiflow/metadata_store/project/" +
+      "delete/name:\001*\022k\n\017getArtifactById\022\022.ai_f" +
+      "low.IdRequest\032\021.ai_flow.Response\"1\202\323\344\223\002+" +
+      "\"&/aiflow/metadata_store/artifact/get/id" +
+      ":\001*\022q\n\021getArtifactByName\022\024.ai_flow.NameR" +
+      "equest\032\021.ai_flow.Response\"3\202\323\344\223\002-\"(/aifl" +
+      "ow/metadata_store/artifact/get/name:\001*\022v" +
+      "\n\016updateArtifact\022\036.ai_flow.UpdateArtifac" +
+      "tRequest\032\021.ai_flow.Response\"1\202\323\344\223\002+\"&/ai" +
+      "flow/metadata_store/artifact/update:\001*\022x" +
+      "\n\020registerArtifact\022 .ai_flow.RegisterArt" +
+      "ifactRequest\032\021.ai_flow.Response\"/\202\323\344\223\002)\"" +
+      "$/aiflow/metadata_store/artifact/save:\001*" +
+      "\022h\n\014listArtifact\022\024.ai_flow.ListRequest\032\021" +
+      ".ai_flow.Response\"/\202\323\344\223\002)\"$/aiflow/metad" +
+      "ata_store/artifact/list:\001*\022q\n\022deleteArti" +
+      "factById\022\022.ai_flow.IdRequest\032\021.ai_flow.R" +
+      "esponse\"4\202\323\344\223\002.\")/aiflow/metadata_store/" +
+      "artifact/delete/id:\001*\022w\n\024deleteArtifactB" +
+      "yName\022\024.ai_flow.NameRequest\032\021.ai_flow.Re" +
+      "sponse\"6\202\323\344\223\0020\"+/aiflow/metadata_store/a" +
+      "rtifact/delete/name:\001*B\"\n\020com.aiflow.pro" +
+      "toZ\010/ai_flow\210\001\001\220\001\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -35379,7 +34970,7 @@ public final class MetadataServiceOuterClass {
     internal_static_ai_flow_UpdateArtifactRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ai_flow_UpdateArtifactRequest_descriptor,
-        new java.lang.String[] { "Name", "Properties", "DataFormat", "BatchUri", "StreamUri", "Description", "UpdateTime", });
+        new java.lang.String[] { "Name", "Properties", "ArtifactType", "Uri", "Description", });
     internal_static_ai_flow_UpdateArtifactRequest_PropertiesEntry_descriptor =
       internal_static_ai_flow_UpdateArtifactRequest_descriptor.getNestedTypes().get(0);
     internal_static_ai_flow_UpdateArtifactRequest_PropertiesEntry_fieldAccessorTable = new

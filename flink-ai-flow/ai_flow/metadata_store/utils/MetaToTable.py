@@ -117,7 +117,7 @@ class MetaToTable:
                       signature=signature)
 
     @staticmethod
-    def artifact_meta_to_table(name, data_format, description, batch_uri, stream_uri,
+    def artifact_meta_to_table(name, artifact_type, description, uri,
                                create_time, update_time, properties, store_type='SqlAlchemyStore'):
         if properties is not None:
             properties = str(properties)
@@ -125,9 +125,8 @@ class MetaToTable:
             _class = MongoArtifact
         else:
             _class = SqlArtifact
-        return _class(name=name, data_format=data_format, description=description, batch_uri=batch_uri,
-                      stream_uri=stream_uri, create_time=create_time, update_time=update_time,
-                      properties=properties)
+        return _class(name=name, artifact_type=artifact_type, description=description, uri=uri,
+                      create_time=create_time, update_time=update_time, properties=properties)
 
     @staticmethod
     def workflow_execution_meta_to_table(name, properties, start_time, end_time,

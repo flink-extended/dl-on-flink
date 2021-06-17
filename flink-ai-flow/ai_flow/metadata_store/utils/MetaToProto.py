@@ -101,10 +101,9 @@ class MetaToProto:
                 uuid=artifact_meta.uuid,
                 name=artifact_meta.name,
                 properties=artifact_meta.properties,
-                data_format=stringValue(artifact_meta.data_format),
+                artifact_type=stringValue(artifact_meta.artifact_type),
                 description=stringValue(artifact_meta.description),
-                batch_uri=stringValue(artifact_meta.batch_uri),
-                stream_uri=stringValue(artifact_meta.stream_uri),
+                uri=stringValue(artifact_meta.uri),
                 create_time=int64Value(artifact_meta.create_time),
                 update_time=int64Value(artifact_meta.update_time))
 

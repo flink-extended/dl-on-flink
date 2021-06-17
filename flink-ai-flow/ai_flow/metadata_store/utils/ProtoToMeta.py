@@ -106,10 +106,9 @@ class ProtoToMeta:
             uuid=artifact_proto.uuid,
             name=artifact_proto.name,
             properties=properties,
-            data_format=artifact_proto.data_format.value if artifact_proto.HasField('data_format') else None,
+            artifact_type=artifact_proto.artifact_type.value if artifact_proto.HasField('artifact_type') else None,
             description=artifact_proto.description.value if artifact_proto.HasField('description') else None,
-            batch_uri=artifact_proto.batch_uri.value if artifact_proto.HasField('batch_uri') else None,
-            stream_uri=artifact_proto.stream_uri.value if artifact_proto.HasField('stream_uri') else None,
+            uri=artifact_proto.uri.value if artifact_proto.HasField('uri') else None,
             create_time=artifact_proto.create_time.value if artifact_proto.HasField('create_time') else None,
             update_time=artifact_proto.update_time.value if artifact_proto.HasField('update_time') else None)
 
