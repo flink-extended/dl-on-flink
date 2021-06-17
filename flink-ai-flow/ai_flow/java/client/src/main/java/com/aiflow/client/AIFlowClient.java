@@ -876,52 +876,41 @@ public class AIFlowClient {
    * Register a artifact in Metadata Store.
    *
    * @param name Name of artifact.
-   * @param dataFormat Data format of artifact.
-   * @param description Description of artifact.
-   * @param batchUri Batch uri of artifact.
-   * @param streamUri Stream uri of artifact.
-   * @param createTime Time when artifact is created.
-   * @param updateTime Time when artifact is updated.
-   * @param properties Properties of artifact.
+   * @param artifactType Data format of artifact.
+   * @param description  Description of artifact.
+   * @param uri          Uri of artifact.
+   * @param properties   Properties of artifact.
    * @return Single ArtifactMeta object registered in Metadata Store.
    */
   public ArtifactMeta registerArtifact(
       String name,
-      String dataFormat,
+      String artifactType,
       String description,
-      String batchUri,
-      String streamUri,
-      Long createTime,
-      Long updateTime,
+      String uri,
       Map<String, String> properties)
       throws Exception {
     return this.metadataClient.registerArtifact(
-        name, dataFormat, description, batchUri, streamUri, createTime, updateTime, properties);
+        name, artifactType, description, uri, properties);
   }
 
   /**
    * Update a artifact in Metadata Store.
    *
    * @param name Name of artifact.
-   * @param dataFormat Data format of artifact.
-   * @param description Description of artifact.
-   * @param batchUri Batch uri of artifact.
-   * @param streamUri Stream uri of artifact.
-   * @param updateTime Time when artifact is updated.
+   * @param artifactType Type of artifact.
+   * @param uri          Uri of artifact.
    * @param properties Properties of artifact.
    * @return Single ArtifactMeta object registered in Metadata Store.
    */
   public ArtifactMeta updateArtifact(
       String name,
-      String dataFormat,
+      String artifactType,
       String description,
-      String batchUri,
-      String streamUri,
-      Long updateTime,
+      String uri,
       Map<String, String> properties)
       throws Exception {
     return this.metadataClient.updateArtifact(
-        name, dataFormat, description, batchUri, streamUri, updateTime, properties);
+        name, artifactType, description, uri, properties);
   }
 
   /**

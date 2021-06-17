@@ -26,10 +26,9 @@ class ArtifactMeta(Jsonable):
 
     def __init__(self,
                  name: Text,
-                 data_format: Text,
+                 artifact_type: Text,
                  description: Text = None,
-                 batch_uri: Text = None,
-                 stream_uri: Text = None,
+                 uri: Text = None,
                  create_time: int = None,
                  update_time: int = None,
                  properties: Properties = None,
@@ -37,19 +36,17 @@ class ArtifactMeta(Jsonable):
         """ create artifact meta
         Args:
             name: artifact name
-            data_format: csv, json, etc.
+            artifact_type: csv, json, etc.
             description: artifact description
-            batch_uri: batch data persistent storage
-            stream_uri: stream data persistent storage
+            uri: data persistent storage uri
             create_time: create artifact datetime
             update_time: update artifact datetime
             properties: properties for the artifact
         """
         self.name = name
-        self.data_format = data_format
+        self.artifact_type = artifact_type
         self.description = description
-        self.batch_uri = batch_uri
-        self.stream_uri = stream_uri
+        self.uri = uri
         self.create_time = create_time
         self.update_time = update_time
         self.properties = properties
@@ -58,12 +55,11 @@ class ArtifactMeta(Jsonable):
 
 # artifact api
 def create_artifact(name: Text,
-                    data_format: Text = None,
+                    artifact_type: Text = None,
                     description: Text = None,
-                    batch_uri: Text = None,
-                    stream_uri: Text = None,
+                    uri: Text = None,
                     create_time: int = None,
                     update_time: int = None,
                     properties: Properties = None) -> ArtifactMeta:
-    return ArtifactMeta(name, data_format, description, batch_uri, stream_uri,
+    return ArtifactMeta(name, artifact_type, description, uri,
                         create_time, update_time, properties)

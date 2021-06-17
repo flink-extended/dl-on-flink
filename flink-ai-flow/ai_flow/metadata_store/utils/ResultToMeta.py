@@ -80,9 +80,9 @@ class ResultToMeta:
         if properties is not None:
             properties = ast.literal_eval(properties)
         return ArtifactMeta(uuid=artifact_result.uuid, name=artifact_result.name,
-                            data_format=artifact_result.data_format,
-                            description=artifact_result.description, batch_uri=artifact_result.batch_uri,
-                            stream_uri=artifact_result.stream_uri, create_time=artifact_result.create_time,
+                            artifact_type=artifact_result.artifact_type,
+                            description=artifact_result.description, uri=artifact_result.uri,
+                            create_time=artifact_result.create_time,
                             update_time=artifact_result.update_time, properties=properties)
 
     @staticmethod
