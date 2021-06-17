@@ -30,7 +30,7 @@ from notification_service.service import NotificationService
 from ai_flow.common.scheduler_type import SchedulerType
 
 import ai_flow as af
-from ai_flow import AIFlowMaster
+from ai_flow import AIFlowServerRunner
 from ai_flow.executor.executor import CmdExecutor
 from ai_flow.graph.graph import EmptyGraphException
 from ai_flow.test import test_util
@@ -42,21 +42,21 @@ class TestAirflowProject(unittest.TestCase):
         cls.notification_server = NotificationMaster(NotificationService(MemoryEventStorage()), port=50052)
         cls.notification_server.run()
         config_file = test_util.get_master_config_file()
-        cls.master = AIFlowMaster(config_file=config_file)
-        cls.master.start()
+        cls.server_runner = AIFlowServerRunner(config_file=config_file)
+        cls.server_runner.start()
         test_util.set_project_config(__file__)
 
     @classmethod
     def tearDownClass(cls) -> None:
-        cls.master.stop()
+        cls.server_runner.stop()
         cls.notification_server.stop()
 
     def setUp(self):
-        TestAirflowProject.master._clear_db()
+        TestAirflowProject.server_runner._clear_db()
         af.default_graph().clear_graph()
 
     def tearDown(self):
-        TestAirflowProject.master._clear_db()
+        TestAirflowProject.server_runner._clear_db()
 
     def run_airflow_dag_function(self):
         # waiting parsed dag file done

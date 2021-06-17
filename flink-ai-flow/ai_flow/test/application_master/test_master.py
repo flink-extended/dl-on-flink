@@ -18,19 +18,19 @@
 #
 import unittest
 
-from ai_flow.application_master.master import AIFlowMaster
-from ai_flow.application_master.master_config import MasterConfig, DBType
+from ai_flow.application_master.server_runner import AIFlowServerRunner
+from ai_flow.application_master.server_config import AIFlowServerConfig, DBType
 from ai_flow.test import test_util
 
 
 class TestMaster(unittest.TestCase):
 
     def test_master_start_stop(self):
-        config = MasterConfig()
+        config = AIFlowServerConfig()
         config.set_db_uri(db_type=DBType.SQLITE, uri="sqlite:///sql.db")
-        master = AIFlowMaster(config_file=test_util.get_master_config_file())
-        master.start(is_block=False)
-        master.stop()
+        server_runner = AIFlowServerRunner(config_file=test_util.get_master_config_file())
+        server_runner.start(is_block=False)
+        server_runner.stop()
 
 
 if __name__ == '__main__':

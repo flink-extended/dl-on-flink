@@ -267,7 +267,7 @@ def generate_job_name(job):
 
 
 def get_flink_session_cluster_boilerplate(job: KubernetesFlinkJob) -> client.V1Job:
-    from ai_flow.application_master.master import GLOBAL_MASTER_CONFIG
+    from ai_flow.application_master.server_runner import GLOBAL_MASTER_CONFIG
     job_master_args_default = ["session-cluster",
                                "--job-classname", job.job_config.main_class,
                                "-Djobmanager.rpc.address=flink-job-cluster-{}-svc".format(job.uuid),
@@ -356,7 +356,7 @@ def get_flink_session_cluster_boilerplate(job: KubernetesFlinkJob) -> client.V1J
 
 
 def get_task_manager_boilerplate(job: KubernetesFlinkJob) -> client.V1Deployment:
-    from ai_flow.application_master.master import GLOBAL_MASTER_CONFIG
+    from ai_flow.application_master.server_runner import GLOBAL_MASTER_CONFIG
     dep_resource_metadata = client.V1ObjectMeta(
         name='flink-task-manager-' + str(job.uuid))
 

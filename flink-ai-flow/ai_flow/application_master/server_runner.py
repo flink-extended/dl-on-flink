@@ -16,9 +16,11 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+import argparse
+
 from typing import Text
 from ai_flow.endpoint.server.server import AIFlowServer
-from ai_flow.application_master.master_config import MasterConfig
+from ai_flow.application_master.server_config import AIFlowServerConfig
 from ai_flow.client.ai_flow_client import get_ai_flow_client
 import logging
 
@@ -29,20 +31,22 @@ _PORT = '50051'
 GLOBAL_MASTER_CONFIG = {}
 
 
-class AIFlowMaster(object):
+class AIFlowServerRunner(object):
     """
-    AI flow master.
+    AI flow server runner. This class is the runner class for the AIFlowServer. It parse the server configuration and
+    manage the live cycle of the AIFlowServer.
     """
+
     def __init__(self, config_file: Text = None, enable_ha=False, server_uri: str = None, ttl_ms=10000) -> None:
         """
-        Set the master attribute according to the master config file.
+        Set the server attribute according to the server config file.
 
-        :param config_file: master configuration file.
+        :param config_file: server configuration file.
         """
         super().__init__()
         self.config_file = config_file
         self.server = None
-        self.master_config = MasterConfig()
+        self.server_config = AIFlowServerConfig()
         self.enable_ha = enable_ha
         self.server_uri = server_uri
         self.ttl_ms = ttl_ms
@@ -50,35 +54,35 @@ class AIFlowMaster(object):
     def start(self,
               is_block=False) -> None:
         """
-        Start the AI flow master.
+        Start the AI flow runner.
 
-        :param is_block: AI flow master will run non-stop if True.
+        :param is_block: AI flow runner will run non-stop if True.
         """
         if self.config_file is not None:
-            self.master_config.load_from_file(self.config_file)
+            self.server_config.load_from_file(self.config_file)
         else:
-            self.master_config.set_master_port(str(_PORT))
+            self.server_config.set_master_port(str(_PORT))
         global GLOBAL_MASTER_CONFIG
-        GLOBAL_MASTER_CONFIG = self.master_config
+        GLOBAL_MASTER_CONFIG = self.server_config
         logging.info("AI Flow Master Config {}".format(GLOBAL_MASTER_CONFIG))
         self.server = AIFlowServer(
-            store_uri=self.master_config.get_db_uri(),
-            port=str(self.master_config.get_master_port()),
-            start_default_notification=self.master_config.start_default_notification(),
-            notification_uri=self.master_config.get_notification_uri(),
-            start_meta_service=self.master_config.start_meta_service(),
-            start_model_center_service=self.master_config.start_model_center_service(),
-            start_metric_service=self.master_config.start_metric_service(),
-            start_scheduling_service=self.master_config.start_scheduling_service(),
-            scheduler_config=self.master_config.get_scheduler_config(),
-            enabled_ha=self.master_config.get_enable_ha(),
-            ha_server_uri=self.master_config.get_master_ip() + ":" + str(self.master_config.get_master_port()),
-            ttl_ms=self.master_config.get_ha_ttl_ms())
+            store_uri=self.server_config.get_db_uri(),
+            port=str(self.server_config.get_master_port()),
+            start_default_notification=self.server_config.start_default_notification(),
+            notification_uri=self.server_config.get_notification_uri(),
+            start_meta_service=self.server_config.start_meta_service(),
+            start_model_center_service=self.server_config.start_model_center_service(),
+            start_metric_service=self.server_config.start_metric_service(),
+            start_scheduling_service=self.server_config.start_scheduling_service(),
+            scheduler_config=self.server_config.get_scheduler_config(),
+            enabled_ha=self.server_config.get_enable_ha(),
+            ha_server_uri=self.server_config.get_master_ip() + ":" + str(self.server_config.get_master_port()),
+            ttl_ms=self.server_config.get_ha_ttl_ms())
         self.server.run(is_block=is_block)
 
     def stop(self, clear_sql_lite_db_file=True) -> None:
         """
-        Stop the AI flow master.
+        Stop the AI flow runner.
 
         :param clear_sql_lite_db_file: If True, the sqlite database files will be deleted When the server stops working.
         """
@@ -92,3 +96,14 @@ def set_master_config():
     code, config, message = get_ai_flow_client().get_master_config()
     for k, v in config.items():
         GLOBAL_MASTER_CONFIG[k] = v
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--config', required=True, help='master config file')
+    args = parser.parse_args()
+    logging.info(args.config)
+    config_file = args.config
+    master = AIFlowServerRunner(
+        config_file=config_file)
+    master.start(is_block=True)

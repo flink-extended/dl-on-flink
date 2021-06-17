@@ -18,7 +18,7 @@
 #
 import unittest
 
-from ai_flow.application_master.master import AIFlowMaster
+from ai_flow.application_master.server_runner import AIFlowServerRunner
 
 from ai_flow.util.path_util import get_file_dir
 from ai_flow.project.project_description import get_project_description_from
@@ -30,12 +30,12 @@ class TestProjectConfig(unittest.TestCase):
     def setUp(self):
         project_path = get_file_dir(__file__)
         config_file = project_path + '/master.yaml'
-        self.master = AIFlowMaster(config_file=config_file)
-        self.master.start()
+        self.server_runner = AIFlowServerRunner(config_file=config_file)
+        self.server_runner.start()
 
     def tearDown(self):
-        self.master.stop()
-        self.master._clear_db()
+        self.server_runner.stop()
+        self.server_runner._clear_db()
 
     def test_load_project_config(self):
         project_path = get_file_dir(__file__)

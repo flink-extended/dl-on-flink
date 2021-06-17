@@ -19,7 +19,7 @@
 import unittest
 
 from ai_flow.project.project_description import get_project_description_from
-from ai_flow.application_master.master import AIFlowMaster
+from ai_flow.application_master.server_runner import AIFlowServerRunner
 from ai_flow.test import test_util
 from ai_flow.workflow.job_config import PeriodicConfig
 from ai_flow.graph.graph import default_graph
@@ -56,20 +56,20 @@ class TestTranslator(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         config_file = test_util.get_master_config_file()
-        cls.master = AIFlowMaster(config_file=config_file)
-        cls.master.start()
+        cls.server_runner = AIFlowServerRunner(config_file=config_file)
+        cls.server_runner.start()
         test_util.set_project_config(__file__)
 
     @classmethod
     def tearDownClass(cls) -> None:
-        cls.master.stop()
+        cls.server_runner.stop()
 
     def setUp(self):
-        TestTranslator.master._clear_db()
+        TestTranslator.server_runner._clear_db()
         default_graph().clear_graph()
 
     def tearDown(self):
-        TestTranslator.master._clear_db()
+        TestTranslator.server_runner._clear_db()
 
     def test_split_graph(self):
         def build_ai_graph() -> AIGraph:
