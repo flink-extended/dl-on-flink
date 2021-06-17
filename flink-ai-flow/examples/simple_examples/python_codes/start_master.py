@@ -16,9 +16,8 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-from ai_flow.application_master.server_runner import AIFlowServerRunner
+from ai_flow.endpoint.server.server_runner import AIFlowServerRunner
 import os
-from flink_ai_flow import *  # for configuring the logger
 
 if __name__ == '__main__':
 

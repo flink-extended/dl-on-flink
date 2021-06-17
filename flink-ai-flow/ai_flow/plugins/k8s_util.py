@@ -24,7 +24,7 @@ from ai_flow.plugins.kubernetes_platform import DEFAULT_PROJECT_PATH, DEFAULT_NA
 
 
 def create_init_container(job, volume_mount, job_container):
-    from ai_flow.application_master.server_runner import GLOBAL_MASTER_CONFIG
+    from ai_flow.endpoint.server.server_runner import GLOBAL_MASTER_CONFIG
     logging.info('Kubernetes GLOBAL_MASTER_CONFIG {}'.format(GLOBAL_MASTER_CONFIG))
     init_args_default = [str(job.job_config.project_desc.project_config),
                          str(job.job_context.workflow_execution_id),

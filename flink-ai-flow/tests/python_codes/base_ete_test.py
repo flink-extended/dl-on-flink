@@ -24,7 +24,7 @@ from airflow.events.scheduler_events import StopSchedulerEvent
 from ai_flow.api.configuration import set_project_path
 from airflow.contrib.jobs.event_based_scheduler_job import EventBasedSchedulerJob
 from airflow.executors.local_executor import LocalExecutor
-from ai_flow.application_master.server_runner import AIFlowServerRunner
+from ai_flow.endpoint.server.server_runner import AIFlowServerRunner
 from notification_service.client import NotificationClient
 import ai_flow as af
 from tests.python_codes import db_utils
