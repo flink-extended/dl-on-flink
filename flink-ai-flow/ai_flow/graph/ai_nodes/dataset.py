@@ -16,20 +16,20 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-from typing import List, Optional
-from ai_flow.graph.ai_node import AINode
+from typing import List
+from ai_flow.graph.ai_nodes.executable import ExecutableNode
 from ai_flow.meta.dataset_meta import DatasetMeta
 from ai_flow.graph.channel import Channel
 from ai_flow.common.properties import ExecuteProperties
-from ai_flow.executor.executor import PythonObjectExecutor
+from ai_flow.executor.executor import BaseExecutor
 
 
-class Dataset(AINode):
+class Dataset(ExecutableNode):
     """define dataset node """
 
     def __init__(self,
                  dataset_meta: DatasetMeta,
-                 executor: Optional[PythonObjectExecutor] = None,
+                 executor: BaseExecutor = None,
                  is_source: bool = True,
                  instance_id=None,
                  properties: ExecuteProperties = None) -> None:
@@ -37,7 +37,7 @@ class Dataset(AINode):
         Args:
             dataset_meta:
         """
-        super().__init__(properties=properties,
+        super().__init__(executor=executor, properties=properties,
                          name=dataset_meta.name,
                          instance_id=instance_id,
                          output_num=1)
