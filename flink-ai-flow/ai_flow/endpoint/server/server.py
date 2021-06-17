@@ -37,8 +37,9 @@ from notification_service.service import NotificationService
 
 from ai_flow.protobuf.high_availability_pb2_grpc import add_HighAvailabilityManagerServicer_to_server
 from ai_flow.endpoint.server.high_availability import SimpleAIFlowServerHaManager, HighAvailableService
+from ai_flow.store.db.base_model import base
 from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
-from ai_flow.store.mongo_store import MongoStore
+from ai_flow.store.mongo_store import MongoStore, MongoStoreConnManager
 from ai_flow.store.db.db_util import extract_db_engine_from_uri, parse_mongo_uri
 from ai_flow.application_master.master_config import DBType
 from notification_service.proto import notification_service_pb2_grpc
@@ -75,9 +76,12 @@ class AIFlowServer(object):
                  ha_server_uri=None,
                  ha_storage=None,
                  ttl_ms: int = 10000):
+        self.store_uri = store_uri
+        self.db_type = DBType.value_of(extract_db_engine_from_uri(store_uri))
         self.executor = Executor(futures.ThreadPoolExecutor(max_workers=10))
         self.server = grpc.server(self.executor)
         self.start_default_notification = start_default_notification
+        self.enabled_ha = enabled_ha
         server_uri = 'localhost:{}'.format(port)
         if start_default_notification:
             logging.info("start default notification service.")
@@ -147,7 +151,7 @@ class AIFlowServer(object):
         add_HighAvailabilityManagerServicer_to_server(self.ha_service, self.server)
 
     def run(self, is_block=False):
-        if self.ha_service is not None:
+        if self.enabled_ha:
             self.ha_service.start()
         self.server.start()
         logging.info('AIFlow server started.')
@@ -160,12 +164,28 @@ class AIFlowServer(object):
         else:
             pass
 
-    def stop(self):
+    def stop(self, clear_sql_lite_db_file=False):
         self.executor.shutdown()
         self.server.stop(0)
-        if self.ha_service is not None:
+        if self.enabled_ha:
             self.ha_service.stop()
+
+        if self.db_type == DBType.SQLITE and clear_sql_lite_db_file:
+            store = SqlAlchemyStore(self.store_uri)
+            base.metadata.drop_all(store.db_engine)
+            os.remove(self.store_uri[10:])
+        elif self.db_type == DBType.MONGODB:
+            MongoStoreConnManager().disconnect_all()
+
         logging.info('AIFlow server stopped.')
+
+    def _clear_db(self):
+        if self.db_type == DBType.SQLITE:
+            store = SqlAlchemyStore(self.store_uri)
+            base.metadata.drop_all(store.db_engine)
+            base.metadata.create_all(store.db_engine)
+        elif self.db_type == DBType.MONGODB:
+            MongoStoreConnManager().drop_all()
 
 
 def _loop(loop: asyncio.AbstractEventLoop):
