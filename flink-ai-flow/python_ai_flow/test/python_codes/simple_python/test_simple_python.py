@@ -19,7 +19,7 @@
 import os
 import unittest
 from typing import List
-from ai_flow.application_master.server_runner import AIFlowServerRunner
+from ai_flow.endpoint.server.server_runner import AIFlowServerRunner
 from ai_flow.udf.function_context import FunctionContext
 from python_ai_flow import Executor
 from python_ai_flow.local_python_job import LocalPythonJobConfig

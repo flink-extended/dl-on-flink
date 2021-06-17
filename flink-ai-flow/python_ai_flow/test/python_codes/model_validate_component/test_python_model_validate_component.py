@@ -25,7 +25,7 @@ from typing import List
 from streamz import Stream
 
 from ai_flow import ModelMeta, ExampleSupportType, PythonObjectExecutor, ModelType, ExecutionMode
-from ai_flow.application_master.server_runner import AIFlowServerRunner
+from ai_flow.endpoint.server.server_runner import AIFlowServerRunner
 from ai_flow.util.path_util import get_file_dir
 from ai_flow.model_center.entity.model_version_stage import ModelVersionStage
 from ai_flow.udf.function_context import FunctionContext

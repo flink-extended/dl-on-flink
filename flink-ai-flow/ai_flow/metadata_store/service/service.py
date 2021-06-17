@@ -33,7 +33,7 @@ from ai_flow.endpoint.server.util import _wrap_meta_response, transform_dataset_
 from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
 from ai_flow.store.mongo_store import MongoStore
 from ai_flow.store.db.db_util import extract_db_engine_from_uri, parse_mongo_uri
-from ai_flow.application_master.server_config import DBType
+from ai_flow.endpoint.server.server_config import DBType
 
 
 class MetadataService(metadata_service_pb2_grpc.MetadataServiceServicer):

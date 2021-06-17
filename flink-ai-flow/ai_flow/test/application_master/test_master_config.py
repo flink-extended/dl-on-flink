@@ -18,7 +18,7 @@
 #
 import unittest
 import os
-from ai_flow.application_master.server_config import AIFlowServerConfig, DBType
+from ai_flow.endpoint.server.server_config import AIFlowServerConfig, DBType
 
 
 class TestConfiguration(unittest.TestCase):
