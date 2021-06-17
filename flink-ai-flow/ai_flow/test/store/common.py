@@ -512,10 +512,10 @@ class AbstractTestStore(object):
     """test artifact"""
 
     def test_register_artifact_get_and_list_artifact(self):
-        artifact = self.store.register_artifact(name='artifact_result', create_time=int(time.time()), batch_uri='../..')
+        artifact = self.store.register_artifact(name='artifact_result', create_time=int(time.time()), uri='../..')
         self.assertEqual(artifact.uuid, self.store.get_artifact_by_id(artifact.uuid).uuid)
-        self.assertEqual(artifact.batch_uri, self.store.get_artifact_by_name('artifact_result').batch_uri)
-        self.store.register_artifact(name='artifact_result_1', create_time=int(time.time()), batch_uri='../..')
+        self.assertEqual(artifact.uri, self.store.get_artifact_by_name('artifact_result').uri)
+        self.store.register_artifact(name='artifact_result_1', create_time=int(time.time()), uri='../..')
         self.assertEqual(2, len(self.store.list_artifact(2, 0)))
         self.assertEqual(Status.OK, self.store.delete_artifact_by_id(1))
         self.assertEqual(Status.OK, self.store.delete_artifact_by_name('artifact_result_1'))
@@ -525,20 +525,20 @@ class AbstractTestStore(object):
         print(artifact.to_json_dict())
 
     def test_double_register_artifact(self):
-        artifact_1 = self.store.register_artifact(name='artifact_result', batch_uri='../..')
-        artifact_2 = self.store.register_artifact(name='artifact_result', batch_uri='../..')
+        artifact_1 = self.store.register_artifact(name='artifact_result', uri='../..')
+        artifact_2 = self.store.register_artifact(name='artifact_result', uri='../..')
         self.assertEqual(artifact_1.to_json_dict(), artifact_2.to_json_dict())
         self.assertRaises(AIFlowException, self.store.register_artifact, name='artifact_result',
-                          create_time=int(time.time()), batch_uri='../..')
+                          create_time=int(time.time()), uri='../..')
 
     def test_update_artifact(self):
-        artifact = self.store.register_artifact(name='artifact_result', create_time=int(time.time()), batch_uri='../..')
+        artifact = self.store.register_artifact(name='artifact_result', create_time=int(time.time()), uri='../..')
         update_time = int(time.time())
-        update_artifact = self.store.update_artifact(artifact_name='artifact_result', update_time=update_time)
+        update_artifact = self.store.update_artifact(name='artifact_result', update_time=update_time)
         self.assertEqual(update_artifact.update_time, update_time)
-        self.assertEqual(update_artifact.batch_uri, artifact.batch_uri)
+        self.assertEqual(update_artifact.uri, artifact.uri)
         self.assertIsNone(update_artifact.properties)
-        self.assertIsNone(update_artifact.data_format)
+        self.assertIsNone(update_artifact.artifact_type)
 
     def _create_registered_model(self, model_name, model_type='model type', model_desc='model desc'):
         return self.store.create_registered_model(model_name, model_type, model_desc)

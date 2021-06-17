@@ -905,51 +905,42 @@ class MetadataClient(BaseClient):
         response = self.metadata_store_stub.getArtifactByName(request)
         return _unwrap_artifact_response(response)
 
-    def register_artifact(self, name: Text, data_format: Text = None, description: Text = None,
-                          batch_uri: Text = None, stream_uri: Text = None,
-                          create_time: int = None, update_time: int = None,
-                          properties: Properties = None) -> ArtifactMeta:
+    def register_artifact(self, name: Text, artifact_type: Text = None, description: Text = None,
+                          uri: Text = None, properties: Properties = None) -> ArtifactMeta:
         """
         register an artifact in metadata store.
 
         :param name: the name of the artifact
-        :param data_format: the data_format of the artifact
+        :param artifact_type: the type of the artifact
         :param description: the description of the artifact
-        :param batch_uri: the batch uri of the artifact
-        :param stream_uri: the stream uri of the artifact
-        :param create_time: the time when the artifact is created
-        :param update_time: the time when the artifact is updated
+        :param uri: the uri of the artifact
         :param properties: the properties of the artifact
         :return: A single :py:class:`ai_flow.meta.artifact_meta.py.ArtifactMeta` object.
         """
-        artifact_request = ArtifactProto(name=name, data_format=stringValue(data_format),
-                                         description=stringValue(description), batch_uri=stringValue(batch_uri),
-                                         stream_uri=stringValue(stream_uri), create_time=int64Value(create_time),
-                                         update_time=int64Value(update_time), properties=properties)
+        artifact_request = ArtifactProto(name=name, artifact_type=stringValue(artifact_type),
+                                         description=stringValue(description), uri=stringValue(uri),
+                                         properties=properties)
         request = metadata_service_pb2.RegisterArtifactRequest(artifact=artifact_request)
         response = self.metadata_store_stub.registerArtifact(request)
         return _unwrap_artifact_response(response)
 
-    def update_artifact(self, artifact_name: Text, data_format: Text = None, description: Text = None,
-                        batch_uri: Text = None, stream_uri: Text = None,
-                        update_time: int = None, properties: Properties = None) -> Optional[ArtifactMeta]:
+    def update_artifact(self, artifact_name: Text, artifact_type: Text = None,
+                        description: Text = None, uri: Text = None,
+                        properties: Properties = None) -> Optional[ArtifactMeta]:
         """
         update artifact in metadata store.
 
         :param artifact_name: the name of the artifact
-        :param data_format: the data_format of the artifact
+        :param artifact_type: the type of the artifact
         :param description: the description of the artifact
-        :param batch_uri: the batch uri of the artifact
-        :param stream_uri: the stream uri of the artifact
-        :param update_time: the time when the artifact is updated
+        :param uri: the batch uri of the artifact
         :param properties: the properties of the artifact
         :return: A single :py:class:`ai_flow.meta.artifact_meta.py.ArtifactMeta` object if update successfully.
         """
-        request = metadata_service_pb2.UpdateArtifactRequest(name=artifact_name, data_format=stringValue(data_format),
+        request = metadata_service_pb2.UpdateArtifactRequest(name=artifact_name,
+                                                             artifact_type=stringValue(artifact_type),
                                                              description=stringValue(description),
-                                                             batch_uri=stringValue(batch_uri),
-                                                             stream_uri=stringValue(stream_uri),
-                                                             update_time=int64Value(update_time),
+                                                             uri=stringValue(uri),
                                                              properties=properties)
         response = self.metadata_store_stub.updateArtifact(request)
         return _unwrap_artifact_response(response)

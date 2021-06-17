@@ -205,22 +205,19 @@ class SqlArtifact(base, Base):
     __tablename__ = 'artifact'
 
     name = Column(String(255), unique=True, nullable=False)
-    data_format = Column(String(256))
+    artifact_type = Column(String(256))
     description = Column(String(1000))
-    batch_uri = Column(String(1000))
-    stream_uri = Column(String(1000))
+    uri = Column(String(1000))
     create_time = Column(BigInteger)
     update_time = Column(BigInteger)
     properties = Column(String(1000))
     is_deleted = Column(String(256), default='False')
 
     def __repr__(self):
-        return '<SqlArtifact ({}, {}, {}, {}, {}, {}, {}, {}, {}, {})>'.format(self.uuid, self.name, self.data_format,
-                                                                               self.description, self.batch_uri,
-                                                                               self.stream_uri,
-                                                                               self.create_time, self.update_time,
-                                                                               self.properties,
-                                                                               self.is_deleted)
+        return '<SqlArtifact ({}, {}, {}, {}, {}, {}, {}, {}, {})>'.format(self.uuid, self.name, self.artifact_type,
+                                                                           self.description, self.uri,
+                                                                           self.create_time, self.update_time,
+                                                                           self.properties, self.is_deleted)
 
 
 class SqlRegisteredModel(base):
@@ -669,10 +666,9 @@ class MongoArtifact(Document):
 
     uuid = SequenceField(db_alias=MONGO_DB_ALIAS_META_SERVICE)
     name = StringField(max_length=255, required=True, unique=True)
-    data_format = StringField(max_length=256)
+    artifact_type = StringField(max_length=256)
     description = StringField(max_length=1000)
-    batch_uri = StringField(max_length=1000)
-    stream_uri = StringField(max_length=1000)
+    uri = StringField(max_length=1000)
     create_time = LongField()
     update_time = LongField()
     properties = StringField(max_length=1000)
@@ -681,13 +677,12 @@ class MongoArtifact(Document):
     meta = {'db_alias': MONGO_DB_ALIAS_META_SERVICE}
 
     def __repr__(self):
-        return '<Document Artifact ({}, {}, {}, {}, {}, {}, {}, {}, {}, {})>'.format(
+        return '<Document Artifact ({}, {}, {}, {}, {}, {}, {}, {}, {})>'.format(
             self.pk,
             self.name,
-            self.data_format,
+            self.artifact_type,
             self.description,
-            self.batch_uri,
-            self.stream_uri,
+            self.uri,
             self.create_time,
             self.update_time,
             self.properties,

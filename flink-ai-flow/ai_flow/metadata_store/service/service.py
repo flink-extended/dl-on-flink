@@ -16,6 +16,8 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+import time
+
 from ai_flow.common.status import Status
 from ai_flow.meta.dataset_meta import DataType
 from ai_flow.meta.job_meta import State
@@ -515,28 +517,26 @@ class MetadataService(metadata_service_pb2_grpc.MetadataServiceServicer):
     @catch_exception
     def registerArtifact(self, request, context):
         artifact = transform_artifact_meta(request.artifact)
-        response = self.store.register_artifact(name=artifact.name, data_format=artifact.data_format,
+        create_time = int(time.time() * 1000)
+        response = self.store.register_artifact(name=artifact.name, artifact_type=artifact.artifact_type,
                                                 description=artifact.description,
-                                                batch_uri=artifact.batch_uri, stream_uri=artifact.stream_uri,
-                                                create_time=artifact.create_time,
-                                                update_time=artifact.update_time, properties=artifact.properties)
+                                                uri=artifact.uri,
+                                                create_time=create_time,
+                                                properties=artifact.properties)
         return _wrap_meta_response(MetaToProto.artifact_meta_to_proto(response))
 
     @catch_exception
     def updateArtifact(self, request, context):
         properties = None if request.properties == {} else request.properties
-        artifact = self.store.update_artifact(artifact_name=request.name,
-                                              data_format=request.data_format.value if request.HasField(
-                                                  'data_format') else None,
+        updata_time = int(time.time() * 1000)
+        artifact = self.store.update_artifact(name=request.name,
+                                              artifact_type=request.artifact_type.value if request.HasField(
+                                                  'artifact_type') else None,
                                               properties=properties,
                                               description=request.description.value if request.HasField(
                                                   'description') else None,
-                                              batch_uri=request.batch_uri.value if request.HasField(
-                                                  'batch_uri') else None,
-                                              stream_uri=request.stream_uri.value if request.HasField(
-                                                  'stream_uri') else None,
-                                              update_time=request.update_time.value if request.HasField(
-                                                  'update_time') else None
+                                              uri=request.uri.value if request.HasField('uri') else None,
+                                              update_time=updata_time
                                               )
         return _wrap_meta_response(MetaToProto.artifact_meta_to_proto(artifact))
 

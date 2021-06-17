@@ -647,27 +647,27 @@ class AIFlowClientTestCases(object):
         """test artifact"""
 
     def test_save_artifact_get_artifact_by_id_and_name(self):
-        artifact = client.register_artifact(name='artifact', data_format='json', batch_uri='./artifact.json')
+        artifact = client.register_artifact(name='artifact', artifact_type='json', uri='./artifact.json')
         artifact_id = client.get_artifact_by_id(artifact.uuid)
         artifact_name = client.get_artifact_by_name(artifact.name)
-        self.assertEqual(artifact.data_format, artifact_id.data_format)
+        self.assertEqual(artifact.artifact_type, artifact_id.artifact_type)
         self.assertEqual('artifact', artifact_name.name)
 
     def test_double_save_artifact(self):
-        artifact_1 = client.register_artifact(name='artifact', data_format='json', batch_uri='./artifact.json')
-        artifact_2 = client.register_artifact(name='artifact', data_format='json', batch_uri='./artifact.json')
-        self.assertEqual(artifact_1.to_json_dict(), artifact_2.to_json_dict())
-        self.assertRaises(AIFlowException, client.register_artifact, name='artifact', data_format='json',
-                          batch_uri='./artifact.json', stream_uri='./artifact.json')
+        client.register_artifact(name='artifact', artifact_type='json', uri='./artifact.json')
+        self.assertRaises(AIFlowException, client.register_artifact, name='artifact', artifact_type='json',
+                          uri='./artifact.json')
+        self.assertRaises(AIFlowException, client.register_artifact, name='artifact', artifact_type='json',
+                          uri='./artifact.json', description='whatever')
 
     def test_save_artifact_list_artifact(self):
-        client.register_artifact(name='artifact', data_format='json', batch_uri='./artifact.json')
-        client.register_artifact(name='artifact_1', data_format='json', batch_uri='./artifact.json')
+        client.register_artifact(name='artifact', artifact_type='json', uri='./artifact.json')
+        client.register_artifact(name='artifact_1', artifact_type='json', uri='./artifact.json')
         self.assertEqual(2, len(client.list_artifact(2, 0)))
 
     def test_delete_artifact_by_id_and_name(self):
-        client.register_artifact(name='artifact', data_format='json', batch_uri='./artifact.json')
-        client.register_artifact(name='artifact_1', data_format='json', batch_uri='./artifact.json')
+        client.register_artifact(name='artifact', artifact_type='json', uri='./artifact.json')
+        client.register_artifact(name='artifact_1', artifact_type='json', uri='./artifact.json')
         self.assertIsNotNone(client.get_artifact_by_id(1))
         self.assertIsNotNone(client.get_artifact_by_name('artifact_1'))
         self.assertEqual(Status.OK, client.delete_artifact_by_id(1))
@@ -677,11 +677,14 @@ class AIFlowClientTestCases(object):
         self.assertIsNone(client.get_artifact_by_name('artifact_1'))
 
     def test_update_artifact(self):
-        client.register_artifact(name='artifact', data_format='json', batch_uri='./artifact.json')
-        artifact = client.update_artifact(artifact_name='artifact', data_format='csv', batch_uri='../..')
+        artifact = client.register_artifact(name='artifact', artifact_type='json', uri='./artifact.json')
         artifact_id = client.get_artifact_by_id(artifact.uuid)
-        self.assertEqual(artifact_id.data_format, 'csv')
-        self.assertEqual(artifact_id.batch_uri, '../..')
+        self.assertIsNone(artifact_id.update_time)
+        artifact = client.update_artifact(artifact_name='artifact', artifact_type='csv', uri='../..')
+        artifact_id = client.get_artifact_by_id(artifact.uuid)
+        self.assertEqual(artifact_id.artifact_type, 'csv')
+        self.assertIsNotNone(artifact_id.update_time)
+        self.assertEqual(artifact_id.uri, '../..')
 
     def test_create_registered_model(self):
         model_name = 'test_create_registered_model'

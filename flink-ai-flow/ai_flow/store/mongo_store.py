@@ -1172,20 +1172,19 @@ class MongoStore(AbstractStore):
         artifact = ResultToMeta.result_to_artifact_meta(artifact_result[0])
         return artifact
 
-    def register_artifact(self, name: Text, data_format: Text = None, description: Text = None,
-                          batch_uri: Text = None, stream_uri: Text = None,
+    def register_artifact(self, name: Text, artifact_type: Text = None, description: Text = None,
+                          uri: Text = None,
                           create_time: int = None, update_time: int = None,
                           properties: Properties = None) -> ArtifactMeta:
         """
         register an artifact in metadata store.
 
         :param name: the name of the artifact
-        :param data_format: the data_format of the artifact
+        :param artifact_type: the type of the artifact
         :param description: the description of the artifact
-        :param batch_uri: the batch uri of the artifact
-        :param stream_uri: the stream uri of the artifact
-        :param create_time: the time when the artifact is created
-        :param update_time: the time when the artifact is updated
+        :param uri: the uri of the artifact
+        :param create_time: the time when the artifact is created represented as milliseconds since epoch.
+        :param update_time: the time when the artifact is updated represented as milliseconds since epoch.
         :param properties: the properties of the artifact
         :return: A single :py:class:`ai_flow.meta.artifact_meta.py.ArtifactMeta` object.
         """
@@ -1193,7 +1192,7 @@ class MongoStore(AbstractStore):
         if before_artifact is not None:
             # if the user has registered exactly the same artifact before,
             # do nothing in metadata store and return the registered artifact.
-            if _compare_artifact_fields(data_format, description, batch_uri, stream_uri,
+            if _compare_artifact_fields(artifact_type, description, uri,
                                         create_time, update_time, properties, before_artifact):
                 return before_artifact
             else:
@@ -1202,38 +1201,33 @@ class MongoStore(AbstractStore):
                 raise AIFlowException("You have registered the artifact with same name: \"{}\""
                                       " but different fields".format(name))
         try:
-            artifact = MetaToTable.artifact_meta_to_table(name=name, data_format=data_format,
-                                                          description=description,
-                                                          batch_uri=batch_uri, stream_uri=stream_uri,
+            artifact = MetaToTable.artifact_meta_to_table(name=name, artifact_type=artifact_type,
+                                                          description=description, uri=uri,
                                                           create_time=create_time,
                                                           update_time=update_time, properties=properties,
                                                           store_type=type(self).__name__)
             artifact.save()
-            artifact_meta = ArtifactMeta(uuid=artifact.uuid, name=name, data_format=data_format,
-                                         description=description,
-                                         batch_uri=batch_uri, stream_uri=stream_uri,
-                                         create_time=create_time,
+            artifact_meta = ArtifactMeta(uuid=artifact.uuid, name=name, artifact_type=artifact_type,
+                                         description=description, uri=uri, create_time=create_time,
                                          update_time=update_time, properties=properties)
             return artifact_meta
         except mongoengine.OperationError as e:
             raise AIFlowException('Registered Artifact (name={}) already exists. '
                                   'Error: {}'.format(artifact.name, str(e)))
 
-    def update_artifact(self, artifact_name: Text, data_format: Text = None, description: Text = None,
-                        batch_uri: Text = None, stream_uri: Text = None,
+    def update_artifact(self, name: Text, artifact_type: Text = None,
+                        description: Text = None, uri: Text = None,
                         update_time: int = None, properties: Properties = None) -> Optional[ArtifactMeta]:
         try:
-            artifact: MongoArtifact = MongoArtifact.objects(name=artifact_name, is_deleted__ne=TRUE).first()
+            artifact: MongoArtifact = MongoArtifact.objects(name=name, is_deleted__ne=TRUE).first()
             if artifact is None:
                 return None
-            if data_format is not None:
-                artifact.data_format = data_format
+            if artifact_type is not None:
+                artifact.artifact_type = artifact_type
             if description is not None:
                 artifact.description = description
-            if batch_uri is not None:
-                artifact.batch_uri = batch_uri
-            if stream_uri is not None:
-                artifact.stream_uri = stream_uri
+            if uri is not None:
+                artifact.uri = uri
             if update_time is not None:
                 artifact.update_time = update_time
             if properties is not None:
@@ -1943,10 +1937,10 @@ def _compare_dataset_fields(data_format, description, uri,
            and catalog_table == before_dataset.catalog_table
 
 
-def _compare_artifact_fields(data_format, description, batch_uri, stream_uri, create_time,
+def _compare_artifact_fields(artifact_type, description, uri, create_time,
                              update_time, properties, before_artifact):
-    return data_format == before_artifact.data_format and description == before_artifact.description \
-           and batch_uri == before_artifact.batch_uri and stream_uri == before_artifact.stream_uri \
+    return artifact_type == before_artifact.artifact_type and description == before_artifact.description \
+           and uri == before_artifact.uri \
            and create_time == before_artifact.create_time and update_time == before_artifact.update_time \
            and properties == before_artifact.properties
 
