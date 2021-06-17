@@ -30,7 +30,7 @@ from ai_flow.meta.model_meta import ModelMeta, ModelType
 from ai_flow.executor.executor import PythonObjectExecutor
 from ai_flow.meta.example_meta import ExampleSupportType
 
-from ai_flow.application_master.server_runner import AIFlowServerRunner
+from ai_flow.endpoint.server.server_runner import AIFlowServerRunner
 from ai_flow.udf.function_context import FunctionContext
 from python_ai_flow import ExampleExecutor, Executor
 from python_ai_flow.test import test_util

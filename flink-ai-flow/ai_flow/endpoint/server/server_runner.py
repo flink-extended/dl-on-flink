@@ -20,7 +20,7 @@ import argparse
 
 from typing import Text
 from ai_flow.endpoint.server.server import AIFlowServer
-from ai_flow.application_master.server_config import AIFlowServerConfig
+from ai_flow.endpoint.server.server_config import AIFlowServerConfig
 from ai_flow.client.ai_flow_client import get_ai_flow_client
 import logging
 

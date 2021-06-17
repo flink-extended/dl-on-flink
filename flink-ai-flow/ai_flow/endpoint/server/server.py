@@ -41,7 +41,7 @@ from ai_flow.store.db.base_model import base
 from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
 from ai_flow.store.mongo_store import MongoStore, MongoStoreConnManager
 from ai_flow.store.db.db_util import extract_db_engine_from_uri, parse_mongo_uri
-from ai_flow.application_master.server_config import DBType
+from ai_flow.endpoint.server.server_config import DBType
 from notification_service.proto import notification_service_pb2_grpc
 
 from ai_flow.metadata_store.service.service import MetadataService

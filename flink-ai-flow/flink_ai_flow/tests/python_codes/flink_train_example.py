@@ -18,7 +18,7 @@
 #
 import ai_flow as af
 from ai_flow import ExecuteArgs, Properties
-from ai_flow.application_master.server_runner import AIFlowServerRunner
+from ai_flow.endpoint.server.server_runner import AIFlowServerRunner
 from ai_flow.util.json_utils import dumps
 import flink_ai_flow as faf
 import test_util
