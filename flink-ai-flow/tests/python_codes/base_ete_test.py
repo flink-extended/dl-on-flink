@@ -49,8 +49,8 @@ def workflow_config_file():
 server_runner = AIFlowServerRunner(config_file=master_config_file())
 
 
-def master_port():
-    return server_runner.server_config.get('master_port')
+def server_port():
+    return server_runner.server_config.get('server_port')
 
 
 def deploy_path():
@@ -89,7 +89,7 @@ class BaseETETest(unittest.TestCase):
 
         scheduler = EventBasedSchedulerJob(
             dag_directory=file_path,
-            server_uri="localhost:{}".format(master_port()),
+            server_uri="localhost:{}".format(server_port()),
             executor=executor,
             max_runs=-1,
             refresh_dag_dir_interval=30
@@ -101,7 +101,7 @@ class BaseETETest(unittest.TestCase):
                     executor=None):
         def run_test_fun():
             time.sleep(3)
-            client = NotificationClient(server_uri="localhost:{}".format(master_port()),
+            client = NotificationClient(server_uri="localhost:{}".format(server_port()),
                                         default_namespace="test")
             try:
                 test_function(client)
