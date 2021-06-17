@@ -307,20 +307,16 @@ def get_artifact_by_name(artifact_name) -> Optional[ArtifactMeta]:
     return get_ai_flow_client().get_artifact_by_name(artifact_name)
 
 
-def register_artifact(name: Text, data_format: Text = None, description: Text = None,
-                      batch_uri: Text = None, stream_uri: Text = None,
-                      create_time: int = None, update_time: int = None,
+def register_artifact(name: Text, artifact_type: Text = None, description: Text = None,
+                      uri: Text = None,
                       properties: Properties = None) -> ArtifactMeta:
-    return get_ai_flow_client().register_artifact(name, data_format, description, batch_uri, stream_uri, create_time,
-                                                  update_time, properties)
+    return get_ai_flow_client().register_artifact(name, artifact_type, description, uri, properties)
 
 
-def update_artifact(artifact_name: Text, data_format: Text = None, description: Text = None,
-                    batch_uri: Text = None, stream_uri: Text = None,
-                    update_time: int = None, properties: Properties = None) -> Optional[ArtifactMeta]:
-    return get_ai_flow_client().update_artifact(artifact_name, data_format, description, batch_uri, stream_uri,
-                                                update_time,
-                                                properties)
+def update_artifact(artifact_name: Text, artifact_type: Text = None,
+                    description: Text = None, uri: Text = None,
+                    properties: Properties = None) -> Optional[ArtifactMeta]:
+    return get_ai_flow_client().update_artifact(artifact_name, artifact_type, description, uri, properties)
 
 
 def list_artifact(page_size, offset) -> Optional[List[ArtifactMeta]]:

@@ -29,10 +29,9 @@ public class ArtifactMeta {
 
     private Long uuid;
     private String name;
-    private String dataFormat;
+    private String artifactType;
     private String description;
-    private String batchUri;
-    private String streamUri;
+    private String uri;
     private Long createTime;
     private Long updateTime;
     private Map<String, String> properties;
@@ -40,13 +39,12 @@ public class ArtifactMeta {
     public ArtifactMeta() {
     }
 
-    public ArtifactMeta(Long uuid, String name, String dataFormat, String description, String batchUri, String streamUri, Long createTime, Long updateTime, Map<String, String> properties) {
+    public ArtifactMeta(Long uuid, String name, String artifactType, String description, String uri, Long createTime, Long updateTime, Map<String, String> properties) {
         this.uuid = uuid;
         this.name = name;
-        this.dataFormat = dataFormat;
+        this.artifactType = artifactType;
         this.description = description;
-        this.batchUri = batchUri;
-        this.streamUri = streamUri;
+        this.uri = uri;
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.properties = properties;
@@ -68,12 +66,20 @@ public class ArtifactMeta {
         this.name = name;
     }
 
-    public String getDataFormat() {
-        return dataFormat;
+    public String getArtifactType() {
+        return artifactType;
     }
 
-    public void setDataFormat(String dataFormat) {
-        this.dataFormat = dataFormat;
+    public void setArtifactType(String artifactType) {
+        this.artifactType = artifactType;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 
     public String getDescription() {
@@ -82,22 +88,6 @@ public class ArtifactMeta {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getBatchUri() {
-        return batchUri;
-    }
-
-    public void setBatchUri(String batchUri) {
-        this.batchUri = batchUri;
-    }
-
-    public String getStreamUri() {
-        return streamUri;
-    }
-
-    public void setStreamUri(String streamUri) {
-        this.streamUri = streamUri;
     }
 
     public Long getCreateTime() {
@@ -129,10 +119,9 @@ public class ArtifactMeta {
         return "ArtifactMeta{" +
                 "uuid=" + uuid +
                 ", name='" + name + '\'' +
-                ", dataFormat='" + dataFormat + '\'' +
+                ", artifactType='" + artifactType + '\'' +
                 ", description='" + description + '\'' +
-                ", batchUri='" + batchUri + '\'' +
-                ", streamUri='" + streamUri + '\'' +
+                ", uri='" + uri + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 ", properties=" + properties +
@@ -142,10 +131,9 @@ public class ArtifactMeta {
     public static ArtifactMeta buildArtifactMeta(ArtifactProto artifactProto) {
         return artifactProto == null ? null : new ArtifactMeta(artifactProto.getUuid(),
                 artifactProto.getName(),
-                artifactProto.getDataFormat().getValue(),
+                artifactProto.getArtifactType().getValue(),
                 artifactProto.getDescription().getValue(),
-                artifactProto.getBatchUri().getValue(),
-                artifactProto.getStreamUri().getValue(),
+                artifactProto.getUri().getValue(),
                 artifactProto.getCreateTime().getValue(),
                 artifactProto.getUpdateTime().getValue(),
                 artifactProto.getPropertiesMap());

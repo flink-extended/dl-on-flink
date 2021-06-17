@@ -18,6 +18,7 @@
 #
 from abc import abstractmethod, ABCMeta
 
+from ai_flow.meta.artifact_meta import ArtifactMeta
 from ai_flow.endpoint.server.high_availability import Member
 from typing import Text, Union, List, Optional
 
@@ -503,18 +504,31 @@ class AbstractStore(object):
                  if the artifact exists, Otherwise, returns None if the artifact does not exist.
         """
 
-    def register_artifact(self, name: Text, data_format, description,
-                          batch_uri, stream_uri, create_time, update_time, properties):
+    def register_artifact(self, name: Text, artifact_type, description,
+                          uri, create_time, update_time, properties):
         """
         register an artifact in metadata store.
 
         :param name: the name of the artifact
-        :param data_format: the data_format of the artifact
+        :param artifact_type: the type of the artifact
         :param description: the description of the artifact
-        :param batch_uri: the batch uri of the artifact
-        :param stream_uri: the stream uri of the artifact
-        :param create_time: the time when the artifact is created
-        :param update_time: the time when the artifact is updated
+        :param uri: the uri of the artifact
+        :param create_time: the time when the artifact is created represented as milliseconds since epoch.
+        :param update_time: the time when the artifact is updated represented as milliseconds since epoch.
+        :param properties: the properties of the artifact
+        :return: A single :py:class:`ai_flow.meta.artifact_meta.py.ArtifactMeta` object.
+        """
+
+    def update_artifact(self, name: Text, artifact_type: Text, description: Text,
+                        uri, update_time, properties) -> Optional[ArtifactMeta]:
+        """
+        Update an artifact in metadata store.
+
+        :param name: the name of the artifact
+        :param artifact_type: the type of the artifact
+        :param description: the description of the artifact
+        :param uri: the uri of the artifact
+        :param update_time: the time when the artifact is updated represented as milliseconds since epoch.
         :param properties: the properties of the artifact
         :return: A single :py:class:`ai_flow.meta.artifact_meta.py.ArtifactMeta` object.
         """
