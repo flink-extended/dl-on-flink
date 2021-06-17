@@ -31,7 +31,7 @@ from ai_flow.api.ops import read_dataset, write_dataset, transform, train, predi
 from ai_flow.api.project import run, submit_ai_flow, stop_execution_by_id, wait_workflow_execution_finished, \
     compile_workflow, deploy_to_airflow, generate_airflow_file_text, submit
 # ai_flow.application_master.master
-from ai_flow.application_master.master import AIFlowMaster, set_master_config
+from ai_flow.application_master.server_runner import AIFlowServerRunner, set_master_config
 # ai_flow.client
 from ai_flow.client import *
 # ai_flow.common

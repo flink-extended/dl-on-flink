@@ -24,7 +24,7 @@ from airflow.events.scheduler_events import StopSchedulerEvent
 from ai_flow.api.configuration import set_project_path
 from airflow.contrib.jobs.event_based_scheduler_job import EventBasedSchedulerJob
 from airflow.executors.local_executor import LocalExecutor
-from ai_flow.application_master.master import AIFlowMaster
+from ai_flow.application_master.server_runner import AIFlowServerRunner
 from notification_service.client import NotificationClient
 import ai_flow as af
 from tests.python_codes import db_utils
@@ -46,30 +46,30 @@ def workflow_config_file():
     return project_path() + '/resources/workflow.yaml'
 
 
-master = AIFlowMaster(config_file=master_config_file())
+server_runner = AIFlowServerRunner(config_file=master_config_file())
 
 
 def master_port():
-    return master.master_config.get('master_port')
+    return server_runner.server_config.get('master_port')
 
 
 def deploy_path():
-    return master.master_config.get('scheduler').get('properties').get('airflow_deploy_path')
+    return server_runner.server_config.get('scheduler').get('properties').get('airflow_deploy_path')
 
 
 class BaseETETest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        master.start()
+        server_runner.start()
         set_project_path(project_path())
 
     @classmethod
     def tearDownClass(cls) -> None:
-        master.stop()
+        server_runner.stop()
 
     def setUp(self):
-        master._clear_db()
+        server_runner._clear_db()
         db_utils.clear_db_jobs()
         db_utils.clear_db_dags()
         db_utils.clear_db_serialized_dags()
@@ -80,7 +80,7 @@ class BaseETETest(unittest.TestCase):
         af.default_graph().clear_graph()
 
     def tearDown(self):
-        master._clear_db()
+        server_runner._clear_db()
 
     @classmethod
     def start_scheduler(cls, file_path, executor=None):

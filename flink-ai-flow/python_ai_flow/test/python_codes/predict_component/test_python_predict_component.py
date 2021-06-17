@@ -28,7 +28,7 @@ from streamz import Stream
 from ai_flow.meta.model_meta import ModelType, ModelMeta
 from ai_flow.executor.executor import PythonObjectExecutor
 from ai_flow.meta.example_meta import ExampleSupportType, ExampleMeta
-from ai_flow.application_master.master import AIFlowMaster
+from ai_flow.application_master.server_runner import AIFlowServerRunner
 from ai_flow.udf.function_context import FunctionContext
 from python_ai_flow import ExampleExecutor, Executor
 from python_ai_flow.test import test_util
@@ -162,17 +162,17 @@ class TestPredictComponent(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         config_file = test_util.get_master_config_file()
-        cls.master = AIFlowMaster(config_file=config_file)
-        cls.master.start()
+        cls.server_runner = AIFlowServerRunner(config_file=config_file)
+        cls.server_runner.start()
         test_util.set_project_config(__file__)
 
     @classmethod
     def tearDownClass(cls) -> None:
-        cls.master.stop()
+        cls.server_runner.stop()
         af.unset_project_config()
 
     def tearDown(self):
-        TestPredictComponent.master._clear_db()
+        TestPredictComponent.server_runner._clear_db()
 
     def test_batch_predict_component(self):
         input_example_meta = af.register_example(name='input_train_example',

@@ -25,7 +25,7 @@ from typing import List
 from streamz import Stream
 
 from ai_flow import ModelMeta, ExampleSupportType, PythonObjectExecutor, ModelType, ExecutionMode
-from ai_flow.application_master.master import AIFlowMaster
+from ai_flow.application_master.server_runner import AIFlowServerRunner
 from ai_flow.util.path_util import get_file_dir
 from ai_flow.model_center.entity.model_version_stage import ModelVersionStage
 from ai_flow.udf.function_context import FunctionContext
@@ -185,17 +185,17 @@ class TestModelValidateComponent(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         config_file = test_util.get_master_config_file()
-        cls.master = AIFlowMaster(config_file=config_file)
-        cls.master.start()
+        cls.server_runner = AIFlowServerRunner(config_file=config_file)
+        cls.server_runner.start()
         test_util.set_project_config(__file__)
 
     @classmethod
     def tearDownClass(cls) -> None:
-        cls.master.stop()
+        cls.server_runner.stop()
         af.unset_project_config()
 
     def tearDown(self):
-        TestModelValidateComponent.master._clear_db()
+        TestModelValidateComponent.server_runner._clear_db()
 
     def test_batch_model_validate(self):
         input_example_meta = af.register_example(name='batch_train_example',

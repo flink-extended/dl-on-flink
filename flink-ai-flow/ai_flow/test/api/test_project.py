@@ -21,7 +21,7 @@ import time
 import unittest
 
 import ai_flow as af
-from ai_flow import AIFlowMaster
+from ai_flow import AIFlowServerRunner
 from ai_flow.executor.executor import CmdExecutor
 from ai_flow.graph.edge import TaskAction, MetValueCondition, MetCondition, EventLife
 from ai_flow.test import test_util
@@ -32,20 +32,20 @@ class TestProject(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         config_file = test_util.get_master_config_file()
-        cls.master = AIFlowMaster(config_file=config_file)
-        cls.master.start()
+        cls.server_runner = AIFlowServerRunner(config_file=config_file)
+        cls.server_runner.start()
         test_util.set_project_config(__file__)
 
     @classmethod
     def tearDownClass(cls) -> None:
-        cls.master.stop()
+        cls.server_runner.stop()
 
     def setUp(self):
-        TestProject.master._clear_db()
+        TestProject.server_runner._clear_db()
         af.default_graph().clear_graph()
 
     def tearDown(self):
-        TestProject.master._clear_db()
+        TestProject.server_runner._clear_db()
 
     @staticmethod
     def build_ai_graph(sleep_time: int):

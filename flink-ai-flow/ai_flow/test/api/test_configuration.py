@@ -18,7 +18,7 @@
 #
 import unittest
 
-from ai_flow import AIFlowMaster
+from ai_flow import AIFlowServerRunner
 from ai_flow.api.configuration import project_config
 from ai_flow.test import test_util
 
@@ -27,16 +27,16 @@ class TestConfiguration(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         config_file = test_util.get_master_config_file()
-        cls.master = AIFlowMaster(config_file=config_file)
-        cls.master.start()
+        cls.server_runner = AIFlowServerRunner(config_file=config_file)
+        cls.server_runner.start()
         test_util.set_project_config(__file__)
 
     @classmethod
     def tearDownClass(cls) -> None:
-        cls.master.stop()
+        cls.server_runner.stop()
 
     def tearDown(self):
-        TestConfiguration.master._clear_db()
+        TestConfiguration.server_runner._clear_db()
 
     def test_load_configuration(self):
         config = project_config()
