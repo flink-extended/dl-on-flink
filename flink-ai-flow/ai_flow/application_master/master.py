@@ -16,13 +16,9 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-import os
 from typing import Text
 from ai_flow.endpoint.server.server import AIFlowServer
-from ai_flow.store.db.base_model import base
-from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
-from ai_flow.store.mongo_store import MongoStoreConnManager
-from ai_flow.application_master.master_config import MasterConfig, DBType
+from ai_flow.application_master.master_config import MasterConfig
 from ai_flow.client.ai_flow_client import get_ai_flow_client
 import logging
 
@@ -86,21 +82,10 @@ class AIFlowMaster(object):
 
         :param clear_sql_lite_db_file: If True, the sqlite database files will be deleted When the server stops working.
         """
-        self.server.stop()
-        if self.master_config.get_db_type() == DBType.SQLITE and clear_sql_lite_db_file:
-            store = SqlAlchemyStore(self.master_config.get_db_uri())
-            base.metadata.drop_all(store.db_engine)
-            os.remove(self.master_config.get_sql_lite_db_file())
-        elif self.master_config.get_db_type() == DBType.MONGODB:
-            MongoStoreConnManager().disconnect_all()
+        self.server.stop(clear_sql_lite_db_file)
 
     def _clear_db(self):
-        if self.master_config.get_db_type() == DBType.SQLITE:
-            store = SqlAlchemyStore(self.master_config.get_db_uri())
-            base.metadata.drop_all(store.db_engine)
-            base.metadata.create_all(store.db_engine)
-        elif self.master_config.get_db_type() == DBType.MONGODB:
-            MongoStoreConnManager().drop_all()
+        self.server._clear_db()
 
 
 def set_master_config():
