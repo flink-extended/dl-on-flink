@@ -57,7 +57,7 @@ class Project(object):
         :return: AIFlowClient.
         """
         if self.client is None:
-            self.client = AIFlowClient(server_uri=project_config().get_master_uri())
+            self.client = AIFlowClient(server_uri=project_config().get_server_uri())
         return self.client
 
     def generate_workflow(self, ai_graph: AIGraph) -> Workflow:

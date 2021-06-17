@@ -202,7 +202,7 @@ class DefaultWorkflowConstructor(BaseWorkflowConstructor):
         self.client: AIFlowClient = None
 
     def get_client(self):
-        self.client = AIFlowClient(server_uri=project_config().get_master_uri())
+        self.client = AIFlowClient(server_uri=project_config().get_server_uri())
         return self.client
 
     def register_job_generator(self, platform, engine, generator: BaseJobGenerator):

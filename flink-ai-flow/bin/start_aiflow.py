@@ -28,8 +28,8 @@ def create_default_sever_config(root_dir_path):
         # Config of master server
 
         # endpoint of master
-        master_ip: localhost
-        master_port: 50051
+        server_ip: localhost
+        server_port: 50051
         # uri of database backend in master
         db_uri: sqlite:///{root_dir_path}/aiflow.db
         # type of database backend in master

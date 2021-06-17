@@ -20,20 +20,20 @@ from ai_flow.common.configuration import AIFlowConfiguration
 
 
 class ProjectConfig(AIFlowConfiguration):
-    def get_master_ip(self):
-        return self["master_ip"]
+    def get_server_ip(self):
+        return self["server_ip"]
 
-    def set_master_ip(self, value):
-        self["master_ip"] = value
+    def set_server_ip(self, value):
+        self["server_ip"] = value
 
-    def get_master_port(self):
-        return self["master_port"]
+    def get_server_port(self):
+        return self["server_port"]
 
-    def set_master_port(self, value):
-        self["master_port"] = value
+    def set_server_port(self, value):
+        self["server_port"] = value
 
-    def get_master_uri(self):
-        return "{}:{}".format(self["master_ip"], self["master_port"])
+    def get_server_uri(self):
+        return "{}:{}".format(self["server_ip"], self["server_port"])
 
     def get_project_name(self):
         return self["project_name"]
@@ -63,7 +63,7 @@ class ProjectConfig(AIFlowConfiguration):
         if "notification_uri" in self:
             return self["notification_uri"]
         else:
-            return self.get_master_uri()
+            return self.get_server_uri()
 
     def set_notification_service_uri(self, uri):
         self["notification_uri"] = uri
@@ -72,7 +72,7 @@ class ProjectConfig(AIFlowConfiguration):
         if "uploaded_project_path" in self:
             return self["uploaded_project_path"]
         else:
-            return self.get_master_uri()
+            return self.get_server_uri()
 
     def set_uploaded_project_path(self, uri):
         self["uploaded_project_path"] = uri

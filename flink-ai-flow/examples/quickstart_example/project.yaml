@@ -18,8 +18,8 @@
 ##
 
 project_name: quick_start_project
-master_ip: localhost
-master_port: 50051
+server_ip: localhost
+server_port: 50051
 # for airflow scheduler this option should be enabled.
 notification_uri: localhost:50052
 # for airflow scheduler this option should be enabled.
