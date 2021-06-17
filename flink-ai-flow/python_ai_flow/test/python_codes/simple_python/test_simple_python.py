@@ -19,7 +19,7 @@
 import os
 import unittest
 from typing import List
-from ai_flow.application_master.master import AIFlowMaster
+from ai_flow.application_master.server_runner import AIFlowServerRunner
 from ai_flow.udf.function_context import FunctionContext
 from python_ai_flow import Executor
 from python_ai_flow.local_python_job import LocalPythonJobConfig
@@ -37,17 +37,17 @@ class TestSimplePython(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         config_file = test_util.get_master_config_file()
-        cls.master = AIFlowMaster(config_file=config_file)
-        cls.master.start()
+        cls.server_runner = AIFlowServerRunner(config_file=config_file)
+        cls.server_runner.start()
         test_util.set_project_config(__file__)
 
     @classmethod
     def tearDownClass(cls) -> None:
-        cls.master.stop()
+        cls.server_runner.stop()
         af.unset_project_config()
 
     def tearDown(self):
-        TestSimplePython.master._clear_db()
+        TestSimplePython.server_runner._clear_db()
 
     def test_deploy_airflow(self):
         airflow_path = af.project_config().get_airflow_deploy_path()

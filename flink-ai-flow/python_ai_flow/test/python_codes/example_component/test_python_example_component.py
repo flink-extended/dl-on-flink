@@ -27,7 +27,7 @@ import ai_flow as af
 import pandas as pd
 
 from ai_flow.executor.executor import PythonObjectExecutor
-from ai_flow.application_master.master import AIFlowMaster
+from ai_flow.application_master.server_runner import AIFlowServerRunner
 from ai_flow.util.path_util import get_file_dir
 from ai_flow.meta.example_meta import ExampleSupportType, ExampleMeta
 from ai_flow.udf.function_context import FunctionContext
@@ -110,17 +110,17 @@ class TestDataComponent(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         config_file = test_util.get_master_config_file()
-        cls.master = AIFlowMaster(config_file=config_file)
-        cls.master.start()
+        cls.server_runner = AIFlowServerRunner(config_file=config_file)
+        cls.server_runner.start()
         test_util.set_project_config(__file__)
 
     @classmethod
     def tearDownClass(cls) -> None:
-        cls.master.stop()
+        cls.server_runner.stop()
         af.unset_project_config()
 
     def tearDown(self):
-        TestDataComponent.master._clear_db()
+        TestDataComponent.server_runner._clear_db()
 
     def test_batch_example_component(self):
         file = get_file_dir(__file__) + '/test1.csv'

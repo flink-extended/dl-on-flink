@@ -91,7 +91,7 @@ spec:
       containers:
         - name: ai-flow-master-container
           image: '${ai flow image}'
-          command: ["python3", "/opt/aiflow_master_main.py", "--config", "/opt/conf/master.yaml"]
+          command: ["python3", "/opt/server_runner.py", "--config", "/opt/conf/master.yaml"]
           imagePullPolicy: Always
           ports:
             - containerPort: 50051

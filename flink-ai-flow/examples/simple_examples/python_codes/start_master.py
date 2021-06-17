@@ -16,7 +16,7 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-from ai_flow.application_master.master import AIFlowMaster
+from ai_flow.application_master.server_runner import AIFlowServerRunner
 import os
 from flink_ai_flow import *  # for configuring the logger
 
@@ -24,5 +24,5 @@ if __name__ == '__main__':
 
     config_file = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + \
                   '/resources/master.yaml'
-    master = AIFlowMaster(config_file=config_file)
-    master.start(is_block=True)
+    server_runner = AIFlowServerRunner(config_file=config_file)
+    server_runner.start(is_block=True)

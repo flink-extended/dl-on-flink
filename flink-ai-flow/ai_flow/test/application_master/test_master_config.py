@@ -18,18 +18,18 @@
 #
 import unittest
 import os
-from ai_flow.application_master.master_config import MasterConfig, DBType
+from ai_flow.application_master.server_config import AIFlowServerConfig, DBType
 
 
 class TestConfiguration(unittest.TestCase):
 
     def test_dump_load_configuration(self):
-        config = MasterConfig()
+        config = AIFlowServerConfig()
         config.set_db_uri(db_type=DBType.SQLITE, uri="sqlite:///sql.db")
         self.assertEqual('sql.db', config.get_sql_lite_db_file())
 
     def test_load_master_configuration(self):
-        config = MasterConfig()
+        config = AIFlowServerConfig()
         config.load_from_file(os.path.dirname(__file__) + '/master_config.yaml')
         self.assertEqual('sql_lite', config.get_db_type())
         self.assertEqual('/tmp/repo', config.get_scheduler_config()['repository'])
