@@ -513,8 +513,8 @@ def project_config() -> Optional[ProjectConfig]:
 **project config project.yaml**
 ```yaml
 project_name: local_batch_example
-master_ip: localhost
-master_port: 50052
+server_ip: localhost
+server_port: 50052
 ai_flow_home: /opt/ai_flow
 blob_server.type: oss
 blob_server.endpoint:

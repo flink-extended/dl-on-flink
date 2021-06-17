@@ -17,8 +17,8 @@
 ## under the License.
 ##
 project_name: sklearn_stream_train_batch_predict
-master_ip: localhost
-master_port: 50051
+server_ip: localhost
+server_port: 50051
 
 notification_uri: localhost:50052
 # for built-in scheduler this option should be disabled.

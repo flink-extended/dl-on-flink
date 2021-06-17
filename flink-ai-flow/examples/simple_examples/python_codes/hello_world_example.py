@@ -29,8 +29,8 @@ from python_ai_flow import Executor
 
 def create_sever_config(root_dir_path):
     content = textwrap.dedent(f"""\
-        master_ip: localhost
-        master_port: 50051
+        server_ip: localhost
+        server_port: 50051
         db_uri: sqlite:///{root_dir_path}/aiflow.db
         db_type: sql_lite
         start_default_notification: True
@@ -45,8 +45,8 @@ def create_sever_config(root_dir_path):
 def create_project_config(root_dir_path):
     content = textwrap.dedent("""\
         project_name: test_project
-        master_ip: localhost
-        master_port: 50051
+        server_ip: localhost
+        server_port: 50051
     """)
     project_yaml_path = root_dir_path + "/project.yaml"
     with open(project_yaml_path, "w") as f:

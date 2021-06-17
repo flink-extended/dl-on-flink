@@ -66,7 +66,7 @@ class ProjectTest(unittest.TestCase):
         project_path = get_file_dir(__file__)
         set_project_config_file(project_path+"/project.yaml")
         project_desc = get_project_description_from(project_path)
-        self.assertEqual(project_desc.project_config.get_master_uri(), "localhost:50051")
+        self.assertEqual(project_desc.project_config.get_server_uri(), "localhost:50051")
         self.assertIsNone(project_desc.project_config.get('ai_flow config', None))
         self.assertEqual(project_desc.project_config['ai_flow_home'], '/opt/ai_flow')
         self.assertEqual(project_desc.project_config['ai_flow_job_master.host'], 'localhost')

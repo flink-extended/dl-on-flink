@@ -17,7 +17,8 @@
 ## under the License.
 ##
 project_name: test_project
-master_ip: localhost
-master_port: 50051
-airflow_deploy_path: /tmp/airflow/
-repository: /tmp
+
+server_ip: localhost
+server_port: 50051
+blob:
+  remote_repository: /tmp

@@ -40,7 +40,7 @@ class TestConfiguration(unittest.TestCase):
 
     def test_load_configuration(self):
         config = project_config()
-        self.assertEqual(config.get_master_uri(), 'localhost:50051')
+        self.assertEqual(config.get_server_uri(), 'localhost:50051')
 
 
 if __name__ == '__main__':

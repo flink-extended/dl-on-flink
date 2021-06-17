@@ -61,13 +61,13 @@ class AIFlowServerRunner(object):
         if self.config_file is not None:
             self.server_config.load_from_file(self.config_file)
         else:
-            self.server_config.set_master_port(str(_PORT))
+            self.server_config.set_server_port(str(_PORT))
         global GLOBAL_MASTER_CONFIG
         GLOBAL_MASTER_CONFIG = self.server_config
         logging.info("AI Flow Master Config {}".format(GLOBAL_MASTER_CONFIG))
         self.server = AIFlowServer(
             store_uri=self.server_config.get_db_uri(),
-            port=str(self.server_config.get_master_port()),
+            port=str(self.server_config.get_server_port()),
             start_default_notification=self.server_config.start_default_notification(),
             notification_uri=self.server_config.get_notification_uri(),
             start_meta_service=self.server_config.start_meta_service(),
@@ -76,7 +76,7 @@ class AIFlowServerRunner(object):
             start_scheduling_service=self.server_config.start_scheduling_service(),
             scheduler_config=self.server_config.get_scheduler_config(),
             enabled_ha=self.server_config.get_enable_ha(),
-            ha_server_uri=self.server_config.get_master_ip() + ":" + str(self.server_config.get_master_port()),
+            ha_server_uri=self.server_config.get_server_ip() + ":" + str(self.server_config.get_server_port()),
             ttl_ms=self.server_config.get_ha_ttl_ms())
         self.server.run(is_block=is_block)
 

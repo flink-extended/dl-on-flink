@@ -29,7 +29,7 @@ from airflow.models import DagRun
 from airflow.utils.state import State
 from airflow.models.taskexecution import TaskExecution
 from airflow.utils.session import create_session
-from base_ete_test import BaseETETest, workflow_config_file, master_port
+from base_ete_test import BaseETETest, workflow_config_file, server_port
 import ai_flow as af
 import flink_ai_flow as faf
 
@@ -115,7 +115,7 @@ class TestRunAIFlowJobs(BaseETETest):
                                      key='key_1',
                                      value='value_1',
                                      event_type='UNDEFINED',
-                                     port=master_port())
+                                     port=server_port())
                     ))
                 with af.config('task_5'):
                     executor_2 = af.user_define_operation(af.PythonObjectExecutor(SimpleExecutor()))
@@ -202,7 +202,7 @@ class TestRunAIFlowJobs(BaseETETest):
                                      key='key_1',
                                      value='value_1',
                                      event_type='UNDEFINED',
-                                     port=master_port())
+                                     port=server_port())
                     ))
                 with af.config('task_5'):
                     executor_2 = af.user_define_operation(af.PythonObjectExecutor(
@@ -210,7 +210,7 @@ class TestRunAIFlowJobs(BaseETETest):
                                      key='key_2',
                                      value='value_2',
                                      event_type='UNDEFINED',
-                                     port=master_port())
+                                     port=server_port())
                     ))
 
                 with af.config('task_6'):
