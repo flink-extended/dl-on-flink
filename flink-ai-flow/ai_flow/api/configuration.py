@@ -29,7 +29,7 @@ def ensure_project_registered():
     """ Ensure the project configured in project.yaml has been registered. """
     from ai_flow.client.ai_flow_client import AIFlowClient
 
-    client = AIFlowClient(server_uri=_default_project_config.get_master_uri())
+    client = AIFlowClient(server_uri=_default_project_config.get_server_uri())
     project_meta = client.get_project_by_name(_default_project_config.get_project_name())
     pp = {}
     for k, v in _default_project_config.items():
@@ -81,10 +81,10 @@ def get_default_project_config():
     return _default_project_config
 
 
-def set_project_master_uri(master_uri: Text):
-    ip_port = master_uri.split(':')
-    _default_project_config.set_master_ip(ip_port[0])
-    _default_project_config.set_master_port(ip_port[1])
+def set_project_server_uri(server_uri: Text):
+    ip_port = server_uri.split(':')
+    _default_project_config.set_server_ip(ip_port[0])
+    _default_project_config.set_server_port(ip_port[1])
 
 
 def unset_project_config():
