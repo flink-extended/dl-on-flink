@@ -160,8 +160,7 @@ class SqlAlchemyStore(AbstractStore):
             return ResultToMeta.result_to_dataset_meta(dataset_result[0])
 
     def _register_dataset(self, name: Text, data_format: Text = None,
-                          description: Text = None, uri: Text = None, create_time: int = None,
-                          update_time: int = None, properties: Properties = None,
+                          description: Text = None, uri: Text = None, properties: Properties = None,
                           name_list: List[Text] = None, type_list: List[DataType] = None,
                           catalog_name: Text = None, catalog_type: Text = None,
                           catalog_connection_uri: Text = None,
@@ -173,8 +172,6 @@ class SqlAlchemyStore(AbstractStore):
         :param data_format: the data format of the dataset
         :param description: the description of the dataset
         :param uri: the batch uri of the dataset
-        :param create_time: the time when the dataset is created
-        :param update_time: the time when the dataset is updated
         :param properties: the properties of the dataset
         :param name_list: the name list of dataset's schema
         :param type_list: the type list corresponded to the name list of dataset's schema
@@ -186,14 +183,15 @@ class SqlAlchemyStore(AbstractStore):
         :param catalog_database: the database where the dataset is stored in the catalog
         :return: A single :py:class:`ai_flow.meta.dataset_meta.DatasetMeta` object.
         """
+        update_time = create_time = int(time.time() * 1000)
         before_dataset = self.get_dataset_by_name(dataset_name=name)
         if before_dataset is not None:
             # if the user has registered exactly the same dataset before,
             # do nothing in metadata store and return the registered dataset.
             if _compare_dataset_fields(data_format, description, uri,
-                                       create_time, update_time, properties, name_list, type_list,
-                                       catalog_name, catalog_type, catalog_database, catalog_connection_uri,
-                                       catalog_table, before_dataset):
+                                       properties, name_list, type_list,
+                                       catalog_name, catalog_type, catalog_database,
+                                       catalog_connection_uri, catalog_table, before_dataset):
                 return before_dataset
             else:
                 # if the dataset registered this time has the same name but different fields,
@@ -230,8 +228,7 @@ class SqlAlchemyStore(AbstractStore):
                                       'Error: {}'.format(dataset.name, str(e)))
 
     def register_dataset(self, name: Text, data_format: Text = None,
-                         description: Text = None, uri: Text = None, create_time: int = None,
-                         update_time: int = None, properties: Properties = None,
+                         description: Text = None, uri: Text = None, properties: Properties = None,
                          name_list: List[Text] = None, type_list: List[DataType] = None):
         """
         register an dataset in metadata store.
@@ -240,16 +237,13 @@ class SqlAlchemyStore(AbstractStore):
         :param data_format: the data format of the dataset
         :param description: the description of the dataset
         :param uri: the uri of the dataset
-        :param create_time: the time when the dataset is created
-        :param update_time: the time when the dataset is updated
         :param properties: the properties of the dataset
         :param name_list: the name list of dataset's schema
         :param type_list: the type list corresponded to the name list of dataset's schema
         :return: A single :py:class:`ai_flow.meta.dataset_meta.DatasetMeta` object.
         """
         return self._register_dataset(name=name, data_format=data_format, description=description,
-                                      uri=uri, create_time=create_time, update_time=update_time,
-                                      properties=properties, name_list=name_list, type_list=type_list)
+                                      uri=uri, properties=properties, name_list=name_list, type_list=type_list)
 
     def register_dataset_with_catalog(self, name: Text, catalog_name: Text,
                                       catalog_type: Text, catalog_connection_uri: Text,
@@ -289,7 +283,7 @@ class SqlAlchemyStore(AbstractStore):
 
     def update_dataset(self, dataset_name: Text,  data_format: Text = None,
                        description: Text = None, uri: Text = None,
-                       update_time: int = None, properties: Properties = None,
+                       properties: Properties = None,
                        name_list: List[Text] = None, type_list: List[DataType] = None, catalog_name: Text = None,
                        catalog_type: Text = None, catalog_database: Text = None,
                        catalog_connection_uri: Text = None,
@@ -305,8 +299,6 @@ class SqlAlchemyStore(AbstractStore):
                     dataset.description = description
                 if uri is not None:
                     dataset.uri = uri
-                if update_time is not None:
-                    dataset.update_time = update_time
                 if properties is not None:
                     dataset.properties = str(properties)
                 if name_list is not None:
@@ -327,6 +319,7 @@ class SqlAlchemyStore(AbstractStore):
                     dataset.connection_config = catalog_connection_uri
                 if catalog_table is not None:
                     dataset.catalog_table = catalog_table
+                dataset.update_time = int(time.time() * 1000)
                 session.flush()
                 return ResultToMeta.result_to_dataset_meta(dataset)
             except sqlalchemy.exc.IntegrityError as e:
@@ -1238,7 +1231,6 @@ class SqlAlchemyStore(AbstractStore):
 
     def register_artifact(self, name: Text, artifact_type: Text = None,
                           description: Text = None, uri: Text = None,
-                          create_time: int = None, update_time: int = None,
                           properties: Properties = None) -> ArtifactMeta:
         """
         register an artifact in metadata store.
@@ -1247,8 +1239,6 @@ class SqlAlchemyStore(AbstractStore):
         :param artifact_type: the type of the artifact
         :param description: the description of the artifact
         :param uri: the uri of the artifact
-        :param create_time: the time when the artifact is created represented as milliseconds since epoch.
-        :param update_time: the time when the artifact is updated represented as milliseconds since epoch.
         :param properties: the properties of the artifact
         :return: A single :py:class:`ai_flow.meta.artifact_meta.py.ArtifactMeta` object.
         """
@@ -1257,7 +1247,7 @@ class SqlAlchemyStore(AbstractStore):
             # if the user has registered exactly the same artifact before,
             # do nothing in metadata store and return the registered artifact.
             if _compare_artifact_fields(artifact_type, description, uri,
-                                        create_time, update_time, properties, before_artifact):
+                                        properties, before_artifact):
                 return before_artifact
             else:
                 # if the artifact registered this time has the same name but different fields,
@@ -1266,6 +1256,7 @@ class SqlAlchemyStore(AbstractStore):
                                       " but different fields".format(name))
         with self.ManagedSessionMaker() as session:
             try:
+                create_time = update_time = int(time.time() * 1000)
                 artifact = MetaToTable.artifact_meta_to_table(name=name, artifact_type=artifact_type,
                                                               description=description, uri=uri,
                                                               create_time=create_time,
@@ -1283,7 +1274,7 @@ class SqlAlchemyStore(AbstractStore):
 
     def update_artifact(self, name: Text, artifact_type: Text = None,
                         description: Text = None, uri: Text = None,
-                        update_time: int = None, properties: Properties = None) -> Optional[ArtifactMeta]:
+                        properties: Properties = None) -> Optional[ArtifactMeta]:
         with self.ManagedSessionMaker() as session:
             try:
                 artifact: SqlArtifact = session.query(SqlArtifact).filter(
@@ -1296,10 +1287,9 @@ class SqlAlchemyStore(AbstractStore):
                     artifact.description = description
                 if uri is not None:
                     artifact.uri = uri
-                if update_time is not None:
-                    artifact.update_time = update_time
                 if properties is not None:
                     artifact.properties = str(properties)
+                artifact.update_time = int(time.time() * 1000)
                 session.flush()
                 return ResultToMeta.result_to_artifact_meta(artifact)
             except sqlalchemy.exc.IntegrityError as e:
@@ -2061,12 +2051,11 @@ def _gen_delete_entity_name(name, count):
 
 
 def _compare_dataset_fields(data_format, description, uri,
-                            create_time, update_time, properties, name_list, type_list, catalog_name,
+                            properties, name_list, type_list, catalog_name,
                             catalog_type, catalog_database, catalog_connection_uri, catalog_table,
                             before_dataset) -> bool:
     return data_format == before_dataset.data_format and description == before_dataset.description \
            and uri == before_dataset.uri \
-           and create_time == before_dataset.create_time and update_time == before_dataset.update_time \
            and properties == before_dataset.properties and name_list == before_dataset.schema.name_list \
            and type_list == before_dataset.schema.type_list and catalog_name == before_dataset.catalog_name \
            and catalog_type == before_dataset.catalog_type and catalog_database == before_dataset.catalog_database \
@@ -2074,11 +2063,9 @@ def _compare_dataset_fields(data_format, description, uri,
            and catalog_table == before_dataset.catalog_table
 
 
-def _compare_artifact_fields(artifact_type, description, uri, create_time,
-                             update_time, properties, before_artifact):
+def _compare_artifact_fields(artifact_type, description, uri, properties, before_artifact):
     return artifact_type == before_artifact.artifact_type and description == before_artifact.description \
-           and uri == before_artifact.uri and create_time == before_artifact.create_time\
-           and update_time == before_artifact.update_time and properties == before_artifact.properties
+           and uri == before_artifact.uri and properties == before_artifact.properties
 
 
 def _compare_model_fields(model_type, model_desc, before_model):
