@@ -72,8 +72,6 @@ class MetadataService(metadata_service_pb2_grpc.MetadataServiceServicer):
                                                    data_format=dataset.data_format,
                                                    description=dataset.description,
                                                    uri=dataset.uri,
-                                                   create_time=dataset.create_time,
-                                                   update_time=dataset.update_time,
                                                    properties=dataset.properties,
                                                    name_list=dataset.schema.name_list,
                                                    type_list=dataset.schema.type_list)
@@ -115,8 +113,6 @@ class MetadataService(metadata_service_pb2_grpc.MetadataServiceServicer):
                                                  description=request.description.value if request.HasField(
                                                      'description') else None,
                                                  uri=request.uri.value if request.HasField('uri') else None,
-                                                 update_time=request.update_time.value if request.HasField(
-                                                     'update_time') else None,
                                                  properties=properties,
                                                  name_list=name_list,
                                                  type_list=data_type_list,
@@ -517,18 +513,14 @@ class MetadataService(metadata_service_pb2_grpc.MetadataServiceServicer):
     @catch_exception
     def registerArtifact(self, request, context):
         artifact = transform_artifact_meta(request.artifact)
-        create_time = int(time.time() * 1000)
         response = self.store.register_artifact(name=artifact.name, artifact_type=artifact.artifact_type,
-                                                description=artifact.description,
-                                                uri=artifact.uri,
-                                                create_time=create_time,
+                                                description=artifact.description, uri=artifact.uri,
                                                 properties=artifact.properties)
         return _wrap_meta_response(MetaToProto.artifact_meta_to_proto(response))
 
     @catch_exception
     def updateArtifact(self, request, context):
         properties = None if request.properties == {} else request.properties
-        updata_time = int(time.time() * 1000)
         artifact = self.store.update_artifact(name=request.name,
                                               artifact_type=request.artifact_type.value if request.HasField(
                                                   'artifact_type') else None,
@@ -536,7 +528,6 @@ class MetadataService(metadata_service_pb2_grpc.MetadataServiceServicer):
                                               description=request.description.value if request.HasField(
                                                   'description') else None,
                                               uri=request.uri.value if request.HasField('uri') else None,
-                                              update_time=updata_time
                                               )
         return _wrap_meta_response(MetaToProto.artifact_meta_to_proto(artifact))
 

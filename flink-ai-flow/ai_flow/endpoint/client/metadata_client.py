@@ -79,8 +79,7 @@ class MetadataClient(BaseClient):
         return _unwrap_dataset_response(response)
 
     def register_dataset(self, name: Text, data_format: Text = None, description: Text = None,
-                         uri: Text = None, create_time: int = None, update_time: int = None,
-                         properties: Properties = None, name_list: List[Text] = None,
+                         uri: Text = None, properties: Properties = None, name_list: List[Text] = None,
                          type_list: List[DataType] = None) -> DatasetMeta:
         """
         register an dataset in metadata store.
@@ -89,8 +88,6 @@ class MetadataClient(BaseClient):
         :param data_format: the data format of the dataset
         :param description: the description of the dataset
         :param uri: the uri of the dataset
-        :param create_time: the time when the dataset is created
-        :param update_time: the time when the dataset is updated
         :param properties: the properties of the dataset
         :param name_list: the name list of dataset's schema
         :param type_list: the type list corresponded to the name list of dataset's schema
@@ -99,8 +96,7 @@ class MetadataClient(BaseClient):
         request = metadata_service_pb2.RegisterDatasetRequest(
             dataset=DatasetProto(name=name,  data_format=stringValue(data_format),
                                  description=stringValue(description), uri=stringValue(uri),
-                                 create_time=int64Value(create_time),
-                                 update_time=int64Value(update_time), properties=properties,
+                                 properties=properties,
                                  schema=SchemaProto(name_list=name_list, type_list=transform_dataset_type_list_to_proto(
                                      type_list)),
                                  catalog_name=stringValue(None), catalog_type=stringValue(None),
@@ -128,7 +124,6 @@ class MetadataClient(BaseClient):
             dataset=DatasetProto(name=name,
                                  data_format=stringValue(None), description=stringValue(None),
                                  uri=stringValue(None),
-                                 create_time=int64Value(None), update_time=int64Value(None),
                                  properties=None,
                                  schema=SchemaProto(name_list=None, type_list=transform_dataset_type_list_to_proto(
                                      None)),
@@ -152,7 +147,7 @@ class MetadataClient(BaseClient):
         return _unwrap_dataset_list_response(response)
 
     def update_dataset(self, dataset_name: Text, data_format: Text = None,
-                       description: Text = None, uri: Text = None, update_time: int = None,
+                       description: Text = None, uri: Text = None,
                        properties: Properties = None, name_list: List[Text] = None,
                        type_list: List[DataType] = None, catalog_name: Text = None,
                        catalog_type: Text = None, catalog_database: Text = None,
@@ -165,7 +160,6 @@ class MetadataClient(BaseClient):
         :param data_format: the data format of the dataset
         :param description: the description of the dataset
         :param uri: the uri of the dataset
-        :param update_time: the time when the dataset is updated
         :param properties: the properties of the dataset
         :param name_list: the name list of dataset's schema
         :param type_list: the type list corresponded to the name list of dataset's schema
@@ -180,7 +174,6 @@ class MetadataClient(BaseClient):
                                                             data_format=stringValue(data_format),
                                                             description=stringValue(description),
                                                             uri=stringValue(uri),
-                                                            update_time=int64Value(update_time),
                                                             properties=properties,
                                                             name_list=name_list,
                                                             type_list=transform_dataset_type_list_to_proto(

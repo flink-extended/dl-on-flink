@@ -106,18 +106,16 @@ public class MetadataClient {
      * @param dataFormat  Data format of dataset.
      * @param description Description of dataset.
      * @param uri    Uri of dataset.
-     * @param createTime  Time when dataset is created.
-     * @param updateTime  Time when dataset is updated.
      * @param properties  Properties of dataset.
      * @param nameList    Name list of dataset's schema.
      * @param typeList    Type list corresponded to name list of dataset's schema.
      * @return Single DatasetMeta object registered in Metadata Store.
      */
     public DatasetMeta registerDataset(String name, String dataFormat, String description,
-                                       String uri, Long createTime, Long updateTime, Map<String, String> properties,
+                                       String uri, Map<String, String> properties,
                                        List<String> nameList, List<DataType> typeList) throws Exception {
-        DatasetProto.Builder dataset = DatasetProto.newBuilder().setName(name).setDataFormat(stringValue(dataFormat)).setDescription(stringValue(description))
-                .setUri(stringValue(uri)).setCreateTime(int64Value(createTime)).setUpdateTime(int64Value(updateTime))
+        DatasetProto.Builder dataset = DatasetProto.newBuilder().setName(name).setDataFormat(stringValue(dataFormat))
+                .setDescription(stringValue(description)).setUri(stringValue(uri))
                 .putAllProperties(properties).setSchema(SchemaProto.newBuilder().addAllNameList(nameList).addAllTypeList(dataTypeList(typeList)))
                 .setCatalogName(stringValue(null)).setCatalogType(stringValue(null)).setCatalogDatabase(stringValue(null))
                 .setCatalogConnectionUri(stringValue(null)).setCatalogTable(stringValue(null));
@@ -140,8 +138,8 @@ public class MetadataClient {
      */
     public DatasetMeta registerDatasetWithCatalog(String name, String catalogName, String catalogType,
                                                   String catalogConnectionUri, String catalogTable, String catalogDatabase) throws Exception {
-        DatasetProto.Builder dataset = DatasetProto.newBuilder().setName(name).setDataFormat(stringValue(null)).setDescription(stringValue(null))
-                .setUri(stringValue(null)).setCreateTime(int64Value(null)).setUpdateTime(int64Value(null))
+        DatasetProto.Builder dataset = DatasetProto.newBuilder().setName(name).setDataFormat(stringValue(null))
+                .setDescription(stringValue(null)).setUri(stringValue(null))
                 .putAllProperties(null).setSchema(SchemaProto.newBuilder().addAllNameList(null).addAllTypeList(null))
                 .setCatalogName(stringValue(catalogName)).setCatalogType(stringValue(catalogType)).setCatalogDatabase(stringValue(catalogDatabase))
                 .setCatalogConnectionUri(stringValue(catalogConnectionUri)).setCatalogTable(stringValue(catalogTable));
@@ -171,7 +169,6 @@ public class MetadataClient {
      * @param dataFormat           Data format of dataset.
      * @param description          Description of dataset.
      * @param uri                  Uri of dataset.
-     * @param updateTime           Time when dataset is updated.
      * @param properties           Properties of dataset.
      * @param nameList             Name list of dataset's schema.
      * @param typeList             Type list corresponded to name list of dataset's schema.
@@ -183,11 +180,11 @@ public class MetadataClient {
      * @return Single DatasetMeta object registered in Metadata Store.
      */
     public DatasetMeta updateDataset(String name, String dataFormat, String description,
-                                     String uri, Long updateTime, Map<String, String> properties,
+                                     String uri, Map<String, String> properties,
                                      List<String> nameList, List<DataType> typeList, String catalogName, String catalogType,
                                      String catalogConnectionUri, String catalogTable, String catalogDatabase) throws Exception {
         UpdateDatasetRequest.Builder dataset = UpdateDatasetRequest.newBuilder().setName(name).setDataFormat(stringValue(dataFormat)).setDescription(stringValue(description))
-                .setUri(stringValue(uri)).setUpdateTime(int64Value(updateTime)).putAllProperties(properties)
+                .setUri(stringValue(uri)).putAllProperties(properties)
                 .addAllNameList(nameList).addAllTypeList(dataTypeList(typeList)).setCatalogName(stringValue(catalogName)).setCatalogType(stringValue(catalogType))
                 .setCatalogDatabase(stringValue(catalogDatabase)).setCatalogConnectionUri(stringValue(catalogConnectionUri))
                 .setCatalogTable(stringValue(catalogTable));

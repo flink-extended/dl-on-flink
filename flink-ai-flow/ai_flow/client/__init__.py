@@ -45,12 +45,10 @@ def get_dataset_by_name(dataset_name) -> Optional[DatasetMeta]:
 
 
 def register_dataset(name: Text, data_format: Text = None, description: Text = None,
-                     uri: Text = None, create_time: int = None, update_time: int = None,
-                     properties: Properties = None, name_list: List[Text] = None,
+                     uri: Text = None, properties: Properties = None, name_list: List[Text] = None,
                      type_list: List[DataType] = None) -> DatasetMeta:
     return get_ai_flow_client().register_dataset(name=name, data_format=data_format, description=description,
-                                                 uri=uri, create_time=create_time, update_time=update_time,
-                                                 properties=properties, name_list=name_list, type_list=type_list)
+                                                 uri=uri, properties=properties, name_list=name_list, type_list=type_list)
 
 
 def register_dataset_with_catalog(name: Text,
@@ -70,14 +68,14 @@ def register_datasets(datasets: List[DatasetMeta]) -> List[DatasetMeta]:
 
 def update_dataset(dataset_name: Text,
                    data_format: Text = None, description: Text = None,
-                   uri: Text = None, update_time: int = None,
+                   uri: Text = None,
                    properties: Properties = None, name_list: List[Text] = None,
                    type_list: List[DataType] = None, catalog_name: Text = None,
                    catalog_type: Text = None, catalog_database: Text = None,
                    catalog_connection_uri: Text = None,
                    catalog_table: Text = None) -> Optional[DatasetMeta]:
     return get_ai_flow_client().update_dataset(dataset_name, data_format, description,
-                                               uri, update_time, properties, name_list, type_list, catalog_name,
+                                               uri, properties, name_list, type_list, catalog_name,
                                                catalog_type, catalog_database, catalog_connection_uri,
                                                catalog_table)
 
