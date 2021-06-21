@@ -106,8 +106,6 @@ public class AIFlowClient {
    * @param dataFormat Data format of dataset.
    * @param description Description of dataset.
    * @param uri Uri of dataset.
-   * @param createTime Time when dataset is created.
-   * @param updateTime Time when dataset is updated.
    * @param properties Properties of dataset.
    * @param nameList Name list of dataset's schema.
    * @param typeList Type list corresponded to name list of dataset's schema.
@@ -118,8 +116,6 @@ public class AIFlowClient {
       String dataFormat,
       String description,
       String uri,
-      Long createTime,
-      Long updateTime,
       Map<String, String> properties,
       List<String> nameList,
       List<DataType> typeList)
@@ -129,8 +125,6 @@ public class AIFlowClient {
         dataFormat,
         description,
         uri,
-        createTime,
-        updateTime,
         properties,
         nameList,
         typeList);
@@ -181,7 +175,6 @@ public class AIFlowClient {
    * @param dataFormat Data format of dataset.
    * @param description Description of dataset.
    * @param uri uri of dataset.
-   * @param updateTime Time when dataset is updated.
    * @param properties Properties of dataset.
    * @param nameList Name list of dataset's schema.
    * @param typeList Type list corresponded to name list of dataset's schema.
@@ -197,7 +190,6 @@ public class AIFlowClient {
       String dataFormat,
       String description,
       String uri,
-      Long updateTime,
       Map<String, String> properties,
       List<String> nameList,
       List<DataType> typeList,
@@ -212,7 +204,6 @@ public class AIFlowClient {
         dataFormat,
         description,
         uri,
-        updateTime,
         properties,
         nameList,
         typeList,

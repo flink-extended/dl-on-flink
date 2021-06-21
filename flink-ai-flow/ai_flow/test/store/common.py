@@ -67,8 +67,8 @@ class AbstractTestStore(object):
         self.assertEqual(dataset_1.schema.to_json_dict(), dataset_2.schema.to_json_dict())
         self.assertEqual(dataset_1.schema.to_json_dict(), dataset_2.schema.to_json_dict())
         self.assertRaises(AIFlowException, self.store.register_dataset, name='dataset',
-                          data_format='csv',
-                          create_time=round(time.time()), properties=Properties({'a': 'b'}),
+                          data_format='txt',
+                          properties=Properties({'a': 'b'}),
                           name_list=['a'], type_list=[DataType.STRING])
 
     def test_double_register_dataset_with_catalog(self):
@@ -84,8 +84,7 @@ class AbstractTestStore(object):
         self.assertEqual(dataset_1.schema.to_json_dict(), dataset_2.schema.to_json_dict())
         self.assertEqual(dataset_1.schema.to_json_dict(), dataset_2.schema.to_json_dict())
         self.assertRaises(AIFlowException, self.store.register_dataset, name='dataset',
-                          data_format='csv',
-                          create_time=round(time.time()), properties=Properties({'a': 'b'}),
+                          data_format='csv', properties=Properties({'a': 'b'}),
                           name_list=['a'], type_list=[DataType.STRING])
 
     def test_list_datasets(self):
@@ -512,10 +511,10 @@ class AbstractTestStore(object):
     """test artifact"""
 
     def test_register_artifact_get_and_list_artifact(self):
-        artifact = self.store.register_artifact(name='artifact_result', create_time=int(time.time()), uri='../..')
+        artifact = self.store.register_artifact(name='artifact_result', uri='../..')
         self.assertEqual(artifact.uuid, self.store.get_artifact_by_id(artifact.uuid).uuid)
         self.assertEqual(artifact.uri, self.store.get_artifact_by_name('artifact_result').uri)
-        self.store.register_artifact(name='artifact_result_1', create_time=int(time.time()), uri='../..')
+        self.store.register_artifact(name='artifact_result_1', uri='../..')
         self.assertEqual(2, len(self.store.list_artifact(2, 0)))
         self.assertEqual(Status.OK, self.store.delete_artifact_by_id(1))
         self.assertEqual(Status.OK, self.store.delete_artifact_by_name('artifact_result_1'))
@@ -528,14 +527,11 @@ class AbstractTestStore(object):
         artifact_1 = self.store.register_artifact(name='artifact_result', uri='../..')
         artifact_2 = self.store.register_artifact(name='artifact_result', uri='../..')
         self.assertEqual(artifact_1.to_json_dict(), artifact_2.to_json_dict())
-        self.assertRaises(AIFlowException, self.store.register_artifact, name='artifact_result',
-                          create_time=int(time.time()), uri='../..')
+        self.assertRaises(AIFlowException, self.store.register_artifact, name='artifact_result', uri='.')
 
     def test_update_artifact(self):
-        artifact = self.store.register_artifact(name='artifact_result', create_time=int(time.time()), uri='../..')
-        update_time = int(time.time())
-        update_artifact = self.store.update_artifact(name='artifact_result', update_time=update_time)
-        self.assertEqual(update_artifact.update_time, update_time)
+        artifact = self.store.register_artifact(name='artifact_result', uri='../..')
+        update_artifact = self.store.update_artifact(name='artifact_result')
         self.assertEqual(update_artifact.uri, artifact.uri)
         self.assertIsNone(update_artifact.properties)
         self.assertIsNone(update_artifact.artifact_type)

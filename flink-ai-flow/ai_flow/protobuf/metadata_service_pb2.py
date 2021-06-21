@@ -43,7 +43,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'\n\020com.aiflow.protoZ\010/ai_flow\210\001\001\220\001\001',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x16metadata_service.proto\x12\x07\x61i_flow\x1a\x1egoogle/protobuf/wrappers.proto\x1a\rmessage.proto\x1a\x1cgoogle/api/annotations.proto\"\x17\n\tIdRequest\x12\n\n\x02id\x18\x01 \x01(\x03\"\x1b\n\x0bNameRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"0\n\x0bListRequest\x12\x11\n\tpage_size\x18\x01 \x01(\x03\x12\x0e\n\x06offset\x18\x02 \x01(\x03\"E\n\x0cMetaResponse\x12\x13\n\x0breturn_code\x18\x01 \x01(\t\x12\x12\n\nreturn_msg\x18\x02 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x03 \x01(\t\"@\n\x16RegisterDatasetRequest\x12&\n\x07\x64\x61taset\x18\x01 \x01(\x0b\x32\x15.ai_flow.DatasetProto\"B\n\x17RegisterDatasetsRequest\x12\'\n\x08\x64\x61tasets\x18\x01 \x03(\x0b\x32\x15.ai_flow.DatasetProto\";\n\x10\x44\x61tasetListProto\x12\'\n\x08\x64\x61tasets\x18\x01 \x03(\x0b\x32\x15.ai_flow.DatasetProto\"\xae\x05\n\x14UpdateDatasetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x41\n\nproperties\x18\x02 \x03(\x0b\x32-.ai_flow.UpdateDatasetRequest.PropertiesEntry\x12\x11\n\tname_list\x18\x03 \x03(\t\x12)\n\ttype_list\x18\x04 \x03(\x0e\x32\x16.ai_flow.DataTypeProto\x12\x31\n\x0b\x64\x61ta_format\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12)\n\x03uri\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\x0b\x64\x65scription\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x30\n\x0bupdate_time\x18\x08 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x32\n\x0c\x63\x61talog_name\x18\t \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0c\x63\x61talog_type\x18\n \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x36\n\x10\x63\x61talog_database\x18\x0b \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12<\n\x16\x63\x61talog_connection_uri\x18\x0c \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x33\n\rcatalog_table\x18\r \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"S\n\x1cRegisterModelRelationRequest\x12\x33\n\x0emodel_relation\x18\x01 \x01(\x0b\x32\x1b.ai_flow.ModelRelationProto\":\n\x14RegisterModelRequest\x12\"\n\x05model\x18\x01 \x01(\x0b\x32\x13.ai_flow.ModelProto\"N\n\x16ModelRelationListProto\x12\x34\n\x0fmodel_relations\x18\x01 \x03(\x0b\x32\x1b.ai_flow.ModelRelationProto\"9\n\x17ModelVersionNameRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08model_id\x18\x02 \x01(\x03\"i\n#RegisterModelVersionRelationRequest\x12\x42\n\x16model_version_relation\x18\x01 \x01(\x0b\x32\".ai_flow.ModelVersionRelationProto\"P\n\x1bRegisterModelVersionRequest\x12\x31\n\rmodel_version\x18\x01 \x01(\x0b\x32\x1a.ai_flow.ModelVersionProto\"V\n\x1fListModelVersionRelationRequest\x12\x10\n\x08model_id\x18\x01 \x01(\x03\x12\x11\n\tpage_size\x18\x02 \x01(\x03\x12\x0e\n\x06offset\x18\x03 \x01(\x03\"[\n\x1dModelVersionRelationListProto\x12:\n\x0emodel_versions\x18\x01 \x03(\x0b\x32\".ai_flow.ModelVersionRelationProto\"K\n\x15ModelVersionListProto\x12\x32\n\x0emodel_versions\x18\x01 \x03(\x0b\x32\x1a.ai_flow.ModelVersionProto\" \n\x10ModelNameRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"4\n\x12RegisterJobRequest\x12\x1e\n\x03job\x18\x01 \x01(\x0b\x32\x11.ai_flow.JobProto\"\xb3\x03\n\x10UpdateJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12:\n\x15workflow_execution_id\x18\x02 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12&\n\tjob_state\x18\x03 \x01(\x0e\x32\x13.ai_flow.StateProto\x12=\n\nproperties\x18\x04 \x03(\x0b\x32).ai_flow.UpdateJobRequest.PropertiesEntry\x12,\n\x06job_id\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12-\n\x08\x65nd_time\x18\x06 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x07log_uri\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tsignature\x18\x08 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"I\n\x15UpdateJobStateRequest\x12\"\n\x05state\x18\x01 \x01(\x0e\x32\x13.ai_flow.StateProto\x12\x0c\n\x04name\x18\x02 \x01(\t\"9\n\x17UpdateJobEndTimeRequest\x12\x10\n\x08\x65nd_time\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\"/\n\x0cJobListProto\x12\x1f\n\x04jobs\x18\x01 \x03(\x0b\x32\x11.ai_flow.JobProto\"_\n RegisterWorkFlowExecutionRequest\x12;\n\x12workflow_execution\x18\x01 \x01(\x0b\x32\x1f.ai_flow.WorkflowExecutionProto\"\xd1\x03\n\x1eUpdateWorkflowExecutionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\nproject_id\x18\x02 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12,\n\x0f\x65xecution_state\x18\x04 \x01(\x0e\x32\x13.ai_flow.StateProto\x12K\n\nproperties\x18\x05 \x03(\x0b\x32\x37.ai_flow.UpdateWorkflowExecutionRequest.PropertiesEntry\x12-\n\x08\x65nd_time\x18\x06 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x07log_uri\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x33\n\rworkflow_json\x18\x08 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tsignature\x18\t \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"Z\n\x1aWorkFlowExecutionListProto\x12<\n\x13workflow_executions\x18\x01 \x03(\x0b\x32\x1f.ai_flow.WorkflowExecutionProto\"G\n%UpdateWorkflowExecutionEndTimeRequest\x12\x10\n\x08\x65nd_time\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\"W\n#UpdateWorkflowExecutionStateRequest\x12\"\n\x05state\x18\x01 \x01(\x0e\x32\x13.ai_flow.StateProto\x12\x0c\n\x04name\x18\x02 \x01(\t\"@\n\x16RegisterProjectRequest\x12&\n\x07project\x18\x01 \x01(\x0b\x32\x15.ai_flow.ProjectProto\"\xc5\x01\n\x14UpdateProjectRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x41\n\nproperties\x18\x02 \x03(\x0b\x32-.ai_flow.UpdateProjectRequest.PropertiesEntry\x12)\n\x03uri\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\";\n\x10ProjectListProto\x12\'\n\x08projects\x18\x01 \x03(\x0b\x32\x15.ai_flow.ProjectProto\"C\n\x17RegisterArtifactRequest\x12(\n\x08\x61rtifact\x18\x01 \x01(\x0b\x32\x16.ai_flow.ArtifactProto\"\xaf\x02\n\x15UpdateArtifactRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x42\n\nproperties\x18\x02 \x03(\x0b\x32..ai_flow.UpdateArtifactRequest.PropertiesEntry\x12\x33\n\rartifact_type\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12)\n\x03uri\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\x0b\x64\x65scription\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\">\n\x11\x41rtifactListProto\x12)\n\tartifacts\x18\x01 \x03(\x0b\x32\x16.ai_flow.ArtifactProto2\xe9<\n\x0fMetadataService\x12i\n\x0egetDatasetById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\"0\x82\xd3\xe4\x93\x02*\"%/aiflow/metadata_store/dataset/get/id:\x01*\x12o\n\x10getDatasetByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\"2\x82\xd3\xe4\x93\x02,\"\'/aiflow/metadata_store/dataset/get/name:\x01*\x12g\n\x0clistDatasets\x12\x14.ai_flow.ListRequest\x1a\x11.ai_flow.Response\".\x82\xd3\xe4\x93\x02(\"#/aiflow/metadata_store/dataset/list:\x01*\x12u\n\x0fregisterDataset\x12\x1f.ai_flow.RegisterDatasetRequest\x1a\x11.ai_flow.Response\".\x82\xd3\xe4\x93\x02(\"#/aiflow/metadata_store/dataset/save:\x01*\x12\x8d\x01\n\x1aregisterDatasetWithCatalog\x12\x1f.ai_flow.RegisterDatasetRequest\x1a\x11.ai_flow.Response\";\x82\xd3\xe4\x93\x02\x35\"0/aiflow/metadata_store/dataset/save_with_catalog:\x01*\x12w\n\x10registerDatasets\x12 .ai_flow.RegisterDatasetsRequest\x1a\x11.ai_flow.Response\".\x82\xd3\xe4\x93\x02(\"#/aiflow/metadata_store/dataset/save:\x01*\x12s\n\rupdateDataset\x12\x1d.ai_flow.UpdateDatasetRequest\x1a\x11.ai_flow.Response\"0\x82\xd3\xe4\x93\x02*\"%/aiflow/metadata_store/dataset/update:\x01*\x12o\n\x11\x64\x65leteDatasetById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\"3\x82\xd3\xe4\x93\x02-\"(/aiflow/metadata_store/dataset/delete/id:\x01*\x12u\n\x13\x64\x65leteDatasetByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\"5\x82\xd3\xe4\x93\x02/\"*/aiflow/metadata_store/dataset/delete/name:\x01*\x12v\n\x14getModelRelationById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\"7\x82\xd3\xe4\x93\x02\x31\",/aiflow/metadata_store/model_relation/get/id:\x01*\x12|\n\x16getModelRelationByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\"9\x82\xd3\xe4\x93\x02\x33\"./aiflow/metadata_store/model_relation/get/name:\x01*\x12s\n\x11listModelRelation\x12\x14.ai_flow.ListRequest\x1a\x11.ai_flow.Response\"5\x82\xd3\xe4\x93\x02/\"*/aiflow/metadata_store/model_relation/list:\x01*\x12\x88\x01\n\x15registerModelRelation\x12%.ai_flow.RegisterModelRelationRequest\x1a\x11.ai_flow.Response\"5\x82\xd3\xe4\x93\x02/\"*/aiflow/metadata_store/model_relation/save:\x01*\x12|\n\x17\x64\x65leteModelRelationById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\":\x82\xd3\xe4\x93\x02\x34\"//aiflow/metadata_store/model_relation/delete/id:\x01*\x12\x82\x01\n\x19\x64\x65leteModelRelationByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\"<\x82\xd3\xe4\x93\x02\x36\"1/aiflow/metadata_store/model_relation/delete/name:\x01*\x12\x65\n\x0cgetModelById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\".\x82\xd3\xe4\x93\x02(\"#/aiflow/metadata_store/model/get/id:\x01*\x12k\n\x0egetModelByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\"0\x82\xd3\xe4\x93\x02*\"%/aiflow/metadata_store/model/get/name:\x01*\x12o\n\rregisterModel\x12\x1d.ai_flow.RegisterModelRequest\x1a\x11.ai_flow.Response\",\x82\xd3\xe4\x93\x02&\"!/aiflow/metadata_store/model/save:\x01*\x12k\n\x0f\x64\x65leteModelById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\"1\x82\xd3\xe4\x93\x02+\"&/aiflow/metadata_store/model/delete/id:\x01*\x12q\n\x11\x64\x65leteModelByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\"3\x82\xd3\xe4\x93\x02-\"(/aiflow/metadata_store/model/delete/name:\x01*\x12\x9c\x01\n getModelVersionRelationByVersion\x12 .ai_flow.ModelVersionNameRequest\x1a\x11.ai_flow.Response\"C\x82\xd3\xe4\x93\x02=\"8/aiflow/metadata_store/modelVersion_relation/get/version:\x01*\x12\x95\x01\n\x18listModelVersionRelation\x12(.ai_flow.ListModelVersionRelationRequest\x1a\x11.ai_flow.Response\"<\x82\xd3\xe4\x93\x02\x36\"1/aiflow/metadata_store/modelVersion_relation/list:\x01*\x12\x9d\x01\n\x1cregisterModelVersionRelation\x12,.ai_flow.RegisterModelVersionRelationRequest\x1a\x11.ai_flow.Response\"<\x82\xd3\xe4\x93\x02\x36\"1/aiflow/metadata_store/modelVersion_relation/save:\x01*\x12\xa2\x01\n#deleteModelVersionRelationByVersion\x12 .ai_flow.ModelVersionNameRequest\x1a\x11.ai_flow.Response\"F\x82\xd3\xe4\x93\x02@\";/aiflow/metadata_store/modelVersion_relation/delete/version:\x01*\x12\x8b\x01\n\x18getModelVersionByVersion\x12 .ai_flow.ModelVersionNameRequest\x1a\x11.ai_flow.Response\":\x82\xd3\xe4\x93\x02\x34\"//aiflow/metadata_store/modelVersion/get/version:\x01*\x12\x84\x01\n\x14registerModelVersion\x12$.ai_flow.RegisterModelVersionRequest\x1a\x11.ai_flow.Response\"3\x82\xd3\xe4\x93\x02-\"(/aiflow/metadata_store/modelVersion/save:\x01*\x12\x91\x01\n\x1b\x64\x65leteModelVersionByVersion\x12 .ai_flow.ModelVersionNameRequest\x1a\x11.ai_flow.Response\"=\x82\xd3\xe4\x93\x02\x37\"2/aiflow/metadata_store/modelVersion/delete/version:\x01*\x12\x8b\x01\n\x17getDeployedModelVersion\x12\x19.ai_flow.ModelNameRequest\x1a\x11.ai_flow.Response\"B\x82\xd3\xe4\x93\x02<\"7/aiflow/metadata_store/modelVersion/get_serving_version:\x01*\x12\xa1\x01\n\x1egetLatestValidatedModelVersion\x12\x19.ai_flow.ModelNameRequest\x1a\x11.ai_flow.Response\"Q\x82\xd3\xe4\x93\x02K\"F/aiflow/metadata_store/modelVersion/get_latest_validated_model_version:\x01*\x12\xa1\x01\n\x1egetLatestGeneratedModelVersion\x12\x19.ai_flow.ModelNameRequest\x1a\x11.ai_flow.Response\"Q\x82\xd3\xe4\x93\x02K\"F/aiflow/metadata_store/modelVersion/get_latest_generated_model_version:\x01*\x12}\n\x18getWorkFlowExecutionById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\":\x82\xd3\xe4\x93\x02\x34\"//aiflow/metadata_store/workflowExecution/get/id:\x01*\x12\x83\x01\n\x1agetWorkFlowExecutionByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\"<\x82\xd3\xe4\x93\x02\x36\"1/aiflow/metadata_store/workflowExecution/get/name:\x01*\x12z\n\x15listWorkFlowExecution\x12\x14.ai_flow.ListRequest\x1a\x11.ai_flow.Response\"8\x82\xd3\xe4\x93\x02\x32\"-/aiflow/metadata_store/workflowExecution/list:\x01*\x12\x93\x01\n\x19registerWorkFlowExecution\x12).ai_flow.RegisterWorkFlowExecutionRequest\x1a\x11.ai_flow.Response\"8\x82\xd3\xe4\x93\x02\x32\"-/aiflow/metadata_store/workflowExecution/save:\x01*\x12\x91\x01\n\x17updateWorkflowExecution\x12\'.ai_flow.UpdateWorkflowExecutionRequest\x1a\x11.ai_flow.Response\":\x82\xd3\xe4\x93\x02\x34\"//aiflow/metadata_store/workflowExecution/update:\x01*\x12\x83\x01\n\x1b\x64\x65leteWorkflowExecutionById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\"=\x82\xd3\xe4\x93\x02\x37\"2/aiflow/metadata_store/workflowExecution/delete/id:\x01*\x12\x89\x01\n\x1d\x64\x65leteWorkflowExecutionByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\"?\x82\xd3\xe4\x93\x02\x39\"4/aiflow/metadata_store/workflowExecution/delete/name:\x01*\x12\xa8\x01\n\x1eupdateWorkflowExecutionEndTime\x12..ai_flow.UpdateWorkflowExecutionEndTimeRequest\x1a\x11.ai_flow.Response\"C\x82\xd3\xe4\x93\x02=\"8/aiflow/metadata_store/workflowExecution/update/end_time:\x01*\x12\xa1\x01\n\x1cupdateWorkflowExecutionState\x12,.ai_flow.UpdateWorkflowExecutionStateRequest\x1a\x11.ai_flow.Response\"@\x82\xd3\xe4\x93\x02:\"5/aiflow/metadata_store/workflowExecution/update/state:\x01*\x12\x61\n\ngetJobById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\",\x82\xd3\xe4\x93\x02&\"!/aiflow/metadata_store/job/get/id:\x01*\x12g\n\x0cgetJobByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\".\x82\xd3\xe4\x93\x02(\"#/aiflow/metadata_store/job/get/name:\x01*\x12^\n\x07listJob\x12\x14.ai_flow.ListRequest\x1a\x11.ai_flow.Response\"*\x82\xd3\xe4\x93\x02$\"\x1f/aiflow/metadata_store/job/list:\x01*\x12i\n\x0bregisterJob\x12\x1b.ai_flow.RegisterJobRequest\x1a\x11.ai_flow.Response\"*\x82\xd3\xe4\x93\x02$\"\x1f/aiflow/metadata_store/job/save:\x01*\x12g\n\tupdateJob\x12\x19.ai_flow.UpdateJobRequest\x1a\x11.ai_flow.Response\",\x82\xd3\xe4\x93\x02&\"!/aiflow/metadata_store/job/update:\x01*\x12w\n\x0eupdateJobState\x12\x1e.ai_flow.UpdateJobStateRequest\x1a\x11.ai_flow.Response\"2\x82\xd3\xe4\x93\x02,\"\'/aiflow/metadata_store/job/update/state:\x01*\x12~\n\x10updateJobEndTime\x12 .ai_flow.UpdateJobEndTimeRequest\x1a\x11.ai_flow.Response\"5\x82\xd3\xe4\x93\x02/\"*/aiflow/metadata_store/job/update/end_time:\x01*\x12g\n\rdeleteJobById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\"/\x82\xd3\xe4\x93\x02)\"$/aiflow/metadata_store/job/delete/id:\x01*\x12m\n\x0f\x64\x65leteJobByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\"1\x82\xd3\xe4\x93\x02+\"&/aiflow/metadata_store/job/delete/name:\x01*\x12i\n\x0egetProjectById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\"0\x82\xd3\xe4\x93\x02*\"%/aiflow/metadata_store/project/get/id:\x01*\x12o\n\x10getProjectByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\"2\x82\xd3\xe4\x93\x02,\"\'/aiflow/metadata_store/project/get/name:\x01*\x12u\n\x0fregisterProject\x12\x1f.ai_flow.RegisterProjectRequest\x1a\x11.ai_flow.Response\".\x82\xd3\xe4\x93\x02(\"#/aiflow/metadata_store/project/save:\x01*\x12s\n\rupdateProject\x12\x1d.ai_flow.UpdateProjectRequest\x1a\x11.ai_flow.Response\"0\x82\xd3\xe4\x93\x02*\"%/aiflow/metadata_store/project/update:\x01*\x12\x66\n\x0blistProject\x12\x14.ai_flow.ListRequest\x1a\x11.ai_flow.Response\".\x82\xd3\xe4\x93\x02(\"#/aiflow/metadata_store/project/list:\x01*\x12o\n\x11\x64\x65leteProjectById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\"3\x82\xd3\xe4\x93\x02-\"(/aiflow/metadata_store/project/delete/id:\x01*\x12u\n\x13\x64\x65leteProjectByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\"5\x82\xd3\xe4\x93\x02/\"*/aiflow/metadata_store/project/delete/name:\x01*\x12k\n\x0fgetArtifactById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\"1\x82\xd3\xe4\x93\x02+\"&/aiflow/metadata_store/artifact/get/id:\x01*\x12q\n\x11getArtifactByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\"3\x82\xd3\xe4\x93\x02-\"(/aiflow/metadata_store/artifact/get/name:\x01*\x12v\n\x0eupdateArtifact\x12\x1e.ai_flow.UpdateArtifactRequest\x1a\x11.ai_flow.Response\"1\x82\xd3\xe4\x93\x02+\"&/aiflow/metadata_store/artifact/update:\x01*\x12x\n\x10registerArtifact\x12 .ai_flow.RegisterArtifactRequest\x1a\x11.ai_flow.Response\"/\x82\xd3\xe4\x93\x02)\"$/aiflow/metadata_store/artifact/save:\x01*\x12h\n\x0clistArtifact\x12\x14.ai_flow.ListRequest\x1a\x11.ai_flow.Response\"/\x82\xd3\xe4\x93\x02)\"$/aiflow/metadata_store/artifact/list:\x01*\x12q\n\x12\x64\x65leteArtifactById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\"4\x82\xd3\xe4\x93\x02.\")/aiflow/metadata_store/artifact/delete/id:\x01*\x12w\n\x14\x64\x65leteArtifactByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\"6\x82\xd3\xe4\x93\x02\x30\"+/aiflow/metadata_store/artifact/delete/name:\x01*B\"\n\x10\x63om.aiflow.protoZ\x08/ai_flow\x88\x01\x01\x90\x01\x01\x62\x06proto3'
+  serialized_pb=b'\n\x16metadata_service.proto\x12\x07\x61i_flow\x1a\x1egoogle/protobuf/wrappers.proto\x1a\rmessage.proto\x1a\x1cgoogle/api/annotations.proto\"\x17\n\tIdRequest\x12\n\n\x02id\x18\x01 \x01(\x03\"\x1b\n\x0bNameRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"0\n\x0bListRequest\x12\x11\n\tpage_size\x18\x01 \x01(\x03\x12\x0e\n\x06offset\x18\x02 \x01(\x03\"E\n\x0cMetaResponse\x12\x13\n\x0breturn_code\x18\x01 \x01(\t\x12\x12\n\nreturn_msg\x18\x02 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x03 \x01(\t\"@\n\x16RegisterDatasetRequest\x12&\n\x07\x64\x61taset\x18\x01 \x01(\x0b\x32\x15.ai_flow.DatasetProto\"B\n\x17RegisterDatasetsRequest\x12\'\n\x08\x64\x61tasets\x18\x01 \x03(\x0b\x32\x15.ai_flow.DatasetProto\";\n\x10\x44\x61tasetListProto\x12\'\n\x08\x64\x61tasets\x18\x01 \x03(\x0b\x32\x15.ai_flow.DatasetProto\"\xfc\x04\n\x14UpdateDatasetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x41\n\nproperties\x18\x02 \x03(\x0b\x32-.ai_flow.UpdateDatasetRequest.PropertiesEntry\x12\x11\n\tname_list\x18\x03 \x03(\t\x12)\n\ttype_list\x18\x04 \x03(\x0e\x32\x16.ai_flow.DataTypeProto\x12\x31\n\x0b\x64\x61ta_format\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12)\n\x03uri\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\x0b\x64\x65scription\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0c\x63\x61talog_name\x18\t \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x32\n\x0c\x63\x61talog_type\x18\n \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x36\n\x10\x63\x61talog_database\x18\x0b \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12<\n\x16\x63\x61talog_connection_uri\x18\x0c \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x33\n\rcatalog_table\x18\r \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"S\n\x1cRegisterModelRelationRequest\x12\x33\n\x0emodel_relation\x18\x01 \x01(\x0b\x32\x1b.ai_flow.ModelRelationProto\":\n\x14RegisterModelRequest\x12\"\n\x05model\x18\x01 \x01(\x0b\x32\x13.ai_flow.ModelProto\"N\n\x16ModelRelationListProto\x12\x34\n\x0fmodel_relations\x18\x01 \x03(\x0b\x32\x1b.ai_flow.ModelRelationProto\"9\n\x17ModelVersionNameRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08model_id\x18\x02 \x01(\x03\"i\n#RegisterModelVersionRelationRequest\x12\x42\n\x16model_version_relation\x18\x01 \x01(\x0b\x32\".ai_flow.ModelVersionRelationProto\"P\n\x1bRegisterModelVersionRequest\x12\x31\n\rmodel_version\x18\x01 \x01(\x0b\x32\x1a.ai_flow.ModelVersionProto\"V\n\x1fListModelVersionRelationRequest\x12\x10\n\x08model_id\x18\x01 \x01(\x03\x12\x11\n\tpage_size\x18\x02 \x01(\x03\x12\x0e\n\x06offset\x18\x03 \x01(\x03\"[\n\x1dModelVersionRelationListProto\x12:\n\x0emodel_versions\x18\x01 \x03(\x0b\x32\".ai_flow.ModelVersionRelationProto\"K\n\x15ModelVersionListProto\x12\x32\n\x0emodel_versions\x18\x01 \x03(\x0b\x32\x1a.ai_flow.ModelVersionProto\" \n\x10ModelNameRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"4\n\x12RegisterJobRequest\x12\x1e\n\x03job\x18\x01 \x01(\x0b\x32\x11.ai_flow.JobProto\"\xb3\x03\n\x10UpdateJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12:\n\x15workflow_execution_id\x18\x02 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12&\n\tjob_state\x18\x03 \x01(\x0e\x32\x13.ai_flow.StateProto\x12=\n\nproperties\x18\x04 \x03(\x0b\x32).ai_flow.UpdateJobRequest.PropertiesEntry\x12,\n\x06job_id\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12-\n\x08\x65nd_time\x18\x06 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x07log_uri\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tsignature\x18\x08 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"I\n\x15UpdateJobStateRequest\x12\"\n\x05state\x18\x01 \x01(\x0e\x32\x13.ai_flow.StateProto\x12\x0c\n\x04name\x18\x02 \x01(\t\"9\n\x17UpdateJobEndTimeRequest\x12\x10\n\x08\x65nd_time\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\"/\n\x0cJobListProto\x12\x1f\n\x04jobs\x18\x01 \x03(\x0b\x32\x11.ai_flow.JobProto\"_\n RegisterWorkFlowExecutionRequest\x12;\n\x12workflow_execution\x18\x01 \x01(\x0b\x32\x1f.ai_flow.WorkflowExecutionProto\"\xd1\x03\n\x1eUpdateWorkflowExecutionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\nproject_id\x18\x02 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12,\n\x0f\x65xecution_state\x18\x04 \x01(\x0e\x32\x13.ai_flow.StateProto\x12K\n\nproperties\x18\x05 \x03(\x0b\x32\x37.ai_flow.UpdateWorkflowExecutionRequest.PropertiesEntry\x12-\n\x08\x65nd_time\x18\x06 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12-\n\x07log_uri\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x33\n\rworkflow_json\x18\x08 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12/\n\tsignature\x18\t \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"Z\n\x1aWorkFlowExecutionListProto\x12<\n\x13workflow_executions\x18\x01 \x03(\x0b\x32\x1f.ai_flow.WorkflowExecutionProto\"G\n%UpdateWorkflowExecutionEndTimeRequest\x12\x10\n\x08\x65nd_time\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\"W\n#UpdateWorkflowExecutionStateRequest\x12\"\n\x05state\x18\x01 \x01(\x0e\x32\x13.ai_flow.StateProto\x12\x0c\n\x04name\x18\x02 \x01(\t\"@\n\x16RegisterProjectRequest\x12&\n\x07project\x18\x01 \x01(\x0b\x32\x15.ai_flow.ProjectProto\"\xc5\x01\n\x14UpdateProjectRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x41\n\nproperties\x18\x02 \x03(\x0b\x32-.ai_flow.UpdateProjectRequest.PropertiesEntry\x12)\n\x03uri\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\";\n\x10ProjectListProto\x12\'\n\x08projects\x18\x01 \x03(\x0b\x32\x15.ai_flow.ProjectProto\"C\n\x17RegisterArtifactRequest\x12(\n\x08\x61rtifact\x18\x01 \x01(\x0b\x32\x16.ai_flow.ArtifactProto\"\xaf\x02\n\x15UpdateArtifactRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x42\n\nproperties\x18\x02 \x03(\x0b\x32..ai_flow.UpdateArtifactRequest.PropertiesEntry\x12\x33\n\rartifact_type\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12)\n\x03uri\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x31\n\x0b\x64\x65scription\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\">\n\x11\x41rtifactListProto\x12)\n\tartifacts\x18\x01 \x03(\x0b\x32\x16.ai_flow.ArtifactProto2\xe9<\n\x0fMetadataService\x12i\n\x0egetDatasetById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\"0\x82\xd3\xe4\x93\x02*\"%/aiflow/metadata_store/dataset/get/id:\x01*\x12o\n\x10getDatasetByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\"2\x82\xd3\xe4\x93\x02,\"\'/aiflow/metadata_store/dataset/get/name:\x01*\x12g\n\x0clistDatasets\x12\x14.ai_flow.ListRequest\x1a\x11.ai_flow.Response\".\x82\xd3\xe4\x93\x02(\"#/aiflow/metadata_store/dataset/list:\x01*\x12u\n\x0fregisterDataset\x12\x1f.ai_flow.RegisterDatasetRequest\x1a\x11.ai_flow.Response\".\x82\xd3\xe4\x93\x02(\"#/aiflow/metadata_store/dataset/save:\x01*\x12\x8d\x01\n\x1aregisterDatasetWithCatalog\x12\x1f.ai_flow.RegisterDatasetRequest\x1a\x11.ai_flow.Response\";\x82\xd3\xe4\x93\x02\x35\"0/aiflow/metadata_store/dataset/save_with_catalog:\x01*\x12w\n\x10registerDatasets\x12 .ai_flow.RegisterDatasetsRequest\x1a\x11.ai_flow.Response\".\x82\xd3\xe4\x93\x02(\"#/aiflow/metadata_store/dataset/save:\x01*\x12s\n\rupdateDataset\x12\x1d.ai_flow.UpdateDatasetRequest\x1a\x11.ai_flow.Response\"0\x82\xd3\xe4\x93\x02*\"%/aiflow/metadata_store/dataset/update:\x01*\x12o\n\x11\x64\x65leteDatasetById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\"3\x82\xd3\xe4\x93\x02-\"(/aiflow/metadata_store/dataset/delete/id:\x01*\x12u\n\x13\x64\x65leteDatasetByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\"5\x82\xd3\xe4\x93\x02/\"*/aiflow/metadata_store/dataset/delete/name:\x01*\x12v\n\x14getModelRelationById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\"7\x82\xd3\xe4\x93\x02\x31\",/aiflow/metadata_store/model_relation/get/id:\x01*\x12|\n\x16getModelRelationByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\"9\x82\xd3\xe4\x93\x02\x33\"./aiflow/metadata_store/model_relation/get/name:\x01*\x12s\n\x11listModelRelation\x12\x14.ai_flow.ListRequest\x1a\x11.ai_flow.Response\"5\x82\xd3\xe4\x93\x02/\"*/aiflow/metadata_store/model_relation/list:\x01*\x12\x88\x01\n\x15registerModelRelation\x12%.ai_flow.RegisterModelRelationRequest\x1a\x11.ai_flow.Response\"5\x82\xd3\xe4\x93\x02/\"*/aiflow/metadata_store/model_relation/save:\x01*\x12|\n\x17\x64\x65leteModelRelationById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\":\x82\xd3\xe4\x93\x02\x34\"//aiflow/metadata_store/model_relation/delete/id:\x01*\x12\x82\x01\n\x19\x64\x65leteModelRelationByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\"<\x82\xd3\xe4\x93\x02\x36\"1/aiflow/metadata_store/model_relation/delete/name:\x01*\x12\x65\n\x0cgetModelById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\".\x82\xd3\xe4\x93\x02(\"#/aiflow/metadata_store/model/get/id:\x01*\x12k\n\x0egetModelByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\"0\x82\xd3\xe4\x93\x02*\"%/aiflow/metadata_store/model/get/name:\x01*\x12o\n\rregisterModel\x12\x1d.ai_flow.RegisterModelRequest\x1a\x11.ai_flow.Response\",\x82\xd3\xe4\x93\x02&\"!/aiflow/metadata_store/model/save:\x01*\x12k\n\x0f\x64\x65leteModelById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\"1\x82\xd3\xe4\x93\x02+\"&/aiflow/metadata_store/model/delete/id:\x01*\x12q\n\x11\x64\x65leteModelByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\"3\x82\xd3\xe4\x93\x02-\"(/aiflow/metadata_store/model/delete/name:\x01*\x12\x9c\x01\n getModelVersionRelationByVersion\x12 .ai_flow.ModelVersionNameRequest\x1a\x11.ai_flow.Response\"C\x82\xd3\xe4\x93\x02=\"8/aiflow/metadata_store/modelVersion_relation/get/version:\x01*\x12\x95\x01\n\x18listModelVersionRelation\x12(.ai_flow.ListModelVersionRelationRequest\x1a\x11.ai_flow.Response\"<\x82\xd3\xe4\x93\x02\x36\"1/aiflow/metadata_store/modelVersion_relation/list:\x01*\x12\x9d\x01\n\x1cregisterModelVersionRelation\x12,.ai_flow.RegisterModelVersionRelationRequest\x1a\x11.ai_flow.Response\"<\x82\xd3\xe4\x93\x02\x36\"1/aiflow/metadata_store/modelVersion_relation/save:\x01*\x12\xa2\x01\n#deleteModelVersionRelationByVersion\x12 .ai_flow.ModelVersionNameRequest\x1a\x11.ai_flow.Response\"F\x82\xd3\xe4\x93\x02@\";/aiflow/metadata_store/modelVersion_relation/delete/version:\x01*\x12\x8b\x01\n\x18getModelVersionByVersion\x12 .ai_flow.ModelVersionNameRequest\x1a\x11.ai_flow.Response\":\x82\xd3\xe4\x93\x02\x34\"//aiflow/metadata_store/modelVersion/get/version:\x01*\x12\x84\x01\n\x14registerModelVersion\x12$.ai_flow.RegisterModelVersionRequest\x1a\x11.ai_flow.Response\"3\x82\xd3\xe4\x93\x02-\"(/aiflow/metadata_store/modelVersion/save:\x01*\x12\x91\x01\n\x1b\x64\x65leteModelVersionByVersion\x12 .ai_flow.ModelVersionNameRequest\x1a\x11.ai_flow.Response\"=\x82\xd3\xe4\x93\x02\x37\"2/aiflow/metadata_store/modelVersion/delete/version:\x01*\x12\x8b\x01\n\x17getDeployedModelVersion\x12\x19.ai_flow.ModelNameRequest\x1a\x11.ai_flow.Response\"B\x82\xd3\xe4\x93\x02<\"7/aiflow/metadata_store/modelVersion/get_serving_version:\x01*\x12\xa1\x01\n\x1egetLatestValidatedModelVersion\x12\x19.ai_flow.ModelNameRequest\x1a\x11.ai_flow.Response\"Q\x82\xd3\xe4\x93\x02K\"F/aiflow/metadata_store/modelVersion/get_latest_validated_model_version:\x01*\x12\xa1\x01\n\x1egetLatestGeneratedModelVersion\x12\x19.ai_flow.ModelNameRequest\x1a\x11.ai_flow.Response\"Q\x82\xd3\xe4\x93\x02K\"F/aiflow/metadata_store/modelVersion/get_latest_generated_model_version:\x01*\x12}\n\x18getWorkFlowExecutionById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\":\x82\xd3\xe4\x93\x02\x34\"//aiflow/metadata_store/workflowExecution/get/id:\x01*\x12\x83\x01\n\x1agetWorkFlowExecutionByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\"<\x82\xd3\xe4\x93\x02\x36\"1/aiflow/metadata_store/workflowExecution/get/name:\x01*\x12z\n\x15listWorkFlowExecution\x12\x14.ai_flow.ListRequest\x1a\x11.ai_flow.Response\"8\x82\xd3\xe4\x93\x02\x32\"-/aiflow/metadata_store/workflowExecution/list:\x01*\x12\x93\x01\n\x19registerWorkFlowExecution\x12).ai_flow.RegisterWorkFlowExecutionRequest\x1a\x11.ai_flow.Response\"8\x82\xd3\xe4\x93\x02\x32\"-/aiflow/metadata_store/workflowExecution/save:\x01*\x12\x91\x01\n\x17updateWorkflowExecution\x12\'.ai_flow.UpdateWorkflowExecutionRequest\x1a\x11.ai_flow.Response\":\x82\xd3\xe4\x93\x02\x34\"//aiflow/metadata_store/workflowExecution/update:\x01*\x12\x83\x01\n\x1b\x64\x65leteWorkflowExecutionById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\"=\x82\xd3\xe4\x93\x02\x37\"2/aiflow/metadata_store/workflowExecution/delete/id:\x01*\x12\x89\x01\n\x1d\x64\x65leteWorkflowExecutionByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\"?\x82\xd3\xe4\x93\x02\x39\"4/aiflow/metadata_store/workflowExecution/delete/name:\x01*\x12\xa8\x01\n\x1eupdateWorkflowExecutionEndTime\x12..ai_flow.UpdateWorkflowExecutionEndTimeRequest\x1a\x11.ai_flow.Response\"C\x82\xd3\xe4\x93\x02=\"8/aiflow/metadata_store/workflowExecution/update/end_time:\x01*\x12\xa1\x01\n\x1cupdateWorkflowExecutionState\x12,.ai_flow.UpdateWorkflowExecutionStateRequest\x1a\x11.ai_flow.Response\"@\x82\xd3\xe4\x93\x02:\"5/aiflow/metadata_store/workflowExecution/update/state:\x01*\x12\x61\n\ngetJobById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\",\x82\xd3\xe4\x93\x02&\"!/aiflow/metadata_store/job/get/id:\x01*\x12g\n\x0cgetJobByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\".\x82\xd3\xe4\x93\x02(\"#/aiflow/metadata_store/job/get/name:\x01*\x12^\n\x07listJob\x12\x14.ai_flow.ListRequest\x1a\x11.ai_flow.Response\"*\x82\xd3\xe4\x93\x02$\"\x1f/aiflow/metadata_store/job/list:\x01*\x12i\n\x0bregisterJob\x12\x1b.ai_flow.RegisterJobRequest\x1a\x11.ai_flow.Response\"*\x82\xd3\xe4\x93\x02$\"\x1f/aiflow/metadata_store/job/save:\x01*\x12g\n\tupdateJob\x12\x19.ai_flow.UpdateJobRequest\x1a\x11.ai_flow.Response\",\x82\xd3\xe4\x93\x02&\"!/aiflow/metadata_store/job/update:\x01*\x12w\n\x0eupdateJobState\x12\x1e.ai_flow.UpdateJobStateRequest\x1a\x11.ai_flow.Response\"2\x82\xd3\xe4\x93\x02,\"\'/aiflow/metadata_store/job/update/state:\x01*\x12~\n\x10updateJobEndTime\x12 .ai_flow.UpdateJobEndTimeRequest\x1a\x11.ai_flow.Response\"5\x82\xd3\xe4\x93\x02/\"*/aiflow/metadata_store/job/update/end_time:\x01*\x12g\n\rdeleteJobById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\"/\x82\xd3\xe4\x93\x02)\"$/aiflow/metadata_store/job/delete/id:\x01*\x12m\n\x0f\x64\x65leteJobByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\"1\x82\xd3\xe4\x93\x02+\"&/aiflow/metadata_store/job/delete/name:\x01*\x12i\n\x0egetProjectById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\"0\x82\xd3\xe4\x93\x02*\"%/aiflow/metadata_store/project/get/id:\x01*\x12o\n\x10getProjectByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\"2\x82\xd3\xe4\x93\x02,\"\'/aiflow/metadata_store/project/get/name:\x01*\x12u\n\x0fregisterProject\x12\x1f.ai_flow.RegisterProjectRequest\x1a\x11.ai_flow.Response\".\x82\xd3\xe4\x93\x02(\"#/aiflow/metadata_store/project/save:\x01*\x12s\n\rupdateProject\x12\x1d.ai_flow.UpdateProjectRequest\x1a\x11.ai_flow.Response\"0\x82\xd3\xe4\x93\x02*\"%/aiflow/metadata_store/project/update:\x01*\x12\x66\n\x0blistProject\x12\x14.ai_flow.ListRequest\x1a\x11.ai_flow.Response\".\x82\xd3\xe4\x93\x02(\"#/aiflow/metadata_store/project/list:\x01*\x12o\n\x11\x64\x65leteProjectById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\"3\x82\xd3\xe4\x93\x02-\"(/aiflow/metadata_store/project/delete/id:\x01*\x12u\n\x13\x64\x65leteProjectByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\"5\x82\xd3\xe4\x93\x02/\"*/aiflow/metadata_store/project/delete/name:\x01*\x12k\n\x0fgetArtifactById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\"1\x82\xd3\xe4\x93\x02+\"&/aiflow/metadata_store/artifact/get/id:\x01*\x12q\n\x11getArtifactByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\"3\x82\xd3\xe4\x93\x02-\"(/aiflow/metadata_store/artifact/get/name:\x01*\x12v\n\x0eupdateArtifact\x12\x1e.ai_flow.UpdateArtifactRequest\x1a\x11.ai_flow.Response\"1\x82\xd3\xe4\x93\x02+\"&/aiflow/metadata_store/artifact/update:\x01*\x12x\n\x10registerArtifact\x12 .ai_flow.RegisterArtifactRequest\x1a\x11.ai_flow.Response\"/\x82\xd3\xe4\x93\x02)\"$/aiflow/metadata_store/artifact/save:\x01*\x12h\n\x0clistArtifact\x12\x14.ai_flow.ListRequest\x1a\x11.ai_flow.Response\"/\x82\xd3\xe4\x93\x02)\"$/aiflow/metadata_store/artifact/list:\x01*\x12q\n\x12\x64\x65leteArtifactById\x12\x12.ai_flow.IdRequest\x1a\x11.ai_flow.Response\"4\x82\xd3\xe4\x93\x02.\")/aiflow/metadata_store/artifact/delete/id:\x01*\x12w\n\x14\x64\x65leteArtifactByName\x12\x14.ai_flow.NameRequest\x1a\x11.ai_flow.Response\"6\x82\xd3\xe4\x93\x02\x30\"+/aiflow/metadata_store/artifact/delete/name:\x01*B\"\n\x10\x63om.aiflow.protoZ\x08/ai_flow\x88\x01\x01\x90\x01\x01\x62\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,message__pb2.DESCRIPTOR,google_dot_api_dot_annotations__pb2.DESCRIPTOR,])
 
@@ -329,8 +329,8 @@ _UPDATEDATASETREQUEST_PROPERTIESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1120,
-  serialized_end=1169,
+  serialized_start=1070,
+  serialized_end=1119,
 )
 
 _UPDATEDATASETREQUEST = _descriptor.Descriptor(
@@ -391,42 +391,35 @@ _UPDATEDATASETREQUEST = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='update_time', full_name='ai_flow.UpdateDatasetRequest.update_time', index=7,
-      number=8, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='catalog_name', full_name='ai_flow.UpdateDatasetRequest.catalog_name', index=8,
+      name='catalog_name', full_name='ai_flow.UpdateDatasetRequest.catalog_name', index=7,
       number=9, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='catalog_type', full_name='ai_flow.UpdateDatasetRequest.catalog_type', index=9,
+      name='catalog_type', full_name='ai_flow.UpdateDatasetRequest.catalog_type', index=8,
       number=10, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='catalog_database', full_name='ai_flow.UpdateDatasetRequest.catalog_database', index=10,
+      name='catalog_database', full_name='ai_flow.UpdateDatasetRequest.catalog_database', index=9,
       number=11, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='catalog_connection_uri', full_name='ai_flow.UpdateDatasetRequest.catalog_connection_uri', index=11,
+      name='catalog_connection_uri', full_name='ai_flow.UpdateDatasetRequest.catalog_connection_uri', index=10,
       number=12, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='catalog_table', full_name='ai_flow.UpdateDatasetRequest.catalog_table', index=12,
+      name='catalog_table', full_name='ai_flow.UpdateDatasetRequest.catalog_table', index=11,
       number=13, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -445,7 +438,7 @@ _UPDATEDATASETREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=483,
-  serialized_end=1169,
+  serialized_end=1119,
 )
 
 
@@ -476,8 +469,8 @@ _REGISTERMODELRELATIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1171,
-  serialized_end=1254,
+  serialized_start=1121,
+  serialized_end=1204,
 )
 
 
@@ -508,8 +501,8 @@ _REGISTERMODELREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1256,
-  serialized_end=1314,
+  serialized_start=1206,
+  serialized_end=1264,
 )
 
 
@@ -540,8 +533,8 @@ _MODELRELATIONLISTPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1316,
-  serialized_end=1394,
+  serialized_start=1266,
+  serialized_end=1344,
 )
 
 
@@ -579,8 +572,8 @@ _MODELVERSIONNAMEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1396,
-  serialized_end=1453,
+  serialized_start=1346,
+  serialized_end=1403,
 )
 
 
@@ -611,8 +604,8 @@ _REGISTERMODELVERSIONRELATIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1455,
-  serialized_end=1560,
+  serialized_start=1405,
+  serialized_end=1510,
 )
 
 
@@ -643,8 +636,8 @@ _REGISTERMODELVERSIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1562,
-  serialized_end=1642,
+  serialized_start=1512,
+  serialized_end=1592,
 )
 
 
@@ -689,8 +682,8 @@ _LISTMODELVERSIONRELATIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1644,
-  serialized_end=1730,
+  serialized_start=1594,
+  serialized_end=1680,
 )
 
 
@@ -721,8 +714,8 @@ _MODELVERSIONRELATIONLISTPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1732,
-  serialized_end=1823,
+  serialized_start=1682,
+  serialized_end=1773,
 )
 
 
@@ -753,8 +746,8 @@ _MODELVERSIONLISTPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1825,
-  serialized_end=1900,
+  serialized_start=1775,
+  serialized_end=1850,
 )
 
 
@@ -785,8 +778,8 @@ _MODELNAMEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1902,
-  serialized_end=1934,
+  serialized_start=1852,
+  serialized_end=1884,
 )
 
 
@@ -817,8 +810,8 @@ _REGISTERJOBREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1936,
-  serialized_end=1988,
+  serialized_start=1886,
+  serialized_end=1938,
 )
 
 
@@ -856,8 +849,8 @@ _UPDATEJOBREQUEST_PROPERTIESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1120,
-  serialized_end=1169,
+  serialized_start=1070,
+  serialized_end=1119,
 )
 
 _UPDATEJOBREQUEST = _descriptor.Descriptor(
@@ -936,8 +929,8 @@ _UPDATEJOBREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1991,
-  serialized_end=2426,
+  serialized_start=1941,
+  serialized_end=2376,
 )
 
 
@@ -975,8 +968,8 @@ _UPDATEJOBSTATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2428,
-  serialized_end=2501,
+  serialized_start=2378,
+  serialized_end=2451,
 )
 
 
@@ -1014,8 +1007,8 @@ _UPDATEJOBENDTIMEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2503,
-  serialized_end=2560,
+  serialized_start=2453,
+  serialized_end=2510,
 )
 
 
@@ -1046,8 +1039,8 @@ _JOBLISTPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2562,
-  serialized_end=2609,
+  serialized_start=2512,
+  serialized_end=2559,
 )
 
 
@@ -1078,8 +1071,8 @@ _REGISTERWORKFLOWEXECUTIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2611,
-  serialized_end=2706,
+  serialized_start=2561,
+  serialized_end=2656,
 )
 
 
@@ -1117,8 +1110,8 @@ _UPDATEWORKFLOWEXECUTIONREQUEST_PROPERTIESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1120,
-  serialized_end=1169,
+  serialized_start=1070,
+  serialized_end=1119,
 )
 
 _UPDATEWORKFLOWEXECUTIONREQUEST = _descriptor.Descriptor(
@@ -1197,8 +1190,8 @@ _UPDATEWORKFLOWEXECUTIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2709,
-  serialized_end=3174,
+  serialized_start=2659,
+  serialized_end=3124,
 )
 
 
@@ -1229,8 +1222,8 @@ _WORKFLOWEXECUTIONLISTPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3176,
-  serialized_end=3266,
+  serialized_start=3126,
+  serialized_end=3216,
 )
 
 
@@ -1268,8 +1261,8 @@ _UPDATEWORKFLOWEXECUTIONENDTIMEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3268,
-  serialized_end=3339,
+  serialized_start=3218,
+  serialized_end=3289,
 )
 
 
@@ -1307,8 +1300,8 @@ _UPDATEWORKFLOWEXECUTIONSTATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3341,
-  serialized_end=3428,
+  serialized_start=3291,
+  serialized_end=3378,
 )
 
 
@@ -1339,8 +1332,8 @@ _REGISTERPROJECTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3430,
-  serialized_end=3494,
+  serialized_start=3380,
+  serialized_end=3444,
 )
 
 
@@ -1378,8 +1371,8 @@ _UPDATEPROJECTREQUEST_PROPERTIESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1120,
-  serialized_end=1169,
+  serialized_start=1070,
+  serialized_end=1119,
 )
 
 _UPDATEPROJECTREQUEST = _descriptor.Descriptor(
@@ -1423,8 +1416,8 @@ _UPDATEPROJECTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3497,
-  serialized_end=3694,
+  serialized_start=3447,
+  serialized_end=3644,
 )
 
 
@@ -1455,8 +1448,8 @@ _PROJECTLISTPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3696,
-  serialized_end=3755,
+  serialized_start=3646,
+  serialized_end=3705,
 )
 
 
@@ -1487,8 +1480,8 @@ _REGISTERARTIFACTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3757,
-  serialized_end=3824,
+  serialized_start=3707,
+  serialized_end=3774,
 )
 
 
@@ -1526,8 +1519,8 @@ _UPDATEARTIFACTREQUEST_PROPERTIESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1120,
-  serialized_end=1169,
+  serialized_start=1070,
+  serialized_end=1119,
 )
 
 _UPDATEARTIFACTREQUEST = _descriptor.Descriptor(
@@ -1585,8 +1578,8 @@ _UPDATEARTIFACTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3827,
-  serialized_end=4130,
+  serialized_start=3777,
+  serialized_end=4080,
 )
 
 
@@ -1617,8 +1610,8 @@ _ARTIFACTLISTPROTO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4132,
-  serialized_end=4194,
+  serialized_start=4082,
+  serialized_end=4144,
 )
 
 _REGISTERDATASETREQUEST.fields_by_name['dataset'].message_type = message__pb2._DATASETPROTO
@@ -1630,7 +1623,6 @@ _UPDATEDATASETREQUEST.fields_by_name['type_list'].enum_type = message__pb2._DATA
 _UPDATEDATASETREQUEST.fields_by_name['data_format'].message_type = google_dot_protobuf_dot_wrappers__pb2._STRINGVALUE
 _UPDATEDATASETREQUEST.fields_by_name['uri'].message_type = google_dot_protobuf_dot_wrappers__pb2._STRINGVALUE
 _UPDATEDATASETREQUEST.fields_by_name['description'].message_type = google_dot_protobuf_dot_wrappers__pb2._STRINGVALUE
-_UPDATEDATASETREQUEST.fields_by_name['update_time'].message_type = google_dot_protobuf_dot_wrappers__pb2._INT64VALUE
 _UPDATEDATASETREQUEST.fields_by_name['catalog_name'].message_type = google_dot_protobuf_dot_wrappers__pb2._STRINGVALUE
 _UPDATEDATASETREQUEST.fields_by_name['catalog_type'].message_type = google_dot_protobuf_dot_wrappers__pb2._STRINGVALUE
 _UPDATEDATASETREQUEST.fields_by_name['catalog_database'].message_type = google_dot_protobuf_dot_wrappers__pb2._STRINGVALUE
@@ -2006,8 +1998,8 @@ _METADATASERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=4197,
-  serialized_end=11982,
+  serialized_start=4147,
+  serialized_end=11932,
   methods=[
   _descriptor.MethodDescriptor(
     name='getDatasetById',

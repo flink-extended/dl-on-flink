@@ -461,7 +461,6 @@ message UpdateDatasetRequest {
     google.protobuf.StringValue data_format = 5;
     google.protobuf.StringValue uri = 6;
     google.protobuf.StringValue description = 7;
-    google.protobuf.Int64Value update_time = 8;
     google.protobuf.StringValue catalog_name = 9;
     google.protobuf.StringValue catalog_type = 10;
     google.protobuf.StringValue catalog_database = 11;
