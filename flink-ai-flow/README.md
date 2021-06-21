@@ -56,4 +56,4 @@ Please see the [Simple Examples](examples/simple_examples).
 
 ## Contributing
 
-We happily welcome contributions to Flink AI Flow. Please see our [contribution guide](CONTRIBUTING.md) for details.
+We happily welcome contributions to Flink AI Flow. Please see our [contribution guide](https://github.com/jinxing64/flink-ai-extended/blob/master/CONTRIBUTING.md) for details.
