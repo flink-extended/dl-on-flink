@@ -28,7 +28,7 @@ from ai_flow.airflow.dag_generator import DAGGenerator
 from ai_flow.api.configuration import project_config
 from ai_flow.util import json_utils
 from ai_flow.common.scheduler_type import SchedulerType
-from ai_flow.graph.graph import default_graph, AIGraph
+from ai_flow.graph.graph import default_graph, AIGraph, EmptyGraphException
 from ai_flow.project.blob_manager import BlobManagerFactory
 from ai_flow.project.project_description import get_project_description_from, ProjectDesc
 from ai_flow.project.project_util import file_path_to_absolute_module
@@ -184,6 +184,7 @@ def _generate_airflow_file_text(ai_graph: AIGraph = default_graph(),
     :return: Workflow id.
     """
     ex_workflow = generate_workflow(ai_graph, project_desc)
+    ai_graph.clear_graph()
     for job in ex_workflow.jobs.values():
         register_job_meta(workflow_id=ex_workflow.workflow_id, job=job)
     _default_project.upload_project_package(ex_workflow)
@@ -201,6 +202,8 @@ def deploy_to_airflow(project_path: Text = None,
     :param default_args:
     :return: (airflow dag file path, airflow dag code).
     """
+    if default_graph().is_empty():
+        raise EmptyGraphException("Cannot submit empty graph")
     project_desc = generate_project_desc(project_path)
     if dag_id is None:
         dag_id = default_af_job_context().global_workflow_config.name
@@ -216,6 +219,7 @@ def deploy_to_airflow(project_path: Text = None,
                                                  project_desc=project_desc,
                                                  dag_id=dag_id,
                                                  default_args=default_args)
+    default_graph().clear_graph()
     with NamedTemporaryFile(mode='w+t', prefix=dag_id, suffix='.py', dir='/tmp', delete=False) as f:
         f.write(generated_code)
     shutil.move(f.name, airflow_file_path)
@@ -279,7 +283,10 @@ def submit_ai_flow(ai_graph: AIGraph = default_graph(),
     :param project_desc: The project description.
     :return: Workflow id.
     """
+    if ai_graph.is_empty():
+        raise EmptyGraphException("Cannot submit empty graph")
     ex_workflow = generate_workflow(ai_graph, project_desc)
+    ai_graph.clear_graph()
     _default_project.upload_project_package(ex_workflow)
     return _default_project.submit_workflow(ex_workflow=ex_workflow)
 
