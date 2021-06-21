@@ -18,21 +18,29 @@
 import sys
 import time
 import unittest
+import os.path
 from airflow.contrib.jobs.event_based_scheduler_job import EventBasedSchedulerJob
 from airflow.events.scheduler_events import StopSchedulerEvent
 from airflow.executors.local_executor import LocalExecutor
 from notification_service.client import NotificationClient
+from notification_service.event_storage import MemoryEventStorage
+from notification_service.master import NotificationMaster
+from notification_service.service import NotificationService
+
 from ai_flow.common.scheduler_type import SchedulerType
 
 import ai_flow as af
 from ai_flow import AIFlowMaster
 from ai_flow.executor.executor import CmdExecutor
+from ai_flow.graph.graph import EmptyGraphException
 from ai_flow.test import test_util
 
 
 class TestAirflowProject(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
+        cls.notification_server = NotificationMaster(NotificationService(MemoryEventStorage()), port=50052)
+        cls.notification_server.run()
         config_file = test_util.get_master_config_file()
         cls.master = AIFlowMaster(config_file=config_file)
         cls.master.start()
@@ -41,6 +49,7 @@ class TestAirflowProject(unittest.TestCase):
     @classmethod
     def tearDownClass(cls) -> None:
         cls.master.stop()
+        cls.notification_server.stop()
 
     def setUp(self):
         TestAirflowProject.master._clear_db()
@@ -52,7 +61,7 @@ class TestAirflowProject(unittest.TestCase):
     def run_airflow_dag_function(self):
         # waiting parsed dag file done
         from datetime import datetime
-        ns_client = NotificationClient(server_uri='localhost:50051')
+        ns_client = NotificationClient(server_uri='localhost:50052')
         with af.global_config_file(test_util.get_workflow_config_file()):
             with af.config('task_1'):
                 cmd_executor = af.user_define_operation(output_num=0,
@@ -70,6 +79,22 @@ class TestAirflowProject(unittest.TestCase):
         print(context.dagrun_id)
         time.sleep(5)
         ns_client.send_event(StopSchedulerEvent(job_id=0).to_event())
+
+    def test_submit_twice_in_row(self):
+        with af.global_config_file(test_util.get_workflow_config_file()):
+            with af.config('task_1'):
+                cmd_executor = af.user_define_operation(output_num=0,
+                                                        executor=CmdExecutor(
+                                                            cmd_line=['echo "hello world!"']))
+        self.assertFalse(af.default_graph().is_empty())
+        af.submit(test_util.get_project_path(), dag_id='test_dag')
+        self.assertTrue(af.default_graph().is_empty())
+        expected_workflow_path = af.project_config().get_airflow_deploy_path() + '/test_dag.py'
+        self.assertTrue(os.path.exists(expected_workflow_path))
+        self.assertRaises(EmptyGraphException, af.submit, test_util.get_project_path(), dag_id='test_dag')
+
+    def test_submit_empty_graph(self):
+        self.assertRaises(EmptyGraphException, af.submit, test_util.get_project_path(), dag_id='test_dag')
 
     # def test_airflow_workflow(self):
     #     import multiprocessing

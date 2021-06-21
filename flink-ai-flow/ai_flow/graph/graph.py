@@ -89,6 +89,9 @@ class Graph(BaseNode):
         self.nodes.clear()
         self.edges.clear()
 
+    def is_empty(self) -> bool:
+        return len(self.nodes) == 0 and len(self.edges) == 0
+
 
 class AIGraph(Graph):
 
@@ -170,3 +173,8 @@ class SplitGraph(AIGraph):
         instance_id = _get_id_generator(self).generate_id(node)
         node.set_instance_id(instance_id)
         self.nodes[instance_id] = node
+
+
+class EmptyGraphException(Exception):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
