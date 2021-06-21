@@ -20,7 +20,7 @@ import os
 from typing import Text, List, Dict
 from ai_flow.project.blob_manager import BlobManagerFactory
 from ai_flow.util import json_utils
-from ai_flow.graph.graph import default_graph
+from ai_flow.graph.graph import default_graph, EmptyGraphException
 from ai_flow.translator.base_translator import get_default_translator
 from ai_flow.client.ai_flow_client import get_ai_flow_client
 from ai_flow.api.configuration import project_config, project_description
@@ -76,6 +76,8 @@ def submit_workflow(workflow_name: Text = None,
     :param args: The arguments of the submit action.
     :return: The result of the submit action.
     """
+    if default_graph().is_empty():
+        raise EmptyGraphException("Cannot submit empty graph")
     call_path = os.path.abspath(sys._getframe(1).f_code.co_filename)
     project_path = os.path.abspath(project_description().project_path)
     # length /python_codes/ is 14; length .py is 3
@@ -83,6 +85,7 @@ def submit_workflow(workflow_name: Text = None,
     namespace = project_config().get_project_name()
     translator = get_default_translator()
     workflow = translator.translate(graph=default_graph(), project_desc=project_description())
+    default_graph().clear_graph()
     for job in workflow.jobs.values():
         _register_job_meta(workflow_id=workflow.workflow_id, job=job)
     _set_entry_module_path(workflow, entry_module_path)
