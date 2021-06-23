@@ -20,18 +20,15 @@ import time
 
 from ai_flow.common.status import Status
 from ai_flow.meta.dataset_meta import DataType
-from ai_flow.meta.job_meta import State
 from ai_flow.metadata_store.utils.MetaToProto import MetaToProto
 from ai_flow.metadata_store.utils.ProtoToMeta import ProtoToMeta
 from ai_flow.protobuf import metadata_service_pb2_grpc
-from ai_flow.protobuf.message_pb2 import DataTypeProto, StateProto, ModelType
+from ai_flow.protobuf.message_pb2 import DataTypeProto, ModelType
 from ai_flow.endpoint.client.model_center_client import ModelCenterClient
 from ai_flow.endpoint.server.util import _wrap_meta_response, transform_dataset_meta, \
     _warp_dataset_list_response, _wrap_delete_response, transform_model_relation_meta, \
     _warp_model_relation_list_response, _warp_model_version_relation_list_response, \
-    transform_model_version_relation_meta, _warp_job_list_response, \
-    transform_job_meta, _wrap_update_response, _warp_workflow_execution_list_response, \
-    transform_workflow_execution_meta, _warp_project_list_response, transform_project_meta, catch_exception, \
+    transform_model_version_relation_meta, _warp_project_list_response, transform_project_meta, catch_exception, \
     transform_model_meta, transform_model_version_meta, transform_artifact_meta, _warp_artifact_list_response
 from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
 from ai_flow.store.mongo_store import MongoStore
@@ -323,139 +320,6 @@ class MetadataService(metadata_service_pb2_grpc.MetadataServiceServicer):
                 model_relation.uuid)
         return _wrap_meta_response(
             MetaToProto.model_version_store_to_proto(model_version_relation, model_version_detail))
-
-    '''job api'''
-
-    @catch_exception
-    def getJobById(self, request, context):
-        job_meta = self.store.get_job_by_id(request.id)
-        return _wrap_meta_response(MetaToProto.job_meta_to_proto(job_meta))
-
-    @catch_exception
-    def getJobByName(self, request, context):
-        job_meta = self.store.get_job_by_name(request.name)
-        return _wrap_meta_response(MetaToProto.job_meta_to_proto(job_meta))
-
-    @catch_exception
-    def updateJob(self, request, context):
-        properties = None if request.properties == {} else request.properties
-        job_state = None if request.job_state == 0 else State(StateProto.Name(request.job_state))
-        job = self.store.update_job(job_name=request.name, job_state=job_state,
-                                    properties=properties,
-                                    job_id=request.job_id.value if request.HasField('job_id') else None,
-                                    workflow_execution_id=request.workflow_execution_id.value
-                                    if request.HasField('workflow_execution_id') else None,
-                                    end_time=request.end_time.value if request.HasField('end_time') else None,
-                                    log_uri=request.log_uri.value if request.HasField('log_uri') else None,
-                                    signature=request.signature.value if request.HasField('signature') else None)
-        return _wrap_meta_response(MetaToProto.job_meta_to_proto(job))
-
-    @catch_exception
-    def listJob(self, request, context):
-        job_meta_list = self.store.list_job(request.page_size, request.offset)
-        return _warp_job_list_response(job_meta_list)
-
-    @catch_exception
-    def registerJob(self, request, context):
-        job = transform_job_meta(request.job)
-        response = self.store.register_job(name=job.name, workflow_execution_id=job.workflow_execution_id,
-                                           job_state=job.job_state, properties=job.properties, job_id=job.job_id,
-                                           start_time=job.start_time, end_time=job.end_time, log_uri=job.log_uri,
-                                           signature=job.signature)
-        return _wrap_meta_response(MetaToProto.job_meta_to_proto(response))
-
-    @catch_exception
-    def updateJobState(self, request, context):
-        _state = ProtoToMeta.proto_to_state(request.state)
-        uuid = self.store.update_job_state(_state, request.name)
-        return _wrap_update_response(uuid)
-
-    @catch_exception
-    def updateJobEndTime(self, request, context):
-        uuid = self.store.update_job_end_time(request.end_time, request.name)
-        return _wrap_update_response(uuid)
-
-    @catch_exception
-    def deleteJobById(self, request, context):
-        status = self.store.delete_job_by_id(request.id)
-        return _wrap_delete_response(status)
-
-    @catch_exception
-    def deleteJobByName(self, request, context):
-        status = self.store.delete_job_by_name(request.name)
-        return _wrap_delete_response(status)
-
-    '''workflow execution api'''
-
-    @catch_exception
-    def getWorkFlowExecutionById(self, request, context):
-        execution_meta = self.store.get_workflow_execution_by_id(request.id)
-        return _wrap_meta_response(MetaToProto.workflow_execution_meta_to_proto(execution_meta))
-
-    @catch_exception
-    def getWorkFlowExecutionByName(self, request, context):
-        execution_meta = self.store.get_workflow_execution_by_name(request.name)
-        return _wrap_meta_response(MetaToProto.workflow_execution_meta_to_proto(execution_meta))
-
-    @catch_exception
-    def updateWorkflowExecution(self, request, context):
-        properties = None if request.properties == {} else request.properties
-        execution_state = None if request.execution_state == 0 else State(StateProto.Name(request.execution_state))
-        workflow_execution = self.store.update_workflow_execution(execution_name=request.name,
-                                                                  execution_state=execution_state,
-                                                                  project_id=request.project_id.value if request.HasField(
-                                                                      'project_id') else None,
-                                                                  properties=properties,
-                                                                  end_time=request.end_time.value if request.HasField(
-                                                                      'end_time') else None,
-                                                                  log_uri=request.log_uri_value if request.HasField(
-                                                                      'log_uri') else None,
-                                                                  workflow_json=request.workjson.value if request.HasField(
-                                                                      'workflow_json') else None,
-                                                                  signature=request.signature.value if request.HasField(
-                                                                      'signature') else None)
-        return _wrap_meta_response(MetaToProto.workflow_execution_meta_to_proto(workflow_execution))
-
-    @catch_exception
-    def listWorkFlowExecution(self, request, context):
-        workflow_execution_meta_list = self.store.list_workflow_execution(request.page_size, request.offset)
-        return _warp_workflow_execution_list_response(workflow_execution_meta_list)
-
-    @catch_exception
-    def registerWorkFlowExecution(self, request, context):
-        workflow_execution = transform_workflow_execution_meta(request.workflow_execution)
-        response = self.store.register_workflow_execution(name=workflow_execution.name,
-                                                          project_id=workflow_execution.project_id,
-                                                          execution_state=workflow_execution.execution_state,
-                                                          properties=workflow_execution.properties,
-                                                          start_time=workflow_execution.start_time,
-                                                          end_time=workflow_execution.end_time,
-                                                          log_uri=workflow_execution.log_uri,
-                                                          workflow_json=workflow_execution.workflow_json,
-                                                          signature=workflow_execution.signature
-                                                          )
-        return _wrap_meta_response(MetaToProto.workflow_execution_meta_to_proto(response))
-
-    @catch_exception
-    def updateWorkflowExecutionEndTime(self, request, context):
-        uuid = self.store.update_workflow_execution_end_time(request.end_time, request.name)
-        return _wrap_update_response(uuid)
-
-    @catch_exception
-    def updateWorkflowExecutionState(self, request, context):
-        _state = ProtoToMeta.proto_to_state(request.state)
-        uuid = self.store.update_workflow_execution_state(_state, request.name)
-        return _wrap_update_response(uuid)
-
-    @catch_exception
-    def deleteWorkflowExecutionById(self, request, context):
-        status = self.store.delete_workflow_execution_by_id(request.id)
-        return _wrap_delete_response(status)
-
-    @catch_exception
-    def deleteWorkflowExecutionByName(self, request, context):
-        status = self.store.delete_workflow_execution_by_name(request.name)
-        return _wrap_delete_response(status)
 
     '''project api'''
 

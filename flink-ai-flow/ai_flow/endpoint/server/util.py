@@ -23,18 +23,16 @@ from google.protobuf.json_format import MessageToJson, Parse
 from ai_flow.common.status import Status
 from ai_flow.meta.artifact_meta import ArtifactMeta
 from ai_flow.meta.dataset_meta import DataType, Schema, DatasetMeta
-from ai_flow.meta.job_meta import State, JobMeta
 from ai_flow.meta.model_meta import ModelMeta, ModelVersionMeta
 from ai_flow.meta.model_relation_meta import ModelRelationMeta, ModelVersionRelationMeta
 from ai_flow.meta.project_meta import ProjectMeta
-from ai_flow.meta.workflow_execution_meta import WorkflowExecutionMeta
 from ai_flow.metadata_store.utils.MetaToProto import MetaToProto
 from ai_flow.metadata_store.utils.ProtoToMeta import ProtoToMeta
 from ai_flow.protobuf.message_pb2 import Response, SUCCESS, ReturnCode, RESOURCE_DOES_NOT_EXIST, \
-    DatasetProto, ModelProto, ModelVersionProto, WorkflowExecutionProto, JobProto, ProjectProto, INTERNAL_ERROR, \
-    DataTypeProto, StateProto, ArtifactProto
-from ai_flow.protobuf.metadata_service_pb2 import DatasetListProto, WorkFlowExecutionListProto, \
-    JobListProto, ProjectListProto, ModelVersionRelationListProto, ModelRelationListProto, ModelVersionListProto, \
+    DatasetProto, ModelProto, ModelVersionProto, ProjectProto, INTERNAL_ERROR, \
+    DataTypeProto, ArtifactProto
+from ai_flow.protobuf.metadata_service_pb2 import DatasetListProto, \
+    ProjectListProto, ModelVersionRelationListProto, ModelRelationListProto, ModelVersionListProto, \
     ArtifactListProto
 from ai_flow.endpoint.server.exception import AIFlowException
 from ai_flow.store.sqlalchemy_store import UPDATE_FAIL
@@ -148,44 +146,6 @@ def _unwrap_model_version_list_response(response):
     if response.return_code == str(SUCCESS):
         model_version_proto_list = Parse(response.data, ModelVersionListProto())
         return ProtoToMeta.proto_to_model_version_meta_list(model_version_proto_list.model_versions)
-    elif response.return_code == str(RESOURCE_DOES_NOT_EXIST):
-        return None
-    else:
-        raise AIFlowException(response.return_msg)
-
-
-def _unwrap_workflow_execution_response(response):
-    if response.return_code == str(SUCCESS):
-        return ProtoToMeta.proto_to_execution_meta(Parse(response.data, WorkflowExecutionProto()))
-    elif response.return_code == str(RESOURCE_DOES_NOT_EXIST):
-        return None
-    else:
-        raise AIFlowException(response.return_msg)
-
-
-def _unwrap_workflow_execution_list_response(response):
-    if response.return_code == str(SUCCESS):
-        workflow_execution_proto_list = Parse(response.data, WorkFlowExecutionListProto())
-        return ProtoToMeta.proto_to_execution_meta_list(workflow_execution_proto_list.workflow_executions)
-    elif response.return_code == str(RESOURCE_DOES_NOT_EXIST):
-        return None
-    else:
-        raise AIFlowException(response.return_msg)
-
-
-def _unwrap_job_response(response):
-    if response.return_code == str(SUCCESS):
-        return ProtoToMeta.proto_to_job_meta(Parse(response.data, JobProto()))
-    elif response.return_code == str(RESOURCE_DOES_NOT_EXIST):
-        return None
-    else:
-        raise AIFlowException(response.return_msg)
-
-
-def _unwrap_job_list_response(response):
-    if response.return_code == str(SUCCESS):
-        job_proto_list = Parse(response.data, JobListProto())
-        return ProtoToMeta.proto_to_job_meta_list(job_proto_list.jobs)
     elif response.return_code == str(RESOURCE_DOES_NOT_EXIST):
         return None
     else:
@@ -320,30 +280,6 @@ def _warp_model_version_relation_list_response(model_version_relation_list):
                         data=None)
 
 
-def _warp_workflow_execution_list_response(workflow_execution_list):
-    if workflow_execution_list is not None:
-        workflow_execution_proto_list = MetaToProto.workflow_execution_meta_list_to_proto(workflow_execution_list)
-        return Response(return_code=str(SUCCESS), return_msg=ReturnCode.Name(SUCCESS).lower(),
-                        data=MessageToJson(
-                            WorkFlowExecutionListProto(workflow_executions=workflow_execution_proto_list),
-                            preserving_proto_field_name=True))
-    else:
-        return Response(return_code=str(RESOURCE_DOES_NOT_EXIST),
-                        return_msg=ReturnCode.Name(RESOURCE_DOES_NOT_EXIST).lower(),
-                        data=None)
-
-
-def _warp_job_list_response(job_list):
-    if job_list is not None:
-        job_proto_list = MetaToProto.job_meta_list_to_proto(job_list)
-        return Response(return_code=str(SUCCESS), return_msg=ReturnCode.Name(SUCCESS).lower(),
-                        data=MessageToJson(JobListProto(jobs=job_proto_list), preserving_proto_field_name=True))
-    else:
-        return Response(return_code=str(RESOURCE_DOES_NOT_EXIST),
-                        return_msg=ReturnCode.Name(RESOURCE_DOES_NOT_EXIST).lower(),
-                        data=None)
-
-
 def _warp_project_list_response(project_list):
     if project_list is not None:
         project_proto_list = MetaToProto.project_meta_list_to_proto(project_list)
@@ -425,49 +361,6 @@ def transform_artifact_meta(artifact_proto) -> ArtifactMeta:
         uri=artifact_proto.uri.value if artifact_proto.HasField('uri') else None,
         create_time=artifact_proto.create_time.value if artifact_proto.HasField('create_time') else None,
         update_time=artifact_proto.update_time.value if artifact_proto.HasField('update_time') else None)
-
-
-def transform_workflow_execution_meta(workflow_execution_proto):
-    execution_state = State(StateProto.Name(workflow_execution_proto.execution_state))
-    properties = workflow_execution_proto.properties
-    if properties == {}:
-        properties = None
-    return WorkflowExecutionMeta(name=workflow_execution_proto.name,
-                                 execution_state=execution_state,
-                                 properties=properties,
-                                 project_id=workflow_execution_proto.project_id.value if workflow_execution_proto.HasField(
-                                     'project_id') else None,
-                                 start_time=workflow_execution_proto.start_time.value if workflow_execution_proto.HasField(
-                                     'start_time') else None,
-                                 end_time=workflow_execution_proto.end_time.value if workflow_execution_proto.HasField(
-                                     'end_time') else None,
-                                 log_uri=workflow_execution_proto.log_uri.value if workflow_execution_proto.HasField(
-                                     'log_uri') else None,
-                                 workflow_json=workflow_execution_proto.workflow_json.value if workflow_execution_proto.HasField(
-                                     'workflow_json') else None,
-                                 signature=workflow_execution_proto.signature.value if workflow_execution_proto.HasField(
-                                     'signature') else None)
-
-
-def transform_job_meta(job_proto):
-    job_state = State(StateProto.Name(job_proto.job_state))
-    properties = job_proto.properties
-    if properties == {}:
-        properties = None
-    return JobMeta(name=job_proto.name,
-                   job_state=job_state,
-                   properties=properties,
-                   workflow_execution_id=job_proto.workflow_execution_id.value if job_proto.HasField(
-                       'workflow_execution_id') else None,
-                   job_id=job_proto.job_id.value if job_proto.HasField('job_id') else None,
-                   start_time=job_proto.start_time.value if job_proto.HasField(
-                       'start_time') else None,
-                   end_time=job_proto.end_time.value if job_proto.HasField(
-                       'end_time') else None,
-                   log_uri=job_proto.log_uri.value if job_proto.HasField(
-                       'log_uri') else None,
-                   signature=job_proto.signature.value if job_proto.HasField(
-                       'signature') else None)
 
 
 def transform_model_relation_meta(model_relation_proto):

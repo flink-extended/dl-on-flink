@@ -178,34 +178,20 @@ class AbstractTestStore(object):
     def test_delete_project_by_id(self):
         self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=1)
-        self.store.register_workflow_execution(name='execution', project_id=1,
-                                               execution_state=State.INIT)
-        self.store.register_job(name='job', workflow_execution_id=1, job_state=State.STARTING,
-                                properties=Properties({'a': 'b'}))
         self.store.register_model_version_relation(version='1', model_id=1,
                                                    workflow_execution_id=1)
         self.assertEqual(self.store.get_project_by_id(1).name, 'project')
         self.assertEqual(self.store.get_model_relation_by_id(1).name, 'model')
-        self.assertEqual(self.store.get_workflow_execution_by_id(1).name, 'execution')
         self.assertEqual(self.store.get_model_version_relation_by_version('1', '1').version, '1')
-        self.assertEqual(self.store.get_job_by_id(1).name, 'job')
         self.assertEqual(Status.OK, self.store.delete_project_by_id(1))
         self.assertIsNone(self.store.get_project_by_id(1))
         self.assertIsNone(self.store.get_model_relation_by_id(1))
-        self.assertIsNone(self.store.get_workflow_execution_by_id(1))
         self.assertIsNone(self.store.get_model_version_relation_by_version('1', '1'))
-        self.assertIsNone(self.store.get_job_by_id(1))
         self.assertIsNone(self.store.list_project(1, 0))
         self.assertIsNone(self.store.list_model_relation(1, 0))
-        self.assertIsNone(self.store.list_workflow_execution(1, 0))
         self.assertIsNone(self.store.list_model_version_relation(1, 1, 0))
-        self.assertIsNone(self.store.list_job(1, 0))
         self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=2)
-        self.store.register_workflow_execution(name='execution', project_id=2,
-                                               execution_state=State.INIT)
-        self.store.register_job(name='job', workflow_execution_id=2, job_state=State.STARTING,
-                                properties=Properties({'a': 'b'}))
         self.store.register_model_version_relation(version='1', model_id=2,
                                                    workflow_execution_id=2)
         self.assertEqual(Status.OK, self.store.delete_project_by_id(2))
@@ -213,34 +199,20 @@ class AbstractTestStore(object):
     def test_delete_project_by_name(self):
         self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=1)
-        self.store.register_workflow_execution(name='execution', project_id=1,
-                                               execution_state=State.INIT)
-        self.store.register_job(name='job', workflow_execution_id=1, job_state=State.STARTING,
-                                properties=Properties({'a': 'b'}))
         self.store.register_model_version_relation(version='1', model_id=1,
                                                    workflow_execution_id=1)
         self.assertEqual(self.store.get_project_by_id(1).name, 'project')
         self.assertEqual(self.store.get_model_relation_by_id(1).name, 'model')
-        self.assertEqual(self.store.get_workflow_execution_by_id(1).name, 'execution')
         self.assertEqual(self.store.get_model_version_relation_by_version('1', '1').version, '1')
-        self.assertEqual(self.store.get_job_by_id(1).name, 'job')
         self.assertEqual(Status.OK, self.store.delete_project_by_name('project'))
         self.assertIsNone(self.store.get_project_by_id(1))
         self.assertIsNone(self.store.get_model_relation_by_id(1))
-        self.assertIsNone(self.store.get_workflow_execution_by_id(1))
         self.assertIsNone(self.store.get_model_version_relation_by_version('1', '1'))
-        self.assertIsNone(self.store.get_job_by_id(1))
         self.assertIsNone(self.store.list_project(1, 0))
         self.assertIsNone(self.store.list_model_relation(1, 0))
-        self.assertIsNone(self.store.list_workflow_execution(1, 0))
         self.assertIsNone(self.store.list_model_version_relation(1, 1, 0))
-        self.assertIsNone(self.store.list_job(1, 0))
         self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=2)
-        self.store.register_workflow_execution(name='execution', project_id=2,
-                                               execution_state=State.INIT)
-        self.store.register_job(name='job', workflow_execution_id=2, job_state=State.STARTING,
-                                properties=Properties({'a': 'b'}))
         self.store.register_model_version_relation(version='1', model_id=2,
                                                    workflow_execution_id=2)
         self.assertEqual(Status.OK, self.store.delete_project_by_name('project'))
@@ -250,173 +222,6 @@ class AbstractTestStore(object):
         update_project = self.store.update_project(project_name='project', uri='git@alibaba')
         self.assertEqual(update_project.uri, 'git@alibaba')
         self.assertIsNone(update_project.properties)
-
-    """test workflow execution"""
-
-    def test_save_workflow_execution_get_by_id_and_name(self):
-        self.store.register_project(name='project', uri='www.code.com')
-        response = self.store.register_workflow_execution(name='execution', project_id=1,
-                                                          execution_state=State.INIT)
-        self.assertEqual(response.name, 'execution')
-        response_id = self.store.get_workflow_execution_by_id(response.uuid)
-        response_name = self.store.get_workflow_execution_by_name('execution')
-        self.assertEqual(response_id.name, 'execution')
-        self.assertEqual(response_name.name, 'execution')
-
-    def test_list_workflow_execution(self):
-        self.store.register_project(name='project', uri='www.code.com')
-        self.store.register_workflow_execution(name='execution', project_id=1,
-                                               execution_state=State.INIT)
-        self.store.register_workflow_execution(name='execution1', project_id=1,
-                                               execution_state=State.INIT)
-        response_list = self.store.list_workflow_execution(2, 0)
-        self.assertEqual(2, len(response_list))
-        self.assertEqual('execution', response_list[0].name)
-        self.assertEqual('execution1', response_list[1].name)
-        print(response_list[0])
-
-    def test_update_workflow_execution(self):
-        self.store.register_workflow_execution(name='execution',
-                                               execution_state=State.INIT)
-        end_time = int(time.time() * 1000)
-        update_execution = self.store.update_workflow_execution(execution_name='execution',
-                                                                execution_state=State.FINISHED, end_time=end_time)
-        self.assertEqual(update_execution.execution_state, State.FINISHED)
-        self.assertEqual(update_execution.end_time, end_time)
-        self.assertIsNone(update_execution.signature)
-        print(update_execution)
-
-    def test_update_workflow_execution_end_time(self):
-        self.store.register_project(name='project', uri='www.code.com')
-        self.store.register_workflow_execution(name='execution', project_id=1,
-                                               execution_state=State.INIT)
-        now = int(time.time() * 1000)
-        self.store.update_workflow_execution_end_time(now, 'execution')
-        self.assertEqual(now, self.store.get_workflow_execution_by_name('execution').end_time)
-        print(self.store.get_workflow_execution_by_name('execution'))
-
-    def test_update_workflow_execution_state(self):
-        self.store.register_project(name='project', uri='www.code.com')
-        self.store.register_workflow_execution(name='execution', project_id=1,
-                                               execution_state=State.INIT)
-        self.assertEqual(State.INIT, self.store.get_workflow_execution_by_name('execution').execution_state)
-        self.store.update_workflow_execution_state(State.FINISHED, 'execution')
-        self.assertEqual(State.FINISHED, self.store.get_workflow_execution_by_name('execution').execution_state)
-        print(self.store.get_workflow_execution_by_name('execution'))
-
-    def test_delete_workflow_execution_by_id(self):
-        self.store.register_project(name='project', uri='www.code.com')
-        self.store.register_workflow_execution(name='execution', project_id=1,
-                                               execution_state=State.INIT)
-        self.store.register_job(name='job', workflow_execution_id=1, job_state=State.STARTING,
-                                properties=Properties({'a': 'b'}))
-        self.assertEqual(self.store.get_workflow_execution_by_id(1).name, 'execution')
-        self.assertEqual(self.store.get_job_by_id(1).name, 'job')
-        self.assertEqual(Status.OK, self.store.delete_workflow_execution_by_id(1))
-        self.assertIsNone(self.store.get_workflow_execution_by_name('execution'))
-        self.assertIsNone(self.store.get_job_by_name('job'))
-        self.store.register_workflow_execution(name='execution', project_id=1,
-                                               execution_state=State.INIT)
-        self.store.register_job(name='job', workflow_execution_id=1, job_state=State.STARTING,
-                                properties=Properties({'a': 'b'}))
-        self.assertEqual(Status.OK, self.store.delete_workflow_execution_by_id(2))
-
-    def test_delete_workflow_execution_by_name(self):
-        self.store.register_project(name='project', uri='www.code.com')
-        self.store.register_workflow_execution(name='execution', project_id=1,
-                                               execution_state=State.INIT)
-        self.store.register_job(name='job', workflow_execution_id=1, job_state=State.STARTING,
-                                properties=Properties({'a': 'b'}))
-        self.assertEqual(self.store.get_workflow_execution_by_id(1).name, 'execution')
-        self.assertEqual(self.store.get_job_by_id(1).name, 'job')
-        self.assertEqual(Status.OK, self.store.delete_workflow_execution_by_name('execution'))
-        self.assertIsNone(self.store.get_workflow_execution_by_name('execution'))
-        self.assertIsNone(self.store.get_job_by_name('job'))
-        self.store.register_workflow_execution(name='execution', project_id=1,
-                                               execution_state=State.INIT)
-        self.store.register_job(name='job', workflow_execution_id=1, job_state=State.STARTING,
-                                properties=Properties({'a': 'b'}))
-        self.assertEqual(Status.OK, self.store.delete_workflow_execution_by_name('execution'))
-
-    """test job"""
-
-    def test_save_job_get_by_id_and_name(self):
-        self.store.register_project(name='project', uri='www.code.com')
-        self.store.register_workflow_execution(name='execution', project_id=1,
-                                               execution_state=State.INIT)
-        response = self.store.register_job(name='job', workflow_execution_id=1, job_state=State.STARTING,
-                                           properties=Properties({'a': 'b'}))
-        self.assertEqual(response.uuid, 1)
-        response_id = self.store.get_job_by_id(response.uuid)
-        response_name = self.store.get_job_by_name('job')
-        self.assertEqual('job', response_id.name)
-        self.assertEqual('job', response_name.name)
-        print(response_id)
-        print(self.store.get_workflow_execution_by_id(1))
-
-    def test_list_job(self):
-        self.store.register_project(name='project', uri='www.code.com')
-        self.store.register_workflow_execution(name='execution', project_id=1,
-                                               execution_state=State.INIT)
-        self.store.register_job(name='job', workflow_execution_id=1, job_state=State.STARTING,
-                                properties=Properties({'a': 'b'}))
-        self.store.register_job(name='job1', workflow_execution_id=1, job_state=State.STARTING,
-                                properties=Properties({'a': 'b'}))
-        response_list = self.store.list_job(2, 0)
-        self.assertEqual(2, len(response_list))
-        self.assertEqual('job', response_list[0].name)
-        self.assertEqual('job1', response_list[1].name)
-
-    def test_update_job(self):
-        self.store.register_project(name='project', uri='www.code.com')
-        self.store.register_workflow_execution(name='execution', project_id=1,
-                                               execution_state=State.INIT)
-        self.store.register_job(name='job', workflow_execution_id=1, job_state=State.STARTING,
-                                properties=Properties({'a': 'b'}))
-        self.store.update_job_state(job_state=State.FINISHED, job_name='job')
-        response = self.store.get_job_by_name('job')
-        self.assertEqual(State.FINISHED, response.job_state)
-        now = int(time.time() * 1000)
-        self.assertEqual(1, self.store.update_job_end_time(now, 'job'))
-        response = self.store.get_job_by_name('job')
-        self.assertEqual(response.end_time, now)
-        print(response)
-
-    def test_delete_job_by_id(self):
-        self.store.register_project(name='project', uri='www.code.com')
-        self.store.register_workflow_execution(name='execution', project_id=1,
-                                               execution_state=State.INIT)
-        self.store.register_job(name='job', workflow_execution_id=1, job_state=State.STARTING,
-                                properties=Properties({'a': 'b'}))
-        self.assertEqual(self.store.get_job_by_id(1).name, 'job')
-        self.assertEqual(Status.OK, self.store.delete_job_by_id(1))
-        self.assertIsNone(self.store.get_job_by_id(1))
-        self.store.register_job(name='job', workflow_execution_id=1, job_state=State.STARTING,
-                                properties=Properties({'a': 'b'}))
-        self.assertEqual(Status.OK, self.store.delete_job_by_id(2))
-
-    def test_delete_job_by_name(self):
-        self.store.register_project(name='project', uri='www.code.com')
-        self.store.register_workflow_execution(name='execution', project_id=1,
-                                               execution_state=State.INIT)
-        self.store.register_job(name='job', workflow_execution_id=1, job_state=State.STARTING,
-                                properties=Properties({'a': 'b'}))
-        self.assertEqual(self.store.get_job_by_id(1).name, 'job')
-        self.assertEqual(Status.OK, self.store.delete_job_by_name('job'))
-        self.assertIsNone(self.store.get_job_by_id(1))
-        self.store.register_job(name='job', workflow_execution_id=1, job_state=State.STARTING,
-                                properties=Properties({'a': 'b'}))
-        self.assertEqual(Status.OK, self.store.delete_job_by_name('job'))
-
-    def test_update_Job(self):
-        self.store.register_workflow_execution(name='execution',
-                                               execution_state=State.INIT)
-        self.store.register_job(name='job', job_state=State.STARTING, properties=Properties({'a': 'b'}))
-        update_job = self.store.update_job(job_name='job', job_state=State.FINISHED, workflow_execution_id=1)
-        self.assertEqual(update_job.workflow_execution_id, 1)
-        self.assertEqual(update_job.job_state, State.FINISHED)
-        self.assertEqual(update_job.properties, Properties({'a': 'b'}))
-        print(update_job)
 
     """test model """
 
@@ -439,8 +244,6 @@ class AbstractTestStore(object):
     def test_delete_model_by_id(self):
         self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=1)
-        self.store.register_workflow_execution(name='execution', project_id=1,
-                                               execution_state=State.INIT)
         response = self.store.register_model_version_relation(version='1', model_id=1, workflow_execution_id=1)
         self.assertEqual(response.version, '1')
         self.assertEqual(self.store.get_model_version_relation_by_version('1', 1).version, '1')
@@ -455,8 +258,6 @@ class AbstractTestStore(object):
     def test_delete_model_by_name(self):
         self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=1)
-        self.store.register_workflow_execution(name='execution', project_id=1,
-                                               execution_state=State.INIT)
         response = self.store.register_model_version_relation(version='1', model_id=1, workflow_execution_id=1)
         self.assertEqual(response.version, '1')
         self.assertEqual(self.store.get_model_version_relation_by_version('1', '1').version, '1')
@@ -479,8 +280,6 @@ class AbstractTestStore(object):
     def test_save_model_version_get_by_version(self):
         self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=1)
-        self.store.register_workflow_execution(name='execution', project_id=1,
-                                               execution_state=State.INIT)
         response = self.store.register_model_version_relation(version='1', model_id=1, workflow_execution_id=1)
         self.assertEqual(response.version, '1')
         self.assertEqual(self.store.get_model_version_relation_by_version(version_name='1', model_id=1).version, '1')
@@ -488,8 +287,6 @@ class AbstractTestStore(object):
     def test_list_model_version(self):
         self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=1)
-        self.store.register_workflow_execution(name='execution', project_id=1,
-                                               execution_state=State.INIT)
         self.store.register_model_version_relation(version='1', model_id=1, workflow_execution_id=1)
         self.store.register_model_version_relation(version='2', model_id=1, workflow_execution_id=1)
         self.assertEqual(len(self.store.list_model_version_relation(1, 2, 0)), 2)
@@ -499,8 +296,6 @@ class AbstractTestStore(object):
     def test_delete_model_version_by_version(self):
         self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=1)
-        self.store.register_workflow_execution(name='execution', project_id=1,
-                                               execution_state=State.INIT)
         self.store.register_model_version_relation(version='1', model_id=1, workflow_execution_id=1)
         self.assertEqual(self.store.get_model_version_relation_by_version('1', 1).version, '1')
         self.assertEqual(Status.OK, self.store.delete_model_version_relation_by_version('1', 1))

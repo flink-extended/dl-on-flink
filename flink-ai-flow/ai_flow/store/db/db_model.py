@@ -116,37 +116,6 @@ class SqlWorkflow(base, Base):
         return '<workflow ({}, {}, {}, {})>'.format(self.uuid, self.name, self.properties, self.project_id)
 
 
-class SqlWorkflowExecution(base, Base):
-    """
-    SQL table of workflow execution in metadata backend storage.
-    """
-    __tablename__ = 'workflow_execution'
-
-    name = Column(String(255), unique=True, nullable=False)
-    properties = Column(Text)
-    start_time = Column(BigInteger)
-    end_time = Column(BigInteger)
-    execution_state = Column(String(256))
-    log_uri = Column(String(1000))
-    workflow_json = Column(Text(2**24-1))
-    signature = Column(String(1000))
-    project_id = Column(BigInteger, ForeignKey('project.uuid', onupdate='cascade'))
-    is_deleted = Column(String(256), default='False')
-
-    project = relationship("SqlProject", backref=backref('workflow_execution', cascade='all'))
-
-    def __repr__(self):
-        return '<workflow_execution ({}, {}, {}, {}, {}, {}, {}, {}, {}, {})>'.format(self.uuid, self.name,
-                                                                                      self.properties,
-                                                                                      self.start_time,
-                                                                                      self.end_time,
-                                                                                      self.execution_state,
-                                                                                      self.log_uri,
-                                                                                      self.workflow_json,
-                                                                                      self.signature,
-                                                                                      self.project_id)
-
-
 class SqlModelVersionRelation(base):
     """
     SQL table of model version relation in metadata backend storage.
@@ -155,46 +124,17 @@ class SqlModelVersionRelation(base):
 
     version = Column(String(255), primary_key=True)
     model_id = Column(BigInteger, ForeignKey('model_relation.uuid', onupdate='cascade'), primary_key=True)
-    workflow_execution_id = Column(BigInteger, ForeignKey('workflow_execution.uuid', onupdate='cascade'))
+    workflow_execution_id = Column(BigInteger)
     is_deleted = Column(String(256), default='False')
 
     UniqueConstraint(version, model_id)
     UniqueConstraint(version, workflow_execution_id)
 
     model_relation = relationship("SqlModelRelation", backref=backref('model_version_relation', cascade='all'))
-    workflow_execution = relationship("SqlWorkflowExecution",
-                                          backref=backref('model_version_relation', cascade='all'))
 
     def __repr__(self):
         return '<model_version_relation ({}, {}, {})>'.format(self.version, self.model_id,
                                                               self.workflow_execution_id)
-
-
-class SqlJob(base, Base):
-    """
-    SQL table of job in metadata backend storage.
-    """
-    __tablename__ = 'job_info'
-
-    name = Column(String(255), unique=True)
-    job_id = Column(String(1000))
-    properties = Column(String(1000))
-    start_time = Column(BigInteger)
-    end_time = Column(BigInteger)
-    job_state = Column(String(256))
-    log_uri = Column(String(256))
-    signature = Column(String(1000))
-    workflow_execution_id = Column(BigInteger, ForeignKey('workflow_execution.uuid', onupdate='cascade'))
-    is_deleted = Column(String(256), default='False')
-
-    workflow_execution = relationship("SqlWorkflowExecution", backref=backref('job_info', cascade='all'))
-
-    def __repr__(self):
-        return '<SqlJob ({}, {}, {}, {}, {}, {}, {}, {}, {}, {})>'.format(self.uuid, self.job_id, self.name,
-                                                                          self.properties, self.start_time,
-                                                                          self.end_time,
-                                                                          self.job_state, self.log_uri, self.signature,
-                                                                          self.workflow_execution_id)
 
 
 class SqlArtifact(base, Base):
@@ -466,75 +406,6 @@ class MongoModelRelation(Document):
             self.project_id)
 
 
-class MongoJob(Document):
-    """
-    Document of job in metadata backend storage.
-    """
-
-    uuid = SequenceField(db_alias=MONGO_DB_ALIAS_META_SERVICE)
-    name = StringField(max_length=255, required=True, unique=True)
-    workflow_execution_id = IntField()
-    job_id = StringField(max_length=1000)
-    properties = StringField(max_length=1000)
-    start_time = LongField()
-    end_time = LongField()
-    job_state = StringField(max_length=256)
-    log_uri = StringField(max_length=256)
-    signature = StringField(max_length=1000)
-    is_deleted = BooleanField(default=False)
-
-    meta = {'db_alias': MONGO_DB_ALIAS_META_SERVICE}
-
-    def __repr__(self):
-        return '<Document Job ({}, {}, {}, {}, {}, {}, {}, {}, {}, {})>'.format(
-            self.uuid,
-            self.job_str_id,
-            self.name,
-            self.properties,
-            self.start_time,
-            self.end_time,
-            self.job_state,
-            self.log_uri,
-            self.signature,
-            self.workflow_execution_id)
-
-
-class MongoWorkflowExecution(Document):
-    """
-    Document of workflow execution in metadata backend storage.
-    """
-
-    uuid = SequenceField(db_alias=MONGO_DB_ALIAS_META_SERVICE)
-    name = StringField(max_length=255, required=True, unique=True)
-    project_id = IntField()
-    properties = StringField(max_length=1000)
-    start_time = LongField()
-    end_time = LongField()
-    execution_state = StringField(max_length=256)
-    log_uri = StringField(max_length=1000)
-    workflow_json = StringField()
-    signature = StringField(max_length=1000)
-    is_deleted = BooleanField(default=False)
-
-    job_info = ListField(ReferenceField(MongoJob))
-    model_version_relation = ListField(ReferenceField(MongoModelVersionRelation))
-
-    meta = {'db_alias': MONGO_DB_ALIAS_META_SERVICE}
-
-    def __repr__(self):
-        return '<Document WorkflowExecution ({}, {}, {}, {}, {}, {}, {}, {}, {}, {})>'.format(
-            self.uuid,
-            self.name,
-            self.properties,
-            self.start_time,
-            self.end_time,
-            self.execution_state,
-            self.log_uri,
-            self.workflow_json,
-            self.signature,
-            self.project_id)
-
-
 class MongoProject(Document):
     """
     Document of project in metadata backend storage.
@@ -547,7 +418,6 @@ class MongoProject(Document):
     is_deleted = BooleanField(default=False)
 
     model_relation = ListField(ReferenceField(MongoModelRelation))
-    workflow_execution = ListField(ReferenceField(MongoWorkflowExecution))
 
     meta = {'db_alias': MONGO_DB_ALIAS_META_SERVICE}
 
