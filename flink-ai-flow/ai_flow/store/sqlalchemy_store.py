@@ -26,11 +26,9 @@ from sqlalchemy import and_, cast, Integer
 from ai_flow.common.status import Status
 from ai_flow.meta.artifact_meta import ArtifactMeta
 from ai_flow.meta.dataset_meta import DatasetMeta, Properties, DataType, Schema
-from ai_flow.meta.job_meta import JobMeta, State
 from ai_flow.meta.metric_meta import MetricMeta, MetricType, MetricSummary
 from ai_flow.meta.model_relation_meta import ModelRelationMeta, ModelVersionRelationMeta
 from ai_flow.meta.project_meta import ProjectMeta
-from ai_flow.meta.workflow_execution_meta import WorkflowExecutionMeta
 from ai_flow.metadata_store.utils.MetaToTable import MetaToTable
 from ai_flow.metadata_store.utils.ResultToMeta import ResultToMeta
 from ai_flow.metric.utils import table_to_metric_meta, table_to_metric_summary, metric_meta_to_table, \
@@ -43,7 +41,7 @@ from ai_flow.endpoint.server.high_availability import Member
 from ai_flow.store.abstract_store import AbstractStore
 from ai_flow.store.db.base_model import base
 from ai_flow.store.db.db_model import SqlDataset, SqlModelRelation, SqlModelVersionRelation, SqlProject, \
-    SqlWorkflowExecution, SqlWorkflow, SqlJob, SqlEvent, SqlArtifact, SqlMember
+    SqlWorkflow, SqlEvent, SqlArtifact, SqlMember
 from ai_flow.store.db.db_model import SqlMetricMeta, SqlMetricSummary
 from ai_flow.store.db.db_model import SqlRegisteredModel, SqlModelVersion
 from ai_flow.store.db.db_util import extract_db_engine_from_uri, create_sqlalchemy_engine, _get_managed_session_maker
@@ -106,9 +104,7 @@ class SqlAlchemyStore(AbstractStore):
             SqlModelRelation.__tablename__,
             SqlModelVersionRelation.__tablename__,
             SqlProject.__tablename__,
-            SqlWorkflowExecution.__tablename__,
             SqlWorkflow.__tablename__,
-            SqlJob.__tablename__,
             SqlArtifact.__tablename__,
             SqlRegisteredModel.__tablename__,
             SqlModelVersion.__tablename__,
@@ -508,25 +504,7 @@ class SqlAlchemyStore(AbstractStore):
                          , SqlProject.is_deleted == TRUE)).count()
                 project.is_deleted = TRUE
                 project.name = deleted_character + project.name + deleted_character + str(deleted_project_counts + 1)
-                job_list = []
                 model_version_list = []
-                for per_workflow_execution in project.workflow_execution:
-                    deleted_workflow_execution_counts = session.query(SqlWorkflowExecution).filter(
-                        and_(SqlWorkflowExecution.name.like(
-                            deleted_character + per_workflow_execution.name + deleted_character + '%'),
-                            SqlWorkflowExecution.is_deleted == TRUE)
-                    ).count()
-                    per_workflow_execution.is_deleted = TRUE
-                    per_workflow_execution.name = deleted_character + per_workflow_execution.name + deleted_character + str(
-                        deleted_workflow_execution_counts + 1)
-                    for per_job in per_workflow_execution.job_info:
-                        deleted_job_counts = session.query(SqlJob).filter(
-                            and_(SqlJob.name.like(deleted_character + per_job.name + deleted_character + '%'),
-                                 SqlJob.is_deleted == TRUE)).count()
-                        per_job.is_deleted = TRUE
-                        per_job.name = deleted_character + per_job.name + deleted_character + str(
-                            deleted_job_counts + 1)
-                    job_list += per_workflow_execution.job_info
                 for per_model in project.model_relation:
                     deleted_model_relation_counts = session.query(SqlModelRelation).filter(
                         and_(SqlModelRelation.name.like(deleted_character + per_model.name + deleted_character + '%'),
@@ -544,7 +522,7 @@ class SqlAlchemyStore(AbstractStore):
                             deleted_model_version_relation_counts + 1)
                     model_version_list += per_model.model_version_relation
                 session.add_all(
-                    [project] + project.workflow_execution + project.model_relation + job_list + model_version_list)
+                    [project] + project.model_relation + model_version_list)
                 session.flush()
                 return Status.OK
             except sqlalchemy.exc.IntegrityError as e:
@@ -678,233 +656,6 @@ class SqlAlchemyStore(AbstractStore):
             except sqlalchemy.exc.IntegrityError as e:
                 raise AIFlowException(str(e))
 
-    '''workflow execution api'''
-
-    def get_workflow_execution_by_id(self, execution_id) -> Optional[WorkflowExecutionMeta]:
-        """
-        get a specific workflow execution in metadata store by workflow execution id.
-
-        :param execution_id: the workflow execution id
-        :return: A single :py:class:`ai_flow.meta.workflow_execution_meta.WorkflowExecutionMeta` object
-                 if the workflow execution exists, Otherwise, returns None if the workflow execution does not exist.
-        """
-        with self.ManagedSessionMaker() as session:
-            execution_result = session.query(SqlWorkflowExecution).filter(
-                and_(SqlWorkflowExecution.uuid == execution_id, SqlWorkflowExecution.is_deleted != TRUE)).all()
-            if len(execution_result) == 0:
-                return None
-            workflow_execution = ResultToMeta.result_to_workflow_execution_meta(execution_result[0])
-            return workflow_execution
-
-    def get_workflow_execution_by_name(self, execution_name) -> Optional[WorkflowExecutionMeta]:
-        """
-        get a specific workflow execution in metadata store by workflow execution name.
-
-        :param execution_name: the workflow execution name
-        :return: A single :py:class:`ai_flow.meta.workflow_execution_meta.WorkflowExecutionMeta` object
-                 if the workflow execution exists, Otherwise, returns None if the workflow execution does not exist.
-        """
-        with self.ManagedSessionMaker() as session:
-            execution_result = session.query(SqlWorkflowExecution).filter(
-                and_(SqlWorkflowExecution.name == execution_name, SqlWorkflowExecution.is_deleted != TRUE)).all()
-            if len(execution_result) == 0:
-                return None
-            workflow_execution = ResultToMeta.result_to_workflow_execution_meta(execution_result[0])
-            return workflow_execution
-
-    def register_workflow_execution(self, name: Text,
-                                    execution_state: State, project_id: int = None,
-                                    properties: Properties = None, start_time: int = None,
-                                    end_time: int = None, log_uri: Text = None,
-                                    workflow_json=None, signature=None) -> WorkflowExecutionMeta:
-        """
-        register a workflow execution in metadata store.
-
-        :param name: the name of the workflow execution
-        :param execution_state: the execution state of the workflow execution
-        :param project_id: the project id corresponded to the workflow execution
-        :param properties: the properties of the workflow execution
-        :param start_time: the time when the workflow execution started
-        :param end_time: the time when the workflow execution ended
-        :param log_uri: the log uri of the workflow execution
-        :param workflow_json: the workflow json of the workflow execution
-        :param signature: the signature of the workflow execution
-        :return: A single :py:class:`ai_flow.meta.workflow_execution_meta.WorkflowExecutionMeta` object.
-        """
-        with self.ManagedSessionMaker() as session:
-            try:
-                execution = MetaToTable.workflow_execution_meta_to_table(name=name,
-                                                                         project_id=project_id,
-                                                                         execution_state=execution_state,
-                                                                         properties=properties, start_time=start_time,
-                                                                         end_time=end_time,
-                                                                         log_uri=log_uri, workflow_json=workflow_json,
-                                                                         signature=signature)
-                session.add(execution)
-                session.flush()
-                execution_meta = WorkflowExecutionMeta(uuid=execution.uuid, name=name, project_id=project_id,
-                                                       execution_state=execution_state,
-                                                       properties=properties, start_time=start_time,
-                                                       end_time=end_time, log_uri=log_uri, workflow_json=workflow_json,
-                                                       signature=signature)
-                return execution_meta
-            except sqlalchemy.exc.IntegrityError as e:
-                raise AIFlowException('Registered WorkflowExecution (name={}) already exists. '
-                                      'Error: {}'.format(execution.name, str(e)))
-
-    def list_workflow_execution(self, page_size, offset) -> Optional[List[WorkflowExecutionMeta]]:
-        """
-        List registered workflow executions in metadata store.
-
-        :param page_size: the limitation of the listed workflow executions.
-        :param offset: the offset of listed workflow executions.
-        :return: List of :py:class:`ai_flow.meta.workflow_execution_meta.WorkflowExecutionMeta` object,
-                 return None if no workflow executions to be listed.
-        """
-        with self.ManagedSessionMaker() as session:
-            execution_result = session.query(SqlWorkflowExecution).filter(
-                SqlWorkflowExecution.is_deleted != TRUE).limit(page_size).offset(offset).all()
-            if len(execution_result) == 0:
-                return None
-            workflow_execution_list = []
-            for execution in execution_result:
-                workflow_execution_list.append(ResultToMeta.result_to_workflow_execution_meta(execution))
-            return workflow_execution_list
-
-    def update_workflow_execution(self, execution_name: Text,
-                                  execution_state: State = None, project_id: int = None,
-                                  properties: Properties = None, end_time: int = None,
-                                  log_uri: Text = None, workflow_json: Text = None, signature: Text = None) -> \
-            Optional[WorkflowExecutionMeta]:
-        with self.ManagedSessionMaker() as session:
-            try:
-                workflow_execution: SqlWorkflowExecution = session.query(SqlWorkflowExecution).filter(and_(
-                    SqlWorkflowExecution.name == execution_name, SqlWorkflowExecution.is_deleted != TRUE)).first()
-                if workflow_execution is None:
-                    return None
-                if execution_state is not None:
-                    workflow_execution.execution_state = execution_state
-                if project_id is not None:
-                    project = self.get_project_by_id(project_id)
-                    if project is None:
-                        raise AIFlowException(
-                            'The project related to the project id={} does not exist'.format(project_id))
-                    workflow_execution.project_id = project_id
-                if properties is not None:
-                    workflow_execution.properties = str(properties)
-                if end_time is not None:
-                    workflow_execution.end_time = end_time
-                if log_uri is not None:
-                    workflow_execution.log_uri = log_uri
-                if workflow_json is not None:
-                    workflow_execution.workflow_json = workflow_json
-                if signature is not None:
-                    workflow_execution.signature = signature
-                session.flush()
-                return ResultToMeta.result_to_workflow_execution_meta(workflow_execution)
-            except sqlalchemy.exc.IntegrityError as e:
-                raise AIFlowException(e)
-
-    def update_workflow_execution_end_time(self, end_time, execution_name):
-        """
-        update the workflow execution end time in metadata store.
-
-        :param end_time: the time when the workflow execution ended.
-        :param execution_name: the execution name
-        :return: the workflow execution uuid if the workflow execution is successfully updated, raise an exception
-                 if fail to update otherwise.
-        """
-        with self.ManagedSessionMaker() as session:
-            try:
-                workflow_execution = session.query(SqlWorkflowExecution).filter(
-                    SqlWorkflowExecution.name == execution_name).first()
-                if workflow_execution is None:
-                    return UPDATE_FAIL
-                workflow_execution.end_time = end_time
-                session.flush()
-                execution = session.query(SqlWorkflowExecution).filter(
-                    SqlWorkflowExecution.name == execution_name).first()
-                return execution.uuid
-            except sqlalchemy.exc.IntegrityError as e:
-                raise AIFlowException(e)
-
-    def update_workflow_execution_state(self, state: State, execution_name):
-        """
-        update the workflow execution end time in metadata store.
-
-        :param state: the state of the workflow execution.
-        :param execution_name: the execution name
-        :return: the workflow execution uuid if the workflow execution is successfully updated, raise an exception
-                 if fail to update otherwise.
-        """
-        with self.ManagedSessionMaker() as session:
-            try:
-                workflow_execution = session.query(SqlWorkflowExecution).filter(
-                    SqlWorkflowExecution.name == execution_name).first()
-                if workflow_execution is None:
-                    return UPDATE_FAIL
-                workflow_execution.execution_state = state
-                session.flush()
-                execution = session.query(SqlWorkflowExecution).filter(
-                    SqlWorkflowExecution.name == execution_name).first()
-                return execution.uuid
-            except sqlalchemy.exc.IntegrityError as e:
-                raise AIFlowException(e)
-
-    def delete_workflow_execution_by_id(self, execution_id) -> Status:
-        """
-        Delete the registered workflow execution by workflow execution id .
-
-        :param execution_id: the workflow execution id
-        :return: Status.OK if the workflow execution is successfully deleted,
-                 Status.ERROR if the workflow execution does not exist otherwise.
-        """
-        execution = self.get_workflow_execution_by_id(execution_id=execution_id)
-        if execution is None:
-            return Status.ERROR
-        return self.delete_workflow_execution_by_name(execution_name=execution.name)
-
-    def delete_workflow_execution_by_name(self, execution_name) -> Status:
-        """
-        Delete the registered workflow execution by workflow execution name .
-
-        :param execution_name: the workflow execution name
-        :return: Status.OK if the workflow execution is successfully deleted,
-                 Status.ERROR if the workflow execution does not exist otherwise.
-        """
-        with self.ManagedSessionMaker() as session:
-            try:
-                execution = session.query(SqlWorkflowExecution).filter(
-                    and_(SqlWorkflowExecution.name == execution_name, SqlWorkflowExecution.is_deleted != TRUE)).first()
-                if execution is None:
-                    return Status.ERROR
-                deleted_execution_counts = session.query(SqlWorkflowExecution).filter(
-                    and_(SqlWorkflowExecution.name.like(deleted_character + execution.name + deleted_character + '%')),
-                    SqlWorkflowExecution.is_deleted == TRUE).count()
-                execution.is_deleted = TRUE
-                execution.name = deleted_character + execution.name + deleted_character + str(
-                    deleted_execution_counts + 1)
-                for per_job in execution.job_info:
-                    deleted_job_counts = session.query(SqlJob).filter(
-                        and_(SqlJob.name.like(deleted_character + per_job.name + deleted_character + '%')),
-                        SqlJob.is_deleted == TRUE).count()
-                    per_job.is_deleted = TRUE
-                    per_job.name = deleted_character + per_job.name + deleted_character + str(deleted_job_counts + 1)
-                for model_version in execution.model_version_relation:
-                    deleted_model_version_counts = session.query(SqlModelVersionRelation).filter(
-                        and_(
-                            SqlModelVersionRelation.version.like(
-                                deleted_character + model_version.version + deleted_character + '%'),
-                            SqlModelVersionRelation.is_deleted == TRUE)).count()
-                    model_version.is_deleted = TRUE
-                    model_version.version = deleted_character + model_version.version + deleted_character + str(
-                        deleted_model_version_counts + 1)
-                session.add_all([execution] + execution.job_info + execution.model_version_relation)
-                session.flush()
-                return Status.OK
-            except sqlalchemy.exc.IntegrityError as e:
-                raise AIFlowException(str(e))
-
     '''model version api'''
 
     def get_model_version_relation_by_version(self, version_name, model_id) -> Optional[ModelVersionRelationMeta]:
@@ -992,204 +743,6 @@ class SqlAlchemyStore(AbstractStore):
                 model_version.is_deleted = TRUE
                 model_version.version = deleted_character + model_version.version + deleted_character + str(
                     deleted_model_version_counts + 1)
-                session.flush()
-                return Status.OK
-            except sqlalchemy.exc.IntegrityError as e:
-                raise AIFlowException(str(e))
-
-    """job api"""
-
-    def get_job_by_id(self, job_id) -> Optional[JobMeta]:
-        """
-        get a specific job in metadata store by job id.
-
-        :param job_id: the job id
-        :return: A single :py:class:`ai_flow.meta.job_meta.JobMeta` object
-                 if the job exists, Otherwise, returns None if the job does not exist.
-        """
-        with self.ManagedSessionMaker() as session:
-            job_result = session.query(SqlJob).filter(
-                and_(SqlJob.uuid == job_id, SqlJob.is_deleted != TRUE)).all()
-            if len(job_result) == 0:
-                return None
-            job = ResultToMeta.result_to_job_meta(job_result[0])
-            return job
-
-    def get_job_by_name(self, job_name) -> Optional[JobMeta]:
-        """
-        get a specific job in metadata store by job name.
-
-        :param job_name: the job name
-        :return: A single :py:class:`ai_flow.meta.job_meta.JobMeta` object
-                 if the job exists, Otherwise, returns None if the job does not exist.
-        """
-        with self.ManagedSessionMaker() as session:
-            job_result = session.query(SqlJob).filter(
-                and_(SqlJob.name == job_name, SqlJob.is_deleted != TRUE)).all()
-            if len(job_result) == 0:
-                return None
-            job = ResultToMeta.result_to_job_meta(job_result[0])
-            return job
-
-    def register_job(self, name: Text, job_state: State, workflow_execution_id: int = None,
-                     properties: Properties = None, job_id: Text = None,
-                     start_time: int = None, end_time: int = None,
-                     log_uri: Text = None, signature: Text = None) -> JobMeta:
-        """
-        register a job in metadata store.
-
-        :param name: the name of the job
-        :param job_state: the state of the job
-        :param workflow_execution_id: the workflow execution id corresponded to the job
-        :param properties: the properties of the job
-        :param job_id: the job_id of the job
-        :param start_time: the time when the job started
-        :param end_time: the time when the job ended
-        :param log_uri: the log uri of the job
-        :param signature: the signature of the job
-        :return: A single :py:class:`ai_flow.meta.job_meta.JobMeta` object.
-        """
-        with self.ManagedSessionMaker() as session:
-            try:
-                job = MetaToTable.job_meta_to_table(name=name,
-                                                    job_state=job_state, properties=properties,
-                                                    job_id=job_id, workflow_execution_id=workflow_execution_id,
-                                                    start_time=start_time, end_time=end_time,
-                                                    log_uri=log_uri,
-                                                    signature=signature)
-                session.add(job)
-                session.flush()
-                job_meta = JobMeta(uuid=job.uuid, name=name, workflow_execution_id=workflow_execution_id,
-                                   job_state=job_state,
-                                   properties=properties, job_id=job_id, start_time=start_time, end_time=end_time,
-                                   log_uri=log_uri, signature=signature)
-                return job_meta
-            except sqlalchemy.exc.IntegrityError as e:
-                raise AIFlowException('Registered Job (name={}) already exists. '
-                                      'Error: {}'.format(job.name, str(e)))
-
-    def update_job(self, job_name: Text, job_state: State = None, properties: Properties = None,
-                   job_id: Text = None, workflow_execution_id: int = None,
-                   end_time: int = None, log_uri: Text = None, signature: Text = None) -> Optional[JobMeta]:
-        with self.ManagedSessionMaker() as session:
-            try:
-                job: SqlJob = session.query(SqlJob).filter(
-                    and_(SqlJob.name == job_name, SqlJob.is_deleted != TRUE)).first()
-                if job is None:
-                    return None
-                if job_state is not None:
-                    job.job_state = job_state
-                if properties is not None:
-                    job.properties = str(properties)
-                if job_id is not None:
-                    job.job_id = job_id
-                if workflow_execution_id is not None:
-                    workflow_execution = self.get_workflow_execution_by_id(workflow_execution_id)
-                    if workflow_execution is None:
-                        raise AIFlowException('The workflow execution related to the workflow execution id={} '
-                                              'does not exist'.format(workflow_execution_id))
-                    job.workflow_execution_id = workflow_execution_id
-                if end_time is not None:
-                    job.end_time = end_time
-                if log_uri is not None:
-                    job.log_uri = log_uri
-                if signature is not None:
-                    job.signature = signature
-                session.flush()
-                return ResultToMeta.result_to_job_meta(job)
-            except sqlalchemy.exc.IntegrityError as e:
-                raise AIFlowException(str(e))
-
-    def list_job(self, page_size, offset) -> Optional[List[JobMeta]]:
-        """
-        List registered jobs in metadata store.
-
-        :param page_size: the limitation of the listed jobs.
-        :param offset: the offset of listed jobs.
-        :return: List of :py:class:`ai_flow.meta.job_meta.JobMeta` objects,
-                 return None if no jobs to be listed.
-        """
-        with self.ManagedSessionMaker() as session:
-            job_result = session.query(SqlJob).filter(SqlJob.is_deleted != TRUE).limit(page_size).offset(
-                offset).all()
-            if len(job_result) == 0:
-                return None
-            job_list = []
-            for job in job_result:
-                job_list.append(ResultToMeta.result_to_job_meta(job))
-            return job_list
-
-    def update_job_state(self, job_state: State, job_name):
-        """
-        update the job state in metadata store.
-
-        :param job_state: the state of the job.
-        :param job_name: the job name
-        :return: the job uuid if the job is successfully updated, raise an exception if fail to update otherwise.
-        """
-        with self.ManagedSessionMaker() as session:
-            try:
-                job_update = session.query(SqlJob).filter(SqlJob.name == job_name).first()
-                if job_update is None:
-                    return UPDATE_FAIL
-                job_update.job_state = job_state
-                session.flush()
-                job = session.query(SqlJob).filter(SqlJob.name == job_name).first()
-                return job.uuid
-            except sqlalchemy.exc.IntegrityError as e:
-                raise AIFlowException(str(e))
-
-    def update_job_end_time(self, end_time, job_name):
-        """
-        update the job end time in metadata store.
-
-        :param end_time: the time when the job ended.
-        :param job_name: the job name
-        :return: the job uuid if the job is successfully updated, raise an exception if fail to update otherwise.
-        """
-        with self.ManagedSessionMaker() as session:
-            try:
-                job_update = session.query(SqlJob).filter(SqlJob.name == job_name).first()
-                if job_update is None:
-                    return UPDATE_FAIL
-                job_update.end_time = end_time
-                session.flush()
-                job = session.query(SqlJob).filter(SqlJob.name == job_name).first()
-                return job.uuid
-            except sqlalchemy.exc.IntegrityError as e:
-                raise AIFlowException(str(e))
-
-    def delete_job_by_id(self, job_id) -> Status:
-        """
-        Delete the registered job by job id .
-
-        :param job_id: the job id
-        :return: Status.OK if the job is successfully deleted,
-                 Status.ERROR if the job does not exist otherwise.
-        """
-        job = self.get_job_by_id(job_id=job_id)
-        if job is None:
-            return Status.ERROR
-        return self.delete_job_by_name(job.name)
-
-    def delete_job_by_name(self, job_name) -> Status:
-        """
-        Delete the registered job by job name .
-
-        :param job_name: the job name
-        :return: Status.OK if the job is successfully deleted,
-                 Status.ERROR if the job does not exist otherwise.
-        """
-        with self.ManagedSessionMaker() as session:
-            try:
-                job = session.query(SqlJob).filter(and_(SqlJob.name == job_name, SqlJob.is_deleted != TRUE)).first()
-                if job is None:
-                    return Status.ERROR
-                deleted_job_counts = session.query(SqlJob).filter(
-                    and_(SqlJob.name.like(deleted_character + job_name + deleted_character + '%')),
-                    SqlJob.is_deleted == TRUE).count()
-                job.is_deleted = TRUE
-                job.name = deleted_character + job.name + deleted_character + str(deleted_job_counts + 1)
                 session.flush()
                 return Status.OK
             except sqlalchemy.exc.IntegrityError as e:

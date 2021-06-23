@@ -180,258 +180,42 @@ class AIFlowClientTestCases(object):
     def test_delete_project_by_id(self):
         project = client.register_project(name='project', uri='www.code.com')
         model = client.register_model_relation(name='model', project_id=project.uuid)
-        work_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
-                                                            execution_state=State.INIT,
-                                                            workflow_json='workflow.yaml',
-                                                            signature='hdfs://')
-        job = client.register_job(name='job', workflow_execution_id=work_execution.uuid, job_state=State.STARTING,
-                                  properties=Properties({'a': 'b'}), signature='offset1')
+
         client.register_model_version_relation(version='1', model_id=model.uuid,
-                                               workflow_execution_id=work_execution.uuid)
+                                               workflow_execution_id=1)
         self.assertEqual(client.get_project_by_id(project.uuid).name, 'project')
         self.assertEqual(client.get_model_relation_by_id(model.uuid).name, 'model')
-        self.assertEqual(client.get_workflow_execution_by_id(work_execution.uuid).name, 'execution')
         self.assertEqual(client.get_model_version_relation_by_version('1', 1).version, '1')
-        self.assertEqual(client.get_job_by_id(job.uuid).name, 'job')
         self.assertEqual(Status.OK, client.delete_project_by_id(project.uuid))
         self.assertIsNone(client.get_project_by_id(project.uuid))
         self.assertIsNone(client.get_model_relation_by_id(model.uuid))
-        self.assertIsNone(client.get_workflow_execution_by_id(work_execution.uuid))
         self.assertIsNone(client.get_model_version_relation_by_version('1', model.uuid))
-        self.assertIsNone(client.get_job_by_id(job.uuid))
         self.assertIsNone(client.list_project(1, 0))
         self.assertIsNone(client.list_model_relation(1, 0))
-        self.assertIsNone(client.list_workflow_execution(1, 0))
         self.assertIsNone(client.list_model_version_relation(1, 1, 0))
-        self.assertIsNone(client.list_job(1, 0))
 
     def test_delete_project_by_name(self):
         project = client.register_project(name='project', uri='www.code.com')
         model = client.register_model_relation(name='model', project_id=project.uuid)
-        work_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
-                                                            execution_state=State.INIT,
-                                                            workflow_json='workflow.yaml',
-                                                            signature='hdfs://')
-        job = client.register_job(name='job', workflow_execution_id=work_execution.uuid, job_state=State.STARTING,
-                                  properties=Properties({'a': 'b'}), signature='offset1')
+
         client.register_model_version_relation(version='1', model_id=model.uuid,
-                                               workflow_execution_id=work_execution.uuid)
+                                               workflow_execution_id=1)
         self.assertEqual(client.get_project_by_id(project.uuid).name, 'project')
         self.assertEqual(client.get_model_relation_by_id(model.uuid).name, 'model')
-        self.assertEqual(client.get_workflow_execution_by_id(work_execution.uuid).name, 'execution')
         self.assertEqual(client.get_model_version_relation_by_version('1', 1).version, '1')
-        self.assertEqual(client.get_job_by_id(job.uuid).name, 'job')
         self.assertEqual(Status.OK, client.delete_project_by_id(project.uuid))
         self.assertIsNone(client.get_project_by_name('project'))
         self.assertIsNone(client.get_model_relation_by_id(model.uuid))
-        self.assertIsNone(client.get_workflow_execution_by_id(work_execution.uuid))
         self.assertIsNone(client.get_model_version_relation_by_version('1', model.uuid))
-        self.assertIsNone(client.get_job_by_id(job.uuid))
         self.assertIsNone(client.list_project(1, 0))
         self.assertIsNone(client.list_model_relation(1, 0))
-        self.assertIsNone(client.list_workflow_execution(1, 0))
         self.assertIsNone(client.list_model_version_relation(1, 1, 0))
-        self.assertIsNone(client.list_job(1, 0))
 
     def test_update_project(self):
         client.register_project(name='project', uri='www.code.com')
         update_project = client.update_project(project_name='project', uri='git@alibaba.com')
         project = client.get_project_by_name('project')
         self.assertEqual(update_project.uri, project.uri)
-
-    """test workflow execution"""
-
-    def test_save_workflow_execution_get_by_id_and_name(self):
-        project = client.register_project(name='project', uri='www.code.com')
-        workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
-                                                                execution_state=State.INIT,
-                                                                workflow_json='workflow.yaml',
-                                                                signature='hdfs://')
-        execution_id = client.get_workflow_execution_by_id(workflow_execution.uuid)
-        execution_name = client.get_workflow_execution_by_name('execution')
-        self.assertEqual('execution', execution_id.name)
-        self.assertEqual('execution', execution_name.name)
-        print(execution_id)
-
-    def test_list_workflow_execution(self):
-        project = client.register_project(name='project', uri='www.code.com')
-        client.register_workflow_execution(name='execution', project_id=project.uuid,
-                                           execution_state=State.INIT,
-                                           workflow_json='workflow.yaml',
-                                           signature='git://')
-        client.register_workflow_execution(name='execution1', project_id=1,
-                                           execution_state=State.INIT,
-                                           workflow_json='workflow.yaml',
-                                           signature='git://')
-        execution_list = client.list_workflow_execution(2, 0)
-        self.assertEqual(2, len(execution_list))
-        self.assertEqual('execution', execution_list[0].name)
-        self.assertEqual('execution1', execution_list[1].name)
-        for execution in execution_list:
-            print(execution)
-
-    def test_update_workflow_execution(self):
-        project = client.register_project(name='project', uri='www.code.com')
-        client.register_workflow_execution(name='execution', project_id=project.uuid,
-                                           execution_state=State.INIT,
-                                           workflow_json='workflow.yaml',
-                                           signature='git://')
-        now = int(time.time() * 1000)
-        client.update_workflow_execution(execution_name='execution',
-                                         execution_state=State.FINISHED, end_time=now)
-        execution = client.get_workflow_execution_by_name('execution')
-        self.assertEqual(execution.execution_state, State.FINISHED)
-        self.assertEqual(execution.end_time, now)
-        client.update_workflow_execution(execution_name='execution')
-        execution = client.get_workflow_execution_by_name('execution')
-        self.assertEqual(execution.execution_state, State.FINISHED)
-        self.assertEqual(execution.end_time, now)
-        print(execution.to_json_dict())
-
-    def test_update_workflow_execution_end_time(self):
-        project = client.register_project(name='project', uri='www.code.com')
-        client.register_workflow_execution(name='execution', project_id=project.uuid,
-                                           execution_state=State.INIT,
-                                           workflow_json='workflow.yaml',
-                                           signature='git://')
-        now = int(time.time() * 1000)
-        self.assertEqual(1, client.update_workflow_execution_end_time(now, 'execution'))
-        self.assertEqual(now, client.get_workflow_execution_by_name('execution').end_time)
-        print(client.get_workflow_execution_by_name('execution'))
-
-    def test_update_workflow_execution_state(self):
-        project = client.register_project(name='project', uri='www.code.com')
-        client.register_workflow_execution(name='execution', project_id=project.uuid,
-                                           execution_state=State.STARTING,
-                                           workflow_json='workflow.yaml',
-                                           signature='git://')
-        self.assertEqual(State.STARTING, client.get_workflow_execution_by_name('execution').execution_state)
-        self.assertEqual(1, client.update_workflow_execution_state(State.FINISHED, 'execution'))
-        self.assertEqual(State.FINISHED, client.get_workflow_execution_by_name('execution').execution_state)
-        print(client.get_workflow_execution_by_name('execution'))
-
-    def test_delete_workflow_execution_by_id(self):
-        project = client.register_project(name='project', uri='www.code.com')
-        workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
-                                                                start_time=122,
-                                                                execution_state=State.INIT,
-                                                                workflow_json='workflow.yaml',
-                                                                signature='git://')
-        job = client.register_job(name='job', workflow_execution_id=workflow_execution.uuid, job_state=State.STARTING,
-                                  properties=Properties({'a': 'b'}), signature='offset1')
-        self.assertEqual(client.get_workflow_execution_by_id(workflow_execution.uuid).workflow_json, 'workflow.yaml')
-        self.assertEqual(client.get_job_by_id(job.uuid).name, 'job')
-        self.assertEqual(Status.OK, client.delete_workflow_execution_by_id(workflow_execution.uuid))
-        self.assertIsNone(client.get_workflow_execution_by_name('execution'))
-        self.assertIsNone(client.get_job_by_name('job'))
-
-    def test_delete_workflow_execution_by_name(self):
-        project = client.register_project(name='project', uri='www.code.com')
-        workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
-                                                                execution_state=State.INIT,
-                                                                workflow_json='workflow.yaml',
-                                                                signature='git://')
-        client.register_job(name='job', workflow_execution_id=workflow_execution.uuid, job_state=State.STARTING,
-                            properties=Properties({'a': 'b'}), signature='offset1')
-        self.assertEqual(client.get_workflow_execution_by_name('execution').name, 'execution')
-        self.assertEqual(client.get_job_by_name('job').name, 'job')
-        self.assertEqual(Status.OK, client.delete_workflow_execution_by_name('execution'))
-        self.assertIsNone(client.get_workflow_execution_by_name('execution'))
-        self.assertIsNone(client.get_job_by_name('job'))
-
-    """test job"""
-
-    def test_save_job_get_by_id_and_name(self):
-        project = client.register_project(name='project', uri='www.code.com')
-        workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
-                                                                execution_state=State.INIT,
-                                                                workflow_json='workflow.yaml',
-                                                                signature='git://')
-        response = client.register_job(name='job', workflow_execution_id=workflow_execution.uuid,
-                                       job_state=State.STARTING,
-                                       properties=Properties({'a': 'b'}), signature='offset1')
-        job_id = client.get_job_by_id(response.uuid)
-        job_name = client.get_job_by_name('job')
-        self.assertEqual('job', job_id.name)
-        self.assertEqual('job', job_name.name)
-        print(job_id)
-
-    def test_list_job(self):
-        project = client.register_project(name='project', uri='www.code.com')
-        workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
-                                                                execution_state=State.INIT,
-                                                                workflow_json='workflow.yaml',
-                                                                signature='git://')
-        response = client.register_job(name='job', workflow_execution_id=workflow_execution.uuid,
-                                       job_state=State.STARTING,
-                                       properties=Properties({'a': 'b'}), signature='offset1')
-        client.register_job(name='job1', workflow_execution_id=1, job_state=State.STARTING,
-                            properties=Properties({'a': 'b'}), signature='offset1')
-        job_list = client.list_job(2, response.uuid - 1)
-        self.assertEqual(2, len(job_list))
-        self.assertEqual('job', job_list[0].name)
-        self.assertEqual('job1', job_list[1].name)
-        for job in job_list:
-            print(job)
-
-    def test_update_Job(self):
-        project = client.register_project(name='project', uri='www.code.com')
-        workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
-                                                                execution_state=State.INIT,
-                                                                workflow_json='workflow.yaml',
-                                                                signature='git://')
-        job = client.register_job(name='job', workflow_execution_id=workflow_execution.uuid,
-                                  job_state=State.STARTING,
-                                  properties=Properties({'a': 'b'}), signature='offset1')
-        client.update_job(job_name='job', job_state=State.FINISHED)
-        self.assertEqual(client.get_job_by_name('job').job_state, State.FINISHED)
-        self.assertIsNone(client.get_job_by_name('job').end_time)
-        now = int(time.time() * 1000)
-        client.update_job(job_name='job', job_state=None, end_time=now)
-        self.assertEqual(client.get_job_by_name('job').job_state, State.FINISHED)
-        self.assertEqual(client.get_job_by_name('job').end_time, now)
-
-    def test_update_job(self):
-        project = client.register_project(name='project', uri='www.code.com')
-        workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
-                                                                execution_state=State.INIT,
-                                                                workflow_json='workflow.yaml',
-                                                                signature='git://')
-        job = client.register_job(name='job', workflow_execution_id=workflow_execution.uuid, job_state=State.STARTING,
-                                  properties=Properties({'a': 'b'}), signature='offset1')
-        job_id = client.get_job_by_id(job.uuid)
-        self.assertEqual(State.STARTING, job_id.job_state)
-        print(client.update_job_state(State.FAILED, 'job'))
-        job_response = client.get_job_by_name('job')
-        self.assertEqual(job_response.job_state, State.FAILED)
-        self.assertEqual(None, job_response.end_time)
-        print(client.update_job_end_time(1000, 'job'))
-        job_response = client.get_job_by_name('job')
-        self.assertEqual(1000, job_response.end_time)
-
-    def test_delete_job_by_id(self):
-        project = client.register_project(name='project', uri='www.code.com')
-        workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
-                                                                execution_state=State.INIT,
-                                                                workflow_json='workflow.yaml',
-                                                                signature='git://')
-        job = client.register_job(name='job', workflow_execution_id=workflow_execution.uuid, job_state=State.STARTING,
-                                  properties=Properties({'a': 'b'}), signature='offset1')
-        self.assertEqual(client.get_job_by_id(job.uuid).name, 'job')
-        self.assertEqual(Status.OK, client.delete_job_by_id(job.uuid))
-        self.assertIsNone(client.get_job_by_id(job.uuid))
-
-    def test_delete_job_by_name(self):
-        project = client.register_project(name='project', uri='www.code.com')
-        workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
-                                                                execution_state=State.INIT,
-                                                                workflow_json='workflow.yaml',
-                                                                signature='git://')
-        job = client.register_job(name='job', workflow_execution_id=workflow_execution.uuid, job_state=State.STARTING,
-                                  properties=Properties({'a': 'b'}), signature='offset1')
-        self.assertEqual(client.get_job_by_id(job.uuid).name, 'job')
-        self.assertEqual(Status.OK, client.delete_job_by_name('job'))
-        self.assertIsNone(client.get_job_by_id(job.uuid))
 
     """test model"""
 
@@ -488,12 +272,9 @@ class AIFlowClientTestCases(object):
     def test_delete_model_by_id(self):
         project = client.register_project(name='project', uri='www.code.com')
         model_relation = client.register_model_relation(name='model', project_id=project.uuid)
-        workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
-                                                                execution_state=State.INIT,
-                                                                workflow_json='workflow.yaml',
-                                                                signature='git://')
+
         client.register_model_version_relation(version='1', model_id=model_relation.uuid,
-                                               workflow_execution_id=workflow_execution.uuid)
+                                               workflow_execution_id=1)
         self.assertEqual(client.get_model_version_relation_by_version('1', model_relation.uuid).version, '1')
         self.assertEqual(client.get_model_relation_by_name('model').name, 'model')
         self.assertEqual(Status.OK, client.delete_model_relation_by_id(model_relation.uuid))
@@ -503,12 +284,9 @@ class AIFlowClientTestCases(object):
     def test_delete_model_by_name(self):
         project = client.register_project(name='project', uri='www.code.com')
         model_relation = client.register_model_relation(name='model', project_id=project.uuid)
-        workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
-                                                                execution_state=State.INIT,
-                                                                workflow_json='workflow.yaml',
-                                                                signature='git://')
+
         client.register_model_version_relation(version='1', model_id=model_relation.uuid,
-                                               workflow_execution_id=workflow_execution.uuid)
+                                               workflow_execution_id=1)
         self.assertEqual(client.get_model_version_relation_by_version('1', model_relation.uuid).version, '1')
         self.assertEqual(client.get_model_relation_by_name('model').name, 'model')
         self.assertEqual(Status.OK, client.delete_model_relation_by_name('model'))
@@ -525,12 +303,8 @@ class AIFlowClientTestCases(object):
         self.assertEqual(client.get_model_by_id(model.uuid).name, 'test_register_model')
         self.assertEqual(client.get_model_by_name('test_register_model').name, 'test_register_model')
 
-        workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
-                                                                execution_state=State.INIT,
-                                                                workflow_json='workflow.yaml',
-                                                                signature='git://')
         response = client.register_model_version(model=model.uuid,
-                                                 workflow_execution_id=workflow_execution.uuid,
+                                                 workflow_execution_id=1,
                                                  model_path='fs://source1.pkl', model_metric='http://metric1',
                                                  version_desc='test model version 1',
                                                  current_stage=ModelVersionStage.GENERATED)
@@ -548,7 +322,7 @@ class AIFlowClientTestCases(object):
         self.assertEqual(response.version, '1')
 
         response = client.register_model_version(model=model.uuid,
-                                                 workflow_execution_id=workflow_execution.uuid,
+                                                 workflow_execution_id=1,
                                                  model_path='fs://source2.pkl', model_metric='http://metric2',
                                                  model_flavor='{"flavor.version":2}',
                                                  version_desc='test model version 2')
@@ -559,7 +333,7 @@ class AIFlowClientTestCases(object):
         self.assertEqual(len(client.list_model_version_relation(1, 10, 0)), 1)
         # register model version with deleted model version name
         response = client.register_model_version(model=model.uuid,
-                                                 workflow_execution_id=workflow_execution.uuid,
+                                                 workflow_execution_id=1,
                                                  model_path='fs://source1.pkl', model_metric='http://metric1',
                                                  version_desc='test model version 1')
         self.assertEqual(response.version, '2')
@@ -574,12 +348,9 @@ class AIFlowClientTestCases(object):
         project = client.register_project(name='project', uri='www.code.com')
         model = client.register_model(model_name='test_register_model', model_type=ModelType.SAVED_MODEL,
                                       model_desc='test register model', project_id=project.uuid)
-        workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
-                                                                execution_state=State.INIT,
-                                                                workflow_json='workflow.yaml',
-                                                                signature='git://')
+
         response_1 = client.register_model_version(model=model.uuid,
-                                                   workflow_execution_id=workflow_execution.uuid,
+                                                   workflow_execution_id=1,
                                                    model_path='fs://source1.pkl', model_metric='http://metric1',
                                                    version_desc='test model version 1',
                                                    current_stage=ModelVersionStage.GENERATED)
@@ -592,7 +363,7 @@ class AIFlowClientTestCases(object):
         new_validated_model_version_2 = client.get_latest_validated_model_version(model.name)
         self.assertEqual(new_validated_model_version_2.version, response_1.version)
         response_2 = client.register_model_version(model=model.uuid,
-                                                   workflow_execution_id=workflow_execution.uuid,
+                                                   workflow_execution_id=1,
                                                    model_path='fs://source1.pkl', model_metric='http://metric1',
                                                    version_desc='test model version 1',
                                                    current_stage=ModelVersionStage.GENERATED)
@@ -606,12 +377,8 @@ class AIFlowClientTestCases(object):
     def test_save_model_version_get_by_version(self):
         project = client.register_project(name='project', uri='www.code.com')
         model = client.register_model_relation(name='model', project_id=project.uuid)
-        workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
-                                                                execution_state=State.INIT,
-                                                                workflow_json='workflow.yaml',
-                                                                signature='git://')
         response = client.register_model_version_relation(version='1', model_id=model.uuid,
-                                                          workflow_execution_id=workflow_execution.uuid)
+                                                          workflow_execution_id=1)
         self.assertEqual(response.version, '1')
         self.assertEqual(client.get_model_version_relation_by_version(response.version, model.uuid).version, '1')
         self.assertEqual(len(client.list_model_version_relation(model.uuid, 2, 0)), 1)
@@ -620,14 +387,11 @@ class AIFlowClientTestCases(object):
     def test_list_model_version(self):
         project = client.register_project(name='project', uri='www.code.com')
         model = client.register_model_relation(name='model', project_id=project.uuid)
-        workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
-                                                                execution_state=State.INIT,
-                                                                workflow_json='workflow.yaml',
-                                                                signature='git://')
+
         client.register_model_version_relation(version='1', model_id=model.uuid,
-                                               workflow_execution_id=workflow_execution.uuid)
+                                               workflow_execution_id=1)
         client.register_model_version_relation(version='2', model_id=model.uuid,
-                                               workflow_execution_id=workflow_execution.uuid)
+                                               workflow_execution_id=1)
         self.assertEqual(len(client.list_model_version_relation(1, 2, 0)), 2)
         self.assertEqual(client.list_model_version_relation(1, 2, 0)[0].version, '1')
         self.assertEqual(client.list_model_version_relation(1, 2, 0)[1].version, '2')
@@ -635,12 +399,9 @@ class AIFlowClientTestCases(object):
     def test_delete_model_version_by_version(self):
         project = client.register_project(name='project', uri='www.code.com')
         model = client.register_model_relation(name='model', project_id=project.uuid)
-        workflow_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
-                                                                execution_state=State.INIT,
-                                                                workflow_json='workflow.yaml',
-                                                                signature='git://')
+
         client.register_model_version_relation(version='1', model_id=model.uuid,
-                                               workflow_execution_id=workflow_execution.uuid)
+                                               workflow_execution_id=1)
         self.assertEqual(client.get_model_version_relation_by_version('1', model.uuid).version, '1')
         client.delete_model_version_relation_by_version('1', model.uuid)
         self.assertIsNone(client.get_model_version_relation_by_version('1', model.uuid))
@@ -1131,11 +892,11 @@ class AIFlowClientTestCases(object):
     #     self.assertEqual(State.FINISHED, execution_meta.execution_state)
 
     def test_dataset_metric_meta(self):
-        project, work_execution, job = self.register_workflow_job()
+        self.register_workflow_job()
 
         start = round(time.time())
         end = start + 1
-        res = client.register_metric_meta(name='a', dataset_id=1, model_name=None, model_version=None, job_id=job.uuid,
+        res = client.register_metric_meta(name='a', dataset_id=1, model_name=None, model_version=None, job_id=1,
                                           start_time=start, end_time=end, uri='/tmp/metric_1',
                                           metric_type=MetricType.DATASET,
                                           tags='', metric_description='', properties=Properties({'a': 'a'}))
@@ -1144,7 +905,7 @@ class AIFlowClientTestCases(object):
         self.assertTrue(isinstance(metric_meta_result[2], MetricMeta))
         self.assertEqual(5, metric_meta_result[2].job_id)
 
-        res = client.register_metric_meta(name='b', dataset_id=1, model_name=None, model_version=None, job_id=job.uuid,
+        res = client.register_metric_meta(name='b', dataset_id=1, model_name=None, model_version=None, job_id=1,
                                           start_time=start, end_time=end, uri='/tmp/metric_2',
                                           metric_type=MetricType.DATASET,
                                           tags='flink', metric_description='', properties=Properties({'b': 'b'}))
@@ -1160,16 +921,10 @@ class AIFlowClientTestCases(object):
     def register_workflow_job():
         project = client.register_project(name='project')
 
-        work_execution = client.register_workflow_execution(name='execution', project_id=project.uuid,
-                                                            execution_state=State.INIT,
-                                                            workflow_json='workflow.yaml',
-                                                            signature='hdfs://')
-        job = client.register_job(name='job', workflow_execution_id=work_execution.uuid, job_state=State.STARTING,
-                                  properties=Properties({'a': 'b'}), signature='offset1')
-        return project, work_execution, job
+        return project
 
     @staticmethod
-    def register_model_and_version(project, work_execution):
+    def register_model_and_version(project):
         model_name = 'test_create_registered_model'
         model_type = ModelType.CHECKPOINT
         model_desc = 'test create registered model'
@@ -1177,16 +932,16 @@ class AIFlowClientTestCases(object):
                                       model_desc=model_desc)
         version = client.register_model_version(model=model.uuid,
                                                 model_path="/tmp",
-                                                workflow_execution_id=work_execution.uuid)
+                                                workflow_execution_id=1)
         return model, version
 
     def test_model_metric_meta(self):
-        project, work_execution, job = self.register_workflow_job()
-        model, version = self.register_model_and_version(project, work_execution)
+        project = self.register_workflow_job()
+        model, version = self.register_model_and_version(project)
         start = round(time.time())
         end = start + 1
         client.register_metric_meta(name='a', dataset_id=1, model_name=model.name,
-                                    model_version=version.version, job_id=job.uuid,
+                                    model_version=version.version, job_id=1,
                                     start_time=start, end_time=end, uri='/tmp/metric_1',
                                     metric_type=MetricType.MODEL,
                                     tags='', metric_description='', properties=Properties({'a': 'a'}))
