@@ -20,13 +20,11 @@ from typing import List
 
 from ai_flow.meta.artifact_meta import ArtifactMeta
 from ai_flow.meta.dataset_meta import DatasetMeta
-from ai_flow.meta.job_meta import JobMeta
 from ai_flow.meta.model_relation_meta import ModelRelationMeta, ModelVersionRelationMeta
 from ai_flow.meta.project_meta import ProjectMeta
-from ai_flow.meta.workflow_execution_meta import WorkflowExecutionMeta
 from ai_flow.protobuf.message_pb2 import DatasetProto, DataTypeProto, \
-    SchemaProto, ProjectProto, JobProto, WorkflowExecutionProto, \
-    ModelRelationProto, ModelVersionRelationProto, ModelProto, ModelVersionProto, StateProto, ArtifactProto, \
+    SchemaProto, ProjectProto, \
+    ModelRelationProto, ModelVersionRelationProto, ModelProto, ModelVersionProto, ArtifactProto, \
     ModelVersionStage
 from ai_flow.endpoint.server import stringValue, int64Value
 
@@ -113,55 +111,6 @@ class MetaToProto:
         for artifact in artifacts:
             artifact_proto_list.append(MetaToProto.artifact_meta_to_proto(artifact))
         return artifact_proto_list
-
-    @staticmethod
-    def job_meta_to_proto(job_meta: JobMeta) -> JobProto:
-        if job_meta is None:
-            return None
-        else:
-            job_state = StateProto.Value(job_meta.job_state)
-            return JobProto(
-                uuid=job_meta.uuid,
-                name=job_meta.name,
-                workflow_execution_id=int64Value(job_meta.workflow_execution_id),
-                job_state=job_state,
-                properties=job_meta.properties,
-                job_id=stringValue(job_meta.job_id),
-                start_time=int64Value(job_meta.start_time),
-                end_time=int64Value(job_meta.end_time),
-                log_uri=stringValue(job_meta.log_uri),
-                signature=stringValue(job_meta.signature))
-
-    @staticmethod
-    def job_meta_list_to_proto(jobs: List[JobMeta]) -> List[JobProto]:
-        job_proto_list = []
-        for job in jobs:
-            job_proto_list.append(MetaToProto.job_meta_to_proto(job))
-        return job_proto_list
-
-    @staticmethod
-    def workflow_execution_meta_to_proto(execution_meta: WorkflowExecutionMeta) -> WorkflowExecutionProto:
-        if execution_meta is None:
-            return None
-        else:
-            execution_state = StateProto.Value(execution_meta.execution_state)
-            return WorkflowExecutionProto(
-                uuid=execution_meta.uuid, name=execution_meta.name,
-                execution_state=execution_state,
-                project_id=int64Value(execution_meta.project_id),
-                properties=execution_meta.properties,
-                start_time=int64Value(execution_meta.start_time),
-                end_time=int64Value(execution_meta.end_time),
-                workflow_json=stringValue(execution_meta.workflow_json),
-                log_uri=stringValue(execution_meta.log_uri),
-                signature=stringValue(execution_meta.signature))
-
-    @staticmethod
-    def workflow_execution_meta_list_to_proto(executions: List[WorkflowExecutionMeta]) -> List[WorkflowExecutionProto]:
-        execution_proto_list = []
-        for execution in executions:
-            execution_proto_list.append(MetaToProto.workflow_execution_meta_to_proto(execution))
-        return execution_proto_list
 
     @staticmethod
     def model_relation_meta_to_proto(model_relation_meta: ModelRelationMeta) -> ModelRelationProto:

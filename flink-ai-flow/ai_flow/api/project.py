@@ -185,8 +185,6 @@ def _generate_airflow_file_text(ai_graph: AIGraph = default_graph(),
     """
     ex_workflow = generate_workflow(ai_graph, project_desc)
     ai_graph.clear_graph()
-    for job in ex_workflow.jobs.values():
-        register_job_meta(workflow_id=ex_workflow.workflow_id, job=job)
     _default_project.upload_project_package(ex_workflow)
     return DAGGenerator().generator(ex_workflow, dag_id, default_args)
 
@@ -289,21 +287,6 @@ def submit_ai_flow(ai_graph: AIGraph = default_graph(),
     ai_graph.clear_graph()
     _default_project.upload_project_package(ex_workflow)
     return _default_project.submit_workflow(ex_workflow=ex_workflow)
-
-
-def register_job_meta(workflow_id: int, job):
-    start_time = time.time()
-    if job.job_config.job_name is None:
-        name = job.instance_id
-    else:
-        name = job.job_config.job_name
-    job_name = str(workflow_id) + '_' + name[0:20] + '_' + str(start_time)
-    job_meta = _default_project.get_client().register_job(name=job_name,
-                                                          job_id=job.instance_id,
-                                                          workflow_execution_id=workflow_id,
-                                                          start_time=round(start_time))
-    job.uuid = job_meta.uuid
-    job.job_name = job_name
 
 
 def generate_workflow(ai_graph, project_desc):

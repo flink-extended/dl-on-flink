@@ -25,12 +25,10 @@ from ai_flow.common.properties import Properties
 from ai_flow.common.status import Status
 from ai_flow.meta.artifact_meta import ArtifactMeta
 from ai_flow.meta.dataset_meta import DatasetMeta, DataType
-from ai_flow.meta.job_meta import JobMeta, State
 from ai_flow.meta.metric_meta import MetricType, MetricMeta, MetricSummary
 from ai_flow.meta.model_meta import ModelMeta, ModelVersionMeta
 from ai_flow.meta.model_relation_meta import ModelRelationMeta, ModelVersionRelationMeta
 from ai_flow.meta.project_meta import ProjectMeta
-from ai_flow.meta.workflow_execution_meta import WorkflowExecutionMeta
 from ai_flow.model_center.entity.model_version_detail import ModelVersionDetail
 from ai_flow.model_center.entity.model_version_stage import ModelVersionStage
 from ai_flow.model_center.entity.registered_model_detail import RegisteredModelDetail
@@ -183,90 +181,6 @@ def get_latest_validated_model_version(model_name) -> ModelVersionMeta:
 
 def get_latest_generated_model_version(model_name) -> ModelVersionMeta:
     return get_ai_flow_client().get_latest_generated_model_version(model_name)
-
-
-def get_workflow_execution_by_id(execution_id) -> Optional[WorkflowExecutionMeta]:
-    return get_ai_flow_client().get_workflow_execution_by_id(execution_id)
-
-
-def get_workflow_execution_by_name(execution_name) -> Optional[WorkflowExecutionMeta]:
-    return get_ai_flow_client().get_workflow_execution_by_name(execution_name)
-
-
-def register_workflow_execution(name, execution_state, project_id, properties=None,
-                                start_time=None, end_time=None, log_uri=None, workflow_json=None,
-                                signature=None) -> WorkflowExecutionMeta:
-    return get_ai_flow_client().register_workflow_execution(name, execution_state, project_id,
-                                                            properties,
-                                                            start_time, end_time, log_uri, workflow_json, signature)
-
-
-def update_workflow_execution(execution_name, execution_state=None, project_id=None,
-                              properties=None, end_time=None, log_uri=None, workflow_json=None,
-                              signature=None) -> Optional[WorkflowExecutionMeta]:
-    return get_ai_flow_client().update_workflow_execution(execution_name, execution_state, project_id,
-                                                          properties, end_time, log_uri, workflow_json, signature)
-
-
-def list_workflow_execution(page_size, offset) -> Optional[List[WorkflowExecutionMeta]]:
-    return get_ai_flow_client().list_workflow_execution(page_size, offset)
-
-
-def update_workflow_execution_end_time(end_time, execution_name):
-    return get_ai_flow_client().update_workflow_execution_end_time(end_time, execution_name)
-
-
-def update_workflow_execution_state(execution_state, execution_name):
-    return get_ai_flow_client().update_workflow_execution_state(execution_state, execution_name)
-
-
-def delete_workflow_execution_by_id(execution_id) -> Status:
-    return get_ai_flow_client().delete_workflow_execution_by_id(execution_id)
-
-
-def delete_workflow_execution_by_name(execution_name) -> Status:
-    return get_ai_flow_client().delete_workflow_execution_by_name(execution_name)
-
-
-def get_job_by_id(job_id) -> Optional[JobMeta]:
-    return get_ai_flow_client().get_job_by_id(job_id)
-
-
-def get_job_by_name(job_name) -> Optional[JobMeta]:
-    return get_ai_flow_client().get_job_by_name(job_name)
-
-
-def register_job(name, workflow_execution_id, job_state=State.INIT, properties=None,
-                 job_id=None, start_time=None, end_time=None, log_uri=None, signature=None) -> JobMeta:
-    return get_ai_flow_client().register_job(name, workflow_execution_id, job_state, properties, job_id, start_time,
-                                             end_time, log_uri, signature)
-
-
-def update_job(job_name, job_state=None, workflow_execution_id=None, properties=None,
-               job_id=None, end_time=None, log_uri=None, signature=None) -> Optional[JobMeta]:
-    return get_ai_flow_client().update_job(job_name, job_state, workflow_execution_id, properties, job_id, end_time,
-                                           log_uri,
-                                           signature)
-
-
-def update_job_state(state, job_name):
-    return get_ai_flow_client().update_job_state(state, job_name)
-
-
-def update_job_end_time(end_time, job_name):
-    return get_ai_flow_client().update_job_end_time(end_time, job_name)
-
-
-def list_job(page_size, offset) -> Optional[List[JobMeta]]:
-    return get_ai_flow_client().list_job(page_size, offset)
-
-
-def delete_job_by_id(job_id) -> Status:
-    return get_ai_flow_client().delete_job_by_id(job_id)
-
-
-def delete_job_by_name(job_name) -> Status:
-    return get_ai_flow_client().delete_job_by_name(job_name)
 
 
 def get_project_by_id(project_id) -> Optional[ProjectMeta]:

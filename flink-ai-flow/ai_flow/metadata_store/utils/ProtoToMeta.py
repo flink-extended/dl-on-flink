@@ -18,13 +18,12 @@
 #
 from ai_flow.meta.artifact_meta import ArtifactMeta
 from ai_flow.meta.dataset_meta import DatasetMeta, List, DataType, Schema
-from ai_flow.meta.job_meta import JobMeta, State
+from ai_flow.meta.job_meta import State
 from ai_flow.meta.model_meta import ModelMeta, ModelVersionMeta
 from ai_flow.meta.model_relation_meta import ModelRelationMeta, ModelVersionRelationMeta
 from ai_flow.meta.project_meta import ProjectMeta
-from ai_flow.meta.workflow_execution_meta import WorkflowExecutionMeta
-from ai_flow.protobuf.message_pb2 import DatasetProto, ProjectProto, JobProto, \
-    WorkflowExecutionProto, StateProto, ModelRelationProto, ModelVersionRelationProto, ModelProto, ModelVersionProto, \
+from ai_flow.protobuf.message_pb2 import DatasetProto, ProjectProto, \
+    StateProto, ModelRelationProto, ModelVersionRelationProto, ModelProto, ModelVersionProto, \
     ArtifactProto, ModelVersionStage, DataTypeProto, ModelType
 
 
@@ -118,67 +117,6 @@ class ProtoToMeta:
         for artifact in artifacts:
             artifact_meta_list.append(ProtoToMeta.proto_to_artifact_meta(artifact))
         return artifact_meta_list
-
-    @staticmethod
-    def proto_to_job_meta(job_proto: JobProto) -> JobMeta:
-        job_state = State(StateProto.Name(job_proto.job_state))
-        properties = job_proto.properties
-        if properties == {}:
-            properties = None
-        return JobMeta(
-            uuid=job_proto.uuid,
-            name=job_proto.name,
-            job_state=job_state,
-            properties=properties,
-            workflow_execution_id=job_proto.workflow_execution_id.value if job_proto.HasField(
-                'workflow_execution_id') else None,
-            job_id=job_proto.job_id.value if job_proto.HasField('job_id') else None,
-            start_time=job_proto.start_time.value if job_proto.HasField(
-                'start_time') else None,
-            end_time=job_proto.end_time.value if job_proto.HasField(
-                'end_time') else None,
-            log_uri=job_proto.log_uri.value if job_proto.HasField(
-                'log_uri') else None,
-            signature=job_proto.signature.value if job_proto.HasField(
-                'signature') else None)
-
-    @staticmethod
-    def proto_to_job_meta_list(jobs: List[JobProto]) -> List[JobMeta]:
-        job_meta_list = []
-        for job in jobs:
-            job_meta_list.append(ProtoToMeta.proto_to_job_meta(job))
-        return job_meta_list
-
-    @staticmethod
-    def proto_to_execution_meta(workflow_execution_proto: WorkflowExecutionProto) -> WorkflowExecutionMeta:
-        execution_state = State(StateProto.Name(workflow_execution_proto.execution_state))
-        properties = workflow_execution_proto.properties
-        if properties == {}:
-            properties = None
-        return WorkflowExecutionMeta(
-            uuid=workflow_execution_proto.uuid,
-            name=workflow_execution_proto.name,
-            execution_state=execution_state,
-            properties=properties,
-            project_id=workflow_execution_proto.project_id.value if workflow_execution_proto.HasField(
-                'project_id') else None,
-            start_time=workflow_execution_proto.start_time.value if workflow_execution_proto.HasField(
-                'start_time') else None,
-            end_time=workflow_execution_proto.end_time.value if workflow_execution_proto.HasField(
-                'end_time') else None,
-            log_uri=workflow_execution_proto.log_uri.value if workflow_execution_proto.HasField(
-                'log_uri') else None,
-            workflow_json=workflow_execution_proto.workflow_json.value if workflow_execution_proto.HasField(
-                'workflow_json') else None,
-            signature=workflow_execution_proto.signature.value if workflow_execution_proto.HasField(
-                'signature') else None)
-
-    @staticmethod
-    def proto_to_execution_meta_list(executions: List[WorkflowExecutionProto]) -> List[WorkflowExecutionMeta]:
-        execution_meta_list = []
-        for execution in executions:
-            execution_meta_list.append(ProtoToMeta.proto_to_execution_meta(execution))
-        return execution_meta_list
 
     @staticmethod
     def proto_to_state(state):

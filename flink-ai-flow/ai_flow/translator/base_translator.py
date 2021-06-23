@@ -20,7 +20,6 @@ from ai_flow.util.time_utils import generate_time_str
 from ai_flow.meta.job_meta import State, ExecutionMode
 from ai_flow.client.ai_flow_client import AIFlowClient
 from ai_flow.api.configuration import project_config
-from ai_flow.meta.workflow_execution_meta import WorkflowExecutionMeta
 from ai_flow.workflow.workflow import Workflow
 from ai_flow.workflow.job import BaseJob, BaseJobConfig
 from ai_flow.graph.graph import AIGraph, SplitGraph, AISubGraph
@@ -209,20 +208,6 @@ class DefaultWorkflowConstructor(BaseWorkflowConstructor):
     def register_job_generator(self, platform, engine, generator: BaseJobGenerator):
         self.job_generator_registry.register((platform, engine), generator)
 
-    def register_workflow_execution(self, workflow: Workflow):
-        exec_name = generate_time_str()
-        workflow_meta: WorkflowExecutionMeta = self.get_client().register_workflow_execution(
-            name=exec_name,
-            project_id=int(workflow.project_desc.project_config.get_project_uuid()),
-            execution_state=State.INIT,
-            workflow_json=dumps(workflow))
-        workflow.workflow_id = workflow_meta.uuid
-        workflow.execution_name = exec_name
-
-        # set workflow execution id to job context
-        for job in workflow.jobs.values():
-            job.job_context.workflow_execution_id = workflow_meta.uuid
-
     def build_workflow(self, split_graph: SplitGraph, project_desc: ProjectDesc) -> Workflow:
         sub_id_to_job_id = {}
         workflow = Workflow()
@@ -248,8 +233,6 @@ class DefaultWorkflowConstructor(BaseWorkflowConstructor):
                 control_edge.target_node_id = sub_id_to_job_id[e.target_node_id]
                 job_edge: JobControlEdge = control_edge_to_job_edge(control_edge=control_edge)
                 workflow.add_edge(sub_id_to_job_id[e.source_node_id], job_edge)
-
-        self.register_workflow_execution(workflow)
 
         for job in workflow.jobs.values():
             job.job_config.project_path = project_desc.project_path
