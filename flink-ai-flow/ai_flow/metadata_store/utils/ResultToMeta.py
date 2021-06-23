@@ -19,11 +19,9 @@
 import ast
 from ai_flow.meta.artifact_meta import ArtifactMeta
 from ai_flow.meta.dataset_meta import DatasetMeta, DataType, Schema
-from ai_flow.meta.job_meta import JobMeta, State
 from ai_flow.meta.model_relation_meta import ModelRelationMeta, ModelVersionRelationMeta, \
     create_model_version_relation
 from ai_flow.meta.project_meta import ProjectMeta
-from ai_flow.meta.workflow_execution_meta import WorkflowExecutionMeta
 
 
 class ResultToMeta:
@@ -64,17 +62,6 @@ class ResultToMeta:
                            properties=properties)
 
     @staticmethod
-    def result_to_job_meta(job_result) -> JobMeta:
-        properties = job_result.properties
-        if properties is not None:
-            properties = ast.literal_eval(properties)
-        state = State(job_result.job_state)
-        return JobMeta(uuid=job_result.uuid, name=job_result.name, job_id=job_result.job_id, properties=properties,
-                       start_time=job_result.start_time, end_time=job_result.end_time,
-                       job_state=state, log_uri=job_result.log_uri,
-                       workflow_execution_id=job_result.workflow_execution_id, signature=job_result.signature)
-
-    @staticmethod
     def result_to_artifact_meta(artifact_result) -> ArtifactMeta:
         properties = artifact_result.properties
         if properties is not None:
@@ -84,20 +71,6 @@ class ResultToMeta:
                             description=artifact_result.description, uri=artifact_result.uri,
                             create_time=artifact_result.create_time,
                             update_time=artifact_result.update_time, properties=properties)
-
-    @staticmethod
-    def result_to_workflow_execution_meta(execution_result) -> WorkflowExecutionMeta:
-        properties = execution_result.properties
-        if properties is not None:
-            properties = ast.literal_eval(properties)
-        execution_state = State(execution_result.execution_state)
-        return WorkflowExecutionMeta(uuid=execution_result.uuid, name=execution_result.name, properties=properties,
-                                     start_time=execution_result.start_time, end_time=execution_result.end_time,
-                                     execution_state=execution_state,
-                                     log_uri=execution_result.log_uri,
-                                     project_id=execution_result.project_id,
-                                     workflow_json=execution_result.workflow_json, signature=execution_result.signature
-                                     )
 
     @staticmethod
     def result_to_model_relation_meta(model_result) -> ModelRelationMeta:
