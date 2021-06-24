@@ -72,9 +72,10 @@ def run_pyflink_project(project_root_path):
                                                                    stream_uri=validate_result)
             validate_channel = af.model_validate(input_data_list=[validate_example_channel], model_info=train_model,
                                                  executor=PythonObjectExecutor(python_object=ValidateModel()))
-
-        with af.config('predict_job') as pyflink_job_config:
-            pyflink_job_config.set_table_env_create_func(StreamTableEnvCreator())
+        workflow_config = af.default_af_job_context().global_workflow_config
+        flink_config : LocalFlinkJobConfig = workflow_config.job_configs['predict_job']
+        flink_config.set_table_env_create_func(StreamTableEnvCreator())
+        with af.config(config=flink_config):
             # Prediction(Inference)
             predict_example = af.register_example(name='predict_example',
                                                   support_type=ExampleSupportType.EXAMPLE_BATCH,

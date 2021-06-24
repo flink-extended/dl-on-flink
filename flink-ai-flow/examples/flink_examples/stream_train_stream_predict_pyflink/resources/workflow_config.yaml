@@ -34,9 +34,10 @@ validate_job:
 
 
 predict_job:
-  job_name: Predict
   platform: local
   engine: flink
+  job_name: Predict
   flink_home: xxx # Please use your own flink path in this config
-  local_mode: python
+  local_mode: cluster
   language_type: PYTHON
+
