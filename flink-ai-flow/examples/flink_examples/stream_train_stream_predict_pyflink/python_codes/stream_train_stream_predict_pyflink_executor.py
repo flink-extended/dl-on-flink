@@ -198,6 +198,10 @@ class Predict(ScalarFunction):
             return 1.0
 
 
+@udf(input_types=[DataTypes.FLOAT()], result_type=DataTypes.FLOAT())
+def add_three(a):
+    return a + 3
+
 class Transformer(Executor):
     def __init__(self):
         super().__init__()
@@ -217,7 +221,8 @@ class Transformer(Executor):
         #                                              input_types=[DataTypes.FLOAT(), DataTypes.FLOAT(),
         #                                                           DataTypes.FLOAT(), DataTypes.FLOAT()],
         #                                              result_type=DataTypes.FLOAT()))
-        function_context.t_env.register_function("add_one", udf(lambda i: i, DataTypes.FLOAT(), DataTypes.FLOAT()))
+        # function_context.t_env.register_function("add_one", udf(lambda i: i, DataTypes.FLOAT(), DataTypes.FLOAT()))
+        function_context.t_env.register_function("add_three", add_three)
         print("-----")
         print(function_context.t_env.list_functions())
         print(function_context.t_env.list_user_defined_functions())
