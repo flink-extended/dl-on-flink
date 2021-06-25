@@ -22,11 +22,11 @@ def run_pyflink_project(project_root_path):
         with af.config('train_job'):
             # Training of model
             # Register metadata raw training data(example) and read example(i.e. training dataset)
-            train_example = af.register_example(name='train_example',
+            train_example = af.register_example(name=artifact_prefix + 'train_example',
                                                 support_type=ExampleSupportType.EXAMPLE_STREAM,
                                                 stream_uri=EXAMPLE_URI.format('train'),
                                                 data_format='csv')
-            train_model = af.register_model(model_name='iris_model',
+            train_model = af.register_model(model_name=artifact_prefix + 'iris_model',
                                             model_type=ModelType.SAVED_MODEL,
                                             model_desc='A KNN model')
             train_read_example_channel = af.read_example(example_info=train_example,
@@ -40,7 +40,7 @@ def run_pyflink_project(project_root_path):
             # Validation of model
             # Read validation dataset and validate model before it is used to predict
 
-            validate_example = af.register_example(name='validate_example',
+            validate_example = af.register_example(name=artifact_prefix + 'validate_example',
                                                    support_type=ExampleSupportType.EXAMPLE_STREAM,
                                                    data_format='csv',
                                                    batch_uri=EXAMPLE_URI.format('test'),
@@ -50,7 +50,7 @@ def run_pyflink_project(project_root_path):
             validate_result = get_file_dir(__file__) + '/validate_result'
             if os.path.exists(validate_result):
                 os.remove(validate_result)
-            validate_artifact: ArtifactMeta = af.register_artifact(name='validate_artifact',
+            validate_artifact: ArtifactMeta = af.register_artifact(name=artifact_prefix + 'validate_artifact',
                                                                    batch_uri=validate_result,
                                                                    stream_uri=validate_result)
             validate_channel = af.model_validate(input_data_list=[validate_example_channel], model_info=train_model,
@@ -60,7 +60,7 @@ def run_pyflink_project(project_root_path):
         flink_config.set_table_env_create_func(StreamTableEnvCreator())
         with af.config(config=flink_config):
             # Prediction(Inference)
-            predict_example = af.register_example(name='predict_example',
+            predict_example = af.register_example(name=artifact_prefix + 'predict_example',
                                                   support_type=ExampleSupportType.EXAMPLE_BATCH,
                                                   batch_uri=EXAMPLE_URI.format('test'),
                                                   stream_uri=EXAMPLE_URI.format('test'),
@@ -71,7 +71,7 @@ def run_pyflink_project(project_root_path):
                                          model_info=train_model,
                                          executor=FlinkPythonExecutor(python_object=Transformer()))
 
-            write_example = af.register_example(name='write_example',
+            write_example = af.register_example(name=artifact_prefix + 'write_example',
                                                 support_type=ExampleSupportType.EXAMPLE_BATCH,
                                                 batch_uri=get_file_dir(
                                                     __file__) + '/predict_model.csv',

@@ -16,7 +16,7 @@
 ## specific language governing permissions and limitations
 ## under the License.
 ##
-project_name: sklearn_batch_train_batch_predict
+project_name: sklearn_stream_train_stream_predict_pyflink
 master_ip: localhost
 master_port: 50051
 
