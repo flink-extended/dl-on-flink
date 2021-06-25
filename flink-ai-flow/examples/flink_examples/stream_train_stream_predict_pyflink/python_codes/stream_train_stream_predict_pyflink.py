@@ -35,23 +35,6 @@ def run_pyflink_project(project_root_path):
             train_channel = af.train(input_data_list=[train_read_example_channel],
                                      executor=PythonObjectExecutor(python_object=TrainModel()),
                                      model_info=train_model)
-        with af.config('eval_job'):
-            # Evaluation of model
-            evaluate_example = af.register_example(name='evaluate_example',
-                                                   support_type=ExampleSupportType.EXAMPLE_STREAM,
-                                                   data_format='csv',
-                                                   batch_uri=EXAMPLE_URI.format('test'),
-                                                   stream_uri=EXAMPLE_URI.format('test'))
-            evaluate_example_channel = af.read_example(example_info=evaluate_example,
-                                                       executor=PythonObjectExecutor(python_object=TestExampleReader()))
-            evaluate_result = get_file_dir(__file__) + '/evaluate_result'
-            if os.path.exists(evaluate_result):
-                os.remove(evaluate_result)
-            evaluate_artifact: ArtifactMeta = af.register_artifact(name='evaluate_artifact',
-                                                                   batch_uri=evaluate_result,
-                                                                   stream_uri=evaluate_result)
-            evaluate_channel = af.evaluate(input_data_list=[evaluate_example_channel], model_info=train_model,
-                                           executor=PythonObjectExecutor(python_object=EvaluateModel()))
 
         with af.config('validate_job'):
             # Validation of model
@@ -98,10 +81,6 @@ def run_pyflink_project(project_root_path):
             af.write_example(input_data=predict_channel,
                              example_info=write_example,
                              executor=FlinkPythonExecutor(python_object=Sink()))
-
-        af.model_version_control_dependency(src=evaluate_channel,
-                                            model_version_event_type=ModelVersionEventType.MODEL_GENERATED,
-                                            dependency=train_channel, model_name=train_model.name)
 
         af.model_version_control_dependency(src=validate_channel,
                                             model_version_event_type=ModelVersionEventType.MODEL_GENERATED,

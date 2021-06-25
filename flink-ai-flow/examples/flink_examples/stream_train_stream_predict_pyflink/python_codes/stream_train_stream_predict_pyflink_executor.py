@@ -15,7 +15,6 @@ from typing import List
 import threading
 import pandas as pd
 import ai_flow as af
-from sklearn.model_selection import cross_val_score
 from sklearn.neighbors import KNeighborsClassifier
 
 from streamz import Stream
@@ -69,7 +68,7 @@ class TrainModel(PythonExecutor):
             model_path = get_file_dir(__file__) + '/saved_model'
             if not os.path.exists(model_path):
                 os.makedirs(model_path)
-            model_timestamp = time.strftime('%Y-%m-%d-%H:%M:%S', time.localtime())
+            model_timestamp = time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime())
             model_path = model_path + '/' + model_timestamp
             dump(sk_model, model_path)
             af.register_model_version(model=model_meta, model_path=model_path)
@@ -88,25 +87,6 @@ class TestExampleReader(Executor):
         train_data = pd.read_csv(function_context.node_spec.example_meta.stream_uri, header=0, names=EXAMPLE_COLUMNS)
         y_train = train_data.pop(EXAMPLE_COLUMNS[4])
         return [[train_data, y_train]]
-
-
-class EvaluateModel(PythonExecutor):
-    def execute(self, function_context: FunctionContext, input_list: List) -> List:
-        print('evaluate' + generate_time_str())
-        model_name = function_context.node_spec.model.name
-        model_meta = af.get_latest_generated_model_version(model_name)
-        model_path = model_meta.model_path
-
-        evaluate_example = input_list[0][0]
-        y_evaluate = input_list[0][1]
-        clf = load(model_path)
-        scores = cross_val_score(clf, evaluate_example, y_evaluate, cv=5)
-        evaluate_artifact = af.get_artifact_by_name('evaluate_artifact').stream_uri
-        print(scores)
-
-        with open(evaluate_artifact, 'a') as f:
-            f.write('model version: {} scores: {}\n'.format(model_meta.version, scores))
-        return []
 
 
 class ValidateModel(PythonExecutor):
@@ -187,21 +167,6 @@ class Source(SourceExecutor):
         return t_env.from_path('mySource')
 
 
-class Predict(ScalarFunction):
-    def eval(self, sl, sw, pl, pw):
-        # records = [[sl, sw, pl, pw]]
-        # df = pd.DataFrame.from_records(records, columns=['sl', 'sw', 'pl', 'pw'])
-        # return clf.predict(df)[0]
-        try:
-            return pw
-        except:
-            return 1.0
-
-
-@udf(input_types=[DataTypes.FLOAT()], result_type=DataTypes.FLOAT())
-def add_three(a):
-    return a + 3
-
 class Transformer(Executor):
     def __init__(self):
         super().__init__()
@@ -216,24 +181,19 @@ class Transformer(Executor):
         print(model_path)
         clf = load(model_path)
 
-        # function_context.t_env.register_function('mypred',
-        #                                          udf(f=Predict(),
-        #                                              input_types=[DataTypes.FLOAT(), DataTypes.FLOAT(),
-        #                                                           DataTypes.FLOAT(), DataTypes.FLOAT()],
-        #                                              result_type=DataTypes.FLOAT()))
-        # function_context.t_env.register_function("add_one", udf(lambda i: i, DataTypes.FLOAT(), DataTypes.FLOAT()))
-        function_context.t_env.register_function("add_three", add_three)
+        class Predict(ScalarFunction):
+            def eval(self, sl, sw, pl, pw):
+                records = [[sl, sw, pl, pw]]
+                df = pd.DataFrame.from_records(records, columns=['sl', 'sw', 'pl', 'pw'])
+                return clf.predict(df)[0]
+        function_context.t_env.register_function('mypred',
+                                                 udf(f=Predict(),
+                                                     input_types=[DataTypes.FLOAT(), DataTypes.FLOAT(),
+                                                                  DataTypes.FLOAT(), DataTypes.FLOAT()],
+                                                     result_type=DataTypes.FLOAT()))
         print("-----")
-        print(function_context.t_env.list_functions())
         print(function_context.t_env.list_user_defined_functions())
-        #
-        # udf_func = udf(Predict(), input_types=[DataTypes.FLOAT()] * 4, result_type=DataTypes.FLOAT())
-        # function_context.t_env.register_function('predict', udf_func)
-        # return [input_list[0].select("predict(sl,sw,pl,pw)")]
-
-
-        # There are some problems when using python udf here
-        return [input_list[0].add_columns('pw as res')]
+        return [input_list[0].select("mypred(sl,sw,pl,pw)")]
 
 
 class Sink(SinkExecutor):
@@ -242,10 +202,8 @@ class Sink(SinkExecutor):
         print("### {} setup done".format(self.__class__.__name__))
         table_env = function_context.get_table_env()
         table_env.register_table_sink("write_example", CsvTableSink(
-            # ['a'],
-            ['sl', 'sw', 'pl', 'pw', 'res'],
-            # [DataTypes.FLOAT()],
-            [DataTypes.FLOAT()] * 5,
+            ['a'],
+            [DataTypes.FLOAT()],
             function_context.get_example_meta().batch_uri,
             write_mode=WriteMode.OVERWRITE
         ))
