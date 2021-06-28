@@ -19,6 +19,7 @@
 package com.alibaba.flink.ml.operator.ops.table;
 
 import com.alibaba.flink.ml.operator.ops.sink.LogSink;
+import com.google.common.annotations.VisibleForTesting;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSink;
@@ -62,5 +63,10 @@ public class LogTableStreamSink extends TableDummySinkBase implements AppendStre
 	@Override
 	public DataStreamSink<?> consumeDataStream(DataStream<Row> dataStream) {
 		return dataStream.addSink(sinkFunction);
+	}
+
+	@VisibleForTesting
+	RichSinkFunction<Row> getSinkFunction() {
+		return sinkFunction;
 	}
 }
