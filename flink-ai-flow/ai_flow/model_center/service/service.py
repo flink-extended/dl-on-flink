@@ -28,7 +28,7 @@ from ai_flow.model_center.entity.model_version_stage import MODEL_VERSION_TO_EVE
 from ai_flow.model_center.entity.registered_model import RegisteredModel
 from ai_flow.model_center.entity.registered_model_param import RegisteredModelParam
 from ai_flow.protobuf import model_center_service_pb2_grpc
-from ai_flow.protobuf.message_pb2 import ModelType, RegisteredModelMetas
+from ai_flow.protobuf.message_pb2 import RegisteredModelMetas
 from ai_flow.endpoint.server.util import catch_exception, _wrap_response
 from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
 from ai_flow.store.mongo_store import MongoStore
@@ -58,8 +58,6 @@ class ModelCenterService(model_center_service_pb2_grpc.ModelCenterServiceService
     def createRegisteredModel(self, request, context):
         registered_model_param = RegisteredModelParam.from_proto(request)
         registered_model_meta = self.model_repo_store.create_registered_model(registered_model_param.model_name,
-                                                                              ModelType.Name(
-                                                                                  registered_model_param.model_type),
                                                                               registered_model_param.model_desc)
         return _wrap_response(registered_model_meta.to_meta_proto())
 
@@ -70,8 +68,6 @@ class ModelCenterService(model_center_service_pb2_grpc.ModelCenterServiceService
         registered_model_meta = self.model_repo_store.update_registered_model(
             RegisteredModel(model_meta_param.model_name),
             registered_model_param.model_name,
-            ModelType.Name(
-                registered_model_param.model_type),
             registered_model_param.model_desc)
         return _wrap_response(None if registered_model_meta is None else registered_model_meta.to_meta_proto())
 
@@ -100,14 +96,13 @@ class ModelCenterService(model_center_service_pb2_grpc.ModelCenterServiceService
         model_version_param = ModelVersionParam.from_proto(request)
         model_version_meta = self.model_repo_store.create_model_version(model_meta_param.model_name,
                                                                         model_version_param.model_path,
-                                                                        model_version_param.model_metric,
-                                                                        model_version_param.model_flavor,
+                                                                        model_version_param.model_type,
                                                                         model_version_param.version_desc,
                                                                         model_version_param.current_stage)
-        model_type = MODEL_VERSION_TO_EVENT_TYPE.get(ModelVersionStage.from_string(model_version_param.current_stage))
+        event_type = MODEL_VERSION_TO_EVENT_TYPE.get(ModelVersionStage.from_string(model_version_param.current_stage))
         self.notification_client.send_event(BaseEvent(model_version_meta.model_name,
                                                       json.dumps(model_version_meta.__dict__),
-                                                      model_type))
+                                                      event_type))
         return _wrap_response(model_version_meta.to_meta_proto())
 
     @catch_exception
@@ -116,15 +111,14 @@ class ModelCenterService(model_center_service_pb2_grpc.ModelCenterServiceService
         model_version_param = ModelVersionParam.from_proto(request)
         model_version_meta = self.model_repo_store.update_model_version(model_meta_param,
                                                                         model_version_param.model_path,
-                                                                        model_version_param.model_metric,
-                                                                        model_version_param.model_flavor,
+                                                                        model_version_param.model_type,
                                                                         model_version_param.version_desc,
                                                                         model_version_param.current_stage)
         if model_version_param.current_stage is not None:
-            model_type = MODEL_VERSION_TO_EVENT_TYPE.get(ModelVersionStage.from_string(model_version_param.current_stage))
+            event_type = MODEL_VERSION_TO_EVENT_TYPE.get(ModelVersionStage.from_string(model_version_param.current_stage))
             self.notification_client.send_event(BaseEvent(model_version_meta.model_name,
                                                           json.dumps(model_version_meta.__dict__),
-                                                          model_type))
+                                                          event_type))
         return _wrap_response(None if model_version_meta is None else model_version_meta.to_meta_proto())
 
     @catch_exception

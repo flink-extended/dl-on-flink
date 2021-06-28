@@ -44,18 +44,18 @@ class ModelVersionRelationMeta(Jsonable):
     def __init__(self,
                  version: Text,
                  model_id: int,
-                 workflow_execution_id: int):
+                 project_snapshot_id: int):
         self.version = version
         self.model_id = model_id
-        self.workflow_execution_id = workflow_execution_id
+        self.project_snapshot_id = project_snapshot_id
 
     def __str__(self):
         return '<\n' \
                'ModelVersionRelation\n' \
                'version:{},\n' \
                'model_id:{},\n' \
-               'workflow_execution_id:{}\n' \
-               '>'.format(self.version, self.model_id, self.workflow_execution_id)
+               'project_snapshot_id:{}\n' \
+               '>'.format(self.version, self.model_id, self.project_snapshot_id)
 
 
 def create_model_relation(name: Text,
@@ -65,5 +65,5 @@ def create_model_relation(name: Text,
 
 def create_model_version_relation(version: Text,
                                   model_id: int,
-                                  workflow_execution_id: int):
-    return ModelVersionRelationMeta(version=version, model_id=model_id, workflow_execution_id=workflow_execution_id)
+                                  project_snapshot_id: int):
+    return ModelVersionRelationMeta(version=version, model_id=model_id, project_snapshot_id=project_snapshot_id)

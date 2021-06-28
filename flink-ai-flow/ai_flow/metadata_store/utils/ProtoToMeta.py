@@ -24,7 +24,7 @@ from ai_flow.meta.model_relation_meta import ModelRelationMeta, ModelVersionRela
 from ai_flow.meta.project_meta import ProjectMeta
 from ai_flow.protobuf.message_pb2 import DatasetProto, ProjectProto, \
     StateProto, ModelRelationProto, ModelVersionRelationProto, ModelProto, ModelVersionProto, \
-    ArtifactProto, ModelVersionStage, DataTypeProto, ModelType
+    ArtifactProto, ModelVersionStage, DataTypeProto
 
 
 class ProtoToMeta:
@@ -153,7 +153,6 @@ class ProtoToMeta:
     @staticmethod
     def proto_to_model_meta(model_proto: ModelProto) -> ModelMeta:
         return ModelMeta(uuid=model_proto.uuid, name=model_proto.name,
-                         model_type=ModelType.Name(model_proto.model_type),
                          model_desc=model_proto.model_desc.value if model_proto.HasField(
                              'model_desc') else None,
                          project_id=model_proto.project_id.value if model_proto.HasField('project_id') else None)
@@ -171,8 +170,8 @@ class ProtoToMeta:
         return ModelVersionRelationMeta(
             version=model_version_proto.version.value if model_version_proto.HasField('version') else None,
             model_id=model_version_proto.model_id.value if model_version_proto.HasField('model_id') else None,
-            workflow_execution_id=model_version_proto.workflow_execution_id.value
-            if model_version_proto.HasField('workflow_execution_id') else None)
+            project_snapshot_id=model_version_proto.project_snapshot_id.value
+            if model_version_proto.HasField('project_snapshot_id') else None)
 
     @staticmethod
     def proto_to_model_version_relation_meta_list(model_version_proto_list: List[ModelVersionRelationProto]) -> List[
@@ -192,12 +191,10 @@ class ProtoToMeta:
             model_id=model_version_proto.model_id.value if model_version_proto.HasField('model_id') else None,
             model_path=model_version_proto.model_path.value if model_version_proto.HasField(
                 'model_path') else None,
-            model_metric=model_version_proto.model_metric.value if model_version_proto.HasField(
-                'model_metric') else None,
-            model_flavor=model_version_proto.model_flavor.value if model_version_proto.HasField(
-                'model_flavor') else None,
-            workflow_execution_id=model_version_proto.workflow_execution_id.value if model_version_proto.HasField(
-                'workflow_execution_id') else None,
+            model_type=model_version_proto.model_type.value if model_version_proto.HasField(
+                'model_type') else None,
+            project_snapshot_id=model_version_proto.project_snapshot_id.value if model_version_proto.HasField(
+                'project_snapshot_id') else None,
             version_desc=model_version_proto.version_desc.value if model_version_proto.HasField(
                 'version_desc') else None,
             current_stage=ModelVersionStage.Name(model_version_proto.current_stage))

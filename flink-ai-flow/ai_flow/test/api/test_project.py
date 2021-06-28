@@ -135,7 +135,7 @@ class TestProject(unittest.TestCase):
         print(sys._getframe().f_code.co_name)
         model_name = 'test_create_model_version'
         model_desc = 'test create model version'
-        response = af.register_model(model_name=model_name, model_type=af.ModelType.CHECKPOINT,
+        response = af.register_model(model_name=model_name,
                                      model_desc=model_desc)
 
         trigger = af.external_trigger(name='stream_trigger')
@@ -155,11 +155,11 @@ class TestProject(unittest.TestCase):
         version_desc1 = 'test create model version1'
         time.sleep(1)
         response = af.register_model_version(model=model_name, model_path=model_path1,
-                                             model_metric=model_metric1, model_flavor=model_flavor1,
+                                             model_type=model_flavor1,
                                              version_desc=version_desc1, current_stage=af.ModelVersionStage.DEPLOYED)
         time.sleep(5)
         response = af.register_model_version(model=model_name, model_path=model_path1,
-                                             model_metric=model_metric1, model_flavor=model_flavor1,
+                                             model_type=model_flavor1,
                                              version_desc=version_desc1, current_stage=af.ModelVersionStage.DEPLOYED)
         time.sleep(10)
         af.stop_execution_by_id(workflow_id)

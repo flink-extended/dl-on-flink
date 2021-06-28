@@ -18,6 +18,8 @@
 #
 import logging
 import time
+
+from ai_flow.store import MONGO_DB_ALIAS_META_SERVICE
 from typing import Optional, Text, List, Union
 
 import mongoengine
@@ -37,12 +39,11 @@ from ai_flow.model_center.entity.model_version_stage import STAGE_DELETED, get_c
 from ai_flow.protobuf.message_pb2 import INVALID_PARAMETER_VALUE, RESOURCE_ALREADY_EXISTS
 from ai_flow.endpoint.server.exception import AIFlowException
 from ai_flow.endpoint.server.high_availability import Member
-from ai_flow.store import MONGO_DB_ALIAS_META_SERVICE
 from ai_flow.store.abstract_store import AbstractStore
 from ai_flow.store.db.db_model import (MongoProject, MongoDataset, MongoModelVersion,
                                        MongoArtifact, MongoRegisteredModel, MongoModelRelation,
                                        MongoMetricSummary, MongoMetricMeta,
-                                       MongoModelVersionRelation, MongoMember)
+                                       MongoModelVersionRelation, MongoMember, MongoProjectSnapshot)
 from ai_flow.store.db.db_util import parse_mongo_uri
 
 if not hasattr(time, 'time_ns'):
@@ -623,19 +624,19 @@ class MongoStore(AbstractStore):
 
     def register_model_version_relation(self, version: Text,
                                         model_id: int,
-                                        workflow_execution_id: int = None) -> ModelVersionRelationMeta:
+                                        project_snapshot_id: int = None) -> ModelVersionRelationMeta:
         """
         register a model version relation in metadata store.
 
         :param version: the specific model version
         :param model_id: the model id corresponded to the model version
-        :param workflow_execution_id: the workflow execution id corresponded to the model version
+        :param project_snapshot_id: the project snapshot id corresponded to the model version
         :return: A single :py:class:`ai_flow.meta.model_relation_meta.ModelVersionRelationMeta` object.
         """
         try:
             model_version_relation = MetaToTable.model_version_relation_to_table(version=version,
                                                                                  model_id=model_id,
-                                                                                 workflow_execution_id=workflow_execution_id,
+                                                                                 project_snapshot_id=project_snapshot_id,
                                                                                  store_type=type(self).__name__)
             model_version_relation.save()
             # update reference field
@@ -647,8 +648,16 @@ class MongoStore(AbstractStore):
                     model_relation.model_version_relation.append(model_version_relation)
                 model_relation.save()
 
+            if project_snapshot_id is not None:
+                project_snapshot = MongoProjectSnapshot.objects(uuid=project_snapshot_id).first()
+                if project_snapshot.model_version_relation is None:
+                    project_snapshot.model_version_relation = [model_version_relation]
+                else:
+                    project_snapshot.model_version_relation.append(model_version_relation)
+                project_snapshot.save()
+
             model_version_relation_meta = ModelVersionRelationMeta(version=version, model_id=model_id,
-                                                                   workflow_execution_id=workflow_execution_id)
+                                                                   project_snapshot_id=project_snapshot_id)
             return model_version_relation_meta
         except mongoengine.OperationError as e:
             raise AIFlowException('Registered ModelVersion (name={}) already exists. '
@@ -882,12 +891,11 @@ class MongoStore(AbstractStore):
                          register_models[0].model_version)
             return register_models[0]
 
-    def create_registered_model(self, model_name, model_type=None, model_desc=None):
+    def create_registered_model(self, model_name, model_desc=None):
         """
         Create a new registered model in model repository.
 
         :param model_name: Name of registered model. This is expected to be unique in the backend store.
-        :param model_type: (Optional) Type of registered model.
         :param model_desc: (Optional) Description of registered model.
 
         :return: Object of :py:class:`ai_flow.model_center.entity.RegisteredModel` created in Model Center.
@@ -897,16 +905,14 @@ class MongoStore(AbstractStore):
         try:
             before_model = self._get_registered_model(model_name=model_name)
             if before_model is not None:
-                if _compare_model_fields(model_type, model_desc, before_model):
+                if _compare_model_fields(model_desc, before_model):
                     registered_model = MongoRegisteredModel(model_name=model_name,
-                                                            model_type=model_type,
                                                             model_desc=model_desc)
                     return registered_model.to_meta_entity()
                 else:
                     raise AIFlowException("You have registered the model with same name: \"{}\" "
                                           "but different fields".format(model_name), RESOURCE_ALREADY_EXISTS)
             registered_model = MongoRegisteredModel(model_name=model_name,
-                                                    model_type=model_type,
                                                     model_desc=model_desc)
             registered_model.save()
             return registered_model.to_meta_entity()
@@ -914,14 +920,13 @@ class MongoStore(AbstractStore):
             raise AIFlowException('Registered Model (name={}) already exists. Error: {}'.format(model_name, str(e)),
                                   RESOURCE_ALREADY_EXISTS)
 
-    def update_registered_model(self, registered_model, model_name=None, model_type=None, model_desc=None):
+    def update_registered_model(self, registered_model, model_name=None, model_desc=None):
         """
-        Update metadata for RegisteredModel entity. Either ``model_name`` or ``model_type`` or ``model_desc``
+        Update metadata for RegisteredModel entity. Either ``model_name`` or ``model_desc``
         should be non-None. Backend raises exception if registered model with given name does not exist.
 
         :param registered_model: :py:class:`ai_flow.model_center.entity.RegisteredModel` object.
         :param model_name: (Optional) New proposed name for the registered model.
-        :param model_type: (Optional) Type of registered model.
         :param model_desc: (Optional) Description of registered model.
 
         :return: A single updated :py:class:`ai_flow.model_center.entity.RegisteredModel` object.
@@ -936,8 +941,6 @@ class MongoStore(AbstractStore):
                     # Update model name of registered model version
                     for model_version in registered_model.model_version:
                         model_version.model_name = model_name
-                if model_type is not None:
-                    registered_model.model_type = model_type
                 if model_desc is not None:
                     registered_model.model_desc = model_desc
                 self._save_all([registered_model] + registered_model.model_version)
@@ -1022,15 +1025,14 @@ class MongoStore(AbstractStore):
                                          model_version__startswith=deleted_character + model_version + deleted_character,
                                          current_stage__ne=STAGE_DELETED).count()
 
-    def create_model_version(self, model_name, model_path, model_metric, model_flavor=None,
+    def create_model_version(self, model_name, model_path, model_type=None,
                              version_desc=None, current_stage=STAGE_GENERATED):
         """
         Create a new model version from given model source and model metric.
 
         :param model_name: Name for containing registered model.
         :param model_path: Source path where the AIFlow model is stored.
-        :param model_metric: Metric address from AIFlow metric server of registered model.
-        :param model_flavor: (Optional) Flavor feature of AIFlow registered model option.
+        :param model_type: (Optional) Type of AIFlow registered model option.
         :param version_desc: (Optional) Description of registered model version.
         :param current_stage: (Optional) Stage of registered model version
 
@@ -1058,8 +1060,7 @@ class MongoStore(AbstractStore):
                     doc_model_version = MongoModelVersion(model_name=model_name,
                                                           model_version=model_version,
                                                           model_path=model_path,
-                                                          model_metric=model_metric,
-                                                          model_flavor=model_flavor,
+                                                          model_type=model_type,
                                                           version_desc=version_desc,
                                                           current_stage=get_canonical_stage(current_stage))
                     doc_model_version.save()
@@ -1083,15 +1084,14 @@ class MongoStore(AbstractStore):
             'Create model version error (model_name={}). Giving up after {} attempts.'.format(model_name,
                                                                                               self.CREATE_RETRY_TIMES))
 
-    def update_model_version(self, model_version, model_path=None, model_metric=None, model_flavor=None,
+    def update_model_version(self, model_version, model_path=None, model_type=None,
                              version_desc=None, current_stage=None):
         """
         Update metadata associated with a model version in model repository.
 
         :param model_version: :py:class:`ai_flow.model_center.entity.ModelVersion` object.
         :param model_path: (Optional) New Source path where AIFlow model is stored.
-        :param model_metric: (Optional) New Metric address AIFlow metric server of registered model provided.
-        :param model_flavor: (Optional) Flavor feature of AIFlow registered model option.
+        :param model_type: (Optional) Type of AIFlow registered model option.
         :param version_desc: (Optional) New Description of registered model version.
         :param current_stage: (Optional) New desired stage for this model version.
 
@@ -1108,10 +1108,8 @@ class MongoStore(AbstractStore):
             try:
                 if model_path is not None:
                     model_version.model_path = model_path
-                if model_metric is not None:
-                    model_version.model_metric = model_metric
-                if model_flavor is not None:
-                    model_version.model_flavor = model_flavor
+                if model_type is not None:
+                    model_version.model_type = model_type
                 if version_desc is not None:
                     model_version.version_desc = version_desc
                 if current_stage is not None:
@@ -1136,8 +1134,7 @@ class MongoStore(AbstractStore):
             return None
 
         doc_model_version.model_path = "REDACTED-SOURCE-PATH"
-        doc_model_version.model_metric = "REDACTED-METRIC-ADDRESS"
-        doc_model_version.model_flavor = "REDACTED-FLAVOR-FEATURE"
+        doc_model_version.model_type = "REDACTED-TYPE-FEATURE"
         doc_model_version.version_status = None
         doc_model_version.version_desc = None
         doc_model_version.current_stage = STAGE_DELETED
@@ -1497,8 +1494,8 @@ def _compare_artifact_fields(artifact_type, description, uri, properties, before
            and uri == before_artifact.uri and properties == before_artifact.properties
 
 
-def _compare_model_fields(model_type, model_desc, before_model):
-    return model_type == before_model.model_type and model_desc == before_model.model_desc
+def _compare_model_fields(model_desc, before_model):
+    return model_desc == before_model.model_desc
 
 
 def _compare_model_relation_fields(project_id, before_model_relation):

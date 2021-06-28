@@ -50,7 +50,6 @@ public class TrainerNode extends TransformerNode {
     private ModelMeta parseModelMeta(JSONObject model) {
         ModelMeta modelMeta = new ModelMeta();
         modelMeta.setName(model.getString("name"));
-        modelMeta.setModelType(model.getString("model_type"));
         modelMeta.setDescription(model.getString("description"));
         modelMeta.setProjectId(model.getLong("project_id"));
         modelMeta.setCreateTime(model.getLongValue("create_time"));

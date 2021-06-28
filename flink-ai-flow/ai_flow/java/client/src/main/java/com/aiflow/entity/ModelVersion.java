@@ -28,8 +28,7 @@ public class ModelVersion {
     private String modelName;
     private String modelVersion;
     private String modelPath;
-    private String modelMetric;
-    private String modelFlavor;
+    private String modelType;
     private String versionDesc;
     private ModelVersionStatus versionStatus;
     private ModelStage currentStage;
@@ -42,12 +41,11 @@ public class ModelVersion {
         this.modelVersion = modelVersion;
     }
 
-    public ModelVersion(String modelName, String modelVersion, String modelPath, String modelMetric, String modelFlavor, String versionDesc, ModelVersionStatus versionStatus, ModelStage currentStage) {
+    public ModelVersion(String modelName, String modelVersion, String modelPath, String modelType, String versionDesc, ModelVersionStatus versionStatus, ModelStage currentStage) {
         this.modelName = modelName;
         this.modelVersion = modelVersion;
         this.modelPath = modelPath;
-        this.modelMetric = modelMetric;
-        this.modelFlavor = modelFlavor;
+        this.modelType = modelType;
         this.versionDesc = versionDesc;
         this.versionStatus = versionStatus;
         this.currentStage = currentStage;
@@ -77,20 +75,12 @@ public class ModelVersion {
         this.modelPath = modelPath;
     }
 
-    public String getModelMetric() {
-        return modelMetric;
+    public String getModelType() {
+        return modelType;
     }
 
-    public void setModelMetric(String modelMetric) {
-        this.modelMetric = modelMetric;
-    }
-
-    public String getModelFlavor() {
-        return modelFlavor;
-    }
-
-    public void setModelFlavor(String modelFlavor) {
-        this.modelFlavor = modelFlavor;
+    public void setModelType(String modelType) {
+        this.modelType = modelType;
     }
 
     public String getVersionDesc() {
@@ -123,11 +113,10 @@ public class ModelVersion {
                 "modelName='" + modelName + '\'' +
                 ", modelVersion='" + modelVersion + '\'' +
                 ", modelPath='" + modelPath + '\'' +
-                ", modelMetric='" + modelMetric + '\'' +
-                ", modelFlavor='" + modelFlavor + '\'' +
+                ", modelType='" + modelType + '\'' +
                 ", versionDesc='" + versionDesc + '\'' +
-                ", versionStatus='" + versionStatus + '\'' +
-                ", currentStage='" + currentStage + '\'' +
+                ", versionStatus=" + versionStatus +
+                ", currentStage=" + currentStage +
                 '}';
     }
 
@@ -139,8 +128,7 @@ public class ModelVersion {
     public static ModelVersion buildModelVersion(ModelVersionMeta modelVersionMeta) {
         return modelVersionMeta == null ? null : new ModelVersion(modelVersionMeta.getModelName(),
                 modelVersionMeta.getModelVersion(), modelVersionMeta.getModelPath().getValue(),
-                modelVersionMeta.getModelMetric().getValue(), modelVersionMeta.getModelFlavor().getValue(),
-                modelVersionMeta.getVersionDesc().getValue(), modelVersionMeta.getVersionStatus(),
-                ModelStage.getModelStage(modelVersionMeta.getCurrentStage()));
+                modelVersionMeta.getModelType().getValue(), modelVersionMeta.getVersionDesc().getValue(),
+                modelVersionMeta.getVersionStatus(), ModelStage.getModelStage(modelVersionMeta.getCurrentStage()));
     }
 }

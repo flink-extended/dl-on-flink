@@ -38,7 +38,6 @@ public class PredictorNode extends TransformerNode {
         JSONObject model = jsonObject.getJSONObject("model");
         if (model != null) {
             modelMeta.setName(model.getString("name"));
-            modelMeta.setModelType(model.getString("model_type"));
             modelMeta.setDescription(model.getString("description"));
             modelMeta.setCreateTime(model.getLongValue("create_time"));
             modelMeta.setUpdateTime(model.getLongValue("update_time"));

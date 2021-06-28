@@ -116,14 +116,13 @@ class AbstractStore(object):
         pass
 
     @abstractmethod
-    def register_model_version_relation(self, version, model_id,
-                                        workflow_execution_id):
+    def register_model_version_relation(self, version, model_id, project_snapshot_id):
         """
         register a model version relation in metadata store.
 
         :param version: the specific model version
         :param model_id: the model id corresponded to the model version
-        :param workflow_execution_id: the workflow execution id corresponded to the model version
+        :param project_snapshot_id: the project snapshot id corresponded to the model version
         :return: A single :py:class:`ai_flow.meta.model_relation_meta.ModelVersionRelationMeta` object.
         """
         pass
@@ -373,12 +372,11 @@ class AbstractStore(object):
         """
 
     @abstractmethod
-    def create_registered_model(self, model_name, model_type, model_desc=None):
+    def create_registered_model(self, model_name, model_desc=None):
         """
         Create a new registered model in model repository.
 
         :param model_name: Name of registered model. This is expected to be unique in the backend store.
-        :param model_type: Type of registered model.
         :param model_desc: (Optional) Description of registered model.
 
         :return: A single object of :py:class:`ai_flow.model_center.entity.RegisteredModel` created in model
@@ -387,14 +385,13 @@ class AbstractStore(object):
         pass
 
     @abstractmethod
-    def update_registered_model(self, registered_model, model_name=None, model_type=None, model_desc=None):
+    def update_registered_model(self, registered_model, model_name=None, model_desc=None):
         """
-        Update metadata for RegisteredModel entity. Either ``model_name`` or ``model_type`` or ``model_desc``
+        Update metadata for RegisteredModel entity. Either ``model_name`` or ``model_desc``
         should be non-None. Backend raises exception if a registered model with given name does not exist.
 
         :param registered_model: :py:class:`ai_flow.model_center.entity.RegisteredModel` object.
         :param model_name: (Optional) New proposed name for the registered model.
-        :param model_type: (Optional) Type of registered model.
         :param model_desc: (Optional) Description of registered model.
 
         :return: A single updated :py:class:`ai_flow.model_center.entity.RegisteredModel` object.
@@ -432,16 +429,15 @@ class AbstractStore(object):
         pass
 
     @abstractmethod
-    def create_model_version(self, model_name, model_version, model_path, model_metric, model_flavor=None,
-                             version_desc=None):
+    def create_model_version(self, model_name, model_version, model_path,
+                             model_type=None, version_desc=None):
         """
         Create a new model version from given model source and model metric.
 
         :param model_name: Name for containing registered model.
         :param model_version: User-defined version of registered model.
         :param model_path: Source path where the AIFlow model is stored.
-        :param model_metric: Metric address from AIFlow metric server of registered model.
-        :param model_flavor: (Optional) Flavor feature of AIFlow registered model option.
+        :param model_type: (Optional) Type of AIFlow model option.
         :param version_desc: (Optional) Description of registered model version.
 
         :return: A single object of :py:class:`ai_flow.model_center.entity.ModelVersion`
@@ -450,15 +446,14 @@ class AbstractStore(object):
         pass
 
     @abstractmethod
-    def update_model_version(self, model_version, model_path=None, model_metric=None, model_flavor=None,
+    def update_model_version(self, model_version, model_path=None, model_type=None,
                              version_desc=None, version_stage=None):
         """
         Update metadata associated with a model version in model repository.
 
         :param model_version: :py:class:`ai_flow.model_center.entity.ModelVersion` object.
         :param model_path: (Optional) New Source path where AIFlow model is stored.
-        :param model_metric: (Optional) New Metric address AIFlow metric server of registered model provided.
-        :param model_flavor: (Optional) Flavor feature of AIFlow registered model option.
+        :param model_type: (Optional) Type of AIFlow registered model option.
         :param version_desc: (Optional) New Description of registered model version.
         :param version_stage: (Optional) New desired stage for this model version.
 

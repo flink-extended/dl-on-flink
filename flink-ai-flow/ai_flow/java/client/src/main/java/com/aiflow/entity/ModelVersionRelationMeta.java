@@ -28,15 +28,15 @@ public class ModelVersionRelationMeta {
 
     private String version;
     private Long modelId;
-    private Long workflowExecutionId;
+    private Long projectSnapshotId;
 
     public ModelVersionRelationMeta() {
     }
 
-    public ModelVersionRelationMeta(String version, Long modelId, Long workflowExecutionId) {
+    public ModelVersionRelationMeta(String version, Long modelId, Long projectSnapshotId) {
         this.version = version;
         this.modelId = modelId;
-        this.workflowExecutionId = workflowExecutionId;
+        this.projectSnapshotId = projectSnapshotId;
     }
 
     public String getVersion() {
@@ -55,12 +55,12 @@ public class ModelVersionRelationMeta {
         this.modelId = modelId;
     }
 
-    public Long getWorkflowExecutionId() {
-        return workflowExecutionId;
+    public Long getProjectSnapshotId() {
+        return projectSnapshotId;
     }
 
-    public void setWorkflowExecutionId(Long workflowExecutionId) {
-        this.workflowExecutionId = workflowExecutionId;
+    public void setProjectSnapshotId(Long projectSnapshotId) {
+        this.projectSnapshotId = projectSnapshotId;
     }
 
     @Override
@@ -68,13 +68,13 @@ public class ModelVersionRelationMeta {
         return "ModelVersionRelationMeta{" +
                 "version='" + version + '\'' +
                 ", modelId=" + modelId +
-                ", workflowExecutionId=" + workflowExecutionId +
+                ", projectSnapshotId=" + projectSnapshotId +
                 '}';
     }
 
     public static ModelVersionRelationMeta buildModelVersionRelationMeta(ModelVersionRelationProto modelVersionRelationProto) {
         return modelVersionRelationProto == null ? null : new ModelVersionRelationMeta(modelVersionRelationProto.getVersion().getValue(),
-                modelVersionRelationProto.getModelId().getValue(), modelVersionRelationProto.getWorkflowExecutionId().getValue());
+                modelVersionRelationProto.getModelId().getValue(), modelVersionRelationProto.getProjectSnapshotId().getValue());
     }
 
     public static List<ModelVersionRelationMeta> buildModelVersionRelationMetas(ModelVersionRelationListProto modelVersionRelationListProto) {
