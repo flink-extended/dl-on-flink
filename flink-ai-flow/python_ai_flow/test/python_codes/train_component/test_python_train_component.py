@@ -170,8 +170,7 @@ class TestTrainComponent(unittest.TestCase):
     def test_batch_train_component(self):
         input_example_meta = af.register_example(name='batch_train_example',
                                                  support_type=ExampleSupportType.EXAMPLE_BATCH)
-        model_meta = af.register_model(model_name='mnist_model',
-                                       model_type=ModelType.SAVED_MODEL)
+        model_meta = af.register_model(model_name='mnist_model')
         with af.config(af.BaseJobConfig(platform='local', engine='python', job_name='batch_train')):
             input_example = af.read_example(example_info=input_example_meta,
                                             executor=PythonObjectExecutor(python_object=ReadBatchExample()))
@@ -185,8 +184,7 @@ class TestTrainComponent(unittest.TestCase):
     def test_batch_train_component_with_an_output(self):
         input_example_meta = af.register_example(name='batch_train_example',
                                                  support_type=ExampleSupportType.EXAMPLE_BATCH)
-        model_meta = af.register_model(model_name='mnist_model',
-                                       model_type=ModelType.SAVED_MODEL)
+        model_meta = af.register_model(model_name='mnist_model')
 
         example_meta = af.register_example(name='output_example', support_type=ExampleSupportType.EXAMPLE_BATCH,
                                            data_type='numpy', data_format='npz',
@@ -209,8 +207,7 @@ class TestTrainComponent(unittest.TestCase):
     def test_stream_train_component(self):
         batch_input_example_meta = af.register_example(name='stream_train_example',
                                                        support_type=ExampleSupportType.EXAMPLE_BOTH)
-        model_meta = af.register_model(model_name='mnist_model',
-                                       model_type=ModelType.SAVED_MODEL)
+        model_meta = af.register_model(model_name='mnist_model')
         stream_input_example_meta = af.register_example(name='stream_train_example',
                                                         support_type=ExampleSupportType.EXAMPLE_BOTH)
         with af.config(af.BaseJobConfig(platform='local', engine='python', job_name='stream_train')):

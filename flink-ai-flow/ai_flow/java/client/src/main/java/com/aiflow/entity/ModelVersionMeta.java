@@ -24,23 +24,21 @@ public class ModelVersionMeta {
 
     private String version;
     private String modelPath;
-    private String modelMetric;
-    private String modelFlavor;
+    private String modelType;
     private String versionDesc;
     private Long modelId;
-    private Long workflowExecutionId;
+    private Long projectSnapshotId;
 
     public ModelVersionMeta() {
     }
 
-    public ModelVersionMeta(String version, String modelPath, String modelMetric, String modelFlavor, String versionDesc, Long modelId, Long workflowExecutionId) {
+    public ModelVersionMeta(String version, String modelPath, String modelType, String versionDesc, Long modelId, Long projectSnapshotId) {
         this.version = version;
         this.modelPath = modelPath;
-        this.modelMetric = modelMetric;
-        this.modelFlavor = modelFlavor;
+        this.modelType = modelType;
         this.versionDesc = versionDesc;
         this.modelId = modelId;
-        this.workflowExecutionId = workflowExecutionId;
+        this.projectSnapshotId = projectSnapshotId;
     }
 
     public String getVersion() {
@@ -59,20 +57,12 @@ public class ModelVersionMeta {
         this.modelPath = modelPath;
     }
 
-    public String getModelMetric() {
-        return modelMetric;
+    public String getModelType() {
+        return modelType;
     }
 
-    public void setModelMetric(String modelMetric) {
-        this.modelMetric = modelMetric;
-    }
-
-    public String getModelFlavor() {
-        return modelFlavor;
-    }
-
-    public void setModelFlavor(String modelFlavor) {
-        this.modelFlavor = modelFlavor;
+    public void setModelType(String modelType) {
+        this.modelType = modelType;
     }
 
     public String getVersionDesc() {
@@ -91,12 +81,12 @@ public class ModelVersionMeta {
         this.modelId = modelId;
     }
 
-    public Long getWorkflowExecutionId() {
-        return workflowExecutionId;
+    public Long getProjectSnapshotId() {
+        return projectSnapshotId;
     }
 
-    public void setWorkflowExecutionId(Long workflowExecutionId) {
-        this.workflowExecutionId = workflowExecutionId;
+    public void setProjectSnapshotId(Long projectSnapshotId) {
+        this.projectSnapshotId = projectSnapshotId;
     }
 
     @Override
@@ -104,18 +94,17 @@ public class ModelVersionMeta {
         return "ModelVersionMeta{" +
                 "version='" + version + '\'' +
                 ", modelPath='" + modelPath + '\'' +
-                ", modelMetric='" + modelMetric + '\'' +
-                ", modelFlavor='" + modelFlavor + '\'' +
+                ", modelType='" + modelType + '\'' +
                 ", versionDesc='" + versionDesc + '\'' +
                 ", modelId=" + modelId +
-                ", workflowExecutionId=" + workflowExecutionId +
+                ", projectSnapshotId=" + projectSnapshotId +
                 '}';
     }
 
     public static ModelVersionMeta buildModelVersionMeta(ModelVersionProto modelVersionProto) {
         return modelVersionProto == null ? null : new ModelVersionMeta(modelVersionProto.getVersion().getValue(),
-                modelVersionProto.getModelPath().getValue(), modelVersionProto.getModelMetric().getValue(),
-                modelVersionProto.getModelFlavor().getValue(), modelVersionProto.getVersionDesc().getValue(),
-                modelVersionProto.getModelId().getValue(), modelVersionProto.getWorkflowExecutionId().getValue());
+                modelVersionProto.getModelPath().getValue(),modelVersionProto.getModelType().getValue(),
+                modelVersionProto.getVersionDesc().getValue(), modelVersionProto.getModelId().getValue(),
+                modelVersionProto.getProjectSnapshotId().getValue());
     }
 }

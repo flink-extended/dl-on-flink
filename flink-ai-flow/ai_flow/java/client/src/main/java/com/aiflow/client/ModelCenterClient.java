@@ -19,7 +19,6 @@
 package com.aiflow.client;
 
 import com.aiflow.common.ModelStage;
-import com.aiflow.common.ModelType;
 import com.aiflow.entity.ModelVersion;
 import com.aiflow.entity.RegisteredModel;
 import com.aiflow.proto.Message.*;
@@ -66,15 +65,11 @@ public class ModelCenterClient {
      * Create a new registered model from given type in Model Center.
      *
      * @param modelName Name of registered model. This is expected to be unique in the backend store.
-     * @param modelType Type of registered model.
      * @param modelDesc (Optional) Description of registered model.
      * @return Object of RegisteredModel created in Model Center.
      */
-    public RegisteredModel createRegisteredModel(String modelName, ModelType modelType, String modelDesc) throws Exception {
+    public RegisteredModel createRegisteredModel(String modelName, String modelDesc) throws Exception {
         RegisteredModelParam.Builder modelParam = RegisteredModelParam.newBuilder().setModelName(stringValue(modelName)).setModelDesc(stringValue(modelDesc));
-        if (modelType != null) {
-            modelParam.setModelType(modelType.getModelType());
-        }
         CreateRegisteredModelRequest request = CreateRegisteredModelRequest.newBuilder().setRegisteredModel(modelParam).build();
         Response response = this.modelCenterServiceStub.createRegisteredModel(request);
         RegisteredModelMeta.Builder builder = RegisteredModelMeta.newBuilder();
@@ -82,18 +77,17 @@ public class ModelCenterClient {
     }
 
     /**
-     * Update metadata for RegisteredModel entity backend. Either ``modelName`` or ``modelType`` or ``modelDesc``
+     * Update metadata for RegisteredModel entity backend. Either ``modelName``  or ``modelDesc``
      * should be non-None. Backend raises exception if a registered model with given name does not exist.
      *
      * @param modelName Name of registered model. This is expected to be unique in the backend store.
      * @param newName   (Optional) New proposed name for the registered model.
-     * @param modelType (Optional) Type of registered model.
      * @param modelDesc (Optional) Description of registered model.
      * @return Object of RegisteredModel updated in Model Center.
      */
-    public RegisteredModel updateRegisteredModel(String modelName, String newName, ModelType modelType, String modelDesc) throws Exception {
+    public RegisteredModel updateRegisteredModel(String modelName, String newName, String modelDesc) throws Exception {
         RegisteredModelParam.Builder param = RegisteredModelParam.newBuilder().setModelName(stringValue(newName))
-                .setModelType(modelType == null ? null : modelType.getModelType()).setModelDesc(stringValue(modelDesc));
+                .setModelDesc(stringValue(modelDesc));
         UpdateRegisteredModelRequest request = UpdateRegisteredModelRequest.newBuilder()
                 .setModelMeta(ModelMetaParam.newBuilder().setModelName(stringValue(modelName))).setRegisteredModel(param).build();
         Response response = this.modelCenterServiceStub.updateRegisteredModel(request);
@@ -146,16 +140,15 @@ public class ModelCenterClient {
      *
      * @param modelName   Name of registered model. This is expected to be unique in the backend store.
      * @param modelPath   Source path where the AIFlow model is stored.
-     * @param modelMetric Metric address from AIFlow metric server of registered model.
-     * @param modelFlavor (Optional) Flavor feature of AIFlow registered model option.
+     * @param modelType (Optional) Type of AIFlow registered model option.
      * @param versionDesc (Optional) Description of registered model version.
      * @return Object of ModelVersion created in Model Center.
      */
-    public ModelVersion createModelVersion(String modelName, String modelPath, String modelMetric, String modelFlavor, String versionDesc) throws Exception {
+    public ModelVersion createModelVersion(String modelName, String modelPath, String modelType, String versionDesc) throws Exception {
         CreateModelVersionRequest request = CreateModelVersionRequest.newBuilder()
                 .setModelMeta(ModelMetaParam.newBuilder().setModelName(stringValue(modelName)))
                 .setModelVersion(ModelVersionParam.newBuilder().setModelPath(stringValue(modelPath))
-                        .setModelMetric(stringValue(modelMetric)).setModelFlavor(stringValue(modelFlavor)).setVersionDesc(stringValue(versionDesc))
+                        .setModelType(stringValue(modelType)).setVersionDesc(stringValue(versionDesc))
                         .setCurrentStage(ModelStage.GENERATED.getModelStage())).build();
         Response response = this.modelCenterServiceStub.createModelVersion(request);
         ModelVersionMeta.Builder builder = ModelVersionMeta.newBuilder();
@@ -164,21 +157,20 @@ public class ModelCenterClient {
 
     /**
      * Update metadata for ModelVersion entity and metadata associated with a model version in backend.
-     * Either ``modelPath`` or ``modelMetric`` or ``modelFlavor`` or ``versionDesc`` should be non-None.
+     * Either ``modelPath`` or ``modelType`` or ``versionDesc`` should be non-None.
      * Backend raises exception if a registered model with given name does not exist.
      *
      * @param modelName    Name of registered model. This is expected to be unique in the backend store.
      * @param modelVersion User-defined version of registered model.
      * @param modelPath    (Optional) Source path where the AIFlow model is stored.
-     * @param modelMetric  (Optional) Metric address from AIFlow metric server of registered model.
-     * @param modelFlavor  (Optional) Flavor feature of AIFlow registered model option.
+     * @param modelType    (Optional) Type of AIFlow registered model option.
      * @param versionDesc  (Optional) Description of registered model version.
      * @param currentStage (Optional) Current stage for registered model version.
      * @return Object of ModelVersion updated in Model Center.
      */
-    public ModelVersion updateModelVersion(String modelName, String modelVersion, String modelPath, String modelMetric, String modelFlavor, String versionDesc, ModelStage currentStage) throws Exception {
-        ModelVersionParam.Builder param = ModelVersionParam.newBuilder().setModelPath(stringValue(modelPath)).setModelMetric(stringValue(modelMetric))
-                .setModelFlavor(stringValue(modelFlavor)).setVersionDesc(stringValue(versionDesc));
+    public ModelVersion updateModelVersion(String modelName, String modelVersion, String modelPath, String modelType, String versionDesc, ModelStage currentStage) throws Exception {
+        ModelVersionParam.Builder param = ModelVersionParam.newBuilder().setModelPath(stringValue(modelPath))
+                .setModelType(stringValue(modelType)).setVersionDesc(stringValue(versionDesc));
         if (currentStage != null) {
             param.setCurrentStage(currentStage.getModelStage());
         }

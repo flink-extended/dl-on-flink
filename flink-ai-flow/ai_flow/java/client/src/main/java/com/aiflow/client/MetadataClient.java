@@ -18,7 +18,6 @@
  */
 package com.aiflow.client;
 
-import com.aiflow.common.ModelType;
 import com.aiflow.common.*;
 import com.aiflow.entity.ModelVersionMeta;
 import com.aiflow.entity.*;
@@ -341,13 +340,12 @@ public class MetadataClient {
      * Register a model in Metadata Store.
      *
      * @param modelName Name of registered model.
-     * @param modelType Type of registered model.
      * @param modelDesc Description of registered model.
      * @param projectId Project id which registered model corresponded to.
      * @return Single ModelMeta object registered in Metadata Store.
      */
-    public ModelMeta registerModel(String modelName, ModelType modelType, String modelDesc, Long projectId) throws Exception {
-        ModelProto modelProto = ModelProto.newBuilder().setName(modelName).setModelType(modelType.getModelType()).setModelDesc(stringValue(modelDesc))
+    public ModelMeta registerModel(String modelName, String modelDesc, Long projectId) throws Exception {
+        ModelProto modelProto = ModelProto.newBuilder().setName(modelName).setModelDesc(stringValue(modelDesc))
                 .setProjectId(int64Value(projectId)).build();
         RegisterModelRequest request = RegisterModelRequest.newBuilder().setModel(modelProto).build();
         Response response = metadataServiceStub.registerModel(request);
@@ -398,12 +396,12 @@ public class MetadataClient {
      *
      * @param version             Name of model version.
      * @param modelId             Model id corresponded to model version.
-     * @param workflowExecutionId Workflow execution id corresponded to model version.
+     * @param projectSnapshotId   Project snapshot id corresponded to model version.
      * @return Single ModelVersionRelationMeta object registered in Metadata Store.
      */
-    public ModelVersionRelationMeta registerModelVersionRelation(String version, Long modelId, Long workflowExecutionId) throws Exception {
+    public ModelVersionRelationMeta registerModelVersionRelation(String version, Long modelId, Long projectSnapshotId) throws Exception {
         ModelVersionRelationProto modelVersionRelationProto = ModelVersionRelationProto.newBuilder().setVersion(stringValue(version)).setModelId(int64Value(modelId))
-                .setWorkflowExecutionId(int64Value(workflowExecutionId)).build();
+                .setProjectSnapshotId(int64Value(projectSnapshotId)).build();
         RegisterModelVersionRelationRequest request = RegisterModelVersionRelationRequest.newBuilder().setModelVersionRelation(modelVersionRelationProto).build();
         Response response = metadataServiceStub.registerModelVersionRelation(request);
         ModelVersionRelationProto.Builder builder = ModelVersionRelationProto.newBuilder();
@@ -456,17 +454,16 @@ public class MetadataClient {
      * Register a model version in Metadata Store.
      *
      * @param modelPath           Source path where the AIFlow model is stored.
-     * @param modelMetric         Metric address from AIFlow metric server of registered model.
-     * @param modelFlavor         Flavor feature of AIFlow registered model option.
+     * @param modelType           Type of AIFlow registered model option.
      * @param versionDesc         Description of registered model version.
      * @param modelId             Model id corresponded to model version.
-     * @param workflowExecutionId Workflow execution id corresponded to model version.
+     * @param projectSnapshotId   Project snapshot id corresponded to model version.
      * @return Single ModelVersionRelationMeta object registered in Metadata Store.
      */
-    public ModelVersionMeta registerModelVersion(String modelPath, String modelMetric, String modelFlavor, String versionDesc, Long modelId, Long workflowExecutionId) throws Exception {
+    public ModelVersionMeta registerModelVersion(String modelPath, String modelType, String versionDesc, Long modelId, Long projectSnapshotId) throws Exception {
         ModelVersionProto modelVersionProto = ModelVersionProto.newBuilder().setModelPath(stringValue(modelPath))
-                .setModelMetric(stringValue(modelMetric)).setModelMetric(stringValue(modelMetric)).setModelFlavor(stringValue(modelFlavor))
-                .setVersionDesc(stringValue(versionDesc)).setModelId(int64Value(modelId)).setWorkflowExecutionId(int64Value(workflowExecutionId)).build();
+                .setModelType(stringValue(modelType))
+                .setVersionDesc(stringValue(versionDesc)).setModelId(int64Value(modelId)).setProjectSnapshotId(int64Value(projectSnapshotId)).build();
         RegisterModelVersionRequest request = RegisterModelVersionRequest.newBuilder().setModelVersion(modelVersionProto).build();
         Response response = metadataServiceStub.registerModelVersion(request);
         ModelVersionProto.Builder builder = ModelVersionProto.newBuilder();

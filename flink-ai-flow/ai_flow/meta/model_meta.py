@@ -26,18 +26,16 @@ class ModelVersionMeta(Jsonable):
                  version: Text,
                  model_id: int,
                  model_path: Text = None,
-                 model_metric: Text = None,
-                 model_flavor: Text = None,
-                 workflow_execution_id: int = None,
+                 model_type: Text = None,
+                 project_snapshot_id: int = None,
                  version_desc: Text = None,
                  current_stage: Text = None
                  ) -> None:
         self.version = version
         self.model_id = model_id
         self.model_path = model_path
-        self.model_metric = model_metric
-        self.model_flavor = model_flavor
-        self.workflow_execution_id = workflow_execution_id
+        self.model_type = model_type
+        self.project_snapshot_id = project_snapshot_id
         self.version_desc = version_desc
         self.current_stage = current_stage
 
@@ -45,39 +43,30 @@ class ModelVersionMeta(Jsonable):
 def create_model_version(version: Text,
                          model_id: int,
                          model_path: Text = None,
-                         model_metric: Text = None,
-                         model_flavor: Text = None,
-                         workflow_execution_id: int = None,
+                         model_type: Text = None,
+                         project_snapshot_id: int = None,
                          version_desc: Text = None,
                          current_stage: Text = None):
-    return ModelVersionMeta(version=version, model_id=model_id, model_path=model_path, model_metric=model_metric,
-                            model_flavor=model_flavor, workflow_execution_id=workflow_execution_id,
+    return ModelVersionMeta(version=version, model_id=model_id, model_path=model_path,
+                            model_type=model_type, project_snapshot_id=project_snapshot_id,
                             version_desc=version_desc, current_stage=current_stage)
 
 
 class ModelMeta(Jsonable):
     def __init__(self,
                  name: Text,
-                 model_type: Text,
                  model_desc: Text = None,
                  project_id: Text = None,
                  uuid: int = None
                  ) -> None:
         self.name = name
-        self.model_type = model_type
         self.model_desc = model_desc
         self.project_id = project_id
         self.uuid = uuid
 
 
 def create_model(name: Text,
-                 model_type: Text,
                  model_desc: Text = None,
                  project_id: Text = None) -> ModelMeta:
-    return ModelMeta(name, model_type, model_desc, project_id)
+    return ModelMeta(name, model_desc, project_id)
 
-
-class ModelType(str, Enum):
-    CHECKPOINT = 'CHECKPOINT'
-    SAVED_MODEL = 'SAVED_MODEL'
-    H5 = 'H5'

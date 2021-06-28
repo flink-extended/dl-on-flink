@@ -55,7 +55,7 @@ def run_flink_predict_job():
                                             batch_properties=batch_args_1,
                                             stream_properties=stream_args_1)
                                         )
-        model_meta = af.ModelMeta(name="test", model_type="saved_model")
+        model_meta = af.ModelMeta(name="test")
 
         exec_args: ExecuteArgs = ExecuteArgs()
         exec_args.common_properties = {'a': 'a'}

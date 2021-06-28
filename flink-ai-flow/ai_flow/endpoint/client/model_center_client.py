@@ -28,7 +28,7 @@ from ai_flow.model_center.entity.registered_model_detail import RegisteredModelD
 from ai_flow.protobuf import model_center_service_pb2_grpc
 from ai_flow.protobuf.message_pb2 import ModelMetaParam, RegisteredModelParam, \
     ModelVersionParam, RegisteredModelDetail as ProtoModelDetail, RegisteredModelMeta, RegisteredModelMetas, \
-    ModelVersionMeta, ModelType
+    ModelVersionMeta
 from ai_flow.protobuf.model_center_service_pb2 import CreateRegisteredModelRequest, \
     UpdateRegisteredModelRequest, DeleteRegisteredModelRequest, ListRegisteredModelsRequest, \
     GetRegisteredModelDetailRequest, CreateModelVersionRequest, UpdateModelVersionRequest, DeleteModelVersionRequest, \
@@ -44,12 +44,11 @@ class ModelCenterClient(BaseClient):
         channel = grpc.insecure_channel(server_uri)
         self.model_center_stub = model_center_service_pb2_grpc.ModelCenterServiceStub(channel)
 
-    def create_registered_model(self, model_name, model_type, model_desc=None) -> Optional[RegisteredModelDetail]:
+    def create_registered_model(self, model_name, model_desc=None) -> Optional[RegisteredModelDetail]:
         """
         Create a new registered model from given type in Model Center.
 
         :param model_name: Name of registered model. This is expected to be unique in the backend store.
-        :param model_type: Type of registered model.
         :param model_desc: (Optional) Description of registered model.
 
         :return: A single object of :py:class:`ai_flow.model_center.entity.RegisteredModelDetail` created in
@@ -57,30 +56,26 @@ class ModelCenterClient(BaseClient):
         """
         request = CreateRegisteredModelRequest(
             registered_model=RegisteredModelParam(model_name=stringValue(model_name),
-                                                  model_type=ModelType.Value(model_type),
                                                   model_desc=stringValue(model_desc)))
         response = self.model_center_stub.createRegisteredModel(request)
         return RegisteredModelDetail.from_proto(_parse_response(response, RegisteredModelMeta()))
 
-    def update_registered_model(self, model_name, new_name=None, model_type=None,
+    def update_registered_model(self, model_name, new_name=None,
                                 model_desc=None) -> Optional[RegisteredModelDetail]:
         """
-        Update metadata for RegisteredModel entity backend. Either ``model_name`` or ``model_type`` or ``model_desc``
+        Update metadata for RegisteredModel entity backend. Either ``model_name`` or ``model_desc``
         should be non-None. Backend raises exception if a registered model with given name does not exist.
 
         :param model_name: Name of registered model. This is expected to be unique in the backend store.
         :param new_name: (Optional) New proposed name for the registered model.
-        :param model_type: (Optional) Type of registered model.
         :param model_desc: (Optional) Description of registered model.
 
         :return: A single updated :py:class:`ai_flow.model_center.entity.RegisteredModelDetail` object.
         """
-        request = UpdateRegisteredModelRequest(model_meta=ModelMetaParam(model_name=stringValue(model_name)),
-                                               registered_model=RegisteredModelParam(model_name=stringValue(new_name),
-                                                                                     model_type=ModelType.Value(
-                                                                                         model_type),
-                                                                                     model_desc=stringValue(
-                                                                                         model_desc)))
+        request = UpdateRegisteredModelRequest(
+            model_meta=ModelMetaParam(model_name=stringValue(model_name)),
+            registered_model=RegisteredModelParam(model_name=stringValue(new_name),
+                                                  model_desc=stringValue(model_desc)))
         response = self.model_center_stub.updateRegisteredModel(request)
         return RegisteredModelDetail.from_proto(_parse_response(response, RegisteredModelMeta()))
 
@@ -121,15 +116,14 @@ class ModelCenterClient(BaseClient):
         response = self.model_center_stub.getRegisteredModelDetail(request)
         return RegisteredModelDetail.from_detail_proto(_parse_response(response, ProtoModelDetail()))
 
-    def create_model_version(self, model_name, model_path, model_metric, model_flavor=None, version_desc=None,
+    def create_model_version(self, model_name, model_path, model_type=None, version_desc=None,
                              current_stage=ModelVersionStage.GENERATED) -> Optional[ModelVersionDetail]:
         """
         Create a new model version from given source and metric in Model Center.
 
         :param model_name: Name of registered model. This is expected to be unique in the backend store.
         :param model_path: Source path where the AIFlow model is stored.
-        :param model_metric: Metric address from AIFlow metric server of registered model.
-        :param model_flavor: (Optional) Flavor feature of AIFlow registered model option.
+        :param model_type: (Optional) Type of AIFlow registered model option.
         :param version_desc: (Optional) Description of registered model version.
         :param current_stage: (Optional) Stage of registered model version.
 
@@ -138,25 +132,23 @@ class ModelCenterClient(BaseClient):
         """
         request = CreateModelVersionRequest(model_meta=ModelMetaParam(model_name=stringValue(model_name)),
                                             model_version=ModelVersionParam(model_path=stringValue(model_path),
-                                                                            model_metric=stringValue(model_metric),
-                                                                            model_flavor=stringValue(model_flavor),
+                                                                            model_type=stringValue(model_type),
                                                                             version_desc=stringValue(version_desc),
                                                                             current_stage=current_stage))
         response = self.model_center_stub.createModelVersion(request)
         return ModelVersionDetail.from_proto(_parse_response(response, ModelVersionMeta()))
 
-    def update_model_version(self, model_name, model_version, model_path=None, model_metric=None, model_flavor=None,
+    def update_model_version(self, model_name, model_version, model_path=None, model_type=None,
                              version_desc=None, current_stage=None) -> Optional[ModelVersionDetail]:
         """
         Update metadata for ModelVersion entity and metadata associated with a model version in backend.
-        Either ``model_path`` or ``model_metric`` or ``model_flavor`` or ``version_desc`` should be non-None.
+        Either ``model_path`` or ``model_type`` or ``version_desc`` should be non-None.
         Backend raises exception if a registered model with given name does not exist.
 
         :param model_name: Name of registered model. This is expected to be unique in the backend store.
         :param model_version: User-defined version of registered model.
         :param model_path: (Optional) Source path where the AIFlow model is stored.
-        :param model_metric: (Optional) Metric address from AIFlow metric server of registered model.
-        :param model_flavor: (Optional) Flavor feature of AIFlow registered model option.
+        :param model_type: (Optional) Type of AIFlow registered model option.
         :param version_desc: (Optional) Description of registered model version.
         :param current_stage: (Optional) Current stage of registered model version.
 
@@ -165,8 +157,7 @@ class ModelCenterClient(BaseClient):
         request = UpdateModelVersionRequest(
             model_meta=ModelMetaParam(model_name=stringValue(model_name), model_version=stringValue(model_version)),
             model_version=ModelVersionParam(model_path=stringValue(model_path),
-                                            model_metric=stringValue(model_metric),
-                                            model_flavor=stringValue(model_flavor),
+                                            model_type=stringValue(model_type),
                                             version_desc=stringValue(version_desc),
                                             current_stage=current_stage))
         response = self.model_center_stub.updateModelVersion(request)

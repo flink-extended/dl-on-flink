@@ -177,8 +177,7 @@ class TestPredictComponent(unittest.TestCase):
     def test_batch_predict_component(self):
         input_example_meta = af.register_example(name='input_train_example',
                                                  support_type=ExampleSupportType.EXAMPLE_BOTH)
-        model_meta = af.register_model(model_name='mnist_model',
-                                       model_type=ModelType.SAVED_MODEL)
+        model_meta = af.register_model(model_name='mnist_model')
         batch_output_file = get_file_dir(__file__) + '/batch_predict'
         evaluate_output = af.register_artifact(name='batch_evaluate',
                                                batch_uri=batch_output_file)
@@ -207,8 +206,7 @@ class TestPredictComponent(unittest.TestCase):
     def test_stream_predict_component(self):
         batch_example_meta = af.register_example(name='batch_train_example',
                                                  support_type=ExampleSupportType.EXAMPLE_BOTH)
-        model_meta = af.register_model(model_name='mnist_model',
-                                       model_type=ModelType.SAVED_MODEL)
+        model_meta = af.register_model(model_name='mnist_model')
         stream_predict_example_meta = af.register_example(name='stream_predict_example',
                                                           support_type=ExampleSupportType.EXAMPLE_STREAM)
         stream_output_file = get_file_dir(__file__) + '/stream_predict'

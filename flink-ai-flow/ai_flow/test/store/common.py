@@ -179,7 +179,7 @@ class AbstractTestStore(object):
         self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=1)
         self.store.register_model_version_relation(version='1', model_id=1,
-                                                   workflow_execution_id=1)
+                                                   project_snapshot_id=None)
         self.assertEqual(self.store.get_project_by_id(1).name, 'project')
         self.assertEqual(self.store.get_model_relation_by_id(1).name, 'model')
         self.assertEqual(self.store.get_model_version_relation_by_version('1', '1').version, '1')
@@ -193,14 +193,14 @@ class AbstractTestStore(object):
         self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=2)
         self.store.register_model_version_relation(version='1', model_id=2,
-                                                   workflow_execution_id=2)
+                                                   project_snapshot_id=None)
         self.assertEqual(Status.OK, self.store.delete_project_by_id(2))
 
     def test_delete_project_by_name(self):
         self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=1)
         self.store.register_model_version_relation(version='1', model_id=1,
-                                                   workflow_execution_id=1)
+                                                   project_snapshot_id=None)
         self.assertEqual(self.store.get_project_by_id(1).name, 'project')
         self.assertEqual(self.store.get_model_relation_by_id(1).name, 'model')
         self.assertEqual(self.store.get_model_version_relation_by_version('1', '1').version, '1')
@@ -214,7 +214,7 @@ class AbstractTestStore(object):
         self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=2)
         self.store.register_model_version_relation(version='1', model_id=2,
-                                                   workflow_execution_id=2)
+                                                   project_snapshot_id=None)
         self.assertEqual(Status.OK, self.store.delete_project_by_name('project'))
 
     def test_update_project(self):
@@ -244,7 +244,7 @@ class AbstractTestStore(object):
     def test_delete_model_by_id(self):
         self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=1)
-        response = self.store.register_model_version_relation(version='1', model_id=1, workflow_execution_id=1)
+        response = self.store.register_model_version_relation(version='1', model_id=1, project_snapshot_id=None)
         self.assertEqual(response.version, '1')
         self.assertEqual(self.store.get_model_version_relation_by_version('1', 1).version, '1')
         self.assertEqual(self.store.get_model_relation_by_name('model').name, 'model')
@@ -252,13 +252,13 @@ class AbstractTestStore(object):
         self.assertIsNone(self.store.get_model_version_relation_by_version('1', '1'))
         self.assertIsNone(self.store.get_model_relation_by_name('model'))
         self.store.register_model_relation(name='model', project_id=1)
-        self.store.register_model_version_relation(version='1', model_id=2, workflow_execution_id=1)
+        self.store.register_model_version_relation(version='1', model_id=2, project_snapshot_id=None)
         self.assertEqual(Status.OK, self.store.delete_model_relation_by_id(2))
 
     def test_delete_model_by_name(self):
         self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=1)
-        response = self.store.register_model_version_relation(version='1', model_id=1, workflow_execution_id=1)
+        response = self.store.register_model_version_relation(version='1', model_id=1, project_snapshot_id=None)
         self.assertEqual(response.version, '1')
         self.assertEqual(self.store.get_model_version_relation_by_version('1', '1').version, '1')
         self.assertEqual(self.store.get_model_relation_by_name('model').name, 'model')
@@ -266,7 +266,7 @@ class AbstractTestStore(object):
         self.assertIsNone(self.store.get_model_version_relation_by_version('1', '1'))
         self.assertIsNone(self.store.get_model_relation_by_name('model'))
         self.store.register_model_relation(name='model', project_id=1)
-        self.store.register_model_version_relation(version='1', model_id=2, workflow_execution_id=1)
+        self.store.register_model_version_relation(version='1', model_id=2, project_snapshot_id=None)
         self.assertEqual(Status.OK, self.store.delete_model_relation_by_name('model'))
 
     def test_double_register_model_relation(self):
@@ -280,15 +280,15 @@ class AbstractTestStore(object):
     def test_save_model_version_get_by_version(self):
         self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=1)
-        response = self.store.register_model_version_relation(version='1', model_id=1, workflow_execution_id=1)
+        response = self.store.register_model_version_relation(version='1', model_id=1, project_snapshot_id=None)
         self.assertEqual(response.version, '1')
         self.assertEqual(self.store.get_model_version_relation_by_version(version_name='1', model_id=1).version, '1')
 
     def test_list_model_version(self):
         self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=1)
-        self.store.register_model_version_relation(version='1', model_id=1, workflow_execution_id=1)
-        self.store.register_model_version_relation(version='2', model_id=1, workflow_execution_id=1)
+        self.store.register_model_version_relation(version='1', model_id=1, project_snapshot_id=None)
+        self.store.register_model_version_relation(version='2', model_id=1, project_snapshot_id=None)
         self.assertEqual(len(self.store.list_model_version_relation(1, 2, 0)), 2)
         self.assertEqual(self.store.list_model_version_relation(1, 2, 0)[0].version, '1')
         self.assertEqual(self.store.list_model_version_relation(1, 2, 0)[1].version, '2')
@@ -296,11 +296,11 @@ class AbstractTestStore(object):
     def test_delete_model_version_by_version(self):
         self.store.register_project(name='project', uri='www.code.com')
         self.store.register_model_relation(name='model', project_id=1)
-        self.store.register_model_version_relation(version='1', model_id=1, workflow_execution_id=1)
+        self.store.register_model_version_relation(version='1', model_id=1, project_snapshot_id=None)
         self.assertEqual(self.store.get_model_version_relation_by_version('1', 1).version, '1')
         self.assertEqual(Status.OK, self.store.delete_model_version_relation_by_version('1', 1))
         self.assertIsNone(self.store.get_model_version_relation_by_version('1', 1))
-        self.store.register_model_version_relation(version='1', model_id=1, workflow_execution_id=1)
+        self.store.register_model_version_relation(version='1', model_id=1, project_snapshot_id=None)
         self.assertEqual(Status.OK, self.store.delete_model_version_relation_by_version('1', 1))
 
     """test artifact"""
@@ -331,51 +331,45 @@ class AbstractTestStore(object):
         self.assertIsNone(update_artifact.properties)
         self.assertIsNone(update_artifact.artifact_type)
 
-    def _create_registered_model(self, model_name, model_type='model type', model_desc='model desc'):
-        return self.store.create_registered_model(model_name, model_type, model_desc)
+    def _create_registered_model(self, model_name, model_desc='model desc'):
+        return self.store.create_registered_model(model_name, model_desc)
 
-    def _create_model_version(self, model_name, model_path='path/to/source', model_metric='http://localhost/metric',
-                              model_flavor='{"flavor.version":1}', version_desc='model version desc'):
-        return self.store.create_model_version(model_name, model_path, model_metric, model_flavor, version_desc)
+    def _create_model_version(self, model_name, model_path='path/to/source',
+                              model_type='{"flavor.version":1}', version_desc='model version desc'):
+        return self.store.create_model_version(model_name, model_path, model_type, version_desc)
 
     def test_create_registered_model(self):
         model_name1 = random_str() + 'ABcd'
-        model_type1 = 'Checkpoint'
         model_desc1 = 'test_create_registered_model1'
-        register_model1 = self._create_registered_model(model_name1, model_type1, model_desc1)
+        register_model1 = self._create_registered_model(model_name1, model_desc1)
         self.assertEqual(register_model1.model_name, model_name1)
 
         # error on duplicate
-        model_type2 = 'SavedModel'
         model_desc2 = 'test_create_registered_model2'
         with self.assertRaises(AIFlowException) as exception_context:
-            self._create_registered_model(model_name1, model_type2, model_desc2)
+            self._create_registered_model(model_name1, model_desc2)
         assert exception_context.exception.error_code == RESOURCE_ALREADY_EXISTS
 
         # slightly different name is ok
         for model_name2 in [model_name1 + 'extra', model_name1 + model_name1]:
-            register_model2 = self._create_registered_model(model_name2, model_type2, model_desc2)
+            register_model2 = self._create_registered_model(model_name2, model_desc2)
             self.assertEqual(register_model2.model_name, model_name2)
 
     def test_double_create_model(self):
         model_name1 = random_str() + 'ABcd'
-        model_type1 = 'Checkpoint'
         model_desc1 = 'test_create_registered_model1'
-        self._create_registered_model(model_name1, model_type1, model_desc1)
+        self._create_registered_model(model_name1, model_desc1)
         model_name2 = random_str() + 'ABcd'
-        model_type2 = 'Checkpoint'
         model_desc2 = 'test_create_registered_model1'
-        self._create_registered_model(model_name2, model_type2, model_desc2)
-        self.assertRaises(AIFlowException, self._create_registered_model, model_name2, model_type2, model_desc=' ')
+        self._create_registered_model(model_name2, model_desc2)
+        self.assertRaises(AIFlowException, self._create_registered_model, model_name2, model_desc=' ')
 
     def test_update_registered_model(self):
         model_name1 = random_str() + 'ABcd'
-        model_type1 = 'Checkpoint'
         model_desc1 = 'test_update_registered_model'
-        register_model1 = self._create_registered_model(model_name1, model_type1, model_desc1)
+        register_model1 = self._create_registered_model(model_name1, model_desc1)
         register_model_detail1 = self.store.get_registered_model_detail(register_model1)
         self.assertEqual(register_model1.model_name, model_name1)
-        self.assertEqual(register_model_detail1.model_type, model_type1)
 
         # update model name
         register_model2 = self.store.update_registered_model(register_model1,
@@ -383,38 +377,27 @@ class AbstractTestStore(object):
         register_model_detail2 = self.store.get_registered_model_detail(register_model2)
         self.assertEqual(register_model2.model_name, 'NewName')
         self.assertEqual(register_model_detail2.model_name, 'NewName')
-        self.assertEqual(register_model_detail2.model_type, model_type1)
-
-        # update model type
-        register_model3 = self.store.update_registered_model(register_model2,
-                                                             model_type='SavedModel')
-        register_model_detail3 = self.store.get_registered_model_detail(register_model3)
-        self.assertEqual(register_model3.model_name, 'NewName')
-        self.assertEqual(register_model_detail3.model_name, 'NewName')
-        self.assertEqual(register_model_detail3.model_type, 'SavedModel')
 
         # update model description
-        register_model4 = self.store.update_registered_model(register_model3,
+        register_model4 = self.store.update_registered_model(register_model2,
                                                              model_desc='update_registered_model_desc')
         register_model_detail4 = self.store.get_registered_model_detail(register_model4)
         self.assertEqual(register_model4.model_name, 'NewName')
         self.assertEqual(register_model_detail4.model_name, 'NewName')
         self.assertEqual(register_model_detail4.model_desc, 'update_registered_model_desc')
 
-        # update both model name, type and description
+        # update both model name and description
         register_model5 = self.store.update_registered_model(register_model4,
                                                              model_name='AnotherName',
-                                                             model_type='H5',
                                                              model_desc='TEST')
         register_model_detail5 = self.store.get_registered_model_detail(register_model5)
         self.assertEqual(register_model5.model_name, 'AnotherName')
         self.assertEqual(register_model_detail5.model_name, 'AnotherName')
-        self.assertEqual(register_model_detail5.model_type, 'H5')
         self.assertEqual(register_model_detail5.model_desc, 'TEST')
 
         # new models with old names
-        self._create_registered_model(model_name1, model_type1, model_desc1)
-        register_model5 = self._create_registered_model('NewName', 'SavedModel', 'update_registered_model_desc')
+        self._create_registered_model(model_name1, model_desc1)
+        register_model5 = self._create_registered_model('NewName', 'update_registered_model_desc')
 
         # cannot rename model to conflict with an existing model
         with self.assertRaises(AIFlowException) as exception_context:
@@ -449,18 +432,16 @@ class AbstractTestStore(object):
 
     def test_get_registered_model_detail(self):
         model_name = 'test_model'
-        model_type = 'Checkpoint'
         model_desc = 'test_get_registered_model_detail'
         # use fake clock
         with mock.patch('time.time') as mock_time:
             mock_time.return_value = 1234
-            registered_model = self._create_registered_model(model_name, model_type, model_desc)
+            registered_model = self._create_registered_model(model_name, model_desc)
             self.assertEqual(registered_model.model_name, model_name)
         register_model_detail = self.store.get_registered_model_detail(registered_model)
         self.assertEqual(register_model_detail.model_name, model_name)
-        self.assertEqual(register_model_detail.model_type, model_type)
         self.assertEqual(register_model_detail.model_desc, model_desc)
-        self.assertEqual(register_model_detail.model_version, None)
+        self.assertEqual(register_model_detail.latest_model_version, None)
 
     def test_create_model_version(self):
         model_name = 'test_for_create_model_version'
@@ -475,8 +456,6 @@ class AbstractTestStore(object):
         self.assertEqual(model_version_detail1.model_name, model_name)
         self.assertEqual(model_version_detail1.model_version, '1')
         self.assertEqual(model_version_detail1.model_path, 'path/to/source')
-        self.assertEqual(model_version_detail1.model_metric, 'http://localhost/metric')
-        self.assertEqual(model_version_detail1.model_flavor, '{"flavor.version":1}')
         self.assertEqual(model_version_detail1.version_desc, 'model version desc')
         self.assertEqual(model_version_detail1.version_status, 'READY')
         self.assertEqual(model_version_detail1.current_stage, 'Generated')

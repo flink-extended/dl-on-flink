@@ -31,14 +31,13 @@ class ModelVersionDetail(ModelVersion):
     """
 
     def __init__(self, model_name, model_version, model_path=None,
-                 model_metric=None, model_flavor=None, version_desc=None,
+                 model_type=None, version_desc=None,
                  version_status=None, current_stage=None):
         # Constructor is called only from within the system by various backend stores.
         super(ModelVersionDetail, self).__init__(model_name=model_name,
                                                  model_version=model_version)
         self._model_path = model_path
-        self._model_metric = model_metric
-        self._model_flavor = model_flavor
+        self._model_type = model_type
         self._version_desc = version_desc
         self._version_status = version_status
         self._current_stage = current_stage
@@ -49,14 +48,9 @@ class ModelVersionDetail(ModelVersion):
         return self._model_path
 
     @property
-    def model_metric(self):
-        """String. Model metric address for the model."""
-        return self._model_metric
-
-    @property
-    def model_flavor(self):
-        """String. Model flavor feature for the model."""
-        return self._model_flavor
+    def model_type(self):
+        """String. Model type of the model."""
+        return self._model_type
 
     @property
     def version_desc(self):
@@ -86,16 +80,14 @@ class ModelVersionDetail(ModelVersion):
         else:
             return cls(proto.model_name, proto.model_version,
                        proto.model_path.value if proto.HasField("model_path") else None,
-                       proto.model_metric.value if proto.HasField("model_metric") else None,
-                       proto.model_flavor.value if proto.HasField("model_flavor") else None,
+                       proto.model_type.value if proto.HasField("model_type") else None,
                        proto.version_desc.value if proto.HasField("version_desc") else None,
                        proto.version_status, proto.current_stage)
 
     def to_meta_proto(self):
         return ModelVersionMeta(model_name=self.model_name, model_version=self.model_version,
                                 model_path=stringValue(self.model_path),
-                                model_metric=stringValue(self.model_metric),
-                                model_flavor=stringValue(self.model_flavor),
+                                model_type=stringValue(self.model_type),
                                 version_desc=stringValue(self.version_desc),
                                 version_status=ModelVersionStatus.from_string(self.version_status),
                                 current_stage=ModelVersionStage.from_string(self.current_stage.upper()))

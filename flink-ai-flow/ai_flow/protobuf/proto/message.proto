@@ -58,23 +58,21 @@ message ModelProto {
     int64 uuid = 1;
     string name = 2;
     google.protobuf.Int64Value project_id = 3;
-    ModelType model_type = 4;
-    google.protobuf.StringValue model_desc = 5;
+    google.protobuf.StringValue model_desc = 4;
 }
 
 message ModelVersionRelationProto {
     google.protobuf.StringValue version = 1;
     google.protobuf.Int64Value model_id = 2;
-    google.protobuf.Int64Value workflow_execution_id = 3;
+    google.protobuf.Int64Value project_snapshot_id = 3;
 }
 
 message ModelVersionProto {
     google.protobuf.StringValue version = 1;
     google.protobuf.Int64Value model_id = 2;
-    google.protobuf.Int64Value workflow_execution_id = 3;
+    google.protobuf.Int64Value project_snapshot_id = 3;
     google.protobuf.StringValue model_path = 4;
-    google.protobuf.StringValue model_metric = 5;
-    google.protobuf.StringValue model_flavor = 6;
+    google.protobuf.StringValue model_type = 6;
     google.protobuf.StringValue version_desc = 7;
     ModelVersionStage current_stage = 8;
 }
@@ -136,16 +134,14 @@ message ArtifactProto {
 
 message RegisteredModelParam {
     google.protobuf.StringValue model_name = 1;
-    ModelType model_type = 2;
-    google.protobuf.StringValue model_desc = 3;
+    google.protobuf.StringValue model_desc = 2;
 }
 
 message ModelVersionParam {
     google.protobuf.StringValue model_path = 1;
-    google.protobuf.StringValue model_metric = 2;
-    google.protobuf.StringValue model_flavor = 3;
-    google.protobuf.StringValue version_desc = 4;
-    ModelVersionStage current_stage = 5;
+    google.protobuf.StringValue model_type = 2;
+    google.protobuf.StringValue version_desc = 3;
+    ModelVersionStage current_stage = 4;
 }
 
 message ModelMetaParam {
@@ -161,16 +157,14 @@ message Response {
 
 message RegisteredModelMeta {
     string model_name = 1;
-    ModelType model_type = 2;
-    google.protobuf.StringValue model_desc = 3;
+    google.protobuf.StringValue model_desc = 2;
 }
 
 message ModelVersionMeta {
     string model_name = 1;
     string model_version = 2;
     google.protobuf.StringValue model_path = 3;
-    google.protobuf.StringValue model_metric = 4;
-    google.protobuf.StringValue model_flavor = 5;
+    google.protobuf.StringValue model_type = 5;
     google.protobuf.StringValue version_desc = 6;
     ModelVersionStatus version_status = 7;
     ModelVersionStage current_stage = 8;
@@ -178,7 +172,7 @@ message ModelVersionMeta {
 
 message RegisteredModelDetail {
     RegisteredModelMeta registered_model = 1;
-    ModelVersionMeta model_version = 2;
+    ModelVersionMeta latest_model_version = 2;
 }
 
 message RegisteredModelMetas {
@@ -272,13 +266,6 @@ enum ExecutionMode {
     EXECUTION_MODE_UNSPECIFIED = 0;
     BATCH = 1;
     STREAM = 2;
-}
-
-enum ModelType {
-    NONE_TYPE = 0;
-    CHECKPOINT = 1;
-    SAVED_MODEL = 2;
-    H5 = 3;
 }
 
 enum ModelVersionStatus {

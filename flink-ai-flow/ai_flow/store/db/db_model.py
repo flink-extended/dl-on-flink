@@ -84,6 +84,19 @@ class SqlProject(base, Base):
         return '<project ({}, {}, {}, {})>'.format(self.uuid, self.name, self.properties, self.uri)
 
 
+class SqlProjectSnapshot(base, Base):
+    """
+    SQL table of project snapshot in metadata backend storage
+    """
+    __tablename__ = 'project_snapshot'
+
+    project_id = Column(BigInteger, ForeignKey('project.uuid', onupdate='cascade'))
+    signature = Column(String(255))
+    create_time = Column(BigInteger)
+
+    project = relationship("SqlProject", backref=backref('project_snapshot', cascade='all'))
+
+
 class SqlModelRelation(base, Base):
     """
     SQL table of model relation in metadata backend storage.
@@ -124,13 +137,11 @@ class SqlModelVersionRelation(base):
 
     version = Column(String(255), primary_key=True)
     model_id = Column(BigInteger, ForeignKey('model_relation.uuid', onupdate='cascade'), primary_key=True)
-    workflow_execution_id = Column(BigInteger)
+    project_snapshot_id = Column(BigInteger, ForeignKey('project_snapshot.uuid', onupdate='cascade'))
     is_deleted = Column(String(256), default='False')
 
-    UniqueConstraint(version, model_id)
-    UniqueConstraint(version, workflow_execution_id)
-
     model_relation = relationship("SqlModelRelation", backref=backref('model_version_relation', cascade='all'))
+    project_snapshot = relationship("SqlProjectSnapshot", backref=backref('project_snapshot', cascade='all'))
 
     def __repr__(self):
         return '<model_version_relation ({}, {}, {})>'.format(self.version, self.model_id,
@@ -167,7 +178,6 @@ class SqlRegisteredModel(base):
     __tablename__ = 'registered_model'
 
     model_name = Column(String(255), unique=True, nullable=False)
-    model_type = Column(String(500), nullable=True)
     model_desc = Column(String(1000), nullable=True)
 
     __table_args__ = (
@@ -175,11 +185,11 @@ class SqlRegisteredModel(base):
     )
 
     def __repr__(self):
-        return '<SqlRegisteredModel ({}, {}, {})>'.format(self.model_name, self.model_type, self.model_desc)
+        return '<SqlRegisteredModel ({}, {}, {})>'.format(self.model_name, self.model_desc)
 
     # entity mappers
     def to_meta_entity(self):
-        return RegisteredModelDetail(self.model_name, self.model_type, self.model_desc)
+        return RegisteredModelDetail(self.model_name, self.model_desc)
 
     def to_detail_entity(self):
         # SqlRegisteredModel has backref to all "model_version". Filter latest version of registered model.
@@ -188,7 +198,7 @@ class SqlRegisteredModel(base):
             if model_version.current_stage != STAGE_DELETED:
                 latest_version = model_version.to_meta_entity()
                 break
-        return RegisteredModelDetail(self.model_name, self.model_type, self.model_desc, latest_version)
+        return RegisteredModelDetail(self.model_name, self.model_desc, latest_version)
 
 
 class SqlModelVersion(base):
@@ -200,8 +210,7 @@ class SqlModelVersion(base):
     model_name = Column(String(255), ForeignKey('registered_model.model_name', onupdate='cascade', ondelete='cascade'))
     model_version = Column(String(10), nullable=False)
     model_path = Column(String(500), nullable=True, default=None)
-    model_metric = Column(String(500), nullable=True, default=None)
-    model_flavor = Column(String(500), nullable=True, default=None)
+    model_type = Column(String(500), nullable=True, default=None)
     version_desc = Column(String(1000), nullable=True)
     version_status = Column(String(20),
                             default=ModelVersionStatus.to_string(ModelVersionStatus.READY))
@@ -215,16 +224,15 @@ class SqlModelVersion(base):
     )
 
     def __repr__(self):
-        return '<SqlModelVersion ({}, {}, {}, {}, {}, {}, {}, {})>'.format(self.model_name, self.model_version,
-                                                                           self.model_path, self.model_metric,
-                                                                           self.model_flavor, self.version_desc,
-                                                                           self.version_status, self.current_stage)
+        return '<SqlModelVersion ({}, {}, {}, {}, {}, {}, {})>'.format(self.model_name, self.model_version,
+                                                                       self.model_path, self.model_type,
+                                                                       self.version_desc, self.version_status,
+                                                                       self.current_stage)
 
     # entity mappers
     def to_meta_entity(self):
         return ModelVersionDetail(self.model_name, self.model_version,
-                                  self.model_path, self.model_metric,
-                                  self.model_flavor, self.version_desc,
+                                  self.model_path, self.model_type, self.version_desc,
                                   self.version_status, self.current_stage)
 
 
@@ -363,9 +371,8 @@ class MongoModelVersionRelation(Document):
 
     version = StringField(max_length=255, required=True, unique=True)
     model_id = IntField()
-    workflow_execution_id = IntField()
+    project_snapshot_id = IntField()
     version_model_id_unique = StringField(max_length=1000, required=True, unique=True)
-    version_workflow_execution_id_unique = StringField(max_length=1000, required=True, unique=True)
     is_deleted = BooleanField(default=False)
 
     meta = {'db_alias': MONGO_DB_ALIAS_META_SERVICE}
@@ -373,16 +380,14 @@ class MongoModelVersionRelation(Document):
     def __init__(self, *args, **kwargs):
         version = kwargs['version']
         model_id = kwargs['model_id']
-        workflow_execution_id = kwargs['workflow_execution_id']
         kwargs['version_model_id_unique'] = f'{version}-{model_id}'
-        kwargs['version_workflow_execution_id_unique'] = f'{version}-{workflow_execution_id}'
         super().__init__(*args, **kwargs)
 
     def __repr__(self):
         return '<Document ModelVersionRelation ({}, {}, {})>'.format(
             self.version,
             self.model_id,
-            self.workflow_execution_id)
+            self.project_snapshot_id)
 
 
 class MongoModelRelation(Document):
@@ -429,6 +434,28 @@ class MongoProject(Document):
             self.uri)
 
 
+class MongoProjectSnapshot(Document):
+    """
+    Document of project snapshot in metadata backend storage
+    """
+
+    uuid = SequenceField(db_alias=MONGO_DB_ALIAS_META_SERVICE)
+    project_id = IntField()
+    signature = StringField(max_length=255)
+    create_time = LongField()
+
+    model_version_relation = ListField(ReferenceField(MongoModelVersionRelation))
+
+    meta = {'db_alias': MONGO_DB_ALIAS_META_SERVICE}
+
+    def __repr__(self):
+        return '<Document ProjectSnapshot ({}, {}, {}, {})>'.format(
+            self.uuid,
+            self.project_id,
+            self.signature,
+            self.create_time)
+
+
 class MongoWorkflow(Document):
     """
     Document of workflow in metadata backend storage.
@@ -458,8 +485,7 @@ class MongoModelVersion(Document):
     model_name = StringField(max_length=255, required=True)
     model_version = StringField(max_length=10, required=True)
     model_path = StringField(max_length=500, default=None)
-    model_metric = StringField(max_length=500, default=None)
-    model_flavor = StringField(max_length=500, default=None)
+    model_type = StringField(max_length=500, default=None)
     version_desc = StringField(max_length=1000)
     version_status = StringField(max_length=20,
                                  default=ModelVersionStatus.to_string(ModelVersionStatus.READY))
@@ -481,8 +507,7 @@ class MongoModelVersion(Document):
             self.model_name,
             self.model_version,
             self.model_path,
-            self.model_metric,
-            self.model_flavor,
+            self.model_type,
             self.version_desc,
             self.version_status,
             self.current_stage)
@@ -491,8 +516,7 @@ class MongoModelVersion(Document):
         return ModelVersionDetail(self.model_name,
                                   self.model_version,
                                   self.model_path,
-                                  self.model_metric,
-                                  self.model_flavor,
+                                  self.model_type,
                                   self.version_desc,
                                   self.version_status,
                                   self.current_stage)
@@ -504,7 +528,6 @@ class MongoRegisteredModel(Document):
     """
 
     model_name = StringField(max_length=255, required=True, unique=True)
-    model_type = StringField(max_length=500)
     model_desc = StringField(max_length=1000)
 
     model_version = ListField(ReferenceField(MongoModelVersion))
@@ -514,11 +537,10 @@ class MongoRegisteredModel(Document):
     def __repr__(self):
         return '<Document RegisteredModel ({}, {}, {})>'.format(
             self.model_name,
-            self.model_type,
             self.model_desc)
 
     def to_meta_entity(self):
-        return RegisteredModelDetail(self.model_name, self.model_type, self.model_desc)
+        return RegisteredModelDetail(self.model_name, self.model_desc)
 
     def to_detail_entity(self):
         latest_version = None
@@ -526,7 +548,7 @@ class MongoRegisteredModel(Document):
             if model_version.current_stage != STAGE_DELETED:
                 latest_version = model_version.to_meta_entity()
                 break
-        return RegisteredModelDetail(self.model_name, self.model_type, self.model_desc, latest_version)
+        return RegisteredModelDetail(self.model_name, self.model_desc, latest_version)
 
 
 class MongoArtifact(Document):
