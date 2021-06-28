@@ -80,4 +80,4 @@ class ResultToMeta:
     def result_to_model_version_relation_meta(model_version_result) -> ModelVersionRelationMeta:
         return create_model_version_relation(version=model_version_result.version,
                                              model_id=model_version_result.model_id,
-                                             workflow_execution_id=model_version_result.workflow_execution_id)
+                                             project_snapshot_id=model_version_result.project_snapshot_id)

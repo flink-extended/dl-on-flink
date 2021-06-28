@@ -124,11 +124,11 @@ class MetaToTable:
         return _class(name=name, project_id=project_id)
 
     @staticmethod
-    def model_version_relation_to_table(version, model_id, workflow_execution_id, store_type='SqlAlchemyStore'):
+    def model_version_relation_to_table(version, model_id, project_snapshot_id, store_type='SqlAlchemyStore'):
         if store_type == 'MongoStore':
             _class = MongoModelVersionRelation
         else:
             _class = SqlModelVersionRelation
         return _class(version=version, model_id=model_id,
-                      workflow_execution_id=workflow_execution_id)
+                      project_snapshot_id=project_snapshot_id)
 

@@ -122,10 +122,10 @@ def get_model_by_name(model_name) -> Optional[ModelMeta]:
     return get_ai_flow_client().get_model_by_name(model_name)
 
 
-def register_model(model_name, model_type, model_desc=None) -> ModelMeta:
+def register_model(model_name: Text, model_desc: Text = None) -> ModelMeta:
     project_config = get_default_project_config()
     project_id = int(project_config.get_project_uuid())
-    return get_ai_flow_client().register_model(model_name, project_id, model_type, model_desc)
+    return get_ai_flow_client().register_model(model_name, project_id, model_desc)
 
 
 def delete_model_by_id(model_id) -> Status:
@@ -140,8 +140,9 @@ def get_model_version_relation_by_version(version, model_id) -> Optional[ModelVe
     return get_ai_flow_client().get_model_version_relation_by_version(version, model_id)
 
 
-def register_model_version_relation(version, model_id, workflow_execution_id=None) -> ModelVersionRelationMeta:
-    return get_ai_flow_client().register_model_version_relation(version, model_id, workflow_execution_id)
+def register_model_version_relation(version: Text, model_id: int,
+                                    project_snapshot_id: int = None) -> ModelVersionRelationMeta:
+    return get_ai_flow_client().register_model_version_relation(version, model_id, project_snapshot_id)
 
 
 def list_model_version_relation(model_id, page_size, offset) -> List[ModelVersionRelationMeta]:
@@ -156,7 +157,7 @@ def get_model_version_by_version(version, model_id) -> Optional[ModelVersionMeta
     return get_ai_flow_client().get_model_version_by_version(version, model_id)
 
 
-def register_model_version(model, model_path, model_metric=None, model_flavor=None, version_desc=None,
+def register_model_version(model, model_path, model_type=None, version_desc=None,
                            current_stage=ModelVersionStage.GENERATED) -> ModelVersionMeta:
     workflow_execution_id = get_workflow_execution_id()
     if isinstance(model, str):
@@ -164,7 +165,7 @@ def register_model_version(model, model_path, model_metric=None, model_flavor=No
     else:
         model_meta_info = model
     return get_ai_flow_client().register_model_version(model_meta_info, model_path, workflow_execution_id,
-                                                       model_metric, model_flavor, version_desc, current_stage)
+                                                       model_type, version_desc, current_stage)
 
 
 def delete_model_version_by_version(version, model_id) -> Status:
@@ -243,13 +244,13 @@ def delete_artifact_by_name(artifact_name) -> Status:
     return get_ai_flow_client().delete_artifact_by_name(artifact_name)
 
 
-def create_registered_model(model_name, model_type, model_desc=None) -> Optional[RegisteredModelDetail]:
-    return get_ai_flow_client().create_registered_model(model_name, model_type, model_desc)
+def create_registered_model(model_name: Text, model_desc: Text = None) -> Optional[RegisteredModelDetail]:
+    return get_ai_flow_client().create_registered_model(model_name, model_desc)
 
 
-def update_registered_model(model_name, new_name=None, model_type=None, model_desc=None) \
-        -> Optional[RegisteredModelDetail]:
-    return get_ai_flow_client().update_registered_model(model_name, new_name, model_type, model_desc)
+def update_registered_model(model_name: Text, new_name: Text = None,
+                            model_desc: Text = None) -> Optional[RegisteredModelDetail]:
+    return get_ai_flow_client().update_registered_model(model_name, new_name, model_desc)
 
 
 def delete_registered_model(model_name) -> RegisteredModelDetail:
@@ -264,16 +265,16 @@ def get_registered_model_detail(model_name) -> Optional[RegisteredModelDetail]:
     return get_ai_flow_client().get_registered_model_detail(model_name)
 
 
-def create_model_version(model_name, model_path, model_metric, model_flavor=None,
+def create_model_version(model_name, model_path, model_type=None,
                          version_desc=None, current_stage=ModelVersionStage.GENERATED) -> Optional[ModelVersionDetail]:
-    return get_ai_flow_client().create_model_version(model_name, model_path, model_metric, model_flavor, version_desc,
+    return get_ai_flow_client().create_model_version(model_name, model_path, model_type, version_desc,
                                                      current_stage)
 
 
-def update_model_version(model_name, model_version, model_path=None, model_metric=None, model_flavor=None,
+def update_model_version(model_name, model_version, model_path=None, model_type=None,
                          version_desc=None, current_stage=None) -> Optional[ModelVersionDetail]:
-    return get_ai_flow_client().update_model_version(model_name, model_version, model_path, model_metric,
-                                                     model_flavor, version_desc, current_stage)
+    return get_ai_flow_client().update_model_version(model_name, model_version, model_path,
+                                                     model_type, version_desc, current_stage)
 
 
 def delete_model_version(model_name, model_version) -> Status:

@@ -19,12 +19,10 @@
 package com.aiflow.entity;
 
 import com.aiflow.proto.Message.ModelProto;
-import com.aiflow.proto.Message.ModelType;
 
 public class ModelMeta {
 
     private Long uuid;
-    private ModelType modelType;
     private String modelDesc;
     private String name;
     private Long projectId;
@@ -33,9 +31,8 @@ public class ModelMeta {
     }
 
 
-    public ModelMeta(Long uuid, ModelType modelType, String modelDesc, String name, Long projectId) {
+    public ModelMeta(Long uuid, String modelDesc, String name, Long projectId) {
         this.uuid = uuid;
-        this.modelType = modelType;
         this.modelDesc = modelDesc;
         this.name = name;
         this.projectId = projectId;
@@ -47,14 +44,6 @@ public class ModelMeta {
 
     public void setUuid(Long uuid) {
         this.uuid = uuid;
-    }
-
-    public ModelType getModelType() {
-        return modelType;
-    }
-
-    public void setModelType(ModelType modelType) {
-        this.modelType = modelType;
     }
 
     public String getModelDesc() {
@@ -85,7 +74,6 @@ public class ModelMeta {
     public String toString() {
         return "ModelMeta{" +
                 "uuid=" + uuid +
-                ", modelType=" + modelType +
                 ", modelDesc='" + modelDesc + '\'' +
                 ", name='" + name + '\'' +
                 ", projectId=" + projectId +
@@ -94,7 +82,7 @@ public class ModelMeta {
 
     public static ModelMeta buildModelMeta(ModelProto modelProto) {
         return modelProto == null ? null : new ModelMeta(modelProto.getUuid(),
-                modelProto.getModelType(), modelProto.getModelDesc().getValue(),
+                modelProto.getModelDesc().getValue(),
                 modelProto.getName(), modelProto.getProjectId().getValue());
     }
 }

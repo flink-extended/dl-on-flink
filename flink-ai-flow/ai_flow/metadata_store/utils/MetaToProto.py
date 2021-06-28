@@ -139,7 +139,7 @@ class MetaToProto:
             return ModelVersionRelationProto(
                 version=stringValue(model_version_relation.version),
                 model_id=int64Value(model_version_relation.model_id),
-                workflow_execution_id=int64Value(model_version_relation.workflow_execution_id))
+                project_snapshot_id=int64Value(model_version_relation.project_snapshot_id))
 
     @staticmethod
     def model_version_relation_meta_list_to_proto(model_version_relation_list: List[ModelVersionRelationMeta]) -> List[
@@ -154,7 +154,6 @@ class MetaToProto:
         if model_relation is not None and model_center_detail is not None:
             return ModelProto(uuid=model_relation.uuid, name=model_relation.name,
                               project_id=int64Value(model_relation.project_id),
-                              model_type=model_center_detail.model_type,
                               model_desc=stringValue(model_center_detail.model_desc))
         else:
             return None
@@ -165,10 +164,9 @@ class MetaToProto:
             return ModelVersionProto(
                 version=stringValue(model_version_relation.version),
                 model_id=int64Value(model_version_relation.model_id),
-                workflow_execution_id=int64Value(model_version_relation.workflow_execution_id),
+                project_snapshot_id=int64Value(model_version_relation.project_snapshot_id),
                 model_path=stringValue(model_center_detail.model_path),
-                model_metric=stringValue(model_center_detail.model_metric),
-                model_flavor=stringValue(model_center_detail.model_flavor),
+                model_type=stringValue(model_center_detail.model_type),
                 version_desc=stringValue(model_center_detail.version_desc),
                 current_stage=model_center_detail.current_stage)
         else:
@@ -180,10 +178,9 @@ class MetaToProto:
             return ModelVersionProto(
                 version=stringValue(model_version_relation.version),
                 model_id=int64Value(model_version_relation.model_id),
-                workflow_execution_id=int64Value(model_version_relation.workflow_execution_id),
+                project_snapshot_id=int64Value(model_version_relation.project_snapshot_id),
                 model_path=stringValue(model_center_detail.model_path),
-                model_metric=stringValue(model_center_detail.model_metric),
-                model_flavor=stringValue(model_center_detail.model_flavor),
+                model_type=stringValue(model_center_detail.model_type),
                 version_desc=stringValue(model_center_detail.version_desc),
                 current_stage=ModelVersionStage.Value(model_center_detail.current_stage.upper()))
         else:

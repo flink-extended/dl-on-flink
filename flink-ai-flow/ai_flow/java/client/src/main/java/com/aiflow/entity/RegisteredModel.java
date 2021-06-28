@@ -18,7 +18,6 @@
  */
 package com.aiflow.entity;
 
-import com.aiflow.common.ModelType;
 import com.aiflow.proto.Message.ModelMetaParam;
 import com.aiflow.proto.Message.RegisteredModelDetail;
 import com.aiflow.proto.Message.RegisteredModelMeta;
@@ -30,9 +29,8 @@ import java.util.List;
 public class RegisteredModel {
 
     private String modelName;
-    private ModelType modelType;
     private String modelDesc;
-    private ModelVersion modelVersion;
+    private ModelVersion latestModelVersion;
 
     public RegisteredModel() {
     }
@@ -41,17 +39,15 @@ public class RegisteredModel {
         this.modelName = modelName;
     }
 
-    public RegisteredModel(String modelName, ModelType modelType, String modelDesc) {
+    public RegisteredModel(String modelName, String modelDesc) {
         this.modelName = modelName;
-        this.modelType = modelType;
         this.modelDesc = modelDesc;
     }
 
-    public RegisteredModel(String modelName, ModelType modelType, String modelDesc, ModelVersion modelVersion) {
+    public RegisteredModel(String modelName, String modelDesc, ModelVersion latestModelVersion) {
         this.modelName = modelName;
-        this.modelType = modelType;
         this.modelDesc = modelDesc;
-        this.modelVersion = modelVersion;
+        this.latestModelVersion = latestModelVersion;
     }
 
     public String getModelName() {
@@ -62,14 +58,6 @@ public class RegisteredModel {
         this.modelName = modelName;
     }
 
-    public ModelType getModelType() {
-        return modelType;
-    }
-
-    public void setModelType(ModelType modelType) {
-        this.modelType = modelType;
-    }
-
     public String getModelDesc() {
         return modelDesc;
     }
@@ -78,21 +66,20 @@ public class RegisteredModel {
         this.modelDesc = modelDesc;
     }
 
-    public ModelVersion getModelVersion() {
-        return modelVersion;
+    public ModelVersion getLatestModelVersion() {
+        return latestModelVersion;
     }
 
-    public void setModelVersion(ModelVersion modelVersion) {
-        this.modelVersion = modelVersion;
+    public void setLatestModelVersion(ModelVersion latestModelVersion) {
+        this.latestModelVersion = latestModelVersion;
     }
 
     @Override
     public String toString() {
         return "RegisteredModel{" +
                 "modelName='" + modelName + '\'' +
-                ", modelType=" + modelType +
                 ", modelDesc='" + modelDesc + '\'' +
-                ", modelVersion=" + modelVersion +
+                ", latestModelVersion=" + latestModelVersion +
                 '}';
     }
 
@@ -102,13 +89,11 @@ public class RegisteredModel {
 
     public static RegisteredModel buildRegisteredModel(RegisteredModelMeta registeredModelMeta) {
         return registeredModelMeta == null ? null : new RegisteredModel(registeredModelMeta.getModelName(),
-                ModelType.getModelType(registeredModelMeta.getModelType()),
                 registeredModelMeta.getModelDesc().getValue());
     }
 
     public static RegisteredModel buildRegisteredModel(RegisteredModelDetail registeredModelDetail) {
         return registeredModelDetail == null ? null : new RegisteredModel(registeredModelDetail.getRegisteredModel().getModelName(),
-                ModelType.getModelType(registeredModelDetail.getRegisteredModel().getModelType()),
                 registeredModelDetail.getRegisteredModel().getModelDesc().getValue(),
                 ModelVersion.buildModelVersion(registeredModelDetail.getModelVersion()));
     }

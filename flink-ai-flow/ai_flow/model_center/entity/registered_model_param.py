@@ -24,20 +24,14 @@ class RegisteredModelParam(_ModelRepoEntity):
     AIFlow entity for Registered Model Parameter.
     """
 
-    def __init__(self, model_name, model_type, model_desc):
+    def __init__(self, model_name, model_desc):
         self._model_name = model_name
-        self._model_type = model_type
         self._model_desc = model_desc
 
     @property
     def model_name(self):
         """String. Unique name for this registered model within Model Registry."""
         return self._model_name
-
-    @property
-    def model_type(self):
-        """String. Model type for this registered model within Model Registry."""
-        return self._model_type
 
     @property
     def model_desc(self):
@@ -49,5 +43,4 @@ class RegisteredModelParam(_ModelRepoEntity):
     def from_proto(cls, proto):
         registered_model = proto.registered_model
         return cls(registered_model.model_name.value if registered_model.HasField("model_name") else None,
-                   registered_model.model_type,
                    registered_model.model_desc.value if registered_model.HasField("model_desc") else None)

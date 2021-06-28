@@ -67,7 +67,7 @@ def run_flink_predict_job():
                                             batch_properties=batch_args_1,
                                             stream_properties=stream_args_1)
                                         )
-        model_meta = af.ModelMeta(name="test", model_type="saved_model")
+        model_meta = af.ModelMeta(name="test")
         model_version = af.ModelVersionMeta(version="11111",
                                             model_path="./tmp/saved_model/",
                                             model_metric="./tmp/saved_model/",
