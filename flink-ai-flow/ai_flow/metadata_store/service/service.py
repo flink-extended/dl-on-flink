@@ -16,14 +16,13 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-import time
 
 from ai_flow.common.status import Status
 from ai_flow.meta.dataset_meta import DataType
 from ai_flow.metadata_store.utils.MetaToProto import MetaToProto
 from ai_flow.metadata_store.utils.ProtoToMeta import ProtoToMeta
 from ai_flow.protobuf import metadata_service_pb2_grpc
-from ai_flow.protobuf.message_pb2 import DataTypeProto, ModelType
+from ai_flow.protobuf.message_pb2 import DataTypeProto
 from ai_flow.endpoint.client.model_center_client import ModelCenterClient
 from ai_flow.endpoint.server.util import _wrap_meta_response, transform_dataset_meta, \
     _warp_dataset_list_response, _wrap_delete_response, transform_model_relation_meta, \
@@ -193,7 +192,7 @@ class MetadataService(metadata_service_pb2_grpc.MetadataServiceServicer):
     @catch_exception
     def registerModel(self, request, context):
         model = transform_model_meta(request.model)
-        model_detail = self.model_center_client.create_registered_model(model.name, ModelType.Name(model.model_type),
+        model_detail = self.model_center_client.create_registered_model(model.name,
                                                                         model.model_desc)
         model_relation = self.store.register_model_relation(name=model.name, project_id=model.project_id)
         return _wrap_meta_response(MetaToProto.model_meta_to_proto(model_relation, model_detail))
@@ -232,7 +231,7 @@ class MetadataService(metadata_service_pb2_grpc.MetadataServiceServicer):
         model_version = transform_model_version_relation_meta(request.model_version_relation)
         response = self.store.register_model_version_relation(version=model_version.version,
                                                               model_id=model_version.model_id,
-                                                              workflow_execution_id=model_version.workflow_execution_id)
+                                                              project_snapshot_id=model_version.project_snapshot_id)
         return _wrap_meta_response(MetaToProto.model_version_relation_meta_to_proto(response))
 
     @catch_exception
@@ -259,14 +258,13 @@ class MetadataService(metadata_service_pb2_grpc.MetadataServiceServicer):
         model_relation = self.store.get_model_relation_by_id(model_version.model_id)
         model_version_detail = self.model_center_client.create_model_version(model_relation.name,
                                                                              model_version.model_path,
-                                                                             model_version.model_metric,
-                                                                             model_version.model_flavor,
+                                                                             model_version.model_type,
                                                                              model_version.version_desc,
                                                                              request.model_version.current_stage)
         model_version_relation = self.store.register_model_version_relation(version=model_version_detail.model_version,
                                                                             model_id=model_version.model_id,
-                                                                            workflow_execution_id=
-                                                                            model_version.workflow_execution_id)
+                                                                            project_snapshot_id=
+                                                                            model_version.project_snapshot_id)
         return _wrap_meta_response(
             MetaToProto.model_version_meta_to_proto(model_version_relation, model_version_detail))
 

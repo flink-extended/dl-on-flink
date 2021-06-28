@@ -27,7 +27,6 @@ import java.util.Map;
  */
 public class ModelMeta {
 	private  String name;
-	private String modelType;
 	private String description;
 	private Long projectId;
 	private long createTime = 0;
@@ -40,14 +39,6 @@ public class ModelMeta {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getModelType() {
-		return modelType;
-	}
-
-	public void setModelType(String modelType) {
-		this.modelType = modelType;
 	}
 
 	public String getDescription() {

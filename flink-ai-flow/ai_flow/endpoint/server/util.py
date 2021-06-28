@@ -375,12 +375,12 @@ def transform_model_version_relation_meta(model_version_relation_proto):
         if model_version_relation_proto.HasField('version') else None,
         model_id=model_version_relation_proto.model_id.value
         if model_version_relation_proto.HasField('model_id') else None,
-        workflow_execution_id=model_version_relation_proto.workflow_execution_id.value
-        if model_version_relation_proto.HasField('workflow_execution_id') else None)
+        project_snapshot_id=model_version_relation_proto.project_snapshot_id.value
+        if model_version_relation_proto.HasField('project_snapshot_id') else None)
 
 
 def transform_model_meta(model_proto):
-    return ModelMeta(name=model_proto.name, model_type=model_proto.model_type,
+    return ModelMeta(name=model_proto.name,
                      model_desc=model_proto.model_desc.value if model_proto.HasField('model_desc') else None,
                      project_id=model_proto.project_id.value if model_proto.HasField('project_id') else None)
 
@@ -390,13 +390,11 @@ def transform_model_version_meta(model_version_proto):
         'version') else None,
                             model_id=model_version_proto.model_id.value if model_version_proto.HasField(
                                 'model_id') else None,
-                            workflow_execution_id=model_version_proto.workflow_execution_id.value
-                            if model_version_proto.HasField('workflow_execution_id') else None,
+                            project_snapshot_id=model_version_proto.project_snapshot_id.value
+                            if model_version_proto.HasField('project_snapshot_id') else None,
                             model_path=model_version_proto.model_path.value if model_version_proto.HasField(
                                 "model_path") else None,
-                            model_metric=model_version_proto.model_metric.value if model_version_proto.HasField(
-                                "model_metric") else None,
-                            model_flavor=model_version_proto.model_flavor.value if model_version_proto.HasField(
-                                "model_flavor") else None,
+                            model_type=model_version_proto.model_type.value if model_version_proto.HasField(
+                                "model_type") else None,
                             version_desc=model_version_proto.version_desc.value if model_version_proto.HasField(
                                 "version_desc") else None)

@@ -31,7 +31,6 @@ import tensorflow as tf
 from notification_service.base_notification import EventWatcher
 from tensorflow.python.saved_model import tag_constants
 
-from ai_flow import ModelType
 from ai_flow.model_center.model import tensorflow
 from ai_flow.client.ai_flow_client import AIFlowClient
 from ai_flow.endpoint.server.server import AIFlowServer
@@ -134,11 +133,9 @@ class TestTensorFlowIrisModel(unittest.TestCase):
         iris_model = fit_and_save_model()
         tf_graph = tf.Graph()
         registered_model = self.client.create_registered_model(model_name='iris_model',
-                                                               model_type=ModelType.SAVED_MODEL,
                                                                model_desc='iris model')
         self.client.create_model_version(model_name=registered_model.model_name, model_path=iris_model.path,
-                                         model_metric='http://metric',
-                                         model_flavor='{"meta_graph_tags":["serve"],"signature_def_map_key":"predict"}',
+                                         model_type='{"meta_graph_tags":["serve"],"signature_def_map_key":"predict"}',
                                          version_desc='iris model')
 
         class IrisWatcher(EventWatcher):
@@ -146,7 +143,7 @@ class TestTensorFlowIrisModel(unittest.TestCase):
             def process(self, notifications):
                 for notification in notifications:
                     model_path = json.loads(notification.value).get('_model_path')
-                    model_flavor = json.loads(notification.value).get('_model_flavor')
+                    model_flavor = json.loads(notification.value).get('_model_type')
                     signature_def = tensorflow.load_model(model_uri=model_path,
                                                           meta_graph_tags=json.loads(model_flavor).get(
                                                               'meta_graph_tags'),
