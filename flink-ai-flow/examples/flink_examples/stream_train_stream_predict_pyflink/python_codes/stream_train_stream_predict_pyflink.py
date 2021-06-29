@@ -50,7 +50,9 @@ def run_pyflink_project(project_root_path):
             validate_result = get_file_dir(__file__) + '/validate_result'
             if os.path.exists(validate_result):
                 os.remove(validate_result)
-            validate_artifact: ArtifactMeta = af.register_artifact(name=artifact_prefix + 'validate_artifact',
+
+            if af.get_artifact_by_name('validate_artifact') is not None:
+                validate_artifact: ArtifactMeta = af.register_artifact(name='validate_artifact',
                                                                    batch_uri=validate_result,
                                                                    stream_uri=validate_result)
             validate_channel = af.model_validate(input_data_list=[validate_example_channel], model_info=train_model,
