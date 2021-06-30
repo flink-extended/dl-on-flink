@@ -18,7 +18,6 @@
  */
 package com.aiflow.entity;
 
-import com.aiflow.common.ExecutionType;
 import com.aiflow.proto.Message;
 import com.aiflow.proto.Message.SchemaProto;
 import com.aiflow.proto.MetadataServiceOuterClass;
