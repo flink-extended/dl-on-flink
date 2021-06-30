@@ -95,7 +95,7 @@ public class RegisteredModel {
     public static RegisteredModel buildRegisteredModel(RegisteredModelDetail registeredModelDetail) {
         return registeredModelDetail == null ? null : new RegisteredModel(registeredModelDetail.getRegisteredModel().getModelName(),
                 registeredModelDetail.getRegisteredModel().getModelDesc().getValue(),
-                ModelVersion.buildModelVersion(registeredModelDetail.getModelVersion()));
+                ModelVersion.buildModelVersion(registeredModelDetail.getLatestModelVersion()));
     }
 
     public static List<RegisteredModel> buildRegisteredModels(RegisteredModelMetas registeredModelMetas) {
