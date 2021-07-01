@@ -814,6 +814,21 @@ class DAG(LoggingMixin):
         )
         return self.get_is_paused()
 
+    def is_long_running_dag(self) -> bool:
+        is_long_running = False
+        for task in self.tasks:
+            if task.executor_config is not None and 'periodic_config' in task.executor_config:
+                self.log.debug('{} has periodic task {}'.format(self.dag_id, task.task_id))
+                is_long_running = True
+                break
+            if task.has_subscribed_events():
+                is_long_running = True
+                break
+        if is_long_running:
+            return True
+        else:
+            return False
+
     @property
     def normalized_schedule_interval(self) -> Optional[ScheduleInterval]:
         """
