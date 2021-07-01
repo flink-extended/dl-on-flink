@@ -23,9 +23,9 @@ from ai_flow.endpoint.server.server_config import AIFlowServerConfig, DBType
 from ai_flow.test import test_util
 
 
-class TestMaster(unittest.TestCase):
+class TestServerRunner(unittest.TestCase):
 
-    def test_master_start_stop(self):
+    def test_server_start_stop(self):
         config = AIFlowServerConfig()
         config.set_db_uri(db_type=DBType.SQLITE, uri="sqlite:///sql.db")
         server_runner = AIFlowServerRunner(config_file=test_util.get_master_config_file())

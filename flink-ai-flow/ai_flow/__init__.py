@@ -30,7 +30,6 @@ from ai_flow.api.ops import read_dataset, write_dataset, transform, train, predi
     dataset_control_dependency, user_define_control_dependency
 from ai_flow.api.project import run, submit_ai_flow, stop_execution_by_id, wait_workflow_execution_finished, \
     compile_workflow, deploy_to_airflow, generate_airflow_file_text, submit
-# ai_flow.application_master.master
 from ai_flow.endpoint.server.server_runner import AIFlowServerRunner, set_master_config
 # ai_flow.client
 from ai_flow.client import *
