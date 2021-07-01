@@ -409,12 +409,7 @@ class DagRun(Base, LoggingMixin):
         self.last_scheduling_decision = start_dttm
         with Stats.timer(f"dagrun.dependency-check.{self.dag_id}"):
             dag = self.get_dag()
-            is_periodic = False
-            for task in dag.tasks:
-                if task.executor_config is not None and 'periodic_config' in task.executor_config:
-                    self.log.debug('{} has periodic task {}'.format(self.run_id, task.task_id))
-                    is_periodic = True
-                    break
+            is_long_running_dag = dag.is_long_running_dag()
             info = self.task_instance_scheduling_decisions(session)
 
             tis = info.tis
@@ -439,50 +434,51 @@ class DagRun(Base, LoggingMixin):
 
         # if all roots finished and at least one failed, the run failed
         if not unfinished_tasks and any(leaf_ti.state in State.failed_states for leaf_ti in leaf_tis):
-            if not is_periodic:
+            if not is_long_running_dag:
                 self.log.error('Marking run %s failed', self)
                 self.set_state(State.FAILED)
-            if execute_callbacks:
-                dag.handle_callback(self, success=False, reason='task_failure', session=session)
-            else:
-                callback = callback_requests.DagCallbackRequest(
-                    full_filepath=dag.fileloc,
-                    dag_id=self.dag_id,
-                    execution_date=self.execution_date,
-                    is_failure_callback=True,
-                    msg='task_failure',
-                )
+                if execute_callbacks:
+                    dag.handle_callback(self, success=False, reason='task_failure', session=session)
+                else:
+                    callback = callback_requests.DagCallbackRequest(
+                        full_filepath=dag.fileloc,
+                        dag_id=self.dag_id,
+                        execution_date=self.execution_date,
+                        is_failure_callback=True,
+                        msg='task_failure',
+                    )
 
         # if all leafs succeeded and no unfinished tasks, the run succeeded
         elif not unfinished_tasks and all(leaf_ti.state in State.success_states for leaf_ti in leaf_tis):
-            if not is_periodic:
+            if not is_long_running_dag:
                 self.log.info('Marking run %s successful', self)
                 self.set_state(State.SUCCESS)
-            if execute_callbacks:
-                dag.handle_callback(self, success=True, reason='success', session=session)
-            else:
-                callback = callback_requests.DagCallbackRequest(
-                    full_filepath=dag.fileloc,
-                    dag_id=self.dag_id,
-                    execution_date=self.execution_date,
-                    is_failure_callback=False,
-                    msg='success',
-                )
+                if execute_callbacks:
+                    dag.handle_callback(self, success=True, reason='success', session=session)
+                else:
+                    callback = callback_requests.DagCallbackRequest(
+                        full_filepath=dag.fileloc,
+                        dag_id=self.dag_id,
+                        execution_date=self.execution_date,
+                        is_failure_callback=False,
+                        msg='success',
+                    )
 
         # if *all tasks* are deadlocked, the run failed
         elif unfinished_tasks and none_depends_on_past and none_task_concurrency and not are_runnable_tasks:
-            self.log.error('Deadlock; marking run %s failed', self)
-            self.set_state(State.FAILED)
-            if execute_callbacks:
-                dag.handle_callback(self, success=False, reason='all_tasks_deadlocked', session=session)
-            else:
-                callback = callback_requests.DagCallbackRequest(
-                    full_filepath=dag.fileloc,
-                    dag_id=self.dag_id,
-                    execution_date=self.execution_date,
-                    is_failure_callback=True,
-                    msg='all_tasks_deadlocked',
-                )
+            if not is_long_running_dag:
+                self.log.error('Deadlock; marking run %s failed', self)
+                self.set_state(State.FAILED)
+                if execute_callbacks:
+                    dag.handle_callback(self, success=False, reason='all_tasks_deadlocked', session=session)
+                else:
+                    callback = callback_requests.DagCallbackRequest(
+                        full_filepath=dag.fileloc,
+                        dag_id=self.dag_id,
+                        execution_date=self.execution_date,
+                        is_failure_callback=True,
+                        msg='All tasks of dag {} are deadlocked'.format(self.dag_id)
+                    )
 
         # finally, if the roots aren't done, the dag is still running
         else:
@@ -492,8 +488,19 @@ class DagRun(Base, LoggingMixin):
         self._emit_duration_stats_for_finished_state()
 
         session.merge(self)
-
-        return schedulable_tis, callback
+        # filter the periodic triggered and subscribed event tasks
+        final_schedulable_tis = []
+        if is_long_running_dag:
+            for ti in schedulable_tis:
+                task = dag.get_task(ti.task_id)
+                if task.has_subscribed_events():
+                    continue
+                if task.executor_config is not None and 'periodic_config' in task.executor_config:
+                    continue
+                final_schedulable_tis.append(ti)
+        else:
+            final_schedulable_tis = schedulable_tis
+        return final_schedulable_tis, callback
 
     @provide_session
     def task_instance_scheduling_decisions(self, session: Session = None) -> TISchedulingDecision:

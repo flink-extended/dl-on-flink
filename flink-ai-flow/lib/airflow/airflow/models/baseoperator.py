@@ -181,6 +181,12 @@ class EventOperator(LoggingMixin, Operator):
         """
         self._events_handler = events_handler
 
+    def has_subscribed_events(self) -> bool:
+        if self._subscribed_events is None or len(self._subscribed_events) == 0:
+            return False
+        else:
+            return True
+
 
 # pylint: disable=too-many-instance-attributes,too-many-public-methods
 @functools.total_ordering

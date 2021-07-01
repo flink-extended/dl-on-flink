@@ -262,17 +262,17 @@ class EventBasedScheduler(LoggingMixin):
                     )
                     if run_type == DagRunType.SCHEDULED:
                         self._update_dag_next_dagrun(dag_id, session)
-
+                    self._register_periodic_events(dag_run.run_id, dag)
                     # commit the session - Release the write lock on DagModel table.
                     guard.commit()
                     # END: create dagrun
-                    self._register_periodic_events(dag_run.run_id, dag)
                     return dag_run
                 except SerializedDagNotFound:
                     self.log.exception("DAG '%s' not found in serialized_dag table", dag_id)
                     return None
                 except Exception:
                     self.log.exception("Error occurred when create dag_run of dag: %s", dag_id)
+                    return None
 
     def _update_dag_next_dagrun(self, dag_id, session):
         """
@@ -410,21 +410,7 @@ class EventBasedScheduler(LoggingMixin):
             of=TI,
             **skip_locked(session=session),
         ).all()
-        # filter need event tasks
-        serialized_dag = session.query(SerializedDagModel).filter(
-            SerializedDagModel.dag_id == dag_run.dag_id).first()
-        final_scheduled_tis = []
-        event_task_set = []
-        if serialized_dag:
-            dep: DagEventDependencies = DagEventDependencies.from_json(serialized_dag.event_relationships)
-            event_task_set = dep.find_event_dependencies_tasks()
-        else:
-            self.log.error("Failed to get serialized_dag from db, unexpected dag id: %s", dag_run.dag_id)
-        for ti in scheduled_tis:
-            if ti.task_id not in event_task_set:
-                final_scheduled_tis.append(ti)
-
-        return final_scheduled_tis
+        return scheduled_tis
 
     @provide_session
     def _verify_integrity_if_dag_changed(self, dag_run: DagRun, session=None):
@@ -632,7 +618,7 @@ class EventBasedSchedulerJob(BaseJob):
             self.dag_trigger.end()
             self.task_event_manager.end()
             self.executor.end()
-            
+
             settings.Session.remove()  # type: ignore
         except Exception as e:  # pylint: disable=broad-except
             self.log.exception("Exception when executing scheduler, %s", e)
