@@ -46,7 +46,7 @@ from airflow.events.scheduler_events import StopSchedulerEvent, StopDagEvent
 from tests.test_utils import db
 
 TEST_DAG_FOLDER = os.path.join(
-    os.path.dirname(os.path.realpath(__file__)), os.pardir, 'dags')
+    os.path.dirname(os.path.realpath(__file__)), os.pardir, os.pardir, 'dags')
 EVENT_BASED_SCHEDULER_DAG = 'event_based_scheduler_dag'
 
 
@@ -113,10 +113,11 @@ class TestEventBasedScheduler(unittest.TestCase):
         self.client.send_event(StopSchedulerEvent(job_id=0).to_event())
 
     def test_event_based_scheduler(self):
+        dag_file = os.path.join(TEST_DAG_FOLDER, 'test_event_based_scheduler.py')
         t = threading.Thread(target=self.schedule_task_function)
         t.setDaemon(True)
         t.start()
-        self.start_scheduler('../../dags/test_event_based_scheduler.py')
+        self.start_scheduler(dag_file)
 
     def test_replay_message(self):
         key = "stop"
@@ -218,10 +219,12 @@ class TestEventBasedScheduler(unittest.TestCase):
         self.client.send_event(StopSchedulerEvent(job_id=0).to_event())
 
     def test_run_a_task(self):
+        dag_file = os.path.join(TEST_DAG_FOLDER, 'test_single_task_dag.py')
+        print(dag_file)
         t = threading.Thread(target=self.run_a_task_function, args=())
         t.setDaemon(True)
         t.start()
-        self.start_scheduler('../../dags/test_single_task_dag.py')
+        self.start_scheduler(dag_file)
         tes: List[TaskExecution] = self.get_task_execution("single", "task_1")
         self.assertEqual(len(tes), 1)
 
@@ -249,14 +252,16 @@ class TestEventBasedScheduler(unittest.TestCase):
         client.send_event(StopSchedulerEvent(job_id=0).to_event())
 
     def test_run_event_task(self):
+        dag_file = os.path.join(TEST_DAG_FOLDER, 'test_event_task_dag.py')
         t = threading.Thread(target=self.run_event_task_function, args=())
         t.setDaemon(True)
         t.start()
-        self.start_scheduler('../../dags/test_event_task_dag.py')
+        self.start_scheduler(dag_file)
         tes: List[TaskExecution] = self.get_task_execution("event_dag", "task_2")
         self.assertEqual(len(tes), 1)
 
-    def run_trigger_dag_function(self):
+    def run_trigger_dag_function(self, dag_file):
+        time.sleep(5)
         ns_client = NotificationClient(server_uri="localhost:{}".format(self.port), default_namespace="")
         client = EventSchedulerClient(ns_client=ns_client)
         while True:
@@ -266,35 +271,38 @@ class TestEventBasedScheduler(unittest.TestCase):
                 if len(tes) > 0:
                     break
                 else:
-                    client.trigger_parse_dag()
+                    client.trigger_parse_dag(dag_file)
                     result = client.schedule_dag('trigger_dag')
                     print('result {}'.format(result.dagrun_id))
                 time.sleep(5)
         ns_client.send_event(StopSchedulerEvent(job_id=0).to_event())
 
     def test_run_trigger_dag(self):
-        import multiprocessing
-        p = multiprocessing.Process(target=self.run_trigger_dag_function, args=())
-        p.start()
-        self.start_scheduler('../../dags/test_run_trigger_dag.py')
+        dag_file = os.path.join(TEST_DAG_FOLDER, 'test_run_trigger_dag.py')
+        t = threading.Thread(target=self.run_trigger_dag_function, args=(dag_file,))
+        t.setDaemon(True)
+        t.start()
+        self.start_scheduler(dag_file)
         tes: List[TaskExecution] = self.get_task_execution("trigger_dag", "task_1")
         self.assertEqual(len(tes), 1)
 
-    def run_no_dag_file_function(self):
+    def run_no_dag_file_function(self, dag_file):
+        time.sleep(5)
         ns_client = NotificationClient(server_uri="localhost:{}".format(self.port), default_namespace="")
         client = EventSchedulerClient(ns_client=ns_client)
         with create_session() as session:
-            client.trigger_parse_dag()
+            client.trigger_parse_dag(dag_file)
             result = client.schedule_dag('no_dag')
             print('result {}'.format(result.dagrun_id))
             time.sleep(5)
         ns_client.send_event(StopSchedulerEvent(job_id=0).to_event())
 
     def test_no_dag_file_trigger_dag(self):
-        import multiprocessing
-        p = multiprocessing.Process(target=self.run_no_dag_file_function, args=())
-        p.start()
-        self.start_scheduler('../../dags/test_run_trigger_dag.py')
+        dag_file = os.path.join(TEST_DAG_FOLDER, 'test_run_trigger_dag.py')
+        t = threading.Thread(target=self.run_no_dag_file_function, args=(dag_file,))
+        t.setDaemon(True)
+        t.start()
+        self.start_scheduler(dag_file)
         tes: List[TaskExecution] = self.get_task_execution("trigger_dag", "task_1")
         self.assertEqual(len(tes), 0)
 
@@ -324,46 +332,12 @@ class TestEventBasedScheduler(unittest.TestCase):
         ns_client.send_event(StopSchedulerEvent(job_id=0).to_event())
 
     def test_task_trigger_dag(self):
-        import threading
+        dag_file = os.path.join(TEST_DAG_FOLDER, 'test_task_trigger_dag.py')
         t = threading.Thread(target=self.run_trigger_task_function, args=())
         t.setDaemon(True)
         t.start()
-        self.start_scheduler('../../dags/test_task_trigger_dag.py')
+        self.start_scheduler(dag_file)
         tes: List[TaskExecution] = self.get_task_execution("trigger_task", "task_2")
-        self.assertEqual(len(tes), 1)
-
-    def run_ai_flow_function(self):
-        client = NotificationClient(server_uri="localhost:{}".format(self.port),
-                                    default_namespace="default",
-                                    sender='1-job-name')
-        while True:
-            with create_session() as session:
-                tes = session.query(TaskExecution).filter(TaskExecution.dag_id == 'workflow_1',
-                                                          TaskExecution.task_id == '1-job-name').all()
-                if len(tes) > 0:
-                    time.sleep(5)
-                    client.send_event(BaseEvent(key='key_1', value='value_1', event_type='UNDEFINED'))
-                    client.send_event(BaseEvent(key='key_2', value='value_2', event_type='UNDEFINED'))
-                    while True:
-                        with create_session() as session_2:
-                            tes_2 = session_2.query(TaskExecution).filter(TaskExecution.dag_id == 'workflow_1').all()
-                            if len(tes_2) == 3:
-                                break
-                            else:
-                                time.sleep(1)
-                    break
-                else:
-                    time.sleep(1)
-        time.sleep(3)
-        client.send_event(StopSchedulerEvent(job_id=0).to_event())
-
-    def test_run_ai_flow_dag(self):
-        import threading
-        t = threading.Thread(target=self.run_ai_flow_function, args=())
-        t.setDaemon(True)
-        t.start()
-        self.start_scheduler('../../dags/test_aiflow_dag.py')
-        tes: List[TaskExecution] = self.get_task_execution("workflow_1", "1-job-name")
         self.assertEqual(len(tes), 1)
 
     def stop_dag_function(self):
@@ -384,10 +358,11 @@ class TestEventBasedScheduler(unittest.TestCase):
         self.client.send_event(StopSchedulerEvent(job_id=0).to_event())
 
     def test_stop_dag(self):
+        dag_file = os.path.join(TEST_DAG_FOLDER, 'test_event_based_scheduler.py')
         t = threading.Thread(target=self.stop_dag_function)
         t.setDaemon(True)
         t.start()
-        self.start_scheduler('../../dags/test_event_based_scheduler.py')
+        self.start_scheduler(dag_file)
         with create_session() as session:
             from airflow.models import DagModel
             dag_model: DagModel = DagModel.get_dagmodel(EVENT_BASED_SCHEDULER_DAG)
@@ -398,22 +373,43 @@ class TestEventBasedScheduler(unittest.TestCase):
             for te in session.query(TaskExecution).filter(TaskExecution.dag_id == EVENT_BASED_SCHEDULER_DAG):
                 self.assertTrue(te.state in [State.SUCCESS, State.KILLED])
 
-    def run_periodic_task_function(self):
+    def run_cron_periodic_task_function(self):
         while True:
             with create_session() as session:
                 tes = session.query(TaskExecution).filter(TaskExecution.dag_id == 'single',
                                                           TaskExecution.task_id == 'task_1').all()
-                if len(tes) > 1:
+                if len(tes) > 2:
                     break
                 else:
                     time.sleep(1)
         self.client.send_event(StopSchedulerEvent(job_id=0).to_event())
 
-    def test_run_periodic_task(self):
-        t = threading.Thread(target=self.run_periodic_task_function, args=())
+    def test_run_cron_periodic_task(self):
+        dag_file = os.path.join(TEST_DAG_FOLDER, 'test_periodic_cron_task_dag.py')
+        t = threading.Thread(target=self.run_cron_periodic_task_function, args=())
         t.setDaemon(True)
         t.start()
-        self.start_scheduler('../../dags/test_periodic_task_dag.py')
+        self.start_scheduler(dag_file)
+        tes: List[TaskExecution] = self.get_task_execution("single", "task_1")
+        self.assertGreater(len(tes), 1)
+
+    def run_interval_periodic_task_function(self):
+        while True:
+            with create_session() as session:
+                tes = session.query(TaskExecution).filter(TaskExecution.dag_id == 'single',
+                                                          TaskExecution.task_id == 'task_1').all()
+                if len(tes) > 2:
+                    break
+                else:
+                    time.sleep(1)
+        self.client.send_event(StopSchedulerEvent(job_id=0).to_event())
+
+    def test_run_interval_periodic_task(self):
+        dag_file = os.path.join(TEST_DAG_FOLDER, 'test_periodic_interval_task_dag.py')
+        t = threading.Thread(target=self.run_interval_periodic_task_function, args=())
+        t.setDaemon(True)
+        t.start()
+        self.start_scheduler(dag_file)
         tes: List[TaskExecution] = self.get_task_execution("single", "task_1")
         self.assertGreater(len(tes), 1)
 
@@ -433,7 +429,8 @@ class TestEventBasedScheduler(unittest.TestCase):
         self.client.send_event(StopSchedulerEvent(job_id=0).to_event())
 
     def test_run_one_task(self):
+        dag_file = os.path.join(TEST_DAG_FOLDER, 'test_multiple_trigger_task_dag.py')
         t = threading.Thread(target=self.run_one_task_function, args=())
         t.setDaemon(True)
         t.start()
-        self.start_scheduler('../../dags/test_multiple_trigger_task_dag.py')
+        self.start_scheduler(dag_file)

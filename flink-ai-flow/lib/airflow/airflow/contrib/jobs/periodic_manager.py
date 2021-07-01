@@ -14,7 +14,7 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-
+from typing import Dict
 from airflow.utils.mailbox import Mailbox
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
@@ -28,6 +28,12 @@ def trigger_periodic_task(mailbox, run_id, task_id):
 
 
 class PeriodicManager(LoggingMixin):
+    """
+    Support cron and interval config
+    cron: second minute hour day month day_of_week option(year)
+    interval: weeks,days,hours,minutes,seconds
+    """
+
     def __init__(self, mailbox: Mailbox):
         super().__init__()
         self.mailbox = mailbox
@@ -42,48 +48,60 @@ class PeriodicManager(LoggingMixin):
     def _generate_job_id(self, run_id, task_id):
         return '{}:{}'.format(run_id, task_id)
 
-    def add_task(self, run_id, task_id, periodic_config):
+    def add_task(self, run_id, task_id, periodic_config: Dict):
         if 'cron' in periodic_config:
+            def build_cron_trigger(expr) -> CronTrigger:
+                cron_items = expr.split()
+                if len(cron_items) == 7:
+                    return CronTrigger(second=cron_items[0],
+                                       minute=cron_items[1],
+                                       hour=cron_items[2],
+                                       day=cron_items[3],
+                                       month=cron_items[4],
+                                       day_of_week=cron_items[5],
+                                       year=cron_items[6])
+                elif len(cron_items) == 6:
+                    return CronTrigger(second=cron_items[0],
+                                       minute=cron_items[1],
+                                       hour=cron_items[2],
+                                       day=cron_items[3],
+                                       month=cron_items[4],
+                                       day_of_week=cron_items[5])
+                else:
+                    raise ValueError('The cron expression {} is incorrect format, follow the pattern: '
+                                     'second minute hour day month day_of_week optional(year).'.format(expr))
+
             self.sc.add_job(id=self._generate_job_id(run_id, task_id),
                             func=trigger_periodic_task, args=(self.mailbox, run_id, task_id),
-                            trigger=CronTrigger.from_crontab(periodic_config['cron']))
+                            trigger=build_cron_trigger(periodic_config['cron']))
         elif 'interval' in periodic_config:
-            interval_config: dict = periodic_config['interval']
-            if 'seconds' in interval_config:
-                seconds = interval_config['seconds']
-            else:
-                seconds = 0
-            
-            if 'minutes' in interval_config:
-                minutes = interval_config['minutes']
-            else:
-                minutes = 0
-            
-            if 'hours' in interval_config:
-                hours = interval_config['hours']
-            else:
-                hours = 0
-                
-            if 'days' in interval_config:
-                days = interval_config['days']
-            else:
-                days = 0
-            
-            if 'weeks' in interval_config:
-                weeks = interval_config['weeks']
-            else:
-                weeks = 0
-            
-            if seconds < 10 and 0 >= minutes and 0 >= hours and 0 >= days and 0 >= weeks:
-                self.log.error('Interval mast greater than 20 seconds')
-                return 
+            interval_expr: str = periodic_config['interval']
+            interval_items = interval_expr.split(',')
+            if len(interval_items) != 5:
+                raise ValueError('The interval expression {} is incorrect format, follow the pattern: '
+                                 'weeks,days,hours,minutes,seconds.'.format(interval_expr))
+            temp_list = []
+            is_zero = True
+            for item in interval_items:
+                if item is None or '' == item.strip():
+                    v = 0
+                else:
+                    v = int(item.strip())
+                if v < 0:
+                    raise Exception('The item of interval expression must be greater than or equal to 0.')
+                if v > 0:
+                    is_zero = False
+                temp_list.append(v)
+            if is_zero:
+                raise Exception('The interval config must be greater than 0.')
+
             self.sc.add_job(id=self._generate_job_id(run_id, task_id),
                             func=trigger_periodic_task, args=(self.mailbox, run_id, task_id),
-                            trigger=IntervalTrigger(seconds=seconds, 
-                                                    minutes=minutes, 
-                                                    hours=hours, 
-                                                    days=days, 
-                                                    weeks=weeks))
+                            trigger=IntervalTrigger(seconds=temp_list[4],
+                                                    minutes=temp_list[3],
+                                                    hours=temp_list[2],
+                                                    days=temp_list[1],
+                                                    weeks=temp_list[0]))
         else:
             self.log.error('Periodic support type cron or interval. current periodic config {}'.format(periodic_config))
 
