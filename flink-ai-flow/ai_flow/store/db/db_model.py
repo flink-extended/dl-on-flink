@@ -18,7 +18,7 @@
 #
 from notification_service.base_notification import BaseEvent
 from sqlalchemy import (
-    Column, String, ForeignKey, Integer, PrimaryKeyConstraint, BigInteger, UniqueConstraint, Text)
+    Column, String, ForeignKey, Integer, PrimaryKeyConstraint, BigInteger, UniqueConstraint, Text, Boolean)
 from sqlalchemy.orm import relationship, backref
 from mongoengine import (Document, StringField, IntField, LongField, ReferenceField,
                          BooleanField, ListField, ObjectIdField, SequenceField)
@@ -119,14 +119,20 @@ class SqlWorkflow(base, Base):
     """
     __tablename__ = 'workflow'
 
-    uuid = Column(BigInteger, primary_key=True, autoincrement=True)
-    name = Column(String(255), unique=True, nullable=False)
+    name = Column(String(255), nullable=False)
+    project_id = Column(BigInteger, ForeignKey('project.uuid', onupdate='cascade'))
     properties = Column(String(1000))
-    project_id = Column(BigInteger, ForeignKey('project.uuid'))
-    is_deleted = Column(String(256), default='False')
+    create_time = Column(BigInteger)
+    update_time = Column(BigInteger)
+    is_deleted = Column(Boolean, default=False)
+
+    UniqueConstraint(project_id, name)
+
+    project = relationship("SqlProject", backref=backref('workflow', cascade='all'))
 
     def __repr__(self):
-        return '<workflow ({}, {}, {}, {})>'.format(self.uuid, self.name, self.properties, self.project_id)
+        return '<workflow ({}, {}, {}, {}, {}, {}, {})>'.format(self.uuid, self.name, self.project_id, self.properties,
+                                                                self.create_time, self.update_time, self.is_deleted)
 
 
 class SqlModelVersionRelation(base):
@@ -465,16 +471,21 @@ class MongoWorkflow(Document):
     name = StringField(max_length=255, required=True, unique=True)
     project_id = IntField()
     properties = StringField(max_length=1000)
+    create_time = Column(BigInteger)
+    update_time = Column(BigInteger)
     is_deleted = BooleanField(default=False)
 
     meta = {'db_alias': MONGO_DB_ALIAS_META_SERVICE}
 
     def __repr__(self):
-        return '<Document Workflow ({}, {}, {}, {})>'.format(
+        return '<Document Workflow ({}, {}, {}, {}, {}, {}, {})>'.format(
             self.uuid,
             self.name,
+            self.project_id,
             self.properties,
-            self.project_id)
+            self.create_time,
+            self.update_time,
+            self.is_deleted)
 
 
 class MongoModelVersion(Document):
