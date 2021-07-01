@@ -309,6 +309,48 @@ service MetadataService {
         body: "*"
         };
     };
+    rpc registerWorkflow (RegisterWorkflowRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/workflow/save"
+        body: "*"
+        };
+    }
+    rpc updateWorkflow (UpdateWorkflowRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/workflow/update"
+        body: "*"
+        };
+    }
+    rpc getWorkflowById (IdRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/workflow/get/id"
+        body: "*"
+        };
+    }
+    rpc getWorkflowByName (WorkflowNameRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/workflow/get/name"
+        body: "*"
+        };
+    }
+    rpc deleteWorkflowById (IdRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/workflow/delete/id"
+        body: "*"
+        };
+    }
+    rpc deleteWorkflowByName (WorkflowNameRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/workflow/delete/name"
+        body: "*"
+        };
+    }
+    rpc listWorkflows (ListWorkflowsRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metadata_store/workflow/list"
+        body: "*"
+        };
+    }
 }
 
 message IdRequest {
@@ -433,4 +475,30 @@ message UpdateArtifactRequest {
 
 message ArtifactListProto {
     repeated ArtifactProto artifacts = 1;
+}
+
+//workflow
+message RegisterWorkflowRequest {
+    WorkflowMetaProto workflow = 1;
+}
+
+message UpdateWorkflowRequest {
+    string project_name = 1;
+    string workflow_name = 2;
+    map<string, string> properties = 3;
+}
+
+message WorkflowListProto {
+    repeated WorkflowMetaProto workflows = 1;
+}
+
+message ListWorkflowsRequest {
+    string project_name = 1;
+    int64 page_size = 2;
+    int64 offset = 3;
+}
+
+message WorkflowNameRequest {
+    string project_name = 1;
+    string workflow_name = 2;
 }

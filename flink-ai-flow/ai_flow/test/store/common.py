@@ -149,6 +149,60 @@ class AbstractTestStore(object):
         self.assertEqual(update_dataset.schema.name_list, ['a'])
         self.assertEqual(update_dataset_1.catalog_database, 'my_db')
 
+    """test workflow"""
+    def test_save_workflow_get_workflow_by_id_and_name(self):
+        project_response = self.store.register_project(name='project', uri='www.code.com')
+        self.assertEqual(project_response.uuid, 1)
+        response = self.store.register_workflow(name='workflow',
+                                                project_id=project_response.uuid,
+                                                properties=Properties({'a': 'b'}))
+        self.assertEqual(response.uuid, 1)
+        self.assertEqual(response.properties, Properties({'a': 'b'}))
+        response_by_id = self.store.get_workflow_by_id(response.uuid)
+        response_by_name = self.store.get_workflow_by_name(project_response.name, response.name)
+        self.assertEqual('workflow', response_by_id.name)
+        self.assertEqual('workflow', response_by_name.name)
+        self.assertEqual(Properties({'a': 'b'}), response_by_id.properties)
+        self.assertEqual(Properties({'a': 'b'}), response_by_name.properties)
+
+    def test_double_register_workflow(self):
+        project_response = self.store.register_project(name='project', uri='www.code.com')
+        project_response2 = self.store.register_project(name='project2', uri='www.code.com')
+        self.store.register_workflow(name='workflow', project_id=project_response.uuid)
+        self.store.register_workflow(name='workflow', project_id=project_response2.uuid)
+        self.assertRaises(AIFlowException, self.store.register_workflow, name='workflow',
+                          project_id=project_response.uuid)
+
+    def test_list_workflows(self):
+        project_response = self.store.register_project(name='project', uri='www.code.com')
+        self.store.register_workflow(name='workflow1', project_id=project_response.uuid)
+        self.store.register_workflow(name='workflow2', project_id=project_response.uuid)
+        response_list = self.store.list_workflows(project_response.name, 2, 0)
+        self.assertEqual('workflow1', response_list[0].name)
+        self.assertEqual('workflow2', response_list[1].name)
+
+    def test_delete_workflow(self):
+        project_response = self.store.register_project(name='project', uri='www.code.com')
+        response = self.store.register_workflow(name='workflow', project_id=project_response.uuid)
+        self.assertEqual(Status.OK, self.store.delete_workflow_by_name(project_name=project_response.name,
+                                                                       workflow_name='workflow'))
+        self.assertIsNone(self.store.get_workflow_by_id(response.uuid))
+
+        response = self.store.register_workflow(name='workflow', project_id=project_response.uuid)
+        self.assertEqual(Status.OK, self.store.delete_workflow_by_id(response.uuid))
+        self.assertIsNone(self.store.get_workflow_by_id(response.uuid))
+
+    def test_update_workflow(self):
+        project_response = self.store.register_project(name='project', uri='www.code.com')
+        response = self.store.register_workflow(name='workflow',
+                                                project_id=project_response.uuid,
+                                                properties=Properties({'a': 'b'}))
+
+        updated_workflow = self.store.update_workflow(project_name=project_response.name,
+                                                      workflow_name='workflow',
+                                                      properties=Properties({'a': 'c'}))
+        self.assertEqual(updated_workflow.properties, Properties({'a': 'c'}))
+
     """test project"""
 
     def test_save_project_get_project_by_id_and_name(self):

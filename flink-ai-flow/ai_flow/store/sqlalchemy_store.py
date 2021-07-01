@@ -29,6 +29,7 @@ from ai_flow.meta.dataset_meta import DatasetMeta, Properties, DataType, Schema
 from ai_flow.meta.metric_meta import MetricMeta, MetricType, MetricSummary
 from ai_flow.meta.model_relation_meta import ModelRelationMeta, ModelVersionRelationMeta
 from ai_flow.meta.project_meta import ProjectMeta
+from ai_flow.meta.workflow_meta import WorkflowMeta
 from ai_flow.metadata_store.utils.MetaToTable import MetaToTable
 from ai_flow.metadata_store.utils.ResultToMeta import ResultToMeta
 from ai_flow.metric.utils import table_to_metric_meta, table_to_metric_summary, metric_meta_to_table, \
@@ -168,7 +169,7 @@ class SqlAlchemyStore(AbstractStore):
         :param name: the name of the dataset
         :param data_format: the data format of the dataset
         :param description: the description of the dataset
-        :param uri: the batch uri of the dataset
+        :param uri: the uri of the dataset
         :param properties: the properties of the dataset
         :param name_list: the name list of dataset's schema
         :param type_list: the type list corresponded to the name list of dataset's schema
@@ -748,6 +749,148 @@ class SqlAlchemyStore(AbstractStore):
                 return Status.OK
             except sqlalchemy.exc.IntegrityError as e:
                 raise AIFlowException(str(e))
+
+    '''workflow api'''
+
+    def register_workflow(self, name, project_id, properties=None) -> WorkflowMeta:
+        """
+        Register a workflow in metadata store.
+
+        :param name: the workflow name
+        :param project_id: the id of project which contains the workflow
+        :param properties: the workflow properties
+        """
+        update_time = create_time = int(time.time() * 1000)
+        with self.ManagedSessionMaker() as session:
+            try:
+                workflow = MetaToTable.workflow_to_table(name=name,
+                                                         project_id=project_id,
+                                                         properties=properties,
+                                                         create_time=create_time,
+                                                         update_time=update_time)
+                session.add(workflow)
+                session.flush()
+                return WorkflowMeta(uuid=workflow.uuid, name=name,
+                                    project_id=project_id, properties=properties,
+                                    create_time=create_time, update_time=update_time)
+            except sqlalchemy.exc.IntegrityError as e:
+                raise AIFlowException('Error: {}'.format(workflow.name, workflow.project_id, str(e)))
+
+    def get_workflow_by_name(self, project_name, workflow_name) -> Optional[WorkflowMeta]:
+        """
+        Get a workflow by specific project name and workflow name
+
+        :param project_name: the name of project which contains the workflow
+        :param workflow_name: the workflow name
+        """
+        with self.ManagedSessionMaker() as session:
+            project = self.get_project_by_name(project_name)
+            if not project:
+                raise AIFlowException("The project name you specific doesn't exists, project: \"{}\""
+                                      .format(project_name))
+            workflow = session.query(SqlWorkflow).filter(SqlWorkflow.project_id == project.uuid,
+                                                         SqlWorkflow.name == workflow_name,
+                                                         SqlWorkflow.is_deleted.is_(False)).scalar()
+            return None if workflow is None else ResultToMeta.result_to_workflow_meta(workflow)
+
+    def get_workflow_by_id(self, workflow_id) -> Optional[WorkflowMeta]:
+        """
+        Get a workflow by specific uuid
+
+        :param workflow_id: the uuid of workflow
+        """
+        with self.ManagedSessionMaker() as session:
+            workflow = session.query(SqlWorkflow).filter(SqlWorkflow.uuid == workflow_id,
+                                                         SqlWorkflow.is_deleted.is_(False)).scalar()
+            return None if workflow is None else ResultToMeta.result_to_workflow_meta(workflow)
+
+    def list_workflows(self, project_name, page_size, offset) -> Optional[List[WorkflowMeta]]:
+        """
+        List all workflows of the specific project
+
+        :param project_name: the name of project which contains the workflow
+        :param page_size     limitation of listed workflows.
+        :param offset        offset of listed workflows.
+        """
+
+        with self.ManagedSessionMaker() as session:
+            project = self.get_project_by_name(project_name)
+            if not project:
+                raise AIFlowException("The project name you specific doesn't exists, project: \"{}\""
+                                      .format(project_name))
+            workflow_result = session.query(SqlWorkflow).filter(SqlWorkflow.project_id == project.uuid,
+                                                                SqlWorkflow.is_deleted.is_(False)).limit(
+                page_size).offset(offset).all()
+            if len(workflow_result) == 0:
+                return None
+            workflow_list = []
+            for workflow in workflow_result:
+                workflow_list.append(ResultToMeta.result_to_workflow_meta(workflow))
+            return workflow_list
+
+    def delete_workflow_by_name(self, project_name, workflow_name) -> Status:
+        """
+        Delete the workflow by specific project and workflow name
+
+        :param project_name: the name of project which contains the workflow
+        :param workflow_name: the workflow name
+        """
+        workflow = self.get_workflow_by_name(project_name=project_name,
+                                             workflow_name=workflow_name)
+        if workflow is None:
+            return Status.ERROR
+        else:
+            return self.delete_workflow_by_id(workflow.uuid)
+
+    def delete_workflow_by_id(self, workflow_id) -> Status:
+        """
+        Delete the workflow by specific id
+
+        :param workflow_id: the uuid of workflow
+        """
+        with self.ManagedSessionMaker() as session:
+            try:
+                workflow = session.query(SqlWorkflow).filter(SqlWorkflow.uuid == workflow_id,
+                                                             SqlWorkflow.is_deleted.is_(False)).scalar()
+                if workflow is None:
+                    return Status.ERROR
+                deleted_workflow_counts = session.query(SqlWorkflow).filter(
+                    SqlWorkflow.project_id == workflow.project_id,
+                    SqlWorkflow.name.like(deleted_character + workflow.name + deleted_character + '%'),
+                    SqlWorkflow.is_deleted.is_(True)).count()
+                workflow.is_deleted = True
+                workflow.name = deleted_character + workflow.name + deleted_character + str(deleted_workflow_counts + 1)
+                session.flush()
+                return Status.OK
+            except sqlalchemy.exc.IntegrityError as e:
+                raise AIFlowException(str(e))
+
+    def update_workflow(self, workflow_name, project_name, properties=None) -> Optional[WorkflowMeta]:
+        """
+        Update the workflow
+
+        :param workflow_name: the workflow name
+        :param project_name: the name of project which contains the workflow
+        :param properties: (Optional) the properties need to be updated
+        """
+        with self.ManagedSessionMaker() as session:
+            try:
+                project = self.get_project_by_name(project_name)
+                if not project:
+                    raise AIFlowException("The project name you specific doesn't exists, project: \"{}\""
+                                          .format(project_name))
+                workflow = session.query(SqlWorkflow).filter(SqlWorkflow.name == workflow_name,
+                                                             SqlWorkflow.project_id == project.uuid).scalar()
+                if workflow is None:
+                    return None
+                if properties is not None:
+                    workflow.properties = str(properties)
+
+                workflow.update_time = int(time.time() * 1000)
+                session.flush()
+                return ResultToMeta.result_to_workflow_meta(workflow)
+            except sqlalchemy.exc.IntegrityError as e:
+                raise AIFlowException(e)
 
     """artifact api"""
 

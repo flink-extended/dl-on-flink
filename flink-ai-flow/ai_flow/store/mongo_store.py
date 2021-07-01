@@ -19,6 +19,7 @@
 import logging
 import time
 
+from ai_flow.meta.workflow_meta import WorkflowMeta
 from ai_flow.store import MONGO_DB_ALIAS_META_SERVICE
 from typing import Optional, Text, List, Union
 
@@ -43,7 +44,7 @@ from ai_flow.store.abstract_store import AbstractStore
 from ai_flow.store.db.db_model import (MongoProject, MongoDataset, MongoModelVersion,
                                        MongoArtifact, MongoRegisteredModel, MongoModelRelation,
                                        MongoMetricSummary, MongoMetricMeta,
-                                       MongoModelVersionRelation, MongoMember, MongoProjectSnapshot)
+                                       MongoModelVersionRelation, MongoMember, MongoProjectSnapshot, MongoWorkflow)
 from ai_flow.store.db.db_util import parse_mongo_uri
 
 if not hasattr(time, 'time_ns'):
@@ -477,6 +478,160 @@ class MongoStore(AbstractStore):
             return Status.OK
         except mongoengine.OperationError as e:
             raise AIFlowException(str(e))
+
+    '''workflow api'''
+
+    def register_workflow(self, name, project_id, properties=None) -> WorkflowMeta:
+        """
+        Register a workflow in metadata store.
+
+        :param name: the workflow name
+        :param project_id: the id of project which contains the workflow
+        :param properties: the workflow properties
+        """
+        update_time = create_time = int(time.time() * 1000)
+        try:
+            workflow = MetaToTable.workflow_to_table(name=name,
+                                                     project_id=project_id,
+                                                     properties=properties,
+                                                     create_time=create_time,
+                                                     update_time=update_time,
+                                                     store_type=type(self).__name__)
+            workflow.save()
+            return WorkflowMeta(uuid=workflow.uuid, name=name,
+                                project_id=project_id, properties=properties,
+                                create_time=create_time, update_time=update_time)
+        except mongoengine.OperationError as e:
+            raise AIFlowException('Registered Workflow (name={}, project_id={}) already exists. '
+                                  'Error: {}'.format(workflow.name, workflow.project_id, str(e)))
+
+    def get_workflow_by_name(self, project_name, workflow_name) -> Optional[WorkflowMeta]:
+        """
+        Get a workflow by specific project name and workflow name
+
+        :param project_name: the name of project which contains the workflow
+        :param workflow_name: the workflow name
+        """
+        project = self.get_project_by_name(project_name)
+        if not project:
+            return None
+        workflow_result = MongoWorkflow.objects(name=workflow_name, project_id=project.uuid, is_deleted__ne=TRUE)
+        if len(workflow_result) == 0:
+            return None
+        return ResultToMeta.result_to_workflow_meta(workflow_result[0])
+
+    def get_workflow_by_id(self, workflow_id) -> Optional[WorkflowMeta]:
+        """
+        Get a workflow by specific uuid
+
+        :param workflow_id: the uuid of workflow
+        """
+        workflow_result = MongoWorkflow.objects(uuid=workflow_id, is_deleted__ne=TRUE)
+        if len(workflow_result) == 0:
+            return None
+        return ResultToMeta.result_to_workflow_meta(workflow_result[0])
+
+    def list_workflows(self, project_name, page_size, offset) -> Optional[List[WorkflowMeta]]:
+        """
+        List all workflows of the specific project
+
+        :param project_name: the name of project which contains the workflow
+        :param page_size     limitation of listed workflows.
+        :param offset        offset of listed workflows.
+        """
+        project = self.get_project_by_name(project_name)
+        if not project:
+            return None
+        workflow_result = MongoWorkflow.objects(project_id=project.uuid, is_deleted__ne=TRUE)\
+            .skip(offset).limit(page_size)
+        if len(workflow_result) == 0:
+            return None
+        workflows = []
+        for workflow in workflow_result:
+            workflows.append(ResultToMeta.result_to_workflow_meta(workflow))
+        return workflows
+
+    def delete_workflow_by_name(self, project_name, workflow_name) -> Status:
+        """
+        Delete the workflow by specific project and workflow name
+
+        :param project_name: the name of project which contains the workflow
+        :param workflow_name: the workflow name
+        """
+
+        workflow = self.get_workflow_by_name(project_name=project_name,
+                                             workflow_name=workflow_name)
+        if workflow is None:
+            return Status.ERROR
+        else:
+            return self.delete_workflow_by_id(workflow.uuid)
+
+
+        try:
+            project = self.get_project_by_name(project_name)
+            if not project:
+                raise AIFlowException("The project name you specific doesn't exists, project: \"{}\""
+                                      .format(project_name))
+            workflow = MongoWorkflow.objects(name=workflow_name, project_id=project.uuid, is_deleted__ne=TRUE).first()
+            if workflow is None:
+                return Status.ERROR
+            deleted_workflow_counts = MongoWorkflow.objects(
+                project_id=project.uuid,
+                name__startswith=deleted_character + workflow_name + deleted_character,
+                is_deleted=TRUE).count()
+            workflow.is_deleted = TRUE
+            workflow.name = deleted_character + workflow.name + deleted_character + str(deleted_workflow_counts + 1)
+            workflow.save()
+            return Status.OK
+        except mongoengine.OperationError as e:
+            raise AIFlowException(str(e))
+
+    def delete_workflow_by_id(self, workflow_id) -> Status:
+        """
+        Delete the workflow by specific id
+
+        :param workflow_id: the uuid of workflow
+        """
+        try:
+            workflow = MongoWorkflow.objects(uuid=workflow_id, is_deleted__ne=TRUE).first()
+            if workflow is None:
+                return Status.ERROR
+            deleted_workflow_counts = MongoWorkflow.objects(
+                project_id=workflow.project_id,
+                name__startswith=deleted_character + workflow.name + deleted_character,
+                is_deleted=TRUE).count()
+            workflow.is_deleted = TRUE
+            workflow.name = deleted_character + workflow.name + deleted_character + str(deleted_workflow_counts + 1)
+            workflow.save()
+            return Status.OK
+        except mongoengine.OperationError as e:
+            raise AIFlowException(str(e))
+
+    def update_workflow(self, workflow_name, project_name, properties=None) -> Optional[WorkflowMeta]:
+        """
+        Update the workflow
+
+        :param workflow_name: the workflow name
+        :param project_name: the name of project which contains the workflow
+        :param properties: (Optional) the properties need to be updated
+        """
+        try:
+            project = self.get_project_by_name(project_name)
+            if not project:
+                raise AIFlowException("The project name you specific doesn't exists, project: \"{}\""
+                                      .format(project_name))
+            workflow: MongoWorkflow = MongoWorkflow.objects(name=workflow_name,
+                                                            project_id=project.uuid,
+                                                            is_deleted__ne=TRUE).first()
+            if workflow is None:
+                return None
+            if properties is not None:
+                workflow.properties = properties
+            workflow.update_time = int(time.time() * 1000)
+            workflow.save()
+            return ResultToMeta.result_to_workflow_meta(workflow)
+        except mongoengine.OperationError as e:
+            raise AIFlowException(e)
 
     """model api"""
 

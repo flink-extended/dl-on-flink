@@ -22,9 +22,10 @@ from ai_flow.meta.job_meta import State
 from ai_flow.meta.model_meta import ModelMeta, ModelVersionMeta
 from ai_flow.meta.model_relation_meta import ModelRelationMeta, ModelVersionRelationMeta
 from ai_flow.meta.project_meta import ProjectMeta
+from ai_flow.meta.workflow_meta import WorkflowMeta
 from ai_flow.protobuf.message_pb2 import DatasetProto, ProjectProto, \
     StateProto, ModelRelationProto, ModelVersionRelationProto, ModelProto, ModelVersionProto, \
-    ArtifactProto, ModelVersionStage, DataTypeProto
+    ArtifactProto, ModelVersionStage, DataTypeProto, WorkflowMetaProto
 
 
 class ProtoToMeta:
@@ -95,6 +96,28 @@ class ProtoToMeta:
         for project in projects:
             project_meta_list.append(ProtoToMeta.proto_to_project_meta(project))
         return project_meta_list
+
+    @staticmethod
+    def proto_to_workflow_meta(workflow_proto: WorkflowMetaProto) -> WorkflowMeta:
+        properties = workflow_proto.properties
+        if properties == {}:
+            properties = None
+        project_id = workflow_proto.project_id.value if workflow_proto.HasField('project_id') else None
+        create_time = workflow_proto.create_time.value if workflow_proto.HasField('create_time') else None
+        update_time = workflow_proto.update_time.value if workflow_proto.HasField('update_time') else None
+        return WorkflowMeta(uuid=workflow_proto.uuid,
+                            name=workflow_proto.name,
+                            project_id=project_id,
+                            properties=properties,
+                            create_time=create_time,
+                            update_time=update_time)
+
+    @staticmethod
+    def proto_to_workflow_meta_list(workflows: List[WorkflowMetaProto]) -> List[WorkflowMeta]:
+        workflow_meta_list = []
+        for workflow in workflows:
+            workflow_meta_list.append(ProtoToMeta.proto_to_workflow_meta(workflow))
+        return workflow_meta_list
 
     @staticmethod
     def proto_to_artifact_meta(artifact_proto: ArtifactProto) -> ArtifactMeta:

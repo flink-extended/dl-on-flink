@@ -16,6 +16,7 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+from ai_flow.meta.workflow_meta import WorkflowMeta
 from typing import Optional, Text, List
 
 import grpc
@@ -30,7 +31,7 @@ from ai_flow.metadata_store.utils.MetaToProto import MetaToProto
 from ai_flow.protobuf import metadata_service_pb2_grpc, metadata_service_pb2
 from ai_flow.protobuf.message_pb2 import DatasetProto, SchemaProto, ModelRelationProto, ModelProto, \
     ModelVersionRelationProto, ModelVersionProto, ProjectProto, \
-    ArtifactProto, ModelVersionStage
+    ArtifactProto, ModelVersionStage, WorkflowMetaProto
 from ai_flow.protobuf.metadata_service_pb2 import ModelNameRequest
 from ai_flow.endpoint.server import stringValue, int64Value
 from ai_flow.endpoint.client.base_client import BaseClient
@@ -40,7 +41,7 @@ from ai_flow.endpoint.server.util import _unwrap_dataset_response, \
     _unwrap_model_version_relation_response, _unwrap_model_version_relation_list_response, \
     _unwrap_model_version_response, \
     _unwrap_project_response, _unwrap_project_list_response, \
-    _unwrap_artifact_response, _unwrap_artifact_list_response
+    _unwrap_artifact_response, _unwrap_artifact_list_response, _unwrap_workflow_response, _unwrap_workflow_list_response
 
 
 class MetadataClient(BaseClient):
@@ -682,3 +683,93 @@ class MetadataClient(BaseClient):
         request = metadata_service_pb2.NameRequest(name=artifact_name)
         response = self.metadata_store_stub.deleteArtifactByName(request)
         return _unwrap_delete_response(response)
+
+    '''workflow api'''
+
+    def register_workflow(self, name: Text, project_id: int, properties: Properties = None) -> WorkflowMeta:
+        """
+        Register a workflow in metadata store.
+
+        :param name: the workflow name
+        :param project_id: the id of project which contains the workflow
+        :param properties: the workflow properties
+        """
+        workflow_request = WorkflowMetaProto(name=name,
+                                             project_id=int64Value(project_id),
+                                             properties=properties)
+        request = metadata_service_pb2.RegisterWorkflowRequest(workflow=workflow_request)
+        response = self.metadata_store_stub.registerWorkflow(request)
+        return _unwrap_workflow_response(response)
+
+    def get_workflow_by_name(self, project_name: Text, workflow_name: Text) -> Optional[WorkflowMeta]:
+        """
+        Get a workflow by specific project name and workflow name
+
+        :param project_name: the name of project which contains the workflow
+        :param workflow_name: the workflow name
+        """
+        request = metadata_service_pb2.WorkflowNameRequest(workflow_name=workflow_name,
+                                                           project_name=project_name)
+        response = self.metadata_store_stub.getWorkflowByName(request)
+        return _unwrap_workflow_response(response)
+
+    def get_workflow_by_id(self, workflow_id: int) -> Optional[WorkflowMeta]:
+        """
+        Get a workflow by specific uuid
+
+        :param workflow_id: the uuid of workflow
+        """
+        request = metadata_service_pb2.IdRequest(id=workflow_id)
+        response = self.metadata_store_stub.getWorkflowById(request)
+        return _unwrap_workflow_response(response)
+
+    def list_workflows(self, project_name: Text, page_size: int, offset: int) -> Optional[List[WorkflowMeta]]:
+        """
+        List all workflows of the specific project
+
+        :param project_name: the name of project which contains the workflow
+        :param page_size      Limitation of listed workflows.
+        :param offset        Offset of listed workflows.
+        """
+        request = metadata_service_pb2.ListWorkflowsRequest(project_name=project_name,
+                                                            page_size=page_size,
+                                                            offset=offset)
+        response = self.metadata_store_stub.listWorkflows(request)
+        return _unwrap_workflow_list_response(response)
+
+    def delete_workflow_by_name(self, project_name: Text, workflow_name: Text) -> Status:
+        """
+        Delete the workflow by specific project and workflow name
+
+        :param project_name: the name of project which contains the workflow
+        :param workflow_name: the workflow name
+        """
+        request = metadata_service_pb2.WorkflowNameRequest(workflow_name=workflow_name,
+                                                           project_name=project_name)
+        response = self.metadata_store_stub.deleteWorkflowByName(request)
+        return _unwrap_delete_response(response)
+
+    def delete_workflow_by_id(self, workflow_id: int) -> Status:
+        """
+        Delete the workflow by specific id
+
+        :param workflow_id: the uuid of workflow
+        """
+        request = metadata_service_pb2.IdRequest(id=workflow_id)
+        response = self.metadata_store_stub.deleteWorkflowById(request)
+        return _unwrap_delete_response(response)
+
+    def update_workflow(self, workflow_name: Text, project_name: Text,
+                        properties: Properties = None) -> Optional[WorkflowMeta]:
+        """
+        Update the workflow
+
+        :param workflow_name: the workflow name
+        :param project_name: the name of project which contains the workflow
+        :param properties: (Optional) the properties need to be updated
+        """
+        request = metadata_service_pb2.UpdateWorkflowRequest(workflow_name=workflow_name,
+                                                             project_name=project_name,
+                                                             properties=properties)
+        response = self.metadata_store_stub.updateWorkflow(request)
+        return _unwrap_workflow_response(response)
