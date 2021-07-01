@@ -28,7 +28,8 @@ from ai_flow.endpoint.server.util import _wrap_meta_response, transform_dataset_
     _warp_dataset_list_response, _wrap_delete_response, transform_model_relation_meta, \
     _warp_model_relation_list_response, _warp_model_version_relation_list_response, \
     transform_model_version_relation_meta, _warp_project_list_response, transform_project_meta, catch_exception, \
-    transform_model_meta, transform_model_version_meta, transform_artifact_meta, _warp_artifact_list_response
+    transform_model_meta, transform_model_version_meta, transform_artifact_meta, _warp_artifact_list_response, \
+    transform_workflow_meta, _wrap_workflow_list_response
 from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
 from ai_flow.store.mongo_store import MongoStore
 from ai_flow.store.db.db_util import extract_db_engine_from_uri, parse_mongo_uri
@@ -407,3 +408,44 @@ class MetadataService(metadata_service_pb2_grpc.MetadataServiceServicer):
     def deleteArtifactByName(self, request, context):
         status = self.store.delete_artifact_by_name(request.name)
         return _wrap_delete_response(status)
+
+    @catch_exception
+    def registerWorkflow(self, request, context):
+        workflow = transform_workflow_meta(request.workflow)
+        response = self.store.register_workflow(name=workflow.name,
+                                                project_id=workflow.project_id,
+                                                properties=workflow.properties)
+        return _wrap_meta_response(MetaToProto.workflow_meta_to_proto(response))
+
+    @catch_exception
+    def updateWorkflow(self, request, context):
+        properties = None if request.properties == {} else request.properties
+        workflow = self.store.update_workflow(workflow_name=request.workflow_name,
+                                              project_name=request.project_name,
+                                              properties=properties)
+        return _wrap_meta_response(MetaToProto.workflow_meta_to_proto(workflow))
+
+    def getWorkflowById(self, request, context):
+        workflow = self.store.get_workflow_by_id(workflow_id=request.id)
+        return _wrap_meta_response(MetaToProto.workflow_meta_to_proto(workflow))
+
+    def getWorkflowByName(self, request, context):
+        workflow = self.store.get_workflow_by_name(project_name=request.project_name,
+                                                   workflow_name=request.workflow_name)
+        return _wrap_meta_response(MetaToProto.workflow_meta_to_proto(workflow))
+
+    def deleteWorkflowById(self, request, context):
+        status = self.store.delete_workflow_by_id(workflow_id=request.id)
+        return _wrap_delete_response(status)
+
+    def deleteWorkflowByName(self, request, context):
+        status = self.store.delete_workflow_by_name(project_name=request.project_name,
+                                                    workflow_name=request.workflow_name)
+        return _wrap_delete_response(status)
+
+    def listWorkflows(self, request, context):
+        workflow_meta_list = self.store.list_workflows(project_name=request.project_name,
+                                                       page_size=request.page_size,
+                                                       offset=request.offset)
+        return _wrap_workflow_list_response(workflow_meta_list)
+

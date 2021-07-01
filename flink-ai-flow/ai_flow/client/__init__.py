@@ -16,6 +16,7 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+from ai_flow.meta.workflow_meta import WorkflowMeta
 from typing import Optional, Text, List, Tuple, Union
 
 from ai_flow.api.configuration import get_default_project_config
@@ -210,6 +211,40 @@ def delete_project_by_id(project_id) -> Status:
 
 def delete_project_by_name(project_name) -> Status:
     return get_ai_flow_client().delete_project_by_name(project_name)
+
+
+def register_workflow(name: Text, project_id: int, properties: Properties = None) -> WorkflowMeta:
+    return get_ai_flow_client().register_workflow(name=name, project_id=project_id, properties=properties)
+
+
+def get_workflow_by_name(project_name: Text, workflow_name: Text) -> Optional[WorkflowMeta]:
+    return get_ai_flow_client().get_workflow_by_name(project_name=project_name, workflow_name=workflow_name)
+
+
+def get_workflow_by_id(workflow_id: int) -> Optional[WorkflowMeta]:
+    return get_ai_flow_client().get_workflow_by_id(workflow_id)
+
+
+def list_workflows(project_name: Text, page_size: int, offset: int) -> Optional[List[WorkflowMeta]]:
+    return get_ai_flow_client().list_workflows(project_name=project_name,
+                                               page_size=page_size,
+                                               offset=offset)
+
+
+def delete_workflow_by_name(project_name: Text, workflow_name: Text) -> Status:
+    return get_ai_flow_client().delete_workflow_by_name(project_name=project_name,
+                                                        workflow_name=workflow_name)
+
+
+def delete_workflow_by_id(workflow_id: int) -> Status:
+    return get_ai_flow_client().delete_workflow_by_id(workflow_id)
+
+
+def update_workflow(workflow_name: Text, project_name: Text,
+                    properties: Properties = None) -> Optional[WorkflowMeta]:
+    return get_ai_flow_client().update_workflow(workflow_name=workflow_name,
+                                                project_name=project_name,
+                                                properties=properties)
 
 
 def get_artifact_by_id(artifact_id) -> Optional[ArtifactMeta]:
