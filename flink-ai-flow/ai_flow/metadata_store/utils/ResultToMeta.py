@@ -22,6 +22,7 @@ from ai_flow.meta.dataset_meta import DatasetMeta, DataType, Schema
 from ai_flow.meta.model_relation_meta import ModelRelationMeta, ModelVersionRelationMeta, \
     create_model_version_relation
 from ai_flow.meta.project_meta import ProjectMeta
+from ai_flow.meta.workflow_meta import WorkflowMeta
 
 
 class ResultToMeta:
@@ -81,3 +82,15 @@ class ResultToMeta:
         return create_model_version_relation(version=model_version_result.version,
                                              model_id=model_version_result.model_id,
                                              project_snapshot_id=model_version_result.project_snapshot_id)
+
+    @staticmethod
+    def result_to_workflow_meta(workflow_result) -> WorkflowMeta:
+        properties = workflow_result.properties
+        if properties is not None:
+            properties = ast.literal_eval(properties)
+        return WorkflowMeta(name=workflow_result.name,
+                            project_id=workflow_result.project_id,
+                            properties=properties,
+                            create_time=workflow_result.create_time,
+                            update_time=workflow_result.update_time,
+                            uuid=workflow_result.uuid)

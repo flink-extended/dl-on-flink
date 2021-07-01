@@ -121,6 +121,15 @@ message ProjectProto {
     google.protobuf.StringValue uri = 4;
 }
 
+message WorkflowMetaProto {
+    int64 uuid = 1;
+    string name = 2;
+    google.protobuf.Int64Value project_id = 3;
+    map<string, string> properties =4;
+    google.protobuf.Int64Value create_time = 5;
+    google.protobuf.Int64Value update_time = 6;
+}
+
 message ArtifactProto {
     int64 uuid = 1;
     string name = 2;

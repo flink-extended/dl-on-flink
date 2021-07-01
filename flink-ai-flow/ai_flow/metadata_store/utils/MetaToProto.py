@@ -16,6 +16,7 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+from ai_flow.meta.workflow_meta import WorkflowMeta
 from typing import List
 
 from ai_flow.meta.artifact_meta import ArtifactMeta
@@ -25,7 +26,7 @@ from ai_flow.meta.project_meta import ProjectMeta
 from ai_flow.protobuf.message_pb2 import DatasetProto, DataTypeProto, \
     SchemaProto, ProjectProto, \
     ModelRelationProto, ModelVersionRelationProto, ModelProto, ModelVersionProto, ArtifactProto, \
-    ModelVersionStage
+    ModelVersionStage, WorkflowMetaProto
 from ai_flow.endpoint.server import stringValue, int64Value
 
 
@@ -89,6 +90,26 @@ class MetaToProto:
         for project in projects:
             project_proto_list.append(MetaToProto.project_meta_to_proto(project))
         return project_proto_list
+
+    @staticmethod
+    def workflow_meta_to_proto(workflow_meta: WorkflowMeta) -> WorkflowMetaProto:
+        if workflow_meta is None:
+            return None
+        else:
+            return WorkflowMetaProto(
+                name=workflow_meta.name,
+                project_id=int64Value(workflow_meta.project_id),
+                properties=workflow_meta.properties,
+                create_time=int64Value(workflow_meta.create_time),
+                update_time=int64Value(workflow_meta.update_time),
+                uuid=workflow_meta.uuid)
+
+    @staticmethod
+    def workflow_meta_list_to_proto(workflows: List[WorkflowMeta]) -> List[WorkflowMetaProto]:
+        workflow_proto_list = []
+        for workflow in workflows:
+            workflow_proto_list.append(MetaToProto.workflow_meta_to_proto(workflow))
+        return workflow_proto_list
 
     @staticmethod
     def artifact_meta_to_proto(artifact_meta: ArtifactMeta) -> ArtifactProto:
