@@ -87,8 +87,6 @@
                         <exclude>ai_flow/application_master/master.yaml.sample</exclude>
                         <exclude>examples/simple_examples/logs/*</exclude>
                         <exclude>examples/simple_examples/temp/*</exclude>
-                        <exclude>flink_ai_flow/tests/resources/word_count.txt</exclude>
-                        <exclude>flink_ai_flow/tests/temp/**/*</exclude>
                         <exclude>resources/auto_build/sources.list</exclude>
                         <exclude>lib/notification_service/.idea/*</exclude>
                         <exclude>lib/airflow/*</exclude>
@@ -97,7 +95,6 @@
                         <exclude>ai_flow/protobuf/go/*.go</exclude>
                         <exclude>lib/**/*</exclude>
                         <exclude>examples/**/*</exclude>
-                        <exclude>python_ai_flow/test/**/*</exclude>
                         <exclude>tests/temp/**/*</exclude>
                         <exclude>tests/resources/**/*</exclude>
                     </excludes>
