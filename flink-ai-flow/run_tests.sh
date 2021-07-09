@@ -52,6 +52,7 @@ function run_test_class() {
 mvn verify
 
 run_tests 'ai_flow/test/graph'
+run_tests 'ai_flow/test/workflow'
 
 
 #run_tests 'ai_flow/test/common/'
