@@ -24,9 +24,9 @@ from ai_flow.protobuf.message_pb2 import WorkflowProto, WorkflowExecutionProto, 
 from ai_flow.endpoint.client.base_client import BaseClient
 
 
-class SchedulingClient(BaseClient):
+class SchedulerClient(BaseClient):
     def __init__(self, server_uri):
-        super(SchedulingClient, self).__init__(server_uri)
+        super(SchedulerClient, self).__init__(server_uri)
         channel = grpc.insecure_channel(server_uri)
         self.scheduling_stub = scheduling_service_pb2_grpc.SchedulingServiceStub(channel)
 

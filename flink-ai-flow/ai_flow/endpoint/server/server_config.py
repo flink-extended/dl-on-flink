@@ -123,8 +123,8 @@ class AIFlowServerConfig(AIFlowConfiguration):
         else:
             return True
 
-    def start_scheduling_service(self):
-        if "start_scheduling_service" in self and self['start_scheduling_service'] is False:
+    def start_scheduler_service(self):
+        if "start_scheduler_service" in self and self['start_scheduler_service'] is False:
             return False
         else:
             return True
