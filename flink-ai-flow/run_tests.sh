@@ -59,6 +59,7 @@ run_tests 'ai_flow/test/ai_graph'
 run_tests 'ai_flow/test/translator'
 run_tests 'ai_flow/test/runtime'
 run_tests 'ai_flow/test/plugin_interface'
+run_tests 'ai_flow/test/scheduler'
 
 #run_tests 'ai_flow/test/common/'
 #run_tests 'ai_flow/test/store/'

@@ -73,8 +73,8 @@ class AIFlowServerRunner(object):
             start_meta_service=self.server_config.start_meta_service(),
             start_model_center_service=self.server_config.start_model_center_service(),
             start_metric_service=self.server_config.start_metric_service(),
-            start_scheduling_service=self.server_config.start_scheduling_service(),
-            scheduler_config=self.server_config.get_scheduler_config(),
+            start_scheduler_service=self.server_config.start_scheduler_service(),
+            scheduler_service_config=self.server_config.get_scheduler_config(),
             enabled_ha=self.server_config.get_enable_ha(),
             ha_server_uri=self.server_config.get_server_ip() + ":" + str(self.server_config.get_server_port()),
             ttl_ms=self.server_config.get_ha_ttl_ms())
