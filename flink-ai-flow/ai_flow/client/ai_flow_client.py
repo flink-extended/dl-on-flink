@@ -31,7 +31,7 @@ from ai_flow.api.execution import AirflowOperation
 from ai_flow.endpoint.client.metadata_client import MetadataClient
 from ai_flow.endpoint.client.metric_client import MetricClient
 from ai_flow.endpoint.client.model_center_client import ModelCenterClient
-from ai_flow.endpoint.client.scheduling_client import SchedulingClient
+from ai_flow.endpoint.client.scheduler_client import SchedulerClient
 from ai_flow.endpoint.server.high_availability import proto_to_member, sleep_and_detecting_running
 from ai_flow.project.project_config import _default_project_config, ProjectConfig
 from ai_flow.protobuf.high_availability_pb2 import ListMembersRequest, ReturnStatus
@@ -90,7 +90,7 @@ def get_airflow_operation_client():
         return AirflowOperation(_default_project_config.get_notification_service_uri())
 
 
-class AIFlowClient(MetadataClient, ModelCenterClient, NotificationClient, MetricClient, SchedulingClient):
+class AIFlowClient(MetadataClient, ModelCenterClient, NotificationClient, MetricClient, SchedulerClient):
     """
     Client of an AIFlow Server that manages metadata store, model center and notification service.
     """
@@ -102,7 +102,7 @@ class AIFlowClient(MetadataClient, ModelCenterClient, NotificationClient, Metric
         MetadataClient.__init__(self, server_uri)
         ModelCenterClient.__init__(self, server_uri)
         MetricClient.__init__(self, server_uri)
-        SchedulingClient.__init__(self, server_uri)
+        SchedulerClient.__init__(self, server_uri)
         self.enable_ha = False
         self.list_member_interval_ms = 5000
         self.retry_interval_ms = 1000
