@@ -55,6 +55,7 @@ run_tests 'ai_flow/test/graph'
 run_tests 'ai_flow/test/workflow'
 run_tests 'ai_flow/test/project'
 run_tests 'ai_flow/test/context'
+run_tests 'ai_flow/test/ai_graph'
 
 #run_tests 'ai_flow/test/common/'
 #run_tests 'ai_flow/test/store/'
