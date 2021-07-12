@@ -20,6 +20,9 @@ from ai_flow.context.workflow_config_loader import current_workflow_config
 
 
 class JobContext(object):
+    """
+    Store the job name of job(ai_flow.workflow.job.Job) in the current context.
+    """
     def __init__(self) -> None:
         self.current_job_name = None
         self.job_depth = 0
@@ -31,8 +34,8 @@ __current_job_context__ = JobContext()
 @contextmanager
 def job_config(job_name: Text):
     """
-    Set the specific job config.
-    :param job_name: The job name
+    Set the job config by job_name.
+    :param job_name: The name of the Job.
     """
     __current_job_context__.current_job_name = job_name
     __current_job_context__.job_depth += 1
@@ -46,6 +49,9 @@ def job_config(job_name: Text):
 
 
 def current_job_name() -> Text:
+    """
+    Return the job name of the current job.
+    """
     return __current_job_context__.current_job_name
 
 

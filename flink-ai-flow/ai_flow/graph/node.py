@@ -45,15 +45,18 @@ def _get_id_generator():
 
 
 class Node(Jsonable):
-    """abstract node"""
+    """
+    Nodes are part of the graph(ai_flow.graph.graph.Graph),
+    and there are edges(ai_flow.graph.edge.Edge) connected between nodes
+    """
     def __init__(self,
                  name: Text = None,
                  properties: Properties = None,
                  output_num: int = 0) -> None:
         """
-        :param name: the node name
+        :param name: the name of Node
         :param properties: node properties
-        :param output_num: the node output number
+        :param output_num: each node has outputs, this represents the number of outputs
         """
         super().__init__()
         self.name = name
@@ -61,8 +64,12 @@ class Node(Jsonable):
             self.properties = Properties()
         else:
             self.properties = properties
+        # node_id is the unique identifier of the node.
         self.node_id = _get_id_generator().generate_id(self)
         self.output_num = output_num
 
     def outputs(self) -> Union[None, List[Channel]]:
+        """
+        Return: The outputs(ai_flow.graph.channel.Channel) of the node.
+        """
         return None

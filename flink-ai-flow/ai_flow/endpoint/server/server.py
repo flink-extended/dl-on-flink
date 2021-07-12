@@ -229,7 +229,7 @@ async def _call_behavior_async(rpc_event, state, behavior, argument, request_des
     try:
         return await behavior(argument, context), True
     except Exception as e:
-        with state.condition:
+        with state.condition_type:
             if e not in state.rpc_errors:
                 logging.exception(e)
                 _abort(state, rpc_event.operation_call, StatusCode.unknown, _common.encode(e))

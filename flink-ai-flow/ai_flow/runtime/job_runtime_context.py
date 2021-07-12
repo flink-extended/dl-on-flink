@@ -22,7 +22,14 @@ from ai_flow.runtime.job_runtime_env import JobRuntimeEnv
 
 
 def init_job_runtime_context(job_runtime_env: JobRuntimeEnv):
-    """Set project config, workflow config"""
+    """
+    When running the ai flow job,
+    you need to call this function to initialize the project, workflow and job environment information.
+    This function has three functions:
+    1. Init project configuration
+    2. Init workflow configuration.
+    3. Set current job's name.
+    """
     init_project_config(job_runtime_env.project_config_file)
     init_workflow_config(job_runtime_env.workflow_config_file)
     set_current_job_name(job_runtime_env.job_name)
