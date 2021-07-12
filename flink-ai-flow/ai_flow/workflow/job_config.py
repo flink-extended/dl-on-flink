@@ -23,8 +23,7 @@ from typing import Text, Dict, Optional
 
 class JobConfig(Jsonable):
     """
-    Base class for job config. It is used to set the basic job config.
-
+    JobConfig is the configuration information of the Job(ai_flow.workflow.job.Job).
     """
 
     def __init__(self,
@@ -32,9 +31,8 @@ class JobConfig(Jsonable):
                  job_type: Text = None,
                  properties: Dict[Text, Jsonable] = None) -> None:
         """
-        The job config
         :param job_name: Name of the configured job.
-        :param job_type: The engine of the job.
+        :param job_type: The job type of the job, such as bash python etc..
         :param properties: Properties of the configured job.
         """
         super().__init__()
@@ -47,6 +45,11 @@ class JobConfig(Jsonable):
 
     @staticmethod
     def from_dict(data: Dict) -> 'JobConfig':
+        """
+        Build JobConfig from a dict.
+        The dict example:
+        {'job_name':{'job_type':'bash', 'properties': {}}}
+        """
         job_name = list(data.keys())[0]
         return JobConfig(job_name=job_name,
                          job_type=data[job_name].get('job_type', None),
@@ -54,4 +57,5 @@ class JobConfig(Jsonable):
 
     @staticmethod
     def to_dict(job_config: 'JobConfig') -> Dict:
+        """Convert the JobConfig to a dict"""
         return {job_config.job_name: {'job_type': job_config.job_type, 'properties': job_config.properties}}

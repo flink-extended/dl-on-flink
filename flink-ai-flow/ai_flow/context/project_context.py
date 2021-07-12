@@ -118,10 +118,16 @@ __current_project_config__ = ProjectConfig()
 
 
 def init_project_config(project_config_file):
+    """
+    Load project configuration of the ai flow project.
+    """
     __current_project_config__.load_from_file(project_config_file)
 
 
 def init_project_context(project_path: Text):
+    """
+    Load project configuration and project context of the ai flow project.
+    """
     global __current_project_context__, __current_project_config__
     project_context = build_project_context(project_path)
     __current_project_context__ = project_context
@@ -129,11 +135,14 @@ def init_project_context(project_path: Text):
 
 
 def current_project_context() -> ProjectContext:
+    """
+    return: The current project context(ai_flow.context.project_context.ProjectContext).
+    """
     return __current_project_context__
 
 
 def current_project_config() -> ProjectConfig:
     """
-    :return: project configuration
+    :return: The current project configuration(ai_flow.project.project_config.ProjectConfig)
     """
     return __current_project_config__

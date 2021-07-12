@@ -22,13 +22,14 @@ from pytz import timezone
 
 class PeriodicConfig(Jsonable):
     """
-    Set period semantics for job. Jobs with periodic semantics will restart at regular intervals.
+    Define the periodic running configuration of the running unit
+    (ai_flow.workflow.job.Job and ai_flow.workflow.workflow.Workflow).
     """
 
     def __init__(self,
                  trigger_config: Dict) -> None:
         """
-        Support two types of configuration:
+        :param trigger_config: Support two types of configuration:
         1. cron config: {'start_date': 'start_date_expression', 'cron': 'cron_expression'}
         start_date_expression:
         year:int,month:int,day:int,hour:int,minute:int,second:int,Option[tzinfo: str]
