@@ -25,16 +25,12 @@ from ai_flow.workflow.status import Status
 def proto_to_state(state):
     if state == StateProto.INIT:
         return Status.INIT
-    elif state == StateProto.STARTING:
-        return Status.STARTING
     elif state == StateProto.RUNNING:
         return Status.RUNNING
     elif state == StateProto.FINISHED:
         return Status.FINISHED
     elif state == StateProto.FAILED:
         return Status.FAILED
-    elif state == StateProto.KILLING:
-        return Status.KILLING
     elif state == StateProto.KILLED:
         return Status.KILLED
 
