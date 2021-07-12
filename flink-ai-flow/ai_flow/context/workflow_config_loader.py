@@ -21,11 +21,17 @@ __current_workflow_config__ = WorkflowConfig()
 
 
 def init_workflow_config(workflow_config_file: Text):
+    """
+    Load the workflow configuration(ai_flow.workflow.workflow_config.WorkflowConfig) of the current workflow.
+    """
     global __current_workflow_config__
     __current_workflow_config__ = load_workflow_config(workflow_config_file)
 
 
 def current_workflow_config() -> WorkflowConfig:
+    """
+    return: the workflow configuration of the current workflow.
+    """
     return __current_workflow_config__
 
 

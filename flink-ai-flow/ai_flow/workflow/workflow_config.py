@@ -24,11 +24,12 @@ from ai_flow.workflow.periodic_config import PeriodicConfig
 from ai_flow.util import yaml_utils
 
 WORKFLOW_PROPERTIES = "properties"  # The configuration item that represents the properties of the workflow.
-WORKFLOW_DEPENDENCIES = "dependencies"  # The configuration item of the workflow runtime dependency files.
-PERIODIC_CONFIG = "periodic_config"  # The configuration item of cycle scheduling of the workflow.
+WORKFLOW_DEPENDENCIES = "dependencies"  # The configuration item of the workflow represents the dependency files.
+PERIODIC_CONFIG = "periodic_config"  # The configuration item of the workflow represents the workflow periodic running.
 
 
 class WorkflowConfig(Jsonable):
+    """WorkflowConfig is the configuration information of the Workflow(ai_flow.workflow.workflow.Workflow)."""
 
     def __init__(self, workflow_name: Text = None) -> None:
         super().__init__()
@@ -43,6 +44,11 @@ class WorkflowConfig(Jsonable):
 
 
 def load_workflow_config(config_path: Text) -> WorkflowConfig:
+    """
+    Load the workflow configuration file.
+    :param config_path: Workflow configuration file path.
+    return: WorkflowConfig.
+    """
     if config_path.endswith('.json'):
         with open(config_path, 'r') as f:
             workflow_config_json = f.read()

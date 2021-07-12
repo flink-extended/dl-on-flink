@@ -20,10 +20,19 @@ from ai_flow.graph.edge import Edge
 
 
 class DataEdge(Edge):
+    """
+    Connect two AINodes in a job.
+    Data flows from the source node to the destination node.
+    """
     def __init__(self,
                  source: Text,
                  destination: Text,
                  port: int = 0) -> None:
+        """
+        :param source: node_id of the data sending node.
+        :param destination: node_id of the data receiving node.
+        :param port: The serial number of the data sending port.
+        """
         super().__init__(destination=destination, source=source)
         self.port = port
 

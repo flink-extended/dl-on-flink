@@ -27,3 +27,9 @@ def serialize(o: object) -> bytes:
 
 def deserialize(s: bytes) -> object:
     return pickle.loads(s)
+
+
+def read_object_from_serialized_file(file_path):
+    with open(file_path, 'rb') as f:
+        serialized_bytes = f.read()
+    return deserialize(serialized_bytes)

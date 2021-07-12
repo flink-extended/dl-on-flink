@@ -21,14 +21,16 @@ from ai_flow.util.json_utils import Jsonable
 
 
 class Channel(Jsonable):
-    """ The output of the Nodes. The Channels are used to establish Data Dependencies between the Nodes."""
+    """
+    The output of the Nodes(ai_flow.graph.node.Node).
+    """
 
     def __init__(self,
                  node_id: Text,
                  port: Optional[int] = 0) -> None:
         """
-        :param node_id: node identity id
-        :param port: the index of output
+        :param node_id: node_id is the unique identifier of the node.
+        :param port: the index of the node outputs
         """
         super().__init__()
         self.node_id = node_id
