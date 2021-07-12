@@ -21,16 +21,12 @@ class Status(str, Enum):
     """
     INIT: INIT is the execution unit creation status.
     STARTING: STARTING is the execution unit starting status.
-    RUNNING: RUNNING is the execution unit running status.
     FINISHED: FINISHED is the successful state of the execution unit.
     FAILED: FAILED is the failed state of the execution unit.
-    KILLING: KILLING means the execution unit is being stopped.
     KILLED: KILLED is the state of the execution unit being stopped.
     """
     INIT = 'INIT'
-    STARTING = 'STARTING'
     RUNNING = 'RUNNING'
     FINISHED = 'FINISHED'
     FAILED = 'FAILED'
-    KILLING = 'KILLING'
     KILLED = 'KILLED'
