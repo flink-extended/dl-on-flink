@@ -63,9 +63,10 @@ class AirFlowScheduler(Scheduler):
             return status.Status.FAILED
         elif State.RUNNING == state:
             return status.Status.RUNNING
-        elif State.KILLING == state:
-            return status.Status.KILLING
-        elif State.KILLED == state or State.SHUTDOWN == state:
+        elif State.KILLED == state or State.SHUTDOWN == state \
+                or State.KILLING == state:
+            # We map airflow state KILLING to KILLED in the assumption that KILLING is a transient state,
+            # and it is the best we can do.
             return status.Status.KILLED
         else:
             return status.Status.INIT
@@ -78,8 +79,6 @@ class AirFlowScheduler(Scheduler):
             return State.FAILED
         elif status.Status.RUNNING == status_:
             return State.RUNNING
-        elif status.Status.KILLING == status_:
-            return State.KILLING
         elif status.Status.KILLED == status_:
             return State.KILLED
         else:
@@ -183,7 +182,7 @@ class AirFlowScheduler(Scheduler):
             return WorkflowExecutionInfo(workflow_info=WorkflowInfo(namespace=project_name,
                                                                     workflow_name=workflow_name),
                                          workflow_execution_id=workflow_execution_id,
-                                         status=status.Status.KILLING)
+                                         status=status.Status.KILLED)
 
     def get_workflow_execution(self, workflow_execution_id: Text) -> Optional[WorkflowExecutionInfo]:
         with create_session() as session:
