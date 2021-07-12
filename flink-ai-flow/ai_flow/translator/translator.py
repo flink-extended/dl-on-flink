@@ -35,7 +35,7 @@
 # under the License.
 #
 from abc import abstractmethod, ABC
-from typing import Dict, Text
+from typing import Dict, Text, List
 import copy
 import time
 import os
@@ -43,7 +43,7 @@ from ai_flow.ai_graph.ai_node import ReadDatasetNode, WriteDatasetNode
 from ai_flow.context.workflow_config_loader import current_workflow_config
 from ai_flow.workflow.workflow import Workflow
 from ai_flow.workflow.job import Job
-from ai_flow.ai_graph.ai_graph import AIGraph, SplitGraph, AISubGraph
+from ai_flow.ai_graph.ai_graph import AIGraph, AISubGraph
 from ai_flow.ai_graph.data_edge import DataEdge
 from ai_flow.workflow.control_edge import ControlEdge
 from ai_flow.context.project_context import ProjectContext
@@ -51,14 +51,30 @@ from ai_flow.context.project_context import ProjectContext
 
 class JobGenerator(ABC):
     """
-    JobGenerator: Translate AISubGraph to Job
+    JobGenerator: Convert AISubGraph(ai_flow.ai_graph.ai_graph.AISubGraph) to Job(ai_flow.workflow.job.Job)
     """
     def __init__(self) -> None:
         super().__init__()
 
     @abstractmethod
     def generate(self, sub_graph: AISubGraph, resource_dir: Text = None) -> Job:
+        """
+        Convert AISubGraph(ai_flow.ai_graph.ai_graph.AISubGraph) to Job(ai_flow.workflow.job.Job)
+        :param sub_graph: An executable Graph composed of AINode and data edges with the same job configuration.
+        :param resource_dir: Store the executable files generated during the generation process.
+        :return: Job(ai_flow.workflow.job.Job)
+        """
         pass
+
+
+class SplitGraph(AIGraph):
+    def __init__(self) -> None:
+        super().__init__()
+        self.nodes: Dict[Text, AISubGraph] = {}
+        self.edges: Dict[Text, List[ControlEdge]] = {}
+
+    def add_node(self, node: AISubGraph):
+        self.nodes[node.config.job_name] = node
 
 
 class GraphSplitter(object):
@@ -161,6 +177,10 @@ class WorkflowConstructor(object):
 
 
 class Translator(object):
+    """
+    Translator translates the user-defined program ai graph(ai_flow.ai_graph.ai_graph.AIGraph)
+    into ai flow executable workflow(ai_flow.workflow.workflow.Workflow)
+    """
     def __init__(self,
                  graph_splitter: GraphSplitter,
                  workflow_constructor: WorkflowConstructor
@@ -170,6 +190,10 @@ class Translator(object):
         self.workflow_constructor = workflow_constructor
 
     def translate(self, graph: AIGraph, project_context: ProjectContext) -> Workflow:
+        """
+        :param graph: The ai graph(ai_flow.ai_graph.ai_graph.AIGraph)
+        :param project_context: The ai flow project context(ai_flow.context.project_context.ProjectContext)
+        """
         split_graph = self.graph_splitter.split(graph=graph)
         workflow = self.workflow_constructor.build_workflow(split_graph=split_graph,
                                                             project_context=project_context)

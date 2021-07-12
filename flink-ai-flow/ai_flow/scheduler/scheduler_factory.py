@@ -21,8 +21,14 @@ from ai_flow.plugin_interface.scheduler_interface import Scheduler
 
 
 class SchedulerFactory(object):
-
+    """
+    SchedulerFactory creates scheduler() based on configuration information.
+    """
     @classmethod
     def create_scheduler(cls, class_name, config: Dict) -> Scheduler:
+        """
+        :param class_name: The class name of a scheduler(ai_flow.plugin_interface.scheduler_interface.Scheduler)
+        :param config: The configuration of the scheduler.
+        """
         class_object = import_string(class_name)
         return class_object(config)

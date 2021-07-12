@@ -22,16 +22,18 @@ from ai_flow.util.json_utils import Jsonable
 
 
 class Edge(Jsonable):
-    """ the edge connect two node"""
+    """
+    Edges are part of the graph(ai_flow.graph.graph.Graph),
+    and there are edges connected between nodes(ai_flow.graph.node.Node).
+    """
 
     def __init__(self,
                  source: Text,
                  destination: Text,
                  ) -> None:
         """
-
-        :param source: the node send data
-        :param destination: the node receive data
+        :param source: source identifies the starting node's node_id of the directed edge.
+        :param destination: destination identifies the ending node's node_id of the directed edge.
         """
         super().__init__()
         if source is None or destination is None:

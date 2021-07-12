@@ -26,36 +26,20 @@ from ai_flow.workflow.job_config import JobConfig
 
 class Job(Node):
     """
-    A job is a description of an executable job, including job configuration files, job type and other information.
+    Job is a description of an executable unit,
+    which contains information about the configuration and data required to run.
     """
     def __init__(self,
                  job_config: JobConfig) -> None:
         """
-        :param job_config: Job configuration information. type: ai_flow.workflow.job_config.JobConfig
+        :param job_config: Job configuration information(ai_flow.workflow.job_config.JobConfig).
         """
         super().__init__()
         self.job_config = job_config
-        self._project_uri: Text = None  # project code uri
-        self._resource_dir: Text = None  # job resource dir
         self.input_dataset_list: List[DatasetMeta] = []  # the job read dataset information
         self.output_dataset_list: List[DatasetMeta] = []  # the job write dataset information
 
     @property
     def job_name(self):
+        """The name of the job."""
         return self.job_config.job_name
-
-    @property
-    def resource_dir(self):
-        return self._resource_dir
-
-    @resource_dir.setter
-    def resource_dir(self, value):
-        self._resource_dir = value
-
-    @property
-    def project_uri(self):
-        return self._project_uri
-
-    @project_uri.setter
-    def project_uri(self, value):
-        self._project_uri = value

@@ -18,10 +18,19 @@ from enum import Enum
 
 
 class Status(str, Enum):
-    INIT = 'INIT'  # The scheduler create the job/workflow and do not scheduling it.
-    STARTING = 'STARTING'  # The scheduler scheduling the job/workflow.
-    RUNNING = 'RUNNING'  # The job/workflow is running.
-    FINISHED = 'FINISHED'  # The job/workflow is finished without exceptions.
-    FAILED = 'FAILED'  # The job/workflow is finished with exceptions.
-    KILLING = 'KILLING'  # The scheduler receive kill signal and kill the job/workflow.
-    KILLED = 'KILLED'  # When the job/workflow is running then the scheduler receive kill signal and kill it.
+    """
+    INIT: INIT is the execution unit creation status.
+    STARTING: STARTING is the execution unit starting status.
+    RUNNING: RUNNING is the execution unit running status.
+    FINISHED: FINISHED is the successful state of the execution unit.
+    FAILED: FAILED is the failed state of the execution unit.
+    KILLING: KILLING means the execution unit is being stopped.
+    KILLED: KILLED is the state of the execution unit being stopped.
+    """
+    INIT = 'INIT'
+    STARTING = 'STARTING'
+    RUNNING = 'RUNNING'
+    FINISHED = 'FINISHED'
+    FAILED = 'FAILED'
+    KILLING = 'KILLING'
+    KILLED = 'KILLED'
