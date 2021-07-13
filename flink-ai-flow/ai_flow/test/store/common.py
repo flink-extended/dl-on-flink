@@ -621,41 +621,116 @@ class AbstractTestStore(object):
 
         self.store.delete_model_version(model_version)
 
-    def test_create_metric_meta(self):
-        start = round(time.time())
-        end = start + 1
-        metric_meta = self.store.register_metric_meta(name='test_create_metric_meta_1', dataset_id=1,
-                                                      model_name='metric_meta_model_1',
-                                                      model_version='metric_meta_model_version_1', job_id=1,
-                                                      start_time=start, end_time=end, uri='/tmp/metric',
+    def test_metric_meta(self):
+        start_time = round(time.time())
+        end_time = start_time + 1
+        metric_meta = self.store.register_metric_meta(metric_name='test_metric_meta_1',
                                                       metric_type=MetricType.DATASET,
-                                                      tags='', metric_description='', properties={'a': 'a'})
-        self.assertGreater(metric_meta.uuid, 0)
-        metric_meta = self.store.update_metric_meta(uuid=metric_meta.uuid, job_id=2)
-        get_metric_meta = self.store.get_dataset_metric_meta(dataset_id=1)
-        self.assertIsNotNone(metric_meta.model_version)
-        self.assertEqual(metric_meta.properties['a'], get_metric_meta.properties['a'])
-        self.assertEqual(2, get_metric_meta.job_id)
-        self.store.register_metric_meta(name='test_create_metric_meta_2', dataset_id=1,
-                                        model_name='metric_meta_model_2',
-                                        model_version='metric_meta_model_version_2', job_id=1,
-                                        start_time=start, end_time=end, uri='/tmp/metric_1',
-                                        metric_type=MetricType.MODEL,
-                                        tags='', metric_description='', properties={'a': 'a'})
-        self.store.register_metric_meta(name='test_create_metric_meta_3', dataset_id=2,
-                                        model_name='metric_meta_model_2',
-                                        model_version='metric_meta_model_version_2', job_id=1,
-                                        start_time=start, end_time=end, uri='/tmp/metric_2',
-                                        metric_type=MetricType.MODEL,
-                                        tags='', metric_description='', properties={'a': 'a'})
-        results = self.store.get_model_metric_meta(model_name='metric_meta_model_2',
-                                                   model_version='metric_meta_model_version_2')
-        self.assertEqual(2, len(results))
+                                                      metric_desc='test dataset metric meta',
+                                                      project_name='test_metric_meta_project_1',
+                                                      dataset_name='test_metric_meta_dataset_1',
+                                                      start_time=start_time, end_time=end_time,
+                                                      uri='/tmp/metric', tags='test_metric_meta_tag',
+                                                      properties={'a': 'a'})
+        metric_meta = self.store.get_metric_meta(metric_meta.metric_name)
+        self.assertEqual('test_metric_meta_1', metric_meta.metric_name)
+        self.assertEqual(MetricType.DATASET, MetricType.value_of(metric_meta.metric_type))
+        self.assertEqual('test dataset metric meta', metric_meta.metric_desc)
+        self.assertEqual('test_metric_meta_project_1', metric_meta.project_name)
+        self.assertEqual('test_metric_meta_dataset_1', metric_meta.dataset_name)
+        self.assertEqual(start_time, metric_meta.start_time)
+        self.assertEqual(end_time, metric_meta.end_time)
+        self.assertEqual('/tmp/metric', metric_meta.uri)
+        self.assertEqual('test_metric_meta_tag', metric_meta.tags)
+        self.assertEqual(metric_meta.properties['a'], metric_meta.properties['a'])
+        metric_meta = self.store.update_metric_meta(metric_name=metric_meta.metric_name,
+                                                    project_name='test_metric_meta_project_2',
+                                                    dataset_name='test_metric_meta_dataset_2')
+        metric_meta = self.store.list_dataset_metric_metas(dataset_name=metric_meta.dataset_name)
+        self.assertEqual('test_metric_meta_project_2', metric_meta.project_name)
+        self.assertEqual('test_metric_meta_dataset_2', metric_meta.dataset_name)
+        metric_meta = self.store.list_dataset_metric_metas(project_name=metric_meta.project_name,
+                                                           dataset_name=metric_meta.dataset_name)
+        self.assertEqual('test_metric_meta_project_2', metric_meta.project_name)
+        self.assertEqual('test_metric_meta_dataset_2', metric_meta.dataset_name)
+        metric_meta = self.store.register_metric_meta(metric_name='test_metric_meta_2',
+                                                      metric_type=MetricType.MODEL,
+                                                      metric_desc='test model metric meta',
+                                                      project_name='test_metric_meta_project_1',
+                                                      model_name='test_metric_meta_model_1',
+                                                      start_time=start_time, end_time=end_time,
+                                                      uri='/tmp/metric', tags='test_metric_meta_tag',
+                                                      properties={'a': 'a'})
+        metric_meta = self.store.register_metric_meta(metric_name='test_metric_meta_3',
+                                                      metric_type=metric_meta.metric_type,
+                                                      metric_desc=metric_meta.metric_desc,
+                                                      project_name=metric_meta.project_name,
+                                                      model_name=metric_meta.model_name,
+                                                      start_time=metric_meta.start_time, end_time=metric_meta.end_time,
+                                                      uri=metric_meta.uri, tags=metric_meta.tags,
+                                                      properties=metric_meta.properties)
+        model_metrics = self.store.list_model_metric_metas(model_name=metric_meta.model_name)
+        self.assertEqual(2, len(model_metrics))
+        self.assertEqual('test_metric_meta_2', model_metrics[0].metric_name)
+        self.assertEqual('test_metric_meta_3', model_metrics[1].metric_name)
+        self.assertEqual(2, len(
+            self.store.list_model_metric_metas(model_name=metric_meta.model_name,
+                                               project_name=metric_meta.project_name)))
+        self.store.delete_metric_meta(metric_meta.metric_name)
+        model_metric = self.store.list_model_metric_metas(model_name=metric_meta.model_name)
+        self.assertEqual('test_metric_meta_2', model_metric.metric_name)
 
-    def test_create_metric_summary(self):
-        metric_summary = self.store.register_metric_summary(metric_id=1, metric_key='name', metric_value='value')
-        self.assertGreater(metric_summary.uuid, 0)
-        self.store.update_metric_summary(uuid=metric_summary.uuid, metric_value='value_2')
-        metric_summary_list = self.store.get_metric_summary(metric_id=1)
-        self.assertEqual(1, len(metric_summary_list))
-        self.assertEqual('value_2', metric_summary_list[0].metric_value)
+    def test_metric_summary(self):
+        metric_timestamp = round(time.time())
+        metric_summary = self.store.register_metric_summary(metric_name='test_metric_summary_1', metric_key='auc',
+                                                            metric_value='0.6', metric_timestamp=metric_timestamp)
+        metric_summary = self.store.get_metric_summary(metric_summary.uuid)
+        self.assertEqual(1, metric_summary.uuid)
+        self.assertEqual('test_metric_summary_1', metric_summary.metric_name)
+        self.assertEqual('auc', metric_summary.metric_key)
+        self.assertEqual('0.6', metric_summary.metric_value)
+        self.assertEqual(metric_timestamp, metric_summary.metric_timestamp)
+        metric_summary = self.store.update_metric_summary(uuid=metric_summary.uuid, metric_value='0.8')
+        metric_summary = self.store.get_metric_summary(metric_summary.uuid)
+        self.assertEqual('0.8', metric_summary.metric_value)
+        metric_summary = self.store.register_metric_summary(metric_name=metric_summary.metric_name,
+                                                            metric_key=metric_summary.metric_key,
+                                                            metric_value='0.7', metric_timestamp=metric_timestamp + 1,
+                                                            model_version='test_metric_summary_model_version_1')
+        metric_summary = self.store.register_metric_summary(metric_name=metric_summary.metric_name,
+                                                            metric_key='roc',
+                                                            metric_value='0.9', metric_timestamp=metric_timestamp + 1,
+                                                            model_version='test_metric_summary_model_version_2')
+        metric_summaries = self.store.list_metric_summaries(metric_name=metric_summary.metric_name)
+        self.assertEqual(3, len(metric_summaries))
+        self.assertEqual('auc', metric_summaries[0].metric_key)
+        self.assertEqual('0.8', metric_summaries[0].metric_value)
+        self.assertEqual('auc', metric_summaries[1].metric_key)
+        self.assertEqual('0.7', metric_summaries[1].metric_value)
+        self.assertEqual('roc', metric_summaries[2].metric_key)
+        self.assertEqual('0.9', metric_summaries[2].metric_value)
+        metric_summaries = self.store.list_metric_summaries(metric_key='auc')
+        self.assertEqual(2, len(metric_summaries))
+        self.assertEqual('0.8', metric_summaries[0].metric_value)
+        self.assertEqual('0.7', metric_summaries[1].metric_value)
+        metric_summary = self.store.list_metric_summaries(model_version='test_metric_summary_model_version_1')
+        self.assertEqual('test_metric_summary_1', metric_summary.metric_name)
+        self.assertEqual('auc', metric_summary.metric_key)
+        self.assertEqual('0.7', metric_summary.metric_value)
+        metric_summary = self.store.list_metric_summaries(model_version='test_metric_summary_model_version_1')
+        self.assertEqual('test_metric_summary_1', metric_summary.metric_name)
+        self.assertEqual('auc', metric_summary.metric_key)
+        self.assertEqual('0.7', metric_summary.metric_value)
+        metric_summaries = self.store.list_metric_summaries(metric_name=metric_summary.metric_name,
+                                                            start_time=metric_timestamp + 1,
+                                                            end_time=metric_summary.metric_timestamp)
+        self.assertEqual(2, len(metric_summaries))
+        self.assertEqual('auc', metric_summaries[0].metric_key)
+        self.assertEqual('0.7', metric_summaries[0].metric_value)
+        self.assertEqual('roc', metric_summaries[1].metric_key)
+        self.assertEqual('0.9', metric_summaries[1].metric_value)
+        metric_summary = self.store.list_metric_summaries(metric_name=metric_summary.metric_name, metric_key='auc',
+                                                          model_version='test_metric_summary_model_version_1')
+        self.assertEqual('test_metric_summary_1', metric_summary.metric_name)
+        self.assertEqual('auc', metric_summary.metric_key)
+        self.assertEqual('0.7', metric_summary.metric_value)
