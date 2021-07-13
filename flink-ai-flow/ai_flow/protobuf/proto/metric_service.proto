@@ -17,16 +17,20 @@
  */
 syntax = "proto3";
 
+import "google/api/annotations.proto";
+import "google/protobuf/wrappers.proto";
+import "message.proto";
+
 option java_generic_services = true;
 option java_package = "com.aiflow.proto";
 option py_generic_services = true;
 option go_package = "/ai_flow";
 
-import "message.proto";
-
-import "google/api/annotations.proto";
-
 package ai_flow;
+
+message MetricNameRequest {
+    string metric_name = 1;
+}
 
 message UuidRequest {
     int64 uuid = 1;
@@ -53,46 +57,40 @@ message MetricSummaryResponse {
     MetricSummaryProto metric_summary = 3;
 }
 
-message GetMetricMetaRequest {
-    string metric_name = 1;
+message ListDatasetMetricMetasRequest {
+    string dataset_name = 1;
+    google.protobuf.StringValue project_name = 2;
 }
 
-message GetDataSetMetricMetaRequest {
-    int64 dataset_id = 1;
-}
-
-message GetModelMetricMetaRequest {
+message ListModelMetricMetasRequest {
     string model_name = 1;
-    string model_version = 2;
+    google.protobuf.StringValue project_name = 2;
 }
 
-message ListMetricMetaResponse {
+message ListMetricMetasResponse {
     int64 return_code = 1;
     string return_msg = 2;
-    repeated MetricMetaProto metric_meta = 3;
+    repeated MetricMetaProto metric_metas = 3;
 }
 
-message GetMetricSummaryRequest {
-    int64 metric_id = 1;
+message ListMetricSummariesRequest {
+    google.protobuf.StringValue metric_name = 1;
+    google.protobuf.StringValue metric_key = 2;
+    google.protobuf.StringValue model_version = 3;
+    google.protobuf.Int64Value start_time = 4;
+    google.protobuf.Int64Value end_time = 5;
 }
 
-message ListMetricSummaryResponse {
+message ListMetricSummariesResponse {
     int64 return_code = 1;
     string return_msg = 2;
-    repeated MetricSummaryProto metric_summary = 3;
+    repeated MetricSummaryProto metric_summaries = 3;
 }
 
 service MetricService {
     rpc registerMetricMeta (MetricMetaRequest) returns (MetricMetaResponse) {
         option (google.api.http) = {
         post: "/aiflow/metric/metric_meta/create"
-        body: "*"
-        };
-    };
-
-    rpc registerMetricSummary (MetricSummaryRequest) returns (MetricSummaryResponse) {
-        option (google.api.http) = {
-        post: "/aiflow/metric/metric_summary/create"
         body: "*"
         };
     };
@@ -104,9 +102,35 @@ service MetricService {
         };
     };
 
-    rpc getMetricMeta (GetMetricMetaRequest) returns (MetricMetaResponse) {
+    rpc deleteMetricMeta (MetricNameRequest) returns (Response) {
+        option (google.api.http) = {
+        post: "/aiflow/metric/metric_meta/delete"
+        body: "*"
+        };
+    };
+
+    rpc getMetricMeta (MetricNameRequest) returns (MetricMetaResponse) {
         option (google.api.http) = {
         get: "/aiflow/metric/metric_meta/get"
+        };
+    };
+
+    rpc listDatasetMetricMetas (ListDatasetMetricMetasRequest) returns (ListMetricMetasResponse) {
+        option (google.api.http) = {
+        get: "/aiflow/metric/metric_meta/dataset/list"
+        };
+    };
+
+    rpc listModelMetricMetas (ListModelMetricMetasRequest) returns (ListMetricMetasResponse) {
+        option (google.api.http) = {
+        get: "/aiflow/metric/metric_meta/model/list"
+        };
+    };
+
+    rpc registerMetricSummary (MetricSummaryRequest) returns (MetricSummaryResponse) {
+        option (google.api.http) = {
+        post: "/aiflow/metric/metric_summary/create"
+        body: "*"
         };
     };
 
@@ -117,35 +141,22 @@ service MetricService {
         };
     };
 
-    rpc getDatasetMetricMeta (GetDataSetMetricMetaRequest) returns (ListMetricMetaResponse) {
+    rpc deleteMetricSummary (UuidRequest) returns (Response) {
         option (google.api.http) = {
-        get: "/aiflow/metric/metric_meta/dataset/get"
+        post: "/aiflow/metric/metric_summary/delete"
+        body: "*"
         };
     };
 
-    rpc getModelMetricMeta (GetModelMetricMetaRequest) returns (ListMetricMetaResponse) {
-        option (google.api.http) = {
-        get: "/aiflow/metric/metric_meta/model/get"
-        };
-    };
-
-    rpc getMetricSummary (GetMetricSummaryRequest) returns (ListMetricSummaryResponse) {
+    rpc getMetricSummary (UuidRequest) returns (MetricSummaryResponse) {
         option (google.api.http) = {
         get: "/aiflow/metric/metric_summary/get"
         };
     };
 
-    rpc deleteMetricMeta (UuidRequest) returns (Response) {
+    rpc listMetricSummaries (ListMetricSummariesRequest) returns (ListMetricSummariesResponse) {
         option (google.api.http) = {
-        post: "/aiflow/metric/metric_meta/delete"
-        body: "*"
-        };
-    };
-
-    rpc deleteMetricSummary (UuidRequest) returns (Response) {
-        option (google.api.http) = {
-        post: "/aiflow/metric/metric_summary/delete"
-        body: "*"
+        get: "/aiflow/metric/metric_summary/list"
         };
     };
 }

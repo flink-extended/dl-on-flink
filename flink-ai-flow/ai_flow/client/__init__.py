@@ -319,55 +319,89 @@ def get_model_version_detail(model_name, model_version) -> Optional[ModelVersion
     return get_ai_flow_client().get_model_version_detail(model_name, model_version)
 
 
-def register_metric_meta(name: Text, dataset_id: int, model_name: Optional[Text], model_version: Optional[Text],
-                         job_id: int = None, start_time: int = None, end_time: int = None,
-                         metric_type: MetricType = MetricType.DATASET, tags: Text = None, uri: Text = None,
-                         metric_description: Text = None, properties: Properties = None) \
-        -> Tuple[int, Text, Optional[MetricMeta]]:
-    return get_ai_flow_client().register_metric_meta(name, dataset_id, model_name, model_version, job_id,
-                                                     start_time, end_time, metric_type, uri, tags, metric_description,
-                                                     properties)
+def register_metric_meta(metric_name: Text,
+                         metric_type: MetricType,
+                         project_name: Text,
+                         metric_desc: Optional[Text] = None,
+                         dataset_name: Optional[Text] = None,
+                         model_name: Optional[Text] = None,
+                         job_name: Optional[Text] = None,
+                         start_time: int = None,
+                         end_time: int = None,
+                         uri: Optional[Text] = None,
+                         tags: Optional[Text] = None,
+                         properties: Properties = None
+                         ) -> Tuple[int, Text, Optional[MetricMeta]]:
+    return get_ai_flow_client().register_metric_meta(metric_name, metric_type, project_name, metric_desc, dataset_name,
+                                                     model_name, job_name, start_time, end_time, uri, tags, properties)
 
 
-def update_metric_meta(uuid: int, name: Text = None, dataset_id: int = None, model_name: Optional[Text] = None,
-                       model_version: Optional[Text] = None, job_id: int = None, start_time: int = None,
-                       end_time: int = None, metric_type: MetricType = MetricType.DATASET, uri: Text = None,
-                       tags: Text = None, metric_description: Text = None, properties: Properties = None) \
-        -> Tuple[int, Text, Optional[MetricMeta]]:
-    return get_ai_flow_client().update_metric_meta(uuid, name, dataset_id, model_name, model_version, job_id,
-                                                   start_time, end_time, metric_type, uri, tags, metric_description,
-                                                   properties)
+def update_metric_meta(metric_name: Text,
+                       project_name: Optional[Text] = None,
+                       metric_desc: Optional[Text] = None,
+                       dataset_name: Optional[Text] = None,
+                       model_name: Optional[Text] = None,
+                       job_name: Optional[Text] = None,
+                       start_time: int = None,
+                       end_time: int = None,
+                       uri: Optional[Text] = None,
+                       tags: Optional[Text] = None,
+                       properties: Properties = None
+                       ) -> Tuple[int, Text, Optional[MetricMeta]]:
+    return get_ai_flow_client().update_metric_meta(metric_name, project_name, metric_desc, dataset_name,
+                                                   model_name, job_name, start_time, end_time, uri, tags, properties)
 
 
-def delete_metric_meta(uuid: int) -> bool:
-    return get_ai_flow_client().delete_metric_meta(uuid)
+def delete_metric_meta(metric_name: Text) -> bool:
+    return get_ai_flow_client().delete_metric_meta(metric_name)
 
 
-def get_metric_meta(name: Text) -> Tuple[int, Text, Union[None, MetricMeta]]:
-    return get_ai_flow_client().get_metric_meta(name)
+def get_metric_meta(metric_name: Text) -> Tuple[int, Text, Union[None, MetricMeta]]:
+    return get_ai_flow_client().get_metric_meta(metric_name)
 
 
-def get_dataset_metric_meta(dataset_id: int) -> Tuple[int, Text, Union[None, MetricMeta, List[MetricMeta]]]:
-    return get_ai_flow_client().get_dataset_metric_meta(dataset_id)
+def list_dataset_metric_metas(dataset_name: Text, project_name: Optional[Text] = None) -> Tuple[
+     int, Text, Union[None, MetricMeta, List[MetricMeta]]]:
+    return get_ai_flow_client().list_dataset_metric_metas(dataset_name, project_name)
 
 
-def get_model_metric_meta(model_name, model_version) -> Tuple[int, Text, Union[None, MetricMeta, List[MetricMeta]]]:
-    return get_ai_flow_client().get_model_metric_meta(model_name, model_version)
+def list_model_metric_metas(model_name: Text, project_name: Optional[Text] = None) -> Tuple[
+        int, Text, Union[None, MetricMeta, List[MetricMeta]]]:
+    return get_ai_flow_client().list_model_metric_metas(model_name, project_name)
 
 
-def register_metric_summary(metric_id: int, metric_key: Text, metric_value: Text) \
-        -> Tuple[int, Text, Optional[MetricSummary]]:
-    return get_ai_flow_client().register_metric_summary(metric_id, metric_key, metric_value)
+def register_metric_summary(metric_name: Text,
+                            metric_key: Text,
+                            metric_value: Text,
+                            metric_timestamp: int,
+                            model_version: Optional[Text] = None,
+                            job_execution_id: Optional[Text] = None
+                            ) -> Tuple[int, Text, Optional[MetricSummary]]:
+    return get_ai_flow_client().register_metric_summary(metric_name, metric_key, metric_value, metric_timestamp,
+                                                        model_version, job_execution_id)
 
 
-def update_metric_summary(uuid: int, metric_id: int = None, metric_key: Text = None, metric_value: Text = None) -> \
-        Tuple[int, Text, Optional[MetricSummary]]:
-    return get_ai_flow_client().update_metric_summary(uuid, metric_id, metric_key, metric_value)
+def update_metric_summary(uuid: int,
+                          metric_name: Optional[Text] = None,
+                          metric_key: Optional[Text] = None,
+                          metric_value: Optional[Text] = None,
+                          metric_timestamp: int = None,
+                          model_version: Optional[Text] = None,
+                          job_execution_id: Optional[Text] = None
+                          ) -> Tuple[int, Text, Optional[MetricSummary]]:
+    return get_ai_flow_client().update_metric_summary(uuid, metric_name, metric_key, metric_value, metric_timestamp,
+                                                      model_version, job_execution_id)
 
 
 def delete_metric_summary(uuid: int) -> bool:
     return get_ai_flow_client().delete_metric_summary(uuid)
 
 
-def get_metric_summary(metric_id: int) -> Tuple[int, Text, Union[None, List[MetricSummary]]]:
-    return get_ai_flow_client().get_metric_summary(metric_id)
+def get_metric_summary(uuid: int) -> Tuple[int, Text, Union[None, MetricSummary]]:
+    return get_ai_flow_client().get_metric_summary(uuid)
+
+
+def list_metric_summaries(metric_name: Optional[Text] = None, metric_key: Optional[Text] = None,
+                          model_version: Optional[Text] = None, start_time: int = None, end_time=None) -> Tuple[
+        int, Text, Union[None, MetricSummary, List[MetricSummary]]]:
+    return get_ai_flow_client().list_metric_summaries(metric_name, metric_key, model_version, start_time, end_time)

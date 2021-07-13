@@ -549,123 +549,55 @@ class AbstractStore(object):
         """
         pass
 
-    def register_metric_meta(self,
-                             name,
-                             dataset_id,
-                             model_name,
-                             model_version,
-                             job_id,
-                             start_time,
-                             end_time,
-                             metric_type,
-                             uri,
-                             tags,
-                             metric_description,
-                             properties) -> MetricMeta:
-        """
-        register metric meta to store
-        :param name: the metric name
-        :param dataset_id: the dataset id of the metric or model metric associate with dataset id
-        :param model_name: if then model metric, associate with model name
-        :param model_version: if then model metric, associate with model version
-        :param job_id: the job_id which create the metric
-        :param start_time:
-        :param end_time:
-        :param metric_type: MetricType DATASET or MODEL
-        :param uri: the metric uri
-        :param tags: such as flink,tensorflow
-        :param metric_description:
-        :param properties:
-        :return:
-        """
+    @abstractmethod
+    def register_metric_meta(self, metric_name, metric_type, project_name, metric_desc=None, dataset_name=None,
+                             model_name=None, job_name=None, start_time=None, end_time=None, uri=None, tags=None,
+                             properties=None) -> MetricMeta:
         pass
 
-    def delete_metric_meta(self, uuid: int):
+    @abstractmethod
+    def update_metric_meta(self, metric_name, metric_desc=None, project_name=None, dataset_name=None,
+                           model_name=None, job_name=None, start_time=None, end_time=None, uri=None, tags=None,
+                           properties=None) -> MetricMeta:
         pass
 
-    def register_metric_summary(self,
-                                metric_id,
-                                metric_key,
-                                metric_value)->MetricSummary:
-        """
-        register metric summary
-        :param metric_id: associate with metric meta uuid
-        :param metric_key:
-        :param metric_value:
-        :return:
-        """
+    @abstractmethod
+    def delete_metric_meta(self, metric_name):
         pass
 
+    @abstractmethod
+    def get_metric_meta(self, metric_name) -> Union[None, MetricMeta]:
+        pass
+
+    @abstractmethod
+    def list_dataset_metric_metas(self, dataset_name, project_name=None) -> Union[None, MetricMeta, List[MetricMeta]]:
+        pass
+
+    @abstractmethod
+    def list_model_metric_metas(self, model_name, project_name=None) -> Union[None, MetricMeta, List[MetricMeta]]:
+        pass
+
+    @abstractmethod
+    def register_metric_summary(self, metric_name, metric_key, metric_value, metric_timestamp, model_version=None,
+                                job_execution_id=None) -> MetricSummary:
+        pass
+
+    @abstractmethod
+    def update_metric_summary(self, uuid, metric_name=None, metric_key=None, metric_value=None, metric_timestamp=None,
+                              model_version=None, job_execution_id=None) -> MetricSummary:
+        pass
+
+    @abstractmethod
     def delete_metric_summary(self, uuid: int):
         pass
 
-    def update_metric_meta(self,
-                           uuid,
-                           dataset_id=None,
-                           model_version_id=None,
-                           job_id=None,
-                           start_time=None,
-                           end_time=None,
-                           metric_type=None,
-                           uri=None,
-                           tags=None,
-                           metric_description=None,
-                           properties=None) -> MetricMeta:
-        """
-        register metric meta to store
-        :param uuid: metric meta unique id
-        :param dataset_id: the dataset id of the metric or model metric associate with dataset id
-        :param model_version_id: if then model metric, associate with model version id
-        :param job_id: the job_id which create the metric
-        :param start_time:
-        :param end_time:
-        :param metric_type: MetricType DATASET or MODEL
-        :param uri: the metric uri
-        :param tags: such as flink,tensorflow
-        :param metric_description:
-        :param properties:
-        :return:
-        """
+    @abstractmethod
+    def get_metric_summary(self, uuid) -> Union[None, MetricSummary]:
         pass
 
-    def update_metric_summary(self,
-                              uuid,
-                              metric_id=None,
-                              metric_key=None,
-                              metric_value=None) -> MetricSummary:
-        """
-        register metric summary
-        :param uuid: metric summary unique id
-        :param metric_id: associate with metric meta uuid
-        :param metric_key:
-        :param metric_value:
-        :return:
-        """
-        pass
-
-    def get_dataset_metric_meta(self, dataset_id) -> Union[None, MetricMeta, List[MetricMeta]]:
-        """
-        get dataset metric
-        :param dataset_id:
-        :return:
-        """
-        pass
-
-    def get_model_metric_meta(self, model_name, model_version) -> Union[None, MetricMeta, List[MetricMeta]]:
-        """
-        get model metric
-        :param model_name:
-        :param model_version:
-        :return:
-        """
-        pass
-
-    def get_metric_summary(self, metric_id) -> Optional[List[MetricSummary]]:
-        """
-        get metric summary
-        :param metric_id:
-        :return:
-        """
+    @abstractmethod
+    def list_metric_summaries(self, metric_name=None, metric_key=None, model_version=None, start_time=None,
+                              end_time=None) -> Union[None, MetricSummary, List[MetricSummary]]:
         pass
 
     """For high availability:"""
