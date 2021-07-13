@@ -518,21 +518,24 @@ def action_on_dataset_event(job_name: Text,
 def action_on_job_status(job_name: Text,
                          upstream_job_name: Text,
                          upstream_job_status: Status = Status.FINISHED,
-                         action: TaskAction = TaskAction.START):
+                         action: TaskAction = TaskAction.START,
+                         condition_type: ConditionType = ConditionType.SUFFICIENT):
     """
     Trigger job by upstream job status changed.
     :param job_name: The job name
     :param upstream_job_name: The upstream job name
     :param upstream_job_status: The upstream job status, type: ai_flow.workflow.status.Status
     :param action: The ai_flow.workflow.control_edge.TaskAction type.
+    :param condition: The event condition. Sufficient or Necessary.
     :return:
     """
+    event_key = '.'.join([current_workflow_config().workflow_name, upstream_job_name])
     action_on_event(job_name=job_name,
-                    event_key=current_workflow_config().workflow_name,
+                    event_key=event_key,
                     event_type=AIFlowInternalEventType.JOB_STATUS_CHANGED,
                     sender=upstream_job_name,
                     event_value=upstream_job_status,
                     action=action,
                     namespace=current_project_config().get_project_name(),
-                    condition_type=ConditionType.SUFFICIENT
+                    condition_type=condition_type
                     )
