@@ -170,6 +170,10 @@
                                     <pattern>com.google.protobuf</pattern>
                                     <shadedPattern>ai.flow.com.google.protobuf</shadedPattern>
                                 </relocation>
+                                <transformers>
+                                <transformer implementation=
+                                                     "org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                </transformers>
                             </relocations>
                         </configuration>
                     </execution>
