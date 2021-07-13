@@ -896,30 +896,140 @@ class AIFlowClientTestCases(object):
     #     self.assertEqual(State.FINISHED, execution_meta.execution_state)
 
     def test_dataset_metric_meta(self):
-        self.register_workflow_job()
+        start_time = round(time.time())
+        end_time = start_time + 1
+        metric_meta = client.register_metric_meta(metric_name='test_dataset_metric_meta_1',
+                                                  metric_type=MetricType.DATASET,
+                                                  project_name='test_dataset_metric_meta_project_1',
+                                                  dataset_name='test_dataset_metric_meta_dataset_1',
+                                                  job_name='test_dataset_metric_meta_job',
+                                                  start_time=start_time, end_time=end_time, uri='/tmp/metric',
+                                                  tags='test_dataset_metric_meta', properties=Properties({'a': 'a'}))[2]
+        metric_meta = client.get_metric_meta(metric_meta.metric_name)[2]
+        self.assertEqual('test_dataset_metric_meta_1', metric_meta.metric_name)
+        self.assertEqual(MetricType.DATASET, MetricType.value_of(metric_meta.metric_type))
+        self.assertEqual('test_dataset_metric_meta_project_1', metric_meta.project_name)
+        self.assertEqual('test_dataset_metric_meta_dataset_1', metric_meta.dataset_name)
+        self.assertEqual(start_time, metric_meta.start_time)
+        self.assertEqual(end_time, metric_meta.end_time)
+        self.assertEqual('/tmp/metric', metric_meta.uri)
+        self.assertEqual('test_dataset_metric_meta', metric_meta.tags)
+        self.assertEqual(metric_meta.properties['a'], metric_meta.properties['a'])
+        metric_meta = client.update_metric_meta(metric_name=metric_meta.metric_name,
+                                                dataset_name='test_dataset_metric_meta_dataset_2')[2]
+        metric_meta = client.get_metric_meta(metric_meta.metric_name)[2]
+        self.assertEqual('test_dataset_metric_meta_dataset_2', metric_meta.dataset_name)
+        metric_meta = client.register_metric_meta(metric_name='test_dataset_metric_meta_2',
+                                                  metric_type=metric_meta.metric_type,
+                                                  project_name='test_dataset_metric_meta_project_2',
+                                                  dataset_name=metric_meta.dataset_name,
+                                                  job_name=metric_meta.job_name,
+                                                  start_time=metric_meta.start_time, end_time=metric_meta.end_time,
+                                                  uri=metric_meta.uri,
+                                                  tags=metric_meta.tags, properties=metric_meta.properties)[2]
+        metric_metas = client.list_dataset_metric_metas(dataset_name=metric_meta.dataset_name)[2]
+        self.assertEqual(2, len(metric_metas))
+        metric_meta = client.list_dataset_metric_metas(dataset_name=metric_meta.dataset_name,
+                                                       project_name=metric_meta.project_name)[2]
+        self.assertEqual('test_dataset_metric_meta_2', metric_meta.metric_name)
+        self.assertEqual('test_dataset_metric_meta_project_2', metric_meta.project_name)
+        self.assertTrue(client.delete_metric_meta(metric_name=metric_meta.metric_name))
+        metric_metas = client.list_dataset_metric_metas(dataset_name=metric_meta.dataset_name)[2]
+        self.assertTrue(isinstance(metric_metas, MetricMeta))
+        self.assertEqual('test_dataset_metric_meta_1', metric_metas.metric_name)
 
-        start = round(time.time())
-        end = start + 1
-        res = client.register_metric_meta(name='a', dataset_id=1, model_name=None, model_version=None, job_id=1,
-                                          start_time=start, end_time=end, uri='/tmp/metric_1',
-                                          metric_type=MetricType.DATASET,
-                                          tags='', metric_description='', properties=Properties({'a': 'a'}))
-        client.update_metric_meta(uuid=res[2].uuid, job_id=5)
-        metric_meta_result = client.get_dataset_metric_meta(dataset_id=1)
-        self.assertTrue(isinstance(metric_meta_result[2], MetricMeta))
-        self.assertEqual(5, metric_meta_result[2].job_id)
+    def test_model_metric_meta(self):
+        metric_meta = client.register_metric_meta(metric_name='test_model_metric_meta_1',
+                                                  metric_type=MetricType.MODEL,
+                                                  project_name='test_model_metric_meta_project_1',
+                                                  model_name='test_model_metric_meta_model_1',
+                                                  job_name='test_model_metric_meta_job',
+                                                  uri='/tmp/metric',
+                                                  tags='test_model_metric_meta', properties=Properties({'a': 'a'}))[2]
+        metric_meta = client.get_metric_meta(metric_meta.metric_name)[2]
+        self.assertEqual('test_model_metric_meta_1', metric_meta.metric_name)
+        self.assertEqual(MetricType.MODEL, MetricType.value_of(metric_meta.metric_type))
+        self.assertEqual('test_model_metric_meta_project_1', metric_meta.project_name)
+        self.assertEqual('test_model_metric_meta_model_1', metric_meta.model_name)
+        self.assertEqual('/tmp/metric', metric_meta.uri)
+        self.assertEqual('test_model_metric_meta', metric_meta.tags)
+        self.assertEqual(metric_meta.properties['a'], metric_meta.properties['a'])
+        metric_meta = client.update_metric_meta(metric_name=metric_meta.metric_name,
+                                                model_name='test_model_metric_meta_model_2')[2]
+        metric_meta = client.get_metric_meta(metric_meta.metric_name)[2]
+        self.assertEqual('test_model_metric_meta_model_2', metric_meta.model_name)
+        metric_meta = client.register_metric_meta(metric_name='test_model_metric_meta_2',
+                                                  metric_type=metric_meta.metric_type,
+                                                  project_name='test_model_metric_meta_project_2',
+                                                  model_name=metric_meta.model_name,
+                                                  job_name=metric_meta.job_name,
+                                                  uri=metric_meta.uri,
+                                                  tags=metric_meta.tags, properties=metric_meta.properties)[2]
+        metric_metas = client.list_model_metric_metas(model_name=metric_meta.model_name)[2]
+        self.assertEqual(2, len(metric_metas))
+        metric_meta = client.list_model_metric_metas(model_name=metric_meta.model_name,
+                                                     project_name=metric_meta.project_name)[2]
+        self.assertEqual('test_model_metric_meta_2', metric_meta.metric_name)
+        self.assertEqual('test_model_metric_meta_project_2', metric_meta.project_name)
+        self.assertTrue(client.delete_metric_meta(metric_name=metric_meta.metric_name))
+        metric_metas = client.list_model_metric_metas(model_name=metric_meta.model_name)[2]
+        self.assertTrue(isinstance(metric_metas, MetricMeta))
+        self.assertEqual('test_model_metric_meta_1', metric_metas.metric_name)
 
-        res = client.register_metric_meta(name='b', dataset_id=1, model_name=None, model_version=None, job_id=1,
-                                          start_time=start, end_time=end, uri='/tmp/metric_2',
-                                          metric_type=MetricType.DATASET,
-                                          tags='flink', metric_description='', properties=Properties({'b': 'b'}))
-        metric_meta_result = client.get_dataset_metric_meta(dataset_id=1)
-        get_metric_meta = client.get_metric_meta(name=res[2].name)
-
-        self.assertEqual(res[2].tags, get_metric_meta[2].tags)
-
-        self.assertTrue(isinstance(metric_meta_result[2], List))
-        self.assertEqual(2, len(metric_meta_result[2]))
+    def test_metric_summary(self):
+        metric_timestamp = round(time.time())
+        metric_summary = client.register_metric_summary(metric_name='test_metric_summary_1', metric_key='auc',
+                                                        metric_value='0.6', metric_timestamp=metric_timestamp)[2]
+        metric_summary = client.get_metric_summary(metric_summary.uuid)[2]
+        self.assertEqual(1, metric_summary.uuid)
+        self.assertEqual('test_metric_summary_1', metric_summary.metric_name)
+        self.assertEqual('auc', metric_summary.metric_key)
+        self.assertEqual('0.6', metric_summary.metric_value)
+        self.assertEqual(metric_timestamp, metric_summary.metric_timestamp)
+        metric_summary = client.update_metric_summary(uuid=metric_summary.uuid, metric_value='0.8')[2]
+        metric_summary = client.get_metric_summary(metric_summary.uuid)[2]
+        self.assertEqual('0.8', metric_summary.metric_value)
+        metric_summary = client.register_metric_summary(metric_name=metric_summary.metric_name,
+                                                        metric_key=metric_summary.metric_key,
+                                                        metric_value='0.7', metric_timestamp=metric_timestamp + 1,
+                                                        model_version='test_metric_summary_model_version_1')[2]
+        metric_summary = client.register_metric_summary(metric_name=metric_summary.metric_name,
+                                                        metric_key='roc',
+                                                        metric_value='0.9', metric_timestamp=metric_timestamp + 1,
+                                                        model_version='test_metric_summary_model_version_2')[2]
+        metric_summaries = client.list_metric_summaries(metric_name=metric_summary.metric_name)[2]
+        self.assertEqual(3, len(metric_summaries))
+        self.assertEqual('auc', metric_summaries[0].metric_key)
+        self.assertEqual('0.8', metric_summaries[0].metric_value)
+        self.assertEqual('auc', metric_summaries[1].metric_key)
+        self.assertEqual('0.7', metric_summaries[1].metric_value)
+        self.assertEqual('roc', metric_summaries[2].metric_key)
+        self.assertEqual('0.9', metric_summaries[2].metric_value)
+        metric_summaries = client.list_metric_summaries(metric_key='auc')[2]
+        self.assertEqual(2, len(metric_summaries))
+        self.assertEqual('0.8', metric_summaries[0].metric_value)
+        self.assertEqual('0.7', metric_summaries[1].metric_value)
+        metric_summary = client.list_metric_summaries(model_version='test_metric_summary_model_version_1')[2]
+        self.assertEqual('test_metric_summary_1', metric_summary.metric_name)
+        self.assertEqual('auc', metric_summary.metric_key)
+        self.assertEqual('0.7', metric_summary.metric_value)
+        metric_summary = client.list_metric_summaries(model_version='test_metric_summary_model_version_1')[2]
+        self.assertEqual('test_metric_summary_1', metric_summary.metric_name)
+        self.assertEqual('auc', metric_summary.metric_key)
+        self.assertEqual('0.7', metric_summary.metric_value)
+        metric_summaries = client.list_metric_summaries(metric_name=metric_summary.metric_name,
+                                                        start_time=metric_timestamp + 1,
+                                                        end_time=metric_summary.metric_timestamp)[2]
+        self.assertEqual(2, len(metric_summaries))
+        self.assertEqual('auc', metric_summaries[0].metric_key)
+        self.assertEqual('0.7', metric_summaries[0].metric_value)
+        self.assertEqual('roc', metric_summaries[1].metric_key)
+        self.assertEqual('0.9', metric_summaries[1].metric_value)
+        metric_summary = client.list_metric_summaries(metric_name=metric_summary.metric_name, metric_key='auc',
+                                                      model_version='test_metric_summary_model_version_1')[2]
+        self.assertEqual('test_metric_summary_1', metric_summary.metric_name)
+        self.assertEqual('auc', metric_summary.metric_key)
+        self.assertEqual('0.7', metric_summary.metric_value)
 
     @staticmethod
     def register_workflow_job():
@@ -937,52 +1047,6 @@ class AIFlowClientTestCases(object):
                                                 model_path="/tmp",
                                                 project_snapshot_id=None)
         return model, version
-
-    def test_model_metric_meta(self):
-        project = self.register_workflow_job()
-        model, version = self.register_model_and_version(project)
-        start = round(time.time())
-        end = start + 1
-        client.register_metric_meta(name='a', dataset_id=1, model_name=model.name,
-                                    model_version=version.version, job_id=1,
-                                    start_time=start, end_time=end, uri='/tmp/metric_1',
-                                    metric_type=MetricType.MODEL,
-                                    tags='', metric_description='', properties=Properties({'a': 'a'}))
-        metric_meta_result = client.get_model_metric_meta(model_name=model.name, model_version=version.version)
-
-        self.assertTrue(isinstance(metric_meta_result[2], MetricMeta))
-
-        client.register_metric_meta(name='b', dataset_id=2, model_name=model.name,
-                                    model_version=version.version, job_id=3,
-                                    start_time=start, end_time=end, uri='/tmp/metric_2',
-                                    metric_type=MetricType.MODEL,
-                                    tags='', metric_description='', properties=Properties({'b': 'b'}))
-        metric_meta_result = client.get_model_metric_meta(model_name=model.name, model_version=version.version)
-
-        self.assertTrue(isinstance(metric_meta_result[2], List))
-        self.assertEqual(2, len(metric_meta_result[2]))
-        client.delete_metric_meta(metric_meta_result[2][0].uuid)
-        metric_meta_result = client.get_model_metric_meta(model_name=model.name, model_version=version.version)
-        self.assertTrue(isinstance(metric_meta_result[2], MetricMeta))
-
-    def test_metric_summary(self):
-        metric_summary_result = client.register_metric_summary(metric_id=1, metric_key='a', metric_value='1.0')
-        self.assertTrue(isinstance(metric_summary_result[2], MetricSummary))
-
-        client.update_metric_summary(uuid=metric_summary_result[2].uuid, metric_value='5.0')
-
-        metric_summary_result = client.get_metric_summary(metric_id=1)
-        self.assertTrue(isinstance(metric_summary_result[2], List))
-        self.assertEqual('5.0', metric_summary_result[2][0].metric_value)
-
-        client.register_metric_summary(metric_id=1, metric_key='b', metric_value='2.0')
-        metric_summary_result = client.get_metric_summary(metric_id=1)
-
-        self.assertEqual(2, len(metric_summary_result[2]))
-
-        client.delete_metric_summary(metric_summary_result[2][0].uuid)
-        metric_summary_result = client.get_metric_summary(metric_id=1)
-        self.assertEqual(1, len(metric_summary_result[2]))
 
 
 class TestAIFlowClientSqlite(AIFlowClientTestCases, unittest.TestCase):
