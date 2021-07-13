@@ -1358,105 +1358,186 @@ class SqlAlchemyStore(AbstractStore):
             sql_model_version = self._get_sql_model_version(session, model_version)
             return None if sql_model_version is None else sql_model_version.to_meta_entity()
 
-    def register_metric_meta(self,
-                             name,
-                             dataset_id,
-                             model_name,
-                             model_version,
-                             job_id,
-                             start_time,
-                             end_time,
-                             metric_type,
-                             uri,
-                             tags,
-                             metric_description,
-                             properties) -> MetricMeta:
-        """
-        register metric meta to store
-        :param name: the metric name
-        :param dataset_id: the dataset id of the metric or model metric associate with dataset id
-        :param model_name: if then model metric, associate with model name
-        :param model_version: if then model metric, associate with model version
-        :param job_id: the job_id which create the metric
-        :param start_time:
-        :param end_time:
-        :param metric_type: MetricType DATASET or MODEL
-        :param uri: the metric uri
-        :param tags: such as flink,tensorflow
-        :param metric_description:
-        :param properties:
-        :return:
-        """
+    """metric api"""
+
+    def register_metric_meta(self, metric_name, metric_type, project_name, metric_desc=None, dataset_name=None,
+                             model_name=None, job_name=None, start_time=None, end_time=None, uri=None, tags=None,
+                             properties=None) -> MetricMeta:
         with self.ManagedSessionMaker() as session:
             try:
-                metric_meta_table = metric_meta_to_table(name,
-                                                         dataset_id,
-                                                         model_name,
-                                                         model_version,
-                                                         job_id,
-                                                         start_time,
-                                                         end_time,
-                                                         metric_type,
-                                                         uri,
-                                                         tags,
-                                                         metric_description,
-                                                         properties)
+                metric_meta_table = metric_meta_to_table(metric_name, metric_type, metric_desc, project_name,
+                                                         dataset_name, model_name, job_name, start_time, end_time, uri,
+                                                         tags, properties)
                 session.add(metric_meta_table)
                 session.flush()
-                return MetricMeta(uuid=metric_meta_table.uuid,
-                                  name=name,
-                                  dataset_id=dataset_id,
+                return MetricMeta(metric_name=metric_name,
+                                  metric_type=metric_type,
+                                  metric_desc=metric_desc,
+                                  project_name=project_name,
+                                  dataset_name=dataset_name,
                                   model_name=model_name,
-                                  model_version=model_version,
-                                  job_id=job_id,
+                                  job_name=job_name,
                                   start_time=start_time,
                                   end_time=end_time,
-                                  metric_type=metric_type,
                                   uri=uri,
                                   tags=tags,
-                                  metric_description=metric_description,
                                   properties=properties)
             except Exception as e:
-                raise AIFlowException('Registered metric meta failed!'
-                                      'Error: {}'.format(str(e)))
+                raise AIFlowException('Register metric meta failed! Error: {}.'.format(str(e)))
 
-    def delete_metric_meta(self, uuid: int):
+    def update_metric_meta(self, metric_name, metric_desc=None, project_name=None, dataset_name=None,
+                           model_name=None, job_name=None, start_time=None, end_time=None, uri=None, tags=None,
+                           properties=None) -> MetricMeta:
+        with self.ManagedSessionMaker() as session:
+            try:
+                metric_meta_table: SqlMetricMeta = session.query(SqlMetricMeta).filter(
+                    and_(SqlMetricMeta.metric_name == metric_name, SqlMetricMeta.is_deleted != TRUE)
+                ).first()
+                if metric_desc is not None:
+                    metric_meta_table.metric_desc = metric_desc
+                if project_name is not None:
+                    metric_meta_table.project_name = project_name
+                if dataset_name is not None:
+                    metric_meta_table.dataset_name = dataset_name
+                if model_name is not None:
+                    metric_meta_table.model_name = model_name
+                if job_name is not None:
+                    metric_meta_table.job_name = job_name
+                if start_time is not None:
+                    metric_meta_table.start_time = start_time
+                if end_time is not None:
+                    metric_meta_table.end_time = end_time
+                if uri is not None:
+                    metric_meta_table.uri = uri
+                if tags is not None:
+                    metric_meta_table.tags = tags
+                if properties is not None and properties != {}:
+                    metric_meta_table.properties = str(properties)
+                session.add(metric_meta_table)
+                session.flush()
+                return table_to_metric_meta(metric_meta_table)
+            except Exception as e:
+                raise AIFlowException('Update metric meta failed! Error: {}.'.format(str(e)))
+
+    def delete_metric_meta(self, metric_name):
         with self.ManagedSessionMaker() as session:
             try:
                 conditions = [
-                    SqlMetricMeta.uuid == uuid
+                    SqlMetricMeta.metric_name == metric_name
                 ]
                 metric_meta_table = session.query(SqlMetricMeta).filter(*conditions).first()
                 metric_meta_table.is_deleted = TRUE
                 session.add(metric_meta_table)
                 session.flush()
             except Exception as e:
-                raise AIFlowException('delete metric meta failed!'
-                                      'Error: {}'.format(str(e)))
+                raise AIFlowException('Delete metric meta failed! Error: {}.'.format(str(e)))
 
-    def register_metric_summary(self,
-                                metric_id,
-                                metric_key,
-                                metric_value) -> MetricSummary:
-        """
-        register metric summary
-        :param metric_id: associate with metric meta uuid
-        :param metric_key:
-        :param metric_value:
-        :return:
-        """
+    def get_metric_meta(self, metric_name) -> Union[None, MetricMeta]:
         with self.ManagedSessionMaker() as session:
             try:
-                metric_summary_table = metric_summary_to_table(metric_id, metric_key, metric_value)
+                conditions = [
+                    SqlMetricMeta.metric_name == metric_name,
+                    SqlMetricMeta.is_deleted != TRUE
+                ]
+                metric_meta_table = session.query(SqlMetricMeta).filter(*conditions).first()
+                if metric_meta_table is None:
+                    return None
+                else:
+                    return table_to_metric_meta(metric_meta_table)
+            except Exception as e:
+                raise AIFlowException('Get metric meta failed! Error: {}.'.format(str(e)))
+
+    def list_dataset_metric_metas(self, dataset_name, project_name=None) -> Union[None, MetricMeta, List[MetricMeta]]:
+        with self.ManagedSessionMaker() as session:
+            try:
+                conditions = [
+                    SqlMetricMeta.dataset_name == dataset_name,
+                    SqlMetricMeta.metric_type == MetricType.DATASET.value,
+                    SqlMetricMeta.is_deleted != TRUE
+                ]
+                if project_name is not None:
+                    conditions.append(SqlMetricMeta.project_name == project_name)
+                metric_meta_tables = session.query(SqlMetricMeta).filter(*conditions).all()
+                if len(metric_meta_tables) == 0:
+                    return None
+                elif len(metric_meta_tables) == 1:
+                    metric_meta_table = metric_meta_tables[0]
+                    return table_to_metric_meta(metric_meta_table)
+                else:
+                    result = []
+                    for metric_meta_table in metric_meta_tables:
+                        result.append(table_to_metric_meta(metric_meta_table))
+                    return result
+            except Exception as e:
+                raise AIFlowException('Get dataset metric metas failed! Error: {}.'.format(str(e)))
+
+    def list_model_metric_metas(self, model_name, project_name=None) -> Union[
+            None, MetricMeta, List[MetricMeta]]:
+        with self.ManagedSessionMaker() as session:
+            try:
+                conditions = [
+                    SqlMetricMeta.model_name == model_name,
+                    SqlMetricMeta.metric_type == MetricType.MODEL.value,
+                    SqlMetricMeta.is_deleted != TRUE
+                ]
+                if project_name is not None:
+                    conditions.append(SqlMetricMeta.project_name == project_name)
+                metric_meta_tables = session.query(SqlMetricMeta).filter(*conditions).all()
+                if len(metric_meta_tables) == 0:
+                    return None
+                elif len(metric_meta_tables) == 1:
+                    metric_meta_table = metric_meta_tables[0]
+                    return table_to_metric_meta(metric_meta_table)
+                else:
+                    result = []
+                    for metric_meta_table in metric_meta_tables:
+                        result.append(table_to_metric_meta(metric_meta_table))
+                    return result
+            except Exception as e:
+                raise AIFlowException('Get model metric metas failed! Error: {}.'.format(str(e)))
+
+    def register_metric_summary(self, metric_name, metric_key, metric_value, metric_timestamp, model_version=None,
+                                job_execution_id=None) -> MetricSummary:
+        with self.ManagedSessionMaker() as session:
+            try:
+                metric_summary_table = metric_summary_to_table(metric_name, metric_key, metric_value, metric_timestamp,
+                                                               model_version, job_execution_id)
                 session.add(metric_summary_table)
                 session.flush()
                 return MetricSummary(uuid=metric_summary_table.uuid,
-                                     metric_id=metric_id,
+                                     metric_name=metric_name,
                                      metric_key=metric_key,
-                                     metric_value=metric_value)
+                                     metric_value=metric_value,
+                                     metric_timestamp=metric_timestamp,
+                                     model_version=model_version,
+                                     job_execution_id=job_execution_id)
             except sqlalchemy.exc.IntegrityError as e:
-                raise AIFlowException('Registered metric summary failed!'
-                                      'Error: {}'.format(str(e)))
+                raise AIFlowException('Register metric summary failed! Error: {}.'.format(str(e)))
+
+    def update_metric_summary(self, uuid, metric_name=None, metric_key=None, metric_value=None, metric_timestamp=None,
+                              model_version=None, job_execution_id=None) -> MetricSummary:
+        with self.ManagedSessionMaker() as session:
+            try:
+                metric_summary_table = session.query(SqlMetricSummary).filter(
+                    and_(SqlMetricSummary.uuid == uuid, SqlMetricSummary.is_deleted != TRUE)
+                ).first()
+                if metric_name is not None:
+                    metric_summary_table.metric_name = metric_name
+                if metric_key is not None:
+                    metric_summary_table.metric_key = metric_key
+                if metric_value is not None:
+                    metric_summary_table.metric_value = metric_value
+                if metric_timestamp is not None:
+                    metric_summary_table.metric_timestamp = metric_timestamp
+                if model_version is not None:
+                    metric_summary_table.model_version = model_version
+                if job_execution_id is not None:
+                    metric_summary_table.job_execution_id = job_execution_id
+                session.add(metric_summary_table)
+                session.flush()
+                return table_to_metric_summary(metric_summary_table)
+            except sqlalchemy.exc.IntegrityError as e:
+                raise AIFlowException('Update metric summary failed! Error: {}.'.format(str(e)))
 
     def delete_metric_summary(self, uuid: int):
         with self.ManagedSessionMaker() as session:
@@ -1469,218 +1550,53 @@ class SqlAlchemyStore(AbstractStore):
                 session.add(metric_summary_table)
                 session.flush()
             except Exception as e:
-                raise AIFlowException('delete metric summary failed!'
-                                      'Error: {}'.format(str(e)))
+                raise AIFlowException('Delete metric summary failed! Error: {}.'.format(str(e)))
 
-    def update_metric_meta(self,
-                           uuid,
-                           name=None,
-                           dataset_id=None,
-                           model_name=None,
-                           model_version=None,
-                           job_id=None,
-                           start_time=None,
-                           end_time=None,
-                           metric_type=None,
-                           uri=None,
-                           tags=None,
-                           metric_description=None,
-                           properties=None) -> MetricMeta:
-        """
-        register metric meta to store
-        :param uuid: metric meta unique id
-        :param name:
-        :param dataset_id: the dataset id of the metric or model metric associate with dataset id
-        :param model_name:
-        :param model_version: if then model metric, associate with model version id
-        :param job_id: the job_id which create the metric
-        :param start_time:
-        :param end_time:
-        :param metric_type: MetricType DATASET or MODEL
-        :param uri: the metric uri
-        :param tags: such as flink,tensorflow
-        :param metric_description:
-        :param properties:
-        :return:
-        """
-        with self.ManagedSessionMaker() as session:
-            try:
-                metric_meta_table: SqlMetricMeta = session.query(SqlMetricMeta).filter(
-                    and_(SqlMetricMeta.uuid == uuid, SqlMetricMeta.is_deleted != TRUE)
-                ).first()
-                if name is not None:
-                    metric_meta_table.name = name
-                if dataset_id is not None:
-                    metric_meta_table.dataset_id = dataset_id
-                if model_name is not None:
-                    metric_meta_table.model_name = model_name
-                if model_version is not None:
-                    metric_meta_table.model_version = model_version
-                if job_id is not None:
-                    metric_meta_table.job_id = job_id
-                if start_time is not None:
-                    metric_meta_table.start_time = start_time
-                if end_time is not None:
-                    metric_meta_table.end_time = end_time
-                if metric_type is not None:
-                    metric_meta_table.metric_type = metric_type.value
-                if uri is not None:
-                    metric_meta_table.uri = uri
-                if tags is not None:
-                    metric_meta_table.tags = tags
-                if metric_description is not None:
-                    metric_meta_table.metric_description = metric_description
-                if properties is not None and properties != {}:
-                    metric_meta_table.properties = str(properties)
-                session.add(metric_meta_table)
-                session.flush()
-                return table_to_metric_meta(metric_meta_table)
-            except Exception as e:
-                raise AIFlowException('Registered metric meta failed!'
-                                      'Error: {}'.format(str(e)))
-
-    def update_metric_summary(self,
-                              uuid,
-                              metric_id=None,
-                              metric_key=None,
-                              metric_value=None) -> MetricSummary:
-        """
-        register metric summary
-        :param uuid: metric summary unique id
-        :param metric_id: associate with metric meta uuid
-        :param metric_key:
-        :param metric_value:
-        :return:
-        """
-        with self.ManagedSessionMaker() as session:
-            try:
-                metric_summary_table = session.query(SqlMetricSummary).filter(
-                    and_(SqlMetricSummary.uuid == uuid, SqlMetricSummary.is_deleted != TRUE)
-                ).first()
-                if metric_id is not None:
-                    metric_summary_table.metric_id = metric_id
-                if metric_key is not None:
-                    metric_summary_table.metric_key = metric_key
-                if metric_value is not None:
-                    metric_summary_table.metric_value = metric_value
-                session.add(metric_summary_table)
-                session.flush()
-                return table_to_metric_summary(metric_summary_table)
-            except sqlalchemy.exc.IntegrityError as e:
-                raise AIFlowException('Registered metric summary failed!'
-                                      'Error: {}'.format(str(e)))
-
-    def get_metric_meta(self, name) -> Union[None, MetricMeta]:
-        """
-        get dataset metric
-        :param name:
-        :return:
-        """
+    def get_metric_summary(self, uuid) -> Union[None, MetricSummary]:
         with self.ManagedSessionMaker() as session:
             try:
                 conditions = [
-                    SqlMetricMeta.name == name,
-                    SqlMetricMeta.is_deleted != TRUE
-                ]
-                metric_meta_table = session.query(SqlMetricMeta).filter(*conditions).first()
-
-                if metric_meta_table is None:
-                    return None
-                else:
-                    _logger.info("Get dataset metric.")
-                    return table_to_metric_meta(metric_meta_table)
-
-            except Exception as e:
-                raise AIFlowException('Get metric meta  '
-                                      'Error: {}'.format(str(e)))
-
-    def get_dataset_metric_meta(self, dataset_id) -> Union[None, MetricMeta, List[MetricMeta]]:
-        """
-        get dataset metric
-        :param dataset_id:
-        :return:
-        """
-        with self.ManagedSessionMaker() as session:
-            try:
-                conditions = [
-                    SqlMetricMeta.dataset_id == dataset_id,
-                    SqlMetricMeta.metric_type == MetricType.DATASET.value,
-                    SqlMetricMeta.is_deleted != TRUE
-                ]
-                metric_meta_tables = session.query(SqlMetricMeta).filter(*conditions).all()
-
-                if len(metric_meta_tables) == 0:
-                    return None
-                elif len(metric_meta_tables) == 1:
-                    _logger.info("Get dataset metric.")
-                    metric_meta_table = metric_meta_tables[0]
-                    return table_to_metric_meta(metric_meta_table)
-                else:
-                    _logger.info("Get dataset metric.")
-                    res = []
-                    for metric_meta_table in metric_meta_tables:
-                        res.append(table_to_metric_meta(metric_meta_table))
-                    return res
-            except Exception as e:
-                raise AIFlowException('Get metric meta  '
-                                      'Error: {}'.format(str(e)))
-
-    def get_model_metric_meta(self, model_name, model_version) -> Union[None, MetricMeta, List[MetricMeta]]:
-        """
-        get model metric
-        :param model_name:
-        :param model_version:
-        :return:
-        """
-        with self.ManagedSessionMaker() as session:
-            try:
-                conditions = [
-                    SqlMetricMeta.model_name == model_name,
-                    SqlMetricMeta.model_version == model_version,
-                    SqlMetricMeta.metric_type == MetricType.MODEL.value,
-                    SqlMetricMeta.is_deleted != TRUE
-                ]
-                metric_meta_tables = session.query(SqlMetricMeta).filter(*conditions).all()
-
-                if len(metric_meta_tables) == 0:
-                    return None
-                elif len(metric_meta_tables) == 1:
-                    metric_meta_table = metric_meta_tables[0]
-                    return table_to_metric_meta(metric_meta_table)
-                else:
-                    result = []
-                    for metric_meta_table in metric_meta_tables:
-                        result.append(table_to_metric_meta(metric_meta_table))
-                    return result
-            except Exception as e:
-                raise AIFlowException('Get metric meta  '
-                                      'Error: {}'.format(str(e)))
-
-    def get_metric_summary(self, metric_id) -> Optional[List[MetricSummary]]:
-        """
-        get metric summary
-        :param metric_id:
-        :return:
-        """
-        with self.ManagedSessionMaker() as session:
-            try:
-                conditions = [
-                    SqlMetricSummary.metric_id == metric_id,
+                    SqlMetricSummary.uuid == uuid,
                     SqlMetricSummary.is_deleted != TRUE
                 ]
-                metric_summary_tables = session.query(SqlMetricSummary).filter(*conditions).all()
-
-                if len(metric_summary_tables) == 0:
+                metric_summary_table = session.query(SqlMetricSummary).filter(*conditions).first()
+                if metric_summary_table is None:
                     return None
                 else:
-                    _logger.info("Get metric summary.")
-                    res = []
-                    for metric_summary_table in metric_summary_tables:
-                        res.append(table_to_metric_summary(metric_summary_table))
-                    return res
+                    return table_to_metric_summary(metric_summary_table)
             except Exception as e:
-                raise AIFlowException('Get metric summary  '
-                                      'Error: {}'.format(str(e)))
+                raise AIFlowException('Get metric summary failed! Error: {}.'.format(str(e)))
+
+    def list_metric_summaries(self, metric_name=None, metric_key=None, model_version=None, start_time=None,
+                              end_time=None) -> Union[None, MetricSummary, List[MetricSummary]]:
+        with self.ManagedSessionMaker() as session:
+            try:
+                conditions = [
+                    SqlMetricSummary.is_deleted != TRUE
+                ]
+                if metric_name is not None:
+                    conditions.append(SqlMetricSummary.metric_name == metric_name)
+                if metric_key is not None:
+                    conditions.append(SqlMetricSummary.metric_key == metric_key)
+                if model_version is not None:
+                    conditions.append(SqlMetricSummary.model_version == model_version)
+                if start_time is not None:
+                    conditions.append(SqlMetricSummary.metric_timestamp >= start_time)
+                if end_time is not None:
+                    conditions.append(SqlMetricSummary.metric_timestamp <= end_time)
+                metric_summary_tables = session.query(SqlMetricSummary).filter(*conditions).all()
+                if len(metric_summary_tables) == 0:
+                    return None
+                elif len(metric_summary_tables) == 1:
+                    metric_summary_table = metric_summary_tables[0]
+                    return table_to_metric_summary(metric_summary_table)
+                else:
+                    results = []
+                    for metric_summary_table in metric_summary_tables:
+                        results.append(table_to_metric_summary(metric_summary_table))
+                    return results
+            except Exception as e:
+                raise AIFlowException('List metric summaries failed! Error: {}.'.format(str(e)))
 
     def list_living_members(self, ttl_ms) -> List[Member]:
         with self.ManagedSessionMaker() as session:

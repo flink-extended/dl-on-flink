@@ -41,45 +41,49 @@ class MetricType(str, Enum):
 
 class MetricMeta(Jsonable):
     def __init__(self,
-                 name: Text,
-                 dataset_id: int,
+                 metric_name: Text,
+                 metric_type: MetricType,
+                 metric_desc: Optional[Text],
+                 project_name: Text,
+                 dataset_name: Optional[Text],
                  model_name: Optional[Text],
-                 model_version: Optional[Text],
-                 job_id: int,
+                 job_name: Optional[Text],
                  start_time: int,
                  end_time: int,
-                 metric_type: MetricType,
-                 uri: Text,
-                 tags: Text,
-                 metric_description: Text,
+                 uri: Optional[Text],
+                 tags: Optional[Text],
                  properties: Properties,
-                 uuid: int = None,
                  ) -> None:
         super().__init__()
-        self.uuid = uuid
-        self.name = name
-        self.dataset_id: int = dataset_id
-        self.model_name: Optional[Text] = model_name
-        self.model_version: Optional[Text] = model_version
-        self.job_id: int = job_id
-        self.start_time: int = start_time
-        self.end_time: int = end_time
-        self.metric_type: MetricType = metric_type
-        self.uri: Text = uri
-        self.tags: Text = tags
-        self.metric_description: Text = metric_description
+        self.metric_name = metric_name
+        self.metric_type = metric_type
+        self.metric_desc = metric_desc
+        self.project_name = project_name
+        self.dataset_name = dataset_name
+        self.model_name = model_name
+        self.job_name = job_name
+        self.start_time = start_time
+        self.end_time = end_time
+        self.uri = uri
+        self.tags = tags
         self.properties: Properties = properties
 
 
 class MetricSummary(Jsonable):
     def __init__(self,
-                 metric_id: int,
+                 uuid: int,
+                 metric_name: Text,
                  metric_key: Text,
                  metric_value: Text,
-                 uuid: int,
+                 metric_timestamp: int,
+                 model_version: Optional[Text],
+                 job_execution_id: Optional[Text]
                  ) -> None:
         super().__init__()
         self.uuid = uuid
-        self.metric_id: int = metric_id
-        self.metric_key: Text = metric_key
-        self.metric_value: Text = metric_value
+        self.metric_name = metric_name
+        self.metric_key = metric_key
+        self.metric_value = metric_value
+        self.metric_timestamp = metric_timestamp
+        self.model_version = model_version
+        self.job_execution_id = job_execution_id
