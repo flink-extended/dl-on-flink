@@ -53,6 +53,9 @@ class DagRunId(object):
     def __hash__(self) -> int:
         return hash(self.dag_id) + hash(self.run_id)
 
+    def __str__(self):
+        return str(self.__dict__)
+
 
 class EventHandleResult(object):
     """
@@ -97,7 +100,7 @@ class DagRunEventManager(BackgroundService, LoggingMixin):
         # DagRunEventExecutor will be added to the set right after it is submitted to ExecutorPool and removed
         # right after it is finished running.
         self._running_event_executor_runners: Set[DagRunId] = set()
-        self._lock = threading.Lock()
+        self._lock = threading.RLock()
 
     def start(self):
         """
@@ -145,9 +148,9 @@ class DagRunEventManager(BackgroundService, LoggingMixin):
         return True
 
     def _submit_event_executor_runner(self, dag_run_id):
+        self._running_event_executor_runners.add(dag_run_id)
         self._executor.submit(self._start_event_executor_runner, dag_run_id) \
             .add_done_callback(self._runner_exited)
-        self._running_event_executor_runners.add(dag_run_id)
 
     def _start_event_executor_runner(self, dag_run_id: DagRunId):
         self.log.debug("starting DagRunEventExecutorRunner for {}".format(dag_run_id))
@@ -302,7 +305,8 @@ class DagRunEventExecutor(LoggingMixin):
         scheduling_actions = dict()
         for operator in operators:
             scheduling_actions[operator.task_id] = self._operator_handle_event(event, operator, dag_run.execution_date)
-
+        self.log.info("DagRunEventExecutor for dag {}-{} handle event: {} actions: {}"
+                      .format(dag_run.dag_id, dag_run.run_id, event, scheduling_actions))
         return scheduling_actions
 
     @staticmethod
