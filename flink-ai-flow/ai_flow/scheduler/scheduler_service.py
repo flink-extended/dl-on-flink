@@ -36,7 +36,7 @@ from ai_flow.protobuf.scheduling_service_pb2 import \
      JobInfoResponse,
      ListJobInfoResponse)
 from ai_flow.scheduler.scheduler_factory import SchedulerFactory
-from ai_flow.plugin_interface.scheduler_interface import AbstractScheduler
+from ai_flow.plugin_interface.scheduler_interface import Scheduler
 from ai_flow.workflow.workflow import Workflow
 from ai_flow.endpoint.server.workflow_proto_utils import workflow_to_proto, workflow_list_to_proto, \
     workflow_execution_to_proto, workflow_execution_list_to_proto, job_to_proto, job_list_to_proto
@@ -79,7 +79,7 @@ class SchedulerService(SchedulingServiceServicer):
     def __init__(self,
                  scheduler_service_config: SchedulerServiceConfig):
         self._scheduler_service_config = scheduler_service_config
-        self._scheduler: AbstractScheduler \
+        self._scheduler: Scheduler \
             = SchedulerFactory.create_scheduler(scheduler_service_config.scheduler_class_name(),
                                                 scheduler_service_config.scheduler_config())
 
@@ -173,7 +173,7 @@ class SchedulerService(SchedulingServiceServicer):
     def killAllWorkflowExecutions(self, request, context):
         try:
             rq: WorkflowExecutionRequest = request
-            workflow_execution_list = self._scheduler.kill_all_workflow_execution(rq.namespace, rq.workflow_name)
+            workflow_execution_list = self._scheduler.stop_all_workflow_execution(rq.namespace, rq.workflow_name)
             response = ListWorkflowExecutionResponse(result=ResultProto(status=StatusProto.OK))
             response.workflow_execution_list.extend(workflow_execution_list_to_proto(workflow_execution_list))
             return response
@@ -184,7 +184,7 @@ class SchedulerService(SchedulingServiceServicer):
     def killWorkflowExecution(self, request, context):
         try:
             rq: WorkflowExecutionRequest = request
-            workflow_execution = self._scheduler.kill_workflow_execution(rq.execution_id)
+            workflow_execution = self._scheduler.stop_workflow_execution(rq.execution_id)
             if workflow_execution is None:
                 return WorkflowExecutionResponse(
                     result=ResultProto(status=StatusProto.ERROR,

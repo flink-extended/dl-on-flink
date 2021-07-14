@@ -120,7 +120,7 @@ class TestTensorFlowIrisModel(unittest.TestCase):
     def setUp(self) -> None:
         if os.path.exists(_SQLITE_DB_FILE):
             os.remove(_SQLITE_DB_FILE)
-        self.server = AIFlowServer(store_uri=_SQLITE_DB_URI, port=_PORT)
+        self.server = AIFlowServer(store_uri=_SQLITE_DB_URI, port=_PORT, start_scheduler_service=False)
         self.server.run()
         self.client = AIFlowClient(server_uri='localhost:' + _PORT)
 

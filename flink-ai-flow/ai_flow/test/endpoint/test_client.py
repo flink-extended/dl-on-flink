@@ -993,7 +993,7 @@ class TestAIFlowClientSqlite(AIFlowClientTestCases, unittest.TestCase):
         print("TestAIFlowClientSqlite setUpClass")
         if os.path.exists(_SQLITE_DB_FILE):
             os.remove(_SQLITE_DB_FILE)
-        cls.server = AIFlowServer(store_uri=_SQLITE_DB_URI, port=_PORT)
+        cls.server = AIFlowServer(store_uri=_SQLITE_DB_URI, port=_PORT, start_scheduler_service=False)
         cls.server.run()
         client = AIFlowClient(server_uri='localhost:' + _PORT)
         client1 = AIFlowClient(server_uri='localhost:' + _PORT)
@@ -1027,7 +1027,7 @@ class TestAIFlowClientSqliteWithSingleHighAvailableServer(
         print("TestAIFlowClientSqlite setUpClass")
         if os.path.exists(_SQLITE_DB_FILE):
             os.remove(_SQLITE_DB_FILE)
-        cls.server = AIFlowServer(store_uri=_SQLITE_DB_URI, port=_PORT, enabled_ha=True,
+        cls.server = AIFlowServer(store_uri=_SQLITE_DB_URI, port=_PORT, enabled_ha=True, start_scheduler_service=False,
                                   ha_server_uri='localhost:' + _PORT)
         cls.server.run()
         config = ProjectConfig()

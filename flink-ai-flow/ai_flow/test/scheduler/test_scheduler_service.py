@@ -27,7 +27,7 @@ from ai_flow.protobuf.message_pb2 import StateProto
 from ai_flow.endpoint.client.scheduler_client import SchedulerClient
 from ai_flow.endpoint.server.server import AIFlowServer
 from ai_flow.context.project_context import ProjectContext
-from ai_flow.plugin_interface.scheduler_interface import AbstractScheduler
+from ai_flow.plugin_interface.scheduler_interface import Scheduler
 from ai_flow.workflow.workflow import Workflow
 from ai_flow.plugin_interface.scheduler_interface import JobExecutionInfo, WorkflowExecutionInfo, WorkflowInfo
 
@@ -36,7 +36,7 @@ _SQLITE_DB_URI = '%s%s' % ('sqlite:///', _SQLITE_DB_FILE)
 _PORT = '50051'
 
 
-class MockScheduler(AbstractScheduler):
+class MockScheduler(Scheduler):
     def start_job_execution(self, job_name: Text, execution_id: Text) -> JobExecutionInfo:
         pass
 
@@ -64,10 +64,10 @@ class MockScheduler(AbstractScheduler):
     def start_new_workflow_execution(self, project_name: Text, workflow_name: Text) -> WorkflowExecutionInfo:
         pass
 
-    def kill_all_workflow_execution(self, project_name: Text, workflow_name: Text) -> List[WorkflowExecutionInfo]:
+    def stop_all_workflow_execution(self, project_name: Text, workflow_name: Text) -> List[WorkflowExecutionInfo]:
         pass
 
-    def kill_workflow_execution(self, execution_id: Text) -> WorkflowExecutionInfo:
+    def stop_workflow_execution(self, execution_id: Text) -> WorkflowExecutionInfo:
         pass
 
     def get_workflow_execution(self, execution_id: Text) -> WorkflowExecutionInfo:
@@ -149,7 +149,7 @@ class TestSchedulerService(unittest.TestCase):
             instance = mockScheduler.return_value
             self.server.scheduler_service._scheduler = instance
 
-            instance.kill_all_workflow_execution.return_value \
+            instance.stop_all_workflow_execution.return_value \
                 = [WorkflowExecutionInfo(workflow_execution_id='id_1', status=Status.INIT),
                    WorkflowExecutionInfo(workflow_execution_id='id_2', status=Status.INIT)]
             client = SchedulerClient("localhost:{}".format(_PORT))
@@ -162,7 +162,7 @@ class TestSchedulerService(unittest.TestCase):
             instance = mockScheduler.return_value
             self.server.scheduler_service._scheduler = instance
 
-            instance.kill_workflow_execution.return_value \
+            instance.stop_workflow_execution.return_value \
                 = WorkflowExecutionInfo(workflow_execution_id='id', status=Status.RUNNING)
             client = SchedulerClient("localhost:{}".format(_PORT))
             workflow_execution = client.kill_workflow_execution(execution_id='id')
