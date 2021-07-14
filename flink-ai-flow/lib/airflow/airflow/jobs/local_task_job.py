@@ -22,6 +22,7 @@ import signal
 from typing import Optional
 
 from airflow.configuration import conf
+from airflow.events.scheduler_events import TaskStatusChangedEvent
 from airflow.exceptions import AirflowException
 from airflow.jobs.base_job import BaseJob
 from airflow.models.taskinstance import TaskInstance
@@ -31,6 +32,7 @@ from airflow.utils import timezone
 from airflow.utils.net import get_hostname
 from airflow.utils.session import provide_session
 from airflow.utils.state import State
+from notification_service.client import NotificationClient
 
 
 class LocalTaskJob(BaseJob):
@@ -48,6 +50,7 @@ class LocalTaskJob(BaseJob):
         mark_success: bool = False,
         pickle_id: Optional[str] = None,
         pool: Optional[str] = None,
+        server_uri: str = None,
         *args,
         **kwargs,
     ):
@@ -61,6 +64,7 @@ class LocalTaskJob(BaseJob):
         self.pickle_id = pickle_id
         self.mark_success = mark_success
         self.task_runner = None
+        self.server_uri = server_uri
 
         # terminating state is used so that a job don't try to
         # terminate multiple times
@@ -94,6 +98,11 @@ class LocalTaskJob(BaseJob):
             return
 
         try:
+            if self.server_uri is not None:
+                try:
+                    self._send_task_status_change_event()
+                except Exception as e:
+                    self.log.warning("failed to send event to {}".format(self.server_uri), exc_info=e)
             self.task_runner.start()
 
             heartbeat_time_limit = conf.getint('scheduler', 'scheduler_zombie_task_threshold')
@@ -133,6 +142,17 @@ class LocalTaskJob(BaseJob):
                     )
         finally:
             self.on_kill()
+
+    def _send_task_status_change_event(self):
+        task_status_changed_event = TaskStatusChangedEvent(
+            self.task_instance.task_id,
+            self.task_instance.dag_id,
+            self.task_instance.execution_date,
+            self.task_instance.state
+        )
+        event = task_status_changed_event.to_event()
+        client = NotificationClient(self.server_uri, default_namespace=event.namespace, sender=event.sender)
+        client.send_event(event)
 
     def on_kill(self):
         self.task_runner.terminate()
