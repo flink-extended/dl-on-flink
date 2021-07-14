@@ -21,7 +21,7 @@ from ai_flow.workflow.periodic_config import PeriodicConfig
 
 from ai_flow import AIFlowServerRunner, init_ai_flow_context
 import ai_flow as af
-from ai_flow.workflow.control_edge import TaskAction
+from ai_flow.workflow.control_edge import TaskAction, ConditionConfig, ConditionType
 from ai_flow.workflow.status import Status
 from ai_flow.test.api.mock_plugins import MockJobFactory
 
@@ -125,6 +125,40 @@ class TestDagGenerator(unittest.TestCase):
         self.assertTrue('datetime' in code)
         self.assertTrue('schedule_interval' in code)
         self.assertTrue('timedelta' in code)
+
+    def test_action_on_job_status(self):
+        with af.job_config('task_1'):
+            af.user_define_operation(processor=None)
+        with af.job_config('task_2'):
+            af.user_define_operation(processor=None)
+        with af.job_config('task_3'):
+            af.user_define_operation(processor=None)
+        af.action_on_job_status(job_name='task_2', upstream_job_name='task_1')
+        af.action_on_job_status(job_name='task_3', upstream_job_name='task_2',
+                                upstream_job_status=Status.RUNNING,
+                                action=TaskAction.START)
+        w = af.workflow_operation.submit_workflow(workflow_name='test_dag_generator')
+        code = w.properties.get('code')
+        self.assertTrue(
+            "op_1.subscribe_event('test_dag_generator.task_1', 'TASK_STATUS_CHANGED', 'test_project', 'task_1')" in code)
+        self.assertTrue(
+            "op_2.subscribe_event('test_dag_generator.task_2', 'TASK_STATUS_CHANGED', 'test_project', 'task_2')" in code)
+
+    def test_action_on_job_status_two_status(self):
+        with af.job_config('task_1'):
+            af.user_define_operation(processor=None)
+        with af.job_config('task_2'):
+            af.user_define_operation(processor=None)
+        af.action_on_job_status(job_name='task_2', upstream_job_name='task_1',
+                                upstream_job_status=Status.RUNNING,
+                                action=TaskAction.START)
+        af.action_on_job_status(job_name='task_2', upstream_job_name='task_1', upstream_job_status=Status.FINISHED,
+                                action=TaskAction.STOP)
+        w = af.workflow_operation.submit_workflow(workflow_name='test_dag_generator')
+        code = w.properties.get('code')
+        self.assertTrue('"event_value": "RUNNING"' in code)
+        self.assertTrue('"event_value": "FINISHED"' in code)
+
 
 
 if __name__ == '__main__':
