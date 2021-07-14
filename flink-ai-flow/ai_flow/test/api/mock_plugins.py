@@ -91,29 +91,29 @@ class MockScheduler(Scheduler):
         return [WorkflowExecutionInfo(workflow_execution_id='1', status=Status.RUNNING),
                 WorkflowExecutionInfo(workflow_execution_id='2', status=Status.RUNNING)]
 
-    def stop_workflow_execution(self, execution_id: Text) -> Optional[WorkflowExecutionInfo]:
+    def stop_workflow_execution(self, workflow_execution_id: Text) -> Optional[WorkflowExecutionInfo]:
         return WorkflowExecutionInfo(workflow_execution_id='1', status=Status.RUNNING)
 
-    def get_workflow_execution(self, execution_id: Text) -> Optional[WorkflowExecutionInfo]:
+    def get_workflow_execution(self, workflow_execution_id: Text) -> Optional[WorkflowExecutionInfo]:
         return WorkflowExecutionInfo(workflow_execution_id='1', status=Status.RUNNING)
 
     def list_workflow_executions(self, project_name: Text, workflow_name: Text) -> List[WorkflowExecutionInfo]:
         return [WorkflowExecutionInfo(workflow_execution_id='1', status=Status.RUNNING),
                 WorkflowExecutionInfo(workflow_execution_id='2', status=Status.RUNNING)]
 
-    def start_job_execution(self, job_name: Text, execution_id: Text) -> JobExecutionInfo:
+    def start_job_execution(self, job_name: Text, workflow_execution_id: Text) -> JobExecutionInfo:
         return JobExecutionInfo(job_name='task_1', status=Status.RUNNING)
 
-    def stop_job_execution(self, job_name: Text, execution_id: Text) -> JobExecutionInfo:
+    def stop_job_execution(self, job_name: Text, workflow_execution_id: Text) -> JobExecutionInfo:
         return JobExecutionInfo(job_name='task_1', status=Status.RUNNING)
 
-    def restart_job_execution(self, job_name: Text, execution_id: Text) -> JobExecutionInfo:
+    def restart_job_execution(self, job_name: Text, workflow_execution_id: Text) -> JobExecutionInfo:
         return JobExecutionInfo(job_name='task_1', status=Status.RUNNING)
 
-    def get_job_executions(self, job_name: Text, execution_id: Text) -> List[JobExecutionInfo]:
+    def get_job_executions(self, job_name: Text, workflow_execution_id: Text) -> List[JobExecutionInfo]:
         return [JobExecutionInfo(job_name='task_1', status=Status.RUNNING)]
 
-    def list_job_executions(self, execution_id: Text) -> List[JobExecutionInfo]:
+    def list_job_executions(self, workflow_execution_id: Text) -> List[JobExecutionInfo]:
         return [JobExecutionInfo(job_name='task_1', status=Status.RUNNING),
                 JobExecutionInfo(job_name='task_2', status=Status.RUNNING)]
 
