@@ -75,7 +75,7 @@ def write_dataset(input: Channel,
     :param input: Channel from the specific operator which generates data.
     :param dataset_info: Information about the dataset which will be read. Its type can be DataSetMeta
                          of py:class:`ai_flow.meta.dataset_meta.DatasetMeta` or Text or int. The dataset_info
-                         means name in he metadata service when its type is Text and it means id when its type is int.
+                         means name in the metadata service when its type is Text and it means id when its type is int.
                          The ai flow will get the dataset from metadata service by name or id.
     :param write_dataset_processor: The python user defined function in write dataset operator. User can write their own logic here.
     :param name: Name of the read_dataset operator.
@@ -132,11 +132,11 @@ def train(input: Union[Channel, List[Channel]],
     :param training_processor: The user defined function in train operator. User can write their own logic here.
     :param model_info: Information about the output model which is under training. Its type can be ModelMeta
                               of py:class:`ai_flow.meta.model_meta.ModelMeta` or Text or int. The output_model_info
-                              means name in he metadata service when its type is Text and it means id when its type is
+                              means name in the metadata service when its type is Text and it means id when its type is
                               int. The ai flow will get the model meta from metadata service by name or id.
     :param base_model_info: Information about the base model which will be trained. Its type can be ModelMeta
                             of py:class:`ai_flow.meta.model_meta.ModelMeta` or Text or int. The base_model_info
-                            means name in he metadata service when its type is Text and it means id when its type is
+                            means name in the metadata service when its type is Text and it means id when its type is
                             int. The ai flow will get the model meta from metadata service by name or id.
     :param output_num: The output number of the operator. The default value is 0.
     :param name: Name of the train operator.
@@ -180,12 +180,12 @@ def predict(input: Union[Channel, List[Channel]],
     :param input: List of Channel. It contains the dataset data used in prediction.
     :param model_info: Information about the model which is in prediction. Its type can be ModelMeta
                        of py:class:`ai_flow.meta.model_meta.ModelMeta` or Text or int. The model_info
-                       means name in he metadata service when its type is Text and it means id when its type is
+                       means name in the metadata service when its type is Text and it means id when its type is
                        int. The ai flow will get the model meta from metadata service by name or id.
     :param prediction_processor: The user defined function in predict operator. User can write their own logic here.
     :param model_version_info: Information about the model version which is in prediction. Its type can be
                                ModelVersionMeta of py:class:`ai_flow.meta.model_meta.ModelVersionMeta`
-                               or Text. The model_version_info means version in he metadata service
+                               or Text. The model_version_info means version in the metadata service
                                when its type is Text. The ai flow will get the model meta from metadata
                                service by version.
     :param output_num: The output number of the operator. The default value is 1.
@@ -228,7 +228,7 @@ def evaluate(input: Union[Channel, List[Channel]],
     :param input: List of Channel. It contains the dataset data used in prediction.
     :param model_info: Information about the model which is in prediction. Its type can be ModelMeta
                        of py:class:`ai_flow.meta.model_meta.ModelMeta` or Text or int. The model_info
-                       means name in he metadata service when its type is Text and it means id when its type is
+                       means name in the metadata service when its type is Text and it means id when its type is
                        int. The ai flow will get the model meta from metadata service by name or id.
     :param evaluation_processor: The user defined function in evaluate operator. User can write their own logic here.
     :param output_num: The output number of the operator. The default value is 0.
@@ -284,17 +284,17 @@ def model_validate(input: Union[Channel, List[Channel]],
     :param input: List of Channel. It contains the dataset data used in model validation.
     :param model_info: Information about the model which is in model validation. Its type can be ModelMeta
                        of py:class:`ai_flow.meta.model_meta.ModelMeta` or Text or int. The model_info
-                       means name in he metadata service when its type is Text and it means id when its type is
+                       means name in the metadata service when its type is Text and it means id when its type is
                        int. The ai flow will get the model meta from metadata service by name or id.
     :param model_validation_processor: The user defined function in model validate operator. User can write their own logic here.
     :param model_version_info: Information about the model version which is in model validation. Its type can be
                                ModelVersionMeta of py:class:`ai_flow.meta.model_meta.ModelVersionMeta`
-                               or Text. The model_version_info means version in he metadata service
+                               or Text. The model_version_info means version in the metadata service
                                when its type is Text. The ai flow will get the model meta from metadata
                                service by version.
     :param base_model_version_info: Information about the model version which is in model validation. Its type can be
                                     ModelVersionMeta of py:class:`ai_flow.meta.model_meta.ModelVersionMeta`
-                                    or Text. The model_version_info means version in he metadata service
+                                    or Text. The model_version_info means version in the metadata service
                                     when its type is Text. The ai flow will get the model meta from metadata
                                     service by version.
     :param output_num: The output number of the operator. The default value is 0.
@@ -347,12 +347,12 @@ def push_model(model_info: Union[ModelMeta, Text, int],
 
     :param model_info: Information about the model which is in pusher. Its type can be ModelMeta
                        of py:class:`ai_flow.meta.model_meta.ModelMeta` or Text or int. The model_info
-                       means name in he metadata service when its type is Text and it means id when its type is
+                       means name in the metadata service when its type is Text and it means id when its type is
                        int. The ai flow will get the model meta from metadata service by name or id.
     :param pushing_model_processor: The user defined function in pusher operator. User can write their own logic here.
     :param model_version_info: Information about the model version which is in push. Its type can be
                                ModelVersionMeta of py:class:`ai_flow.meta.model_meta.ModelVersionMeta`
-                               or Text. The model_version_info means version in he metadata service
+                               or Text. The model_version_info means version in the metadata service
                                when its type is Text. The ai flow will get the model meta from metadata
                                service by version.
     :param name: Name of the push operator.

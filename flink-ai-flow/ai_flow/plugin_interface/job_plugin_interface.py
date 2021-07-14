@@ -28,8 +28,8 @@ from ai_flow.workflow.status import Status
 
 class JobHandle(Jsonable):
     """
-    JobHandler is created by JobController. When call submit_job function, then return a JobHandler.
-    Using JobHandler, you can get the job information.
+    JobHandle is created by JobController. When call submit_job function, then return a JobHandle.
+    Using JobHandle, you can get the job information.
     """
     def __init__(self,
                  job: Job,
@@ -115,13 +115,13 @@ class JobControllerManager(BaseRegistry):
             raise Exception("job submitter not found! job_type {}".format(job.job_config.job_type))
         return job_controller
 
-    def stop_job(self, job_handle: JobHandle, job_context: JobRuntimeEnv):
+    def stop_job(self, job_handle: JobHandle, job_runtime_env: JobRuntimeEnv):
         job_controller = self.get_job_controller(job_handle.job)
-        job_controller.stop_job(job_handle, job_context)
+        job_controller.stop_job(job_handle, job_runtime_env)
 
-    def cleanup_job(self, job_handle: JobHandle, job_context: JobRuntimeEnv):
+    def cleanup_job(self, job_handle: JobHandle, job_runtime_env: JobRuntimeEnv):
         job_controller = self.get_job_controller(job_handle.job)
-        job_controller.cleanup_job(job_handle, job_context)
+        job_controller.cleanup_job(job_handle, job_runtime_env)
 
 
 __job_controller_manager__ = JobControllerManager()
