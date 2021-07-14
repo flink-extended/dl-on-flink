@@ -33,22 +33,19 @@ service MetadataService {
     //dataset api
     rpc getDatasetById (IdRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/dataset/get/id"
-        body: "*"
+        get: "/aiflow/metadata_store/dataset/get/id"
         };
     };
 
     rpc getDatasetByName (NameRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/dataset/get/name"
-        body: "*"
+        get: "/aiflow/metadata_store/dataset/get/name"
         };
     };
 
     rpc listDatasets (ListRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/dataset/list"
-        body: "*"
+        get: "/aiflow/metadata_store/dataset/list"
         };
     };
 
@@ -96,20 +93,17 @@ service MetadataService {
     //model relation api
     rpc getModelRelationById (IdRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/model_relation/get/id"
-        body: "*"
+        get: "/aiflow/metadata_store/model_relation/get/id"
         };
     };
     rpc getModelRelationByName (NameRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/model_relation/get/name"
-        body: "*"
+        get: "/aiflow/metadata_store/model_relation/get/name"
         };
     };
     rpc listModelRelation (ListRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/model_relation/list"
-        body: "*"
+        get: "/aiflow/metadata_store/model_relation/list"
         };
     };
     rpc registerModelRelation (RegisterModelRelationRequest) returns (Response) {
@@ -133,14 +127,12 @@ service MetadataService {
     //model api
     rpc getModelById (IdRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/model/get/id"
-        body: "*"
+        get: "/aiflow/metadata_store/model/get/id"
         };
     };
     rpc getModelByName (NameRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/model/get/name"
-        body: "*"
+        get: "/aiflow/metadata_store/model/get/name"
         };
     };
     rpc registerModel (RegisterModelRequest) returns (Response) {
@@ -164,14 +156,12 @@ service MetadataService {
     //model version relation api
     rpc getModelVersionRelationByVersion (ModelVersionNameRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/modelVersion_relation/get/version"
-        body: "*"
+        get: "/aiflow/metadata_store/modelVersion_relation/get/version"
         };
     };
     rpc listModelVersionRelation (ListModelVersionRelationRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/modelVersion_relation/list"
-        body: "*"
+        get: "/aiflow/metadata_store/modelVersion_relation/list"
         };
     };
     rpc registerModelVersionRelation (RegisterModelVersionRelationRequest) returns (Response) {
@@ -189,8 +179,7 @@ service MetadataService {
     //model version api
     rpc getModelVersionByVersion (ModelVersionNameRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/modelVersion/get/version"
-        body: "*"
+        get: "/aiflow/metadata_store/modelVersion/get/version"
         };
     };
     rpc registerModelVersion (RegisterModelVersionRequest) returns (Response) {
@@ -207,33 +196,28 @@ service MetadataService {
     };
     rpc getDeployedModelVersion (ModelNameRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/modelVersion/get_serving_version"
-        body: "*"
+        get: "/aiflow/metadata_store/modelVersion/get_serving_version"
         };
     }
     rpc getLatestValidatedModelVersion (ModelNameRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/modelVersion/get_latest_validated_model_version"
-        body: "*"
+        get: "/aiflow/metadata_store/modelVersion/get_latest_validated_model_version"
         };
     }
     rpc getLatestGeneratedModelVersion (ModelNameRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/modelVersion/get_latest_generated_model_version"
-        body: "*"
+        get: "/aiflow/metadata_store/modelVersion/get_latest_generated_model_version"
         };
     }
     //project api
     rpc getProjectById (IdRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/project/get/id"
-        body: "*"
+        get: "/aiflow/metadata_store/project/get/id"
         };
     };
     rpc getProjectByName (NameRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/project/get/name"
-        body: "*"
+        get: "/aiflow/metadata_store/project/get/name"
         };
     };
     rpc registerProject (RegisterProjectRequest) returns (Response) {
@@ -250,8 +234,7 @@ service MetadataService {
     };
     rpc listProject (ListRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/project/list"
-        body: "*"
+        get: "/aiflow/metadata_store/project/list"
         };
     };
     rpc deleteProjectById (IdRequest) returns (Response) {
@@ -269,14 +252,12 @@ service MetadataService {
     //artifact api
     rpc getArtifactById (IdRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/artifact/get/id"
-        body: "*"
+        get: "/aiflow/metadata_store/artifact/get/id"
         };
     }
     rpc getArtifactByName (NameRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/artifact/get/name"
-        body: "*"
+        get: "/aiflow/metadata_store/artifact/get/name"
         };
     }
     rpc updateArtifact (UpdateArtifactRequest) returns (Response) {
@@ -293,8 +274,7 @@ service MetadataService {
     };
     rpc listArtifact (ListRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/artifact/list"
-        body: "*"
+        get: "/aiflow/metadata_store/artifact/list"
         };
     };
     rpc deleteArtifactById (IdRequest) returns (Response) {
@@ -323,14 +303,12 @@ service MetadataService {
     }
     rpc getWorkflowById (IdRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/workflow/get/id"
-        body: "*"
+        get: "/aiflow/metadata_store/workflow/get/id"
         };
     }
     rpc getWorkflowByName (WorkflowNameRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/workflow/get/name"
-        body: "*"
+        get: "/aiflow/metadata_store/workflow/get/name"
         };
     }
     rpc deleteWorkflowById (IdRequest) returns (Response) {
@@ -347,8 +325,7 @@ service MetadataService {
     }
     rpc listWorkflows (ListWorkflowsRequest) returns (Response) {
         option (google.api.http) = {
-        post: "/aiflow/metadata_store/workflow/list"
-        body: "*"
+        get: "/aiflow/metadata_store/workflow/list"
         };
     }
 }
