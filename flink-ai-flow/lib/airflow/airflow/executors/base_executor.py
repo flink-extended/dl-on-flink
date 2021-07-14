@@ -130,12 +130,14 @@ class BaseExecutor(LoggingMixin):
             queue=task_instance.task.queue,
         )
 
-    def schedule_task(self, key: TaskInstanceKey, action: SchedulingAction):
+    def schedule_task(self, key: TaskInstanceKey, action: SchedulingAction, server_uri: str):
         """
         Schedule a task
 
         :param key: task instance key
         :param action: task scheduling action in [START, STOP, RESTART]
+        :param server_uri: notification server uri
+        :type server_uri: str
         """
         with create_session() as session:
             ti = session.query(TaskInstance).filter(
@@ -145,19 +147,25 @@ class BaseExecutor(LoggingMixin):
             ).first()
             if SchedulingAction.START == action:
                 if ti.state not in State.running:
-                    self._start_task_instance(key)
+                    self._start_task_instance(key, server_uri)
+                    self._send_message(ti)
             elif SchedulingAction.STOP == action:
                 if ti.state in State.unfinished:
-                    self._stop_task_instance(key)
+                    if self._stop_task_instance(key):
+                        self._send_message(ti)
             elif SchedulingAction.RESTART == action:
                 if ti.state in State.running:
-                    self._restart_task_instance(key)
+                    self._restart_task_instance(key, server_uri)
                 else:
-                    self._start_task_instance(key)
+                    self._start_task_instance(key, server_uri)
+                self._send_message(ti)
             else:
                 raise ValueError('The task scheduling action must in ["START", "STOP", "RESTART"].')
 
-    def _start_task_instance(self, key: TaskInstanceKey):
+    def _send_message(self, ti):
+        self.send_message(TaskInstanceKey(ti.dag_id, ti.task_id, ti.execution_date, ti.try_number))
+
+    def _start_task_instance(self, key: TaskInstanceKey, server_uri: str):
         """
         Ignore all dependencies, force start a task instance
         """
@@ -177,7 +185,8 @@ class BaseExecutor(LoggingMixin):
             ignore_ti_state=True,
             pool=ti.pool,
             file_path=ti.dag_model.fileloc,
-            pickle_id=ti.dag_model.pickle_id
+            pickle_id=ti.dag_model.pickle_id,
+            server_uri=server_uri,
         )
         ti.set_state(State.QUEUED)
         self.execute_async(
@@ -219,10 +228,10 @@ class BaseExecutor(LoggingMixin):
             self.log.error("Failed to stop task instance: %s, please try again.", str(ti))
         return stopped
 
-    def _restart_task_instance(self, key: TaskInstanceKey):
+    def _restart_task_instance(self, key: TaskInstanceKey, server_uri: str):
         """Force restarting a task instance"""
         if self._stop_task_instance(key):
-            self._start_task_instance(key)
+            self._start_task_instance(key, server_uri)
 
     def has_task(self, task_instance: TaskInstance) -> bool:
         """
