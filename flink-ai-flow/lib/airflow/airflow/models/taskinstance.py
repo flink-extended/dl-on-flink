@@ -396,6 +396,7 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
         job_id: Optional[str] = None,
         pool: Optional[str] = None,
         cfg_path: Optional[str] = None,
+        server_uri: Optional[str] = None,
     ) -> List[str]:
         """
         Generates the shell command required to execute this task instance.
@@ -434,6 +435,8 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
         :type pool: Optional[str]
         :param cfg_path: the Path to the configuration file
         :type cfg_path: Optional[str]
+        :param server_uri: the notification server uri
+        :type server_uri: Optional[str]
         :return: shell command that can be used to run the task instance
         :rtype: list[str]
         """
@@ -463,6 +466,8 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
             cmd.extend(["--subdir", file_path])
         if cfg_path:
             cmd.extend(["--cfg-path", cfg_path])
+        if server_uri:
+            cmd.extend(["--server-uri", server_uri])
         return cmd
 
     @property
