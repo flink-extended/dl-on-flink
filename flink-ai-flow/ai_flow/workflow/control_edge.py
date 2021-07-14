@@ -44,7 +44,7 @@ class EventLife(str, Enum):
     REPEATED = "REPEATED"
 
 
-class MetValueCondition(str, Enum):
+class ValueCondition(str, Enum):
     """
     EQUAL: the condition that notification service updates a value which equals to the event value
     UPDATE: the condition that notification service has a update operation on the event key which event
@@ -61,15 +61,15 @@ class ConditionConfig(Jsonable):
                  event_type: Text = UNDEFINED_EVENT_TYPE,
                  namespace: Text = DEFAULT_NAMESPACE,
                  sender: Text = None,
-                 condition: ConditionType = ConditionType.NECESSARY,
+                 condition_type: ConditionType = ConditionType.NECESSARY,
                  action: TaskAction = TaskAction.START,
                  life: EventLife = EventLife.ONCE,
-                 value_condition: MetValueCondition = MetValueCondition.EQUALS
+                 value_condition: ValueCondition = ValueCondition.EQUALS
                  ):
         self.event_type = event_type
         self.event_key = event_key
         self.event_value = event_value
-        self.condition = condition
+        self.condition = condition_type
         self.action = action
         self.life = life
         self.value_condition = value_condition
@@ -82,11 +82,9 @@ class ControlEdge(Edge):
     def __init__(self,
                  destination: Text,
                  condition_config: ConditionConfig,
-                 extra_information: Jsonable = None
                  ) -> None:
         super().__init__(condition_config.sender, destination)
         self.condition_config = condition_config
-        self.extra_information = extra_information
 
 
 class AIFlowInternalEventType(object):

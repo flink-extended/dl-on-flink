@@ -17,7 +17,7 @@
 # under the License.
 #
 import unittest
-
+import os
 from ai_flow.common.configuration import AIFlowConfiguration
 from ai_flow.util.path_util import get_file_dir
 
@@ -32,6 +32,8 @@ class TestConfiguration(unittest.TestCase):
         config.clear()
         config.load_from_file(test_yaml)
         self.assertEqual('a', config['a'])
+        if os.path.exists(test_yaml):
+            os.remove(test_yaml)
 
 
 if __name__ == '__main__':

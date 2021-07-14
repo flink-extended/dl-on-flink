@@ -210,7 +210,7 @@ class JobExecutionInfo(json_utils.Jsonable):
         return json_utils.dumps(self)
 
 
-class AbstractScheduler(ABC):
+class Scheduler(ABC):
     def __init__(self, config: Dict):
         self._config = config
 
@@ -259,9 +259,9 @@ class AbstractScheduler(ABC):
         pass
 
     @abstractmethod
-    def kill_all_workflow_execution(self, project_name: Text, workflow_name: Text) -> List[WorkflowExecutionInfo]:
+    def stop_all_workflow_execution(self, project_name: Text, workflow_name: Text) -> List[WorkflowExecutionInfo]:
         """
-        Kill all workflow execution of the workflow.
+        Stop all workflow execution of the workflow.
         :param project_name: The project name.
         :param workflow_name: The workflow name.
         :return: The workflow execution information.
@@ -269,9 +269,9 @@ class AbstractScheduler(ABC):
         pass
 
     @abstractmethod
-    def kill_workflow_execution(self, execution_id: Text) -> Optional[WorkflowExecutionInfo]:
+    def stop_workflow_execution(self, execution_id: Text) -> Optional[WorkflowExecutionInfo]:
         """
-        Kill the workflow execution by execution id.
+        Stop the workflow execution by execution id.
         :param execution_id: The workflow execution id.
         :return: The workflow execution information.
         """

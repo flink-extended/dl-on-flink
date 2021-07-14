@@ -19,12 +19,12 @@ from typing import Text, List, Dict
 
 from ai_flow.context.project_context import ProjectContext
 from ai_flow.scheduler.scheduler_factory import SchedulerFactory
-from ai_flow.plugin_interface.scheduler_interface import AbstractScheduler
+from ai_flow.plugin_interface.scheduler_interface import Scheduler
 from ai_flow.workflow.workflow import Workflow
 from ai_flow.plugin_interface.scheduler_interface import JobExecutionInfo, WorkflowExecutionInfo, WorkflowInfo
 
 
-class UnitTestScheduler(AbstractScheduler):
+class UnitTestScheduler(Scheduler):
     def start_job_execution(self, job_name: Text, execution_id: Text) -> JobExecutionInfo:
         pass
 
@@ -52,10 +52,10 @@ class UnitTestScheduler(AbstractScheduler):
     def start_new_workflow_execution(self, project_name: Text, workflow_name: Text) -> WorkflowExecutionInfo:
         pass
 
-    def kill_all_workflow_execution(self, project_name: Text, workflow_name: Text) -> List[WorkflowExecutionInfo]:
+    def stop_all_workflow_execution(self, project_name: Text, workflow_name: Text) -> List[WorkflowExecutionInfo]:
         pass
 
-    def kill_workflow_execution(self, execution_id: Text) -> WorkflowExecutionInfo:
+    def stop_workflow_execution(self, execution_id: Text) -> WorkflowExecutionInfo:
         pass
 
     def get_workflow_execution(self, execution_id: Text) -> WorkflowExecutionInfo:
@@ -68,7 +68,7 @@ class UnitTestScheduler(AbstractScheduler):
 class TestSchedulerFactory(unittest.TestCase):
 
     def test_create_scheduler(self):
-        print(AbstractScheduler.__class__.__name__, AbstractScheduler.__class__.__module__)
+        print(Scheduler.__class__.__name__, Scheduler.__class__.__module__)
         class_name = 'ai_flow.test.scheduler.test_scheduler_factory.UnitTestScheduler'
         sc = SchedulerFactory.create_scheduler(class_name=class_name, config={})
-        self.assertTrue(isinstance(sc, AbstractScheduler))
+        self.assertTrue(isinstance(sc, Scheduler))
