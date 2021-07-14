@@ -55,9 +55,3 @@ protoc -I/usr/local/include -I. \
 
 sed -i -E 's/^import notification_service_pb2 as notification__service__pb2/from \. import notification_service_pb2 as notification__service__pb2/' *pb2*.py
 rm -rf *.py-E
-
-cd ..
-
-sed -i -E 's/^package notification_service/package service/' go/notification_service/*.go
-sed -i '' 's/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/\/\/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/g' go/notification_service/notification_service.pb.go
-rm -rf go/*.go-E
