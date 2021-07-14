@@ -97,6 +97,12 @@ class ConditionConfig(Jsonable):
         self.namespace = namespace
         self.sender = sender
 
+    def __eq__(self, o):
+        if isinstance(o, ControlEdge):
+            return self.__dict__ == o.__dict__
+        else:
+            return False
+
 
 class ControlEdge(Edge):
     """
@@ -112,6 +118,13 @@ class ControlEdge(Edge):
         """
         super().__init__(condition_config.sender, destination)
         self.condition_config = condition_config
+
+    def __eq__(self, o):
+        if isinstance(o, ControlEdge):
+            return self.destination == o.destination and self.source == o.source \
+                   and self.condition_config == o.condition_config
+        else:
+            return False
 
 
 class AIFlowInternalEventType(object):
