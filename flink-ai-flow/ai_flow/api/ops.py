@@ -444,7 +444,7 @@ def action_on_event(job_name: Text,
                                restart only when in the condition that the notification service updates a value which
                                equals to the event value under the specific event key, while update means src channel
                                will start or restart when in the the condition that the notification service has a update
-                               operation on the event key which event value belongs to.
+                               operation on the event key which event value belongs.
        :return:None.
        """
     control_edge = ControlEdge(destination=job_name,

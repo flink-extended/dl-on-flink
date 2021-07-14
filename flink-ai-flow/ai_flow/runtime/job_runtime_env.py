@@ -52,7 +52,7 @@ class JobRuntimeEnv(object):
     @property
     def workflow_name(self) -> Text:
         """
-        return: The name of the workflow which the job belong to.
+        return: The name of the workflow which the job belongs.
         """
         if self._workflow_name is None:
             self._workflow_name = serialization_utils.read_object_from_serialized_file(
