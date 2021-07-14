@@ -269,19 +269,19 @@ class Scheduler(ABC):
         pass
 
     @abstractmethod
-    def stop_workflow_execution(self, execution_id: Text) -> Optional[WorkflowExecutionInfo]:
+    def stop_workflow_execution(self, workflow_execution_id: Text) -> Optional[WorkflowExecutionInfo]:
         """
         Stop the workflow execution by execution id.
-        :param execution_id: The workflow execution id.
+        :param workflow_execution_id: The workflow execution id.
         :return: The workflow execution information.
         """
         pass
 
     @abstractmethod
-    def get_workflow_execution(self, execution_id: Text) -> Optional[WorkflowExecutionInfo]:
+    def get_workflow_execution(self, workflow_execution_id: Text) -> Optional[WorkflowExecutionInfo]:
         """
         Get the workflow execution information.
-        :param execution_id: The workflow execution id.
+        :param workflow_execution_id: The workflow execution id.
         :return: The workflow execution information.
         """
         pass
@@ -298,50 +298,50 @@ class Scheduler(ABC):
         pass
 
     @abstractmethod
-    def start_job_execution(self, job_name: Text, execution_id: Text) -> JobExecutionInfo:
+    def start_job_execution(self, job_name: Text, workflow_execution_id: Text) -> JobExecutionInfo:
         """
         Make the scheduler start a new job execution.
         :param job_name: The job name.
-        :param execution_id: The workflow execution id.
+        :param workflow_execution_id: The workflow execution id.
         :return: The job execution information.
         """
         pass
 
     @abstractmethod
-    def stop_job_execution(self, job_name: Text, execution_id: Text) -> JobExecutionInfo:
+    def stop_job_execution(self, job_name: Text, workflow_execution_id: Text) -> JobExecutionInfo:
         """
         Make the scheduler stop the job execution.
         :param job_name: The job name.
-        :param execution_id: The workflow execution id.
+        :param workflow_execution_id: The workflow execution id.
         :return: The job execution information.
         """
         pass
 
     @abstractmethod
-    def restart_job_execution(self, job_name: Text, execution_id: Text) -> JobExecutionInfo:
+    def restart_job_execution(self, job_name: Text, workflow_execution_id: Text) -> JobExecutionInfo:
         """
         Make the scheduler restart a job execution. If job status is running, first stop the job and then start it.
         :param job_name: The job name.
-        :param execution_id: The workflow execution id.
+        :param workflow_execution_id: The workflow execution id.
         :return: The job execution information.
         """
         pass
 
     @abstractmethod
-    def get_job_executions(self, job_name: Text, execution_id: Text) -> List[JobExecutionInfo]:
+    def get_job_executions(self, job_name: Text, workflow_execution_id: Text) -> List[JobExecutionInfo]:
         """
         Get the job execution information by job name.
         :param job_name: The job name.
-        :param execution_id: The workflow execution id.
+        :param workflow_execution_id: The workflow execution id.
         :return: The job execution information.
         """
         pass
 
     @abstractmethod
-    def list_job_executions(self, execution_id: Text) -> List[JobExecutionInfo]:
+    def list_job_executions(self, workflow_execution_id: Text) -> List[JobExecutionInfo]:
         """
         List the job execution information by the workflow execution id.
-        :param execution_id: The workflow execution id.
+        :param workflow_execution_id: The workflow execution id.
         :return: The job execution information.
         """
         pass
