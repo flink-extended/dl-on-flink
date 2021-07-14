@@ -19,10 +19,10 @@
 from typing import Text, List, Dict
 from ai_flow.workflow.job import Job
 from ai_flow.util import json_utils
-from ai_flow.workflow.control_edge import ConditionConfig, AIFlowInternalEventType
+from ai_flow.workflow.control_edge import ConditionConfig, AIFlowInternalEventType, TaskAction
 from ai_flow.workflow.periodic_config import PeriodicConfig
 from ai_flow.workflow.workflow import Workflow, WorkflowPropertyKeys
-
+from airflow.events.scheduler_events import SchedulerInnerEventType
 
 def import_job_plugins_text(workflow: Workflow):
     text = ''
@@ -149,38 +149,33 @@ op_{0} = AIFlowOperator(task_id='{2}', job=job_{0}, workflow=workflow, dag=dag)
             if job_name in task_map:
                 op_name = task_map[job_name]
                 configs = []
-                upstream_configs = []
                 for edge in edges:
                     condition_config: ConditionConfig = edge.condition_config
                     if AIFlowInternalEventType.JOB_STATUS_CHANGED == condition_config.event_type:
-                        upstream_configs.append(condition_config)
-                    else:
-                        def reset_met_config():
-                            if condition_config.sender is None or '' == condition_config.sender:
-                                target_node_id = edge.source
-                                if target_node_id is not None and '' != target_node_id:
-                                    target_job: Job = workflow.jobs.get(target_node_id)
-                                    if target_job.job_name is not None:
-                                        condition_config.sender = target_job.job_name
-                                else:
-                                    condition_config.sender = '*'
-                        reset_met_config()
+                        condition_config.event_type = SchedulerInnerEventType.TASK_STATUS_CHANGED.value
 
-                        if edge.source in task_map:
-                            from_op_name = task_map[edge.source]
-                        else:
-                            from_op_name = ''
-                        code = self.generate_event_deps(op_name, from_op_name, condition_config)
-                        code_text += code
-                        configs.append(condition_config)
+                    def reset_met_config():
+                        if condition_config.sender is None or '' == condition_config.sender:
+                            target_node_id = edge.source
+                            if target_node_id is not None and '' != target_node_id:
+                                target_job: Job = workflow.jobs.get(target_node_id)
+                                if target_job.job_name is not None:
+                                    condition_config.sender = target_job.job_name
+                            else:
+                                condition_config.sender = '*'
+                    reset_met_config()
+
+                    if edge.source in task_map:
+                        from_op_name = task_map[edge.source]
+                    else:
+                        from_op_name = ''
+                    code = self.generate_event_deps(op_name, from_op_name, condition_config)
+                    code_text += code
+                    configs.append(condition_config)
 
                 if len(configs) > 0:
                     code = self.generate_handler(op_name, configs)
                     code_text += code
-
-                if len(upstream_configs) > 0:
-                    for c in upstream_configs:
-                        code_text += """{}.set_upstream({})\n""".format(op_name, task_map[c.sender])
 
         return code_text
 
