@@ -95,7 +95,7 @@ class SchedulerService(SchedulingServiceServicer):
             config.update(workflow.properties['blob'])
             blob_manager = BlobManagerFactory.get_blob_manager(config)
             project_path: Text = blob_manager\
-                .download_project(workflow_id=workflow.workflow_snapshot_id,
+                .download_project(workflow_snapshot_id=workflow.workflow_snapshot_id,
                                   remote_path=workflow.project_uri,
                                   local_path=self._scheduler_service_config.repository())
 

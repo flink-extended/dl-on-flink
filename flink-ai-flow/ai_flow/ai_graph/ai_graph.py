@@ -19,7 +19,6 @@ from ai_flow.graph.channel import Channel
 from ai_flow.ai_graph.ai_node import AINode
 from typing import Dict, List, Text, Optional, Union
 from ai_flow.ai_graph.data_edge import DataEdge
-from ai_flow.workflow.control_edge import ControlEdge
 from ai_flow.workflow.job_config import JobConfig
 from ai_flow.context.workflow_config_loader import current_workflow_config
 from ai_flow.context.job_context import current_job_name
