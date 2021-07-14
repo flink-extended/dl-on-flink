@@ -14,6 +14,8 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
+import time
+
 from airflow.executors.scheduling_action import SchedulingAction
 from airflow.utils import dates
 from enum import Enum
@@ -28,9 +30,9 @@ UNREACHED_EVENT = 'UNREACHED_EVENT'
 # set task trigger only by scheduler inner events
 class UnreachedEvent(BaseEvent):
     def __init__(self):
-        super().__init__(key=UNREACHED_EVENT, 
+        super().__init__(key=UNREACHED_EVENT,
                          value=UNREACHED_EVENT,
-                         event_type=UNREACHED_EVENT, 
+                         event_type=UNREACHED_EVENT,
                          namespace=SCHEDULER_NAMESPACE)
 
 
@@ -47,7 +49,7 @@ class SchedulerInnerEventType(Enum):
     PARSE_DAG_REQUEST = 'PARSE_DAG_REQUEST'
     PARSE_DAG_RESPONSE = 'PARSE_DAG_RESPONSE'
     PERIODIC_TASK_EVENT = 'PERIODIC_TASK_EVENT'
-    
+
 
 class SchedulerInnerEvent(object):
 
@@ -68,27 +70,27 @@ class PeriodicEvent(SchedulerInnerEvent):
     def __init__(self, run_id, task_id):
         self.run_id = run_id
         self.task_id = task_id
-    
+
     @classmethod
     def to_base_event(cls, event: 'PeriodicEvent') -> BaseEvent:
-        return BaseEvent(key=event.run_id, 
-                         value=event.task_id, 
+        return BaseEvent(key=event.run_id,
+                         value=event.task_id,
                          event_type=SchedulerInnerEventType.PERIODIC_TASK_EVENT.value,
                          namespace=SCHEDULER_NAMESPACE)
 
     @classmethod
     def from_base_event(cls, event: BaseEvent) -> 'PeriodicEvent':
         return PeriodicEvent(event.key, event.value)
-        
-        
+
+
 class ParseDagRequestEvent(SchedulerInnerEvent):
     def __init__(self, request_id):
         self.request_id = request_id
 
     @classmethod
     def to_base_event(cls, event: 'ParseDagRequestEvent') -> BaseEvent:
-        return BaseEvent(key=str(event.request_id), 
-                         value='', 
+        return BaseEvent(key=str(event.request_id),
+                         value='',
                          event_type=SchedulerInnerEventType.PARSE_DAG_REQUEST.value)
 
     @classmethod
@@ -102,15 +104,15 @@ class ParseDagResponseEvent(SchedulerInnerEvent):
 
     @classmethod
     def to_base_event(cls, event: 'ParseDagResponseEvent') -> BaseEvent:
-        return BaseEvent(key=str(event.request_id), 
-                         value='', 
+        return BaseEvent(key=str(event.request_id),
+                         value='',
                          event_type=SchedulerInnerEventType.PARSE_DAG_RESPONSE.value)
 
     @classmethod
     def from_base_event(cls, event: BaseEvent) -> 'SchedulerInnerEvent':
         return ParseDagResponseEvent(event.key)
-    
-    
+
+
 class UserDefineMessageType(Enum):
     RUN_DAG = 'RUN_DAG'
     STOP_DAG_RUN = 'STOP_DAG_RUN'
@@ -221,12 +223,13 @@ class StopDagEvent(SchedulerInnerEvent):
 
 class TaskStatusChangedEvent(SchedulerInnerEvent):
 
-    def __init__(self, task_id, dag_id, execution_date, status):
+    def __init__(self, task_id, dag_id, execution_date, status, create_time=None):
         super().__init__()
         self.task_id = task_id
         self.dag_id = dag_id
         self.execution_date = execution_date
         self.status = status
+        self.create_time = create_time if create_time is not None else int(time.time() * 1000)
 
     @classmethod
     def to_base_event(cls, event: 'TaskStatusChangedEvent') -> BaseEvent:
@@ -236,18 +239,27 @@ class TaskStatusChangedEvent(SchedulerInnerEvent):
                 o[k] = v.strftime(EXECUTION_DATE_FORMAT)
             else:
                 o[k] = v
-        return BaseEvent(key=event.dag_id,
-                         value=json.dumps(o),
+        split_dag_id = event.dag_id.split('.', 1)
+        if len(split_dag_id) < 2:
+            project_name,  workflow_name = split_dag_id[0], split_dag_id[0]
+        else:
+            project_name, workflow_name = split_dag_id[0], split_dag_id[1]
+        return BaseEvent(key='.'.join([workflow_name, event.task_id]),
+                         value=event.status,
+                         context=json.dumps(o),
                          event_type=SchedulerInnerEventType.TASK_STATUS_CHANGED.value,
-                         namespace=event.dag_id)
+                         namespace=project_name,
+                         sender=event.task_id,
+                         create_time=event.create_time)
 
     @classmethod
     def from_base_event(cls, event: BaseEvent) -> 'TaskStatusChangedEvent':
-        o = json.loads(event.value)
+        o = json.loads(event.context)
         return TaskStatusChangedEvent(task_id=o['task_id'],
                                       dag_id=o['dag_id'],
                                       execution_date=dates.parse_execution_date(o['execution_date']),
-                                      status=o['status'])
+                                      status=o['status'],
+                                      create_time=event.create_time)
 
 
 class DagExecutableEvent(SchedulerInnerEvent):
@@ -278,7 +290,7 @@ class DagRunFinishedEvent(SchedulerInnerEvent):
     @classmethod
     def from_base_event(cls, event: BaseEvent) -> 'DagRunFinishedEvent':
         return DagRunFinishedEvent(run_id=event.key)
-    
+
 
 class TaskSchedulingEvent(SchedulerInnerEvent):
     def __init__(self, task_id, dag_id, execution_date, try_number, action: SchedulingAction):
