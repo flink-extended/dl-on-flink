@@ -36,10 +36,10 @@ class MockBlobManger(BlobManager):
     def __init__(self, config):
         super().__init__(config)
 
-    def upload_project(self, workflow_id: Text, project_path: Text) -> Text:
+    def upload_project(self, workflow_snapshot_id: Text, project_path: Text) -> Text:
         return project_path
 
-    def download_project(self, workflow_id, remote_path: Text, local_path: Text = None) -> Text:
+    def download_project(self, workflow_snapshot_id, remote_path: Text, local_path: Text = None) -> Text:
         return remote_path
 
 

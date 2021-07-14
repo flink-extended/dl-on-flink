@@ -17,7 +17,15 @@
 # under the License.
 #
 import time
+import datetime
 
 
 def generate_time_str():
     return time.strftime('%Y-%m-%d-%H:%M:%S', time.localtime())
+
+
+def datetime_to_int64(d: datetime.datetime):
+    if d is None:
+        return 0
+    else:
+        return int(d.timestamp()*1000)

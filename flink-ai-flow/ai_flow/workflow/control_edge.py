@@ -58,7 +58,7 @@ class ValueCondition(str, Enum):
     """
     EQUALS: The condition that notification service updates a value which equals to the event value.
     UPDATED: The condition that notification service has a update operation on the event key which event
-            value belongs to.
+            value belongs.
     """
     EQUALS = "EQUALS"
     UPDATED = "UPDATE"
