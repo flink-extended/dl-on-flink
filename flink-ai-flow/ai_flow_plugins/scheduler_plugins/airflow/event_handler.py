@@ -14,10 +14,16 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-
-from typing import Tuple, List, Dict
+import logging
+from typing import Tuple, List, Dict, Optional
 import json
 import copy
+
+from airflow.utils.state import State
+
+from ai_flow.workflow import status
+from airflow.events.scheduler_events import SchedulerInnerEventType
+
 from ai_flow.workflow.control_edge import ConditionConfig, ConditionType, EventLife, ValueCondition, TaskAction
 from airflow.executors.scheduling_action import SchedulingAction
 from airflow.models.eventhandler import EventHandler
@@ -73,6 +79,22 @@ class ActionWrapper(object):
         self.action = action
 
 
+def _airflow_task_state_to_aiflow_status(airflow_task_state) -> Optional[status.Status]:
+    if State.SUCCESS == airflow_task_state:
+        return status.Status.FINISHED
+    elif State.FAILED == airflow_task_state:
+        return status.Status.FAILED
+    elif State.RUNNING == airflow_task_state:
+        return status.Status.RUNNING
+    elif State.KILLED == airflow_task_state or State.SHUTDOWN == airflow_task_state:
+        return status.Status.KILLED
+    elif State.KILLING:
+        # map KILLING to value None so that it will not trigger any action
+        return None
+    else:
+        return status.Status.INIT
+
+
 class AIFlowHandler(EventHandler):
     """
     AIFlowHandler is an implementation of EventHandler,
@@ -99,6 +121,9 @@ class AIFlowHandler(EventHandler):
         return configs
 
     def handle_event(self, event: BaseEvent, task_state: object) -> Tuple[SchedulingAction, object]:
+        if SchedulerInnerEventType.TASK_STATUS_CHANGED.value == event.event_type:
+            event = BaseEvent(**event.__dict__)
+            event.value = _airflow_task_state_to_aiflow_status(event.value)
         configs: List[ConditionConfig] = AIFlowHandler._parse_configs(self.config)
         if task_state is None:
             task_state = AiFlowTs()
@@ -111,10 +136,14 @@ class AIFlowHandler(EventHandler):
             if SchedulingAction(aw.action) in SchedulingAction:
                 af_ts.schedule_time = af_ts.latest_time
             if len(configs) == 0:
+                logging.debug("AIFlowHandler {} handle event {}, action: {}".format(self.config, event, "START"))
                 return SchedulingAction.START, af_ts
             else:
+                logging.debug("AIFlowHandler {} handle event {}, action: {}".format(self.config, event,
+                                                                                   SchedulingAction(aw.action)))
                 return SchedulingAction(aw.action), af_ts
         else:
+            logging.debug("AIFlowHandler {} handle event {}, action: {}".format(self.config, event, "NONE"))
             return SchedulingAction.NONE, af_ts
 
     @staticmethod
