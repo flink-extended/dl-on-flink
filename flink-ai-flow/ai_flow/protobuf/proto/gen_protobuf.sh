@@ -151,12 +151,6 @@ python3 -m grpc.tools.protoc -I. \
 
 cd ..
 
-sed -i '' 's/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/\/\/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/g' go/ai_flow/metadata_service.pb.go
-sed -i '' 's/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/\/\/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/g' go/ai_flow/model_center_service.pb.go
-sed -i '' 's/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/\/\/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/g' go/ai_flow/scheduling_service.pb.go
-sed -i '' 's/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/\/\/\_ "github.com\/grpc-ecosystem\/grpc-gateway\/third_party\/googleapis\/google\/api"/g' go/ai_flow/metric_service.pb.go
-rm -rf go/*.go-E
-
 sed -i -E 's/^import message_pb2 as message__pb2/from \. import message_pb2 as message__pb2/' *pb2*.py
 sed -i -E 's/^import metadata_service_pb2 as metadata__service__pb2/from \. import metadata_service_pb2 as metadata__service__pb2/' *pb2*.py
 sed -i -E 's/^import model_center_service_pb2 as model__center__service__pb2/from \. import model_center_service_pb2 as model__center__service__pb2/' *pb2*.py

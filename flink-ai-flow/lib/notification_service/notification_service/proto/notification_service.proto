@@ -43,16 +43,14 @@ service NotificationService {
     // List events.
     rpc listEvents (ListEventsRequest) returns (ListEventsResponse) {
         option (google.api.http) = {
-            post: "/aiflow/notification-service/list_events"
-            body: "*"
+            get: "/aiflow/notification-service/list_events"
         };
     }
 
     // List all events
     rpc listAllEvents (ListAllEventsRequest) returns (ListEventsResponse) {
         option (google.api.http) = {
-            post: "/aiflow/notification-service/list_all_events"
-            body: "*"
+            get: "/aiflow/notification-service/list_all_events"
         };
     }
 
@@ -67,8 +65,7 @@ service NotificationService {
     // List current living members.
     rpc listMembers (ListMembersRequest) returns (ListMembersResponse) {
         option (google.api.http) = {
-            post: "/aiflow/notification-service/list_members"
-            body: "*"
+            get: "/aiflow/notification-service/list_members"
         };
     }
 
@@ -83,8 +80,7 @@ service NotificationService {
     // Get latest version by key
     rpc getLatestVersionByKey (GetLatestVersionByKeyRequest) returns (GetLatestVersionResponse) {
         option (google.api.http) = {
-            post: "/aiflow/notification-service/get_latest_version_by_key"
-            body: "*"
+            get: "/aiflow/notification-service/get_latest_version_by_key"
         };
     }
 }

@@ -17,7 +17,6 @@
  */
 syntax = "proto3";
 
-import "google/protobuf/wrappers.proto";
 option java_generic_services = true;
 option java_package = "com.aiflow.proto";
 option py_generic_services = true;
@@ -111,15 +110,13 @@ service SchedulingService {
 
     rpc getWorkflow (ScheduleWorkflowRequest) returns (WorkflowInfoResponse) {
         option (google.api.http) = {
-        post: "/aiflow/scheduling/workflow/get"
-        body: "*"
+        get: "/aiflow/scheduling/workflow/get"
         };
     };
 
     rpc listWorkflows (ScheduleWorkflowRequest) returns (ListWorkflowInfoResponse) {
         option (google.api.http) = {
-        post: "/aiflow/scheduling/workflow/list"
-        body: "*"
+        get: "/aiflow/scheduling/workflow/list"
         };
     };
 
@@ -148,15 +145,13 @@ service SchedulingService {
 
     rpc getWorkflowExecution (WorkflowExecutionRequest) returns (WorkflowExecutionResponse) {
         option (google.api.http) = {
-        post: "/aiflow/scheduling/workflow_execution/get"
-        body: "*"
+        get: "/aiflow/scheduling/workflow_execution/get"
         };
     };
 
     rpc listWorkflowExecutions (WorkflowExecutionRequest) returns (ListWorkflowExecutionResponse) {
         option (google.api.http) = {
-        post: "/aiflow/scheduling/workflow_execution/list"
-        body: "*"
+        get: "/aiflow/scheduling/workflow_execution/list"
         };
     };
 
@@ -185,15 +180,13 @@ service SchedulingService {
 
     rpc getJob (ScheduleJobRequest) returns (JobInfoResponse) {
         option (google.api.http) = {
-        post: "/aiflow/scheduling/job/get"
-        body: "*"
+        get: "/aiflow/scheduling/job/get"
         };
     };
 
     rpc listJobs (ScheduleJobRequest) returns (ListJobInfoResponse) {
         option (google.api.http) = {
-        post: "/aiflow/scheduling/job/list"
-        body: "*"
+        get: "/aiflow/scheduling/job/list"
         };
     };
 }

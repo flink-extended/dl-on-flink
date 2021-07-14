@@ -106,8 +106,7 @@ service MetricService {
 
     rpc getMetricMeta (GetMetricMetaRequest) returns (MetricMetaResponse) {
         option (google.api.http) = {
-        post: "/aiflow/metric/metric_meta/get"
-        body: "*"
+        get: "/aiflow/metric/metric_meta/get"
         };
     };
 
@@ -120,22 +119,19 @@ service MetricService {
 
     rpc getDatasetMetricMeta (GetDataSetMetricMetaRequest) returns (ListMetricMetaResponse) {
         option (google.api.http) = {
-        post: "/aiflow/metric/metric_meta/dataset/get"
-        body: "*"
+        get: "/aiflow/metric/metric_meta/dataset/get"
         };
     };
 
     rpc getModelMetricMeta (GetModelMetricMetaRequest) returns (ListMetricMetaResponse) {
         option (google.api.http) = {
-        post: "/aiflow/metric/metric_meta/model/get"
-        body: "*"
+        get: "/aiflow/metric/metric_meta/model/get"
         };
     };
 
     rpc getMetricSummary (GetMetricSummaryRequest) returns (ListMetricSummaryResponse) {
         option (google.api.http) = {
-        post: "/aiflow/metric/metric_summary/get"
-        body: "*"
+        get: "/aiflow/metric/metric_summary/get"
         };
     };
 

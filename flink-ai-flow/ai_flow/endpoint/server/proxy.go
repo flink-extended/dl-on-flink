@@ -25,7 +25,7 @@ import (
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 
-	gw "../../protobuf/go"
+	gw "../../protobuf/go/ai_flow"
 )
 
 var (
@@ -49,12 +49,12 @@ func run() error {
 		return err
 	}
 
-	err = gw.RegisterDeployServiceHandlerFromEndpoint(ctx, mux, *echoEndpoint, opts)
+	err = gw.RegisterMetricServiceHandlerFromEndpoint(ctx, mux, *echoEndpoint, opts)
 	if err != nil {
 		return err
 	}
 
-	err = gw.RegisterMetadataServiceHandlerFromEndpoint(ctx, mux, *echoEndpoint, opts)
+	err = gw.RegisterSchedulingServiceHandlerFromEndpoint(ctx, mux, *echoEndpoint, opts)
 	if err != nil {
 		return err
 	}
