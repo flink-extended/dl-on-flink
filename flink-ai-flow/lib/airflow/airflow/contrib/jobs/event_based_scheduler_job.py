@@ -74,6 +74,7 @@ class EventBasedScheduler(LoggingMixin):
                  task_event_manager: DagRunEventManager,
                  executor: BaseExecutor,
                  notification_client: NotificationClient,
+                 server_uri: str,
                  context=None,
                  periodic_manager: PeriodicManager = None):
         super().__init__(context)
@@ -86,6 +87,7 @@ class EventBasedScheduler(LoggingMixin):
         self._timer_handler = None
         self.timers = sched.scheduler()
         self.periodic_manager = periodic_manager
+        self.server_uri = server_uri
 
     def sync(self):
 
@@ -310,7 +312,7 @@ class EventBasedScheduler(LoggingMixin):
             scheduling_event.execution_date,
             scheduling_event.try_number
         )
-        self.executor.schedule_task(task_key, scheduling_event.action)
+        self.executor.schedule_task(task_key, scheduling_event.action, self.server_uri)
 
     def _find_dagruns_by_event(self, event, session) -> Optional[List[DagRun]]:
         affect_dag_runs = []
@@ -573,6 +575,7 @@ class EventBasedSchedulerJob(BaseJob):
             self.task_event_manager,
             self.executor,
             self.notification_client,
+            server_uri,
             None,
             self.periodic_manager
         )

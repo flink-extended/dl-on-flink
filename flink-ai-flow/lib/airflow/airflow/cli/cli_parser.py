@@ -962,6 +962,7 @@ TASKS_COMMANDS = (
             ARG_JOB_ID,
             ARG_INTERACTIVE,
             ARG_SHUT_DOWN_LOGGING,
+            ARG_SERVER_URI
         ),
     ),
     ActionCommand(

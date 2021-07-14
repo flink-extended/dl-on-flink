@@ -116,6 +116,7 @@ def _run_task_by_local_task_job(args, ti):
         ignore_task_deps=args.ignore_dependencies,
         ignore_ti_state=args.force,
         pool=args.pool,
+        server_uri=args.server_uri
     )
     try:
         run_job.run()
