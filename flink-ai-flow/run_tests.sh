@@ -27,7 +27,7 @@ export PYTHONPATH=${SOURCE_ROOT}
 cd ${SOURCE_ROOT}
 function run_tests() {
     code_path=$1
-    test_files=`find ${code_path} | grep -v __pycache__  | grep test_`
+    test_files=$(find ${code_path} | grep -v __pycache__ | grep -v temp | grep test_ | grep "\.py$")
 
     for i in ${test_files}
     do
@@ -44,6 +44,7 @@ function run_tests() {
 function run_test_class() {
     dir_name=$1
     class_name=$2
+    echo "RUN TEST: ${2}"
     cd ${dir_name} && python3 -m unittest ${class_name}
     cd ${SOURCE_ROOT}
 }
@@ -51,6 +52,7 @@ function run_test_class() {
 
 mvn verify
 
+run_tests 'ai_flow/test/common/'
 run_tests 'ai_flow/test/graph'
 run_tests 'ai_flow/test/workflow'
 run_tests 'ai_flow/test/project'
@@ -60,15 +62,14 @@ run_tests 'ai_flow/test/translator'
 run_tests 'ai_flow/test/runtime'
 run_tests 'ai_flow/test/plugin_interface'
 run_tests 'ai_flow/test/scheduler'
+run_tests 'ai_flow/test/api'
 
-#run_tests 'ai_flow/test/common/'
-#run_tests 'ai_flow/test/store/'
-#run_tests 'ai_flow/test/model_center/'
-#run_tests 'ai_flow/test/endpoint/server/'
-#
-#run_test_class 'ai_flow/test/endpoint/' 'test_client.TestAIFlowClientSqlite'
-#run_test_class 'ai_flow/test/endpoint/' 'test_mysql_client.TestAIFlowClientMySQL'
-#run_test_class 'ai_flow/test/endpoint/' 'test_high_availability.TestHighAvailableAIFlowServer'
+run_tests 'ai_flow/test/store/'
+run_tests 'ai_flow/test/model_center/'
+run_tests 'ai_flow/test/endpoint/server/'
+run_test_class 'ai_flow/test/endpoint/' 'test_client.TestAIFlowClientSqlite'
+run_test_class 'ai_flow/test/endpoint/' 'test_mysql_client.TestAIFlowClientMySQL'
+run_test_class 'ai_flow/test/endpoint/' 'test_high_availability.TestHighAvailableAIFlowServer'
 
 
 

@@ -17,18 +17,62 @@
 # under the License.
 #
 import unittest
+import os
+from typing import Text, List, Optional
 
+from ai_flow.context.project_context import ProjectContext
 from ai_flow.endpoint.server.server_runner import AIFlowServerRunner
-from ai_flow.endpoint.server.server_config import AIFlowServerConfig, DBType
-from ai_flow.test import test_util
+from ai_flow.plugin_interface.scheduler_interface import Scheduler, JobExecutionInfo, WorkflowExecutionInfo, \
+    WorkflowInfo
+from ai_flow.workflow.workflow import Workflow
+
+
+class MockScheduler(Scheduler):
+
+    def submit_workflow(self, workflow: Workflow, project_context: ProjectContext) -> WorkflowInfo:
+        pass
+
+    def pause_workflow_scheduling(self, project_name: Text, workflow_name: Text) -> WorkflowInfo:
+        pass
+
+    def resume_workflow_scheduling(self, project_name: Text, workflow_name: Text) -> WorkflowInfo:
+        pass
+
+    def start_new_workflow_execution(self, project_name: Text, workflow_name: Text) -> Optional[WorkflowExecutionInfo]:
+        pass
+
+    def stop_all_workflow_execution(self, project_name: Text, workflow_name: Text) -> List[WorkflowExecutionInfo]:
+        pass
+
+    def stop_workflow_execution(self, execution_id: Text) -> Optional[WorkflowExecutionInfo]:
+        pass
+
+    def get_workflow_execution(self, execution_id: Text) -> Optional[WorkflowExecutionInfo]:
+        pass
+
+    def list_workflow_executions(self, project_name: Text, workflow_name: Text) -> List[WorkflowExecutionInfo]:
+        pass
+
+    def start_job_execution(self, job_name: Text, execution_id: Text) -> JobExecutionInfo:
+        pass
+
+    def stop_job_execution(self, job_name: Text, execution_id: Text) -> JobExecutionInfo:
+        pass
+
+    def restart_job_execution(self, job_name: Text, execution_id: Text) -> JobExecutionInfo:
+        pass
+
+    def get_job_executions(self, job_name: Text, execution_id: Text) -> List[JobExecutionInfo]:
+        pass
+
+    def list_job_executions(self, execution_id: Text) -> List[JobExecutionInfo]:
+        pass
 
 
 class TestServerRunner(unittest.TestCase):
 
     def test_server_start_stop(self):
-        config = AIFlowServerConfig()
-        config.set_db_uri(db_type=DBType.SQLITE, uri="sqlite:///sql.db")
-        server_runner = AIFlowServerRunner(config_file=test_util.get_master_config_file())
+        server_runner = AIFlowServerRunner(config_file=os.path.dirname(__file__) + '/master_config.yaml')
         server_runner.start(is_block=False)
         server_runner.stop()
 

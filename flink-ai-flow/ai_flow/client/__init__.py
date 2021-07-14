@@ -16,11 +16,10 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+from ai_flow.context.project_context import current_project_config
 from ai_flow.meta.workflow_meta import WorkflowMeta
 from typing import Optional, Text, List, Tuple, Union
 
-from ai_flow.api.configuration import get_default_project_config
-from ai_flow.api.execution import get_workflow_execution_id
 from ai_flow.client.ai_flow_client import get_ai_flow_client
 from ai_flow.common.properties import Properties
 from ai_flow.common.status import Status
@@ -124,7 +123,7 @@ def get_model_by_name(model_name) -> Optional[ModelMeta]:
 
 
 def register_model(model_name: Text, model_desc: Text = None) -> ModelMeta:
-    project_config = get_default_project_config()
+    project_config = current_project_config()
     project_id = int(project_config.get_project_uuid())
     return get_ai_flow_client().register_model(model_name, project_id, model_desc)
 
@@ -160,7 +159,7 @@ def get_model_version_by_version(version, model_id) -> Optional[ModelVersionMeta
 
 def register_model_version(model, model_path, model_type=None, version_desc=None,
                            current_stage=ModelVersionStage.GENERATED) -> ModelVersionMeta:
-    workflow_execution_id = get_workflow_execution_id()
+    workflow_execution_id = None
     if isinstance(model, str):
         model_meta_info = get_ai_flow_client().get_model_by_name(model)
     else:

@@ -18,7 +18,6 @@
 #
 import os
 
-from ai_flow.api.configuration import set_project_config_file, project_config
 from ai_flow.util import path_util
 
 DEFAULT_MYSQL_USERNAME = ''
@@ -46,11 +45,6 @@ def get_master_config_file():
 
 def get_workflow_config_file():
     return os.path.dirname(os.path.abspath(__file__)) + "/workflow_config.yaml"
-
-
-def set_project_config(main_file):
-    set_project_config_file(get_project_config_file())
-    project_config()['entry_module_path'] = path_util.get_module_name(main_file)
 
 
 def get_mysql_server_url():
