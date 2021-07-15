@@ -437,7 +437,7 @@ def action_on_event(job_name: Text,
        :param event_value: The value of the event.
        :param event_type: The type of the event.
        :param sender: The event sender identity,which value uses the name of the job. If sender is None, the sender will be dependency.
-       :param condition_type: The event condition type. Sufficient or Necessary.
+       :param condition_type: The condition type. Sufficient or Necessary.
        :param action: The action act on the src channel. Start or Restart.
        :param life: The life of the event. Once or Repeated.
        :param value_condition: The event value condition. Equal or Update. Equal means the src channel will start or
@@ -526,7 +526,7 @@ def action_on_job_status(job_name: Text,
     :param upstream_job_name: The upstream job name
     :param upstream_job_status: The upstream job status, type: ai_flow.workflow.status.Status
     :param action: The ai_flow.workflow.control_edge.TaskAction type.
-    :param condition: The event condition. Sufficient or Necessary.
+    :param condition: The condition. Sufficient or Necessary.
     :return:
     """
     event_key = '.'.join([current_workflow_config().workflow_name, upstream_job_name])
