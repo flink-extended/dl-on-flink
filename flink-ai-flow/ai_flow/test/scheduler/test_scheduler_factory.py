@@ -25,6 +25,9 @@ from ai_flow.plugin_interface.scheduler_interface import JobExecutionInfo, Workf
 
 
 class UnitTestScheduler(Scheduler):
+    def delete_workflow(self, project_name: Text, workflow_name: Text) -> WorkflowInfo:
+        pass
+
     def start_job_execution(self, job_name: Text, workflow_execution_id: Text) -> JobExecutionInfo:
         pass
 

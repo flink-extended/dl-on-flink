@@ -74,6 +74,22 @@ class TestWorkflowOperation(unittest.TestCase):
         w = workflow_operation.submit_workflow(workflow_name=current_workflow_config().workflow_name)
         self.assertEqual('test_workflow_operation', w.workflow_name)
 
+    def test_delete_workflow(self):
+        w = workflow_operation.submit_workflow(workflow_name=current_workflow_config().workflow_name)
+        w = workflow_operation.delete_workflow(workflow_name=current_workflow_config().workflow_name)
+        self.assertEqual('test_workflow_operation', w.workflow_name)
+
+    def test_get_workflow(self):
+        w = workflow_operation.submit_workflow(workflow_name=current_workflow_config().workflow_name)
+        w = workflow_operation.get_workflow(workflow_name=current_workflow_config().workflow_name)
+        self.assertEqual('test_workflow_operation', w.workflow_name)
+
+    def test_list_workflow(self):
+        w = workflow_operation.submit_workflow(workflow_name=current_workflow_config().workflow_name)
+        w_list = workflow_operation.list_workflows(page_size=5, offset=0)
+        self.assertEqual(1, len(w_list))
+        self.assertEqual('test_workflow_operation', w_list[0].workflow_name)
+
     def test_pause_workflow(self):
 
         w = workflow_operation.pause_workflow_scheduling(workflow_name='workflow_1')

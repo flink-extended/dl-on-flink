@@ -15,7 +15,13 @@
 # specific language governing permissions and limitations
 # under the License.
 import time
-from typing import Text, List
+from typing import Text, List, Optional
+
+from ai_flow.common.status import Status
+
+from ai_flow.meta.project_meta import ProjectMeta
+
+from ai_flow.meta.workflow_meta import WorkflowMeta
 from ai_flow.exception.exceptions import EmptyGraphException
 from ai_flow.plugin_interface.blob_manager_interface import BlobManagerFactory
 from ai_flow.util import json_utils
@@ -79,11 +85,66 @@ def submit_workflow(workflow_name: Text = None) -> WorkflowInfo:
     workflow = translator.translate(graph=current_graph(), project_context=current_project_context())
     _apply_full_info_to_workflow(entry_module_path, workflow)
     current_graph().clear_graph()
+    workflow_meta = get_ai_flow_client().get_workflow_by_name(project_name=current_project_config().get_project_name(),
+                                                              workflow_name=workflow_name)
+    if workflow_meta is None:
+        get_ai_flow_client().register_workflow(name=workflow_name,
+                                               project_id=int(current_project_config().get_project_uuid()))
     return proto_to_workflow(get_ai_flow_client()
                              .submit_workflow_to_scheduler(namespace=namespace,
                                                            workflow_json=json_utils.dumps(workflow),
                                                            workflow_name=workflow_name,
                                                            args={}))
+
+
+def get_workflow(workflow_name: Text = None) -> Optional[WorkflowInfo]:
+    """
+    Get the workflow information.
+    :param workflow_name: The name of the workflow(ai_flow.workflow.workflow.Workflow).
+    :return: The information of the workflow.
+    """
+    workflow_meta: WorkflowMeta = get_ai_flow_client().get_workflow_by_name(project_name=current_project_config()
+                                                                            .get_project_name(),
+                                                                            workflow_name=workflow_name)
+    if workflow_meta is None:
+        return None
+    project_meta: ProjectMeta = get_ai_flow_client().get_project_by_id(workflow_meta.project_id)
+    return WorkflowInfo(workflow_name=workflow_meta.name, namespace=project_meta.name)
+
+
+def delete_workflow(workflow_name: Text = None) -> WorkflowInfo:
+    """
+    Delete the ai flow workflow from the scheduler.
+    :param workflow_name: The name of the workflow(ai_flow.workflow.workflow.Workflow).
+    :return: The information of the workflow.
+    """
+    status: Status = get_ai_flow_client().delete_workflow_by_name(project_name=current_project_config()
+                                                                  .get_project_name(),
+                                                                  workflow_name=workflow_name)
+    if status == Status.ERROR:
+        raise Exception("Delete workflow {} failed")
+    return proto_to_workflow(get_ai_flow_client().delete_workflow(namespace=current_project_config().get_project_name(),
+                                                                  workflow_name=workflow_name))
+
+
+def list_workflows(page_size: int, offset: int) -> Optional[List[WorkflowInfo]]:
+    """
+    List the ai flow workflows.
+    :param page_size: Limitation of listed workflows.
+    :param offset: Offset of listed workflows.
+    :return: The information of the workflow list.
+    """
+    project_name = current_project_config().get_project_name()
+    workflow_list = get_ai_flow_client().list_workflows(project_name=project_name,
+                                                        page_size=page_size,
+                                                        offset=offset)
+    if workflow_list is None:
+        return None
+
+    workflow_info_list = []
+    for workflow_meta in workflow_list:
+        workflow_info_list.append(WorkflowInfo(namespace=project_name, workflow_name=workflow_meta.name))
+    return workflow_info_list
 
 
 def _apply_full_info_to_workflow(entry_module_path, workflow):

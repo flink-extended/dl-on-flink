@@ -37,6 +37,9 @@ _PORT = '50051'
 
 
 class MockScheduler(Scheduler):
+    def delete_workflow(self, project_name: Text, workflow_name: Text) -> WorkflowInfo:
+        pass
+
     def start_job_execution(self, job_name: Text, workflow_execution_id: Text) -> JobExecutionInfo:
         pass
 
