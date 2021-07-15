@@ -38,6 +38,7 @@ class WorkflowConfig(Jsonable):
         self.properties: Dict[Text, Jsonable] = {}
         self.dependencies: Dict = None
         self.periodic_config: PeriodicConfig = None
+        self.job_periodic_config_dict: Dict[Text, PeriodicConfig] = {}
 
     def add_job_config(self, config_key: Text, job_config: JobConfig):
         self.job_configs[config_key] = job_config
@@ -72,10 +73,14 @@ def load_workflow_config(config_path: Text) -> WorkflowConfig:
             workflow_config.dependencies = workflow_data[WORKFLOW_DEPENDENCIES]
 
         for k, v in workflow_data.items():
-            if k == WORKFLOW_DEPENDENCIES or k == WORKFLOW_PROPERTIES:
+            if k == WORKFLOW_DEPENDENCIES or k == WORKFLOW_PROPERTIES or k == PERIODIC_CONFIG:
                 continue
             job_config = JobConfig.from_dict({k: v})
             workflow_config.add_job_config(k, job_config)
+            if PERIODIC_CONFIG in v:
+                p_data = v.get(PERIODIC_CONFIG)
+                periodic_config = PeriodicConfig.from_dict(p_data)
+                workflow_config.job_periodic_config_dict[k] = periodic_config
         return workflow_config
     else:
         return None
