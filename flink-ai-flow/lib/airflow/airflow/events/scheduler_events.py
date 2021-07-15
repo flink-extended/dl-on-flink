@@ -221,18 +221,18 @@ class StopDagEvent(SchedulerInnerEvent):
         return StopDagEvent(str(event.key))
 
 
-class TaskStatusChangedEvent(SchedulerInnerEvent):
+class TaskStateChangedEvent(SchedulerInnerEvent):
 
-    def __init__(self, task_id, dag_id, execution_date, status, create_time=None):
+    def __init__(self, task_id, dag_id, execution_date, state, create_time=None):
         super().__init__()
         self.task_id = task_id
         self.dag_id = dag_id
         self.execution_date = execution_date
-        self.status = status
+        self.state = state
         self.create_time = create_time if create_time is not None else int(time.time() * 1000)
 
     @classmethod
-    def to_base_event(cls, event: 'TaskStatusChangedEvent') -> BaseEvent:
+    def to_base_event(cls, event: 'TaskStateChangedEvent') -> BaseEvent:
         o = {}
         for k, v in event.__dict__.items():
             if 'execution_date' == k:
@@ -245,7 +245,7 @@ class TaskStatusChangedEvent(SchedulerInnerEvent):
         else:
             project_name, workflow_name = split_dag_id[0], split_dag_id[1]
         return BaseEvent(key='.'.join([workflow_name, event.task_id]),
-                         value=event.status,
+                         value=event.state,
                          context=json.dumps(o),
                          event_type=SchedulerInnerEventType.TASK_STATUS_CHANGED.value,
                          namespace=project_name,
@@ -253,13 +253,13 @@ class TaskStatusChangedEvent(SchedulerInnerEvent):
                          create_time=event.create_time)
 
     @classmethod
-    def from_base_event(cls, event: BaseEvent) -> 'TaskStatusChangedEvent':
+    def from_base_event(cls, event: BaseEvent) -> 'TaskStateChangedEvent':
         o = json.loads(event.context)
-        return TaskStatusChangedEvent(task_id=o['task_id'],
-                                      dag_id=o['dag_id'],
-                                      execution_date=dates.parse_execution_date(o['execution_date']),
-                                      status=o['status'],
-                                      create_time=event.create_time)
+        return TaskStateChangedEvent(task_id=o['task_id'],
+                                     dag_id=o['dag_id'],
+                                     execution_date=dates.parse_execution_date(o['execution_date']),
+                                     state=o['state'],
+                                     create_time=event.create_time)
 
 
 class DagExecutableEvent(SchedulerInnerEvent):
@@ -380,7 +380,7 @@ class SchedulerInnerEventUtil(object):
         elif SchedulerInnerEventType.TASK_SCHEDULING == event_type:
             return TaskSchedulingEvent.from_base_event(event)
         elif SchedulerInnerEventType.TASK_STATUS_CHANGED == event_type:
-            return TaskStatusChangedEvent.from_base_event(event)
+            return TaskStateChangedEvent.from_base_event(event)
         elif SchedulerInnerEventType.DAG_EXECUTABLE == event_type:
             return DagExecutableEvent.from_base_event(event)
         elif SchedulerInnerEventType.EVENT_HANDLE == event_type:
