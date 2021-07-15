@@ -317,7 +317,7 @@ class EventBasedScheduler(LoggingMixin):
             scheduling_event.execution_date,
             scheduling_event.try_number
         )
-        self.executor.schedule_task(task_key, scheduling_event.action, self.server_uri)
+        self.executor.schedule_task(task_key, scheduling_event.action)
 
     def _find_dagruns_by_event(self, event, session) -> Optional[List[DagRun]]:
         affect_dag_runs = []
@@ -571,6 +571,7 @@ class EventBasedSchedulerJob(BaseJob):
         )
         self.task_event_manager = DagRunEventManager(self.mailbox)
         self.executor.set_mailbox(self.mailbox)
+        self.executor.set_server_uri(server_uri)
         self.notification_client: NotificationClient = NotificationClient(server_uri=server_uri,
                                                                           default_namespace=SCHEDULER_NAMESPACE)
         self.periodic_manager = PeriodicManager(self.mailbox)
