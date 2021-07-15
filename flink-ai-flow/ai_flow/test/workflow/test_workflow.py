@@ -20,7 +20,8 @@ import unittest
 import os
 from ai_flow.util import json_utils
 from ai_flow.workflow.job import Job
-from ai_flow.workflow.control_edge import ControlEdge, ConditionConfig
+from ai_flow.workflow.control_edge import ControlEdge, SchedulingRule, MeetAnyEventCondition, \
+    JobAction
 from ai_flow.workflow.workflow import Workflow
 from ai_flow.workflow.workflow_config import load_workflow_config
 
@@ -58,10 +59,12 @@ class TestWorkflow(unittest.TestCase):
             workflow.add_job(job)
             jobs.append(job)
         edge = ControlEdge(destination=jobs[0].job_name,
-                           condition_config=ConditionConfig(sender=jobs[1].job_name, event_key='a', event_value='a'))
+                           scheduling_rule=SchedulingRule(MeetAnyEventCondition().add_event('a', 'a'),
+                                                          JobAction.START))
         workflow.add_edge(jobs[0].job_name, edge)
         edge = ControlEdge(destination=jobs[0].job_name,
-                           condition_config=ConditionConfig(sender=jobs[2].job_name, event_key='b', event_value='b'))
+                           scheduling_rule=SchedulingRule(MeetAnyEventCondition().add_event('b', 'b'),
+                                                          JobAction.START))
         workflow.add_edge(jobs[0].job_name, edge)
         json_text = json_utils.dumps(workflow)
         w: Workflow = json_utils.loads(json_text)

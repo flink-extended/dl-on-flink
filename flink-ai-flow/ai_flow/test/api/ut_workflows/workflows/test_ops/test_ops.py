@@ -25,7 +25,7 @@ from ai_flow.context.job_context import job_config
 from ai_flow.endpoint.server.server import AIFlowServer
 from ai_flow.meta.dataset_meta import DatasetMeta
 from ai_flow.meta.model_meta import ModelMeta
-from ai_flow.workflow.control_edge import ControlEdge, TaskAction, AIFlowInternalEventType
+from ai_flow.workflow.control_edge import ControlEdge, JobAction, AIFlowInternalEventType
 from ai_flow.workflow.periodic_config import PeriodicConfig
 from ai_flow.workflow.status import Status
 
@@ -169,9 +169,11 @@ class TestOps(unittest.TestCase):
         self.assertEqual(1, len(current_graph().edges))
         edge: ControlEdge = current_graph().edges.get('task_1')[0]
         self.assertEqual('task_1', edge.destination)
-        self.assertEqual('task_2', edge.condition_config.sender)
-        self.assertEqual('a', edge.condition_config.event_key)
-        self.assertEqual('a', edge.condition_config.event_value)
+        events = edge.scheduling_rule.event_condition.events
+        event = next(iter(events))
+        self.assertEqual('task_2', event.sender)
+        self.assertEqual('a', event.event_key)
+        self.assertEqual('a', event.event_value)
 
     def test_action_on_status(self):
         with job_config('task_1'):
@@ -180,13 +182,16 @@ class TestOps(unittest.TestCase):
             o2 = ops.user_define_operation(processor=None, b='b', name='2')
         ops.action_on_job_status(job_name='task_1',
                                  upstream_job_name='task_2',
-                                 upstream_job_status=Status.FINISHED, action=TaskAction.START)
+                                 upstream_job_status=Status.FINISHED, action=JobAction.START)
         self.assertEqual(1, len(current_graph().edges))
         edge: ControlEdge = current_graph().edges.get('task_1')[0]
         self.assertEqual('task_1', edge.destination)
-        self.assertEqual('task_2', edge.condition_config.sender)
-        self.assertEqual(AIFlowInternalEventType.JOB_STATUS_CHANGED, edge.condition_config.event_type)
-        self.assertEqual(TaskAction.START, edge.condition_config.action)
+
+        events = edge.scheduling_rule.event_condition.events
+        event = next(iter(events))
+        self.assertEqual('task_2', event.sender)
+        self.assertEqual(AIFlowInternalEventType.JOB_STATUS_CHANGED, event.event_type)
+        self.assertEqual(JobAction.START, edge.scheduling_rule.action)
 
 
 if __name__ == '__main__':
