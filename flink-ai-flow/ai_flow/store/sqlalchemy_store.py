@@ -1422,13 +1422,28 @@ class SqlAlchemyStore(AbstractStore):
     def delete_metric_meta(self, metric_name):
         with self.ManagedSessionMaker() as session:
             try:
-                conditions = [
-                    SqlMetricMeta.metric_name == metric_name
-                ]
-                metric_meta_table = session.query(SqlMetricMeta).filter(*conditions).first()
-                metric_meta_table.is_deleted = TRUE
-                session.add(metric_meta_table)
+                metric_meta = session.query(SqlMetricMeta).filter(
+                    and_(SqlMetricMeta.metric_name == metric_name, SqlMetricMeta.is_deleted != TRUE)).first()
+                if metric_meta is None:
+                    return Status.ERROR
+                deleted_metric_meta_counts = session.query(SqlMetricMeta).filter(
+                    and_(SqlMetricMeta.metric_name.like(
+                        deleted_character + metric_meta.metric_name + deleted_character + '%')),
+                    SqlDataset.is_deleted == TRUE).count()
+                metric_meta.is_deleted = TRUE
+                metric_meta.metric_name = deleted_character + metric_meta.metric_name + deleted_character + str(
+                    deleted_metric_meta_counts + 1)
+                for metric_summary in metric_meta.metric_summary:
+                    deleted_metric_summary_counts = session.query(SqlMetricSummary).filter(
+                        and_(SqlMetricSummary.metric_name.like(
+                            deleted_character + metric_summary.metric_name + deleted_character + '%'),
+                            SqlMetricSummary.is_deleted == TRUE)).count()
+                    metric_summary.is_deleted = TRUE
+                    metric_summary.metric_name = deleted_character + metric_summary.metric_name + deleted_character + str(
+                        deleted_metric_summary_counts + 1)
+                session.add_all([metric_meta] + metric_meta.metric_summary)
                 session.flush()
+                return Status.OK
             except Exception as e:
                 raise AIFlowException('Delete metric meta failed! Error: {}.'.format(str(e)))
 

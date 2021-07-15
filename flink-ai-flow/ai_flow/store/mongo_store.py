@@ -1342,9 +1342,24 @@ class MongoStore(AbstractStore):
 
     def delete_metric_meta(self, metric_name):
         try:
-            metric_meta_table = MongoMetricMeta.objects(metric_name=metric_name).first()
-            metric_meta_table.is_deleted = TRUE
-            metric_meta_table.save()
+            metric_meta = MongoMetricMeta.objects(metric_name=metric_name, is_deleted__ne=TRUE).first()
+            if metric_meta is None:
+                return Status.ERROR
+            deleted_metric_meta_counts = MongoMetricMeta.objects(
+                name__startswith=deleted_character + metric_meta.metric_name + deleted_character,
+                is_deleted=TRUE).count()
+            metric_meta.is_deleted = TRUE
+            metric_meta.metric_name = deleted_character + metric_meta.metric_name + deleted_character + str(
+                deleted_metric_meta_counts + 1)
+            for metric_summary in metric_meta.metric_summary:
+                deleted_metric_summary_counts = MongoMetricSummary.objects(
+                    name__startswith=deleted_character + metric_summary.metric_name + deleted_character,
+                    is_deleted=TRUE).count()
+                metric_summary.is_deleted = TRUE
+                metric_summary.metric_name = deleted_character + metric_summary.metric_name + deleted_character + str(
+                    deleted_metric_summary_counts + 1)
+            self._save_all([metric_meta] + metric_meta.metric_summary)
+            return Status.OK
         except Exception as e:
             raise AIFlowException('Delete metric meta failed! Error: {}.'.format(str(e)))
 
