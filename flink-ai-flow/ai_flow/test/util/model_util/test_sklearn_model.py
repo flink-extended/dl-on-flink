@@ -30,7 +30,7 @@ import sklearn.datasets as datasets
 import sklearn.neighbors as knn
 from notification_service.base_notification import EventWatcher
 
-from ai_flow.model_center.model import sklearn
+from ai_flow.util.model_util.model_util import load_scikit_learn_model
 from ai_flow.client.ai_flow_client import AIFlowClient
 from ai_flow.endpoint.server.server import AIFlowServer
 
@@ -89,7 +89,7 @@ class TestSklearnModel(unittest.TestCase):
             def process(self, notifications):
                 for notification in notifications:
                     load_path = json.loads(notification.value).get('_model_path')
-                    reloaded_knn_model = sklearn.load_model(model_uri=load_path)
+                    reloaded_knn_model = load_scikit_learn_model(model_uri=load_path)
                     numpy.testing.assert_array_equal(
                         knn_model.model.predict(knn_model.inference_data),
                         reloaded_knn_model.predict(knn_model.inference_data))
