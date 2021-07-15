@@ -22,7 +22,24 @@ task_1:
 
 task_2:
   job_type: bash
+  periodic_config:
+    start_date: "2020,1,1,1,1,1,"
+    cron: "* * * * * * *"
 
 task_3:
   job_type: bash
+  periodic_config:
+    start_date: "2020,1,1,1,1,1,"
+    interval: "1,1,1,1"
 
+periodic_config:
+  start_date: "2020,1,1,1,1,1,"
+  interval: "1,1,1,1"
+
+properties:
+  a: a
+
+dependencies:
+  jars:
+    - a.jar
+    - b.jar
