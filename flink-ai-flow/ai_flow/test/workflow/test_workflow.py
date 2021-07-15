@@ -30,8 +30,22 @@ class TestWorkflow(unittest.TestCase):
     def test_workflow_config(self):
         workflow_config_file = os.path.join(os.path.dirname(__file__), 'workflow_1.yaml')
         workflow_config = load_workflow_config(workflow_config_file)
+        self.assertEqual("2020,1,1,1,1,1,",
+                         workflow_config.periodic_config.trigger_config['start_date'])
+        self.assertEqual("1,1,1,1",
+                         workflow_config.periodic_config.trigger_config['interval'])
+        self.assertEqual(1, len(workflow_config.properties))
+        self.assertEqual(1, len(workflow_config.dependencies))
+        self.assertEqual(2, len(workflow_config.dependencies['jars']))
+
         self.assertEqual('workflow_1', workflow_config.workflow_name)
         self.assertEqual('bash', workflow_config.job_configs['task_1'].job_type)
+        self.assertEqual("2020,1,1,1,1,1,",
+                         workflow_config.job_periodic_config_dict.get('task_2').trigger_config['start_date'])
+        self.assertEqual("* * * * * * *",
+                         workflow_config.job_periodic_config_dict.get('task_2').trigger_config['cron'])
+        self.assertEqual("1,1,1,1",
+                         workflow_config.job_periodic_config_dict.get('task_3').trigger_config['interval'])
 
     def test_workflow_serde(self):
         workflow_config_file = os.path.join(os.path.dirname(__file__), 'workflow_1.yaml')
