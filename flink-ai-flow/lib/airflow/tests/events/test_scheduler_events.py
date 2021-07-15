@@ -20,7 +20,7 @@ from notification_service.base_notification import BaseEvent
 from airflow.executors.scheduling_action import SchedulingAction
 
 from airflow.utils import timezone
-from airflow.events.scheduler_events import SchedulerInnerEventType, TaskStatusChangedEvent, TaskSchedulingEvent, \
+from airflow.events.scheduler_events import SchedulerInnerEventType, TaskStateChangedEvent, TaskSchedulingEvent, \
     SchedulerInnerEventUtil, StopSchedulerEvent
 
 
@@ -32,17 +32,17 @@ class TestSchedulerEvents(unittest.TestCase):
 
     def test_to_event(self):
         e_date = timezone.utcnow()
-        task_changed_event = TaskStatusChangedEvent(task_id='a', dag_id='b',
-                                                    execution_date=e_date, status='running')
+        task_changed_event = TaskStateChangedEvent(task_id='a', dag_id='b',
+                                                   execution_date=e_date, state='running')
         event = task_changed_event.to_event()
         self.assertEqual('b', event.key)
 
     def test_task_status_changed(self):
         e_date = timezone.utcnow()
-        task_changed_event = TaskStatusChangedEvent(task_id='a', dag_id='b',
-                                                    execution_date=e_date, status='running')
-        event = TaskStatusChangedEvent.to_base_event(task_changed_event)
-        task_changed_event_2 = TaskStatusChangedEvent.from_base_event(event)
+        task_changed_event = TaskStateChangedEvent(task_id='a', dag_id='b',
+                                                   execution_date=e_date, state='running')
+        event = TaskStateChangedEvent.to_base_event(task_changed_event)
+        task_changed_event_2 = TaskStateChangedEvent.from_base_event(event)
         self.assertEqual(e_date, task_changed_event_2.execution_date)
 
     def test_scheduling_task(self):
