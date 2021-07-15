@@ -71,9 +71,13 @@ class BaseExecutor(LoggingMixin):
         self.running: Set[TaskInstanceKey] = set()
         self.event_buffer: Dict[TaskInstanceKey, EventBufferValueType] = {}
         self._mailbox = None
+        self._server_uri = None
 
     def set_mailbox(self, mailbox):
         self._mailbox = mailbox
+
+    def set_server_uri(self, server_uri):
+        self._server_uri = server_uri
 
     def start(self):  # pragma: no cover
         """Executors may need to get things started."""
@@ -130,14 +134,12 @@ class BaseExecutor(LoggingMixin):
             queue=task_instance.task.queue,
         )
 
-    def schedule_task(self, key: TaskInstanceKey, action: SchedulingAction, server_uri: str):
+    def schedule_task(self, key: TaskInstanceKey, action: SchedulingAction):
         """
         Schedule a task
 
         :param key: task instance key
         :param action: task scheduling action in [START, STOP, RESTART]
-        :param server_uri: notification server uri
-        :type server_uri: str
         """
         with create_session() as session:
             ti = session.query(TaskInstance).filter(
@@ -147,7 +149,7 @@ class BaseExecutor(LoggingMixin):
             ).first()
             if SchedulingAction.START == action:
                 if ti.state not in State.running:
-                    self._start_task_instance(key, server_uri)
+                    self._start_task_instance(key)
                     self._send_message(ti)
             elif SchedulingAction.STOP == action:
                 if ti.state in State.unfinished:
@@ -155,9 +157,9 @@ class BaseExecutor(LoggingMixin):
                         self._send_message(ti)
             elif SchedulingAction.RESTART == action:
                 if ti.state in State.running:
-                    self._restart_task_instance(key, server_uri)
+                    self._restart_task_instance(key)
                 else:
-                    self._start_task_instance(key, server_uri)
+                    self._start_task_instance(key)
                 self._send_message(ti)
             else:
                 raise ValueError('The task scheduling action must in ["START", "STOP", "RESTART"].')
@@ -165,7 +167,7 @@ class BaseExecutor(LoggingMixin):
     def _send_message(self, ti):
         self.send_message(TaskInstanceKey(ti.dag_id, ti.task_id, ti.execution_date, ti.try_number))
 
-    def _start_task_instance(self, key: TaskInstanceKey, server_uri: str):
+    def _start_task_instance(self, key: TaskInstanceKey):
         """
         Ignore all dependencies, force start a task instance
         """
@@ -186,7 +188,7 @@ class BaseExecutor(LoggingMixin):
             pool=ti.pool,
             file_path=ti.dag_model.fileloc,
             pickle_id=ti.dag_model.pickle_id,
-            server_uri=server_uri,
+            server_uri=self._server_uri,
         )
         ti.set_state(State.QUEUED)
         self.execute_async(
@@ -228,10 +230,10 @@ class BaseExecutor(LoggingMixin):
             self.log.error("Failed to stop task instance: %s, please try again.", str(ti))
         return stopped
 
-    def _restart_task_instance(self, key: TaskInstanceKey, server_uri: str):
+    def _restart_task_instance(self, key: TaskInstanceKey):
         """Force restarting a task instance"""
         if self._stop_task_instance(key):
-            self._start_task_instance(key, server_uri)
+            self._start_task_instance(key)
 
     def has_task(self, task_instance: TaskInstance) -> bool:
         """
