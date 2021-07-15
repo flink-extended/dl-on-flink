@@ -229,6 +229,16 @@ class Scheduler(ABC):
         pass
 
     @abstractmethod
+    def delete_workflow(self, project_name: Text, workflow_name: Text) -> WorkflowInfo:
+        """
+        Delete the workflow from scheduler.
+        :param project_name: The project name.
+        :param workflow_name: The workflow name.
+        :return: The workflow information.
+        """
+        pass
+
+    @abstractmethod
     def pause_workflow_scheduling(self, project_name: Text, workflow_name: Text) -> WorkflowInfo:
         """
         Make the scheduler stop scheduling the workflow.
