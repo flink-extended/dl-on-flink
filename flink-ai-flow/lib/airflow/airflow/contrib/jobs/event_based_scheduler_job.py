@@ -149,7 +149,7 @@ class EventBasedScheduler(LoggingMixin):
                     if dagrun.state in State.finished:
                         self.mailbox.send_message(DagRunFinishedEvent(dagrun.run_id).to_event())
                 else:
-                    self.log.error("dagrun is None for dag_id:{} execution_date: {}".format(event.dag_id, event.execution_date))
+                    self.log.warning("dagrun is None for dag_id:{} execution_date: {}".format(event.dag_id, event.execution_date))
             elif isinstance(event, DagExecutableEvent):
                 dagrun = self._create_dag_run(event.dag_id, session=session)
                 tasks = self._find_scheduled_tasks(dagrun, session)
