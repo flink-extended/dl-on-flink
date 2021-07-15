@@ -31,10 +31,10 @@ import tensorflow as tf
 from notification_service.base_notification import EventWatcher
 from tensorflow.python.saved_model import tag_constants
 
-from ai_flow.model_center.model import tensorflow
+from ai_flow.util.model_util.model_util import load_tensorflow_saved_model
 from ai_flow.client.ai_flow_client import AIFlowClient
 from ai_flow.endpoint.server.server import AIFlowServer
-from ai_flow.test.model_center.tensorflow import iris_data_utils
+from ai_flow.test.util.model_util import iris_data_utils
 
 SavedModelInfo = collections.namedtuple(
     'SavedModelInfo',
@@ -144,12 +144,14 @@ class TestTensorFlowIrisModel(unittest.TestCase):
                 for notification in notifications:
                     model_path = json.loads(notification.value).get('_model_path')
                     model_flavor = json.loads(notification.value).get('_model_type')
-                    signature_def = tensorflow.load_model(model_uri=model_path,
-                                                          meta_graph_tags=json.loads(model_flavor).get(
-                                                              'meta_graph_tags'),
-                                                          signature_def_map_key=json.loads(model_flavor).get(
-                                                              'signature_def_map_key'),
-                                                          tf_session=tf.Session(graph=tf_graph))
+                    print(json.loads(notification.value).keys())
+                    print(model_path)
+                    signature_def = load_tensorflow_saved_model(model_uri=model_path,
+                                                                meta_graph_tags=json.loads(model_flavor).get(
+                                                                    'meta_graph_tags'),
+                                                                signature_def_map_key=json.loads(model_flavor).get(
+                                                                    'signature_def_map_key'),
+                                                                tf_session=tf.Session(graph=tf_graph))
                     for _, input_signature in signature_def.inputs.items():
                         t_input = tf_graph.get_tensor_by_name(input_signature.name)
                         assert t_input is not None
@@ -158,7 +160,7 @@ class TestTensorFlowIrisModel(unittest.TestCase):
                         assert t_output is not None
 
         self.client.start_listen_event(key=registered_model.model_name,
-                                              watcher=IrisWatcher())
+                                       watcher=IrisWatcher())
 
 
 if __name__ == '__main__':
