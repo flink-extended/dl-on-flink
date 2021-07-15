@@ -20,7 +20,7 @@ import time
 from collections import OrderedDict
 from typing import Any, Dict, List, Optional, Set, Tuple
 
-from airflow.events.scheduler_events import TaskStatusChangedEvent
+from airflow.events.scheduler_events import TaskStateChangedEvent
 from sqlalchemy.orm import Session, selectinload
 
 from airflow.configuration import conf
@@ -443,7 +443,7 @@ class BaseExecutor(LoggingMixin):
     def send_message(self, key: TaskInstanceKey):
         if self._mailbox is not None:
             ti = self.get_task_instance(key)
-            task_status_changed_event = TaskStatusChangedEvent(
+            task_status_changed_event = TaskStateChangedEvent(
                 ti.task_id,
                 ti.dag_id,
                 ti.execution_date,

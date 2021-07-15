@@ -22,7 +22,7 @@ import signal
 from typing import Optional
 
 from airflow.configuration import conf
-from airflow.events.scheduler_events import TaskStatusChangedEvent
+from airflow.events.scheduler_events import TaskStateChangedEvent
 from airflow.exceptions import AirflowException
 from airflow.jobs.base_job import BaseJob
 from airflow.models.taskinstance import TaskInstance
@@ -144,7 +144,7 @@ class LocalTaskJob(BaseJob):
             self.on_kill()
 
     def _send_task_status_change_event(self):
-        task_status_changed_event = TaskStatusChangedEvent(
+        task_status_changed_event = TaskStateChangedEvent(
             self.task_instance.task_id,
             self.task_instance.dag_id,
             self.task_instance.execution_date,

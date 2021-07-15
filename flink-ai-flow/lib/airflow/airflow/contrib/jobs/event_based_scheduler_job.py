@@ -52,7 +52,7 @@ from airflow.utils.types import DagRunType
 
 from airflow.utils.mailbox import Mailbox
 from airflow.events.scheduler_events import (
-    StopSchedulerEvent, TaskSchedulingEvent, DagExecutableEvent, TaskStatusChangedEvent, EventHandleEvent, RequestEvent,
+    StopSchedulerEvent, TaskSchedulingEvent, DagExecutableEvent, TaskStateChangedEvent, EventHandleEvent, RequestEvent,
     ResponseEvent, StopDagEvent, ParseDagRequestEvent, ParseDagResponseEvent, SchedulerInnerEventUtil,
     BaseUserDefineMessage, UserDefineMessageType, SCHEDULER_NAMESPACE, DagRunFinishedEvent, PeriodicEvent)
 
@@ -139,7 +139,7 @@ class EventBasedScheduler(LoggingMixin):
                 self._process_request_event(event)
             elif isinstance(event, TaskSchedulingEvent):
                 self._schedule_task(event)
-            elif isinstance(event, TaskStatusChangedEvent):
+            elif isinstance(event, TaskStateChangedEvent):
                 dagrun = self._find_dagrun(event.dag_id, event.execution_date, session)
                 if dagrun is not None:
                     dag_run_id = DagRunId(dagrun.dag_id, dagrun.run_id)
