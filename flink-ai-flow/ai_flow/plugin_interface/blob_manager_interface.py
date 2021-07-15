@@ -45,9 +45,9 @@ class BlobManager(ABC):
         download the needed resource from remote blob server to local process for remote execution.
 
         :param workflow_snapshot_id: It is the unique identifier for each workflow generation.
-        :param remote_path: the remote path of the blob server.
-        :param local_path: the download destination local directory.
-        :return a local path for downloaded project directory.
+        :param remote_path: The project package uri.
+        :param local_path: Download file root path.
+        :return Local project path.
         """
         pass
 
@@ -55,7 +55,7 @@ class BlobManager(ABC):
         """
         clean up the project files downloaded or created during this execution.
         :param workflow_snapshot_id: It is the unique identifier for each workflow generation.
-        :param remote_path: the project package uri.
+        :param remote_path: The project package uri.
         """
         pass
 
