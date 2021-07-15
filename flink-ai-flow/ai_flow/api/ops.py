@@ -23,7 +23,8 @@ from ai_flow.client.ai_flow_client import get_ai_flow_client
 from ai_flow.ai_graph.ai_node import AINode, ReadDatasetNode, WriteDatasetNode
 from ai_flow.graph.channel import Channel
 from ai_flow.workflow.control_edge import ControlEdge, \
-    TaskAction, EventLife, ValueCondition, ConditionType, DEFAULT_NAMESPACE, AIFlowInternalEventType, ConditionConfig
+    JobAction, EventLife, ValueCondition, DEFAULT_NAMESPACE, AIFlowInternalEventType, \
+    EventCondition, SchedulingRule, MeetAnyEventCondition
 from ai_flow.ai_graph.ai_graph import current_graph, add_ai_node_to_graph
 from ai_flow.meta.dataset_meta import DatasetMeta
 from ai_flow.meta.model_meta import ModelMeta, ModelVersionMeta
@@ -424,41 +425,43 @@ def action_on_event(job_name: Text,
                     event_type: Text = UNDEFINED_EVENT_TYPE,
                     sender: Text = None,
                     namespace: Text = DEFAULT_NAMESPACE,
-                    condition_type: ConditionType = ConditionType.NECESSARY,
-                    action: TaskAction = TaskAction.START,
-                    life: EventLife = EventLife.ONCE,
-                    value_condition: ValueCondition = ValueCondition.EQUALS
+                    value_condition: ValueCondition = ValueCondition.EQUALS,
+                    action: JobAction = JobAction.START
                     ):
     """
-       Add user defined control logic.
+        When the event is met, the JobAction will be triggered on the job with the job_name. It is a convenient method
+        to add a MetAnyCondition with one event to a job.
        :param job_name: The job name identify the job.
-       :param namespace: The namespace of the event, which value uses the project name.
        :param event_key: The key of the event.
        :param event_value: The value of the event.
        :param event_type: The type of the event.
        :param sender: The event sender identity,which value uses the name of the job. If sender is None, the sender will be dependency.
-       :param condition_type: The condition type. Sufficient or Necessary.
-       :param action: The action act on the src channel. Start or Restart.
-       :param life: The life of the event. Once or Repeated.
+       :param namespace: The namespace of the event, which value uses the project name.
        :param value_condition: The event value condition. Equal or Update. Equal means the src channel will start or
                                restart only when in the condition that the notification service updates a value which
                                equals to the event value under the specific event key, while update means src channel
                                will start or restart when in the the condition that the notification service has a update
                                operation on the event key which event value belongs.
+       :param action: The action act on the src channel. Start or Restart.
        :return:None.
        """
-    control_edge = ControlEdge(destination=job_name,
-                               condition_config=ConditionConfig(
-                                   event_key=event_key,
-                                   event_value=event_value,
-                                   event_type=event_type,
-                                   condition_type=condition_type,
-                                   action=action,
-                                   life=life,
-                                   value_condition=value_condition,
-                                   namespace=namespace,
-                                   sender=sender)
-                               )
+    event_condition = MeetAnyEventCondition()
+    event_condition.add_event(event_key, event_value, event_type, namespace, sender, EventLife.ONCE, value_condition)
+    action_on_events(job_name, event_condition, action)
+
+
+def action_on_events(job_name: Text, event_condition: EventCondition, action: JobAction):
+    """
+    Define a rule, which is the combination of a EventCondition and JobAction, on the job with job_name. When the
+    EventCondition of a rule met, the corresponding JobAction will be trigger on the job. User can call this method
+    multiple times on the same job to add multiples rules, the rules will be checked according to the order of the
+    the method call.
+    :param job_name: The job_name of the job to add the rule.
+    :param event_condition: The EventCondition of the rule.
+    :param action: The JobAction to take when the EventCondition is met.
+    """
+    rule = SchedulingRule(event_condition, action)
+    control_edge = ControlEdge(destination=job_name, scheduling_rule=rule)
     current_graph().add_edge(job_name, control_edge)
 
 
@@ -466,7 +469,7 @@ def action_on_model_version_event(job_name: Text,
                                   model_name: Text,
                                   model_version_event_type: Text,
                                   namespace: Text = DEFAULT_NAMESPACE,
-                                  action: TaskAction = TaskAction.RESTART,
+                                  action: JobAction = JobAction.RESTART,
                                   ) -> None:
     """
     Add model version control dependency. It means src channel will start when and only a new model version of the
@@ -484,16 +487,14 @@ def action_on_model_version_event(job_name: Text,
                     event_value="*",
                     event_type=model_version_event_type,
                     action=action,
-                    life=EventLife.ONCE,
                     value_condition=ValueCondition.UPDATED,
-                    condition_type=ConditionType.SUFFICIENT,
                     namespace=namespace,
                     sender=ANY_CONDITION)
 
 
 def action_on_dataset_event(job_name: Text,
                             dataset_name: Text,
-                            action: TaskAction = TaskAction.START,
+                            action: JobAction = JobAction.START,
                             namespace: Text = DEFAULT_NAMESPACE
                             ) -> None:
     """
@@ -518,15 +519,13 @@ def action_on_dataset_event(job_name: Text,
 def action_on_job_status(job_name: Text,
                          upstream_job_name: Text,
                          upstream_job_status: Status = Status.FINISHED,
-                         action: TaskAction = TaskAction.START,
-                         condition_type: ConditionType = ConditionType.SUFFICIENT):
+                         action: JobAction = JobAction.START):
     """
     Trigger job by upstream job status changed.
     :param job_name: The job name
     :param upstream_job_name: The upstream job name
     :param upstream_job_status: The upstream job status, type: ai_flow.workflow.status.Status
     :param action: The ai_flow.workflow.control_edge.TaskAction type.
-    :param condition: The condition. Sufficient or Necessary.
     :return:
     """
     event_key = '.'.join([current_workflow_config().workflow_name, upstream_job_name])
@@ -536,6 +535,5 @@ def action_on_job_status(job_name: Text,
                     sender=upstream_job_name,
                     event_value=upstream_job_status,
                     action=action,
-                    namespace=current_project_config().get_project_name(),
-                    condition_type=condition_type
+                    namespace=current_project_config().get_project_name()
                     )

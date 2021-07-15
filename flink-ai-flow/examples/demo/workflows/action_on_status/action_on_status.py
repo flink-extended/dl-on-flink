@@ -1,4 +1,4 @@
-from ai_flow.workflow.control_edge import TaskAction
+from ai_flow.workflow.control_edge import JobAction
 
 from ai_flow.workflow.status import Status
 
@@ -15,11 +15,11 @@ def main():
     with af.job_config('task_3'):
         af.user_define_operation(BashProcessor("echo hello"))
 
-    af.action_on_job_status('task_2', 'task_1', upstream_job_status=Status.RUNNING, action=TaskAction.START)
-    af.action_on_job_status('task_2', 'task_1', upstream_job_status=Status.FINISHED, action=TaskAction.STOP)
+    af.action_on_job_status('task_2', 'task_1', upstream_job_status=Status.RUNNING, action=JobAction.START)
+    af.action_on_job_status('task_2', 'task_1', upstream_job_status=Status.FINISHED, action=JobAction.STOP)
 
-    af.action_on_job_status('task_3', 'task_1', upstream_job_status=Status.RUNNING, action=TaskAction.START)
-    af.action_on_job_status('task_3', 'task_2', upstream_job_status=Status.KILLED, action=TaskAction.RESTART)
+    af.action_on_job_status('task_3', 'task_1', upstream_job_status=Status.RUNNING, action=JobAction.START)
+    af.action_on_job_status('task_3', 'task_2', upstream_job_status=Status.KILLED, action=JobAction.RESTART)
 
     workflow_name = af.current_workflow_config().workflow_name
     stop_workflow_executions(workflow_name)
