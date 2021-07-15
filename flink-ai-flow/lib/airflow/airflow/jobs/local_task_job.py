@@ -152,6 +152,7 @@ class LocalTaskJob(BaseJob):
         )
         event = task_status_changed_event.to_event()
         client = NotificationClient(self.server_uri, default_namespace=event.namespace, sender=event.sender)
+        self.log.info("LocalTaskJob sending event: {}".format(event))
         client.send_event(event)
 
     def on_kill(self):
