@@ -299,13 +299,15 @@ class SqlMetricSummary(base, Base):
     """
     __tablename__ = 'metric_summary'
 
-    metric_name = Column(String(256), nullable=False)
+    metric_name = Column(String(256), ForeignKey('metric_meta.metric_name', onupdate='cascade'), nullable=False)
     metric_key = Column(String(256), nullable=False)
     metric_value = Column(String(2048), nullable=False)
     metric_timestamp = Column(BigInteger, nullable=False)
     model_version = Column(String(256))
     job_execution_id = Column(String(256))
     is_deleted = Column(String(128), default='False')
+
+    metric_summary = relationship("SqlMetricMeta", backref=backref('metric_summary', cascade='all'))
 
     def __repr__(self):
         return '<SqlMetricSummary ({}, {}, {}, {}, {}, {}, {})>'.format(self.uuid, self.metric_name, self.metric_key,
