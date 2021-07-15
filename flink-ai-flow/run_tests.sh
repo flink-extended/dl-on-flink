@@ -71,5 +71,4 @@ run_test_class 'ai_flow/test/endpoint/' 'test_client.TestAIFlowClientSqlite'
 run_test_class 'ai_flow/test/endpoint/' 'test_mysql_client.TestAIFlowClientMySQL'
 run_test_class 'ai_flow/test/endpoint/' 'test_high_availability.TestHighAvailableAIFlowServer'
 
-
-
+run_tests 'ai_flow_plugins/tests/blob_manager_plugins'
