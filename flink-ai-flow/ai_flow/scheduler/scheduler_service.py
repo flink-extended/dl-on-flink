@@ -115,8 +115,18 @@ class SchedulerService(SchedulingServiceServicer):
                                                            error_message=traceback.format_exc()))
 
     def deleteWorkflow(self, request, context):
-        return WorkflowInfoResponse(result=ResultProto(status=StatusProto.ERROR,
-                                                       error_message='Do not support deleteWorkflow'))
+        try:
+            rq: ScheduleWorkflowRequest = request
+            workflow_info = self._scheduler.delete_workflow(rq.namespace, rq.workflow_name)
+            if workflow_info is None:
+                return WorkflowInfoResponse(
+                    result=ResultProto(status=StatusProto.ERROR,
+                                       error_message='{} do not exist!'.format(rq.workflow_name)))
+            return WorkflowInfoResponse(result=ResultProto(status=StatusProto.OK),
+                                        workflow=workflow_to_proto(workflow_info))
+        except Exception as err:
+            return WorkflowInfoResponse(result=ResultProto(status=StatusProto.ERROR,
+                                                           error_message=traceback.format_exc()))
 
     def pauseWorkflowScheduling(self, request, context):
         try:

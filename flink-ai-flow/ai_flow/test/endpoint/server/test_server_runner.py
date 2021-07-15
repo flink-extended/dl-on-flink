@@ -29,6 +29,9 @@ from ai_flow.workflow.workflow import Workflow
 
 class MockScheduler(Scheduler):
 
+    def delete_workflow(self, project_name: Text, workflow_name: Text) -> WorkflowInfo:
+        pass
+
     def submit_workflow(self, workflow: Workflow, project_context: ProjectContext) -> WorkflowInfo:
         pass
 
