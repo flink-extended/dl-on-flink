@@ -160,6 +160,10 @@
                                     <shadedPattern>ai.flow.io.grpc</shadedPattern>
                                 </relocation>
                                 <relocation>
+                                    <pattern>com.google.common</pattern>
+                                    <shadedPattern>ai.flow.com.google.common</shadedPattern>
+                                </relocation>
+                                <relocation>
                                     <pattern>com.google.protobuf</pattern>
                                     <shadedPattern>ai.flow.com.google.protobuf</shadedPattern>
                                 </relocation>
