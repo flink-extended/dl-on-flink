@@ -434,3 +434,22 @@ class TestEventBasedScheduler(unittest.TestCase):
         t.setDaemon(True)
         t.start()
         self.start_scheduler(dag_file)
+
+    def schedule_with_task_status_change_check(self):
+        self.wait_for_running()
+        while True:
+            with create_session() as session:
+                tis = session.query(TaskExecution).filter(TaskExecution.dag_id == 'schedule_on_state',
+                                                          TaskExecution.state == State.SUCCESS).all()
+                if len(tis) >= 2:
+                    break
+                else:
+                    time.sleep(1)
+        self.client.send_event(StopSchedulerEvent(job_id=0).to_event())
+
+    def test_schedule_with_task_status_change(self):
+        dag_file = os.path.join(TEST_DAG_FOLDER, 'test_schedule_with_task_status_change.py')
+        t = threading.Thread(target=self.schedule_with_task_status_change_check, args=())
+        t.setDaemon(True)
+        t.start()
+        self.start_scheduler(dag_file)
