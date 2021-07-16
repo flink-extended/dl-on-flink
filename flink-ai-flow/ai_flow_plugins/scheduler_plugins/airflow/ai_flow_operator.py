@@ -48,7 +48,7 @@ class AIFlowOperator(BaseOperator):
         module, name = plugins.get(self.job.job_config.job_type)
         class_object = import_string('{}.{}'.format(module, name))
         self.job_controller: JobController = class_object()
-        self.job_handler: JobHandle = None
+        self.job_handle: JobHandle = None
         self.job_runtime_env: JobRuntimeEnv = None
 
     def context_to_job_info(self, project_name: Text, context: Any) -> JobExecutionInfo:
@@ -56,7 +56,7 @@ class AIFlowOperator(BaseOperator):
         The function of this function is to turn the context of airflow into execution information of a job.
         """
         wi = WorkflowInfo(namespace=project_name, workflow_name=self.workflow.workflow_name)
-        we = WorkflowExecutionInfo(workflow_execution_id=context.get('dag_run').run_id,
+        we = WorkflowExecutionInfo(workflow_execution_id=str(context.get('dag_run').id),
                                    workflow_info=wi,
                                    start_date=str(datetime_to_int64(context.get('dag_run').start_date)),
                                    end_date=str(datetime_to_int64(context.get('dag_run').end_date)),
@@ -102,11 +102,11 @@ class AIFlowOperator(BaseOperator):
 
     def execute(self, context: Any):
         self.log.info("context:" + str(context))
-        self.job_handler: JobHandle = self.job_controller.submit_job(self.job, self.job_runtime_env)
-        result = self.job_controller.get_result(job_handle=self.job_handler, blocking=True)
-        self.job_controller.cleanup_job(self.job_handler, self.job_runtime_env)
+        self.job_handle: JobHandle = self.job_controller.submit_job(self.job, self.job_runtime_env)
+        result = self.job_controller.get_result(job_handle=self.job_handle, blocking=True)
+        self.job_controller.cleanup_job(self.job_handle, self.job_runtime_env)
         return result
 
     def on_kill(self):
-        self.job_controller.stop_job(self.job_handler, self.job_runtime_env)
-        self.job_controller.cleanup_job(self.job_handler, self.job_runtime_env)
+        self.job_controller.stop_job(self.job_handle, self.job_runtime_env)
+        self.job_controller.cleanup_job(self.job_handle, self.job_runtime_env)

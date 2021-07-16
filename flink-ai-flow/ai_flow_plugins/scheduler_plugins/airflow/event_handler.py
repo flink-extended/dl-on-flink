@@ -82,7 +82,7 @@ class AIFlowHandler(EventHandler):
         self.config = config
 
     @staticmethod
-    def parse_configs(config_str: str):
+    def _parse_configs(config_str: str):
         configs: List[ConditionConfig] = []
         config_json = json.loads(config_str)
         for config in config_json:
@@ -99,7 +99,7 @@ class AIFlowHandler(EventHandler):
         return configs
 
     def handle_event(self, event: BaseEvent, task_state: object) -> Tuple[SchedulingAction, object]:
-        configs: List[ConditionConfig] = AIFlowHandler.parse_configs(self.config)
+        configs: List[ConditionConfig] = AIFlowHandler._parse_configs(self.config)
         if task_state is None:
             task_state = AiFlowTs()
         af_ts = copy.deepcopy(task_state)
