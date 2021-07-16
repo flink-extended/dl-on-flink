@@ -28,6 +28,7 @@ class PythonJobConfig(JobConfig):
         job_name:
             job_type: python
             properties:
+                python_executable_path: /usr/bin/python3
                 env:
                     a: a
                     b: b
