@@ -19,12 +19,16 @@ from typing import Tuple, List, Dict, Optional
 import json
 import copy
 
+from ai_flow.util import json_utils
+
+from ai_flow.workflow.control_edge import SchedulingRule, ConditionType, EventLife, ValueCondition, JobAction, \
+    EventMeetConfig, EventCondition
+
 from airflow.utils.state import State
 
 from ai_flow.workflow import status
 from airflow.events.scheduler_events import SchedulerInnerEventType
 
-from ai_flow.workflow.control_edge import ConditionConfig, ConditionType, EventLife, ValueCondition, TaskAction
 from airflow.executors.scheduling_action import SchedulingAction
 from airflow.models.eventhandler import EventHandler
 from notification_service.base_notification import BaseEvent, ANY_CONDITION
@@ -63,10 +67,18 @@ class ActionEventHandler(EventHandler):
 
 
 class AiFlowTs(object):
+    def __init__(self, rules_cnt: int):
+        self.rule_states: List[SchedulingRuleState] = [SchedulingRuleState() for _ in range(rules_cnt)]
+
+    def add_event(self, event: BaseEvent):
+        for rule_state in self.rule_states:
+            rule_state.event_map[(event.namespace, event.event_type, event.sender, event.key)] = copy.deepcopy(event)
+            rule_state.latest_time = event.create_time
+
+
+class SchedulingRuleState(object):
     def __init__(self):
-        # key: namespace event_type sender event_key
-        # value: BaseEvent
-        self.event_map = {}
+        self.event_map: Dict[Tuple[str, str, str, str], BaseEvent] = {}
         self.schedule_time = 0
         self.latest_time = 0
 
@@ -95,56 +107,57 @@ def _airflow_task_state_to_aiflow_status(airflow_task_state) -> Optional[status.
         return status.Status.INIT
 
 
+def job_action_to_scheduling_action(action: JobAction) -> SchedulingAction:
+    if JobAction.START == action:
+        return SchedulingAction.START
+    elif JobAction.RESTART == action:
+        return SchedulingAction.RESTART
+    elif JobAction.STOP == action:
+        return SchedulingAction.STOP
+    elif JobAction.NONE == action:
+        return SchedulingAction.NONE
+    else:
+        logging.warning("Cannot map JobAction {} to SchedulingAction, SchedulingAction.NONE will be used"
+                        .format(action))
+        return SchedulingAction.NONE
+
+
 class AIFlowHandler(EventHandler):
     """
     AIFlowHandler is an implementation of EventHandler,
     which implements the semantics of ai flow based on event scheduling.
     """
+
     def __init__(self, config: str):
         self.config = config
 
     @staticmethod
-    def _parse_configs(config_str: str):
-        configs: List[ConditionConfig] = []
-        config_json = json.loads(config_str)
-        for config in config_json:
-            condition_config = ConditionConfig(event_key=config['event_key'],
-                                               event_value=config['event_value'],
-                                               event_type=config['event_type'],
-                                               action=TaskAction(config['action']),
-                                               condition_type=ConditionType(config['condition_type']),
-                                               value_condition=ValueCondition(config['value_condition']),
-                                               life=EventLife(config['life']),
-                                               namespace=config['namespace'],
-                                               sender=config['sender'])
-            configs.append(condition_config)
-        return configs
+    def _parse_configs(scheduling_rules_json_str: str) -> List[SchedulingRule]:
+        rules: List[SchedulingRule] = json_utils.loads(scheduling_rules_json_str)
+        return rules
 
     def handle_event(self, event: BaseEvent, task_state: object) -> Tuple[SchedulingAction, object]:
+        rules = self._parse_configs(self.config)
         if SchedulerInnerEventType.TASK_STATUS_CHANGED.value == event.event_type:
-            event = BaseEvent(**event.__dict__)
+            event = copy.deepcopy(event)
             event.value = _airflow_task_state_to_aiflow_status(event.value)
-        configs: List[ConditionConfig] = AIFlowHandler._parse_configs(self.config)
         if task_state is None:
-            task_state = AiFlowTs()
+            task_state = AiFlowTs(len(rules))
         af_ts = copy.deepcopy(task_state)
-        af_ts.event_map[(event.namespace, event.event_type, event.sender, event.key)] = event
-        af_ts.latest_time = event.create_time
-        aw = ActionWrapper()
-        res = self._check_condition(configs, af_ts, aw)
-        if res:
-            if SchedulingAction(aw.action) in SchedulingAction:
-                af_ts.schedule_time = af_ts.latest_time
-            if len(configs) == 0:
-                logging.debug("AIFlowHandler {} handle event {}, action: {}".format(self.config, event, "START"))
-                return SchedulingAction.START, af_ts
-            else:
-                logging.debug("AIFlowHandler {} handle event {}, action: {}".format(self.config, event,
-                                                                                   SchedulingAction(aw.action)))
-                return SchedulingAction(aw.action), af_ts
-        else:
-            logging.debug("AIFlowHandler {} handle event {}, action: {}".format(self.config, event, "NONE"))
-            return SchedulingAction.NONE, af_ts
+        af_ts.add_event(event)
+        actions = self._check_rules(rules, af_ts)
+
+        # pick the first triggered action
+        for action in actions:
+            if action is not None:
+                scheduling_action = job_action_to_scheduling_action(action)
+                logging.debug("AIFlowHandler {} handle event {} triggered action: {}"
+                              .format(self.config, event, scheduling_action))
+                return scheduling_action, af_ts
+
+        logging.debug("AIFlowHandler {} handle event {} no action triggered return action {}"
+                      .format(self.config, event, SchedulingAction.NONE))
+        return SchedulingAction.NONE, af_ts
 
     @staticmethod
     def _match_config_events(namespace, event_type, sender, key, event_map: Dict):
@@ -165,74 +178,64 @@ class AIFlowHandler(EventHandler):
                 events.append(event)
         return events
 
-    def _check_condition(self, configs, ts: AiFlowTs, aw: ActionWrapper) -> bool:
+    def _check_rules(self, rules: List[SchedulingRule], ts: AiFlowTs) -> List[JobAction]:
+        rule_states = ts.rule_states
+        rules_num = len(rules)
+        res: List[Optional[JobAction]] = [None] * rules_num
+        for i in range(rules_num):
+            rule = rules[i]
+            rule_state = rule_states[i]
+            if self._check_rule(rule, rule_state):
+                rule_state.schedule_time = rule_state.latest_time
+                res[i] = rule.action
+        return res
+
+    def _check_rule(self, rule: SchedulingRule, ts: SchedulingRuleState) -> bool:
+        event_condition = rule.event_condition
+        if ConditionType.MEET_ANY == event_condition.condition_type:
+            return self._check_meet_any_event_condition(rule.event_condition, ts)
+        elif ConditionType.MEET_ALL == event_condition.condition_type:
+            return self._check_meet_all_event_condition(rule.event_condition, ts)
+        else:
+            logging.warning("Unsupported ConditionType {}".format(event_condition.condition_type))
+            return False
+
+    def _check_meet_any_event_condition(self, event_condition: EventCondition, ts: SchedulingRuleState) -> bool:
+        for event_meet_config in event_condition.events:
+            if self._check_event_meet(event_meet_config, ts):
+                return True
+        return False
+
+    def _check_meet_all_event_condition(self, event_condition: EventCondition, ts: SchedulingRuleState) -> bool:
+        for event_meet_config in event_condition.events:
+            if not self._check_event_meet(event_meet_config, ts):
+                return False
+        return True
+
+    def _check_event_meet(self, event_meet_config: EventMeetConfig, ts: SchedulingRuleState) -> bool:
         event_map: Dict = ts.event_map
         schedule_time = ts.schedule_time
-        has_necessary_edge = False
-        for condition_config in configs:
-            namespace = condition_config.namespace
-            sender = condition_config.sender
-            key = condition_config.event_key
-            value = condition_config.event_value
-            event_type = condition_config.event_type
-            events = self._match_config_events(namespace, event_type, sender, key, event_map)
-            if condition_config.condition_type == ConditionType.SUFFICIENT:
-                if 0 == len(events):
-                    continue
-                for event in events:
-                    v, event_time = event.value, event.create_time
-                    if condition_config.life == EventLife.ONCE:
-                        if condition_config.value_condition == ValueCondition.EQUALS:
-                            if v == value and event_time > schedule_time:
-                                aw.action = condition_config.action
-                                return True
-                        else:
-                            if event_time > schedule_time:
-                                aw.action = condition_config.action
-                                return True
-                    else:
-                        if condition_config.value_condition == ValueCondition.EQUALS:
-                            if v == value:
-                                aw.action = condition_config.action
-                                return True
-                        else:
-                            aw.action = condition_config.action
-                            return True
-            else:
-                has_necessary_edge = True
-                if 0 == len(events):
-                    return False
-                final_flag = False
-                for event in events:
-                    flag = True
-                    v, event_time = event.value, event.create_time
-                    if condition_config.life == EventLife.ONCE:
-                        if condition_config.value_condition == ValueCondition.EQUALS:
-                            if schedule_time >= event_time:
-                                flag = False
-                            else:
-                                if v != value:
-                                    flag = False
-                        else:
-                            if schedule_time >= event_time:
-                                flag = False
-
-                    else:
-                        if condition_config.value_condition == ValueCondition.EQUALS:
-                            if v != value:
-                                flag = False
-
-                        else:
-                            if v is None:
-                                flag = False
-                    if flag:
-                        final_flag = True
-                        break
-                if not final_flag:
-                    return False
-
-        if has_necessary_edge:
-            aw.action = configs[0].action
-            return True
-        else:
+        events = self._match_config_events(event_meet_config.namespace,
+                                           event_meet_config.event_type,
+                                           event_meet_config.sender,
+                                           event_meet_config.event_key,
+                                           event_map)
+        if 0 == len(events):
             return False
+        for event in events:
+            v, event_time = event.value, event.create_time
+            if event_meet_config.life == EventLife.ONCE:
+                if event_meet_config.value_condition == ValueCondition.EQUALS:
+                    if v == event_meet_config.event_value and event_time > schedule_time:
+                        return True
+                else:
+                    if event_time > schedule_time:
+                        return True
+            else:
+                if event_meet_config.value_condition == ValueCondition.EQUALS:
+                    if v == event_meet_config.event_value:
+                        return True
+                else:
+                    return True
+        # no event meet
+        return False
