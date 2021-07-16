@@ -77,13 +77,11 @@ class PythonProcessor(object):
     def setup(self, execution_context: ExecutionContext):
         """
         Setup method for user-defined function. It can be used as a preparation stage before the process function.
-        By default, this method does nothing.
         """
         pass
 
     def close(self, execution_context: ExecutionContext):
         """
         Close method for user-defined function. It can be used as a cleanup phase after the process function.
-        By default, this method does nothing.
         """
         pass
