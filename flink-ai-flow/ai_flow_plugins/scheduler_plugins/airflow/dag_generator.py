@@ -19,7 +19,7 @@
 from typing import Text, List, Dict
 from ai_flow.workflow.job import Job
 from ai_flow.util import json_utils
-from ai_flow.workflow.control_edge import ConditionConfig, AIFlowInternalEventType, TaskAction
+from ai_flow.workflow.control_edge import SchedulingRule, AIFlowInternalEventType
 from ai_flow.workflow.periodic_config import PeriodicConfig
 from ai_flow.workflow.workflow import Workflow, WorkflowPropertyKeys
 from airflow.events.scheduler_events import SchedulerInnerEventType
@@ -86,16 +86,21 @@ op_{0} = AIFlowOperator(task_id='{2}', job=job_{0}, workflow=workflow, dag=dag)
     def generate_upstream(self, op_1, op_2):
         return DAGTemplate.UPSTREAM_OP.format(op_1, op_2)
 
-    def generate_event_deps(self, op, from_task_id, met_config):
-        if met_config.sender is not None and '' != met_config.sender:
-            sender = met_config.sender
-        else:
-            sender = from_task_id
-        return DAGTemplate.EVENT_DEPS.format(op, met_config.event_key, met_config.event_type,
-                                             met_config.namespace, sender)
+    def generate_event_deps(self, op, from_task_id, rule: SchedulingRule):
+        code = ""
 
-    def generate_handler(self, op, configs: List[ConditionConfig]):
-        return DAGTemplate.MET_HANDLER.format(op, json_utils.dumps(configs))
+        # subscribe to all the events in the rule
+        for event_condition in rule.event_condition.events:
+            if event_condition.sender is not None and '' != event_condition.sender:
+                sender = event_condition.sender
+            else:
+                sender = from_task_id
+            code += DAGTemplate.EVENT_DEPS.format(op, event_condition.event_key, event_condition.event_type,
+                                             event_condition.namespace, sender)
+        return code
+
+    def generate_handler(self, op, scheduling_rules: List[SchedulingRule]):
+        return DAGTemplate.MET_HANDLER.format(op, json_utils.dumps(scheduling_rules))
 
     def generate(self,
                  workflow: Workflow,
@@ -104,7 +109,7 @@ op_{0} = AIFlowOperator(task_id='{2}', job=job_{0}, workflow=workflow, dag=dag)
         code_text += import_job_plugins_text(workflow)
         code_text += DAGTemplate.LOAD_CONFIG.format(json_utils.dumps(workflow))
 
-        def dict_code_text(data: Dict)-> Text:
+        def dict_code_text(data: Dict) -> Text:
             code_t = "{\n"
             for k, v in data.items():
                 code_t += """   '{}': {},\n""".format(k, v)
@@ -150,28 +155,18 @@ op_{0} = AIFlowOperator(task_id='{2}', job=job_{0}, workflow=workflow, dag=dag)
                 op_name = task_map[job_name]
                 configs = []
                 for edge in edges:
-                    condition_config: ConditionConfig = edge.condition_config
-                    if AIFlowInternalEventType.JOB_STATUS_CHANGED == condition_config.event_type:
-                        condition_config.event_type = SchedulerInnerEventType.TASK_STATUS_CHANGED.value
-
-                    def reset_met_config():
-                        if condition_config.sender is None or '' == condition_config.sender:
-                            target_node_id = edge.source
-                            if target_node_id is not None and '' != target_node_id:
-                                target_job: Job = workflow.jobs.get(target_node_id)
-                                if target_job.job_name is not None:
-                                    condition_config.sender = target_job.job_name
-                            else:
-                                condition_config.sender = '*'
-                    reset_met_config()
-
+                    rule: SchedulingRule = edge.scheduling_rule
+                    for event in rule.event_condition.events:
+                        # Change AIFlowInternalEventType to SchedulerInnerEventType
+                        if AIFlowInternalEventType.JOB_STATUS_CHANGED == event.event_type:
+                            event.event_type = SchedulerInnerEventType.TASK_STATUS_CHANGED.value
                     if edge.source in task_map:
                         from_op_name = task_map[edge.source]
                     else:
                         from_op_name = ''
-                    code = self.generate_event_deps(op_name, from_op_name, condition_config)
+                    code = self.generate_event_deps(op_name, from_op_name, rule)
                     code_text += code
-                    configs.append(condition_config)
+                    configs.append(rule)
 
                 if len(configs) > 0:
                     code = self.generate_handler(op_name, configs)
