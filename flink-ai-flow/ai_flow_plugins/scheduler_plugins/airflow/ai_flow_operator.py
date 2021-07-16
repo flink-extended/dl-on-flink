@@ -102,11 +102,15 @@ class AIFlowOperator(BaseOperator):
 
     def execute(self, context: Any):
         self.log.info("context:" + str(context))
-        self.job_handle: JobHandle = self.job_controller.submit_job(self.job, self.job_runtime_env)
-        result = self.job_controller.get_result(job_handle=self.job_handle, blocking=True)
-        self.job_controller.cleanup_job(self.job_handle, self.job_runtime_env)
+        try:
+            self.job_handle: JobHandle = self.job_controller.submit_job(self.job, self.job_runtime_env)
+            result = self.job_controller.get_result(job_handle=self.job_handle, blocking=True)
+        finally:
+            self.job_controller.cleanup_job(self.job_handle, self.job_runtime_env)
         return result
 
     def on_kill(self):
-        self.job_controller.stop_job(self.job_handle, self.job_runtime_env)
-        self.job_controller.cleanup_job(self.job_handle, self.job_runtime_env)
+        try:
+            self.job_controller.stop_job(self.job_handle, self.job_runtime_env)
+        finally:
+            self.job_controller.cleanup_job(self.job_handle, self.job_runtime_env)
