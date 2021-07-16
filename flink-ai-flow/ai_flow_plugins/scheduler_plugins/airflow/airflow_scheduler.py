@@ -131,9 +131,11 @@ class AirFlowScheduler(Scheduler):
                                          dag_id + '.py')
         if os.path.exists(airflow_file_path):
             os.remove(airflow_file_path)
-        return WorkflowInfo(namespace=project_name,
-                            workflow_name=workflow_name,
-                            properties={'dag_file': airflow_file_path})
+            return WorkflowInfo(namespace=project_name,
+                                workflow_name=workflow_name,
+                                properties={'dag_file': airflow_file_path})
+        else:
+            return None
 
     def pause_workflow_scheduling(self, project_name: Text, workflow_name: Text) -> WorkflowInfo:
         dag_id = self.airflow_dag_id(project_name, workflow_name)
