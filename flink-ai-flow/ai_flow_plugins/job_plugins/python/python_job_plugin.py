@@ -77,14 +77,17 @@ class PythonJobController(JobController):
         env = os.environ.copy()
         if 'env' in job.job_config.properties:
             env.update(job.job_config.properties.get('env'))
-        # Add PYTHONEPATH
+        # Add PYTHONPATH
         copy_path = sys.path.copy()
         copy_path.insert(0, job_runtime_env.python_dep_dir)
         env['PYTHONPATH'] = ':'.join(copy_path)
 
         current_path = os.path.dirname(__file__)
         script_path = os.path.join(current_path, 'python_run_main.py')
-        python3_location = sys.executable
+        if 'python_executable_path' in job.job_config.properties:
+            python3_location = job.job_config.properties.get('python_executable_path')
+        else:
+            python3_location = sys.executable
         bash_command = [python3_location, script_path, run_graph_file, job_runtime_env.working_dir]
 
         stdout_log = log_path_utils.stdout_log_path(job_runtime_env.log_dir, job.job_name)
