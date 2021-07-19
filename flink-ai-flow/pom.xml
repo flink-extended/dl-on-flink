@@ -98,6 +98,7 @@
                         <exclude>tests/temp/**/*</exclude>
                         <exclude>tests/resources/**/*</exclude>
                         <exclude>ai_flow_plugins/tests/job_plugins/ut_workflows/resources/**/*</exclude>
+                        <exclude>ai_flow_plugins/tests/it_workflows/resources/**/*</exclude>
                     </excludes>
                 </configuration>
             </plugin>
