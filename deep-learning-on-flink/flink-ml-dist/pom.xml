@@ -117,8 +117,15 @@ under the License.
                                 <excludes>
                                     <exclude>org.scala-lang:*</exclude>
                                     <exclude>org.apache.flink:*</exclude>
+                                    <exclude>org.apache.hadoop</exclude>
                                 </excludes>
                             </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.google</pattern>
+                                    <shadedPattern>com.alibaba.flink.ml.com.google</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
