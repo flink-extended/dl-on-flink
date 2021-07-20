@@ -28,6 +28,11 @@ jobs:
         pip install ./flink-ai-flow/lib/notification_service
         pip install ./flink-ai-flow/lib/airflow
         pip install ./flink-ai-flow
+    - name: Install java client
+      run: |
+        cd ./flink-ai-flow/ai_flow/java
+        mvn clean install -DskipTests=true
+        cd ../../..
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax erroservice.pys or undefined names
