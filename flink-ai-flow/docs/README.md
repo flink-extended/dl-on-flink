@@ -2,7 +2,7 @@
 
 ### Requirement
 1. Python3.7
-2. Sphinx (You can install it via `pip install -U sphinx`)
+2. Sphinx (You can install it via `pip install -U sphinx sphinx_rtd_theme`)
 3. Flink AI Flow
 
 ### Build
