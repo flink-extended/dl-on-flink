@@ -30,7 +30,9 @@ jobs:
         pip install ./flink-ai-flow
     - name: Install java client
       run: |
-        cd ./flink-ai-flow/ai_flow/java
+        cd ./flink-ai-flow/lib/notification_service/java
+        mvn clean install -DskipTests=true
+        cd ../../../ai_flow/java
         mvn clean install -DskipTests=true
         cd ../../..
     - name: Lint with flake8
