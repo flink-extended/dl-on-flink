@@ -80,6 +80,8 @@
                         <exclude>**/*.csv</exclude>
 						<exclude>**/*.log</exclude>
                         <exclude>**/*.json</exclude>
+                        <exclude>**/*.iml</exclude>
+                        <exclude>**/dependency-reduced-pom.xml</exclude>
                         <exclude>licenses/*</exclude>
                         <exclude>venv/**</exclude>
                         <exclude>build/**</exclude>
@@ -99,6 +101,9 @@
                         <exclude>tests/resources/**/*</exclude>
                         <exclude>ai_flow_plugins/tests/job_plugins/ut_workflows/resources/**/*</exclude>
                         <exclude>ai_flow_plugins/tests/it_workflows/resources/**/*</exclude>
+                        <exclude>ai_flow/java/target/**/*</exclude>
+                        <exclude>ai_flow/java/client/target/**/*</exclude>
+                        <exclude>ai_flow/java/.idea/**/*</exclude>
                     </excludes>
                 </configuration>
             </plugin>
