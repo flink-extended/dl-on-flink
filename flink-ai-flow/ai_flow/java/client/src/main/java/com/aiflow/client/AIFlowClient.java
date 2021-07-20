@@ -23,6 +23,7 @@ import com.aiflow.entity.*;
 import com.aiflow.notification.client.EventWatcher;
 import com.aiflow.notification.client.NotificationClient;
 import com.aiflow.notification.entity.EventMeta;
+import com.aiflow.proto.Message;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
 import org.apache.commons.lang3.StringUtils;
@@ -448,10 +449,11 @@ public class AIFlowClient {
       String modelType,
       String versionDesc,
       Long modelId,
+      Message.ModelVersionStage currentStage,
       Long projectSnapshotId)
       throws Exception {
     return this.metadataClient.registerModelVersion(
-        modelPath, modelType, versionDesc, modelId, projectSnapshotId);
+        modelPath, modelType, versionDesc, modelId, currentStage, projectSnapshotId);
   }
 
   /**
@@ -551,6 +553,87 @@ public class AIFlowClient {
    */
   public Status deleteProjectByName(String projectName) throws Exception {
     return this.metadataClient.deleteProjectByName(projectName);
+  }
+
+  /***
+   * Register a workflow in metadata store.
+   *
+   * @param name       The workflow name
+   * @param projectId  The id of project which contains the workflow
+   * @param properties The workflow properties
+   * @return WorkflowMeta object registered in Metadata Store
+   */
+  public WorkflowMeta registerWorkflow(String name, Long projectId,
+                                       Map<String, String> properties) throws Exception {
+    return this.metadataClient.registerWorkflow(name, projectId, properties);
+  }
+
+  /***
+   * Get a workflow by specific project name and workflow name
+   *
+   * @param projectName   The name of project which contains the workflow
+   * @param workflowName  The workflow name
+   * @return WorkflowMeta object registered in Metadata Store
+   */
+  public WorkflowMeta getWorkflowByName(String projectName, String workflowName) throws Exception {
+    return this.metadataClient.getWorkflowByName(projectName, workflowName);
+  }
+
+  /***
+   * Get a workflow by uuid
+   *
+   * @param workflowId The workflow id
+   * @return WorkflowMeta object registered in Metadata Store
+   */
+  public WorkflowMeta getWorkflowById(Long workflowId) throws Exception {
+    return this.metadataClient.getWorkflowById(workflowId);
+  }
+
+  /***
+   * List all workflows of the specific project
+   *
+   * @param projectName  The name of project which contains the workflow
+   * @param pageSize     Limitation of listed workflows.
+   * @param offset       Offset of listed workflows.
+   * @return
+   */
+  public List<WorkflowMeta> listWorkflows(String projectName, Long pageSize, Long offset) throws Exception {
+    return this.metadataClient.listWorkflows(projectName, pageSize, offset);
+  }
+
+  /***
+   * Delete the workflow by specific project and workflow name
+   *
+   * @param projectName  The name of project which contains the workflow
+   * @param workflowName The workflow name
+   * @return Status.OK if workflow is successfully deleted, Status.ERROR if workflow does not exist otherwise.
+   */
+  public Status deleteWorkflowByName(String projectName, String workflowName) throws Exception {
+    return this.metadataClient.deleteWorkflowByName(projectName, workflowName);
+  }
+
+
+  /**
+   * Delete the workflow by specific uuid.
+   *
+   * @param workflowId Id of worflow.
+   * @return Status.OK if workflow is successfully deleted, Status.ERROR if workflow does not exist otherwise.
+   */
+  public Status deleteWorkflowById(Long workflowId) throws Exception {
+    return this.metadataClient.deleteWorkflowById(workflowId);
+  }
+
+  /***
+   * Update the workflow
+   *
+   * @param workflowName The workflow name
+   * @param projectName  The name of project which contains the workflow
+   * @param properties   Properties needs to be updated
+   * @return WorkflowMeta object registered in Metadata Store
+   */
+  public WorkflowMeta updateWorkflow(String workflowName, String projectName, Map<String,
+          String> properties) throws Exception {
+    return this.metadataClient.updateWorkflow(workflowName, projectName, properties);
   }
 
   /**

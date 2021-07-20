@@ -29,6 +29,7 @@ import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -137,11 +138,11 @@ public class MetadataClient {
                                                   String catalogConnectionUri, String catalogTable, String catalogDatabase) throws Exception {
         DatasetProto.Builder dataset = DatasetProto.newBuilder().setName(name).setDataFormat(stringValue(null))
                 .setDescription(stringValue(null)).setUri(stringValue(null))
-                .putAllProperties(null).setSchema(SchemaProto.newBuilder().addAllNameList(null).addAllTypeList(null))
+                .putAllProperties(Collections.emptyMap()).setSchema(SchemaProto.newBuilder().addAllNameList(Collections.emptyList()).addAllTypeList(Collections.emptyList()))
                 .setCatalogName(stringValue(catalogName)).setCatalogType(stringValue(catalogType)).setCatalogDatabase(stringValue(catalogDatabase))
                 .setCatalogConnectionUri(stringValue(catalogConnectionUri)).setCatalogTable(stringValue(catalogTable));
         RegisterDatasetRequest request = RegisterDatasetRequest.newBuilder().setDataset(dataset).build();
-        Response response = metadataServiceStub.registerDataset(request);
+        Response response = metadataServiceStub.registerDatasetWithCatalog(request);
         DatasetProto.Builder builder = DatasetProto.newBuilder();
         return StringUtils.isEmpty(metadataDetailResponse(response, this.parser, builder)) ? null : buildDatasetMeta(builder.build());
     }
@@ -458,9 +459,10 @@ public class MetadataClient {
      * @param projectSnapshotId   Project snapshot id corresponded to model version.
      * @return Single ModelVersionRelationMeta object registered in Metadata Store.
      */
-    public ModelVersionMeta registerModelVersion(String modelPath, String modelType, String versionDesc, Long modelId, Long projectSnapshotId) throws Exception {
+    public ModelVersionMeta registerModelVersion(String modelPath, String modelType, String versionDesc, Long modelId, ModelVersionStage currentStage,
+                                                 Long projectSnapshotId) throws Exception {
         ModelVersionProto modelVersionProto = ModelVersionProto.newBuilder().setModelPath(stringValue(modelPath))
-                .setModelType(stringValue(modelType))
+                .setModelType(stringValue(modelType)).setCurrentStage(currentStage)
                 .setVersionDesc(stringValue(versionDesc)).setModelId(int64Value(modelId)).setProjectSnapshotId(int64Value(projectSnapshotId)).build();
         RegisterModelVersionRequest request = RegisterModelVersionRequest.newBuilder().setModelVersion(modelVersionProto).build();
         Response response = metadataServiceStub.registerModelVersion(request);
