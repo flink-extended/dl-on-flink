@@ -28,20 +28,20 @@ import java.util.Map;
 public class WorkflowMeta {
     private Long uuid;
     private String name;
-    private Long project_id;
+    private Long projectId;
     private Map<String, String> properties;
-    private Long create_time;
-    private Long update_time;
+    private Long createTime;
+    private Long updateTime;
 
     public WorkflowMeta() {}
 
-    public WorkflowMeta(Long uuid, String name, Long project_id, Map<String, String> properties, Long create_time, Long update_time) {
+    public WorkflowMeta(Long uuid, String name, Long projectId, Map<String, String> properties, Long createTime, Long updateTime) {
         this.uuid = uuid;
         this.name = name;
-        this.project_id = project_id;
+        this.projectId = projectId;
         this.properties = properties;
-        this.create_time = create_time;
-        this.update_time = update_time;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
     }
 
     public Long getUuid() {
@@ -60,12 +60,12 @@ public class WorkflowMeta {
         this.name = name;
     }
 
-    public Long getProject_id() {
-        return project_id;
+    public Long getProjectId() {
+        return projectId;
     }
 
-    public void setProject_id(Long project_id) {
-        this.project_id = project_id;
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
     }
 
     public Map<String, String> getProperties() {
@@ -76,20 +76,20 @@ public class WorkflowMeta {
         this.properties = properties;
     }
 
-    public Long getCreate_time() {
-        return create_time;
+    public Long getCreateTime() {
+        return createTime;
     }
 
-    public void setCreate_time(Long create_time) {
-        this.create_time = create_time;
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
     }
 
-    public Long getUpdate_time() {
-        return update_time;
+    public Long getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUpdate_time(Long update_time) {
-        this.update_time = update_time;
+    public void setUpdateTime(Long updateTime) {
+        this.updateTime = updateTime;
     }
 
     @Override
@@ -97,10 +97,10 @@ public class WorkflowMeta {
         return "WorkflowMeta{" +
                 "uuid=" + uuid +
                 ", name='" + name + '\'' +
-                ", project_id=" + project_id +
+                ", projectId=" + projectId +
                 ", properties=" + properties +
-                ", create_time=" + create_time +
-                ", update_time=" + update_time +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
                 '}';
     }
 
