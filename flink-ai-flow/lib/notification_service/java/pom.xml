@@ -157,15 +157,19 @@
                             <relocations>
                                 <relocation>
                                     <pattern>io.grpc</pattern>
-                                    <shadedPattern>ai.flow.io.grpc</shadedPattern>
+                                    <shadedPattern>notification.io.grpc</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>com.google.common</pattern>
-                                    <shadedPattern>ai.flow.com.google.common</shadedPattern>
+                                    <shadedPattern>notification.com.google.common</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>com.google.protobuf</pattern>
-                                    <shadedPattern>ai.flow.com.google.protobuf</shadedPattern>
+                                    <shadedPattern>notification.com.google.protobuf</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.google.api</pattern>
+                                    <shadedPattern>notification.com.google.api</shadedPattern>
                                 </relocation>
                             </relocations>
                             <transformers>
