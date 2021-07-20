@@ -36,7 +36,7 @@
         <protoc.version>3.11.0</protoc.version>
         <commons.lang3.version>3.9</commons.lang3.version>
         <commons.collections4.version>4.4</commons.collections4.version>
-        <junit.version>4.12</junit.version>
+        <junit.version>5.7.2</junit.version>
         <mockito.version>2.28.2</mockito.version>
         <jython.version>2.7.0</jython.version>
         <maven.compiler.version>3.1</maven.compiler.version>
@@ -110,9 +110,15 @@
             <version>${commons.collections4.version}</version>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <version>1.7.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -174,11 +180,15 @@
                                     <pattern>com.google.protobuf</pattern>
                                     <shadedPattern>ai.flow.com.google.protobuf</shadedPattern>
                                 </relocation>
-                                <transformers>
+                                <relocation>
+                                    <pattern>com.google.api</pattern>
+                                    <shadedPattern>ai.flow.com.google.api</shadedPattern>
+                                </relocation>
+                            </relocations>
+                            <transformers>
                                 <transformer implementation=
                                                      "org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-                                </transformers>
-                            </relocations>
+                            </transformers>
                         </configuration>
                     </execution>
                 </executions>
