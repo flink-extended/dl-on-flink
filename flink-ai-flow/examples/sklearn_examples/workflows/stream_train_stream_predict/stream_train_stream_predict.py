@@ -21,9 +21,9 @@ import os
 import ai_flow as af
 from ai_flow.model_center.entity.model_version_stage import ModelVersionEventType
 from ai_flow.util.path_util import get_file_dir
-from batch_train_stream_predict_executor import DatasetReader, DatasetTransformer, ModelTrainer, \
-    ValidateDatasetReader, ValidateTransformer, ModelValidator, ModelPusher, \
-    PredictDatasetReader, PredictTransformer, ModelPredictor, DatasetWriter
+from stream_train_stream_predict_executor import TrainDatasetReader, TrainDatasetTransformer, ModelTrainer, \
+    ValidateDatasetReader, ValidateTransformer, ModelValidator, ModelPusher, PredictDatasetReader, \
+    PredictTransformer, ModelPredictor, DatasetWriter
 
 DATASET_URI = os.path.abspath(os.path.join(__file__, "../../../..")) + '/dataset_data/mnist_{}.npz'
 
@@ -33,29 +33,20 @@ def run_workflow():
 
     artifact_prefix = af.current_project_config().get_project_name() + "."
 
-    # the config of train job is a periodic job  which means it will
-    # run every `interval`(defined in workflow_config.yaml) seconds
     with af.job_config('train'):
         # Register metadata raw training data(dataset) and read dataset(i.e. training dataset)
         train_dataset = af.register_dataset(name=artifact_prefix + 'train_dataset',
                                             uri=DATASET_URI.format('train'))
         train_read_dataset = af.read_dataset(dataset_info=train_dataset,
-                                             read_dataset_processor=DatasetReader())
-
-        # Transform(preprocessing) dataset
+                                             read_dataset_processor=TrainDatasetReader())
         train_transform = af.transform(input=[train_read_dataset],
-                                       transform_processor=DatasetTransformer())
-
-        # Register model metadata and train model
+                                       transform_processor=TrainDatasetTransformer())
         train_model = af.register_model(model_name=artifact_prefix + 'logistic-regression',
                                         model_desc='logistic regression model')
         train_channel = af.train(input=[train_transform],
                                  training_processor=ModelTrainer(),
                                  model_info=train_model)
     with af.job_config('validate'):
-        # Validation of model
-        # Read validation dataset and validate model before it is used to predict
-
         validate_dataset = af.register_dataset(name=artifact_prefix + 'validate_dataset',
                                                uri=DATASET_URI.format('evaluate'))
         validate_read_dataset = af.read_dataset(dataset_info=validate_dataset,
@@ -75,9 +66,7 @@ def run_workflow():
         push_model_artifact = af.register_artifact(name=push_model_artifact_name,
                                                    uri=get_file_dir(__file__) + '/pushed_model')
         af.push_model(model_info=train_model, pushing_model_processor=ModelPusher(push_model_artifact_name))
-
     with af.job_config('predict'):
-        # Prediction(Inference)
         predict_dataset = af.register_dataset(name=artifact_prefix + 'predict_dataset',
                                               uri=DATASET_URI.format('predict'))
         predict_read_dataset = af.read_dataset(dataset_info=predict_dataset,
@@ -87,18 +76,12 @@ def run_workflow():
         predict_channel = af.predict(input=[predict_transform],
                                      model_info=train_model,
                                      prediction_processor=ModelPredictor())
-        # Save prediction result
-        write_dataset = af.register_dataset(name=artifact_prefix + 'write_dataset',
+        write_dataset = af.register_dataset(name=artifact_prefix + 'export_dataset',
                                             uri=get_file_dir(__file__) + '/predict_result')
         af.write_dataset(input=predict_channel,
                          dataset_info=write_dataset,
                          write_dataset_processor=DatasetWriter())
 
-    # Define relation graph connected by control edge:
-    # Once a round of training is done, validator will be launched and
-    # pusher will be launched if the new model is better.
-    # Prediction will start once the first round of training is done and
-    # when pusher pushes(deploys) a new model, the predictor will use the latest deployed model as well.
     af.action_on_model_version_event(job_name='validate',
                                      model_version_event_type=ModelVersionEventType.MODEL_GENERATED,
                                      model_name=train_model.name)
