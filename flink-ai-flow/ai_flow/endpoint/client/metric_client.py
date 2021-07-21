@@ -151,7 +151,7 @@ class MetricClient(BaseClient):
 
         :param metric_name: Name of registered metric meta. This is expected to be unique in the backend store.
 
-        :return: Whether to delete the given metric metadata.
+        :return: True if successfully deleting the given metric metadata, False if not success.
         """
         request = MetricNameRequest(metric_name=metric_name)
         response = self.metric_stub.deleteMetricMeta(request)
