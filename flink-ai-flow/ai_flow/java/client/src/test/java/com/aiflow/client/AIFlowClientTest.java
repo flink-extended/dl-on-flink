@@ -24,6 +24,9 @@ import com.aiflow.common.ModelStage;
 import com.aiflow.common.Status;
 import com.aiflow.entity.ArtifactMeta;
 import com.aiflow.entity.DatasetMeta;
+import com.aiflow.entity.MetricMeta;
+import com.aiflow.entity.MetricSummary;
+import com.aiflow.entity.MetricType;
 import com.aiflow.entity.ModelMeta;
 import com.aiflow.entity.ModelRelationMeta;
 import com.aiflow.entity.ModelVersion;
@@ -694,6 +697,128 @@ public class AIFlowClientTest {
         Assertions.assertEquals("1", detail.getModelVersion());
         client.deleteModelVersion(modelName, "1");
         Assertions.assertNull(client.getModelVersionDetail(modelName, "1"));
+    }
+
+    // test metric center
+
+    @Test
+    public void testDatasetMetricMeta() throws AIFlowException {
+        String metricName = "test_dataset_metric_meta_1";
+        String projectName = "test_dataset_metric_meta_project_1";
+        String datasetName = "test_dataset_metric_meta_dataset_1";
+        String jobName = "test_dataset_metric_meta_job";
+        String tags = "test_dataset_metric_meta";
+        long startTime = System.currentTimeMillis() / 1000;
+        long endTime = startTime + 1;
+
+        client.registerMetricMeta(metricName, MetricType.DATASET, projectName, "", datasetName, null,
+                jobName, startTime, endTime, "uri", tags, EMPTY_MAP);
+        MetricMeta metricMeta = client.getMetricMeta(metricName);
+        Assertions.assertEquals(metricName, metricMeta.getName());
+        Assertions.assertEquals(MetricType.DATASET, metricMeta.getMetricType());
+        Assertions.assertEquals(projectName, metricMeta.getProjectName());
+        Assertions.assertEquals(startTime, metricMeta.getStartTime());
+
+        client.updateMetricMeta(metricName, projectName, "new desc", datasetName, null,
+                jobName, startTime, endTime, "uri", tags, EMPTY_MAP);
+        metricMeta = client.getMetricMeta(metricName);
+        Assertions.assertEquals("new desc", metricMeta.getDescription());
+        System.out.println("desc: " + metricMeta.getDescription());
+
+        client.registerMetricMeta(metricName + "_2", MetricType.DATASET, projectName, "", datasetName, null,
+                jobName, startTime, endTime, "uri", tags, EMPTY_MAP);
+        List<MetricMeta> metricMetaList = client.listDatasetMetricMetas(datasetName, projectName);
+        Assertions.assertEquals(2, metricMetaList.size());
+
+        Assertions.assertTrue(client.deleteMetricMeta(metricName));
+        metricMetaList = client.listDatasetMetricMetas(datasetName, projectName);
+        Assertions.assertEquals(1, metricMetaList.size());
+        Assertions.assertEquals(metricName + "_2", metricMetaList.get(0).getName());
+    }
+
+    @Test
+    public void testModelMetricMeta() throws AIFlowException {
+        String metricName = "test_model_metric_meta_1";
+        String projectName = "test_model_metric_meta_project_1";
+        String modelName = "test_model_metric_meta_model_1";
+        String jobName = "test_model_metric_meta_job";
+        String tags = "test_model_metric_meta";
+        long startTime = System.currentTimeMillis() / 1000;
+        long endTime = startTime + 1;
+
+        client.registerMetricMeta(metricName, MetricType.MODEL, projectName, "", null, modelName,
+                jobName, startTime, endTime, "uri", tags, EMPTY_MAP);
+        MetricMeta metricMeta = client.getMetricMeta(metricName);
+        Assertions.assertEquals(metricName, metricMeta.getName());
+        Assertions.assertEquals(MetricType.MODEL, metricMeta.getMetricType());
+        Assertions.assertEquals(projectName, metricMeta.getProjectName());
+        Assertions.assertEquals(startTime, metricMeta.getStartTime());
+
+        client.updateMetricMeta(metricName, projectName, "new desc", null, modelName,
+                jobName, startTime, endTime, "uri", tags, EMPTY_MAP);
+        metricMeta = client.getMetricMeta(metricName);
+        Assertions.assertEquals("new desc", metricMeta.getDescription());
+        System.out.println("desc: " + metricMeta.getDescription());
+
+        client.registerMetricMeta(metricName + "_2", MetricType.MODEL, projectName, "", null, modelName,
+                jobName, startTime, endTime, "uri", tags, EMPTY_MAP);
+        List<MetricMeta> metricMetaList = client.listModelMetricMetas(modelName, projectName);
+        Assertions.assertEquals(2, metricMetaList.size());
+
+        Assertions.assertTrue(client.deleteMetricMeta(metricName));
+        metricMetaList = client.listModelMetricMetas(modelName, projectName);
+        Assertions.assertEquals(1, metricMetaList.size());
+        Assertions.assertEquals(metricName + "_2", metricMetaList.get(0).getName());
+    }
+
+    @Test
+    public void testMetricSummary() throws AIFlowException {
+        long metricTimestamp = System.currentTimeMillis() / 1000;
+        String metricName = "test_metric_summary_1";
+        String metricKey = "auc";
+        String metricValue = "0.6";
+        String modelVersion = "version1";
+
+        MetricSummary metricSummary = client.registerMetricSummary(metricName, metricKey, metricValue, metricTimestamp, modelVersion, null);
+        metricSummary = client.getMetricSummary(metricSummary.getUuid());
+        Assertions.assertEquals(1, metricSummary.getUuid());
+        Assertions.assertEquals(metricName, metricSummary.getMetricName());
+        Assertions.assertEquals(metricKey, metricSummary.getMetricKey());
+        Assertions.assertEquals(metricValue, metricSummary.getMetricValue());
+        Assertions.assertEquals(metricTimestamp, metricSummary.getMetricTimestamp());
+
+        metricSummary = client.updateMetricSummary(metricSummary.getUuid(), metricName, metricKey, metricValue, metricTimestamp, modelVersion, "job_1");
+        metricSummary = client.getMetricSummary(metricSummary.getUuid());
+        Assertions.assertEquals("job_1", metricSummary.getJobExecutionId());
+
+        String newMetricKey = metricKey + "_new";
+        String newModelVersion = modelVersion + "_new";
+        String newMetricValue = metricValue + "_new";
+        MetricSummary metricSummary2 = client.registerMetricSummary(metricName, newMetricKey, metricValue, metricTimestamp, modelVersion, null);
+        MetricSummary metricSummary3 = client.registerMetricSummary(metricName, newMetricKey, newMetricValue, metricTimestamp, newModelVersion, null);
+        List<MetricSummary> metricSummaryList = client.listMetricSummaries(metricName, null, null, Long.MIN_VALUE, Long.MAX_VALUE);
+        Assertions.assertEquals(3, metricSummaryList.size());
+        Assertions.assertEquals(metricKey, metricSummaryList.get(0).getMetricKey());
+        Assertions.assertEquals(newMetricKey, metricSummaryList.get(1).getMetricKey());
+        Assertions.assertEquals(newMetricKey, metricSummaryList.get(2).getMetricKey());
+
+        metricSummaryList = client.listMetricSummaries(null, newMetricKey, null, Long.MIN_VALUE, Long.MAX_VALUE);
+        Assertions.assertEquals(2, metricSummaryList.size());
+        Assertions.assertEquals(modelVersion, metricSummaryList.get(0).getModelVersion());
+        Assertions.assertEquals(newModelVersion, metricSummaryList.get(1).getModelVersion());
+
+        metricSummaryList = client.listMetricSummaries(null, null, newModelVersion, Long.MIN_VALUE, Long.MAX_VALUE);
+        Assertions.assertEquals(1, metricSummaryList.size());
+        Assertions.assertEquals(newMetricKey, metricSummaryList.get(0).getMetricKey());
+        Assertions.assertEquals(newMetricValue, metricSummaryList.get(0).getMetricValue());
+
+        Assertions.assertTrue(client.deleteMetricSummary(metricSummary2.getUuid()));
+        metricSummaryList = client.listMetricSummaries(metricName, null, null, Long.MIN_VALUE, Long.MAX_VALUE);
+        Assertions.assertEquals(2, metricSummaryList.size());
+        Assertions.assertEquals(metricKey, metricSummaryList.get(0).getMetricKey());
+        Assertions.assertEquals(metricValue, metricSummaryList.get(0).getMetricValue());
+        Assertions.assertEquals(newMetricKey, metricSummaryList.get(1).getMetricKey());
+        Assertions.assertEquals(newMetricValue, metricSummaryList.get(1).getMetricValue());
     }
 
     // test notification service

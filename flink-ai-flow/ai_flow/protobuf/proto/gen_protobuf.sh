@@ -107,6 +107,19 @@ protoc -I/usr/local/include -I. \
   --proto_path=. \
   model_center_service.proto
 
+protoc -I/usr/local/include -I. \
+  -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+  --java_out=${root_dir}/java/client/src/main/java \
+  --proto_path=. \
+  metric_service.proto
+
+protoc -I/usr/local/include -I. \
+  -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+  --plugin=protoc-gen-grpc-java \
+  --grpc-java_out=${root_dir}/java/client/src/main/java \
+  --proto_path=. \
+  metric_service.proto
+
 #generate python file
 python3 -m grpc.tools.protoc -I. \
   -I/usr/local/include \

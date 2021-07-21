@@ -85,7 +85,6 @@ class JavaAIFlowClientTest(unittest.TestCase):
         jar_abs_path = jar_list[0]
         junit_runner = "com.aiflow.client.SingleJUnitTestRunner"
         test_class_and_method = "com.aiflow.client.AIFlowClientTest#{}".format(method)
-        print(test_class_and_method)
         subprocess.check_call(["java", "-cp", jar_abs_path, junit_runner, test_class_and_method], shell=False)
 
     def test_register_dataset(self):
@@ -199,3 +198,11 @@ class JavaAIFlowClientTest(unittest.TestCase):
     def test_listen_notification(self):
         self._run_test_with_java_client('testListenNotification')
 
+    def test_dataset_metric_meta(self):
+        self._run_test_with_java_client('testDatasetMetricMeta')
+
+    def test_model_metric_meta(self):
+        self._run_test_with_java_client('testModelMetricMeta')
+
+    def test_metric_summary(self):
+        self._run_test_with_java_client('testMetricSummary')
