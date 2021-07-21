@@ -19,7 +19,7 @@
 import unittest
 import os
 
-from ai_flow.plugin_interface.scheduler_interface import JobExecutionInfo
+from ai_flow.plugin_interface.scheduler_interface import JobExecutionInfo, WorkflowExecutionInfo, WorkflowInfo
 
 from ai_flow.context.job_context import current_job_name
 from ai_flow.context.project_context import current_project_config
@@ -32,8 +32,13 @@ class TestJobRuntimeContext(unittest.TestCase):
 
     def test_init_job_runtime_context(self):
         working_dir = os.path.dirname(__file__)
-        job_runtime_env = JobRuntimeEnv(working_dir=working_dir, workflow_name='workflow_1',
-                                        job_execution_info=JobExecutionInfo(job_name='task_1'))
+        job_runtime_env = JobRuntimeEnv(working_dir=working_dir,
+                                        job_execution_info=
+                                        JobExecutionInfo(job_name='task_1',
+                                                         workflow_execution=
+                                                         WorkflowExecutionInfo(workflow_execution_id='1',
+                                                                               workflow_info=
+                                                                               WorkflowInfo(workflow_name='workflow_1'))))
         init_job_runtime_context(job_runtime_env)
         self.assertEqual('workflow_1', current_workflow_config().workflow_name)
         self.assertEqual('task_1', current_workflow_config().job_configs[current_job_name()].job_name)
