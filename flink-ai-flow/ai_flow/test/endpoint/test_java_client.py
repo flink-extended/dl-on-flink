@@ -78,7 +78,11 @@ class JavaAIFlowClientTest(unittest.TestCase):
         jar_dir_path = 'java/client/target'
         home_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
         jar_abs_dir_path = os.path.join(home_path, jar_dir_path)
-        jar_abs_path = glob.glob(jar_abs_dir_path + '/aiflow-client-*-jar-with-dependencies.jar')[0]
+        jar_list = glob.glob(jar_abs_dir_path + '/aiflow-client-*-jar-with-dependencies.jar')
+        if len(jar_list) != 1:
+            raise Exception("You must run `mvn package` to build a uber jar before running this test.")
+
+        jar_abs_path = jar_list[0]
         junit_runner = "com.aiflow.client.SingleJUnitTestRunner"
         test_class_and_method = "com.aiflow.client.AIFlowClientTest#{}".format(method)
         print(test_class_and_method)
@@ -194,3 +198,4 @@ class JavaAIFlowClientTest(unittest.TestCase):
 
     def test_listen_notification(self):
         self._run_test_with_java_client('testListenNotification')
+
