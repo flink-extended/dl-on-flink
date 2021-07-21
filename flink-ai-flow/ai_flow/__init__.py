@@ -19,7 +19,8 @@
 from ai_flow.api.ai_flow_context import init_ai_flow_context
 from ai_flow.api import workflow_operation
 from ai_flow.api.ops import read_dataset, write_dataset, transform, train, predict, evaluate, dataset_validate, \
-    model_validate, push_model, user_define_operation, action_on_event, action_on_events, action_on_job_status
+    model_validate, push_model, user_define_operation, action_on_event, action_on_events, action_on_job_status, \
+    action_on_model_version_event, action_on_dataset_event
 from ai_flow.context.project_context import current_project_context, current_project_config
 from ai_flow.context.workflow_config_loader import current_workflow_config
 from ai_flow.context.job_context import job_config
