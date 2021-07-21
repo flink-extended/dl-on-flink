@@ -54,19 +54,5 @@ public class SingleJUnitTestRunner {
             failure.getException().printStackTrace();
         }
         System.exit(summary.getFailures().size() == 0 ? 0 : 1);
-
-/*
-        Request request = Request.method(Class.forName(classAndMethod[0]),
-                classAndMethod[1]);
-
-        Result result = new JUnitCore().run(request);
-        for (Failure f : result.getFailures()) {
-            System.out.println(f.getDescription());
-            System.out.println(f.get.getTrimmedTrace());
-            System.out.println(f.getTrace());
-            System.out.println(f.getException());
-        }
-
-        System.exit(result.wasSuccessful() ? 0 : 1);*/
     }
 }
