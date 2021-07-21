@@ -17,31 +17,30 @@
 # under the License.
 #
 import os
-import ai_flow as af
-from batch_train_batch_predict_executor import ExampleReader, ExampleTransformer, ModelTrainer, EvaluateExampleReader, \
-    EvaluateTransformer, ModelEvaluator, ValidateExampleReader, ValidateTransformer, ModelValidator, ModelPusher, \
-    PredictExampleReader, PredictTransformer, ModelPredictor, ExampleWriter
-from ai_flow.util.path_util import get_file_dir
-from ai_flow_plugins.job_plugins import python
 
-EXAMPLE_URI = os.path.abspath(os.path.join(__file__, "../../../..")) + '/example_data/mnist_{}.npz'
+import ai_flow as af
+from ai_flow.util.path_util import get_file_dir
+from batch_train_batch_predict_executor import DatasetReader, DatasetTransformer, ModelTrainer, EvaluateDatasetReader, \
+    EvaluateTransformer, ModelEvaluator, ValidateDatasetReader, ValidateTransformer, ModelValidator, ModelPusher, \
+    PredictDatasetReader, PredictTransformer, ModelPredictor, DatasetWriter
+
+DATASET_URI = os.path.abspath(os.path.join(__file__, "../../../..")) + '/dataset_data/mnist_{}.npz'
 
 
 def run_workflow():
-
     af.init_ai_flow_context()
     artifact_prefix = af.current_project_config().get_project_name() + "."
     with af.job_config('train'):
         # Training of model
-        # Register metadata raw training data(example) and read example(i.e. training dataset)
-        train_example = af.register_dataset(name=artifact_prefix + 'train_example',
-                                            uri=EXAMPLE_URI.format('train'))
-        train_read_example = af.read_dataset(dataset_info=train_example,
-                                             read_dataset_processor=ExampleReader())
+        # Register metadata raw training data(dataset) and read dataset(i.e. training dataset)
+        train_dataset = af.register_dataset(name=artifact_prefix + 'train_dataset',
+                                            uri=DATASET_URI.format('train'))
+        train_read_dataset = af.read_dataset(dataset_info=train_dataset,
+                                             read_dataset_processor=DatasetReader())
 
-        # Transform(preprocessing) example
-        train_transform = af.transform(input=[train_read_example],
-                                       transform_processor=ExampleTransformer())
+        # Transform(preprocessing) dataset
+        train_transform = af.transform(input=[train_read_dataset],
+                                       transform_processor=DatasetTransformer())
 
         # Register model metadata and train model
         train_model = af.register_model(model_name=artifact_prefix + 'logistic-regression',
@@ -52,11 +51,11 @@ def run_workflow():
 
     with af.job_config('evaluate'):
         # Evaluation of model
-        evaluate_example = af.register_dataset(name=artifact_prefix + 'evaluate_example',
-                                               uri=EXAMPLE_URI.format('evaluate'))
-        evaluate_read_example = af.read_dataset(dataset_info=evaluate_example,
-                                                read_dataset_processor=EvaluateExampleReader())
-        evaluate_transform = af.transform(input=[evaluate_read_example],
+        evaluate_dataset = af.register_dataset(name=artifact_prefix + 'evaluate_dataset',
+                                               uri=DATASET_URI.format('evaluate'))
+        evaluate_read_dataset = af.read_dataset(dataset_info=evaluate_dataset,
+                                                read_dataset_processor=EvaluateDatasetReader())
+        evaluate_transform = af.transform(input=[evaluate_read_dataset],
                                           transform_processor=EvaluateTransformer())
         # Register disk path used to save evaluate result
         evaluate_artifact_name = artifact_prefix + 'evaluate_artifact'
@@ -71,11 +70,11 @@ def run_workflow():
         # Validation of model
         # Read validation dataset and validate model before it is used to predict
 
-        validate_example = af.register_dataset(name=artifact_prefix + 'validate_example',
-                                               uri=EXAMPLE_URI.format('evaluate'))
-        validate_read_example = af.read_dataset(dataset_info=validate_example,
-                                                read_dataset_processor=ValidateExampleReader())
-        validate_transform = af.transform(input=[validate_read_example],
+        validate_dataset = af.register_dataset(name=artifact_prefix + 'validate_dataset',
+                                               uri=DATASET_URI.format('evaluate'))
+        validate_read_dataset = af.read_dataset(dataset_info=validate_dataset,
+                                                read_dataset_processor=ValidateDatasetReader())
+        validate_transform = af.transform(input=[validate_read_dataset],
                                           transform_processor=ValidateTransformer())
         validate_artifact_name = artifact_prefix + 'validate_artifact'
         validate_artifact = af.register_artifact(name=validate_artifact_name,
@@ -93,21 +92,21 @@ def run_workflow():
 
     with af.job_config('predict'):
         # Prediction(Inference)
-        predict_example = af.register_dataset(name=artifact_prefix + 'predict_example',
-                                              uri=EXAMPLE_URI.format('predict'))
-        predict_read_example = af.read_dataset(dataset_info=predict_example,
-                                               read_dataset_processor=PredictExampleReader())
-        predict_transform = af.transform(input=[predict_read_example],
+        predict_dataset = af.register_dataset(name=artifact_prefix + 'predict_dataset',
+                                              uri=DATASET_URI.format('predict'))
+        predict_read_dataset = af.read_dataset(dataset_info=predict_dataset,
+                                               read_dataset_processor=PredictDatasetReader())
+        predict_transform = af.transform(input=[predict_read_dataset],
                                          transform_processor=PredictTransformer())
         predict_channel = af.predict(input=[predict_transform],
                                      model_info=train_model,
                                      prediction_processor=ModelPredictor())
         # Save prediction result
-        write_example = af.register_dataset(name=artifact_prefix + 'write_example',
+        write_dataset = af.register_dataset(name=artifact_prefix + 'write_dataset',
                                             uri=get_file_dir(__file__) + '/predict_result')
         af.write_dataset(input=predict_channel,
-                         dataset_info=write_example,
-                         write_dataset_processor=ExampleWriter())
+                         dataset_info=write_dataset,
+                         write_dataset_processor=DatasetWriter())
 
         # Define relation graph connected by control edge: train -> evaluate -> validate -> push -> predict
         af.action_on_job_status('evaluate', 'train')
