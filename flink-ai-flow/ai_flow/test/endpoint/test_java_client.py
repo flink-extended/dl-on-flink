@@ -73,10 +73,12 @@ class JavaAIFlowClientTest(unittest.TestCase):
 
     @staticmethod
     def _run_test_with_java_client(method):
-        jar_path = 'java/client/target/aiflow-client-1.0-SNAPSHOT-jar-with-dependencies.jar'
-        home_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        jar_abs_path = os.path.join(home_path, jar_path)
+        import glob
 
+        jar_dir_path = 'java/client/target'
+        home_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        jar_abs_dir_path = os.path.join(home_path, jar_dir_path)
+        jar_abs_path = glob.glob(jar_abs_dir_path + '/aiflow-client-*-jar-with-dependencies.jar')[0]
         junit_runner = "com.aiflow.client.SingleJUnitTestRunner"
         test_class_and_method = "com.aiflow.client.AIFlowClientTest#{}".format(method)
         print(test_class_and_method)

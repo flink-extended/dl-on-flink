@@ -738,9 +738,6 @@ public class AIFlowClientTest {
             @Override
             public void process(List<EventMeta> list) {
                 Assertions.assertTrue(list.size() > 0);
-                for (EventMeta e: list) {
-                    System.out.println(e);
-                }
             }
         }
         TestWatcher watcher = new TestWatcher();
