@@ -9,6 +9,7 @@
 ```
 cd flink-ai-flow/docs/
 bash docgen.sh
+make clean html
 ```
 
 After building, you can view the local document in your browser by typing `open ./_build/html/index.html` in your terminal.
