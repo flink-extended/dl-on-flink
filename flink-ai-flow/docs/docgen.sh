@@ -20,7 +20,7 @@
 set -e
 
 docs=$(dirname "${BASH_SOURCE[0]}")
-docs=$(cd "docs"; pwd)
+docs=$(cd "$docs"; pwd)
 workdir=$docs
 tmpdir="$workdir"/__tmp
 cd "$workdir"
@@ -33,4 +33,3 @@ rm "$tmpdir"/*
 sphinx-apidoc -f -M -o "$tmpdir"/ "$workdir"/../ai_flow_plugins "$workdir"/../ai_flow_plugins/*test*
 cp -a "$tmpdir"/. "$workdir"/source_rst/
 rm -r "$tmpdir"
-make clean html
