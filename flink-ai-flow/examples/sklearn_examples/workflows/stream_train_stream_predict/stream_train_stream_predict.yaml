@@ -16,8 +16,15 @@
 ## specific language governing permissions and limitations
 ## under the License.
 ##
-project_name: sklearn_examples
-server_ip: localhost
-server_port: 50051
-blob:
-  blob_manager_class: ai_flow_plugins.blob_manager_plugins.local_blob_manager.LocalBlobManager
+
+train:
+  job_type: python
+
+validate:
+  job_type: python
+
+push:
+  job_type: python
+
+predict:
+  job_type: python

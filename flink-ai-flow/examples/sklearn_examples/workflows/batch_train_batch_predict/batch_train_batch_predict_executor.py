@@ -43,7 +43,7 @@ def preprocess_data(x_data, y_data=None):
         return x_data[permutation], y_data[permutation]
 
 
-class ExampleReader(PythonProcessor):
+class DatasetReader(PythonProcessor):
 
     def process(self, execution_context: ExecutionContext, input_list: List) -> List:
         dataset_meta: af.DatasetMeta = execution_context.config.get('dataset')
@@ -52,7 +52,7 @@ class ExampleReader(PythonProcessor):
         return [[x_train, y_train]]
 
 
-class ExampleTransformer(PythonProcessor):
+class DatasetTransformer(PythonProcessor):
 
     def process(self, execution_context: ExecutionContext, input_list: List) -> List:
         x_train, y_train = preprocess_data(input_list[0][0], input_list[0][1])
@@ -79,7 +79,7 @@ class ModelTrainer(PythonProcessor):
         return []
 
 
-class EvaluateExampleReader(PythonProcessor):
+class EvaluateDatasetReader(PythonProcessor):
 
     def process(self, execution_context: ExecutionContext, input_list: List) -> List:
         dataset_meta: af.DatasetMeta = execution_context.config.get('dataset')
@@ -121,7 +121,7 @@ class ModelEvaluator(PythonProcessor):
         return []
 
 
-class ValidateExampleReader(PythonProcessor):
+class ValidateDatasetReader(PythonProcessor):
 
     def process(self, execution_context: ExecutionContext, input_list: List) -> List:
         dataset_meta: af.DatasetMeta = execution_context.config.get('dataset')
@@ -214,7 +214,7 @@ class ModelPusher(PythonProcessor):
         return []
 
 
-class PredictExampleReader(PythonProcessor):
+class PredictDatasetReader(PythonProcessor):
 
     def process(self, execution_context: ExecutionContext, input_list: List) -> List:
         dataset_meta: af.DatasetMeta = execution_context.config.get('dataset')
@@ -243,7 +243,7 @@ class ModelPredictor(PythonProcessor):
         return [clf.predict(input_list[0][0])]
 
 
-class ExampleWriter(PythonProcessor):
+class DatasetWriter(PythonProcessor):
 
     def process(self, execution_context: ExecutionContext, input_list: List) -> List:
         dataset_meta: af.DatasetMeta = execution_context.config.get('dataset')
