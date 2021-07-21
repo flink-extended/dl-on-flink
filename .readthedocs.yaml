@@ -1,0 +1,39 @@
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+version: 2
+formats: all
+sphinx:
+  configuration: flink-ai-flow/docs/conf.py
+  fail_on_warning: false
+
+build:
+  image: latest
+  apt_packages:
+    - default-libmysqlclient-dev
+    - build-essential
+
+python:
+  # For available versions, see:
+  # https://docs.readthedocs.io/en/stable/config-file/v2.html#build-image
+  version: 3.7  # Flink AI Flow currently only support py3.7
+  install:
+    - method: pip
+      path: flink-ai-flow/
+    - method: pip
+      path: flink-ai-flow/lib/notification_service
+    - method: pip
+      path: flink-ai-flow/lib/airflow
