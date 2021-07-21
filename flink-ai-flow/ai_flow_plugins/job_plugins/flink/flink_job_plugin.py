@@ -128,6 +128,7 @@ class FlinkJobController(JobController):
             flink_env_file = os.path.join(job_runtime_env.generated_dir, flink_job.flink_env_file)
             # Add PYTHONPATH
             copy_path = sys.path.copy()
+            copy_path.insert(0, job_runtime_env.workflow_dir)
             copy_path.insert(0, job_runtime_env.python_dep_dir)
             env['PYTHONPATH'] = ':'.join(copy_path)
 
@@ -143,8 +144,7 @@ class FlinkJobController(JobController):
                     bash_command.extend(job_config.flink_run_args)
 
                 bash_command.append('-pyfs')
-                files = [job_runtime_env.workflow_entry_file,
-                         job_runtime_env.workflow_config_file]
+                files = [job_runtime_env.workflow_dir]
                 if os.path.exists(job_runtime_env.python_dep_dir):
                     files.append(job_runtime_env.python_dep_dir)
                 bash_command.append(','.join(files))
