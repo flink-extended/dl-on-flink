@@ -41,16 +41,12 @@ def prepare_job_runtime_env(workflow_snapshot_id,
                                job_execution_info.job_name,
                                str(time.strftime("%Y%m%d%H%M%S", time.localtime())))
     job_runtime_env: JobRuntimeEnv = JobRuntimeEnv(working_dir=working_dir,
-                                                   workflow_name=workflow_name,
                                                    job_execution_info=job_execution_info)
     if not os.path.exists(working_dir):
         os.makedirs(job_runtime_env.log_dir)
-        job_runtime_env.save_workflow_name()
         job_runtime_env.save_job_execution_info()
-        os.symlink(project_context.get_workflow_entry_file(workflow_name=workflow_name),
-                   os.path.join(working_dir, '{}.py'.format(workflow_name)))
-        os.symlink(project_context.get_workflow_config_file(workflow_name=workflow_name),
-                   os.path.join(working_dir, '{}.yaml'.format(workflow_name)))
+        os.symlink(project_context.get_workflow_path(workflow_name=workflow_name),
+                   os.path.join(working_dir, workflow_name))
         if os.path.exists(project_context.get_generated_path()):
             os.symlink(os.path.join(project_context.get_generated_path(),
                                     workflow_snapshot_id,

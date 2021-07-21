@@ -18,30 +18,14 @@ import unittest
 import os
 import time
 import shutil
-from typing import List
 
 from ai_flow import AIFlowServerRunner, init_ai_flow_context
 from ai_flow.workflow.status import Status
 from ai_flow_plugins.job_plugins import python
 import ai_flow as af
-from ai_flow_plugins.job_plugins.python.python_processor import ExecutionContext
+from test_python_processor import PyProcessor1, PyProcessor2
 
 project_path = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-
-
-class PyProcessor1(python.PythonProcessor):
-
-    def process(self, execution_context: ExecutionContext, input_list: List) -> List:
-        print("Zhang san hello world!")
-        return []
-
-
-class PyProcessor2(python.PythonProcessor):
-
-    def process(self, execution_context: ExecutionContext, input_list: List) -> List:
-        print("Li si hello world!")
-        time.sleep(100)
-        return []
 
 
 class TestPython(unittest.TestCase):

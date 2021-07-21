@@ -34,10 +34,8 @@ class JobRuntimeEnv(object):
 
     def __init__(self,
                  working_dir: Text,
-                 workflow_name: Text = None,
                  job_execution_info: JobExecutionInfo = None):
         self._working_dir: Text = working_dir
-        self._workflow_name: Text = workflow_name
         self._job_execution_info: JobExecutionInfo = job_execution_info
         self._workflow_config: WorkflowConfig = None
         self._project_config: ProjectConfig = None
@@ -54,10 +52,14 @@ class JobRuntimeEnv(object):
         """
         return: The name of the workflow which the job belongs.
         """
-        if self._workflow_name is None:
-            self._workflow_name = serialization_utils.read_object_from_serialized_file(
-                os.path.join(self.working_dir, 'workflow_name'))
-        return self._workflow_name
+        return self.job_execution_info.workflow_execution.workflow_info.workflow_name
+
+    @property
+    def workflow_dir(self) -> Text:
+        """
+        return: The directory of the workflow file.
+        """
+        return os.path.join(self.working_dir, self.workflow_name)
 
     @property
     def job_name(self) -> Text:
@@ -139,7 +141,7 @@ class JobRuntimeEnv(object):
         """
         return: The workflow configuration file path.
         """
-        return os.path.join(self.working_dir, '{}.yaml'.format(self.workflow_name))
+        return os.path.join(self.workflow_dir, '{}.yaml'.format(self.workflow_name))
 
     @property
     def workflow_config(self) -> WorkflowConfig:
@@ -155,7 +157,7 @@ class JobRuntimeEnv(object):
         """
         return: The path of file that defines the workflow.
         """
-        return os.path.join(self.working_dir, '{}.py'.format(self.workflow_name))
+        return os.path.join(self.workflow_dir, '{}.py'.format(self.workflow_name))
 
     @property
     def job_execution_info(self) -> JobExecutionInfo:
@@ -166,15 +168,6 @@ class JobRuntimeEnv(object):
             self._job_execution_info = serialization_utils.read_object_from_serialized_file(
                 os.path.join(self.working_dir, 'job_execution_info'))
         return self._job_execution_info
-
-    def save_workflow_name(self):
-        if self._workflow_name is None:
-            return
-        file_path = os.path.join(self.working_dir, 'workflow_name')
-        if os.path.exists(file_path):
-            os.remove(file_path)
-        with open(file_path, 'wb') as fp:
-            fp.write(serialization_utils.serialize(self._workflow_name))
 
     def save_job_execution_info(self):
         if self._job_execution_info is None:
