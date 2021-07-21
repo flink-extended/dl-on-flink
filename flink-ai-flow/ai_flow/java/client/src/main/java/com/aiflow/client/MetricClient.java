@@ -34,6 +34,7 @@ import io.grpc.ManagedChannelBuilder;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import static com.aiflow.common.Constant.SERVER_URI;
 import static com.aiflow.util.Transform.int64Value;
@@ -71,7 +72,7 @@ public class MetricClient {
      * @param tags          Tags of registered metric meta.
      * @param properties    Properties of registered metric meta.
      *
-     * @return A single :py:class:`ai_flow.meta.metric_meta.MetricMeta` object.
+     * @return The {@link MetricMeta} object that is registered.
      */
     public MetricMeta registerMetricMeta(String name, MetricType metricType, String projectName, String description, String datasetName, String modelName,
                                          String jobName, long startTime, long endTime, String uri, String tags, Map<String, String> properties) throws AIFlowException {
@@ -90,7 +91,7 @@ public class MetricClient {
     }
 
     /**
-     * Update a MetricMeta in metric center.
+     * Update a MetricMeta in Metric Center.
      *
      * @param name          Name of registered metric meta. This is expected to be unique in the backend store.
      * @param projectName   Name of the project associated with the registered metric meta.
@@ -104,7 +105,7 @@ public class MetricClient {
      * @param tags          Tags of registered metric meta.
      * @param properties    Properties of registered metric meta.
      *
-     * @return A single :py:class:`ai_flow.meta.metric_meta.MetricMeta` object.
+     * @return The {@link MetricMeta} object that is updated.
      */
     public MetricMeta updateMetricMeta(String name, String projectName, String description, String datasetName, String modelName,
                                        String jobName, long startTime, long endTime, String uri, String tags, Map<String, String> properties) throws AIFlowException {
@@ -143,7 +144,7 @@ public class MetricClient {
      * Get metric metadata detail filter by metric name for Metric Center.
      *
      * @param metricName Name of registered metric meta. This is expected to be unique in the backend store.
-     * @return A single :py:class:`ai_flow.meta.metric_meta.MetricMeta` object.
+     * @return A {@link MetricMeta} object.
      * @throws AIFlowException
      */
     public MetricMeta getMetricMeta(String metricName) throws AIFlowException {
@@ -161,7 +162,7 @@ public class MetricClient {
      *
      * @param datasetName Name of the dataset associated with the registered metric meta.
      * @param projectName Name of the project associated with the registered metric meta.
-     * @return List of :py:class:`ai_flow.meta.metric_meta.MetricMeta` objects.
+     * @return List of {@link MetricMeta} objects.
      * @throws AIFlowException
      */
     public List<MetricMeta> listDatasetMetricMetas(String datasetName, String projectName) throws AIFlowException {
@@ -180,7 +181,7 @@ public class MetricClient {
      *
      * @param modelName     Name of the model associated with the registered metric meta.
      * @param projectName   Name of the project associated with the registered metric meta.
-     * @return List of :py:class:`ai_flow.meta.metric_meta.MetricMeta` objects.
+     * @return List of {@link MetricMeta} objects.
      * @throws AIFlowException
      */
     public List<MetricMeta> listModelMetricMetas(String modelName, String projectName) throws AIFlowException {
@@ -203,7 +204,7 @@ public class MetricClient {
      * @param metricTimestamp   Timestamp of registered metric summary.
      * @param modelVersion      Version of the model version associated with the registered metric summary.
      * @param jobExecutionId    ID of the job execution associated with the registered metric summary.
-     * @return A single :py:class:`ai_flow.meta.metric_meta.MetricSummary` object.
+     * @return The {@link MetricSummary} object that is registered.
      * @throws AIFlowException
      */
     public MetricSummary registerMetricSummary(String metricName, String metricKey, String metricValue, long metricTimestamp,
@@ -231,7 +232,7 @@ public class MetricClient {
      * @param metricTimestamp   Timestamp of registered metric summary.
      * @param modelVersion      Version of the model version associated with the registered metric summary.
      * @param jobExecutionId    ID of the job execution associated with the registered metric summary.
-     * @return A single :py:class:`ai_flow.meta.metric_meta.MetricSummary` object.
+     * @return The {@link MetricSummary}  object that is updated.
      * @throws AIFlowException
      */
     public MetricSummary updateMetricSummary(long uuid, String metricName, String metricKey, String metricValue, long metricTimestamp,
@@ -269,7 +270,7 @@ public class MetricClient {
      * Get metric summary detail filter by summary uuid for Metric Center.
      *
      * @param uuid UUID of registered metric summary.
-     * @return A single :py:class:`ai_flow.meta.metric_meta.MetricSummary` object.
+     * @return A {@link MetricSummary}  object.
      * @throws AIFlowException
      */
     public MetricSummary getMetricSummary(long uuid) throws AIFlowException {
@@ -290,7 +291,7 @@ public class MetricClient {
      * @param modelVersion  Version of the model version associated with the registered metric summary.
      * @param startTime     Start time for timestamp filtered metric summary.
      * @param endTime       End time for timestamp filtered metric summary.
-     * @return List of :py:class:`ai_flow.meta.metric_meta.MetricSummary` objects.
+     * @return List of {@link MetricSummary} objects.
      * @throws AIFlowException
      */
     public List<MetricSummary> listMetricSummaries(String metricName, String metricKey, String modelVersion,
