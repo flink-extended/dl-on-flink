@@ -79,6 +79,7 @@ class PythonJobController(JobController):
             env.update(job.job_config.properties.get('env'))
         # Add PYTHONPATH
         copy_path = sys.path.copy()
+        copy_path.insert(0, job_runtime_env.workflow_dir)
         copy_path.insert(0, job_runtime_env.python_dep_dir)
         env['PYTHONPATH'] = ':'.join(copy_path)
 
