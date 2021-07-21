@@ -50,6 +50,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+/***
+ * This test class is used by python test `flink-ai-flow.ai_flow.test.endpoint.test_java_client.py`,
+ * so it cannot run individually.
+ */
 public class AIFlowClientTest {
 
     private static final String LOCALHOST = "localhost";
@@ -70,8 +74,6 @@ public class AIFlowClientTest {
         client.stopListenEvent("default", "");
     }
 
-
-
     private static String getProperties(String key) throws IOException {
         InputStream in = new Object() {
             public InputStream getInputStream() {
@@ -81,10 +83,6 @@ public class AIFlowClientTest {
         Properties properties = new Properties();
         properties.load(in);
         return properties.getProperty(key);
-    }
-
-    public static void main(String[] args) throws IOException {
-        System.out.println(getProperties("port"));
     }
 
     // test dataset
@@ -767,10 +765,5 @@ public class AIFlowClientTest {
         client.sendEvent(namespace, key2, value3, eventType2, context);
         Thread.sleep(1 * 1000);
         client.stopListenEvent(namespace, key2);
-    }
-
-    @Test
-    public void testFalse() {
-        Assertions.assertFalse(true);
     }
 }
