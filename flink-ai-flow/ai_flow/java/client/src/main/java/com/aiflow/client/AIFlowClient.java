@@ -20,6 +20,7 @@ package com.aiflow.client;
 
 import com.aiflow.common.*;
 import com.aiflow.entity.*;
+import com.aiflow.exception.AIFlowException;
 import com.aiflow.notification.client.EventWatcher;
 import com.aiflow.notification.client.NotificationClient;
 import com.aiflow.notification.entity.EventMeta;
@@ -40,6 +41,7 @@ public class AIFlowClient {
   private final MetadataClient metadataClient;
   private final ModelCenterClient modelCenterClient;
   private final NotificationClient notificationClient;
+  private final MetricClient metricClient;
 
   public AIFlowClient(
       String target,
@@ -76,6 +78,7 @@ public class AIFlowClient {
             listMemberIntervalMs,
             retryIntervalMs,
             retryTimeoutMs);
+    this.metricClient = new MetricClient(channel);
   }
 
   /**
@@ -925,5 +928,168 @@ public class AIFlowClient {
      */
     public long getLatestVersion(String namespace, String key) throws Exception {
         return this.notificationClient.getLatestVersion(namespace, key);
+    }
+
+    /**
+     * Register a MetricMeta in metric center.
+     *
+     * @param name          Name of registered metric meta. This is expected to be unique in the backend store.
+     * @param metricType    Type of registered metric meta.
+     * @param projectName   Name of the project associated with the registered metric meta.
+     * @param description   Name of registered model.
+     * @param datasetName   Name of the dataset associated with the registered metric meta.
+     * @param modelName     Name of the model associated with the registered metric meta.
+     * @param jobName       Name of the job associated with the registered metric meta.
+     * @param startTime     Start time of registered metric meta.
+     * @param endTime       End time of registered metric meta.
+     * @param uri           Uri of registered metric meta.
+     * @param tags          Tags of registered metric meta.
+     * @param properties    Properties of registered metric meta.
+     *
+     * @return A single :py:class:`ai_flow.meta.metric_meta.MetricMeta` object.
+     */
+    public MetricMeta registerMetricMeta(String name, MetricType metricType, String projectName, String description, String datasetName, String modelName,
+                                         String jobName, long startTime, long endTime, String uri, String tags, Map<String, String> properties) throws AIFlowException {
+        return this.metricClient.registerMetricMeta(name, metricType, projectName, description, datasetName, modelName, jobName, startTime, endTime, uri, tags, properties);
+    }
+
+    /**
+     * Update a MetricMeta in metric center.
+     *
+     * @param name          Name of registered metric meta. This is expected to be unique in the backend store.
+     * @param projectName   Name of the project associated with the registered metric meta.
+     * @param description   Name of registered model.
+     * @param datasetName   Name of the dataset associated with the registered metric meta.
+     * @param modelName     Name of the model associated with the registered metric meta.
+     * @param jobName       Name of the job associated with the registered metric meta.
+     * @param startTime     Start time of registered metric meta.
+     * @param endTime       End time of registered metric meta.
+     * @param uri           Uri of registered metric meta.
+     * @param tags          Tags of registered metric meta.
+     * @param properties    Properties of registered metric meta.
+     *
+     * @return A single :py:class:`ai_flow.meta.metric_meta.MetricMeta` object.
+     */
+    public MetricMeta updateMetricMeta(String name, String projectName, String description, String datasetName, String modelName,
+                                       String jobName, long startTime, long endTime, String uri, String tags, Map<String, String> properties) throws AIFlowException {
+        return this.metricClient.updateMetricMeta(name, projectName, description, datasetName, modelName, jobName, startTime, endTime, uri, tags, properties);
+    }
+
+    /***
+     * Delete metric metadata by metric name in Metric Center backend.
+     *
+     * @param metricName Name of registered metric meta. This is expected to be unique in the backend store.
+     *
+     * @return True if successfully deleting the given metric metadata, false if not success.
+     */
+    public boolean deleteMetricMeta(String metricName) {
+        return this.metricClient.deleteMetricMeta(metricName);
+    }
+
+    /***
+     * Get metric metadata detail filter by metric name for Metric Center.
+     *
+     * @param metricName Name of registered metric meta. This is expected to be unique in the backend store.
+     * @return A single :py:class:`ai_flow.meta.metric_meta.MetricMeta` object.
+     * @throws AIFlowException
+     */
+    public MetricMeta getMetricMeta(String metricName) throws AIFlowException {
+        return this.metricClient.getMetricMeta(metricName);
+    }
+
+    /***
+     * List dataset metric metadata filter by dataset name and project name for Metric Center.
+     *
+     * @param datasetName Name of the dataset associated with the registered metric meta.
+     * @param projectName Name of the project associated with the registered metric meta.
+     * @return List of :py:class:`ai_flow.meta.metric_meta.MetricMeta` objects.
+     * @throws AIFlowException
+     */
+    public List<MetricMeta> listDatasetMetricMetas(String datasetName, String projectName) throws AIFlowException {
+        return this.metricClient.listDatasetMetricMetas(datasetName, projectName);
+    }
+
+    /***
+     * List model metric metadata filter by model name and project name for Metric Center.
+     *
+     * @param modelName     Name of the model associated with the registered metric meta.
+     * @param projectName   Name of the project associated with the registered metric meta.
+     * @return List of :py:class:`ai_flow.meta.metric_meta.MetricMeta` objects.
+     * @throws AIFlowException
+     */
+    public List<MetricMeta> listModelMetricMetas(String modelName, String projectName) throws AIFlowException {
+        return this.metricClient.listModelMetricMetas(modelName, projectName);
+    }
+
+    /***
+     * Register metric summary in Metric Center.
+     *
+     * @param metricName        Name of registered metric summary.
+     * @param metricKey         Key of registered metric summary.
+     * @param metricValue       Value of registered metric summary.
+     * @param metricTimestamp   Timestamp of registered metric summary.
+     * @param modelVersion      Version of the model version associated with the registered metric summary.
+     * @param jobExecutionId    ID of the job execution associated with the registered metric summary.
+     * @return A single :py:class:`ai_flow.meta.metric_meta.MetricSummary` object.
+     * @throws AIFlowException
+     */
+    public MetricSummary registerMetricSummary(String metricName, String metricKey, String metricValue, long metricTimestamp,
+                                               String modelVersion, String jobExecutionId) throws AIFlowException {
+        return this.metricClient.registerMetricSummary(metricName, metricKey, metricValue, metricTimestamp, modelVersion, jobExecutionId);
+    }
+
+    /***
+     * Update metric summary in Metric Center.
+     *
+     * @param uuid              UUID of registered metric summary.
+     * @param metricName        Name of registered metric summary.
+     * @param metricKey         Key of registered metric summary.
+     * @param metricValue       Value of registered metric summary.
+     * @param metricTimestamp   Timestamp of registered metric summary.
+     * @param modelVersion      Version of the model version associated with the registered metric summary.
+     * @param jobExecutionId    ID of the job execution associated with the registered metric summary.
+     * @return A single :py:class:`ai_flow.meta.metric_meta.MetricSummary` object.
+     * @throws AIFlowException
+     */
+    public MetricSummary updateMetricSummary(long uuid, String metricName, String metricKey, String metricValue, long metricTimestamp,
+                                             String modelVersion, String jobExecutionId) throws AIFlowException {
+        return this.metricClient.updateMetricSummary(uuid, metricName, metricKey, metricValue, metricTimestamp, modelVersion, jobExecutionId);
+    }
+
+    /***
+     * Delete metric summary by metric uuid in Metric Center backend.
+     *
+     * @param uuid UUID of registered metric summary.
+     * @return Whether to delete the given metric summary.
+     */
+    public boolean deleteMetricSummary(long uuid) {
+        return this.metricClient.deleteMetricSummary(uuid);
+    }
+
+    /***
+     * Get metric summary detail filter by summary uuid for Metric Center.
+     *
+     * @param uuid UUID of registered metric summary.
+     * @return A single :py:class:`ai_flow.meta.metric_meta.MetricSummary` object.
+     * @throws AIFlowException
+     */
+    public MetricSummary getMetricSummary(long uuid) throws AIFlowException {
+        return this.metricClient.getMetricSummary(uuid);
+    }
+
+    /***
+     * List of metric summaries filter by metric summary fields for Metric Center.
+     *
+     * @param metricName    Name of filtered metric summary.
+     * @param metricKey     Key of filtered metric summary.
+     * @param modelVersion  Version of the model version associated with the registered metric summary.
+     * @param startTime     Start time for timestamp filtered metric summary.
+     * @param endTime       End time for timestamp filtered metric summary.
+     * @return List of :py:class:`ai_flow.meta.metric_meta.MetricSummary` objects.
+     * @throws AIFlowException
+     */
+    public List<MetricSummary> listMetricSummaries(String metricName, String metricKey, String modelVersion,
+                                                   long startTime, long endTime) throws AIFlowException {
+        return this.metricClient.listMetricSummaries(metricName, metricKey, modelVersion, startTime, endTime);
     }
 }
