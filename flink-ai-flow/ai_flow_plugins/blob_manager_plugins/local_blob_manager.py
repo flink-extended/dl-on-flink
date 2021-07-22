@@ -17,6 +17,7 @@
 # under the License.
 #
 import os
+import shutil
 import tempfile
 import zipfile
 from typing import Text, Dict, Any
@@ -55,7 +56,7 @@ class LocalBlobManager(BlobManager):
                 temp_dir_path = Path(temp_dir)
                 zip_file_path = temp_dir_path / zip_file_name
                 make_dir_zipfile(project_path, zip_file_path)
-                os.rename(zip_file_path, upload_file_path)
+                shutil.move(zip_file_path, upload_file_path)
                 return str(upload_file_path)
         else:
             return project_path
