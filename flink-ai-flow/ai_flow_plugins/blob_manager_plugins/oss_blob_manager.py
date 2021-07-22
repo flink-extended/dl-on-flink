@@ -19,6 +19,8 @@
 import os
 import tempfile
 import zipfile
+import fcntl
+import time
 from typing import Text, Dict, Any
 from pathlib import Path
 import oss2
@@ -75,16 +77,34 @@ class OssBlobManager(BlobManager):
         local_zip_file_name = 'workflow_{}_project'.format(workflow_snapshot_id)
         oss_object_key = remote_path
         if local_path is not None:
-            tmp_dir = Path(local_path)
+            repo_path = Path(local_path)
         elif self._local_repo is not None:
-            tmp_dir = Path(self._local_repo)
+            repo_path = Path(self._local_repo)
         else:
-            tmp_dir = Path(tempfile.gettempdir())
-        local_zip_file_path = str(tmp_dir / local_zip_file_name) + '.zip'
+            repo_path = Path(tempfile.gettempdir())
+        local_zip_file_path = str(repo_path / local_zip_file_name) + '.zip'
+        extract_path = str(repo_path / local_zip_file_name)
         self.bucket.get_object_to_file(oss_object_key, filename=local_zip_file_path)
+        lock_file = os.path.join(repo_path, '{}.lock'.format(workflow_snapshot_id))
         with zipfile.ZipFile(local_zip_file_path, 'r') as zip_ref:
             top_dir = os.path.split(zip_ref.namelist()[0])[0]
-            extract_path = str(tmp_dir / local_zip_file_name)
-            zip_ref.extractall(extract_path)
-        downloaded_local_path = Path(extract_path) / top_dir
-        return str(downloaded_local_path)
+            downloaded_local_path = str(Path(extract_path) / top_dir)
+            if os.path.exists(lock_file):
+                while os.path.exists(lock_file):
+                    time.sleep(1)
+                return downloaded_local_path
+            else:
+                if not os.path.exists(downloaded_local_path):
+                    f = open(lock_file, 'w')
+                    try:
+                        fcntl.flock(f.fileno(), fcntl.LOCK_EX)
+                        if not os.path.exists(downloaded_local_path):
+                            zip_ref.extractall(extract_path)
+                    finally:
+                        fcntl.flock(f.fileno(), fcntl.LOCK_UN)
+                    f.close()
+                    try:
+                        os.remove(lock_file)
+                    except OSError:
+                        pass
+                return downloaded_local_path
