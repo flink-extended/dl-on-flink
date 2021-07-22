@@ -46,6 +46,7 @@ public class AIFlowClient {
   public AIFlowClient(
       String target,
       String defaultNamespace,
+      String sender,
       Boolean enableHa,
       Integer listMemberIntervalMs,
       Integer retryIntervalMs,
@@ -54,6 +55,7 @@ public class AIFlowClient {
         ManagedChannelBuilder.forTarget(target).usePlaintext().build(),
         StringUtils.isEmpty(target) ? SERVER_URI : target,
         StringUtils.isEmpty(defaultNamespace) ? DEFAULT_NAMESPACE : defaultNamespace,
+        sender,
         enableHa,
         listMemberIntervalMs,
         retryIntervalMs,
@@ -64,6 +66,7 @@ public class AIFlowClient {
       Channel channel,
       String target,
       String defaultNamespace,
+      String sender,
       Boolean enableHa,
       Integer listMemberIntervalMs,
       Integer retryIntervalMs,
@@ -74,6 +77,7 @@ public class AIFlowClient {
         new NotificationClient(
             target,
             defaultNamespace,
+            sender,
             enableHa,
             listMemberIntervalMs,
             retryIntervalMs,
@@ -861,17 +865,15 @@ public class AIFlowClient {
     /**
      * Send the event to Notification Service.
      *
-     * @param namespace Namespace of event updated in Notification Service.
      * @param key Key of event updated in Notification Service.
      * @param value Value of event updated in Notification Service.
      * @param eventType Type of event updated in Notification Service.
      * @param context Context of event updated in Notification Service.
      * @return Object of Event created in Notification Service.
      */
-    public EventMeta sendEvent(
-            String namespace, String key, String value, String eventType, String context)
+    public EventMeta sendEvent(String key, String value, String eventType, String context)
             throws Exception {
-        return this.notificationClient.sendEvent(namespace, key, value, eventType, context);
+        return this.notificationClient.sendEvent(key, value, eventType, context);
     }
 
     /**
@@ -885,9 +887,9 @@ public class AIFlowClient {
      * @return List of Notification updated in Notification Service.
      */
     public List<EventMeta> listEvents(
-            String namespace, List<String> keys, long version, String eventType, long startTime)
+            String namespace, List<String> keys, long version, String eventType, long startTime, String sender)
             throws Exception {
-        return this.notificationClient.listEvents(namespace, keys, version, eventType, startTime);
+        return this.notificationClient.listEvents(namespace, keys, version, eventType, startTime, sender);
     }
 
     /**
@@ -906,9 +908,10 @@ public class AIFlowClient {
             EventWatcher watcher,
             long version,
             String eventType,
-            long startTime) {
+            long startTime,
+            String sender) {
         this.notificationClient.startListenEvent(
-                namespace, key, watcher, version, eventType, startTime);
+                namespace, key, watcher, version, eventType, startTime, sender);
     }
 
     /**
@@ -916,8 +919,8 @@ public class AIFlowClient {
      *
      * @param key Key of notification for listening.
      */
-    public void stopListenEvent(String namespace, String key) {
-        this.notificationClient.stopListenEvent(namespace, key);
+    public void stopListenEvent(String namespace, String key, String eventType, String sender) {
+        this.notificationClient.stopListenEvent(namespace, key, eventType, sender);
     }
 
     /**

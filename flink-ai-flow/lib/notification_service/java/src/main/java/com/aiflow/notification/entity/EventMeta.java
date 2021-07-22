@@ -29,6 +29,7 @@ public class EventMeta {
     private long createTime;
     private String context;
     private String namespace;
+    private String sender;
 
     public EventMeta(
             String key,
@@ -37,7 +38,8 @@ public class EventMeta {
             long version,
             long createTime,
             String context,
-            String namespace) {
+            String namespace,
+            String sender) {
         this.key = key;
         this.value = value;
         this.eventType = eventType;
@@ -45,6 +47,7 @@ public class EventMeta {
         this.createTime = createTime;
         this.context = context;
         this.namespace = namespace;
+        this.sender = sender;
     }
 
     public String getKey() {
@@ -103,6 +106,14 @@ public class EventMeta {
         this.namespace = namespace;
     }
 
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
+
     @Override
     public String toString() {
         return "EventMeta{"
@@ -125,6 +136,9 @@ public class EventMeta {
                 + ", namespace='"
                 + namespace
                 + '\''
+                + ", sender='"
+                + sender
+                + '\''
                 + '}';
     }
 
@@ -136,6 +150,7 @@ public class EventMeta {
                 eventProto.getVersion(),
                 eventProto.getCreateTime(),
                 eventProto.getContext(),
-                eventProto.getNamespace());
+                eventProto.getNamespace(),
+                eventProto.getSender());
     }
 }
