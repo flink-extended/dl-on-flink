@@ -15,6 +15,7 @@
 # specific language governing permissions and limitations
 # under the License.
 import os
+import shutil
 from tempfile import NamedTemporaryFile
 from typing import Dict, Text, List, Optional
 from ai_flow_plugins.scheduler_plugins.airflow.dag_generator import DAGGenerator
@@ -121,7 +122,7 @@ class AirFlowScheduler(Scheduler):
             os.remove(airflow_file_path)
         with NamedTemporaryFile(mode='w+t', prefix=dag_id, suffix='.py', dir='/tmp', delete=False) as f:
             f.write(code_text)
-        os.rename(f.name, airflow_file_path)
+        shutil.move(f.name, airflow_file_path)
         self.airflow_client.trigger_parse_dag(airflow_file_path)
         return WorkflowInfo(namespace=project_context.project_name,
                             workflow_name=workflow.workflow_name,
