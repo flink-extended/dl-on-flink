@@ -91,8 +91,10 @@ class AIFlowServer(object):
         if start_model_center_service:
             logging.info("start model center service.")
             model_center_service_pb2_grpc.add_ModelCenterServiceServicer_to_server(
-                ModelCenterService(store_uri=store_uri, server_uri=server_uri,
-                                   notification_uri=notification_uri), self.server)
+                ModelCenterService(store_uri=store_uri,
+                                   notification_uri=server_uri if start_default_notification
+                                                                  and notification_uri is None else notification_uri),
+                self.server)
         if start_meta_service:
             logging.info("start meta service.")
             metadata_service_pb2_grpc.add_MetadataServiceServicer_to_server(
@@ -102,27 +104,27 @@ class AIFlowServer(object):
             metric_service_pb2_grpc.add_MetricServiceServicer_to_server(MetricService(db_uri=store_uri), self.server)
 
         if start_scheduler_service:
-            self._add_scheduler_service(notification_uri, scheduler_service_config, server_uri, start_default_notification)
+            self._add_scheduler_service(scheduler_service_config)
 
         if enabled_ha:
             self._add_ha_service(ha_manager, ha_server_uri, ha_storage, store_uri, ttl_ms)
 
         self.server.add_insecure_port('[::]:' + str(port))
 
-    def _add_scheduler_service(self, notification_uri, scheduler_service_config, server_uri,
-                               start_default_notification):
+    def _add_scheduler_service(self, scheduler_service_config):
         logging.info("start scheduler service.")
+        # check the `scheduler` option of scheduler service config
         if scheduler_service_config is None:
-            raise Exception('scheduler config not set!')
-        real_config = SchedulerServiceConfig()
+            raise Exception(
+                'The `scheduler` option of scheduler service config is not configured. '
+                'Please add the `scheduler` option!')
+        if 'scheduler_class_name' not in scheduler_service_config:
+            raise Exception(
+                'The `scheduler_class_name` option of scheduler service config is not configured. '
+                'Please add the `scheduler_class_name` option under the `scheduler` option!')
         if 'scheduler_config' not in scheduler_service_config:
             scheduler_service_config['scheduler_config'] = {}
-        if scheduler_service_config.get('scheduler_config').get('notification_uri') is None:
-            nf_uri = server_uri if start_default_notification else notification_uri
-            real_config.scheduler_config()['notification_uri'] = nf_uri
-        else:
-            real_config.scheduler_config()['notification_uri'] \
-                = scheduler_service_config.get('scheduler_config').get('notification_uri')
+        real_config = SchedulerServiceConfig()
         real_config.set_scheduler_config(scheduler_service_config.get('scheduler_config'))
         real_config.set_repository(scheduler_service_config.get('repository'))
         real_config.set_scheduler_class_name(scheduler_service_config.get('scheduler_class_name'))
