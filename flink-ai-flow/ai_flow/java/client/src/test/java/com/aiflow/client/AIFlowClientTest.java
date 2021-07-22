@@ -68,13 +68,12 @@ public class AIFlowClientTest {
     @BeforeAll
     public static void beforeClass() throws Exception {
         int port = Integer.valueOf(getProperties("port"));
-        client = new AIFlowClient(LOCALHOST + ":" + port, "default",
+        client = new AIFlowClient(LOCALHOST + ":" + port, "default", "sender",
                 false, 1 * SEC, 1 * SEC, 1 * SEC);
     }
 
     @AfterAll
     public static void afterClass() throws Exception {
-        client.stopListenEvent("default", "");
     }
 
     private static String getProperties(String key) throws IOException {
@@ -825,30 +824,31 @@ public class AIFlowClientTest {
 
     @Test
     public void testUpdateAndListNotification() throws Exception {
-        String namespace = "namespace";
+        String namespace = "default";
         String key = "send_event_key";
         String value1 = "send_event_value1";
         String eventType = "send_event_type";
         String context = "send_event_context";
-        EventMeta event = client.sendEvent(namespace, key, value1, eventType, context);
+        String sender = "sender";
+        EventMeta event = client.sendEvent(key, value1, eventType, context);
         Assertions.assertEquals(value1, event.getValue());
         Assertions.assertTrue(event.getVersion() > 0);
 
-        List<EventMeta> eventList = client.listEvents(namespace, Arrays.asList(key), 0, eventType, 0);
+        List<EventMeta> eventList = client.listEvents(namespace, Arrays.asList(key), 0, eventType, 0, sender);
         Assertions.assertEquals(1, eventList.size());
         Assertions.assertEquals(key, eventList.get(0).getKey());
         Assertions.assertEquals(value1, eventList.get(0).getValue());
         Assertions.assertEquals(eventType, eventList.get(0).getEventType());
 
         String value2 = "send_event_value2";
-        EventMeta event2 = client.sendEvent(namespace, key, value2, eventType, context);
+        EventMeta event2 = client.sendEvent(key, value2, eventType, context);
         Assertions.assertEquals(event.getVersion() + 1, event2.getVersion());
-        eventList = client.listEvents(namespace, Arrays.asList(key), 0, eventType, 0);
+        eventList = client.listEvents(namespace, Arrays.asList(key), 0, eventType, 0, sender);
         Assertions.assertEquals(2, eventList.size());
         Assertions.assertEquals(key, eventList.get(1).getKey());
         Assertions.assertEquals(value2, eventList.get(1).getValue());
         Assertions.assertEquals(eventType, eventList.get(1).getEventType());
-        eventList = client.listEvents(namespace, Arrays.asList(key), event.getVersion(), eventType, 0);
+        eventList = client.listEvents(namespace, Arrays.asList(key), event.getVersion(), eventType, 0, sender);
         Assertions.assertEquals(1, eventList.size());
         Assertions.assertEquals(key, eventList.get(0).getKey());
         Assertions.assertEquals(value2, eventList.get(0).getValue());
@@ -865,30 +865,31 @@ public class AIFlowClientTest {
         }
         TestWatcher watcher = new TestWatcher();
 
-        String namespace = "namespace";
+        String namespace = "default";
         String key = "send_event_key";
         String eventType = "send_event_type";
         String context = "send_event_context";
-        client.startListenEvent(namespace, key, watcher, 0, eventType, 0);
+        String sender = "sender";
+        client.startListenEvent(namespace, key, watcher, 0, eventType, 0, sender);
 
         String value1 = "send_event_value1";
         String value2 = "send_event_value2";
         String value3 = "send_event_value3";
-        client.sendEvent(namespace, key, value1, eventType, context);
-        client.sendEvent(namespace, key, value2, eventType, context);
+        client.sendEvent(key, value1, eventType, context);
+        client.sendEvent(key, value2, eventType, context);
         Thread.sleep(10 * 1000);
-        client.sendEvent(namespace, key, value3, eventType, context);
+        client.sendEvent(key, value3, eventType, context);
         Thread.sleep(1 * 1000);
-        client.stopListenEvent(namespace, key);
+        client.stopListenEvent(namespace, key, eventType, sender);
 
         String key2 = "send_event_key_2";
         String eventType2 = "send_event_type_2";
-        client.sendEvent(namespace, key2, value1, eventType2, context);
-        client.sendEvent(namespace, key2, value2, eventType2, context);
-        client.startListenEvent(namespace, key2, watcher, 0, eventType2, 0);
+        client.sendEvent(key2, value1, eventType2, context);
+        client.sendEvent(key2, value2, eventType2, context);
+        client.startListenEvent(namespace, key2, watcher, 0, eventType2, 0, sender);
         Thread.sleep(10 * 1000);
-        client.sendEvent(namespace, key2, value3, eventType2, context);
+        client.sendEvent(key2, value3, eventType2, context);
         Thread.sleep(1 * 1000);
-        client.stopListenEvent(namespace, key2);
+        client.stopListenEvent(namespace, key2, eventType, sender);
     }
 }
