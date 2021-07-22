@@ -22,6 +22,8 @@ import com.aiflow.notification.entity.EventMeta;
 import com.aiflow.notification.proto.NotificationServiceGrpc.NotificationServiceBlockingStub;
 import com.aiflow.notification.proto.NotificationServiceOuterClass.*;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import com.speedment.common.tuple.Tuple4;
+import com.speedment.common.tuple.internal.nonnullable.Tuple4Impl;
 import io.grpc.ManagedChannelBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -37,26 +39,30 @@ import static com.aiflow.notification.proto.NotificationServiceGrpc.newBlockingS
 public class NotificationClient {
 
     private static final Logger logger = LoggerFactory.getLogger(NotificationClient.class);
+    public static String ANY_CONDITION = "*";
     private static final String SERVER_URI = "localhost:50051";
     private final String defaultNamespace;
     private final Integer listMemberIntervalMs;
     private final Integer retryIntervalMs;
     private final Integer retryTimeoutMs;
-    private final Map<Map<String, String>, EventListener> threads;
+    private final Map<Tuple4<String, String, String, String>, EventListener> threads; //key, namespace, event_type, sender
     private final ExecutorService listMembersService;
     private NotificationServiceBlockingStub notificationServiceStub;
     private Set<MemberProto> livingMembers;
     private Boolean enableHa;
     private String currentUri;
+    private String sender;
 
     public NotificationClient(
             String target,
             String defaultNamespace,
+            String sender,
             Boolean enableHa,
             Integer listMemberIntervalMs,
             Integer retryIntervalMs,
             Integer retryTimeoutMs) {
         this.defaultNamespace = defaultNamespace;
+        this.sender = sender;
         this.enableHa = enableHa;
         this.listMemberIntervalMs = listMemberIntervalMs;
         this.retryIntervalMs = retryIntervalMs;
@@ -96,14 +102,19 @@ public class NotificationClient {
      * List specific registered listener events in Notification Service.
      *
      * @param serviceStub Notification service GRPC stub.
+     * @param namespace The namespace of the event.
+     * @param sender The sender of the event.
      * @param keys Keys of event for listening.
      * @param version (Optional) Version of event for listening.
+     * @param eventType The event type of the event.
+     * @param startTime Events generated after this time.
      * @param timeoutSeconds List events request timeout seconds.
      * @return List of event updated in Notification Service.
      */
     protected static List<EventMeta> listEvents(
             NotificationServiceBlockingStub serviceStub,
             String namespace,
+            String sender,
             List<String> keys,
             long version,
             String eventType,
@@ -117,6 +128,7 @@ public class NotificationClient {
                         .setEventType(eventType)
                         .setStartTime(startTime)
                         .setNamespace(namespace)
+                        .setSender(sender)
                         .setTimeoutSeconds(timeoutSeconds)
                         .build();
         return parseEventsFromResponse(serviceStub.listEvents(request));
@@ -238,7 +250,6 @@ public class NotificationClient {
     /**
      * Send the event to Notification Service.
      *
-     * @param namespace Namespace of event updated in Notification Service.
      * @param key Key of event updated in Notification Service.
      * @param value Value of event updated in Notification Service.
      * @param eventType Type of event updated in Notification Service.
@@ -246,7 +257,7 @@ public class NotificationClient {
      * @return Object of Event created in Notification Service.
      */
     public EventMeta sendEvent(
-            String namespace, String key, String value, String eventType, String context)
+            String key, String value, String eventType, String context)
             throws Exception {
         SendEventRequest request =
                 SendEventRequest.newBuilder()
@@ -256,10 +267,8 @@ public class NotificationClient {
                                         .setValue(value)
                                         .setEventType(eventType)
                                         .setContext(context)
-                                        .setNamespace(
-                                                StringUtils.isEmpty(namespace)
-                                                        ? defaultNamespace
-                                                        : namespace)
+                                        .setNamespace(defaultNamespace)
+                                        .setSender(sender)
                                         .build())
                         .setUuid(UUID.randomUUID().toString())
                         .build();
@@ -275,6 +284,7 @@ public class NotificationClient {
      * List specific `key` or `version` notifications in Notification Service.
      *
      * @param namespace Namespace of notification for listening.
+     * @param sender The sender of the event.
      * @param keys Keys of notification for listening.
      * @param version (Optional) Version of notification for listening.
      * @param eventType (Optional) Type of event for listening.
@@ -282,11 +292,12 @@ public class NotificationClient {
      * @return List of Notification updated in Notification Service.
      */
     public List<EventMeta> listEvents(
-            String namespace, List<String> keys, long version, String eventType, long startTime)
+            String namespace, List<String> keys, long version, String eventType, long startTime, String sender)
             throws Exception {
         return listEvents(
                 notificationServiceStub,
                 StringUtils.isEmpty(namespace) ? defaultNamespace : namespace,
+                sender,
                 keys,
                 version,
                 eventType,
@@ -323,6 +334,7 @@ public class NotificationClient {
      * @param version (Optional) Version of notification for listening.
      * @param eventType (Optional) Type of event for listening.
      * @param startTime (Optional) Type of event for listening.
+     * @param sender The sender of the event.
      */
     public void startListenEvent(
             String namespace,
@@ -330,18 +342,19 @@ public class NotificationClient {
             EventWatcher watcher,
             long version,
             String eventType,
-            long startTime) {
-        Map<String, String> listenKey =
-                new HashMap<String, String>() {
-                    {
-                        put(key, namespace);
-                    }
-                };
+            long startTime,
+            String sender) {
+        String realNamespace = StringUtils.isEmpty(namespace) ? ANY_CONDITION : namespace;
+        String realKey = StringUtils.isEmpty(key) ? ANY_CONDITION : key;
+        String realEventType = StringUtils.isEmpty(eventType) ? ANY_CONDITION : eventType;
+        String realSender = StringUtils.isEmpty(sender) ? ANY_CONDITION : sender;
+
+        Tuple4<String, String, String, String> listenKey = new Tuple4Impl<>(realKey, realNamespace, realEventType, realSender);
         if (!threads.containsKey(listenKey)) {
             ArrayList<String> curListenerKeys =
                     new ArrayList<String>() {
                         {
-                            add(key);
+                            add(realKey);
                         }
                     };
             EventListener listener =
@@ -349,9 +362,10 @@ public class NotificationClient {
                             notificationServiceStub,
                             curListenerKeys,
                             version,
-                            eventType,
+                            realEventType,
                             startTime,
-                            StringUtils.isEmpty(namespace) ? defaultNamespace : namespace,
+                            realNamespace,
+                            realSender,
                             watcher,
                             5);
             listener.start();
@@ -362,23 +376,22 @@ public class NotificationClient {
     /**
      * Stop listen specific `key` notifications in Notification Service.
      *
-     * @param key Key of notification for listening.
+     * @param namespace The namespace of the event.
+     * @param key The key of the event.
+     * @param eventType The event type of the event.
+     * @param sender The sender of the event.
      */
-    public void stopListenEvent(String namespace, String key) {
-        Map<String, String> listenKey =
-                new HashMap<String, String>() {
-                    {
-                        put(key, StringUtils.isEmpty(namespace) ? defaultNamespace : namespace);
-                    }
-                };
-        if (StringUtils.isEmpty(key)) {
-            for (Map.Entry<Map<String, String>, EventListener> entry : threads.entrySet()) {
-                entry.getValue().shutdown();
-            }
-        } else {
-            if (threads.containsKey(listenKey)) {
-                threads.get(listenKey).shutdown();
-            }
+    public void stopListenEvent(String namespace, String key, String eventType, String sender) {
+        String realNamespace = StringUtils.isEmpty(namespace) ? ANY_CONDITION : namespace;
+        String realKey = StringUtils.isEmpty(key) ? ANY_CONDITION : key;
+        String realEventType = StringUtils.isEmpty(eventType) ? ANY_CONDITION : eventType;
+        String realSender = StringUtils.isEmpty(sender) ? ANY_CONDITION : sender;
+
+        Tuple4<String, String, String, String> listenKey = new Tuple4Impl<>(realKey, realNamespace, realEventType, realSender);
+
+        if (threads.containsKey(listenKey)) {
+            threads.get(listenKey).shutdown();
+            threads.remove(listenKey);
         }
     }
 

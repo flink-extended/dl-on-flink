@@ -19,14 +19,9 @@
 package com.aiflow.notification.client;
 
 import com.aiflow.notification.entity.EventMeta;
-import com.aiflow.notification.service.LocalNotificationService;
-import io.grpc.ManagedChannel;
-import io.grpc.inprocess.InProcessChannelBuilder;
-import io.grpc.inprocess.InProcessServerBuilder;
-import io.grpc.testing.GrpcCleanupRule;
-import io.grpc.util.MutableHandlerRegistry;
+import com.aiflow.notification.service.PythonServer;
+import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.Collections;
@@ -36,49 +31,44 @@ import static org.junit.Assert.assertEquals;
 
 public class NotificationClientTest {
 
-    @Rule public final GrpcCleanupRule grpcCleanup = new GrpcCleanupRule();
-    private final MutableHandlerRegistry serviceRegistry = new MutableHandlerRegistry();
     private NotificationClient client;
-    private LocalNotificationService mockNotificationService = new LocalNotificationService();
+    private PythonServer server;
 
     @Before
     public void setUp() throws Exception {
-        // Generate a unique in-process server name.
-        String serverName = InProcessServerBuilder.generateName();
-
-        // Create a server, add service, start, and register for automatic graceful shutdown.
-        this.grpcCleanup.register(
-                InProcessServerBuilder.forName(serverName)
-                        .directExecutor()
-                        .fallbackHandlerRegistry(this.serviceRegistry)
-                        .addService(mockNotificationService)
-                        .build()
-                        .start());
-
-        // Create a client channel and register for automatic graceful shutdown.
-        ManagedChannel channel =
-                this.grpcCleanup.register(
-                        InProcessChannelBuilder.forName(serverName).directExecutor().build());
+        this.server = new PythonServer();
+        server.start();
 
         // Create a NotificationClient using the in-process channel
         try {
             this.client =
                     new NotificationClient(
-                            "localhost:50051,localhost:50052", "default", true, 5, 10, 2000);
+                            "localhost:50051",
+                            "default",
+                            "test",
+                            false,
+                            5,
+                            10,
+                            2000);
         } catch (Exception e) {
             throw new Exception("Failed to init notification client", e);
         }
+    }
+
+    @After
+    public void tearDown(){
+        this.server.stop();
     }
 
     @Test
     public void sendEvent() throws Exception {
         long latestVersion = this.client.getLatestVersion("default", "key");
         for (int i = 0; i < 3; i++) {
-            this.client.sendEvent("default", "key", String.valueOf(i), "type", "");
+            this.client.sendEvent("key", String.valueOf(i), "type", "");
         }
         List<String> listenerKeys = Collections.singletonList("key");
         List<EventMeta> eventList =
-                this.client.listEvents("default", listenerKeys, latestVersion, "type", 0);
+                this.client.listEvents("default", listenerKeys, latestVersion, "type", 0, "");
         assertEquals(3, eventList.size());
     }
 
@@ -87,7 +77,7 @@ public class NotificationClientTest {
         long startTime = 0;
         for (int i = 0; i < 3; i++) {
             EventMeta event =
-                    this.client.sendEvent("default", "key", String.valueOf(i), "type", "");
+                    this.client.sendEvent("key", String.valueOf(i), "type", "");
             if (i == 1) {
                 startTime = event.getCreateTime();
             }
@@ -100,22 +90,79 @@ public class NotificationClientTest {
     public void startListenEvent() throws Exception {
         long latestVersion = this.client.getLatestVersion("default", "key");
         for (int i = 0; i < 3; i++) {
-            this.client.sendEvent("default", "key", String.valueOf(i), "type", "");
+            this.client.sendEvent("key", String.valueOf(i), "type", "");
         }
         final Integer[] ii = {0};
         String listenerKey = "key";
         this.client.startListenEvent(
-                "default", listenerKey, events -> ii[0] += events.size(), latestVersion, "type", 0);
+                "default", listenerKey, events -> ii[0] += events.size(), latestVersion, "type", 0, "*");
 
         Thread.sleep(10000);
         assertEquals(3, ii[0].intValue());
+        this.client.stopListenEvent("default", listenerKey, "type", "*");
+    }
+
+    @Test
+    public void startListenEventFilterByKey() throws Exception {
+        long latestVersion = sendTestEvents();
+        final Integer[] ii = {0};
+        String listenerKey = "key_0";
+        this.client.startListenEvent(
+                "default", listenerKey, events -> ii[0] += events.size(), latestVersion, "*", 0, "*");
+        Thread.sleep(10000);
+        assertEquals(1, ii[0].intValue());
+        this.client.stopListenEvent("default", listenerKey, "*", "*");
+    }
+
+    @Test
+    public void startListenEventSetSender() throws Exception {
+        long latestVersion = sendTestEvents();
+        final Integer[] ii = {0};
+        String listenerKey = "*";
+        this.client.startListenEvent(
+                "default", listenerKey, events -> ii[0] += events.size(), latestVersion, "*", 0, "test");
+        Thread.sleep(10000);
+        assertEquals(3, ii[0].intValue());
+        this.client.stopListenEvent("default", listenerKey, "*", "test");
+    }
+
+    @Test
+    public void startListenEventFilterBySender() throws Exception {
+        long latestVersion = sendTestEvents();
+        final Integer[] ii = {0};
+        String listenerKey = "*";
+        this.client.startListenEvent(
+                "default", listenerKey, events -> ii[0] += events.size(), latestVersion, "*", 0, "test_1");
+        Thread.sleep(10000);
+        assertEquals(0, ii[0].intValue());
+        this.client.stopListenEvent("default", listenerKey, "*", "test_1");
+    }
+
+    @Test
+    public void startListenEventFilterByEventType() throws Exception {
+        long latestVersion = sendTestEvents();
+        final Integer[] ii = {0};
+        String listenerKey = "*";
+        this.client.startListenEvent(
+                "default", listenerKey, events -> ii[0] += events.size(), latestVersion, "type_1", 0, "test");
+        Thread.sleep(10000);
+        assertEquals(1, ii[0].intValue());
+        this.client.stopListenEvent("default", listenerKey, "type_1", "test");
+    }
+
+    private long sendTestEvents() throws Exception {
+        long latestVersion = this.client.getLatestVersion("default", "key");
+        for (int i = 0; i < 3; i++) {
+            this.client.sendEvent(String.format("key_%d", i), String.valueOf(i), String.format("type_%d", i), "");
+        }
+        return latestVersion;
     }
 
     @Test
     public void getLatestVersion() throws Exception {
         long latestVersion = this.client.getLatestVersion("default", "key");
         for (int i = 0; i < 3; i++) {
-            this.client.sendEvent("default", "key", String.valueOf(i), "type", "");
+            this.client.sendEvent("key", String.valueOf(i), "type", "");
         }
         long newLatestVersion = this.client.getLatestVersion("default", "key");
         assertEquals(latestVersion + 3, newLatestVersion);

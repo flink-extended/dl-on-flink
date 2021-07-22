@@ -37,6 +37,7 @@ public class EventListener {
 	private final String eventType;
 	private final long startTime;
 	private final String namespace;
+	private final String sender;
 	private final EventWatcher watcher;
 	private final ExecutorService executorService;
 	private final int timeoutSeconds;
@@ -49,6 +50,7 @@ public class EventListener {
 			String eventType,
 			long startTime,
 			String namespace,
+			String sender,
 			EventWatcher watcher,
 			Integer timeoutSeconds) {
 		this.serviceStub = serviceStub;
@@ -57,6 +59,7 @@ public class EventListener {
 		this.eventType = eventType;
 		this.startTime = startTime;
 		this.namespace = namespace;
+		this.sender = sender;
 		this.watcher = watcher;
 		this.timeoutSeconds = timeoutSeconds;
 		this.executorService =
@@ -88,6 +91,7 @@ public class EventListener {
 							listEvents(
 									this.serviceStub,
                                     this.namespace,
+									this.sender,
 									this.keys,
 									listenVersion,
 									this.eventType,
