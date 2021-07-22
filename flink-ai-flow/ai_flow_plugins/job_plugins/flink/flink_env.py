@@ -17,6 +17,7 @@
 from abc import abstractmethod
 
 from pyflink.dataset import ExecutionEnvironment
+from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import TableConfig, BatchTableEnvironment, StreamTableEnvironment, TableEnvironment, StatementSet
 
 
@@ -25,6 +26,7 @@ class FlinkEnv(object):
     FlinkEnv is responsible for creating the objects(ExecutionEnvironment, TableEnvironment, StatementSet)
     needed to build a flink job.
     """
+
     @abstractmethod
     def create_env(self) -> (ExecutionEnvironment, TableEnvironment, StatementSet):
         pass
@@ -51,7 +53,7 @@ class FlinkStreamEnv(FlinkEnv):
     """
 
     def create_env(self) -> (ExecutionEnvironment, TableEnvironment, StatementSet):
-        exec_env = ExecutionEnvironment.get_execution_environment()
+        exec_env = StreamExecutionEnvironment.get_execution_environment()
         exec_env.set_parallelism(1)
         t_config = TableConfig()
         t_env = StreamTableEnvironment.create(exec_env, t_config)
