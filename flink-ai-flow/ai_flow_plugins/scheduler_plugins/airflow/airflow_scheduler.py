@@ -42,6 +42,12 @@ class AirFlowScheduler(Scheduler):
     """
 
     def __init__(self, config: Dict):
+        if 'notification_service_uri' not in config:
+            raise Exception('`notification_service_uri` option of scheduler config is not configured. '
+                            'Please add the `notification_service_uri` option under `scheduler_config` option!')
+        if 'airflow_deploy_path' not in config:
+            raise Exception('`airflow_deploy_path` option of scheduler config is not configured. '
+                            'Please add the `notification_service_uri` option under `airflow_deploy_path` option!')
         super().__init__(config)
         self.dag_generator = DAGGenerator()
         self._airflow_client = None
