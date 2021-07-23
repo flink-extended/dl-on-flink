@@ -78,13 +78,13 @@ class JavaAIFlowClientTest(unittest.TestCase):
         jar_dir_path = 'java/client/target'
         home_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
         jar_abs_dir_path = os.path.join(home_path, jar_dir_path)
-        jar_list = glob.glob(jar_abs_dir_path + '/aiflow-client-*-jar-with-dependencies.jar')
+        jar_list = glob.glob(jar_abs_dir_path + '/aiflow-client-*-test-jar-with-dependencies.jar')
         if len(jar_list) != 1:
             raise Exception("You must run `mvn package` to build a uber jar before running this test.")
 
         jar_abs_path = jar_list[0]
-        junit_runner = "com.aiflow.client.SingleJUnitTestRunner"
-        test_class_and_method = "com.aiflow.client.AIFlowClientTest#{}".format(method)
+        junit_runner = "org.aiflow.client.SingleJUnitTestRunner"
+        test_class_and_method = "org.aiflow.client.AIFlowClientTest#{}".format(method)
         subprocess.check_call(["java", "-cp", jar_abs_path, junit_runner, test_class_and_method], shell=False)
 
     def test_register_dataset(self):
