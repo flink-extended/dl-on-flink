@@ -16,21 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.aiflow.notification.proto;
+package org.aiflow.notification.proto;
 
 import static io.grpc.MethodDescriptor.generateFullMethodName;
-import static io.grpc.stub.ClientCalls.asyncBidiStreamingCall;
-import static io.grpc.stub.ClientCalls.asyncClientStreamingCall;
-import static io.grpc.stub.ClientCalls.asyncServerStreamingCall;
 import static io.grpc.stub.ClientCalls.asyncUnaryCall;
 import static io.grpc.stub.ClientCalls.blockingServerStreamingCall;
 import static io.grpc.stub.ClientCalls.blockingUnaryCall;
 import static io.grpc.stub.ClientCalls.futureUnaryCall;
-import static io.grpc.stub.ServerCalls.asyncBidiStreamingCall;
-import static io.grpc.stub.ServerCalls.asyncClientStreamingCall;
-import static io.grpc.stub.ServerCalls.asyncServerStreamingCall;
 import static io.grpc.stub.ServerCalls.asyncUnaryCall;
-import static io.grpc.stub.ServerCalls.asyncUnimplementedStreamingCall;
 import static io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall;
 
 /**
@@ -51,29 +44,29 @@ public final class NotificationServiceGrpc {
   public static final String SERVICE_NAME = "notification_service.NotificationService";
 
   // Static method descriptors that strictly reflect the proto.
-  private static volatile io.grpc.MethodDescriptor<com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventRequest,
-      com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventsResponse> getSendEventMethod;
+  private static volatile io.grpc.MethodDescriptor<NotificationServiceOuterClass.SendEventRequest,
+      NotificationServiceOuterClass.SendEventsResponse> getSendEventMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "sendEvent",
-      requestType = com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventRequest.class,
-      responseType = com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventsResponse.class,
+      requestType = NotificationServiceOuterClass.SendEventRequest.class,
+      responseType = NotificationServiceOuterClass.SendEventsResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventRequest,
-      com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventsResponse> getSendEventMethod() {
-    io.grpc.MethodDescriptor<com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventRequest, com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventsResponse> getSendEventMethod;
+  public static io.grpc.MethodDescriptor<NotificationServiceOuterClass.SendEventRequest,
+      NotificationServiceOuterClass.SendEventsResponse> getSendEventMethod() {
+    io.grpc.MethodDescriptor<NotificationServiceOuterClass.SendEventRequest, NotificationServiceOuterClass.SendEventsResponse> getSendEventMethod;
     if ((getSendEventMethod = NotificationServiceGrpc.getSendEventMethod) == null) {
       synchronized (NotificationServiceGrpc.class) {
         if ((getSendEventMethod = NotificationServiceGrpc.getSendEventMethod) == null) {
           NotificationServiceGrpc.getSendEventMethod = getSendEventMethod =
-              io.grpc.MethodDescriptor.<com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventRequest, com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventsResponse>newBuilder()
+              io.grpc.MethodDescriptor.<NotificationServiceOuterClass.SendEventRequest, NotificationServiceOuterClass.SendEventsResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "sendEvent"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventRequest.getDefaultInstance()))
+                  NotificationServiceOuterClass.SendEventRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventsResponse.getDefaultInstance()))
+                  NotificationServiceOuterClass.SendEventsResponse.getDefaultInstance()))
               .setSchemaDescriptor(new NotificationServiceMethodDescriptorSupplier("sendEvent"))
               .build();
         }
@@ -82,29 +75,29 @@ public final class NotificationServiceGrpc {
     return getSendEventMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsRequest,
-      com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse> getListEventsMethod;
+  private static volatile io.grpc.MethodDescriptor<NotificationServiceOuterClass.ListEventsRequest,
+      NotificationServiceOuterClass.ListEventsResponse> getListEventsMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "listEvents",
-      requestType = com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsRequest.class,
-      responseType = com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse.class,
+      requestType = NotificationServiceOuterClass.ListEventsRequest.class,
+      responseType = NotificationServiceOuterClass.ListEventsResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsRequest,
-      com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse> getListEventsMethod() {
-    io.grpc.MethodDescriptor<com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsRequest, com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse> getListEventsMethod;
+  public static io.grpc.MethodDescriptor<NotificationServiceOuterClass.ListEventsRequest,
+      NotificationServiceOuterClass.ListEventsResponse> getListEventsMethod() {
+    io.grpc.MethodDescriptor<NotificationServiceOuterClass.ListEventsRequest, NotificationServiceOuterClass.ListEventsResponse> getListEventsMethod;
     if ((getListEventsMethod = NotificationServiceGrpc.getListEventsMethod) == null) {
       synchronized (NotificationServiceGrpc.class) {
         if ((getListEventsMethod = NotificationServiceGrpc.getListEventsMethod) == null) {
           NotificationServiceGrpc.getListEventsMethod = getListEventsMethod =
-              io.grpc.MethodDescriptor.<com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsRequest, com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse>newBuilder()
+              io.grpc.MethodDescriptor.<NotificationServiceOuterClass.ListEventsRequest, NotificationServiceOuterClass.ListEventsResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "listEvents"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsRequest.getDefaultInstance()))
+                  NotificationServiceOuterClass.ListEventsRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse.getDefaultInstance()))
+                  NotificationServiceOuterClass.ListEventsResponse.getDefaultInstance()))
               .setSchemaDescriptor(new NotificationServiceMethodDescriptorSupplier("listEvents"))
               .build();
         }
@@ -113,29 +106,29 @@ public final class NotificationServiceGrpc {
     return getListEventsMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.aiflow.notification.proto.NotificationServiceOuterClass.ListAllEventsRequest,
-      com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse> getListAllEventsMethod;
+  private static volatile io.grpc.MethodDescriptor<NotificationServiceOuterClass.ListAllEventsRequest,
+      NotificationServiceOuterClass.ListEventsResponse> getListAllEventsMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "listAllEvents",
-      requestType = com.aiflow.notification.proto.NotificationServiceOuterClass.ListAllEventsRequest.class,
-      responseType = com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse.class,
+      requestType = NotificationServiceOuterClass.ListAllEventsRequest.class,
+      responseType = NotificationServiceOuterClass.ListEventsResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.aiflow.notification.proto.NotificationServiceOuterClass.ListAllEventsRequest,
-      com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse> getListAllEventsMethod() {
-    io.grpc.MethodDescriptor<com.aiflow.notification.proto.NotificationServiceOuterClass.ListAllEventsRequest, com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse> getListAllEventsMethod;
+  public static io.grpc.MethodDescriptor<NotificationServiceOuterClass.ListAllEventsRequest,
+      NotificationServiceOuterClass.ListEventsResponse> getListAllEventsMethod() {
+    io.grpc.MethodDescriptor<NotificationServiceOuterClass.ListAllEventsRequest, NotificationServiceOuterClass.ListEventsResponse> getListAllEventsMethod;
     if ((getListAllEventsMethod = NotificationServiceGrpc.getListAllEventsMethod) == null) {
       synchronized (NotificationServiceGrpc.class) {
         if ((getListAllEventsMethod = NotificationServiceGrpc.getListAllEventsMethod) == null) {
           NotificationServiceGrpc.getListAllEventsMethod = getListAllEventsMethod =
-              io.grpc.MethodDescriptor.<com.aiflow.notification.proto.NotificationServiceOuterClass.ListAllEventsRequest, com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse>newBuilder()
+              io.grpc.MethodDescriptor.<NotificationServiceOuterClass.ListAllEventsRequest, NotificationServiceOuterClass.ListEventsResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "listAllEvents"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.aiflow.notification.proto.NotificationServiceOuterClass.ListAllEventsRequest.getDefaultInstance()))
+                  NotificationServiceOuterClass.ListAllEventsRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse.getDefaultInstance()))
+                  NotificationServiceOuterClass.ListEventsResponse.getDefaultInstance()))
               .setSchemaDescriptor(new NotificationServiceMethodDescriptorSupplier("listAllEvents"))
               .build();
         }
@@ -144,29 +137,29 @@ public final class NotificationServiceGrpc {
     return getListAllEventsMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest,
-      com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse> getNotifyMethod;
+  private static volatile io.grpc.MethodDescriptor<NotificationServiceOuterClass.NotifyRequest,
+      NotificationServiceOuterClass.NotifyResponse> getNotifyMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "notify",
-      requestType = com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest.class,
-      responseType = com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse.class,
+      requestType = NotificationServiceOuterClass.NotifyRequest.class,
+      responseType = NotificationServiceOuterClass.NotifyResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest,
-      com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse> getNotifyMethod() {
-    io.grpc.MethodDescriptor<com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest, com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse> getNotifyMethod;
+  public static io.grpc.MethodDescriptor<NotificationServiceOuterClass.NotifyRequest,
+      NotificationServiceOuterClass.NotifyResponse> getNotifyMethod() {
+    io.grpc.MethodDescriptor<NotificationServiceOuterClass.NotifyRequest, NotificationServiceOuterClass.NotifyResponse> getNotifyMethod;
     if ((getNotifyMethod = NotificationServiceGrpc.getNotifyMethod) == null) {
       synchronized (NotificationServiceGrpc.class) {
         if ((getNotifyMethod = NotificationServiceGrpc.getNotifyMethod) == null) {
           NotificationServiceGrpc.getNotifyMethod = getNotifyMethod =
-              io.grpc.MethodDescriptor.<com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest, com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse>newBuilder()
+              io.grpc.MethodDescriptor.<NotificationServiceOuterClass.NotifyRequest, NotificationServiceOuterClass.NotifyResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "notify"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest.getDefaultInstance()))
+                  NotificationServiceOuterClass.NotifyRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse.getDefaultInstance()))
+                  NotificationServiceOuterClass.NotifyResponse.getDefaultInstance()))
               .setSchemaDescriptor(new NotificationServiceMethodDescriptorSupplier("notify"))
               .build();
         }
@@ -175,29 +168,29 @@ public final class NotificationServiceGrpc {
     return getNotifyMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersRequest,
-      com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersResponse> getListMembersMethod;
+  private static volatile io.grpc.MethodDescriptor<NotificationServiceOuterClass.ListMembersRequest,
+      NotificationServiceOuterClass.ListMembersResponse> getListMembersMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "listMembers",
-      requestType = com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersRequest.class,
-      responseType = com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersResponse.class,
+      requestType = NotificationServiceOuterClass.ListMembersRequest.class,
+      responseType = NotificationServiceOuterClass.ListMembersResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersRequest,
-      com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersResponse> getListMembersMethod() {
-    io.grpc.MethodDescriptor<com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersRequest, com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersResponse> getListMembersMethod;
+  public static io.grpc.MethodDescriptor<NotificationServiceOuterClass.ListMembersRequest,
+      NotificationServiceOuterClass.ListMembersResponse> getListMembersMethod() {
+    io.grpc.MethodDescriptor<NotificationServiceOuterClass.ListMembersRequest, NotificationServiceOuterClass.ListMembersResponse> getListMembersMethod;
     if ((getListMembersMethod = NotificationServiceGrpc.getListMembersMethod) == null) {
       synchronized (NotificationServiceGrpc.class) {
         if ((getListMembersMethod = NotificationServiceGrpc.getListMembersMethod) == null) {
           NotificationServiceGrpc.getListMembersMethod = getListMembersMethod =
-              io.grpc.MethodDescriptor.<com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersRequest, com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersResponse>newBuilder()
+              io.grpc.MethodDescriptor.<NotificationServiceOuterClass.ListMembersRequest, NotificationServiceOuterClass.ListMembersResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "listMembers"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersRequest.getDefaultInstance()))
+                  NotificationServiceOuterClass.ListMembersRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersResponse.getDefaultInstance()))
+                  NotificationServiceOuterClass.ListMembersResponse.getDefaultInstance()))
               .setSchemaDescriptor(new NotificationServiceMethodDescriptorSupplier("listMembers"))
               .build();
         }
@@ -206,29 +199,29 @@ public final class NotificationServiceGrpc {
     return getListMembersMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest,
-      com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse> getNotifyNewMemberMethod;
+  private static volatile io.grpc.MethodDescriptor<NotificationServiceOuterClass.NotifyNewMemberRequest,
+      NotificationServiceOuterClass.NotifyNewMemberResponse> getNotifyNewMemberMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "notifyNewMember",
-      requestType = com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest.class,
-      responseType = com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse.class,
+      requestType = NotificationServiceOuterClass.NotifyNewMemberRequest.class,
+      responseType = NotificationServiceOuterClass.NotifyNewMemberResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest,
-      com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse> getNotifyNewMemberMethod() {
-    io.grpc.MethodDescriptor<com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest, com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse> getNotifyNewMemberMethod;
+  public static io.grpc.MethodDescriptor<NotificationServiceOuterClass.NotifyNewMemberRequest,
+      NotificationServiceOuterClass.NotifyNewMemberResponse> getNotifyNewMemberMethod() {
+    io.grpc.MethodDescriptor<NotificationServiceOuterClass.NotifyNewMemberRequest, NotificationServiceOuterClass.NotifyNewMemberResponse> getNotifyNewMemberMethod;
     if ((getNotifyNewMemberMethod = NotificationServiceGrpc.getNotifyNewMemberMethod) == null) {
       synchronized (NotificationServiceGrpc.class) {
         if ((getNotifyNewMemberMethod = NotificationServiceGrpc.getNotifyNewMemberMethod) == null) {
           NotificationServiceGrpc.getNotifyNewMemberMethod = getNotifyNewMemberMethod =
-              io.grpc.MethodDescriptor.<com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest, com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse>newBuilder()
+              io.grpc.MethodDescriptor.<NotificationServiceOuterClass.NotifyNewMemberRequest, NotificationServiceOuterClass.NotifyNewMemberResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "notifyNewMember"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest.getDefaultInstance()))
+                  NotificationServiceOuterClass.NotifyNewMemberRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse.getDefaultInstance()))
+                  NotificationServiceOuterClass.NotifyNewMemberResponse.getDefaultInstance()))
               .setSchemaDescriptor(new NotificationServiceMethodDescriptorSupplier("notifyNewMember"))
               .build();
         }
@@ -237,29 +230,29 @@ public final class NotificationServiceGrpc {
     return getNotifyNewMemberMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest,
-      com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse> getGetLatestVersionByKeyMethod;
+  private static volatile io.grpc.MethodDescriptor<NotificationServiceOuterClass.GetLatestVersionByKeyRequest,
+      NotificationServiceOuterClass.GetLatestVersionResponse> getGetLatestVersionByKeyMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "getLatestVersionByKey",
-      requestType = com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest.class,
-      responseType = com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse.class,
+      requestType = NotificationServiceOuterClass.GetLatestVersionByKeyRequest.class,
+      responseType = NotificationServiceOuterClass.GetLatestVersionResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest,
-      com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse> getGetLatestVersionByKeyMethod() {
-    io.grpc.MethodDescriptor<com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest, com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse> getGetLatestVersionByKeyMethod;
+  public static io.grpc.MethodDescriptor<NotificationServiceOuterClass.GetLatestVersionByKeyRequest,
+      NotificationServiceOuterClass.GetLatestVersionResponse> getGetLatestVersionByKeyMethod() {
+    io.grpc.MethodDescriptor<NotificationServiceOuterClass.GetLatestVersionByKeyRequest, NotificationServiceOuterClass.GetLatestVersionResponse> getGetLatestVersionByKeyMethod;
     if ((getGetLatestVersionByKeyMethod = NotificationServiceGrpc.getGetLatestVersionByKeyMethod) == null) {
       synchronized (NotificationServiceGrpc.class) {
         if ((getGetLatestVersionByKeyMethod = NotificationServiceGrpc.getGetLatestVersionByKeyMethod) == null) {
           NotificationServiceGrpc.getGetLatestVersionByKeyMethod = getGetLatestVersionByKeyMethod =
-              io.grpc.MethodDescriptor.<com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest, com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse>newBuilder()
+              io.grpc.MethodDescriptor.<NotificationServiceOuterClass.GetLatestVersionByKeyRequest, NotificationServiceOuterClass.GetLatestVersionResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "getLatestVersionByKey"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest.getDefaultInstance()))
+                  NotificationServiceOuterClass.GetLatestVersionByKeyRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse.getDefaultInstance()))
+                  NotificationServiceOuterClass.GetLatestVersionResponse.getDefaultInstance()))
               .setSchemaDescriptor(new NotificationServiceMethodDescriptorSupplier("getLatestVersionByKey"))
               .build();
         }
@@ -327,8 +320,8 @@ public final class NotificationServiceGrpc {
      * Send event.
      * </pre>
      */
-    public void sendEvent(com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventRequest request,
-        io.grpc.stub.StreamObserver<com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventsResponse> responseObserver) {
+    public void sendEvent(NotificationServiceOuterClass.SendEventRequest request,
+						  io.grpc.stub.StreamObserver<NotificationServiceOuterClass.SendEventsResponse> responseObserver) {
       asyncUnimplementedUnaryCall(getSendEventMethod(), responseObserver);
     }
 
@@ -337,8 +330,8 @@ public final class NotificationServiceGrpc {
      * List events.
      * </pre>
      */
-    public void listEvents(com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsRequest request,
-        io.grpc.stub.StreamObserver<com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse> responseObserver) {
+    public void listEvents(NotificationServiceOuterClass.ListEventsRequest request,
+						   io.grpc.stub.StreamObserver<NotificationServiceOuterClass.ListEventsResponse> responseObserver) {
       asyncUnimplementedUnaryCall(getListEventsMethod(), responseObserver);
     }
 
@@ -347,8 +340,8 @@ public final class NotificationServiceGrpc {
      * List all events
      * </pre>
      */
-    public void listAllEvents(com.aiflow.notification.proto.NotificationServiceOuterClass.ListAllEventsRequest request,
-        io.grpc.stub.StreamObserver<com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse> responseObserver) {
+    public void listAllEvents(NotificationServiceOuterClass.ListAllEventsRequest request,
+							  io.grpc.stub.StreamObserver<NotificationServiceOuterClass.ListEventsResponse> responseObserver) {
       asyncUnimplementedUnaryCall(getListAllEventsMethod(), responseObserver);
     }
 
@@ -357,8 +350,8 @@ public final class NotificationServiceGrpc {
      * Accepts notifications from other members.
      * </pre>
      */
-    public void notify(com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest request,
-        io.grpc.stub.StreamObserver<com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse> responseObserver) {
+    public void notify(NotificationServiceOuterClass.NotifyRequest request,
+					   io.grpc.stub.StreamObserver<NotificationServiceOuterClass.NotifyResponse> responseObserver) {
       asyncUnimplementedUnaryCall(getNotifyMethod(), responseObserver);
     }
 
@@ -367,8 +360,8 @@ public final class NotificationServiceGrpc {
      * List current living members.
      * </pre>
      */
-    public void listMembers(com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersRequest request,
-        io.grpc.stub.StreamObserver<com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersResponse> responseObserver) {
+    public void listMembers(NotificationServiceOuterClass.ListMembersRequest request,
+							io.grpc.stub.StreamObserver<NotificationServiceOuterClass.ListMembersResponse> responseObserver) {
       asyncUnimplementedUnaryCall(getListMembersMethod(), responseObserver);
     }
 
@@ -377,8 +370,8 @@ public final class NotificationServiceGrpc {
      * Notify current members that there is a new member added.
      * </pre>
      */
-    public void notifyNewMember(com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest request,
-        io.grpc.stub.StreamObserver<com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse> responseObserver) {
+    public void notifyNewMember(NotificationServiceOuterClass.NotifyNewMemberRequest request,
+								io.grpc.stub.StreamObserver<NotificationServiceOuterClass.NotifyNewMemberResponse> responseObserver) {
       asyncUnimplementedUnaryCall(getNotifyNewMemberMethod(), responseObserver);
     }
 
@@ -387,8 +380,8 @@ public final class NotificationServiceGrpc {
      * Get latest version by key
      * </pre>
      */
-    public void getLatestVersionByKey(com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest request,
-        io.grpc.stub.StreamObserver<com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse> responseObserver) {
+    public void getLatestVersionByKey(NotificationServiceOuterClass.GetLatestVersionByKeyRequest request,
+									  io.grpc.stub.StreamObserver<NotificationServiceOuterClass.GetLatestVersionResponse> responseObserver) {
       asyncUnimplementedUnaryCall(getGetLatestVersionByKeyMethod(), responseObserver);
     }
 
@@ -398,50 +391,50 @@ public final class NotificationServiceGrpc {
             getSendEventMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventRequest,
-                com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventsResponse>(
+                NotificationServiceOuterClass.SendEventRequest,
+                NotificationServiceOuterClass.SendEventsResponse>(
                   this, METHODID_SEND_EVENT)))
           .addMethod(
             getListEventsMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsRequest,
-                com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse>(
+                NotificationServiceOuterClass.ListEventsRequest,
+                NotificationServiceOuterClass.ListEventsResponse>(
                   this, METHODID_LIST_EVENTS)))
           .addMethod(
             getListAllEventsMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                com.aiflow.notification.proto.NotificationServiceOuterClass.ListAllEventsRequest,
-                com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse>(
+                NotificationServiceOuterClass.ListAllEventsRequest,
+                NotificationServiceOuterClass.ListEventsResponse>(
                   this, METHODID_LIST_ALL_EVENTS)))
           .addMethod(
             getNotifyMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest,
-                com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse>(
+                NotificationServiceOuterClass.NotifyRequest,
+                NotificationServiceOuterClass.NotifyResponse>(
                   this, METHODID_NOTIFY)))
           .addMethod(
             getListMembersMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersRequest,
-                com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersResponse>(
+                NotificationServiceOuterClass.ListMembersRequest,
+                NotificationServiceOuterClass.ListMembersResponse>(
                   this, METHODID_LIST_MEMBERS)))
           .addMethod(
             getNotifyNewMemberMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest,
-                com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse>(
+                NotificationServiceOuterClass.NotifyNewMemberRequest,
+                NotificationServiceOuterClass.NotifyNewMemberResponse>(
                   this, METHODID_NOTIFY_NEW_MEMBER)))
           .addMethod(
             getGetLatestVersionByKeyMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest,
-                com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse>(
+                NotificationServiceOuterClass.GetLatestVersionByKeyRequest,
+                NotificationServiceOuterClass.GetLatestVersionResponse>(
                   this, METHODID_GET_LATEST_VERSION_BY_KEY)))
           .build();
     }
@@ -472,8 +465,8 @@ public final class NotificationServiceGrpc {
      * Send event.
      * </pre>
      */
-    public void sendEvent(com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventRequest request,
-        io.grpc.stub.StreamObserver<com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventsResponse> responseObserver) {
+    public void sendEvent(NotificationServiceOuterClass.SendEventRequest request,
+						  io.grpc.stub.StreamObserver<NotificationServiceOuterClass.SendEventsResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getSendEventMethod(), getCallOptions()), request, responseObserver);
     }
@@ -483,8 +476,8 @@ public final class NotificationServiceGrpc {
      * List events.
      * </pre>
      */
-    public void listEvents(com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsRequest request,
-        io.grpc.stub.StreamObserver<com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse> responseObserver) {
+    public void listEvents(NotificationServiceOuterClass.ListEventsRequest request,
+						   io.grpc.stub.StreamObserver<NotificationServiceOuterClass.ListEventsResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getListEventsMethod(), getCallOptions()), request, responseObserver);
     }
@@ -494,8 +487,8 @@ public final class NotificationServiceGrpc {
      * List all events
      * </pre>
      */
-    public void listAllEvents(com.aiflow.notification.proto.NotificationServiceOuterClass.ListAllEventsRequest request,
-        io.grpc.stub.StreamObserver<com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse> responseObserver) {
+    public void listAllEvents(NotificationServiceOuterClass.ListAllEventsRequest request,
+							  io.grpc.stub.StreamObserver<NotificationServiceOuterClass.ListEventsResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getListAllEventsMethod(), getCallOptions()), request, responseObserver);
     }
@@ -505,8 +498,8 @@ public final class NotificationServiceGrpc {
      * Accepts notifications from other members.
      * </pre>
      */
-    public void notify(com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest request,
-        io.grpc.stub.StreamObserver<com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse> responseObserver) {
+    public void notify(NotificationServiceOuterClass.NotifyRequest request,
+					   io.grpc.stub.StreamObserver<NotificationServiceOuterClass.NotifyResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getNotifyMethod(), getCallOptions()), request, responseObserver);
     }
@@ -516,8 +509,8 @@ public final class NotificationServiceGrpc {
      * List current living members.
      * </pre>
      */
-    public void listMembers(com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersRequest request,
-        io.grpc.stub.StreamObserver<com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersResponse> responseObserver) {
+    public void listMembers(NotificationServiceOuterClass.ListMembersRequest request,
+							io.grpc.stub.StreamObserver<NotificationServiceOuterClass.ListMembersResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getListMembersMethod(), getCallOptions()), request, responseObserver);
     }
@@ -527,8 +520,8 @@ public final class NotificationServiceGrpc {
      * Notify current members that there is a new member added.
      * </pre>
      */
-    public void notifyNewMember(com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest request,
-        io.grpc.stub.StreamObserver<com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse> responseObserver) {
+    public void notifyNewMember(NotificationServiceOuterClass.NotifyNewMemberRequest request,
+								io.grpc.stub.StreamObserver<NotificationServiceOuterClass.NotifyNewMemberResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getNotifyNewMemberMethod(), getCallOptions()), request, responseObserver);
     }
@@ -538,8 +531,8 @@ public final class NotificationServiceGrpc {
      * Get latest version by key
      * </pre>
      */
-    public void getLatestVersionByKey(com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest request,
-        io.grpc.stub.StreamObserver<com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse> responseObserver) {
+    public void getLatestVersionByKey(NotificationServiceOuterClass.GetLatestVersionByKeyRequest request,
+									  io.grpc.stub.StreamObserver<NotificationServiceOuterClass.GetLatestVersionResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getGetLatestVersionByKeyMethod(), getCallOptions()), request, responseObserver);
     }
@@ -570,7 +563,7 @@ public final class NotificationServiceGrpc {
      * Send event.
      * </pre>
      */
-    public com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventsResponse sendEvent(com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventRequest request) {
+    public NotificationServiceOuterClass.SendEventsResponse sendEvent(NotificationServiceOuterClass.SendEventRequest request) {
       return blockingUnaryCall(
           getChannel(), getSendEventMethod(), getCallOptions(), request);
     }
@@ -580,7 +573,7 @@ public final class NotificationServiceGrpc {
      * List events.
      * </pre>
      */
-    public com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse listEvents(com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsRequest request) {
+    public NotificationServiceOuterClass.ListEventsResponse listEvents(NotificationServiceOuterClass.ListEventsRequest request) {
       return blockingUnaryCall(
           getChannel(), getListEventsMethod(), getCallOptions(), request);
     }
@@ -590,7 +583,7 @@ public final class NotificationServiceGrpc {
      * List all events
      * </pre>
      */
-    public com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse listAllEvents(com.aiflow.notification.proto.NotificationServiceOuterClass.ListAllEventsRequest request) {
+    public NotificationServiceOuterClass.ListEventsResponse listAllEvents(NotificationServiceOuterClass.ListAllEventsRequest request) {
       return blockingUnaryCall(
           getChannel(), getListAllEventsMethod(), getCallOptions(), request);
     }
@@ -600,7 +593,7 @@ public final class NotificationServiceGrpc {
      * Accepts notifications from other members.
      * </pre>
      */
-    public com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse notify(com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest request) {
+    public NotificationServiceOuterClass.NotifyResponse notify(NotificationServiceOuterClass.NotifyRequest request) {
       return blockingUnaryCall(
           getChannel(), getNotifyMethod(), getCallOptions(), request);
     }
@@ -610,7 +603,7 @@ public final class NotificationServiceGrpc {
      * List current living members.
      * </pre>
      */
-    public com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersResponse listMembers(com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersRequest request) {
+    public NotificationServiceOuterClass.ListMembersResponse listMembers(NotificationServiceOuterClass.ListMembersRequest request) {
       return blockingUnaryCall(
           getChannel(), getListMembersMethod(), getCallOptions(), request);
     }
@@ -620,7 +613,7 @@ public final class NotificationServiceGrpc {
      * Notify current members that there is a new member added.
      * </pre>
      */
-    public com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse notifyNewMember(com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest request) {
+    public NotificationServiceOuterClass.NotifyNewMemberResponse notifyNewMember(NotificationServiceOuterClass.NotifyNewMemberRequest request) {
       return blockingUnaryCall(
           getChannel(), getNotifyNewMemberMethod(), getCallOptions(), request);
     }
@@ -630,7 +623,7 @@ public final class NotificationServiceGrpc {
      * Get latest version by key
      * </pre>
      */
-    public com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse getLatestVersionByKey(com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest request) {
+    public NotificationServiceOuterClass.GetLatestVersionResponse getLatestVersionByKey(NotificationServiceOuterClass.GetLatestVersionByKeyRequest request) {
       return blockingUnaryCall(
           getChannel(), getGetLatestVersionByKeyMethod(), getCallOptions(), request);
     }
@@ -661,8 +654,8 @@ public final class NotificationServiceGrpc {
      * Send event.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventsResponse> sendEvent(
-        com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<NotificationServiceOuterClass.SendEventsResponse> sendEvent(
+        NotificationServiceOuterClass.SendEventRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getSendEventMethod(), getCallOptions()), request);
     }
@@ -672,8 +665,8 @@ public final class NotificationServiceGrpc {
      * List events.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse> listEvents(
-        com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<NotificationServiceOuterClass.ListEventsResponse> listEvents(
+        NotificationServiceOuterClass.ListEventsRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getListEventsMethod(), getCallOptions()), request);
     }
@@ -683,8 +676,8 @@ public final class NotificationServiceGrpc {
      * List all events
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse> listAllEvents(
-        com.aiflow.notification.proto.NotificationServiceOuterClass.ListAllEventsRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<NotificationServiceOuterClass.ListEventsResponse> listAllEvents(
+        NotificationServiceOuterClass.ListAllEventsRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getListAllEventsMethod(), getCallOptions()), request);
     }
@@ -694,8 +687,8 @@ public final class NotificationServiceGrpc {
      * Accepts notifications from other members.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse> notify(
-        com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<NotificationServiceOuterClass.NotifyResponse> notify(
+        NotificationServiceOuterClass.NotifyRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getNotifyMethod(), getCallOptions()), request);
     }
@@ -705,8 +698,8 @@ public final class NotificationServiceGrpc {
      * List current living members.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersResponse> listMembers(
-        com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<NotificationServiceOuterClass.ListMembersResponse> listMembers(
+        NotificationServiceOuterClass.ListMembersRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getListMembersMethod(), getCallOptions()), request);
     }
@@ -716,8 +709,8 @@ public final class NotificationServiceGrpc {
      * Notify current members that there is a new member added.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse> notifyNewMember(
-        com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<NotificationServiceOuterClass.NotifyNewMemberResponse> notifyNewMember(
+        NotificationServiceOuterClass.NotifyNewMemberRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getNotifyNewMemberMethod(), getCallOptions()), request);
     }
@@ -727,8 +720,8 @@ public final class NotificationServiceGrpc {
      * Get latest version by key
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse> getLatestVersionByKey(
-        com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<NotificationServiceOuterClass.GetLatestVersionResponse> getLatestVersionByKey(
+        NotificationServiceOuterClass.GetLatestVersionByKeyRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getGetLatestVersionByKeyMethod(), getCallOptions()), request);
     }
@@ -760,32 +753,32 @@ public final class NotificationServiceGrpc {
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
         case METHODID_SEND_EVENT:
-          serviceImpl.sendEvent((com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventRequest) request,
-              (io.grpc.stub.StreamObserver<com.aiflow.notification.proto.NotificationServiceOuterClass.SendEventsResponse>) responseObserver);
+          serviceImpl.sendEvent((NotificationServiceOuterClass.SendEventRequest) request,
+              (io.grpc.stub.StreamObserver<NotificationServiceOuterClass.SendEventsResponse>) responseObserver);
           break;
         case METHODID_LIST_EVENTS:
-          serviceImpl.listEvents((com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsRequest) request,
-              (io.grpc.stub.StreamObserver<com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse>) responseObserver);
+          serviceImpl.listEvents((NotificationServiceOuterClass.ListEventsRequest) request,
+              (io.grpc.stub.StreamObserver<NotificationServiceOuterClass.ListEventsResponse>) responseObserver);
           break;
         case METHODID_LIST_ALL_EVENTS:
-          serviceImpl.listAllEvents((com.aiflow.notification.proto.NotificationServiceOuterClass.ListAllEventsRequest) request,
-              (io.grpc.stub.StreamObserver<com.aiflow.notification.proto.NotificationServiceOuterClass.ListEventsResponse>) responseObserver);
+          serviceImpl.listAllEvents((NotificationServiceOuterClass.ListAllEventsRequest) request,
+              (io.grpc.stub.StreamObserver<NotificationServiceOuterClass.ListEventsResponse>) responseObserver);
           break;
         case METHODID_NOTIFY:
-          serviceImpl.notify((com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest) request,
-              (io.grpc.stub.StreamObserver<com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse>) responseObserver);
+          serviceImpl.notify((NotificationServiceOuterClass.NotifyRequest) request,
+              (io.grpc.stub.StreamObserver<NotificationServiceOuterClass.NotifyResponse>) responseObserver);
           break;
         case METHODID_LIST_MEMBERS:
-          serviceImpl.listMembers((com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersRequest) request,
-              (io.grpc.stub.StreamObserver<com.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersResponse>) responseObserver);
+          serviceImpl.listMembers((NotificationServiceOuterClass.ListMembersRequest) request,
+              (io.grpc.stub.StreamObserver<NotificationServiceOuterClass.ListMembersResponse>) responseObserver);
           break;
         case METHODID_NOTIFY_NEW_MEMBER:
-          serviceImpl.notifyNewMember((com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest) request,
-              (io.grpc.stub.StreamObserver<com.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse>) responseObserver);
+          serviceImpl.notifyNewMember((NotificationServiceOuterClass.NotifyNewMemberRequest) request,
+              (io.grpc.stub.StreamObserver<NotificationServiceOuterClass.NotifyNewMemberResponse>) responseObserver);
           break;
         case METHODID_GET_LATEST_VERSION_BY_KEY:
-          serviceImpl.getLatestVersionByKey((com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest) request,
-              (io.grpc.stub.StreamObserver<com.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionResponse>) responseObserver);
+          serviceImpl.getLatestVersionByKey((NotificationServiceOuterClass.GetLatestVersionByKeyRequest) request,
+              (io.grpc.stub.StreamObserver<NotificationServiceOuterClass.GetLatestVersionResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -809,7 +802,7 @@ public final class NotificationServiceGrpc {
 
     @java.lang.Override
     public com.google.protobuf.Descriptors.FileDescriptor getFileDescriptor() {
-      return com.aiflow.notification.proto.NotificationServiceOuterClass.getDescriptor();
+      return NotificationServiceOuterClass.getDescriptor();
     }
 
     @java.lang.Override

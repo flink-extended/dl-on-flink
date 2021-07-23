@@ -16,15 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.aiflow.notification.client;
+package org.aiflow.notification.client;
 
-import com.aiflow.notification.entity.EventMeta;
-import com.aiflow.notification.proto.NotificationServiceGrpc.NotificationServiceBlockingStub;
-import com.aiflow.notification.proto.NotificationServiceOuterClass.*;
+import org.aiflow.notification.entity.EventMeta;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.speedment.common.tuple.Tuple4;
 import com.speedment.common.tuple.internal.nonnullable.Tuple4Impl;
 import io.grpc.ManagedChannelBuilder;
+import org.aiflow.notification.proto.NotificationServiceGrpc;
+import org.aiflow.notification.proto.NotificationServiceOuterClass;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,9 +32,6 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import static com.aiflow.notification.entity.EventMeta.buildEventMeta;
-import static com.aiflow.notification.proto.NotificationServiceGrpc.newBlockingStub;
 
 public class NotificationClient {
 
@@ -47,8 +44,8 @@ public class NotificationClient {
     private final Integer retryTimeoutMs;
     private final Map<Tuple4<String, String, String, String>, EventListener> threads; //key, namespace, event_type, sender
     private final ExecutorService listMembersService;
-    private NotificationServiceBlockingStub notificationServiceStub;
-    private Set<MemberProto> livingMembers;
+    private NotificationServiceGrpc.NotificationServiceBlockingStub notificationServiceStub;
+    private Set<NotificationServiceOuterClass.MemberProto> livingMembers;
     private Boolean enableHa;
     private String currentUri;
     private String sender;
@@ -112,7 +109,7 @@ public class NotificationClient {
      * @return List of event updated in Notification Service.
      */
     protected static List<EventMeta> listEvents(
-            NotificationServiceBlockingStub serviceStub,
+            NotificationServiceGrpc.NotificationServiceBlockingStub serviceStub,
             String namespace,
             String sender,
             List<String> keys,
@@ -121,8 +118,8 @@ public class NotificationClient {
             long startTime,
             Integer timeoutSeconds)
             throws Exception {
-        ListEventsRequest request =
-                ListEventsRequest.newBuilder()
+        NotificationServiceOuterClass.ListEventsRequest request =
+                NotificationServiceOuterClass.ListEventsRequest.newBuilder()
                         .addAllKeys(keys)
                         .setStartVersion(version)
                         .setEventType(eventType)
@@ -134,12 +131,12 @@ public class NotificationClient {
         return parseEventsFromResponse(serviceStub.listEvents(request));
     }
 
-    private static List<EventMeta> parseEventsFromResponse(ListEventsResponse response)
+    private static List<EventMeta> parseEventsFromResponse(NotificationServiceOuterClass.ListEventsResponse response)
             throws Exception {
-        if (response.getReturnCode() == ReturnStatus.SUCCESS) {
+        if (response.getReturnCode() == NotificationServiceOuterClass.ReturnStatus.SUCCESS) {
             List<EventMeta> eventMetas = new ArrayList<>();
-            for (EventProto eventProto : response.getEventsList()) {
-                eventMetas.add(buildEventMeta(eventProto));
+            for (NotificationServiceOuterClass.EventProto eventProto : response.getEventsList()) {
+                eventMetas.add(EventMeta.buildEventMeta(eventProto));
             }
             return eventMetas;
         } else {
@@ -147,14 +144,14 @@ public class NotificationClient {
         }
     }
 
-    protected static NotificationServiceBlockingStub wrapBlockingStub(
-            NotificationServiceBlockingStub stub,
+    protected static NotificationServiceGrpc.NotificationServiceBlockingStub wrapBlockingStub(
+            NotificationServiceGrpc.NotificationServiceBlockingStub stub,
             String target,
-            Set<MemberProto> livingMembers,
+            Set<NotificationServiceOuterClass.MemberProto> livingMembers,
             Boolean haRunning,
             Integer retryIntervalMs,
             Integer retryTimeoutMs) {
-        return newBlockingStub(ManagedChannelBuilder.forTarget(target).usePlaintext().build())
+        return NotificationServiceGrpc.newBlockingStub(ManagedChannelBuilder.forTarget(target).usePlaintext().build())
                 .withInterceptors(
                         new NotificationInterceptor(
                                 stub,
@@ -168,7 +165,7 @@ public class NotificationClient {
     /** Initialize notification service stub. */
     protected void initNotificationServiceStub() {
         notificationServiceStub =
-                newBlockingStub(
+                NotificationServiceGrpc.newBlockingStub(
                         ManagedChannelBuilder.forTarget(
                                         StringUtils.isEmpty(currentUri) ? SERVER_URI : currentUri)
                                 .usePlaintext()
@@ -188,16 +185,16 @@ public class NotificationClient {
     /** Select a valid server from server candidates as current server. */
     protected void selectValidServer() {
         boolean lastError = false;
-        for (MemberProto livingMember : livingMembers) {
+        for (NotificationServiceOuterClass.MemberProto livingMember : livingMembers) {
             try {
                 currentUri = livingMember.getServerUri();
                 initNotificationServiceStub();
-                ListMembersRequest request =
-                        ListMembersRequest.newBuilder()
+                NotificationServiceOuterClass.ListMembersRequest request =
+                        NotificationServiceOuterClass.ListMembersRequest.newBuilder()
                                 .setTimeoutSeconds(listMemberIntervalMs / 1000)
                                 .build();
-                ListMembersResponse response = notificationServiceStub.listMembers(request);
-                if (response.getReturnCode() == ReturnStatus.SUCCESS) {
+                NotificationServiceOuterClass.ListMembersResponse response = notificationServiceStub.listMembers(request);
+                if (response.getReturnCode() == NotificationServiceOuterClass.ReturnStatus.SUCCESS) {
                     livingMembers = new HashSet<>(response.getMembersList());
                     lastError = false;
                     break;
@@ -221,12 +218,12 @@ public class NotificationClient {
                     if (Thread.currentThread().isInterrupted()) {
                         break;
                     }
-                    ListMembersRequest request =
-                            ListMembersRequest.newBuilder()
+                    NotificationServiceOuterClass.ListMembersRequest request =
+                            NotificationServiceOuterClass.ListMembersRequest.newBuilder()
                                     .setTimeoutSeconds(listMemberIntervalMs / 1000)
                                     .build();
-                    ListMembersResponse response = notificationServiceStub.listMembers(request);
-                    if (response.getReturnCode() == ReturnStatus.SUCCESS) {
+                    NotificationServiceOuterClass.ListMembersResponse response = notificationServiceStub.listMembers(request);
+                    if (response.getReturnCode() == NotificationServiceOuterClass.ReturnStatus.SUCCESS) {
                         livingMembers = new HashSet<>(response.getMembersList());
                     } else {
                         logger.warn(response.getReturnMsg());
@@ -259,10 +256,10 @@ public class NotificationClient {
     public EventMeta sendEvent(
             String key, String value, String eventType, String context)
             throws Exception {
-        SendEventRequest request =
-                SendEventRequest.newBuilder()
+        NotificationServiceOuterClass.SendEventRequest request =
+                NotificationServiceOuterClass.SendEventRequest.newBuilder()
                         .setEvent(
-                                EventProto.newBuilder()
+                                NotificationServiceOuterClass.EventProto.newBuilder()
                                         .setKey(key)
                                         .setValue(value)
                                         .setEventType(eventType)
@@ -272,9 +269,9 @@ public class NotificationClient {
                                         .build())
                         .setUuid(UUID.randomUUID().toString())
                         .build();
-        SendEventsResponse response = notificationServiceStub.sendEvent(request);
-        if (response.getReturnCode() == ReturnStatus.SUCCESS) {
-            return buildEventMeta(response.getEvent());
+        NotificationServiceOuterClass.SendEventsResponse response = notificationServiceStub.sendEvent(request);
+        if (response.getReturnCode() == NotificationServiceOuterClass.ReturnStatus.SUCCESS) {
+            return EventMeta.buildEventMeta(response.getEvent());
         } else {
             throw new Exception(response.getReturnMsg());
         }
@@ -315,13 +312,13 @@ public class NotificationClient {
      */
     public List<EventMeta> listAllEvents(long startTime, long startVersion, long endVersion)
             throws Exception {
-        ListAllEventsRequest request =
-                ListAllEventsRequest.newBuilder()
+        NotificationServiceOuterClass.ListAllEventsRequest request =
+                NotificationServiceOuterClass.ListAllEventsRequest.newBuilder()
                         .setStartTime(startTime)
                         .setStartVersion(startVersion)
                         .setEndVersion(endVersion)
                         .build();
-        ListEventsResponse response = notificationServiceStub.listAllEvents(request);
+        NotificationServiceOuterClass.ListEventsResponse response = notificationServiceStub.listAllEvents(request);
         return parseEventsFromResponse(response);
     }
 
@@ -405,20 +402,20 @@ public class NotificationClient {
         if (StringUtils.isEmpty(key)) {
             throw new Exception("Empty key, please provide valid key");
         } else {
-            GetLatestVersionByKeyRequest request =
-                    GetLatestVersionByKeyRequest.newBuilder()
+            NotificationServiceOuterClass.GetLatestVersionByKeyRequest request =
+                    NotificationServiceOuterClass.GetLatestVersionByKeyRequest.newBuilder()
                             .setNamespace(
                                     StringUtils.isEmpty(namespace) ? defaultNamespace : namespace)
                             .setKey(key)
                             .build();
-            GetLatestVersionResponse response =
+            NotificationServiceOuterClass.GetLatestVersionResponse response =
                     notificationServiceStub.getLatestVersionByKey(request);
             return parseLatestVersionFromResponse(response);
         }
     }
 
-    public long parseLatestVersionFromResponse(GetLatestVersionResponse response) throws Exception {
-        if (response.getReturnCode().equals(ReturnStatus.ERROR.toString())) {
+    public long parseLatestVersionFromResponse(NotificationServiceOuterClass.GetLatestVersionResponse response) throws Exception {
+        if (response.getReturnCode().equals(NotificationServiceOuterClass.ReturnStatus.ERROR.toString())) {
             throw new Exception(response.getReturnMsg());
         } else {
             return response.getVersion();
