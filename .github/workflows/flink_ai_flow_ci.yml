@@ -31,9 +31,9 @@ jobs:
     - name: Install java client
       run: |
         cd ./flink-ai-flow/lib/notification_service/java
-        mvn clean install -DskipTests=true
+        mvn -B clean install
         cd ../../../ai_flow/java
-        mvn clean install -DskipTests=true
+        mvn -B clean install
         cd ../../..
     - name: Lint with flake8
       run: |
