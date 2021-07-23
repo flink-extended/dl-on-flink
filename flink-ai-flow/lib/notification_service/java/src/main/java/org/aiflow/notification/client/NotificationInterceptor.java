@@ -16,23 +16,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.aiflow.notification.client;
+package org.aiflow.notification.client;
 
-import com.aiflow.notification.proto.NotificationServiceGrpc.NotificationServiceBlockingStub;
-import com.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto;
+import org.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto;
 import io.grpc.*;
+import org.aiflow.notification.proto.NotificationServiceGrpc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.aiflow.notification.client.NotificationClient.wrapBlockingStub;
+import static org.aiflow.notification.client.NotificationClient.wrapBlockingStub;
 
 public class NotificationInterceptor implements ClientInterceptor {
 
     private static final Logger logger = LoggerFactory.getLogger(NotificationInterceptor.class);
-    private NotificationServiceBlockingStub stub;
+    private NotificationServiceGrpc.NotificationServiceBlockingStub stub;
     private String target;
     private Set<MemberProto> livingMembers;
     private Boolean haRunning;
@@ -40,7 +40,7 @@ public class NotificationInterceptor implements ClientInterceptor {
     private Integer retryTimeoutMs;
 
     public NotificationInterceptor(
-            NotificationServiceBlockingStub stub,
+            NotificationServiceGrpc.NotificationServiceBlockingStub stub,
             String target,
             Set<MemberProto> livingMembers,
             Boolean haRunning,
