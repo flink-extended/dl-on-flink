@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.aiflow.notification.entity;
+package org.aiflow.notification.entity;
 
-import com.aiflow.notification.proto.NotificationServiceOuterClass.EventProto;
+import org.aiflow.notification.proto.NotificationServiceOuterClass;
 
 public class EventMeta {
 
@@ -142,7 +142,7 @@ public class EventMeta {
                 + '}';
     }
 
-    public static EventMeta buildEventMeta(EventProto eventProto) {
+    public static EventMeta buildEventMeta(NotificationServiceOuterClass.EventProto eventProto) {
         return new EventMeta(
                 eventProto.getKey(),
                 eventProto.getValue(),
