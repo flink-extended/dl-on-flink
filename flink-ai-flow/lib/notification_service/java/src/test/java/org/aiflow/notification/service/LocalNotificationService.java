@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.aiflow.notification.service;
+package org.aiflow.notification.service;
 
-import com.aiflow.notification.proto.NotificationServiceGrpc;
-import com.aiflow.notification.proto.NotificationServiceOuterClass;
+import org.aiflow.notification.proto.NotificationServiceGrpc;
+import org.aiflow.notification.proto.NotificationServiceOuterClass;
 import io.grpc.stub.StreamObserver;
 
 import java.util.ArrayList;

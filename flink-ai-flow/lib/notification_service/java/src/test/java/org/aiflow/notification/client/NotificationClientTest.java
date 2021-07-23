@@ -16,12 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.aiflow.notification.client;
+package org.aiflow.notification.client;
 
-import com.aiflow.notification.entity.EventMeta;
-import com.aiflow.notification.service.PythonServer;
+import org.aiflow.notification.entity.EventMeta;
+import org.aiflow.notification.service.PythonServer;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.Collections;
@@ -31,17 +33,18 @@ import static org.junit.Assert.assertEquals;
 
 public class NotificationClientTest {
 
-    private NotificationClient client;
-    private PythonServer server;
+    private static NotificationClient client;
+    private static PythonServer server;
 
-    @Before
-    public void setUp() throws Exception {
-        this.server = new PythonServer();
+    @BeforeClass
+    public static void setUp() throws Exception {
+        server = new PythonServer();
         server.start();
-
+        // waiting for notification server
+        Thread.sleep(1000);
         // Create a NotificationClient using the in-process channel
         try {
-            this.client =
+            client =
                     new NotificationClient(
                             "localhost:50051",
                             "default",
@@ -55,9 +58,9 @@ public class NotificationClientTest {
         }
     }
 
-    @After
-    public void tearDown(){
-        this.server.stop();
+    @AfterClass
+    public static void tearDown(){
+        server.stop();
     }
 
     @Test

@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.aiflow.notification.client;
+package org.aiflow.notification.client;
 
-import com.aiflow.notification.entity.EventMeta;
+import org.aiflow.notification.entity.EventMeta;
 
 import java.util.List;
 

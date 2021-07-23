@@ -16,22 +16,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.aiflow.notification.client;
+package org.aiflow.notification.client;
 
-import com.aiflow.notification.entity.EventMeta;
-import com.aiflow.notification.proto.NotificationServiceGrpc.NotificationServiceBlockingStub;
+import org.aiflow.notification.entity.EventMeta;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import org.aiflow.notification.proto.NotificationServiceGrpc;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.aiflow.notification.client.NotificationClient.listEvents;
+import static org.aiflow.notification.client.NotificationClient.listEvents;
 
 public class EventListener {
 
-	private final NotificationServiceBlockingStub serviceStub;
+	private final NotificationServiceGrpc.NotificationServiceBlockingStub serviceStub;
 	private final List<String> keys;
 	private final long version;
 	private final String eventType;
@@ -44,7 +44,7 @@ public class EventListener {
 	private volatile boolean isRunning = true;
 
 	public EventListener(
-			NotificationServiceBlockingStub serviceStub,
+			NotificationServiceGrpc.NotificationServiceBlockingStub serviceStub,
 			List<String> keys,
 			long version,
 			String eventType,
