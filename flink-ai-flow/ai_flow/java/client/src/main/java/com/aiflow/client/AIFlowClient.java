@@ -21,12 +21,12 @@ package com.aiflow.client;
 import com.aiflow.common.*;
 import com.aiflow.entity.*;
 import com.aiflow.exception.AIFlowException;
-import com.aiflow.notification.client.EventWatcher;
-import com.aiflow.notification.client.NotificationClient;
-import com.aiflow.notification.entity.EventMeta;
 import com.aiflow.proto.Message;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
+import org.aiflow.notification.client.EventWatcher;
+import org.aiflow.notification.client.NotificationClient;
+import org.aiflow.notification.entity.EventMeta;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
