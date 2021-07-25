@@ -3,5 +3,3 @@ server_ip: localhost
 server_port: 50051
 blob:
   blob_manager_class: ai_flow_plugins.blob_manager_plugins.local_blob_manager.LocalBlobManager
-  remote_repository: /tmp
-  local_repository: /tmp

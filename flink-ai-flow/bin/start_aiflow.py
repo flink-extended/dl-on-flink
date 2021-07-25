@@ -24,21 +24,32 @@ from airflow.logging_config import configure_logging
 
 
 def create_default_sever_config(root_dir_path):
+    airflow_deploy_path = os.environ["AIRFLOW_DEPLOY_PATH"]
     content = textwrap.dedent(f"""\
         # Config of master server
 
-        # endpoint of master
+        # endpoint of AI Flow Server
         server_ip: localhost
         server_port: 50051
-        # uri of database backend in master
+
+        # uri of database backend of AIFlow server
         db_uri: sqlite:///{root_dir_path}/aiflow.db
+
         # type of database backend in master
         db_type: sql_lite
-        # the default notification service is no need to started
-        # when using the airflow scheduler 
-        start_default_notification: False
-        # uri of the notification service
+
+        # whether to start the scheduler service
+        start_scheduler_service: True
+
+        # uri of notification service
         notification_uri: localhost:50052
+
+        # scheduler config
+        scheduler:
+          scheduler_class_name: ai_flow_plugins.scheduler_plugins.airflow.airflow_scheduler.AirFlowScheduler
+          scheduler_config:
+            airflow_deploy_path: {airflow_deploy_path}
+            notification_service_uri: localhost:50052
     """)
     master_yaml_path = root_dir_path + "/master.yaml"
     with open(master_yaml_path, "w") as f:
