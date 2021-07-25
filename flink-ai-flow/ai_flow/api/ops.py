@@ -37,15 +37,18 @@ def read_dataset(dataset_info: Union[DatasetMeta, Text, int],
                  read_dataset_processor=None,
                  name: Text = None) -> Channel:
     """
-    Read dataset from the dataset operator. It can read dataset from external system.
+    Reads the dataset through the user-defined processor based on the metadata of dataset. The processor reads dataset
+    from external system and generates the :class:`~ai_flow.ai_graph.ai_node.ReadDatasetNode` with
+    :class:`~ai_flow.meta.dataset_meta.DatasetMeta`.
 
-    :param dataset_info: Information about the dataset which will be read. Its type can be DatasetMeta
-                         of py:class:`ai_flow.meta.dataset_meta.DatasetMeta` or Text or int. The dataset_info
-                         means name in the metadata service when its type is Text and it means id when its type is int.
-                         The ai flow will get the dataset from metadata service by name or id.
-    :param read_dataset_processor: The python user defined function in read dataset operator. User can write their own logic here.
-    :param name: Name of the read_dataset operator.
-    :return: Channel: data output channel.
+    :param dataset_info: Information about the dataset read by the processor. The type of dataset information could be
+                                      :class:`~ai_flow.meta.dataset_meta.DatasetMeta` or Text(i.e. the name of dataset)
+                                      or int(i.e. the id of dataset). If the type is Text or int, this method will get
+                                      the metadata of dataset by the name or id of dataset by default.
+    :param read_dataset_processor: The user-defined processor composed of the logic that reads dataset.
+    :param name: Name of the reading dataset operator represent for the
+                            :class:`~ai_flow.ai_graph.ai_node.ReadDatasetNode`.
+    :return: The :class:`~ai_flow.graph.channel.Channel`.
     """
     if isinstance(dataset_info, DatasetMeta):
         dataset_meta = dataset_info
@@ -71,15 +74,19 @@ def write_dataset(input: Channel,
                   name: Text = None
                   ) -> None:
     """
-    Write dataset to dataset operator. It can write dataset to external system.
+    Writes the dataset through the user-defined processor based on the metadata of dataset. The processor writes dataset
+    to external system and generates the :class:`~ai_flow.ai_graph.ai_node.WriteDatasetNode` with
+    :class:`~ai_flow.meta.dataset_meta.DatasetMeta`.
 
-    :param input: Channel from the specific operator which generates data.
-    :param dataset_info: Information about the dataset which will be read. Its type can be DataSetMeta
-                         of py:class:`ai_flow.meta.dataset_meta.DatasetMeta` or Text or int. The dataset_info
-                         means name in the metadata service when its type is Text and it means id when its type is int.
-                         The ai flow will get the dataset from metadata service by name or id.
-    :param write_dataset_processor: The python user defined function in write dataset operator. User can write their own logic here.
-    :param name: Name of the read_dataset operator.
+    :param input: The input :class:`~ai_flow.graph.channel.Channel` from the operator that generates the data used to
+                            write dataset.
+    :param dataset_info: Information about the dataset writen by the processor. The type of dataset information could be
+                                      :class:`~ai_flow.meta.dataset_meta.DatasetMeta` or Text(i.e. the name of dataset)
+                                      or int(i.e. the id of dataset). If the type is Text or int, this method will get
+                                      the metadata of dataset by the name or id of dataset by default.
+    :param write_dataset_processor: The user-defined processor composed of the logic that writes dataset.
+    :param name: Name of the writing dataset operator represent for the
+                            :class:`~ai_flow.ai_graph.ai_node.WriteDatasetNode`.
     :return: None.
     """
     if isinstance(dataset_info, DatasetMeta):
@@ -103,15 +110,17 @@ def transform(input: Union[Channel, List[Channel]],
               output_num=1,
               name: Text = None) -> Union[Channel, Tuple[Channel]]:
     """
-    Transformer operator. Transform the dataset so that the original dataset can be used for trainer or other operators
-    after feature engineering, data cleaning or some other data transformation.
+    Transforms dataset through the user-defined processor based on the input :class:`~ai_flow.graph.channel.Channel`.
+    The processor generates the transforming :class:`~ai_flow.ai_graph.ai_node.AINode`.
 
-    :param input: List of input data. It contains multiple channels from the operators which generate data.
-    :param transform_processor: The user defined function in transform operator. User can write their own logic here.
-    :param output_num: The output number of the operator. The default value is 1.
-    :param name: Name of the transform operator.
-    :return: Channel or Tuple[Channel]. It returns Channel When the output_num is 1 and returns Tuple[Channel] when
-             the output_num is bigger than 1, and the len(Tuple(Channel)) is output_num.
+    :param input: List of the input :class:`~ai_flow.graph.channel.Channel` that contains the multiple channels from the
+                           operators which generate the data used to transform.
+    :param transform_processor: The user-defined processor composed of the transformation logic.
+    :param output_num: The output :class:`~ai_flow.graph.channel.Channel` number of the transforming operator.
+                                      The default value is 1.
+    :param name: Name of the transforming operator represent for the :class:`~ai_flow.ai_graph.ai_node.AINode`.
+    :return: Returns the :class:`~ai_flow.graph.channel.Channel` when the `output_num` is 1 and returns
+                 Tuple[:class:`~ai_flow.graph.channel.Channel`] when the `output_num` is bigger than 1.
     """
     return user_define_operation(input=input,
                                  name=name,
@@ -121,27 +130,33 @@ def transform(input: Union[Channel, List[Channel]],
 
 
 def train(input: Union[Channel, List[Channel]],
-          training_processor,
           model_info: Union[ModelMeta, Text, int],
+          training_processor,
           base_model_info: Union[ModelMeta, Text, int] = None,
           output_num=0,
           name: Text = None) -> Union[Channel, Tuple[Channel]]:
     """
-    Trainer operator. Train model with the inputs or continually re-training the base model.
+    Trains model through the user-defined processor with the information of models based on the input
+    :class:`~ai_flow.graph.channel.Channel`. The processor generates the model training
+    :class:`~ai_flow.ai_graph.ai_node.AINode`.
 
-    :param input: List of Channel. It contains multiple channels from the operators which generate data.
-    :param training_processor: The user defined function in train operator. User can write their own logic here.
-    :param model_info: Information about the output model which is under training. Its type can be ModelMeta
-                              of py:class:`ai_flow.meta.model_meta.ModelMeta` or Text or int. The output_model_info
-                              means name in the metadata service when its type is Text and it means id when its type is
-                              int. The ai flow will get the model meta from metadata service by name or id.
-    :param base_model_info: Information about the base model which will be trained. Its type can be ModelMeta
-                            of py:class:`ai_flow.meta.model_meta.ModelMeta` or Text or int. The base_model_info
-                            means name in the metadata service when its type is Text and it means id when its type is
-                            int. The ai flow will get the model meta from metadata service by name or id.
-    :param output_num: The output number of the operator. The default value is 0.
-    :param name: Name of the train operator.
-    :return: Channel, Tuple[Channel].
+    :param input: List of the input :class:`~ai_flow.graph.channel.Channel` that contains the multiple channels from the
+                           operators which generate the data used to train model.
+    :param model_info: Information about the model trained by the processor. The type of model could be
+                                     :class:`~ai_flow.meta.model_meta.ModelMeta` or Text(i.e. the name of model) or int(
+                                     i.e. the id of model). If the type is Text or int, this method will get the
+                                     metadata of model by the name or id of model by default.
+    :param training_processor: The user-defined processor composed of the logic that trains model.
+    :param base_model_info: Information about the base model for training by the processor. The type of model could be
+                                              :class:`~ai_flow.meta.model_meta.ModelMeta` or Text or int. The
+                                              `base_model_info` means the name of model when the type is Text and it
+                                              means the id of model when the type is int, which gets the metadata of
+                                              model by the id or name of model.
+    :param output_num: The output :class:`~ai_flow.graph.channel.Channel` number of the model training operator.
+                                      The default value is 0.
+    :param name: Name of the model training operator represent for the :class:`~ai_flow.ai_graph.ai_node.AINode`.
+    :return: Returns the :class:`~ai_flow.graph.channel.Channel` when the `output_num` is 1 and returns
+                 Tuple[:class:`~ai_flow.graph.channel.Channel`] when the `output_num` is bigger than 1.
     """
     if isinstance(model_info, ModelMeta):
         output_model_meta = model_info
@@ -176,22 +191,28 @@ def predict(input: Union[Channel, List[Channel]],
             output_num=1,
             name: Text = None) -> Union[Channel, Tuple[Channel]]:
     """
-    Predictor Operator. Do prediction job with the specific model version.
+    Predicts through the user-defined processor with the information of model and model version based on the input
+    :class:`~ai_flow.graph.channel.Channel`. The processor generates the model prediction
+    :class:`~ai_flow.ai_graph.ai_node.AINode`.
 
-    :param input: List of Channel. It contains the dataset data used in prediction.
-    :param model_info: Information about the model which is in prediction. Its type can be ModelMeta
-                       of py:class:`ai_flow.meta.model_meta.ModelMeta` or Text or int. The model_info
-                       means name in the metadata service when its type is Text and it means id when its type is
-                       int. The ai flow will get the model meta from metadata service by name or id.
-    :param prediction_processor: The user defined function in predict operator. User can write their own logic here.
-    :param model_version_info: Information about the model version which is in prediction. Its type can be
-                               ModelVersionMeta of py:class:`ai_flow.meta.model_meta.ModelVersionMeta`
-                               or Text. The model_version_info means version in the metadata service
-                               when its type is Text. The ai flow will get the model meta from metadata
-                               service by version.
-    :param output_num: The output number of the operator. The default value is 1.
-    :param name: Name of the predict operator.
-    :return: Channel or Tuple[Channel].
+    :param input: List of the input :class:`~ai_flow.graph.channel.Channel` that contains the multiple channels from the
+                           operators which generate the data used to predict model.
+    :param model_info: Information about the model predicted by the processor. The type of model could be
+                                     :class:`~ai_flow.meta.model_meta.ModelMeta` or Text(i.e. the name of model) or int(
+                                     i.e. the id of model). If the type is Text or int, this method will get the
+                                     metadata of model by the name or id of model by default.
+    :param prediction_processor: The user-defined processor composed of the logic that predicts model.
+    :param model_version_info: Information about the model version predicted by the processor. The type of model version
+                                                  could be :class:`~ai_flow.meta.model_meta.ModelVersionMeta` or Text(
+                                                  i.e. the `version` field of
+                                                  :class:`~ai_flow.meta.model_meta.ModelVersionMeta`). If the type is
+                                                  Text, this method will get the metadata of model version by the
+                                                  version of model version by default.
+    :param output_num: The output :class:`~ai_flow.graph.channel.Channel` number of the model prediction operator.
+                                      The default value is 1.
+    :param name: Name of the model prediction operator represent for the :class:`~ai_flow.ai_graph.ai_node.AINode`.
+    :return: Returns the :class:`~ai_flow.graph.channel.Channel` when the `output_num` is 1 and returns
+                 Tuple[:class:`~ai_flow.graph.channel.Channel`] when the `output_num` is bigger than 1.
     """
     if isinstance(model_info, ModelMeta):
         model_meta = model_info
@@ -224,17 +245,22 @@ def evaluate(input: Union[Channel, List[Channel]],
              output_num=0,
              name: Text = None) -> Union[Channel, Tuple[Channel]]:
     """
-    Evaluate Operator. Do evaluate job with the specific model version.
+    Evaluates model through the user-defined processor with the information of model based on the input
+    :class:`~ai_flow.graph.channel.Channel`. The processor generates the model evaluating
+    :class:`~ai_flow.ai_graph.ai_node.AINode`.
 
-    :param input: List of Channel. It contains the dataset data used in prediction.
-    :param model_info: Information about the model which is in prediction. Its type can be ModelMeta
-                       of py:class:`ai_flow.meta.model_meta.ModelMeta` or Text or int. The model_info
-                       means name in the metadata service when its type is Text and it means id when its type is
-                       int. The ai flow will get the model meta from metadata service by name or id.
-    :param evaluation_processor: The user defined function in evaluate operator. User can write their own logic here.
-    :param output_num: The output number of the operator. The default value is 0.
-    :param name: Name of the predict operator.
-    :return: NoneChannel.
+    :param input: List of the input :class:`~ai_flow.graph.channel.Channel` that contains the multiple channels from the
+                           operators which generate the data used to evaluate model.
+    :param model_info: Information about the model evaluated by the processor. The type of model could be
+                                     :class:`~ai_flow.meta.model_meta.ModelMeta` or Text(i.e. the name of model) or int(
+                                     i.e. the id of model). If the type is Text or int, this method will get the
+                                     metadata of model by the name or id of model by default.
+    :param evaluation_processor: The user-defined processor composed of the logic that evaluates model.
+    :param output_num: The output :class:`~ai_flow.graph.channel.Channel` number of the model evaluating operator.
+                                      The default value is 0.
+    :param name: Name of the model evaluating operator represent for the :class:`~ai_flow.ai_graph.ai_node.AINode`.
+    :return: Returns the :class:`~ai_flow.graph.channel.Channel` when the `output_num` is 1 and returns
+                 Tuple[:class:`~ai_flow.graph.channel.Channel`] when the `output_num` is bigger than 1.
     """
     if isinstance(model_info, ModelMeta):
         model_meta = model_info
@@ -256,13 +282,16 @@ def dataset_validate(input: Channel,
                      name: Text = None
                      ) -> None:
     """
-    Dataset Validator Operator. Identifies anomalies in training and serving data in this operator.
+    Validates dataset through the user-defined processor based on the input :class:`~ai_flow.graph.channel.Channel`.
+    The processor generates the dataset validating :class:`~ai_flow.ai_graph.ai_node.AINode`.
 
-    :param input: Channel. It contains the dataset data used in evaluation.
-    :param dataset_validation_processor: The user defined function in dataset validate operator. User can write their own logic here.
-    :param name: Name of the dataset validate operator.
-    :return: NoneChannel.
-    """
+    :param input: List of the input :class:`~ai_flow.graph.channel.Channel` that contains the multiple channels from
+                           the operators which generate the data used to validate dataset.
+    :param dataset_validation_processor: The user-defined processor composed of the logic that validates dataset.
+    :param name: Name of the dataset validating operator represent for the :class:`~ai_flow.ai_graph.ai_node.AINode`.
+    :return: Returns the :class:`~ai_flow.graph.channel.Channel` when the `output_num` is 1 and returns
+                 Tuple[:class:`~ai_flow.graph.channel.Channel`] when the `output_num` is bigger than 1.
+        """
     return user_define_operation(input=input,
                                  processor=dataset_validation_processor,
                                  name=name,
@@ -279,28 +308,35 @@ def model_validate(input: Union[Channel, List[Channel]],
                    output_num=0,
                    name: Text = None) -> Union[Channel, Tuple[Channel]]:
     """
-    Model Validator Operator. Compare the performance of two different versions of the same model and choose the better
-    model version to make it ready to be in the stage of deployment.
+    Validates model through the user-defined processor with the information of model and model versions based on the input
+    :class:`~ai_flow.graph.channel.Channel`. The processor generates the model validating
+    :class:`~ai_flow.ai_graph.ai_node.AINode`.
 
-    :param input: List of Channel. It contains the dataset data used in model validation.
-    :param model_info: Information about the model which is in model validation. Its type can be ModelMeta
-                       of py:class:`ai_flow.meta.model_meta.ModelMeta` or Text or int. The model_info
-                       means name in the metadata service when its type is Text and it means id when its type is
-                       int. The ai flow will get the model meta from metadata service by name or id.
-    :param model_validation_processor: The user defined function in model validate operator. User can write their own logic here.
-    :param model_version_info: Information about the model version which is in model validation. Its type can be
-                               ModelVersionMeta of py:class:`ai_flow.meta.model_meta.ModelVersionMeta`
-                               or Text. The model_version_info means version in the metadata service
-                               when its type is Text. The ai flow will get the model meta from metadata
-                               service by version.
-    :param base_model_version_info: Information about the model version which is in model validation. Its type can be
-                                    ModelVersionMeta of py:class:`ai_flow.meta.model_meta.ModelVersionMeta`
-                                    or Text. The model_version_info means version in the metadata service
-                                    when its type is Text. The ai flow will get the model meta from metadata
-                                    service by version.
-    :param output_num: The output number of the operator. The default value is 0.
-    :param name: Name of the model validate operator.
-    :return: Channel.
+    :param input: List of the input :class:`~ai_flow.graph.channel.Channel` that contains the multiple channels from the
+                           operators which generate the data used to validate model.
+    :param model_info: Information about the model validated by the processor. The type of model could be
+                                     :class:`~ai_flow.meta.model_meta.ModelMeta` or Text(i.e. the name of model) or int(
+                                     i.e. the id of model). If the type is Text or int, this method will get the
+                                     metadata of model by the name or id of model by default.
+    :param model_validation_processor: The user-defined processor composed of the logic that validates model.
+    :param model_version_info: Information about the model version validated by the processor. The type of model version
+                                                  could be :class:`~ai_flow.meta.model_meta.ModelVersionMeta` or Text(
+                                                  i.e. the `version` field of
+                                                  :class:`~ai_flow.meta.model_meta.ModelVersionMeta`). If the type is
+                                                  Text, this method will get the metadata of model version by the
+                                                  version of model version by default.
+    :param base_model_version_info: Information about the base model version for validating by the processor. The type
+                                                            of model version could be
+                                                            :class:`~ai_flow.meta.model_meta.ModelVersionMeta` or Text(
+                                                            i.e. the `version` field of 
+                                                            :class:`~ai_flow.meta.model_meta.ModelVersionMeta`). If the
+                                                            type is Text, this method will get the metadata of model
+                                                            version by the version of model version by default.
+    :param output_num: The output :class:`~ai_flow.graph.channel.Channel` number of the model validating operator.
+                                      The default value is 0.
+    :param name: Name of the model validating operator represent for the :class:`~ai_flow.ai_graph.ai_node.AINode`.
+    :return: Returns the :class:`~ai_flow.graph.channel.Channel` when the `output_num` is 1 and returns
+                 Tuple[:class:`~ai_flow.graph.channel.Channel`] when the `output_num` is bigger than 1.
     """
     if isinstance(model_info, ModelMeta):
         model_meta = model_info
@@ -343,20 +379,22 @@ def push_model(model_info: Union[ModelMeta, Text, int],
                model_version_info: Optional[Union[ModelVersionMeta, Text]] = None,
                name: Text = None) -> None:
     """
-    Pusher operator. The pusher operator is used to push a validated model which is better than previous one to
-    a deployment target.
+    Pushes model through the user-defined processor with the information of model version based on the input
+    :class:`~ai_flow.graph.channel.Channel`. The processor generates the model pushing
+    :class:`~ai_flow.ai_graph.ai_node.AINode`.
 
-    :param model_info: Information about the model which is in pusher. Its type can be ModelMeta
-                       of py:class:`ai_flow.meta.model_meta.ModelMeta` or Text or int. The model_info
-                       means name in the metadata service when its type is Text and it means id when its type is
-                       int. The ai flow will get the model meta from metadata service by name or id.
-    :param pushing_model_processor: The user defined function in pusher operator. User can write their own logic here.
-    :param model_version_info: Information about the model version which is in push. Its type can be
-                               ModelVersionMeta of py:class:`ai_flow.meta.model_meta.ModelVersionMeta`
-                               or Text. The model_version_info means version in the metadata service
-                               when its type is Text. The ai flow will get the model meta from metadata
-                               service by version.
-    :param name: Name of the push operator.
+    :param model_info: Information about the model pushed by the processor. The type of model could be
+                                     :class:`~ai_flow.meta.model_meta.ModelMeta` or Text(i.e. the name of model) or int(
+                                     i.e. the id of model). If the type is Text or int, this method will get the
+                                     metadata of model by the name or id of model by default.
+    :param pushing_model_processor: The user-defined processor composed of the logic that pushes model.
+    :param model_version_info: Information about the model version pushed by the processor. The type of model version
+                                                  could be :class:`~ai_flow.meta.model_meta.ModelVersionMeta` or Text(
+                                                  i.e. the `version` field of
+                                                  :class:`~ai_flow.meta.model_meta.ModelVersionMeta`). If the type is
+                                                  Text, this method will get the metadata of model version by the
+                                                  version of model version by default.
+    :param name: Name of the model pushing operator represent for the :class:`~ai_flow.ai_graph.ai_node.AINode`.
     :return: None.
     """
     if isinstance(model_info, ModelMeta) or model_info is None:
@@ -379,23 +417,25 @@ def push_model(model_info: Union[ModelMeta, Text, int],
                                  operation_type='push_model')
 
 
-def user_define_operation(
-        processor=None,
-        input: Union[None, Channel, List[Channel]] = None,
-        output_num=1,
-        name: Text = None,
-        operation_type: Text = 'user_define_operation',
-        **kwargs) -> Union[None, Channel, Tuple[Channel]]:
+def user_define_operation(input: Union[None, Channel, List[Channel]] = None,
+                          processor=None,
+                          output_num=1,
+                          name: Text = None,
+                          operation_type: Text = 'user_define_operation',
+                          **kwargs) -> Union[None, Channel, Tuple[Channel]]:
     """
-    User defined operator.
+    Operation through the user-defined processor based on the input :class:`~ai_flow.graph.channel.Channel`. The
+    processor generates the :class:`~ai_flow.ai_graph.ai_node.AINode`.
 
+    :param input: List of the input :class:`~ai_flow.graph.channel.Channel` that contains the multiple channels from the
+                           operators which generate the data.
+    :param processor: The user-defined processor composed of the processing logic.
+    :param output_num: The output :class:`~ai_flow.graph.channel.Channel` number. The default value is 1.
+    :param name: Name of the operator represent for the :class:`~ai_flow.ai_graph.ai_node.AINode`.
     :param operation_type: The type of the operation.
-    :param processor: The user defined function in operator. User can write their own logic here.
-    :param input: It contains multiple channels from the operators which generate data.
-    :param output_num: The output number of the operator. The default value is 1.
-    :param name: Name of this operator.
-    :param kwargs:
-    :return: None or Channel or Tuple[Channel].
+    :param kwargs: The arguments of the operation used.
+    :return: Returns None when no output and returns the :class:`~ai_flow.graph.channel.Channel` when the `output_num`
+                 is 1 and returns Tuple[:class:`~ai_flow.graph.channel.Channel`] when the `output_num` is bigger than 1.
     """
     node = AINode(name=name,
                   processor=processor,
@@ -426,25 +466,27 @@ def action_on_event(job_name: Text,
                     sender: Text = None,
                     namespace: Text = DEFAULT_NAMESPACE,
                     value_condition: ValueCondition = ValueCondition.EQUALS,
-                    action: JobAction = JobAction.START
-                    ):
+                    action: JobAction = JobAction.START):
     """
-        When the event is met, the JobAction will be triggered on the job with the job_name. It is a convenient method
-        to add a MetAnyCondition with one event to a job.
-       :param job_name: The job name identify the job.
-       :param event_key: The key of the event.
-       :param event_value: The value of the event.
-       :param event_type: The type of the event.
-       :param sender: The event sender identity,which value uses the name of the job. If sender is None, the sender will be dependency.
-       :param namespace: The namespace of the event, which value uses the project name.
-       :param value_condition: The event value condition. Equal or Update. Equal means the src channel will start or
-                               restart only when in the condition that the notification service updates a value which
-                               equals to the event value under the specific event key, while update means src channel
-                               will start or restart when in the the condition that the notification service has a update
-                               operation on the event key which event value belongs.
-       :param action: The action act on the src channel. Start or Restart.
-       :return:None.
-       """
+    When the specified event is met, the :class:`~ai_flow.workflow.control_edge.JobAction` is triggered on the job with
+    the given job name. It is a convenient method to add a :class:`~ai_flow.workflow.control_edge.MeetAnyEventCondition`
+    with one event to a job.
+
+    :param job_name: The name of the job triggered.
+    :param event_key: The key of the event met.
+    :param event_value: The value of the event met.
+    :param event_type: The type of the event met.
+    :param sender: The sender of event which uses the name of the job. If sender is None, the sender is dependency.
+    :param namespace: The namespace of the event which uses the name of the project.
+    :param value_condition: The event :class:`~ai_flow.workflow.control_edge.ValueCondition`, whose value is EQUALS or UPDATE.
+                                            EQUALS means the source channel will start or restart only in the condition
+                                            that the notification service updates a value which equals to the event
+                                            value under the specified event key, while UPDATE means the source channel
+                                            will start or restart when in the the condition that the notification
+                                            service has a update operation on the event key which event value belongs.
+    :param action: The :class:`~ai_flow.workflow.control_edge.JobAction` acts on the source channel whose value includes
+                             START, RESTART, STOP and NONE.
+    """
     event_condition = MeetAnyEventCondition()
     event_condition.add_event(event_key, event_value, event_type, namespace, sender, EventLife.ONCE, value_condition)
     action_on_events(job_name, event_condition, action)
@@ -452,13 +494,17 @@ def action_on_event(job_name: Text,
 
 def action_on_events(job_name: Text, event_condition: EventCondition, action: JobAction):
     """
-    Define a rule, which is the combination of a EventCondition and JobAction, on the job with job_name. When the
-    EventCondition of a rule met, the corresponding JobAction will be trigger on the job. User can call this method
+    Defines a rule which is the combination of a :class:`~ai_flow.workflow.control_edge.EventCondition` and
+    :class:`~ai_flow.workflow.control_edge.JobAction`, on the job with the given name. When the
+    :class:`~ai_flow.workflow.control_edge.EventCondition` of the rule met, the corresponding
+    :class:`~ai_flow.workflow.control_edge.JobAction` will be triggered on the job. User could call the method
     multiple times on the same job to add multiples rules, the rules will be checked according to the order of the
     the method call.
-    :param job_name: The job_name of the job to add the rule.
-    :param event_condition: The EventCondition of the rule.
-    :param action: The JobAction to take when the EventCondition is met.
+
+    :param job_name: The name of the job to add the rule.
+    :param event_condition: The :class:`~ai_flow.workflow.control_edge.EventCondition` of the rule.
+    :param action: The :class:`~ai_flow.workflow.control_edge.JobAction` to take when the
+                             :class:`~ai_flow.workflow.control_edge.EventCondition` is met.
     """
     rule = SchedulingRule(event_condition, action)
     control_edge = ControlEdge(destination=job_name, scheduling_rule=rule)
@@ -469,18 +515,18 @@ def action_on_model_version_event(job_name: Text,
                                   model_name: Text,
                                   model_version_event_type: Text,
                                   namespace: Text = DEFAULT_NAMESPACE,
-                                  action: JobAction = JobAction.RESTART,
-                                  ) -> None:
+                                  action: JobAction = JobAction.RESTART):
     """
-    Add model version control dependency. It means src channel will start when and only a new model version of the
-    specific model is updated in notification service.
+    Adds the model version control dependency. It means the job will take given action when the type of model version
+    event is updated to the specified  type.
 
-    :param action: ai_flow.workflow.control_edge.TaskAction
-    :param namespace: the namespace of the event.
-    :param model_version_event_type: one of ai_flow.model_center.entity.model_version_stage.ModelVersionEventType
-    :param job_name: The job name
-    :param model_name: Name of the model, refers to a specific model.
-    :return: None.
+    :param job_name: The name of the job triggered.
+    :param model_name: The name of the model refer to a specified model.
+    :param model_version_event_type: The type of the model version event, whose value is of the
+                                                             :class:`~ai_flow.model_center.entity.model_version_stage.ModelVersionEventType`.
+    :param namespace: The namespace of the event which uses the name of the project.
+    :param action: The :class:`~ai_flow.workflow.control_edge.JobAction` acts on the source channel whose value includes
+                             START, RESTART, STOP and NONE.
     """
     action_on_event(job_name=job_name,
                     event_key=model_name,
@@ -494,17 +540,17 @@ def action_on_model_version_event(job_name: Text,
 
 def action_on_dataset_event(job_name: Text,
                             dataset_name: Text,
-                            action: JobAction = JobAction.START,
-                            namespace: Text = DEFAULT_NAMESPACE
-                            ) -> None:
+                            namespace: Text = DEFAULT_NAMESPACE,
+                            action: JobAction = JobAction.START):
     """
-    Add dataset control dependency. It means src channel will start when and only the an new dataset of the specific
-    dataset is updated in notification service.
-    :param namespace: the namespace of the dataset
-    :param job_name: The job name
-    :param dataset_name: Name of the dataset, refers to a specific dataset.
-    :param action: ai_flow.workflow.control_edge.TaskAction
-    :return: None.
+    Adds the dataset control dependency. It means the job will take given action when only a new dataset of the
+    specified dataset is updated in notification service.
+
+    :param job_name: The name of the job triggered.
+    :param dataset_name: The name of the dataset refer to a specified dataset.
+    :param namespace: The namespace of the event which uses the name of the project.
+    :param action: The :class:`~ai_flow.workflow.control_edge.JobAction` acts on the source channel whose value includes
+                             START, RESTART, STOP and NONE.
     """
     action_on_event(job_name=job_name,
                     event_key=dataset_name,
@@ -521,12 +567,13 @@ def action_on_job_status(job_name: Text,
                          upstream_job_status: Status = Status.FINISHED,
                          action: JobAction = JobAction.START):
     """
-    Trigger job by upstream job status changed.
-    :param job_name: The job name
-    :param upstream_job_name: The upstream job name
-    :param upstream_job_status: The upstream job status, type: ai_flow.workflow.status.Status
-    :param action: The ai_flow.workflow.control_edge.TaskAction type.
-    :return:
+    Triggers the job with the given name when the status of the upstream job changes.
+
+    :param job_name: The name of the job triggered.
+    :param upstream_job_name: The name of the upstream job.
+    :param upstream_job_status: The status of the upstream job.
+    :param action: The :class:`~ai_flow.workflow.control_edge.JobAction` acts on the source channel whose value includes
+                             START, RESTART, STOP and NONE.
     """
     event_key = '.'.join([current_workflow_config().workflow_name, upstream_job_name])
     action_on_event(job_name=job_name,
@@ -535,5 +582,4 @@ def action_on_job_status(job_name: Text,
                     sender=upstream_job_name,
                     event_value=upstream_job_status,
                     action=action,
-                    namespace=current_project_config().get_project_name()
-                    )
+                    namespace=current_project_config().get_project_name())
