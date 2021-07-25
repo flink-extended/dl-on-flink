@@ -64,7 +64,6 @@ exclude_rst = [
     '**ai_flow.model_center.service.rst', 
     '**ai_flow.scheduler.rst', 
     '**ai_flow.endpoint.client.rst', 
-    '**ai_flow.plugin_interface.rst', 
     '**ai_flow.util.rst',
     '**ai_flow.metadata_store.rst',  
     '**ai_flow.store.rst', 
