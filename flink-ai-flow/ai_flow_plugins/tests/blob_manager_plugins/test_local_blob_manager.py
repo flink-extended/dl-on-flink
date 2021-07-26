@@ -18,6 +18,8 @@
 #
 import unittest
 import os
+import shutil
+import threading
 from ai_flow.util.path_util import get_file_dir
 from ai_flow.plugin_interface.blob_manager_interface import BlobManagerFactory
 
@@ -44,6 +46,41 @@ class TestLocalBlobManager(unittest.TestCase):
 
         downloaded_path = blob_manager.download_project('1', uploaded_path)
         self.assertEqual('/tmp/workflow_1_project/blob_manager_plugins', downloaded_path)
+
+    def test_project_download_local_same_time(self):
+        project_path = get_file_dir(__file__)
+        upload_path = '/tmp/upload'
+        download_path = '/tmp/download'
+        if not os.path.exists(upload_path):
+            os.makedirs(upload_path)
+        if not os.path.exists(download_path):
+            os.makedirs(download_path)
+        config = {'local_repository': download_path, 'remote_repository': upload_path,
+                  'blob_manager_class': 'ai_flow_plugins.blob_manager_plugins.local_blob_manager.LocalBlobManager'}
+
+        blob_manager = BlobManagerFactory.get_blob_manager(config)
+        uploaded_path = blob_manager.upload_project('1', project_path)
+        download_project_path = "/tmp/download/workflow_1_project"
+        if os.path.exists(download_project_path):
+            shutil.rmtree(download_project_path)
+
+        def download_project():
+            blob_manager.download_project('1', uploaded_path)
+
+        t1 = threading.Thread(target=download_project, args=())
+        t1.setDaemon(True)
+        t1.start()
+        t2 = threading.Thread(target=download_project, args=())
+        t2.setDaemon(True)
+        t2.start()
+        t1.join()
+        t2.join()
+        downloaded_path = blob_manager.download_project('1', uploaded_path)
+        self.assertEqual('/tmp/download/workflow_1_project/blob_manager_plugins', downloaded_path)
+        if os.path.exists(upload_path):
+            shutil.rmtree(upload_path)
+        if os.path.exists(download_path):
+            shutil.rmtree(download_path)
 
 
 if __name__ == '__main__':
