@@ -58,13 +58,13 @@ def start_notification_service(port: int = 50052,
 def _prepare_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--port', type=int, default=50052,
-                        help='The port on which to run notification service')
+                        help='The port on which to run notification service， default is 50052')
     parser.add_argument('--database-conn', type=str, default=None,
                         help='Database connection info')
     parser.add_argument('--enable-ha', type=bool, default=False,
-                        help='Whether to start a notification service with HA enabled')
+                        help='Whether to start a notification service with HA enabled, default is False')
     parser.add_argument('--server-uris', type=str, default=None,
-                        help='When HA enabled, multiple server uris should be set with comma separated')
+                        help='When HA is enabled, multiple server URIs must be set with comma separated')
     return parser.parse_args()
 
 
