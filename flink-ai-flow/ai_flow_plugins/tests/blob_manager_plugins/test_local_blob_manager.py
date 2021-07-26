@@ -77,6 +77,10 @@ class TestLocalBlobManager(unittest.TestCase):
         t2.join()
         downloaded_path = blob_manager.download_project('1', uploaded_path)
         self.assertEqual('/tmp/download/workflow_1_project/blob_manager_plugins', downloaded_path)
+        if os.path.exists(upload_path):
+            shutil.rmtree(upload_path)
+        if os.path.exists(download_path):
+            shutil.rmtree(download_path)
 
 
 if __name__ == '__main__':
