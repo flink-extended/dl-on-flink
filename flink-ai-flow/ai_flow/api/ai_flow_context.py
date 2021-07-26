@@ -31,7 +31,7 @@ def init_ai_flow_context():
     3. Init workflow configuration.
     """
     stack = traceback.extract_stack()
-    workflow_entry_file = stack[-2].filename
+    workflow_entry_file = os.path.abspath(stack[-2].filename)
     workflows_path = os.path.dirname(os.path.dirname(workflow_entry_file))
     # workflow_name/workflow_name.py len(.py) == 3
     workflow_name = os.path.basename(workflow_entry_file)[:-3]
