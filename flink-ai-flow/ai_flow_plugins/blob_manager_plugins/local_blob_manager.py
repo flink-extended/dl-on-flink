@@ -19,13 +19,11 @@
 import os
 import shutil
 import tempfile
-import time
-import zipfile
-import fcntl
 from typing import Text, Dict, Any
 from pathlib import Path
 from ai_flow.plugin_interface.blob_manager_interface import BlobManager
 from ai_flow.util.file_util.zip_file_util import make_dir_zipfile
+from ai_flow_plugins.blob_manager_plugins.blob_manager_utils import extract_project_zip_file
 
 
 class LocalBlobManager(BlobManager):
@@ -76,29 +74,10 @@ class LocalBlobManager(BlobManager):
             repo_path = local_path if local_path is not None else self._local_repo
             local_zip_file_name = 'workflow_{}_project'.format(workflow_snapshot_id)
             extract_path = str(Path(repo_path) / local_zip_file_name)
-            lock_file = os.path.join(repo_path, '{}.lock'.format(workflow_snapshot_id))
-            with zipfile.ZipFile(remote_path, 'r') as zip_ref:
-                top_dir = os.path.split(zip_ref.namelist()[0])[0]
-                downloaded_local_path = str(Path(extract_path) / top_dir)
-                if os.path.exists(lock_file):
-                    while os.path.exists(lock_file):
-                        time.sleep(1)
-                    return downloaded_local_path
-                else:
-                    if not os.path.exists(downloaded_local_path):
-                        f = open(lock_file, 'w')
-                        try:
-                            fcntl.flock(f.fileno(), fcntl.LOCK_EX)
-                            if not os.path.exists(downloaded_local_path):
-                                zip_ref.extractall(extract_path)
-                        finally:
-                            fcntl.flock(f.fileno(), fcntl.LOCK_UN)
-                        f.close()
-                        try:
-                            os.remove(lock_file)
-                        except OSError:
-                            pass
-                    return downloaded_local_path
+            return extract_project_zip_file(workflow_snapshot_id=workflow_snapshot_id,
+                                            local_root_path=repo_path,
+                                            zip_file_path=remote_path,
+                                            extract_project_path=extract_path)
         else:
             return remote_path
 
