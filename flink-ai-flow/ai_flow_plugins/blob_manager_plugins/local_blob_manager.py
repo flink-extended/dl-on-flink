@@ -19,11 +19,11 @@
 import os
 import shutil
 import tempfile
-import zipfile
 from typing import Text, Dict, Any
 from pathlib import Path
 from ai_flow.plugin_interface.blob_manager_interface import BlobManager
 from ai_flow.util.file_util.zip_file_util import make_dir_zipfile
+from ai_flow_plugins.blob_manager_plugins.blob_manager_utils import extract_project_zip_file
 
 
 class LocalBlobManager(BlobManager):
@@ -74,17 +74,10 @@ class LocalBlobManager(BlobManager):
             repo_path = local_path if local_path is not None else self._local_repo
             local_zip_file_name = 'workflow_{}_project'.format(workflow_snapshot_id)
             extract_path = str(Path(repo_path) / local_zip_file_name)
-            with zipfile.ZipFile(remote_path, 'r') as zip_ref:
-                top_dir = os.path.split(zip_ref.namelist()[0])[0]
-                downloaded_local_path = Path(extract_path) / top_dir
-                if os.path.exists(str(downloaded_local_path)):
-                    for root, dirs, files in os.walk(str(downloaded_local_path), topdown=False):
-                        for name in files:
-                            os.remove(os.path.join(root, name))
-                        for name in dirs:
-                            os.rmdir(os.path.join(root, name))
-                zip_ref.extractall(extract_path)
-            return str(downloaded_local_path)
+            return extract_project_zip_file(workflow_snapshot_id=workflow_snapshot_id,
+                                            local_root_path=repo_path,
+                                            zip_file_path=remote_path,
+                                            extract_project_path=extract_path)
         else:
             return remote_path
 

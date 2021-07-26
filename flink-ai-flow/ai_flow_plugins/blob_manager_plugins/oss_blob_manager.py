@@ -16,14 +16,13 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-import os
 import tempfile
-import zipfile
 from typing import Text, Dict, Any
 from pathlib import Path
 import oss2
 from ai_flow.plugin_interface.blob_manager_interface import BlobManager
 from ai_flow.util.file_util.zip_file_util import make_dir_zipfile
+from ai_flow_plugins.blob_manager_plugins.blob_manager_utils import extract_project_zip_file
 
 
 class OssBlobManager(BlobManager):
@@ -75,16 +74,15 @@ class OssBlobManager(BlobManager):
         local_zip_file_name = 'workflow_{}_project'.format(workflow_snapshot_id)
         oss_object_key = remote_path
         if local_path is not None:
-            tmp_dir = Path(local_path)
+            repo_path = Path(local_path)
         elif self._local_repo is not None:
-            tmp_dir = Path(self._local_repo)
+            repo_path = Path(self._local_repo)
         else:
-            tmp_dir = Path(tempfile.gettempdir())
-        local_zip_file_path = str(tmp_dir / local_zip_file_name) + '.zip'
+            repo_path = Path(tempfile.gettempdir())
+        local_zip_file_path = str(repo_path / local_zip_file_name) + '.zip'
+        extract_path = str(repo_path / local_zip_file_name)
         self.bucket.get_object_to_file(oss_object_key, filename=local_zip_file_path)
-        with zipfile.ZipFile(local_zip_file_path, 'r') as zip_ref:
-            top_dir = os.path.split(zip_ref.namelist()[0])[0]
-            extract_path = str(tmp_dir / local_zip_file_name)
-            zip_ref.extractall(extract_path)
-        downloaded_local_path = Path(extract_path) / top_dir
-        return str(downloaded_local_path)
+        return extract_project_zip_file(workflow_snapshot_id=workflow_snapshot_id,
+                                        local_root_path=repo_path,
+                                        zip_file_path=local_zip_file_path,
+                                        extract_project_path=extract_path)
