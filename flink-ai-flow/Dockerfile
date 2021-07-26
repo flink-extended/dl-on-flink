@@ -84,23 +84,11 @@ RUN set -ex \
         /usr/share/doc \
         /usr/share/doc-base
 
-RUN apt-get update
-RUN apt-get install -y git
+RUN apt-get update -yqq
 RUN apt-get install -y default-mysql-client
 RUN apt-get install -y procps
-RUN apt-get install -y vim
-RUN apt-get install -y less
 RUN apt-get install -y --no-install-recommends nodejs npm bzip2
 RUN npm install --global yarn
-
-# For locally dev, it's better to pre-install master version of Flink AI Flow dependencies so that
-# we do not have to always reinstall it from the scratch.
-# WORKDIR /tmp
-# RUN git clone https://github.com/alibaba/flink-ai-extended.git
-# RUN pip install flink-ai-extended/flink-ai-flow/lib/notification_service
-# RUN pip install flink-ai-extended/flink-ai-flow/lib/airflow
-# RUN pip install flink-ai-extended/flink-ai-flow
-# RUN pip uninstall -y typing
 
 ARG FLINK_AI_FLOW_SOURCES=/opt/flink-ai-flow
 ENV FLINK_AI_FLOW_SOURCES=${FLINK_AI_FLOW_SOURCES}
@@ -108,15 +96,10 @@ ENV FLINK_AI_FLOW_SOURCES=${FLINK_AI_FLOW_SOURCES}
 WORKDIR ${FLINK_AI_FLOW_SOURCES}
 COPY . ${FLINK_AI_FLOW_SOURCES}/
 
-RUN bash lib/airflow/airflow/www/compile_assets.sh
-RUN pip install lib/notification_service
-RUN pip install lib/airflow
-RUN pip install .
+RUN bash bin/install_aiflow.sh
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod 755 /entrypoint.sh
-
-RUN echo "airflow_deploy_path: ${AIRFLOW_DEPLOY_PATH}" >> ${FLINK_AI_FLOW_SOURCES}/examples/quickstart_example/project.yaml
 
 EXPOSE 8080 50051 50052
 

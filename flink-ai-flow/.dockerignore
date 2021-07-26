@@ -28,11 +28,11 @@
 
 # Allow only these directories
 !ai_flow
-!doc
+!ai_flow_plugins
+!bin
+!docs
 !examples
-!flink_ai_flow
 !lib
-!python_ai_flow
 !*.sh
 !*.xml
 !*.md
@@ -45,7 +45,6 @@
 !NOTICE
 !.github
 !empty
-
 !README.md
 
 # Setup/version configuration
