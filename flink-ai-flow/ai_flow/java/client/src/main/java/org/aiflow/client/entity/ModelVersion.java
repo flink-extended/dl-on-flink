@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.aiflow.entity;
+package org.aiflow.client.entity;
 
-import org.aiflow.common.ModelStage;
+import org.aiflow.client.common.ModelStage;
 import org.aiflow.proto.Message.ModelMetaParam;
 import org.aiflow.proto.Message.ModelVersionMeta;
 import org.aiflow.proto.Message.ModelVersionStatus;

@@ -16,32 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.aiflow.common;
+package org.aiflow.client.common;
 
-import org.aiflow.proto.Message.DataTypeProto;
+public enum Status {
 
-public enum DataType {
-
-    INT32(DataTypeProto.INT32),
-    INT64(DataTypeProto.INT64),
-    FLOAT32(DataTypeProto.FLOAT32),
-    FLOAT64(DataTypeProto.FLOAT64),
-    STRING(DataTypeProto.STRING),
-    BYTES(DataTypeProto.BYTES),
-    INT32ARRAY(DataTypeProto.INT32ARRAY),
-    INT64ARRAY(DataTypeProto.INT64ARRAY),
-    FlOAT32ARRAY(DataTypeProto.FlOAT32ARRAY),
-    FLOAT64ARRAY(DataTypeProto.FLOAT64ARRAY),
-    STRINGARRAY(DataTypeProto.STRINGARRAY),
-    BYTESARRAY(DataTypeProto.BYTESARRAY);
-
-    private DataTypeProto dataType;
-
-    DataType(DataTypeProto dataType) {
-        this.dataType = dataType;
-    }
-
-    public DataTypeProto getDataType() {
-        return dataType;
-    }
+    OK,
+    ERROR;
 }

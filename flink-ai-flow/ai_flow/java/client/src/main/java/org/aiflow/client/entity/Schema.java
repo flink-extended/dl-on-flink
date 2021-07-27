@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.aiflow.entity;
+package org.aiflow.client.entity;
 
-import org.aiflow.common.DataType;
+import org.aiflow.client.common.DataType;
 import org.aiflow.proto.Message.DataTypeProto;
 import org.aiflow.proto.Message.SchemaProto;
 

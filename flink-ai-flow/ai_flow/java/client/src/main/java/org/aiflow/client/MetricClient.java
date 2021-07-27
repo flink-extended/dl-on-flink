@@ -19,26 +19,25 @@
 
 package org.aiflow.client;
 
-import org.aiflow.entity.MetricMeta;
-import org.aiflow.entity.MetricSummary;
-import org.aiflow.entity.MetricType;
-import org.aiflow.exception.AIFlowException;
+import io.grpc.Channel;
+import io.grpc.ManagedChannelBuilder;
+import org.aiflow.client.entity.MetricMeta;
+import org.aiflow.client.entity.MetricSummary;
+import org.aiflow.client.entity.MetricType;
+import org.aiflow.client.exception.AIFlowException;
 import org.aiflow.proto.Message;
 import org.aiflow.proto.Message.MetricMetaProto;
 import org.aiflow.proto.MetricServiceGrpc;
 import org.aiflow.proto.MetricServiceOuterClass;
-import org.aiflow.proto.MetricServiceOuterClass.MetricSummaryRequest;
 import org.aiflow.proto.MetricServiceOuterClass.MetricMetaRequest;
-import io.grpc.Channel;
-import io.grpc.ManagedChannelBuilder;
+import org.aiflow.proto.MetricServiceOuterClass.MetricSummaryRequest;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
-import static org.aiflow.common.Constant.SERVER_URI;
-import static org.aiflow.util.Transform.int64Value;
-import static org.aiflow.util.Transform.stringValue;
+import static org.aiflow.client.common.Constant.SERVER_URI;
+import static org.aiflow.client.util.Transform.int64Value;
+import static org.aiflow.client.util.Transform.stringValue;
 
 public class MetricClient {
 

@@ -18,27 +18,42 @@
  */
 package org.aiflow.client;
 
-import org.aiflow.common.ModelStage;
-import org.aiflow.entity.ModelVersion;
-import org.aiflow.entity.RegisteredModel;
-import org.aiflow.proto.Message.*;
-import org.aiflow.proto.ModelCenterServiceGrpc;
-import org.aiflow.proto.ModelCenterServiceGrpc.ModelCenterServiceBlockingStub;
-import org.aiflow.proto.ModelCenterServiceOuterClass.*;
 import com.google.protobuf.util.JsonFormat.Parser;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
+import org.aiflow.client.common.ModelStage;
+import org.aiflow.client.entity.ModelVersion;
+import org.aiflow.client.entity.RegisteredModel;
+import org.aiflow.proto.Message.ModelMetaParam;
+import org.aiflow.proto.Message.ModelVersionMeta;
+import org.aiflow.proto.Message.ModelVersionParam;
+import org.aiflow.proto.Message.RegisteredModelDetail;
+import org.aiflow.proto.Message.RegisteredModelMeta;
+import org.aiflow.proto.Message.RegisteredModelMetas;
+import org.aiflow.proto.Message.RegisteredModelParam;
+import org.aiflow.proto.Message.Response;
+import org.aiflow.proto.ModelCenterServiceGrpc;
+import org.aiflow.proto.ModelCenterServiceGrpc.ModelCenterServiceBlockingStub;
+import org.aiflow.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest;
+import org.aiflow.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest;
+import org.aiflow.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest;
+import org.aiflow.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest;
+import org.aiflow.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest;
+import org.aiflow.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest;
+import org.aiflow.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest;
+import org.aiflow.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest;
+import org.aiflow.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
-import static org.aiflow.common.Constant.SERVER_URI;
-import static org.aiflow.entity.ModelVersion.buildModelVersion;
-import static org.aiflow.entity.RegisteredModel.buildRegisteredModel;
-import static org.aiflow.entity.RegisteredModel.buildRegisteredModels;
-import static org.aiflow.util.Transform.buildResponse;
-import static org.aiflow.util.Transform.stringValue;
 import static com.google.protobuf.util.JsonFormat.parser;
+import static org.aiflow.client.common.Constant.SERVER_URI;
+import static org.aiflow.client.entity.ModelVersion.buildModelVersion;
+import static org.aiflow.client.entity.RegisteredModel.buildRegisteredModel;
+import static org.aiflow.client.entity.RegisteredModel.buildRegisteredModels;
+import static org.aiflow.client.util.Transform.buildResponse;
+import static org.aiflow.client.util.Transform.stringValue;
 
 /**
  * Client of AIFlow Rest Endpoint that provides Model Center function service.

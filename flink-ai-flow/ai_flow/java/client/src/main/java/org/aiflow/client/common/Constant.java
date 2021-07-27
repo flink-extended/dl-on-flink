@@ -16,32 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.aiflow.exception;
+package org.aiflow.client.common;
 
-public class AIFlowException extends  Exception{
-
-    private String errorCode;
-    private String errorMsg;
-
-    public AIFlowException(String errorCode, String errorMsg) {
-        super(errorMsg);
-        this.errorCode = errorCode;
-        this.errorMsg = errorMsg;
-    }
-
-    public String getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
-    }
-
-    public String getErrorMsg() {
-        return errorMsg;
-    }
-
-    public void setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
-    }
+public class Constant {
+    public static final String SERVER_URI="localhost:50051";
+    public static final String DEFAULT_NAMESPACE="default";
 }
