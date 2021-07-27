@@ -16,19 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.aiflow.util;
+package org.aiflow.client.util;
 
-import org.aiflow.common.DataType;
-import org.aiflow.common.Status;
-import org.aiflow.exception.AIFlowException;
-import org.aiflow.proto.Message.DataTypeProto;
-import org.aiflow.proto.Message.Response;
-import org.aiflow.proto.Message.ReturnCode;
 import com.google.protobuf.GeneratedMessageV3.Builder;
 import com.google.protobuf.Int32Value;
 import com.google.protobuf.Int64Value;
 import com.google.protobuf.StringValue;
 import com.google.protobuf.util.JsonFormat.Parser;
+import org.aiflow.client.common.DataType;
+import org.aiflow.client.common.Status;
+import org.aiflow.client.exception.AIFlowException;
+import org.aiflow.proto.Message.DataTypeProto;
+import org.aiflow.proto.Message.Response;
+import org.aiflow.proto.Message.ReturnCode;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;

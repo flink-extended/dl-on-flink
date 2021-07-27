@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.aiflow.entity;
+package org.aiflow.client.entity;
 
 import org.aiflow.proto.Message;
 import org.aiflow.proto.Message.SchemaProto;
@@ -26,8 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.aiflow.entity.Schema.buildSchema;
-import static org.aiflow.util.Transform.*;
+import static org.aiflow.client.entity.Schema.buildSchema;
+import static org.aiflow.client.util.Transform.dataTypeList;
+import static org.aiflow.client.util.Transform.int64Value;
+import static org.aiflow.client.util.Transform.stringValue;
 
 public class DatasetMeta {
 

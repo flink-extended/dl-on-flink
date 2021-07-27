@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.aiflow.entity;
+package org.aiflow.client.entity;
 
 import org.aiflow.proto.Message.ProjectProto;
 import org.aiflow.proto.MetadataServiceOuterClass.ProjectListProto;

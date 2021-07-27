@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.aiflow.common;
+package org.aiflow.client.common;
 
 import org.aiflow.proto.Message;
 
