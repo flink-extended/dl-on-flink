@@ -47,7 +47,7 @@
         </dependency>
         <dependency>
             <groupId>org.ai-flow</groupId>
-            <artifactId>notification</artifactId>
+            <artifactId>notification-client</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.annotation</groupId>
