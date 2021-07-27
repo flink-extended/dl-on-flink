@@ -18,22 +18,36 @@
  */
 package org.aiflow.client;
 
-import org.aiflow.common.*;
-import org.aiflow.entity.*;
-import org.aiflow.exception.AIFlowException;
-import org.aiflow.proto.Message;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
+import org.aiflow.client.common.DataType;
+import org.aiflow.client.common.ModelStage;
+import org.aiflow.client.common.Status;
+import org.aiflow.client.entity.ArtifactMeta;
+import org.aiflow.client.entity.DatasetMeta;
+import org.aiflow.client.entity.MetricMeta;
+import org.aiflow.client.entity.MetricSummary;
+import org.aiflow.client.entity.MetricType;
+import org.aiflow.client.entity.ModelMeta;
+import org.aiflow.client.entity.ModelRelationMeta;
+import org.aiflow.client.entity.ModelVersion;
+import org.aiflow.client.entity.ModelVersionMeta;
+import org.aiflow.client.entity.ModelVersionRelationMeta;
+import org.aiflow.client.entity.ProjectMeta;
+import org.aiflow.client.entity.RegisteredModel;
+import org.aiflow.client.entity.WorkflowMeta;
+import org.aiflow.client.exception.AIFlowException;
 import org.aiflow.notification.client.EventWatcher;
 import org.aiflow.notification.client.NotificationClient;
 import org.aiflow.notification.entity.EventMeta;
+import org.aiflow.proto.Message;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Map;
 
-import static org.aiflow.common.Constant.DEFAULT_NAMESPACE;
-import static org.aiflow.common.Constant.SERVER_URI;
+import static org.aiflow.client.common.Constant.DEFAULT_NAMESPACE;
+import static org.aiflow.client.common.Constant.SERVER_URI;
 
 /** Client of AIFlow Rest Endpoint that provides Metadata/Model/Notification function service. */
 public class AIFlowClient {

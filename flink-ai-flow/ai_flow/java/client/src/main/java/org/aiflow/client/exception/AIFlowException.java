@@ -16,30 +16,32 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.aiflow.entity;
+package org.aiflow.client.exception;
 
-import org.aiflow.proto.Message;
+public class AIFlowException extends  Exception{
 
-public enum MetricType {
-    DATASET(Message.MetricTypeProto.DATASET),
-    MODEL(Message.MetricTypeProto.MODEL);
+    private String errorCode;
+    private String errorMsg;
 
-    private Message.MetricTypeProto metricType;
-
-    MetricType(Message.MetricTypeProto metricType) {
-        this.metricType = metricType;
+    public AIFlowException(String errorCode, String errorMsg) {
+        super(errorMsg);
+        this.errorCode = errorCode;
+        this.errorMsg = errorMsg;
     }
 
-    public Message.MetricTypeProto getMetricType() {
-        return metricType;
+    public String getErrorCode() {
+        return errorCode;
     }
 
-    public static MetricType getMetricTypeFromValue(Message.MetricTypeProto value) {
-        for (MetricType t: values()) {
-            if (t.getMetricType().equals(value)) {
-                return t;
-            }
-        }
-        return null;
+    public void setErrorCode(String errorCode) {
+        this.errorCode = errorCode;
+    }
+
+    public String getErrorMsg() {
+        return errorMsg;
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
     }
 }

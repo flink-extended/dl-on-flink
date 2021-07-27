@@ -16,34 +16,32 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.aiflow.common;
+package org.aiflow.client.common;
 
-import org.aiflow.proto.Message.ModelVersionStage;
+import org.aiflow.proto.Message.DataTypeProto;
 
-public enum ModelStage {
+public enum DataType {
 
-    GENERATED(ModelVersionStage.GENERATED),
-    VALIDATED(ModelVersionStage.VALIDATED),
-    DEPLOYED(ModelVersionStage.DEPLOYED),
-    DEPRECATED(ModelVersionStage.DEPRECATED),
-    DELETED(ModelVersionStage.DELETED);
+    INT32(DataTypeProto.INT32),
+    INT64(DataTypeProto.INT64),
+    FLOAT32(DataTypeProto.FLOAT32),
+    FLOAT64(DataTypeProto.FLOAT64),
+    STRING(DataTypeProto.STRING),
+    BYTES(DataTypeProto.BYTES),
+    INT32ARRAY(DataTypeProto.INT32ARRAY),
+    INT64ARRAY(DataTypeProto.INT64ARRAY),
+    FlOAT32ARRAY(DataTypeProto.FlOAT32ARRAY),
+    FLOAT64ARRAY(DataTypeProto.FLOAT64ARRAY),
+    STRINGARRAY(DataTypeProto.STRINGARRAY),
+    BYTESARRAY(DataTypeProto.BYTESARRAY);
 
-    private ModelVersionStage modelStage;
+    private DataTypeProto dataType;
 
-    ModelStage(ModelVersionStage modelStage) {
-        this.modelStage = modelStage;
+    DataType(DataTypeProto dataType) {
+        this.dataType = dataType;
     }
 
-    public ModelVersionStage getModelStage() {
-        return modelStage;
-    }
-
-    public static ModelStage getModelStage(ModelVersionStage modelStage) {
-        for (ModelStage stage : ModelStage.values()) {
-            if (stage.getModelStage() == modelStage) {
-                return stage;
-            }
-        }
-        return null;
+    public DataTypeProto getDataType() {
+        return dataType;
     }
 }
