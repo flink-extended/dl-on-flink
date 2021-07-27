@@ -16,9 +16,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.aiflow.common;
+package org.aiflow.client.entity;
 
-public class Constant {
-    public static final String SERVER_URI="localhost:50051";
-    public static final String DEFAULT_NAMESPACE="default";
+import org.aiflow.proto.Message;
+
+public enum MetricType {
+    DATASET(Message.MetricTypeProto.DATASET),
+    MODEL(Message.MetricTypeProto.MODEL);
+
+    private Message.MetricTypeProto metricType;
+
+    MetricType(Message.MetricTypeProto metricType) {
+        this.metricType = metricType;
+    }
+
+    public Message.MetricTypeProto getMetricType() {
+        return metricType;
+    }
+
+    public static MetricType getMetricTypeFromValue(Message.MetricTypeProto value) {
+        for (MetricType t: values()) {
+            if (t.getMetricType().equals(value)) {
+                return t;
+            }
+        }
+        return null;
+    }
 }
