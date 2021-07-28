@@ -20,7 +20,7 @@ syntax = "proto3";
 import "google/protobuf/wrappers.proto";
 
 option java_generic_services = true;
-option java_package = "com.aiflow.proto";
+option java_package = "org.aiflow.client.proto";
 option py_generic_services = true;
 option go_package = "/ai_flow";
 
