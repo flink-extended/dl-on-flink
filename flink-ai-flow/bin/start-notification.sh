@@ -18,13 +18,23 @@
 ## under the License.
 ##
 set -e
-export AIFLOW_PID_DIR=${AIFLOW_PID_DIR:-/tmp}
 
-set +e
-for((i=1;i<=3;i++));do kill $(cat ${AIFLOW_PID_DIR}/scheduler.pid) >/dev/null 2>&1 && sleep 1;done
-for((i=1;i<=3;i++));do kill $(cat ${AIFLOW_PID_DIR}/web.pid) >/dev/null 2>&1 && sleep 1;done
-stop-aiflow.sh
-stop-notification.sh
+BIN=`dirname "${BASH_SOURCE-$0}"`
+BIN=`cd "$BIN"; pwd`
+. ${BIN}/aiflow-config.sh
 
-rm ${AIFLOW_PID_DIR}/scheduler.pid
-rm ${AIFLOW_PID_DIR}/web.pid
+usage="Usage: start-notification_service.sh [database-conn]"
+
+if [ $# -ne 1 ]; then
+  echo $usage
+  exit 1
+fi
+
+echo "Starting notification service"
+LOG_FILE_NAME=notification_service-$(date "+%Y%m%d-%H%M%S").log
+start_notification_service.py --database-conn=$1 > ${AIFLOW_LOG_DIR}/${LOG_FILE_NAME} 2>&1 &
+echo $! > ${AIFLOW_PID_DIR}/notification_service.pid
+
+echo "notification service started"
+echo "Notification service log: ${AIFLOW_LOG_DIR}/${LOG_FILE_NAME}"
+echo "Notification service pid: $(cat ${AIFLOW_PID_DIR}/notification_service.pid)"
