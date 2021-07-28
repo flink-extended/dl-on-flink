@@ -18,7 +18,7 @@
  */
 package org.aiflow.client.common;
 
-import org.aiflow.proto.Message.ModelVersionStage;
+import org.aiflow.client.proto.Message.ModelVersionStage;
 
 public enum ModelStage {
 

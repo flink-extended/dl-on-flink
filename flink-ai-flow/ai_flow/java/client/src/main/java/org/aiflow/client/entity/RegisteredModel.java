@@ -18,10 +18,10 @@
  */
 package org.aiflow.client.entity;
 
-import org.aiflow.proto.Message.ModelMetaParam;
-import org.aiflow.proto.Message.RegisteredModelDetail;
-import org.aiflow.proto.Message.RegisteredModelMeta;
-import org.aiflow.proto.Message.RegisteredModelMetas;
+import org.aiflow.client.proto.Message.ModelMetaParam;
+import org.aiflow.client.proto.Message.RegisteredModelDetail;
+import org.aiflow.client.proto.Message.RegisteredModelMeta;
+import org.aiflow.client.proto.Message.RegisteredModelMetas;
 
 import java.util.ArrayList;
 import java.util.List;
