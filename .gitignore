@@ -57,6 +57,7 @@ flink-ai-flow/ai_flow.egg-info/*
 flink-ai-flow/ai_flow/test/endpoint/aiflow.db
 flink-ai-flow/ai_flow/test/api/workflow_config.json
 flink-ai-flow/ai_flow/test/common/test.yaml
+flink-ai-flow/examples/*/generated/*
 flink-ai-flow/examples/simple_examples/logs/*
 flink-ai-flow/examples/simple_examples/temp/*
 flink-ai-flow/flink_ai_flow/tests/python_codes/word_count_output.csv

@@ -21,7 +21,7 @@ import os
 import shutil
 import threading
 from ai_flow.util.path_util import get_file_dir
-from ai_flow.plugin_interface.blob_manager_interface import BlobManagerFactory
+from ai_flow.plugin_interface.blob_manager_interface import BlobConfig, BlobManagerFactory
 
 
 class TestLocalBlobManager(unittest.TestCase):
@@ -29,7 +29,9 @@ class TestLocalBlobManager(unittest.TestCase):
     def test_project_upload_download_local(self):
         project_path = get_file_dir(__file__)
         config = {'blob_manager_class': 'ai_flow_plugins.blob_manager_plugins.local_blob_manager.LocalBlobManager'}
-        blob_manager = BlobManagerFactory.get_blob_manager(config)
+        blob_config = BlobConfig(config)
+        blob_manager = BlobManagerFactory.create_blob_manager(blob_config.blob_manager_class(),
+                                                              blob_config.blob_manager_config())
         uploaded_path = blob_manager.upload_project('1', project_path)
         self.assertEqual(uploaded_path, project_path)
 
@@ -38,10 +40,17 @@ class TestLocalBlobManager(unittest.TestCase):
 
     def test_project_upload_download_local_2(self):
         project_path = get_file_dir(__file__)
-        config = {'local_repository': '/tmp', 'remote_repository': '/tmp',
-                  'blob_manager_class': 'ai_flow_plugins.blob_manager_plugins.local_blob_manager.LocalBlobManager'}
+        config = {
+            'blob_manager_class': 'ai_flow_plugins.blob_manager_plugins.local_blob_manager.LocalBlobManager',
+            'blob_manager_config': {
+                'local_repository': '/tmp',
+                'remote_repository': '/tmp'
+            }
+        }
+        blob_config = BlobConfig(config)
+        blob_manager = BlobManagerFactory.create_blob_manager(blob_config.blob_manager_class(),
+                                                              blob_config.blob_manager_config())
 
-        blob_manager = BlobManagerFactory.get_blob_manager(config)
         uploaded_path = blob_manager.upload_project('1', project_path)
 
         downloaded_path = blob_manager.download_project('1', uploaded_path)
@@ -55,10 +64,17 @@ class TestLocalBlobManager(unittest.TestCase):
             os.makedirs(upload_path)
         if not os.path.exists(download_path):
             os.makedirs(download_path)
-        config = {'local_repository': download_path, 'remote_repository': upload_path,
-                  'blob_manager_class': 'ai_flow_plugins.blob_manager_plugins.local_blob_manager.LocalBlobManager'}
+        config = {
+            'blob_manager_class': 'ai_flow_plugins.blob_manager_plugins.local_blob_manager.LocalBlobManager',
+            'blob_manager_config': {
+                'local_repository': download_path,
+                'remote_repository': upload_path
+            }
+        }
+        blob_config = BlobConfig(config)
+        blob_manager = BlobManagerFactory.create_blob_manager(blob_config.blob_manager_class(),
+                                                              blob_config.blob_manager_config())
 
-        blob_manager = BlobManagerFactory.get_blob_manager(config)
         uploaded_path = blob_manager.upload_project('1', project_path)
         download_project_path = "/tmp/download/workflow_1_project"
         if os.path.exists(download_project_path):
