@@ -1,0 +1,57 @@
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+
+# Config of AIFlow server
+
+# endpoint of AIFlow server
+server_ip: localhost
+server_port: 50051
+# uri of database backend for AIFlow server
+db_uri: sqlite:///{AIFLOW_HOME}/aiflow.db
+# type of database backend for AIFlow server, can be SQL_LITE, MYSQL, MONGODB
+db_type: SQL_LITE
+
+# High availability is disabled by default
+#enable_ha: false
+# TTL of the heartbeat of a server, i.e., if the server hasn't send heartbeat for the TTL time, it is down.
+#ha_ttl_ms: 10000
+
+# whether to start the default notification service, default is True
+# start_default_notification: True
+# uri of the notification service. Use the server_ip: server_port if not set.
+# notification_uri: localhost:50051
+
+# whether to start the metadata service, default is True
+#start_meta_service: True
+
+# whether to start the model center service, default is True
+#start_model_center_service: True
+
+# whether to start the metric service, default is True
+#start_metric_service: True
+
+# whether to start the scheduler service, default is True
+#start_scheduler_service: True
+
+# scheduler config
+scheduler:
+  scheduler_class: ai_flow_plugins.scheduler_plugins.airflow.airflow_scheduler.AirFlowScheduler
+  scheduler_config:
+    # AirFlow dag file deployment directory, i.e., where the airflow dag will be.
+    airflow_deploy_path: {AIFLOW_HOME}/airflow_deploy
+    # Notification service uri used by the scheduler service.
+    notification_service_uri: localhost:50051
