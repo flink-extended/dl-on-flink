@@ -18,7 +18,7 @@
 #
 import unittest
 from typing import Text
-from ai_flow.plugin_interface.blob_manager_interface import BlobManagerFactory, BlobManager
+from ai_flow.plugin_interface.blob_manager_interface import BlobConfig, BlobManagerFactory, BlobManager
 
 
 class MockBlockManager(BlobManager):
@@ -38,7 +38,9 @@ class TestBlobManager(unittest.TestCase):
         config = {
             'blob_manager_class': 'ai_flow.test.plugin_interface.test_blob_manager.MockBlockManager'
         }
-        blob_manager = BlobManagerFactory.get_blob_manager(config)
+        blob_config = BlobConfig(config)
+        blob_manager = BlobManagerFactory.create_blob_manager(blob_config.blob_manager_class(),
+                                                              blob_config.blob_manager_config())
         uploaded_path = blob_manager.upload_project('1', None)
         self.assertEqual('upload', uploaded_path)
 
