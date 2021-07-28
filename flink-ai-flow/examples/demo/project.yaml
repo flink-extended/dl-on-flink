@@ -1,4 +1,4 @@
-project_name: demo2
+project_name: demo
 server_ip: localhost
 server_port: 50051
 blob:
