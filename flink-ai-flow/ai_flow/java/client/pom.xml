@@ -31,7 +31,10 @@
 
     <artifactId>aiflow-client</artifactId>
     <packaging>jar</packaging>
-    <name>client</name>
+
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>A java client for AIFlow service.</description>
+
     <dependencies>
         <dependency>
             <groupId>io.grpc</groupId>
@@ -112,15 +115,11 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <configuration>
-                    <quiet>true</quiet>
-                </configuration>
+                <artifactId>maven-jar-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>attach-javadocs</id>
                         <goals>
-                            <goal>jar</goal>
+                            <goal>test-jar</goal>
                         </goals>
                     </execution>
                 </executions>
