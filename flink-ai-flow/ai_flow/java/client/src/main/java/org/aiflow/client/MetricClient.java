@@ -25,12 +25,12 @@ import org.aiflow.client.entity.MetricMeta;
 import org.aiflow.client.entity.MetricSummary;
 import org.aiflow.client.entity.MetricType;
 import org.aiflow.client.exception.AIFlowException;
-import org.aiflow.proto.Message;
-import org.aiflow.proto.Message.MetricMetaProto;
-import org.aiflow.proto.MetricServiceGrpc;
-import org.aiflow.proto.MetricServiceOuterClass;
-import org.aiflow.proto.MetricServiceOuterClass.MetricMetaRequest;
-import org.aiflow.proto.MetricServiceOuterClass.MetricSummaryRequest;
+import org.aiflow.client.proto.Message;
+import org.aiflow.client.proto.Message.MetricMetaProto;
+import org.aiflow.client.proto.MetricServiceGrpc;
+import org.aiflow.client.proto.MetricServiceOuterClass;
+import org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaRequest;
+import org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryRequest;
 
 import java.util.List;
 import java.util.Map;

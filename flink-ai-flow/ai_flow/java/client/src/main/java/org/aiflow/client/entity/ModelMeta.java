@@ -18,7 +18,7 @@
  */
 package org.aiflow.client.entity;
 
-import org.aiflow.proto.Message.ModelProto;
+import org.aiflow.client.proto.Message.ModelProto;
 
 public class ModelMeta {
 

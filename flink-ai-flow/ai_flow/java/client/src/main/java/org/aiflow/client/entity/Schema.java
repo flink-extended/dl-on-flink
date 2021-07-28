@@ -19,8 +19,8 @@
 package org.aiflow.client.entity;
 
 import org.aiflow.client.common.DataType;
-import org.aiflow.proto.Message.DataTypeProto;
-import org.aiflow.proto.Message.SchemaProto;
+import org.aiflow.client.proto.Message.DataTypeProto;
+import org.aiflow.client.proto.Message.SchemaProto;
 
 import java.util.ArrayList;
 import java.util.List;

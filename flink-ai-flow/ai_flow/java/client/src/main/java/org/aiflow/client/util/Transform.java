@@ -26,9 +26,9 @@ import com.google.protobuf.util.JsonFormat.Parser;
 import org.aiflow.client.common.DataType;
 import org.aiflow.client.common.Status;
 import org.aiflow.client.exception.AIFlowException;
-import org.aiflow.proto.Message.DataTypeProto;
-import org.aiflow.proto.Message.Response;
-import org.aiflow.proto.Message.ReturnCode;
+import org.aiflow.client.proto.Message.DataTypeProto;
+import org.aiflow.client.proto.Message.Response;
+import org.aiflow.client.proto.Message.ReturnCode;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;

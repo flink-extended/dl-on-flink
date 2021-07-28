@@ -40,7 +40,7 @@ import org.aiflow.client.exception.AIFlowException;
 import org.aiflow.notification.client.EventWatcher;
 import org.aiflow.notification.client.NotificationClient;
 import org.aiflow.notification.entity.EventMeta;
-import org.aiflow.proto.Message;
+import org.aiflow.client.proto.Message;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;

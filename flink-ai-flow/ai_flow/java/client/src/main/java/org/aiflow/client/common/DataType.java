@@ -18,7 +18,7 @@
  */
 package org.aiflow.client.common;
 
-import org.aiflow.proto.Message.DataTypeProto;
+import org.aiflow.client.proto.Message.DataTypeProto;
 
 public enum DataType {
 

@@ -18,9 +18,9 @@
  */
 package org.aiflow.client.entity;
 
-import org.aiflow.proto.Message;
-import org.aiflow.proto.Message.SchemaProto;
-import org.aiflow.proto.MetadataServiceOuterClass;
+import org.aiflow.client.proto.Message;
+import org.aiflow.client.proto.Message.SchemaProto;
+import org.aiflow.client.proto.MetadataServiceOuterClass;
 
 import java.util.ArrayList;
 import java.util.List;
