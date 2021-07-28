@@ -73,7 +73,7 @@ class AIFlowOperator(BaseOperator):
         config = {}
         config.update(self.workflow.properties['blob'])
         blob_config = BlobConfig(config)
-        local_repo = blob_config.blob_manager_config.get('local_repository')
+        local_repo = blob_config.blob_manager_config().get('local_repository')
         if local_repo is not None:
             # Maybe Download the project code
             if not os.path.exists(local_repo):
