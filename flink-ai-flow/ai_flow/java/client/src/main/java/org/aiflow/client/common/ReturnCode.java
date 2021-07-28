@@ -18,7 +18,7 @@
  */
 package org.aiflow.client.common;
 
-import org.aiflow.proto.Message;
+import org.aiflow.client.proto.Message;
 
 public enum ReturnCode {
 

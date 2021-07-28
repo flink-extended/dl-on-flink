@@ -36,7 +36,7 @@ import org.aiflow.client.entity.ProjectMeta;
 import org.aiflow.client.entity.RegisteredModel;
 import org.aiflow.client.entity.WorkflowMeta;
 import org.aiflow.client.exception.AIFlowException;
-import org.aiflow.proto.Message;
+import org.aiflow.client.proto.Message;
 import org.aiflow.notification.client.EventWatcher;
 import org.aiflow.notification.entity.EventMeta;
 import org.junit.jupiter.api.AfterAll;
