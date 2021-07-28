@@ -36,7 +36,7 @@ If you are installing AI Flow from source, you can install AI Flow by running th
 
 ```shell
 cd flink-ai-extended
-bash flink-ai-flow/bin/install_aiflow.sh
+bash flink-ai-flow/install_aiflow.sh
 ```
 To make it easier to start server, some shell scripts like start-all-aiflow-services.sh will be installed with upon commands.
 You could run with `which start-all-aiflow-services.sh` to check if the scripts are installed successfully. 
