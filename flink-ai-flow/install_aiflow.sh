@@ -22,7 +22,7 @@ set -e
 
 bin=$(dirname "${BASH_SOURCE[0]}")
 bin=$(cd "$bin"; pwd)
-workdir=$bin/..
+workdir=$bin
 
 # In case of existed typing cause version conflict, uninstall it and then install AI Flow from source
 pip uninstall -y typing
