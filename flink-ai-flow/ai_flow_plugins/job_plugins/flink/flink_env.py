@@ -15,7 +15,8 @@
 # specific language governing permissions and limitations
 # under the License.
 from abc import abstractmethod
-
+from typing import Dict, Text
+from ai_flow.context.job_context import current_job_name
 from pyflink.dataset import ExecutionEnvironment
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import TableConfig, BatchTableEnvironment, StreamTableEnvironment, TableEnvironment, StatementSet
@@ -64,12 +65,25 @@ class FlinkStreamEnv(FlinkEnv):
 
 __flink_env__: FlinkEnv = FlinkBatchEnv()
 
+__job_flink_env_dict__: Dict[Text, FlinkEnv] = {}
+
 
 def set_flink_env(env: FlinkEnv):
-    global __flink_env__
-    __flink_env__ = env
+    global __flink_env__, __job_flink_env_dict__
+    if current_job_name() is None:
+        __flink_env__ = env
+    else:
+        __job_flink_env_dict__[current_job_name()] = env
 
 
 def get_flink_env() -> FlinkEnv:
-    global __flink_env__
-    return __flink_env__
+    global __flink_env__, __job_flink_env_dict__
+    if current_job_name() is None:
+        return __flink_env__
+    else:
+        return __job_flink_env_dict__.get(current_job_name())
+
+
+def get_flink_env_by_job_name(job_name: Text) -> FlinkEnv:
+    global __job_flink_env_dict__
+    return __job_flink_env_dict__.get(job_name)
