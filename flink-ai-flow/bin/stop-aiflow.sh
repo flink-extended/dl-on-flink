@@ -18,15 +18,21 @@
 ## under the License.
 ##
 set -e
-export AIFLOW_PID_DIR=${AIFLOW_PID_DIR:-/tmp}
+
+BIN=`dirname "${BASH_SOURCE-$0}"`
+BIN=`cd "$BIN"; pwd`
+. ${BIN}/aiflow-config.sh
+
+if [ ! -e ${AIFLOW_PID_DIR}/aiflow_server.pid ]; then
+  echo "No aiflow server running"
+fi
 
 set +e
-for((i=1;i<=3;i++));do kill $(cat ${AIFLOW_PID_DIR}/scheduler.pid) >/dev/null 2>&1 && sleep 1;done
-for((i=1;i<=3;i++));do kill $(cat ${AIFLOW_PID_DIR}/web.pid) >/dev/null 2>&1 && sleep 1;done
-stop-aiflow.sh
-for((i=1;i<=3;i++));do kill $(cat ${AIFLOW_PID_DIR}/notification_service.pid) >/dev/null 2>&1 && sleep 1;done
+echo "Killing AIFlow Server"
+for ((i=1;i<=3;i++))
+do
+  kill $(cat ${AIFLOW_PID_DIR}/aiflow_server.pid) >/dev/null 2>&1 && sleep 1
+done
 
-
-rm ${AIFLOW_PID_DIR}/scheduler.pid
-rm ${AIFLOW_PID_DIR}/web.pid
-rm ${AIFLOW_PID_DIR}/notification_service.pid
+rm ${AIFLOW_PID_DIR}/aiflow_server.pid
+echo "AIFlow Server killed"
