@@ -19,7 +19,7 @@
 import unittest
 import os
 from ai_flow.util.path_util import get_file_dir
-from ai_flow.plugin_interface.blob_manager_interface import BlobManagerFactory
+from ai_flow.plugin_interface.blob_manager_interface import BlobConfig, BlobManagerFactory
 
 
 class TestOSSBlobManager(unittest.TestCase):
@@ -33,15 +33,19 @@ class TestOSSBlobManager(unittest.TestCase):
         project_path = get_file_dir(__file__)
         config = {
             'blob_manager_class': 'ai_flow_plugins.blob_manager_plugins.oss_blob_manager.OssBlobManager',
-            'local_repository': '/tmp',
-            'access_key_id': os.environ.get('access_key_id'),
-            'access_key_secret': os.environ.get('access_key_secret'),
-            'endpoint': os.environ.get('endpoint'),
-            'bucket': os.environ.get('bucket'),
-            'repo_name': os.environ.get('repo_name')
+            'blob_manager_config': {
+                'local_repository': '/tmp',
+                'access_key_id': os.environ.get('access_key_id'),
+                'access_key_secret': os.environ.get('access_key_secret'),
+                'endpoint': os.environ.get('endpoint'),
+                'bucket': os.environ.get('bucket'),
+                'repo_name': os.environ.get('repo_name')
+            }
         }
 
-        blob_manager = BlobManagerFactory.get_blob_manager(config)
+        blob_config = BlobConfig(config)
+        blob_manager = BlobManagerFactory.create_blob_manager(blob_config.blob_manager_class(),
+                                                              blob_config.blob_manager_config())
         uploaded_path = blob_manager.upload_project('1', project_path)
 
         downloaded_path = blob_manager.download_project('1', uploaded_path)

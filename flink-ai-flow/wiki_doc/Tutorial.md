@@ -35,7 +35,7 @@ start_scheduler_service: True
 notification_uri: localhost:50052
 # scheduler config
 scheduler:
-  scheduler_class_name: ai_flow_plugins.scheduler_plugins.airflow.airflow_scheduler.AirFlowScheduler
+  scheduler_class: ai_flow_plugins.scheduler_plugins.airflow.airflow_scheduler.AirFlowScheduler
   scheduler_config:
     airflow_deploy_path: /absolute/path/to/airflow/airflow_deploy
     notification_service_uri: localhost:50052
