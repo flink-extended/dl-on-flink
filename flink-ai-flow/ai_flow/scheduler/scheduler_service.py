@@ -18,8 +18,8 @@ from typing import Text
 import traceback
 
 from ai_flow.common.configuration import AIFlowConfiguration
-
-from ai_flow.plugin_interface.blob_manager_interface import BlobManagerFactory
+from ai_flow.workflow.workflow import WorkflowPropertyKeys
+from ai_flow.plugin_interface.blob_manager_interface import BlobConfig, BlobManagerFactory
 
 from ai_flow.util import json_utils
 from ai_flow.context.project_context import ProjectContext, build_project_context
@@ -57,14 +57,14 @@ class SchedulerServiceConfig(AIFlowConfiguration):
     def set_repository(self, value):
         self['repository'] = value
 
-    def scheduler_class_name(self):
-        if self.get('scheduler_class_name') is not None:
-            return self.get('scheduler_class_name')
+    def scheduler_class(self):
+        if self.get('scheduler_class') is not None:
+            return self.get('scheduler_class')
         else:
             return None
 
-    def set_scheduler_class_name(self, value):
-        self['scheduler_class_name'] = value
+    def set_scheduler_class(self, value):
+        self['scheduler_class'] = value
 
     def scheduler_config(self):
         if 'scheduler_config' not in self:
@@ -80,7 +80,7 @@ class SchedulerService(SchedulingServiceServicer):
                  scheduler_service_config: SchedulerServiceConfig):
         self._scheduler_service_config = scheduler_service_config
         self._scheduler: Scheduler \
-            = SchedulerFactory.create_scheduler(scheduler_service_config.scheduler_class_name(),
+            = SchedulerFactory.create_scheduler(scheduler_service_config.scheduler_class(),
                                                 scheduler_service_config.scheduler_config())
 
     # workflow interface
@@ -91,9 +91,11 @@ class SchedulerService(SchedulingServiceServicer):
                 return WorkflowInfoResponse(result=ResultProto(status=StatusProto.ERROR,
                                                                error_message='workflow json is empty!'))
             workflow: Workflow = json_utils.loads(rq.workflow_json)
-            config = {}
-            config.update(workflow.properties['blob'])
-            blob_manager = BlobManagerFactory.get_blob_manager(config)
+            raw_config = {}
+            raw_config.update(workflow.properties[WorkflowPropertyKeys.BLOB])
+            blob_config = BlobConfig(raw_config)
+            blob_manager = BlobManagerFactory.create_blob_manager(blob_config.blob_manager_class(),
+                                                                  blob_config.blob_manager_config())
             project_path: Text = blob_manager\
                 .download_project(workflow_snapshot_id=workflow.workflow_snapshot_id,
                                   remote_path=workflow.project_uri,

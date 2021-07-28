@@ -21,7 +21,7 @@ from airflow.utils.decorators import apply_defaults
 from ai_flow.common.module_load import import_string
 from ai_flow.runtime.job_runtime_util import prepare_job_runtime_env
 from ai_flow.util.time_utils import datetime_to_int64
-from ai_flow.plugin_interface.blob_manager_interface import BlobManagerFactory
+from ai_flow.plugin_interface.blob_manager_interface import BlobConfig, BlobManagerFactory
 from ai_flow.plugin_interface.job_plugin_interface import JobController, JobHandle, JobRuntimeEnv
 from ai_flow.plugin_interface.scheduler_interface import JobExecutionInfo, WorkflowExecutionInfo, WorkflowInfo
 from ai_flow.context.project_context import build_project_context
@@ -72,12 +72,14 @@ class AIFlowOperator(BaseOperator):
     def pre_execute(self, context: Any):
         config = {}
         config.update(self.workflow.properties['blob'])
-        local_repo = config.get('local_repository')
+        blob_config = BlobConfig(config)
+        local_repo = blob_config.blob_manager_config.get('local_repository')
         if local_repo is not None:
             # Maybe Download the project code
             if not os.path.exists(local_repo):
                 os.makedirs(local_repo)
-            blob_manager = BlobManagerFactory.get_blob_manager(config)
+            blob_manager = BlobManagerFactory.create_blob_manager(blob_config.blob_manager_class(),
+                                                                  blob_config.blob_manager_config())
             project_path: Text = blob_manager \
                 .download_project(workflow_snapshot_id=self.workflow.workflow_snapshot_id,
                                   remote_path=self.workflow.project_uri,
