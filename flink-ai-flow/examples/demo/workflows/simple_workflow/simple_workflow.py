@@ -5,9 +5,9 @@ from ai_flow_plugins.job_plugins.bash import BashProcessor
 def main():
     af.init_ai_flow_context()
     with af.job_config('task_1'):
-        af.user_define_operation(processor=BashProcessor("echo hello"))
+        af.user_define_operation(BashProcessor("echo hello"))
     with af.job_config('task_2'):
-        af.user_define_operation(processor=BashProcessor("echo hello"))
+        af.user_define_operation(BashProcessor("echo hello"))
 
     af.action_on_job_status('task_2', 'task_1')
 
