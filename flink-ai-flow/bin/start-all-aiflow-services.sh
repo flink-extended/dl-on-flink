@@ -87,8 +87,7 @@ airflow webserver -p 8080 > ${AIFLOW_LOG_DIR}/web.log 2>&1 &
 echo $! > ${AIFLOW_PID_DIR}/web.pid
 
 # start AIFlow
-start_aiflow.py > ${AIFLOW_LOG_DIR}/master_server.log 2>&1 &
-echo $! > ${AIFLOW_PID_DIR}/master_server.pid
+start-aiflow.sh
 
 echo "Notification service log: ${AIFLOW_LOG_DIR}/notification_service.log"
 echo "Notification service pid: $(cat ${AIFLOW_PID_DIR}/notification_service.pid)"
@@ -96,7 +95,5 @@ echo "Scheduler log: ${AIFLOW_LOG_DIR}/scheduler.log"
 echo "Scheduler pid: $(cat ${AIFLOW_PID_DIR}/scheduler.pid)"
 echo "Web Server log: ${AIFLOW_LOG_DIR}/web.log"
 echo "Web Server pid: $(cat ${AIFLOW_PID_DIR}/web.pid)"
-echo "Master Server log: ${AIFLOW_LOG_DIR}/master_server.log"
-echo "Master Server pid: $(cat ${AIFLOW_PID_DIR}/master_server.pid)"
 echo "Airflow deploy path: ${AIRFLOW_DEPLOY_PATH}"
 echo "Visit http://127.0.0.1:8080/ to access the airflow web server."
