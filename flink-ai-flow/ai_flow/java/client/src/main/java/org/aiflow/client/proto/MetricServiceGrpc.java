@@ -16,8 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.aiflow.proto;
+package org.aiflow.client.proto;
 
 import static io.grpc.MethodDescriptor.generateFullMethodName;
 import static io.grpc.stub.ClientCalls.asyncBidiStreamingCall;
@@ -46,29 +45,29 @@ public final class MetricServiceGrpc {
   public static final String SERVICE_NAME = "ai_flow.MetricService";
 
   // Static method descriptors that strictly reflect the proto.
-  private static volatile io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.MetricMetaRequest,
-      org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse> getRegisterMetricMetaMethod;
+  private static volatile io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaRequest,
+      org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse> getRegisterMetricMetaMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "registerMetricMeta",
-      requestType = org.aiflow.proto.MetricServiceOuterClass.MetricMetaRequest.class,
-      responseType = org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse.class,
+      requestType = org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaRequest.class,
+      responseType = org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.MetricMetaRequest,
-      org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse> getRegisterMetricMetaMethod() {
-    io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.MetricMetaRequest, org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse> getRegisterMetricMetaMethod;
+  public static io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaRequest,
+      org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse> getRegisterMetricMetaMethod() {
+    io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaRequest, org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse> getRegisterMetricMetaMethod;
     if ((getRegisterMetricMetaMethod = MetricServiceGrpc.getRegisterMetricMetaMethod) == null) {
       synchronized (MetricServiceGrpc.class) {
         if ((getRegisterMetricMetaMethod = MetricServiceGrpc.getRegisterMetricMetaMethod) == null) {
           MetricServiceGrpc.getRegisterMetricMetaMethod = getRegisterMetricMetaMethod =
-              io.grpc.MethodDescriptor.<org.aiflow.proto.MetricServiceOuterClass.MetricMetaRequest, org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse>newBuilder()
+              io.grpc.MethodDescriptor.<org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaRequest, org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "registerMetricMeta"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.MetricServiceOuterClass.MetricMetaRequest.getDefaultInstance()))
+                  org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse.getDefaultInstance()))
+                  org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse.getDefaultInstance()))
               .setSchemaDescriptor(new MetricServiceMethodDescriptorSupplier("registerMetricMeta"))
               .build();
         }
@@ -77,29 +76,29 @@ public final class MetricServiceGrpc {
     return getRegisterMetricMetaMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.MetricMetaRequest,
-      org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse> getUpdateMetricMetaMethod;
+  private static volatile io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaRequest,
+      org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse> getUpdateMetricMetaMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "updateMetricMeta",
-      requestType = org.aiflow.proto.MetricServiceOuterClass.MetricMetaRequest.class,
-      responseType = org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse.class,
+      requestType = org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaRequest.class,
+      responseType = org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.MetricMetaRequest,
-      org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse> getUpdateMetricMetaMethod() {
-    io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.MetricMetaRequest, org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse> getUpdateMetricMetaMethod;
+  public static io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaRequest,
+      org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse> getUpdateMetricMetaMethod() {
+    io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaRequest, org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse> getUpdateMetricMetaMethod;
     if ((getUpdateMetricMetaMethod = MetricServiceGrpc.getUpdateMetricMetaMethod) == null) {
       synchronized (MetricServiceGrpc.class) {
         if ((getUpdateMetricMetaMethod = MetricServiceGrpc.getUpdateMetricMetaMethod) == null) {
           MetricServiceGrpc.getUpdateMetricMetaMethod = getUpdateMetricMetaMethod =
-              io.grpc.MethodDescriptor.<org.aiflow.proto.MetricServiceOuterClass.MetricMetaRequest, org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse>newBuilder()
+              io.grpc.MethodDescriptor.<org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaRequest, org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "updateMetricMeta"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.MetricServiceOuterClass.MetricMetaRequest.getDefaultInstance()))
+                  org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse.getDefaultInstance()))
+                  org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse.getDefaultInstance()))
               .setSchemaDescriptor(new MetricServiceMethodDescriptorSupplier("updateMetricMeta"))
               .build();
         }
@@ -108,29 +107,29 @@ public final class MetricServiceGrpc {
     return getUpdateMetricMetaMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.MetricNameRequest,
-      org.aiflow.proto.Message.Response> getDeleteMetricMetaMethod;
+  private static volatile io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.MetricNameRequest,
+      org.aiflow.client.proto.Message.Response> getDeleteMetricMetaMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "deleteMetricMeta",
-      requestType = org.aiflow.proto.MetricServiceOuterClass.MetricNameRequest.class,
-      responseType = org.aiflow.proto.Message.Response.class,
+      requestType = org.aiflow.client.proto.MetricServiceOuterClass.MetricNameRequest.class,
+      responseType = org.aiflow.client.proto.Message.Response.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.MetricNameRequest,
-      org.aiflow.proto.Message.Response> getDeleteMetricMetaMethod() {
-    io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.MetricNameRequest, org.aiflow.proto.Message.Response> getDeleteMetricMetaMethod;
+  public static io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.MetricNameRequest,
+      org.aiflow.client.proto.Message.Response> getDeleteMetricMetaMethod() {
+    io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.MetricNameRequest, org.aiflow.client.proto.Message.Response> getDeleteMetricMetaMethod;
     if ((getDeleteMetricMetaMethod = MetricServiceGrpc.getDeleteMetricMetaMethod) == null) {
       synchronized (MetricServiceGrpc.class) {
         if ((getDeleteMetricMetaMethod = MetricServiceGrpc.getDeleteMetricMetaMethod) == null) {
           MetricServiceGrpc.getDeleteMetricMetaMethod = getDeleteMetricMetaMethod =
-              io.grpc.MethodDescriptor.<org.aiflow.proto.MetricServiceOuterClass.MetricNameRequest, org.aiflow.proto.Message.Response>newBuilder()
+              io.grpc.MethodDescriptor.<org.aiflow.client.proto.MetricServiceOuterClass.MetricNameRequest, org.aiflow.client.proto.Message.Response>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "deleteMetricMeta"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.MetricServiceOuterClass.MetricNameRequest.getDefaultInstance()))
+                  org.aiflow.client.proto.MetricServiceOuterClass.MetricNameRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.Message.Response.getDefaultInstance()))
+                  org.aiflow.client.proto.Message.Response.getDefaultInstance()))
               .setSchemaDescriptor(new MetricServiceMethodDescriptorSupplier("deleteMetricMeta"))
               .build();
         }
@@ -139,29 +138,29 @@ public final class MetricServiceGrpc {
     return getDeleteMetricMetaMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.MetricNameRequest,
-      org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse> getGetMetricMetaMethod;
+  private static volatile io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.MetricNameRequest,
+      org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse> getGetMetricMetaMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "getMetricMeta",
-      requestType = org.aiflow.proto.MetricServiceOuterClass.MetricNameRequest.class,
-      responseType = org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse.class,
+      requestType = org.aiflow.client.proto.MetricServiceOuterClass.MetricNameRequest.class,
+      responseType = org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.MetricNameRequest,
-      org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse> getGetMetricMetaMethod() {
-    io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.MetricNameRequest, org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse> getGetMetricMetaMethod;
+  public static io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.MetricNameRequest,
+      org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse> getGetMetricMetaMethod() {
+    io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.MetricNameRequest, org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse> getGetMetricMetaMethod;
     if ((getGetMetricMetaMethod = MetricServiceGrpc.getGetMetricMetaMethod) == null) {
       synchronized (MetricServiceGrpc.class) {
         if ((getGetMetricMetaMethod = MetricServiceGrpc.getGetMetricMetaMethod) == null) {
           MetricServiceGrpc.getGetMetricMetaMethod = getGetMetricMetaMethod =
-              io.grpc.MethodDescriptor.<org.aiflow.proto.MetricServiceOuterClass.MetricNameRequest, org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse>newBuilder()
+              io.grpc.MethodDescriptor.<org.aiflow.client.proto.MetricServiceOuterClass.MetricNameRequest, org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "getMetricMeta"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.MetricServiceOuterClass.MetricNameRequest.getDefaultInstance()))
+                  org.aiflow.client.proto.MetricServiceOuterClass.MetricNameRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse.getDefaultInstance()))
+                  org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse.getDefaultInstance()))
               .setSchemaDescriptor(new MetricServiceMethodDescriptorSupplier("getMetricMeta"))
               .build();
         }
@@ -170,29 +169,29 @@ public final class MetricServiceGrpc {
     return getGetMetricMetaMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.ListDatasetMetricMetasRequest,
-      org.aiflow.proto.MetricServiceOuterClass.ListMetricMetasResponse> getListDatasetMetricMetasMethod;
+  private static volatile io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.ListDatasetMetricMetasRequest,
+      org.aiflow.client.proto.MetricServiceOuterClass.ListMetricMetasResponse> getListDatasetMetricMetasMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "listDatasetMetricMetas",
-      requestType = org.aiflow.proto.MetricServiceOuterClass.ListDatasetMetricMetasRequest.class,
-      responseType = org.aiflow.proto.MetricServiceOuterClass.ListMetricMetasResponse.class,
+      requestType = org.aiflow.client.proto.MetricServiceOuterClass.ListDatasetMetricMetasRequest.class,
+      responseType = org.aiflow.client.proto.MetricServiceOuterClass.ListMetricMetasResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.ListDatasetMetricMetasRequest,
-      org.aiflow.proto.MetricServiceOuterClass.ListMetricMetasResponse> getListDatasetMetricMetasMethod() {
-    io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.ListDatasetMetricMetasRequest, org.aiflow.proto.MetricServiceOuterClass.ListMetricMetasResponse> getListDatasetMetricMetasMethod;
+  public static io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.ListDatasetMetricMetasRequest,
+      org.aiflow.client.proto.MetricServiceOuterClass.ListMetricMetasResponse> getListDatasetMetricMetasMethod() {
+    io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.ListDatasetMetricMetasRequest, org.aiflow.client.proto.MetricServiceOuterClass.ListMetricMetasResponse> getListDatasetMetricMetasMethod;
     if ((getListDatasetMetricMetasMethod = MetricServiceGrpc.getListDatasetMetricMetasMethod) == null) {
       synchronized (MetricServiceGrpc.class) {
         if ((getListDatasetMetricMetasMethod = MetricServiceGrpc.getListDatasetMetricMetasMethod) == null) {
           MetricServiceGrpc.getListDatasetMetricMetasMethod = getListDatasetMetricMetasMethod =
-              io.grpc.MethodDescriptor.<org.aiflow.proto.MetricServiceOuterClass.ListDatasetMetricMetasRequest, org.aiflow.proto.MetricServiceOuterClass.ListMetricMetasResponse>newBuilder()
+              io.grpc.MethodDescriptor.<org.aiflow.client.proto.MetricServiceOuterClass.ListDatasetMetricMetasRequest, org.aiflow.client.proto.MetricServiceOuterClass.ListMetricMetasResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "listDatasetMetricMetas"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.MetricServiceOuterClass.ListDatasetMetricMetasRequest.getDefaultInstance()))
+                  org.aiflow.client.proto.MetricServiceOuterClass.ListDatasetMetricMetasRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.MetricServiceOuterClass.ListMetricMetasResponse.getDefaultInstance()))
+                  org.aiflow.client.proto.MetricServiceOuterClass.ListMetricMetasResponse.getDefaultInstance()))
               .setSchemaDescriptor(new MetricServiceMethodDescriptorSupplier("listDatasetMetricMetas"))
               .build();
         }
@@ -201,29 +200,29 @@ public final class MetricServiceGrpc {
     return getListDatasetMetricMetasMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.ListModelMetricMetasRequest,
-      org.aiflow.proto.MetricServiceOuterClass.ListMetricMetasResponse> getListModelMetricMetasMethod;
+  private static volatile io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.ListModelMetricMetasRequest,
+      org.aiflow.client.proto.MetricServiceOuterClass.ListMetricMetasResponse> getListModelMetricMetasMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "listModelMetricMetas",
-      requestType = org.aiflow.proto.MetricServiceOuterClass.ListModelMetricMetasRequest.class,
-      responseType = org.aiflow.proto.MetricServiceOuterClass.ListMetricMetasResponse.class,
+      requestType = org.aiflow.client.proto.MetricServiceOuterClass.ListModelMetricMetasRequest.class,
+      responseType = org.aiflow.client.proto.MetricServiceOuterClass.ListMetricMetasResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.ListModelMetricMetasRequest,
-      org.aiflow.proto.MetricServiceOuterClass.ListMetricMetasResponse> getListModelMetricMetasMethod() {
-    io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.ListModelMetricMetasRequest, org.aiflow.proto.MetricServiceOuterClass.ListMetricMetasResponse> getListModelMetricMetasMethod;
+  public static io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.ListModelMetricMetasRequest,
+      org.aiflow.client.proto.MetricServiceOuterClass.ListMetricMetasResponse> getListModelMetricMetasMethod() {
+    io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.ListModelMetricMetasRequest, org.aiflow.client.proto.MetricServiceOuterClass.ListMetricMetasResponse> getListModelMetricMetasMethod;
     if ((getListModelMetricMetasMethod = MetricServiceGrpc.getListModelMetricMetasMethod) == null) {
       synchronized (MetricServiceGrpc.class) {
         if ((getListModelMetricMetasMethod = MetricServiceGrpc.getListModelMetricMetasMethod) == null) {
           MetricServiceGrpc.getListModelMetricMetasMethod = getListModelMetricMetasMethod =
-              io.grpc.MethodDescriptor.<org.aiflow.proto.MetricServiceOuterClass.ListModelMetricMetasRequest, org.aiflow.proto.MetricServiceOuterClass.ListMetricMetasResponse>newBuilder()
+              io.grpc.MethodDescriptor.<org.aiflow.client.proto.MetricServiceOuterClass.ListModelMetricMetasRequest, org.aiflow.client.proto.MetricServiceOuterClass.ListMetricMetasResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "listModelMetricMetas"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.MetricServiceOuterClass.ListModelMetricMetasRequest.getDefaultInstance()))
+                  org.aiflow.client.proto.MetricServiceOuterClass.ListModelMetricMetasRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.MetricServiceOuterClass.ListMetricMetasResponse.getDefaultInstance()))
+                  org.aiflow.client.proto.MetricServiceOuterClass.ListMetricMetasResponse.getDefaultInstance()))
               .setSchemaDescriptor(new MetricServiceMethodDescriptorSupplier("listModelMetricMetas"))
               .build();
         }
@@ -232,29 +231,29 @@ public final class MetricServiceGrpc {
     return getListModelMetricMetasMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.MetricSummaryRequest,
-      org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse> getRegisterMetricSummaryMethod;
+  private static volatile io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryRequest,
+      org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse> getRegisterMetricSummaryMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "registerMetricSummary",
-      requestType = org.aiflow.proto.MetricServiceOuterClass.MetricSummaryRequest.class,
-      responseType = org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse.class,
+      requestType = org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryRequest.class,
+      responseType = org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.MetricSummaryRequest,
-      org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse> getRegisterMetricSummaryMethod() {
-    io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.MetricSummaryRequest, org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse> getRegisterMetricSummaryMethod;
+  public static io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryRequest,
+      org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse> getRegisterMetricSummaryMethod() {
+    io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryRequest, org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse> getRegisterMetricSummaryMethod;
     if ((getRegisterMetricSummaryMethod = MetricServiceGrpc.getRegisterMetricSummaryMethod) == null) {
       synchronized (MetricServiceGrpc.class) {
         if ((getRegisterMetricSummaryMethod = MetricServiceGrpc.getRegisterMetricSummaryMethod) == null) {
           MetricServiceGrpc.getRegisterMetricSummaryMethod = getRegisterMetricSummaryMethod =
-              io.grpc.MethodDescriptor.<org.aiflow.proto.MetricServiceOuterClass.MetricSummaryRequest, org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse>newBuilder()
+              io.grpc.MethodDescriptor.<org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryRequest, org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "registerMetricSummary"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.MetricServiceOuterClass.MetricSummaryRequest.getDefaultInstance()))
+                  org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse.getDefaultInstance()))
+                  org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse.getDefaultInstance()))
               .setSchemaDescriptor(new MetricServiceMethodDescriptorSupplier("registerMetricSummary"))
               .build();
         }
@@ -263,29 +262,29 @@ public final class MetricServiceGrpc {
     return getRegisterMetricSummaryMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.MetricSummaryRequest,
-      org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse> getUpdateMetricSummaryMethod;
+  private static volatile io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryRequest,
+      org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse> getUpdateMetricSummaryMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "updateMetricSummary",
-      requestType = org.aiflow.proto.MetricServiceOuterClass.MetricSummaryRequest.class,
-      responseType = org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse.class,
+      requestType = org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryRequest.class,
+      responseType = org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.MetricSummaryRequest,
-      org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse> getUpdateMetricSummaryMethod() {
-    io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.MetricSummaryRequest, org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse> getUpdateMetricSummaryMethod;
+  public static io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryRequest,
+      org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse> getUpdateMetricSummaryMethod() {
+    io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryRequest, org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse> getUpdateMetricSummaryMethod;
     if ((getUpdateMetricSummaryMethod = MetricServiceGrpc.getUpdateMetricSummaryMethod) == null) {
       synchronized (MetricServiceGrpc.class) {
         if ((getUpdateMetricSummaryMethod = MetricServiceGrpc.getUpdateMetricSummaryMethod) == null) {
           MetricServiceGrpc.getUpdateMetricSummaryMethod = getUpdateMetricSummaryMethod =
-              io.grpc.MethodDescriptor.<org.aiflow.proto.MetricServiceOuterClass.MetricSummaryRequest, org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse>newBuilder()
+              io.grpc.MethodDescriptor.<org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryRequest, org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "updateMetricSummary"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.MetricServiceOuterClass.MetricSummaryRequest.getDefaultInstance()))
+                  org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse.getDefaultInstance()))
+                  org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse.getDefaultInstance()))
               .setSchemaDescriptor(new MetricServiceMethodDescriptorSupplier("updateMetricSummary"))
               .build();
         }
@@ -294,29 +293,29 @@ public final class MetricServiceGrpc {
     return getUpdateMetricSummaryMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.UuidRequest,
-      org.aiflow.proto.Message.Response> getDeleteMetricSummaryMethod;
+  private static volatile io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.UuidRequest,
+      org.aiflow.client.proto.Message.Response> getDeleteMetricSummaryMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "deleteMetricSummary",
-      requestType = org.aiflow.proto.MetricServiceOuterClass.UuidRequest.class,
-      responseType = org.aiflow.proto.Message.Response.class,
+      requestType = org.aiflow.client.proto.MetricServiceOuterClass.UuidRequest.class,
+      responseType = org.aiflow.client.proto.Message.Response.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.UuidRequest,
-      org.aiflow.proto.Message.Response> getDeleteMetricSummaryMethod() {
-    io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.UuidRequest, org.aiflow.proto.Message.Response> getDeleteMetricSummaryMethod;
+  public static io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.UuidRequest,
+      org.aiflow.client.proto.Message.Response> getDeleteMetricSummaryMethod() {
+    io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.UuidRequest, org.aiflow.client.proto.Message.Response> getDeleteMetricSummaryMethod;
     if ((getDeleteMetricSummaryMethod = MetricServiceGrpc.getDeleteMetricSummaryMethod) == null) {
       synchronized (MetricServiceGrpc.class) {
         if ((getDeleteMetricSummaryMethod = MetricServiceGrpc.getDeleteMetricSummaryMethod) == null) {
           MetricServiceGrpc.getDeleteMetricSummaryMethod = getDeleteMetricSummaryMethod =
-              io.grpc.MethodDescriptor.<org.aiflow.proto.MetricServiceOuterClass.UuidRequest, org.aiflow.proto.Message.Response>newBuilder()
+              io.grpc.MethodDescriptor.<org.aiflow.client.proto.MetricServiceOuterClass.UuidRequest, org.aiflow.client.proto.Message.Response>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "deleteMetricSummary"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.MetricServiceOuterClass.UuidRequest.getDefaultInstance()))
+                  org.aiflow.client.proto.MetricServiceOuterClass.UuidRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.Message.Response.getDefaultInstance()))
+                  org.aiflow.client.proto.Message.Response.getDefaultInstance()))
               .setSchemaDescriptor(new MetricServiceMethodDescriptorSupplier("deleteMetricSummary"))
               .build();
         }
@@ -325,29 +324,29 @@ public final class MetricServiceGrpc {
     return getDeleteMetricSummaryMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.UuidRequest,
-      org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse> getGetMetricSummaryMethod;
+  private static volatile io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.UuidRequest,
+      org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse> getGetMetricSummaryMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "getMetricSummary",
-      requestType = org.aiflow.proto.MetricServiceOuterClass.UuidRequest.class,
-      responseType = org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse.class,
+      requestType = org.aiflow.client.proto.MetricServiceOuterClass.UuidRequest.class,
+      responseType = org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.UuidRequest,
-      org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse> getGetMetricSummaryMethod() {
-    io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.UuidRequest, org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse> getGetMetricSummaryMethod;
+  public static io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.UuidRequest,
+      org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse> getGetMetricSummaryMethod() {
+    io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.UuidRequest, org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse> getGetMetricSummaryMethod;
     if ((getGetMetricSummaryMethod = MetricServiceGrpc.getGetMetricSummaryMethod) == null) {
       synchronized (MetricServiceGrpc.class) {
         if ((getGetMetricSummaryMethod = MetricServiceGrpc.getGetMetricSummaryMethod) == null) {
           MetricServiceGrpc.getGetMetricSummaryMethod = getGetMetricSummaryMethod =
-              io.grpc.MethodDescriptor.<org.aiflow.proto.MetricServiceOuterClass.UuidRequest, org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse>newBuilder()
+              io.grpc.MethodDescriptor.<org.aiflow.client.proto.MetricServiceOuterClass.UuidRequest, org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "getMetricSummary"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.MetricServiceOuterClass.UuidRequest.getDefaultInstance()))
+                  org.aiflow.client.proto.MetricServiceOuterClass.UuidRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse.getDefaultInstance()))
+                  org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse.getDefaultInstance()))
               .setSchemaDescriptor(new MetricServiceMethodDescriptorSupplier("getMetricSummary"))
               .build();
         }
@@ -356,29 +355,29 @@ public final class MetricServiceGrpc {
     return getGetMetricSummaryMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.ListMetricSummariesRequest,
-      org.aiflow.proto.MetricServiceOuterClass.ListMetricSummariesResponse> getListMetricSummariesMethod;
+  private static volatile io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.ListMetricSummariesRequest,
+      org.aiflow.client.proto.MetricServiceOuterClass.ListMetricSummariesResponse> getListMetricSummariesMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "listMetricSummaries",
-      requestType = org.aiflow.proto.MetricServiceOuterClass.ListMetricSummariesRequest.class,
-      responseType = org.aiflow.proto.MetricServiceOuterClass.ListMetricSummariesResponse.class,
+      requestType = org.aiflow.client.proto.MetricServiceOuterClass.ListMetricSummariesRequest.class,
+      responseType = org.aiflow.client.proto.MetricServiceOuterClass.ListMetricSummariesResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.ListMetricSummariesRequest,
-      org.aiflow.proto.MetricServiceOuterClass.ListMetricSummariesResponse> getListMetricSummariesMethod() {
-    io.grpc.MethodDescriptor<org.aiflow.proto.MetricServiceOuterClass.ListMetricSummariesRequest, org.aiflow.proto.MetricServiceOuterClass.ListMetricSummariesResponse> getListMetricSummariesMethod;
+  public static io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.ListMetricSummariesRequest,
+      org.aiflow.client.proto.MetricServiceOuterClass.ListMetricSummariesResponse> getListMetricSummariesMethod() {
+    io.grpc.MethodDescriptor<org.aiflow.client.proto.MetricServiceOuterClass.ListMetricSummariesRequest, org.aiflow.client.proto.MetricServiceOuterClass.ListMetricSummariesResponse> getListMetricSummariesMethod;
     if ((getListMetricSummariesMethod = MetricServiceGrpc.getListMetricSummariesMethod) == null) {
       synchronized (MetricServiceGrpc.class) {
         if ((getListMetricSummariesMethod = MetricServiceGrpc.getListMetricSummariesMethod) == null) {
           MetricServiceGrpc.getListMetricSummariesMethod = getListMetricSummariesMethod =
-              io.grpc.MethodDescriptor.<org.aiflow.proto.MetricServiceOuterClass.ListMetricSummariesRequest, org.aiflow.proto.MetricServiceOuterClass.ListMetricSummariesResponse>newBuilder()
+              io.grpc.MethodDescriptor.<org.aiflow.client.proto.MetricServiceOuterClass.ListMetricSummariesRequest, org.aiflow.client.proto.MetricServiceOuterClass.ListMetricSummariesResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "listMetricSummaries"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.MetricServiceOuterClass.ListMetricSummariesRequest.getDefaultInstance()))
+                  org.aiflow.client.proto.MetricServiceOuterClass.ListMetricSummariesRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.MetricServiceOuterClass.ListMetricSummariesResponse.getDefaultInstance()))
+                  org.aiflow.client.proto.MetricServiceOuterClass.ListMetricSummariesResponse.getDefaultInstance()))
               .setSchemaDescriptor(new MetricServiceMethodDescriptorSupplier("listMetricSummaries"))
               .build();
         }
@@ -437,78 +436,78 @@ public final class MetricServiceGrpc {
 
     /**
      */
-    public void registerMetricMeta(org.aiflow.proto.MetricServiceOuterClass.MetricMetaRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse> responseObserver) {
+    public void registerMetricMeta(org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse> responseObserver) {
       asyncUnimplementedUnaryCall(getRegisterMetricMetaMethod(), responseObserver);
     }
 
     /**
      */
-    public void updateMetricMeta(org.aiflow.proto.MetricServiceOuterClass.MetricMetaRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse> responseObserver) {
+    public void updateMetricMeta(org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse> responseObserver) {
       asyncUnimplementedUnaryCall(getUpdateMetricMetaMethod(), responseObserver);
     }
 
     /**
      */
-    public void deleteMetricMeta(org.aiflow.proto.MetricServiceOuterClass.MetricNameRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response> responseObserver) {
+    public void deleteMetricMeta(org.aiflow.client.proto.MetricServiceOuterClass.MetricNameRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response> responseObserver) {
       asyncUnimplementedUnaryCall(getDeleteMetricMetaMethod(), responseObserver);
     }
 
     /**
      */
-    public void getMetricMeta(org.aiflow.proto.MetricServiceOuterClass.MetricNameRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse> responseObserver) {
+    public void getMetricMeta(org.aiflow.client.proto.MetricServiceOuterClass.MetricNameRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse> responseObserver) {
       asyncUnimplementedUnaryCall(getGetMetricMetaMethod(), responseObserver);
     }
 
     /**
      */
-    public void listDatasetMetricMetas(org.aiflow.proto.MetricServiceOuterClass.ListDatasetMetricMetasRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.MetricServiceOuterClass.ListMetricMetasResponse> responseObserver) {
+    public void listDatasetMetricMetas(org.aiflow.client.proto.MetricServiceOuterClass.ListDatasetMetricMetasRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.MetricServiceOuterClass.ListMetricMetasResponse> responseObserver) {
       asyncUnimplementedUnaryCall(getListDatasetMetricMetasMethod(), responseObserver);
     }
 
     /**
      */
-    public void listModelMetricMetas(org.aiflow.proto.MetricServiceOuterClass.ListModelMetricMetasRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.MetricServiceOuterClass.ListMetricMetasResponse> responseObserver) {
+    public void listModelMetricMetas(org.aiflow.client.proto.MetricServiceOuterClass.ListModelMetricMetasRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.MetricServiceOuterClass.ListMetricMetasResponse> responseObserver) {
       asyncUnimplementedUnaryCall(getListModelMetricMetasMethod(), responseObserver);
     }
 
     /**
      */
-    public void registerMetricSummary(org.aiflow.proto.MetricServiceOuterClass.MetricSummaryRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse> responseObserver) {
+    public void registerMetricSummary(org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse> responseObserver) {
       asyncUnimplementedUnaryCall(getRegisterMetricSummaryMethod(), responseObserver);
     }
 
     /**
      */
-    public void updateMetricSummary(org.aiflow.proto.MetricServiceOuterClass.MetricSummaryRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse> responseObserver) {
+    public void updateMetricSummary(org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse> responseObserver) {
       asyncUnimplementedUnaryCall(getUpdateMetricSummaryMethod(), responseObserver);
     }
 
     /**
      */
-    public void deleteMetricSummary(org.aiflow.proto.MetricServiceOuterClass.UuidRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response> responseObserver) {
+    public void deleteMetricSummary(org.aiflow.client.proto.MetricServiceOuterClass.UuidRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response> responseObserver) {
       asyncUnimplementedUnaryCall(getDeleteMetricSummaryMethod(), responseObserver);
     }
 
     /**
      */
-    public void getMetricSummary(org.aiflow.proto.MetricServiceOuterClass.UuidRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse> responseObserver) {
+    public void getMetricSummary(org.aiflow.client.proto.MetricServiceOuterClass.UuidRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse> responseObserver) {
       asyncUnimplementedUnaryCall(getGetMetricSummaryMethod(), responseObserver);
     }
 
     /**
      */
-    public void listMetricSummaries(org.aiflow.proto.MetricServiceOuterClass.ListMetricSummariesRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.MetricServiceOuterClass.ListMetricSummariesResponse> responseObserver) {
+    public void listMetricSummaries(org.aiflow.client.proto.MetricServiceOuterClass.ListMetricSummariesRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.MetricServiceOuterClass.ListMetricSummariesResponse> responseObserver) {
       asyncUnimplementedUnaryCall(getListMetricSummariesMethod(), responseObserver);
     }
 
@@ -518,78 +517,78 @@ public final class MetricServiceGrpc {
             getRegisterMetricMetaMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                org.aiflow.proto.MetricServiceOuterClass.MetricMetaRequest,
-                org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse>(
+                org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaRequest,
+                org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse>(
                   this, METHODID_REGISTER_METRIC_META)))
           .addMethod(
             getUpdateMetricMetaMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                org.aiflow.proto.MetricServiceOuterClass.MetricMetaRequest,
-                org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse>(
+                org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaRequest,
+                org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse>(
                   this, METHODID_UPDATE_METRIC_META)))
           .addMethod(
             getDeleteMetricMetaMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                org.aiflow.proto.MetricServiceOuterClass.MetricNameRequest,
-                org.aiflow.proto.Message.Response>(
+                org.aiflow.client.proto.MetricServiceOuterClass.MetricNameRequest,
+                org.aiflow.client.proto.Message.Response>(
                   this, METHODID_DELETE_METRIC_META)))
           .addMethod(
             getGetMetricMetaMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                org.aiflow.proto.MetricServiceOuterClass.MetricNameRequest,
-                org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse>(
+                org.aiflow.client.proto.MetricServiceOuterClass.MetricNameRequest,
+                org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse>(
                   this, METHODID_GET_METRIC_META)))
           .addMethod(
             getListDatasetMetricMetasMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                org.aiflow.proto.MetricServiceOuterClass.ListDatasetMetricMetasRequest,
-                org.aiflow.proto.MetricServiceOuterClass.ListMetricMetasResponse>(
+                org.aiflow.client.proto.MetricServiceOuterClass.ListDatasetMetricMetasRequest,
+                org.aiflow.client.proto.MetricServiceOuterClass.ListMetricMetasResponse>(
                   this, METHODID_LIST_DATASET_METRIC_METAS)))
           .addMethod(
             getListModelMetricMetasMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                org.aiflow.proto.MetricServiceOuterClass.ListModelMetricMetasRequest,
-                org.aiflow.proto.MetricServiceOuterClass.ListMetricMetasResponse>(
+                org.aiflow.client.proto.MetricServiceOuterClass.ListModelMetricMetasRequest,
+                org.aiflow.client.proto.MetricServiceOuterClass.ListMetricMetasResponse>(
                   this, METHODID_LIST_MODEL_METRIC_METAS)))
           .addMethod(
             getRegisterMetricSummaryMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                org.aiflow.proto.MetricServiceOuterClass.MetricSummaryRequest,
-                org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse>(
+                org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryRequest,
+                org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse>(
                   this, METHODID_REGISTER_METRIC_SUMMARY)))
           .addMethod(
             getUpdateMetricSummaryMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                org.aiflow.proto.MetricServiceOuterClass.MetricSummaryRequest,
-                org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse>(
+                org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryRequest,
+                org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse>(
                   this, METHODID_UPDATE_METRIC_SUMMARY)))
           .addMethod(
             getDeleteMetricSummaryMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                org.aiflow.proto.MetricServiceOuterClass.UuidRequest,
-                org.aiflow.proto.Message.Response>(
+                org.aiflow.client.proto.MetricServiceOuterClass.UuidRequest,
+                org.aiflow.client.proto.Message.Response>(
                   this, METHODID_DELETE_METRIC_SUMMARY)))
           .addMethod(
             getGetMetricSummaryMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                org.aiflow.proto.MetricServiceOuterClass.UuidRequest,
-                org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse>(
+                org.aiflow.client.proto.MetricServiceOuterClass.UuidRequest,
+                org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse>(
                   this, METHODID_GET_METRIC_SUMMARY)))
           .addMethod(
             getListMetricSummariesMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                org.aiflow.proto.MetricServiceOuterClass.ListMetricSummariesRequest,
-                org.aiflow.proto.MetricServiceOuterClass.ListMetricSummariesResponse>(
+                org.aiflow.client.proto.MetricServiceOuterClass.ListMetricSummariesRequest,
+                org.aiflow.client.proto.MetricServiceOuterClass.ListMetricSummariesResponse>(
                   this, METHODID_LIST_METRIC_SUMMARIES)))
           .build();
     }
@@ -611,88 +610,88 @@ public final class MetricServiceGrpc {
 
     /**
      */
-    public void registerMetricMeta(org.aiflow.proto.MetricServiceOuterClass.MetricMetaRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse> responseObserver) {
+    public void registerMetricMeta(org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getRegisterMetricMetaMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
      */
-    public void updateMetricMeta(org.aiflow.proto.MetricServiceOuterClass.MetricMetaRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse> responseObserver) {
+    public void updateMetricMeta(org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getUpdateMetricMetaMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
      */
-    public void deleteMetricMeta(org.aiflow.proto.MetricServiceOuterClass.MetricNameRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response> responseObserver) {
+    public void deleteMetricMeta(org.aiflow.client.proto.MetricServiceOuterClass.MetricNameRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getDeleteMetricMetaMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
      */
-    public void getMetricMeta(org.aiflow.proto.MetricServiceOuterClass.MetricNameRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse> responseObserver) {
+    public void getMetricMeta(org.aiflow.client.proto.MetricServiceOuterClass.MetricNameRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getGetMetricMetaMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
      */
-    public void listDatasetMetricMetas(org.aiflow.proto.MetricServiceOuterClass.ListDatasetMetricMetasRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.MetricServiceOuterClass.ListMetricMetasResponse> responseObserver) {
+    public void listDatasetMetricMetas(org.aiflow.client.proto.MetricServiceOuterClass.ListDatasetMetricMetasRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.MetricServiceOuterClass.ListMetricMetasResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getListDatasetMetricMetasMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
      */
-    public void listModelMetricMetas(org.aiflow.proto.MetricServiceOuterClass.ListModelMetricMetasRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.MetricServiceOuterClass.ListMetricMetasResponse> responseObserver) {
+    public void listModelMetricMetas(org.aiflow.client.proto.MetricServiceOuterClass.ListModelMetricMetasRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.MetricServiceOuterClass.ListMetricMetasResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getListModelMetricMetasMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
      */
-    public void registerMetricSummary(org.aiflow.proto.MetricServiceOuterClass.MetricSummaryRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse> responseObserver) {
+    public void registerMetricSummary(org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getRegisterMetricSummaryMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
      */
-    public void updateMetricSummary(org.aiflow.proto.MetricServiceOuterClass.MetricSummaryRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse> responseObserver) {
+    public void updateMetricSummary(org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getUpdateMetricSummaryMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
      */
-    public void deleteMetricSummary(org.aiflow.proto.MetricServiceOuterClass.UuidRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response> responseObserver) {
+    public void deleteMetricSummary(org.aiflow.client.proto.MetricServiceOuterClass.UuidRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getDeleteMetricSummaryMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
      */
-    public void getMetricSummary(org.aiflow.proto.MetricServiceOuterClass.UuidRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse> responseObserver) {
+    public void getMetricSummary(org.aiflow.client.proto.MetricServiceOuterClass.UuidRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getGetMetricSummaryMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
      */
-    public void listMetricSummaries(org.aiflow.proto.MetricServiceOuterClass.ListMetricSummariesRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.MetricServiceOuterClass.ListMetricSummariesResponse> responseObserver) {
+    public void listMetricSummaries(org.aiflow.client.proto.MetricServiceOuterClass.ListMetricSummariesRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.MetricServiceOuterClass.ListMetricSummariesResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getListMetricSummariesMethod(), getCallOptions()), request, responseObserver);
     }
@@ -714,77 +713,77 @@ public final class MetricServiceGrpc {
 
     /**
      */
-    public org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse registerMetricMeta(org.aiflow.proto.MetricServiceOuterClass.MetricMetaRequest request) {
+    public org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse registerMetricMeta(org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaRequest request) {
       return blockingUnaryCall(
           getChannel(), getRegisterMetricMetaMethod(), getCallOptions(), request);
     }
 
     /**
      */
-    public org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse updateMetricMeta(org.aiflow.proto.MetricServiceOuterClass.MetricMetaRequest request) {
+    public org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse updateMetricMeta(org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaRequest request) {
       return blockingUnaryCall(
           getChannel(), getUpdateMetricMetaMethod(), getCallOptions(), request);
     }
 
     /**
      */
-    public org.aiflow.proto.Message.Response deleteMetricMeta(org.aiflow.proto.MetricServiceOuterClass.MetricNameRequest request) {
+    public org.aiflow.client.proto.Message.Response deleteMetricMeta(org.aiflow.client.proto.MetricServiceOuterClass.MetricNameRequest request) {
       return blockingUnaryCall(
           getChannel(), getDeleteMetricMetaMethod(), getCallOptions(), request);
     }
 
     /**
      */
-    public org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse getMetricMeta(org.aiflow.proto.MetricServiceOuterClass.MetricNameRequest request) {
+    public org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse getMetricMeta(org.aiflow.client.proto.MetricServiceOuterClass.MetricNameRequest request) {
       return blockingUnaryCall(
           getChannel(), getGetMetricMetaMethod(), getCallOptions(), request);
     }
 
     /**
      */
-    public org.aiflow.proto.MetricServiceOuterClass.ListMetricMetasResponse listDatasetMetricMetas(org.aiflow.proto.MetricServiceOuterClass.ListDatasetMetricMetasRequest request) {
+    public org.aiflow.client.proto.MetricServiceOuterClass.ListMetricMetasResponse listDatasetMetricMetas(org.aiflow.client.proto.MetricServiceOuterClass.ListDatasetMetricMetasRequest request) {
       return blockingUnaryCall(
           getChannel(), getListDatasetMetricMetasMethod(), getCallOptions(), request);
     }
 
     /**
      */
-    public org.aiflow.proto.MetricServiceOuterClass.ListMetricMetasResponse listModelMetricMetas(org.aiflow.proto.MetricServiceOuterClass.ListModelMetricMetasRequest request) {
+    public org.aiflow.client.proto.MetricServiceOuterClass.ListMetricMetasResponse listModelMetricMetas(org.aiflow.client.proto.MetricServiceOuterClass.ListModelMetricMetasRequest request) {
       return blockingUnaryCall(
           getChannel(), getListModelMetricMetasMethod(), getCallOptions(), request);
     }
 
     /**
      */
-    public org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse registerMetricSummary(org.aiflow.proto.MetricServiceOuterClass.MetricSummaryRequest request) {
+    public org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse registerMetricSummary(org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryRequest request) {
       return blockingUnaryCall(
           getChannel(), getRegisterMetricSummaryMethod(), getCallOptions(), request);
     }
 
     /**
      */
-    public org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse updateMetricSummary(org.aiflow.proto.MetricServiceOuterClass.MetricSummaryRequest request) {
+    public org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse updateMetricSummary(org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryRequest request) {
       return blockingUnaryCall(
           getChannel(), getUpdateMetricSummaryMethod(), getCallOptions(), request);
     }
 
     /**
      */
-    public org.aiflow.proto.Message.Response deleteMetricSummary(org.aiflow.proto.MetricServiceOuterClass.UuidRequest request) {
+    public org.aiflow.client.proto.Message.Response deleteMetricSummary(org.aiflow.client.proto.MetricServiceOuterClass.UuidRequest request) {
       return blockingUnaryCall(
           getChannel(), getDeleteMetricSummaryMethod(), getCallOptions(), request);
     }
 
     /**
      */
-    public org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse getMetricSummary(org.aiflow.proto.MetricServiceOuterClass.UuidRequest request) {
+    public org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse getMetricSummary(org.aiflow.client.proto.MetricServiceOuterClass.UuidRequest request) {
       return blockingUnaryCall(
           getChannel(), getGetMetricSummaryMethod(), getCallOptions(), request);
     }
 
     /**
      */
-    public org.aiflow.proto.MetricServiceOuterClass.ListMetricSummariesResponse listMetricSummaries(org.aiflow.proto.MetricServiceOuterClass.ListMetricSummariesRequest request) {
+    public org.aiflow.client.proto.MetricServiceOuterClass.ListMetricSummariesResponse listMetricSummaries(org.aiflow.client.proto.MetricServiceOuterClass.ListMetricSummariesRequest request) {
       return blockingUnaryCall(
           getChannel(), getListMetricSummariesMethod(), getCallOptions(), request);
     }
@@ -806,88 +805,88 @@ public final class MetricServiceGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse> registerMetricMeta(
-        org.aiflow.proto.MetricServiceOuterClass.MetricMetaRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse> registerMetricMeta(
+        org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getRegisterMetricMetaMethod(), getCallOptions()), request);
     }
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse> updateMetricMeta(
-        org.aiflow.proto.MetricServiceOuterClass.MetricMetaRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse> updateMetricMeta(
+        org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getUpdateMetricMetaMethod(), getCallOptions()), request);
     }
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.proto.Message.Response> deleteMetricMeta(
-        org.aiflow.proto.MetricServiceOuterClass.MetricNameRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.client.proto.Message.Response> deleteMetricMeta(
+        org.aiflow.client.proto.MetricServiceOuterClass.MetricNameRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getDeleteMetricMetaMethod(), getCallOptions()), request);
     }
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse> getMetricMeta(
-        org.aiflow.proto.MetricServiceOuterClass.MetricNameRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse> getMetricMeta(
+        org.aiflow.client.proto.MetricServiceOuterClass.MetricNameRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getGetMetricMetaMethod(), getCallOptions()), request);
     }
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.proto.MetricServiceOuterClass.ListMetricMetasResponse> listDatasetMetricMetas(
-        org.aiflow.proto.MetricServiceOuterClass.ListDatasetMetricMetasRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.client.proto.MetricServiceOuterClass.ListMetricMetasResponse> listDatasetMetricMetas(
+        org.aiflow.client.proto.MetricServiceOuterClass.ListDatasetMetricMetasRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getListDatasetMetricMetasMethod(), getCallOptions()), request);
     }
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.proto.MetricServiceOuterClass.ListMetricMetasResponse> listModelMetricMetas(
-        org.aiflow.proto.MetricServiceOuterClass.ListModelMetricMetasRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.client.proto.MetricServiceOuterClass.ListMetricMetasResponse> listModelMetricMetas(
+        org.aiflow.client.proto.MetricServiceOuterClass.ListModelMetricMetasRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getListModelMetricMetasMethod(), getCallOptions()), request);
     }
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse> registerMetricSummary(
-        org.aiflow.proto.MetricServiceOuterClass.MetricSummaryRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse> registerMetricSummary(
+        org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getRegisterMetricSummaryMethod(), getCallOptions()), request);
     }
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse> updateMetricSummary(
-        org.aiflow.proto.MetricServiceOuterClass.MetricSummaryRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse> updateMetricSummary(
+        org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getUpdateMetricSummaryMethod(), getCallOptions()), request);
     }
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.proto.Message.Response> deleteMetricSummary(
-        org.aiflow.proto.MetricServiceOuterClass.UuidRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.client.proto.Message.Response> deleteMetricSummary(
+        org.aiflow.client.proto.MetricServiceOuterClass.UuidRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getDeleteMetricSummaryMethod(), getCallOptions()), request);
     }
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse> getMetricSummary(
-        org.aiflow.proto.MetricServiceOuterClass.UuidRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse> getMetricSummary(
+        org.aiflow.client.proto.MetricServiceOuterClass.UuidRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getGetMetricSummaryMethod(), getCallOptions()), request);
     }
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.proto.MetricServiceOuterClass.ListMetricSummariesResponse> listMetricSummaries(
-        org.aiflow.proto.MetricServiceOuterClass.ListMetricSummariesRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.client.proto.MetricServiceOuterClass.ListMetricSummariesResponse> listMetricSummaries(
+        org.aiflow.client.proto.MetricServiceOuterClass.ListMetricSummariesRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getListMetricSummariesMethod(), getCallOptions()), request);
     }
@@ -923,48 +922,48 @@ public final class MetricServiceGrpc {
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
         case METHODID_REGISTER_METRIC_META:
-          serviceImpl.registerMetricMeta((org.aiflow.proto.MetricServiceOuterClass.MetricMetaRequest) request,
-              (io.grpc.stub.StreamObserver<org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse>) responseObserver);
+          serviceImpl.registerMetricMeta((org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaRequest) request,
+              (io.grpc.stub.StreamObserver<org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse>) responseObserver);
           break;
         case METHODID_UPDATE_METRIC_META:
-          serviceImpl.updateMetricMeta((org.aiflow.proto.MetricServiceOuterClass.MetricMetaRequest) request,
-              (io.grpc.stub.StreamObserver<org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse>) responseObserver);
+          serviceImpl.updateMetricMeta((org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaRequest) request,
+              (io.grpc.stub.StreamObserver<org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse>) responseObserver);
           break;
         case METHODID_DELETE_METRIC_META:
-          serviceImpl.deleteMetricMeta((org.aiflow.proto.MetricServiceOuterClass.MetricNameRequest) request,
-              (io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response>) responseObserver);
+          serviceImpl.deleteMetricMeta((org.aiflow.client.proto.MetricServiceOuterClass.MetricNameRequest) request,
+              (io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response>) responseObserver);
           break;
         case METHODID_GET_METRIC_META:
-          serviceImpl.getMetricMeta((org.aiflow.proto.MetricServiceOuterClass.MetricNameRequest) request,
-              (io.grpc.stub.StreamObserver<org.aiflow.proto.MetricServiceOuterClass.MetricMetaResponse>) responseObserver);
+          serviceImpl.getMetricMeta((org.aiflow.client.proto.MetricServiceOuterClass.MetricNameRequest) request,
+              (io.grpc.stub.StreamObserver<org.aiflow.client.proto.MetricServiceOuterClass.MetricMetaResponse>) responseObserver);
           break;
         case METHODID_LIST_DATASET_METRIC_METAS:
-          serviceImpl.listDatasetMetricMetas((org.aiflow.proto.MetricServiceOuterClass.ListDatasetMetricMetasRequest) request,
-              (io.grpc.stub.StreamObserver<org.aiflow.proto.MetricServiceOuterClass.ListMetricMetasResponse>) responseObserver);
+          serviceImpl.listDatasetMetricMetas((org.aiflow.client.proto.MetricServiceOuterClass.ListDatasetMetricMetasRequest) request,
+              (io.grpc.stub.StreamObserver<org.aiflow.client.proto.MetricServiceOuterClass.ListMetricMetasResponse>) responseObserver);
           break;
         case METHODID_LIST_MODEL_METRIC_METAS:
-          serviceImpl.listModelMetricMetas((org.aiflow.proto.MetricServiceOuterClass.ListModelMetricMetasRequest) request,
-              (io.grpc.stub.StreamObserver<org.aiflow.proto.MetricServiceOuterClass.ListMetricMetasResponse>) responseObserver);
+          serviceImpl.listModelMetricMetas((org.aiflow.client.proto.MetricServiceOuterClass.ListModelMetricMetasRequest) request,
+              (io.grpc.stub.StreamObserver<org.aiflow.client.proto.MetricServiceOuterClass.ListMetricMetasResponse>) responseObserver);
           break;
         case METHODID_REGISTER_METRIC_SUMMARY:
-          serviceImpl.registerMetricSummary((org.aiflow.proto.MetricServiceOuterClass.MetricSummaryRequest) request,
-              (io.grpc.stub.StreamObserver<org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse>) responseObserver);
+          serviceImpl.registerMetricSummary((org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryRequest) request,
+              (io.grpc.stub.StreamObserver<org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse>) responseObserver);
           break;
         case METHODID_UPDATE_METRIC_SUMMARY:
-          serviceImpl.updateMetricSummary((org.aiflow.proto.MetricServiceOuterClass.MetricSummaryRequest) request,
-              (io.grpc.stub.StreamObserver<org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse>) responseObserver);
+          serviceImpl.updateMetricSummary((org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryRequest) request,
+              (io.grpc.stub.StreamObserver<org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse>) responseObserver);
           break;
         case METHODID_DELETE_METRIC_SUMMARY:
-          serviceImpl.deleteMetricSummary((org.aiflow.proto.MetricServiceOuterClass.UuidRequest) request,
-              (io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response>) responseObserver);
+          serviceImpl.deleteMetricSummary((org.aiflow.client.proto.MetricServiceOuterClass.UuidRequest) request,
+              (io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response>) responseObserver);
           break;
         case METHODID_GET_METRIC_SUMMARY:
-          serviceImpl.getMetricSummary((org.aiflow.proto.MetricServiceOuterClass.UuidRequest) request,
-              (io.grpc.stub.StreamObserver<org.aiflow.proto.MetricServiceOuterClass.MetricSummaryResponse>) responseObserver);
+          serviceImpl.getMetricSummary((org.aiflow.client.proto.MetricServiceOuterClass.UuidRequest) request,
+              (io.grpc.stub.StreamObserver<org.aiflow.client.proto.MetricServiceOuterClass.MetricSummaryResponse>) responseObserver);
           break;
         case METHODID_LIST_METRIC_SUMMARIES:
-          serviceImpl.listMetricSummaries((org.aiflow.proto.MetricServiceOuterClass.ListMetricSummariesRequest) request,
-              (io.grpc.stub.StreamObserver<org.aiflow.proto.MetricServiceOuterClass.ListMetricSummariesResponse>) responseObserver);
+          serviceImpl.listMetricSummaries((org.aiflow.client.proto.MetricServiceOuterClass.ListMetricSummariesRequest) request,
+              (io.grpc.stub.StreamObserver<org.aiflow.client.proto.MetricServiceOuterClass.ListMetricSummariesResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -988,7 +987,7 @@ public final class MetricServiceGrpc {
 
     @java.lang.Override
     public com.google.protobuf.Descriptors.FileDescriptor getFileDescriptor() {
-      return org.aiflow.proto.MetricServiceOuterClass.getDescriptor();
+      return org.aiflow.client.proto.MetricServiceOuterClass.getDescriptor();
     }
 
     @java.lang.Override
