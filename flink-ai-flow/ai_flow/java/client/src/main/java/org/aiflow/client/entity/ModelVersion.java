@@ -19,9 +19,9 @@
 package org.aiflow.client.entity;
 
 import org.aiflow.client.common.ModelStage;
-import org.aiflow.proto.Message.ModelMetaParam;
-import org.aiflow.proto.Message.ModelVersionMeta;
-import org.aiflow.proto.Message.ModelVersionStatus;
+import org.aiflow.client.proto.Message.ModelMetaParam;
+import org.aiflow.client.proto.Message.ModelVersionMeta;
+import org.aiflow.client.proto.Message.ModelVersionStatus;
 
 public class ModelVersion {
 

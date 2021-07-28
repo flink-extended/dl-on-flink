@@ -18,8 +18,8 @@
  */
 package org.aiflow.client.entity;
 
-import org.aiflow.proto.Message.ArtifactProto;
-import org.aiflow.proto.MetadataServiceOuterClass.ArtifactListProto;
+import org.aiflow.client.proto.Message.ArtifactProto;
+import org.aiflow.client.proto.MetadataServiceOuterClass.ArtifactListProto;
 
 import java.util.ArrayList;
 import java.util.List;

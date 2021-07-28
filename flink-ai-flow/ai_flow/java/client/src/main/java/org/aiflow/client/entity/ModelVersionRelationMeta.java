@@ -18,8 +18,8 @@
  */
 package org.aiflow.client.entity;
 
-import org.aiflow.proto.Message.ModelVersionRelationProto;
-import org.aiflow.proto.MetadataServiceOuterClass.ModelVersionRelationListProto;
+import org.aiflow.client.proto.Message.ModelVersionRelationProto;
+import org.aiflow.client.proto.MetadataServiceOuterClass.ModelVersionRelationListProto;
 
 import java.util.ArrayList;
 import java.util.List;
