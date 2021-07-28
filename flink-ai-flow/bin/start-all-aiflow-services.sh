@@ -85,7 +85,9 @@ airflow scheduler --subdir=${AIRFLOW_DEPLOY_PATH} > ${AIFLOW_LOG_DIR}/scheduler.
 echo $! > ${AIFLOW_PID_DIR}/scheduler.pid
 airflow webserver -p 8080 > ${AIFLOW_LOG_DIR}/web.log 2>&1 &
 echo $! > ${AIFLOW_PID_DIR}/web.pid
-start_aiflow.py --database-conn=${MYSQL_CONN} --airflow-deploy-path=${AIRFLOW_DEPLOY_PATH} > ${AIFLOW_LOG_DIR}/master_server.log 2>&1 &
+
+# start AIFlow
+start_aiflow.py > ${AIFLOW_LOG_DIR}/master_server.log 2>&1 &
 echo $! > ${AIFLOW_PID_DIR}/master_server.pid
 
 echo "Notification service log: ${AIFLOW_LOG_DIR}/notification_service.log"
