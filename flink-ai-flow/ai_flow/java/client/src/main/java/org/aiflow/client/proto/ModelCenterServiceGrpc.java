@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.aiflow.proto;
+package org.aiflow.client.proto;
 
 import static io.grpc.MethodDescriptor.generateFullMethodName;
 import static io.grpc.stub.ClientCalls.asyncBidiStreamingCall;
@@ -58,29 +58,29 @@ public final class ModelCenterServiceGrpc {
   public static final String SERVICE_NAME = "ai_flow.ModelCenterService";
 
   // Static method descriptors that strictly reflect the proto.
-  private static volatile io.grpc.MethodDescriptor<org.aiflow.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest,
-      org.aiflow.proto.Message.Response> getCreateRegisteredModelMethod;
+  private static volatile io.grpc.MethodDescriptor<org.aiflow.client.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest,
+      org.aiflow.client.proto.Message.Response> getCreateRegisteredModelMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "createRegisteredModel",
-      requestType = org.aiflow.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest.class,
-      responseType = org.aiflow.proto.Message.Response.class,
+      requestType = org.aiflow.client.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest.class,
+      responseType = org.aiflow.client.proto.Message.Response.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<org.aiflow.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest,
-      org.aiflow.proto.Message.Response> getCreateRegisteredModelMethod() {
-    io.grpc.MethodDescriptor<org.aiflow.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest, org.aiflow.proto.Message.Response> getCreateRegisteredModelMethod;
+  public static io.grpc.MethodDescriptor<org.aiflow.client.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest,
+      org.aiflow.client.proto.Message.Response> getCreateRegisteredModelMethod() {
+    io.grpc.MethodDescriptor<org.aiflow.client.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest, org.aiflow.client.proto.Message.Response> getCreateRegisteredModelMethod;
     if ((getCreateRegisteredModelMethod = ModelCenterServiceGrpc.getCreateRegisteredModelMethod) == null) {
       synchronized (ModelCenterServiceGrpc.class) {
         if ((getCreateRegisteredModelMethod = ModelCenterServiceGrpc.getCreateRegisteredModelMethod) == null) {
           ModelCenterServiceGrpc.getCreateRegisteredModelMethod = getCreateRegisteredModelMethod =
-              io.grpc.MethodDescriptor.<org.aiflow.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest, org.aiflow.proto.Message.Response>newBuilder()
+              io.grpc.MethodDescriptor.<org.aiflow.client.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest, org.aiflow.client.proto.Message.Response>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "createRegisteredModel"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest.getDefaultInstance()))
+                  org.aiflow.client.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.Message.Response.getDefaultInstance()))
+                  org.aiflow.client.proto.Message.Response.getDefaultInstance()))
               .setSchemaDescriptor(new ModelCenterServiceMethodDescriptorSupplier("createRegisteredModel"))
               .build();
         }
@@ -89,29 +89,29 @@ public final class ModelCenterServiceGrpc {
     return getCreateRegisteredModelMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<org.aiflow.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest,
-      org.aiflow.proto.Message.Response> getUpdateRegisteredModelMethod;
+  private static volatile io.grpc.MethodDescriptor<org.aiflow.client.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest,
+      org.aiflow.client.proto.Message.Response> getUpdateRegisteredModelMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "updateRegisteredModel",
-      requestType = org.aiflow.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest.class,
-      responseType = org.aiflow.proto.Message.Response.class,
+      requestType = org.aiflow.client.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest.class,
+      responseType = org.aiflow.client.proto.Message.Response.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<org.aiflow.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest,
-      org.aiflow.proto.Message.Response> getUpdateRegisteredModelMethod() {
-    io.grpc.MethodDescriptor<org.aiflow.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest, org.aiflow.proto.Message.Response> getUpdateRegisteredModelMethod;
+  public static io.grpc.MethodDescriptor<org.aiflow.client.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest,
+      org.aiflow.client.proto.Message.Response> getUpdateRegisteredModelMethod() {
+    io.grpc.MethodDescriptor<org.aiflow.client.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest, org.aiflow.client.proto.Message.Response> getUpdateRegisteredModelMethod;
     if ((getUpdateRegisteredModelMethod = ModelCenterServiceGrpc.getUpdateRegisteredModelMethod) == null) {
       synchronized (ModelCenterServiceGrpc.class) {
         if ((getUpdateRegisteredModelMethod = ModelCenterServiceGrpc.getUpdateRegisteredModelMethod) == null) {
           ModelCenterServiceGrpc.getUpdateRegisteredModelMethod = getUpdateRegisteredModelMethod =
-              io.grpc.MethodDescriptor.<org.aiflow.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest, org.aiflow.proto.Message.Response>newBuilder()
+              io.grpc.MethodDescriptor.<org.aiflow.client.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest, org.aiflow.client.proto.Message.Response>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "updateRegisteredModel"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest.getDefaultInstance()))
+                  org.aiflow.client.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.Message.Response.getDefaultInstance()))
+                  org.aiflow.client.proto.Message.Response.getDefaultInstance()))
               .setSchemaDescriptor(new ModelCenterServiceMethodDescriptorSupplier("updateRegisteredModel"))
               .build();
         }
@@ -120,29 +120,29 @@ public final class ModelCenterServiceGrpc {
     return getUpdateRegisteredModelMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<org.aiflow.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest,
-      org.aiflow.proto.Message.Response> getDeleteRegisteredModelMethod;
+  private static volatile io.grpc.MethodDescriptor<org.aiflow.client.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest,
+      org.aiflow.client.proto.Message.Response> getDeleteRegisteredModelMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "deleteRegisteredModel",
-      requestType = org.aiflow.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest.class,
-      responseType = org.aiflow.proto.Message.Response.class,
+      requestType = org.aiflow.client.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest.class,
+      responseType = org.aiflow.client.proto.Message.Response.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<org.aiflow.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest,
-      org.aiflow.proto.Message.Response> getDeleteRegisteredModelMethod() {
-    io.grpc.MethodDescriptor<org.aiflow.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest, org.aiflow.proto.Message.Response> getDeleteRegisteredModelMethod;
+  public static io.grpc.MethodDescriptor<org.aiflow.client.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest,
+      org.aiflow.client.proto.Message.Response> getDeleteRegisteredModelMethod() {
+    io.grpc.MethodDescriptor<org.aiflow.client.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest, org.aiflow.client.proto.Message.Response> getDeleteRegisteredModelMethod;
     if ((getDeleteRegisteredModelMethod = ModelCenterServiceGrpc.getDeleteRegisteredModelMethod) == null) {
       synchronized (ModelCenterServiceGrpc.class) {
         if ((getDeleteRegisteredModelMethod = ModelCenterServiceGrpc.getDeleteRegisteredModelMethod) == null) {
           ModelCenterServiceGrpc.getDeleteRegisteredModelMethod = getDeleteRegisteredModelMethod =
-              io.grpc.MethodDescriptor.<org.aiflow.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest, org.aiflow.proto.Message.Response>newBuilder()
+              io.grpc.MethodDescriptor.<org.aiflow.client.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest, org.aiflow.client.proto.Message.Response>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "deleteRegisteredModel"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest.getDefaultInstance()))
+                  org.aiflow.client.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.Message.Response.getDefaultInstance()))
+                  org.aiflow.client.proto.Message.Response.getDefaultInstance()))
               .setSchemaDescriptor(new ModelCenterServiceMethodDescriptorSupplier("deleteRegisteredModel"))
               .build();
         }
@@ -151,29 +151,29 @@ public final class ModelCenterServiceGrpc {
     return getDeleteRegisteredModelMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<org.aiflow.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest,
-      org.aiflow.proto.Message.Response> getListRegisteredModelsMethod;
+  private static volatile io.grpc.MethodDescriptor<org.aiflow.client.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest,
+      org.aiflow.client.proto.Message.Response> getListRegisteredModelsMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "listRegisteredModels",
-      requestType = org.aiflow.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest.class,
-      responseType = org.aiflow.proto.Message.Response.class,
+      requestType = org.aiflow.client.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest.class,
+      responseType = org.aiflow.client.proto.Message.Response.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<org.aiflow.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest,
-      org.aiflow.proto.Message.Response> getListRegisteredModelsMethod() {
-    io.grpc.MethodDescriptor<org.aiflow.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest, org.aiflow.proto.Message.Response> getListRegisteredModelsMethod;
+  public static io.grpc.MethodDescriptor<org.aiflow.client.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest,
+      org.aiflow.client.proto.Message.Response> getListRegisteredModelsMethod() {
+    io.grpc.MethodDescriptor<org.aiflow.client.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest, org.aiflow.client.proto.Message.Response> getListRegisteredModelsMethod;
     if ((getListRegisteredModelsMethod = ModelCenterServiceGrpc.getListRegisteredModelsMethod) == null) {
       synchronized (ModelCenterServiceGrpc.class) {
         if ((getListRegisteredModelsMethod = ModelCenterServiceGrpc.getListRegisteredModelsMethod) == null) {
           ModelCenterServiceGrpc.getListRegisteredModelsMethod = getListRegisteredModelsMethod =
-              io.grpc.MethodDescriptor.<org.aiflow.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest, org.aiflow.proto.Message.Response>newBuilder()
+              io.grpc.MethodDescriptor.<org.aiflow.client.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest, org.aiflow.client.proto.Message.Response>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "listRegisteredModels"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest.getDefaultInstance()))
+                  org.aiflow.client.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.Message.Response.getDefaultInstance()))
+                  org.aiflow.client.proto.Message.Response.getDefaultInstance()))
               .setSchemaDescriptor(new ModelCenterServiceMethodDescriptorSupplier("listRegisteredModels"))
               .build();
         }
@@ -182,29 +182,29 @@ public final class ModelCenterServiceGrpc {
     return getListRegisteredModelsMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<org.aiflow.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest,
-      org.aiflow.proto.Message.Response> getGetRegisteredModelDetailMethod;
+  private static volatile io.grpc.MethodDescriptor<org.aiflow.client.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest,
+      org.aiflow.client.proto.Message.Response> getGetRegisteredModelDetailMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "getRegisteredModelDetail",
-      requestType = org.aiflow.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest.class,
-      responseType = org.aiflow.proto.Message.Response.class,
+      requestType = org.aiflow.client.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest.class,
+      responseType = org.aiflow.client.proto.Message.Response.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<org.aiflow.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest,
-      org.aiflow.proto.Message.Response> getGetRegisteredModelDetailMethod() {
-    io.grpc.MethodDescriptor<org.aiflow.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest, org.aiflow.proto.Message.Response> getGetRegisteredModelDetailMethod;
+  public static io.grpc.MethodDescriptor<org.aiflow.client.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest,
+      org.aiflow.client.proto.Message.Response> getGetRegisteredModelDetailMethod() {
+    io.grpc.MethodDescriptor<org.aiflow.client.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest, org.aiflow.client.proto.Message.Response> getGetRegisteredModelDetailMethod;
     if ((getGetRegisteredModelDetailMethod = ModelCenterServiceGrpc.getGetRegisteredModelDetailMethod) == null) {
       synchronized (ModelCenterServiceGrpc.class) {
         if ((getGetRegisteredModelDetailMethod = ModelCenterServiceGrpc.getGetRegisteredModelDetailMethod) == null) {
           ModelCenterServiceGrpc.getGetRegisteredModelDetailMethod = getGetRegisteredModelDetailMethod =
-              io.grpc.MethodDescriptor.<org.aiflow.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest, org.aiflow.proto.Message.Response>newBuilder()
+              io.grpc.MethodDescriptor.<org.aiflow.client.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest, org.aiflow.client.proto.Message.Response>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "getRegisteredModelDetail"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest.getDefaultInstance()))
+                  org.aiflow.client.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.Message.Response.getDefaultInstance()))
+                  org.aiflow.client.proto.Message.Response.getDefaultInstance()))
               .setSchemaDescriptor(new ModelCenterServiceMethodDescriptorSupplier("getRegisteredModelDetail"))
               .build();
         }
@@ -213,29 +213,29 @@ public final class ModelCenterServiceGrpc {
     return getGetRegisteredModelDetailMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<org.aiflow.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest,
-      org.aiflow.proto.Message.Response> getCreateModelVersionMethod;
+  private static volatile io.grpc.MethodDescriptor<org.aiflow.client.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest,
+      org.aiflow.client.proto.Message.Response> getCreateModelVersionMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "createModelVersion",
-      requestType = org.aiflow.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest.class,
-      responseType = org.aiflow.proto.Message.Response.class,
+      requestType = org.aiflow.client.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest.class,
+      responseType = org.aiflow.client.proto.Message.Response.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<org.aiflow.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest,
-      org.aiflow.proto.Message.Response> getCreateModelVersionMethod() {
-    io.grpc.MethodDescriptor<org.aiflow.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest, org.aiflow.proto.Message.Response> getCreateModelVersionMethod;
+  public static io.grpc.MethodDescriptor<org.aiflow.client.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest,
+      org.aiflow.client.proto.Message.Response> getCreateModelVersionMethod() {
+    io.grpc.MethodDescriptor<org.aiflow.client.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest, org.aiflow.client.proto.Message.Response> getCreateModelVersionMethod;
     if ((getCreateModelVersionMethod = ModelCenterServiceGrpc.getCreateModelVersionMethod) == null) {
       synchronized (ModelCenterServiceGrpc.class) {
         if ((getCreateModelVersionMethod = ModelCenterServiceGrpc.getCreateModelVersionMethod) == null) {
           ModelCenterServiceGrpc.getCreateModelVersionMethod = getCreateModelVersionMethod =
-              io.grpc.MethodDescriptor.<org.aiflow.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest, org.aiflow.proto.Message.Response>newBuilder()
+              io.grpc.MethodDescriptor.<org.aiflow.client.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest, org.aiflow.client.proto.Message.Response>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "createModelVersion"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest.getDefaultInstance()))
+                  org.aiflow.client.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.Message.Response.getDefaultInstance()))
+                  org.aiflow.client.proto.Message.Response.getDefaultInstance()))
               .setSchemaDescriptor(new ModelCenterServiceMethodDescriptorSupplier("createModelVersion"))
               .build();
         }
@@ -244,29 +244,29 @@ public final class ModelCenterServiceGrpc {
     return getCreateModelVersionMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<org.aiflow.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest,
-      org.aiflow.proto.Message.Response> getUpdateModelVersionMethod;
+  private static volatile io.grpc.MethodDescriptor<org.aiflow.client.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest,
+      org.aiflow.client.proto.Message.Response> getUpdateModelVersionMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "updateModelVersion",
-      requestType = org.aiflow.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest.class,
-      responseType = org.aiflow.proto.Message.Response.class,
+      requestType = org.aiflow.client.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest.class,
+      responseType = org.aiflow.client.proto.Message.Response.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<org.aiflow.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest,
-      org.aiflow.proto.Message.Response> getUpdateModelVersionMethod() {
-    io.grpc.MethodDescriptor<org.aiflow.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest, org.aiflow.proto.Message.Response> getUpdateModelVersionMethod;
+  public static io.grpc.MethodDescriptor<org.aiflow.client.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest,
+      org.aiflow.client.proto.Message.Response> getUpdateModelVersionMethod() {
+    io.grpc.MethodDescriptor<org.aiflow.client.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest, org.aiflow.client.proto.Message.Response> getUpdateModelVersionMethod;
     if ((getUpdateModelVersionMethod = ModelCenterServiceGrpc.getUpdateModelVersionMethod) == null) {
       synchronized (ModelCenterServiceGrpc.class) {
         if ((getUpdateModelVersionMethod = ModelCenterServiceGrpc.getUpdateModelVersionMethod) == null) {
           ModelCenterServiceGrpc.getUpdateModelVersionMethod = getUpdateModelVersionMethod =
-              io.grpc.MethodDescriptor.<org.aiflow.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest, org.aiflow.proto.Message.Response>newBuilder()
+              io.grpc.MethodDescriptor.<org.aiflow.client.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest, org.aiflow.client.proto.Message.Response>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "updateModelVersion"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest.getDefaultInstance()))
+                  org.aiflow.client.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.Message.Response.getDefaultInstance()))
+                  org.aiflow.client.proto.Message.Response.getDefaultInstance()))
               .setSchemaDescriptor(new ModelCenterServiceMethodDescriptorSupplier("updateModelVersion"))
               .build();
         }
@@ -275,29 +275,29 @@ public final class ModelCenterServiceGrpc {
     return getUpdateModelVersionMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<org.aiflow.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest,
-      org.aiflow.proto.Message.Response> getDeleteModelVersionMethod;
+  private static volatile io.grpc.MethodDescriptor<org.aiflow.client.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest,
+      org.aiflow.client.proto.Message.Response> getDeleteModelVersionMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "deleteModelVersion",
-      requestType = org.aiflow.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest.class,
-      responseType = org.aiflow.proto.Message.Response.class,
+      requestType = org.aiflow.client.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest.class,
+      responseType = org.aiflow.client.proto.Message.Response.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<org.aiflow.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest,
-      org.aiflow.proto.Message.Response> getDeleteModelVersionMethod() {
-    io.grpc.MethodDescriptor<org.aiflow.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest, org.aiflow.proto.Message.Response> getDeleteModelVersionMethod;
+  public static io.grpc.MethodDescriptor<org.aiflow.client.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest,
+      org.aiflow.client.proto.Message.Response> getDeleteModelVersionMethod() {
+    io.grpc.MethodDescriptor<org.aiflow.client.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest, org.aiflow.client.proto.Message.Response> getDeleteModelVersionMethod;
     if ((getDeleteModelVersionMethod = ModelCenterServiceGrpc.getDeleteModelVersionMethod) == null) {
       synchronized (ModelCenterServiceGrpc.class) {
         if ((getDeleteModelVersionMethod = ModelCenterServiceGrpc.getDeleteModelVersionMethod) == null) {
           ModelCenterServiceGrpc.getDeleteModelVersionMethod = getDeleteModelVersionMethod =
-              io.grpc.MethodDescriptor.<org.aiflow.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest, org.aiflow.proto.Message.Response>newBuilder()
+              io.grpc.MethodDescriptor.<org.aiflow.client.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest, org.aiflow.client.proto.Message.Response>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "deleteModelVersion"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest.getDefaultInstance()))
+                  org.aiflow.client.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.Message.Response.getDefaultInstance()))
+                  org.aiflow.client.proto.Message.Response.getDefaultInstance()))
               .setSchemaDescriptor(new ModelCenterServiceMethodDescriptorSupplier("deleteModelVersion"))
               .build();
         }
@@ -306,29 +306,29 @@ public final class ModelCenterServiceGrpc {
     return getDeleteModelVersionMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<org.aiflow.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest,
-      org.aiflow.proto.Message.Response> getGetModelVersionDetailMethod;
+  private static volatile io.grpc.MethodDescriptor<org.aiflow.client.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest,
+      org.aiflow.client.proto.Message.Response> getGetModelVersionDetailMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "getModelVersionDetail",
-      requestType = org.aiflow.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest.class,
-      responseType = org.aiflow.proto.Message.Response.class,
+      requestType = org.aiflow.client.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest.class,
+      responseType = org.aiflow.client.proto.Message.Response.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<org.aiflow.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest,
-      org.aiflow.proto.Message.Response> getGetModelVersionDetailMethod() {
-    io.grpc.MethodDescriptor<org.aiflow.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest, org.aiflow.proto.Message.Response> getGetModelVersionDetailMethod;
+  public static io.grpc.MethodDescriptor<org.aiflow.client.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest,
+      org.aiflow.client.proto.Message.Response> getGetModelVersionDetailMethod() {
+    io.grpc.MethodDescriptor<org.aiflow.client.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest, org.aiflow.client.proto.Message.Response> getGetModelVersionDetailMethod;
     if ((getGetModelVersionDetailMethod = ModelCenterServiceGrpc.getGetModelVersionDetailMethod) == null) {
       synchronized (ModelCenterServiceGrpc.class) {
         if ((getGetModelVersionDetailMethod = ModelCenterServiceGrpc.getGetModelVersionDetailMethod) == null) {
           ModelCenterServiceGrpc.getGetModelVersionDetailMethod = getGetModelVersionDetailMethod =
-              io.grpc.MethodDescriptor.<org.aiflow.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest, org.aiflow.proto.Message.Response>newBuilder()
+              io.grpc.MethodDescriptor.<org.aiflow.client.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest, org.aiflow.client.proto.Message.Response>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "getModelVersionDetail"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest.getDefaultInstance()))
+                  org.aiflow.client.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.proto.Message.Response.getDefaultInstance()))
+                  org.aiflow.client.proto.Message.Response.getDefaultInstance()))
               .setSchemaDescriptor(new ModelCenterServiceMethodDescriptorSupplier("getModelVersionDetail"))
               .build();
         }
@@ -403,8 +403,8 @@ public final class ModelCenterServiceGrpc {
      * Create registered model with metadata of RegisteredModel.
      * </pre>
      */
-    public void createRegisteredModel(org.aiflow.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response> responseObserver) {
+    public void createRegisteredModel(org.aiflow.client.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response> responseObserver) {
       asyncUnimplementedUnaryCall(getCreateRegisteredModelMethod(), responseObserver);
     }
 
@@ -413,8 +413,8 @@ public final class ModelCenterServiceGrpc {
      * Update registered model with metadata of RegisteredModel.
      * </pre>
      */
-    public void updateRegisteredModel(org.aiflow.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response> responseObserver) {
+    public void updateRegisteredModel(org.aiflow.client.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response> responseObserver) {
       asyncUnimplementedUnaryCall(getUpdateRegisteredModelMethod(), responseObserver);
     }
 
@@ -423,8 +423,8 @@ public final class ModelCenterServiceGrpc {
      * Delete registered model with metadata of RegisteredModel.
      * </pre>
      */
-    public void deleteRegisteredModel(org.aiflow.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response> responseObserver) {
+    public void deleteRegisteredModel(org.aiflow.client.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response> responseObserver) {
       asyncUnimplementedUnaryCall(getDeleteRegisteredModelMethod(), responseObserver);
     }
 
@@ -433,8 +433,8 @@ public final class ModelCenterServiceGrpc {
      * List registered models about metadata of RegisteredModel.
      * </pre>
      */
-    public void listRegisteredModels(org.aiflow.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response> responseObserver) {
+    public void listRegisteredModels(org.aiflow.client.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response> responseObserver) {
       asyncUnimplementedUnaryCall(getListRegisteredModelsMethod(), responseObserver);
     }
 
@@ -443,8 +443,8 @@ public final class ModelCenterServiceGrpc {
      * Get registered model detail including metadata of RegisteredModel.
      * </pre>
      */
-    public void getRegisteredModelDetail(org.aiflow.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response> responseObserver) {
+    public void getRegisteredModelDetail(org.aiflow.client.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response> responseObserver) {
       asyncUnimplementedUnaryCall(getGetRegisteredModelDetailMethod(), responseObserver);
     }
 
@@ -453,8 +453,8 @@ public final class ModelCenterServiceGrpc {
      * Create model version with metadata of ModelVersion.
      * </pre>
      */
-    public void createModelVersion(org.aiflow.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response> responseObserver) {
+    public void createModelVersion(org.aiflow.client.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response> responseObserver) {
       asyncUnimplementedUnaryCall(getCreateModelVersionMethod(), responseObserver);
     }
 
@@ -463,8 +463,8 @@ public final class ModelCenterServiceGrpc {
      * Update model version with metadata of ModelVersion.
      * </pre>
      */
-    public void updateModelVersion(org.aiflow.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response> responseObserver) {
+    public void updateModelVersion(org.aiflow.client.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response> responseObserver) {
       asyncUnimplementedUnaryCall(getUpdateModelVersionMethod(), responseObserver);
     }
 
@@ -473,8 +473,8 @@ public final class ModelCenterServiceGrpc {
      * Delete model version with metadata of ModelVersion.
      * </pre>
      */
-    public void deleteModelVersion(org.aiflow.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response> responseObserver) {
+    public void deleteModelVersion(org.aiflow.client.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response> responseObserver) {
       asyncUnimplementedUnaryCall(getDeleteModelVersionMethod(), responseObserver);
     }
 
@@ -483,8 +483,8 @@ public final class ModelCenterServiceGrpc {
      * Get model version detail with metadata of ModelVersion.
      * </pre>
      */
-    public void getModelVersionDetail(org.aiflow.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response> responseObserver) {
+    public void getModelVersionDetail(org.aiflow.client.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response> responseObserver) {
       asyncUnimplementedUnaryCall(getGetModelVersionDetailMethod(), responseObserver);
     }
 
@@ -494,64 +494,64 @@ public final class ModelCenterServiceGrpc {
             getCreateRegisteredModelMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                org.aiflow.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest,
-                org.aiflow.proto.Message.Response>(
+                org.aiflow.client.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest,
+                org.aiflow.client.proto.Message.Response>(
                   this, METHODID_CREATE_REGISTERED_MODEL)))
           .addMethod(
             getUpdateRegisteredModelMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                org.aiflow.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest,
-                org.aiflow.proto.Message.Response>(
+                org.aiflow.client.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest,
+                org.aiflow.client.proto.Message.Response>(
                   this, METHODID_UPDATE_REGISTERED_MODEL)))
           .addMethod(
             getDeleteRegisteredModelMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                org.aiflow.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest,
-                org.aiflow.proto.Message.Response>(
+                org.aiflow.client.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest,
+                org.aiflow.client.proto.Message.Response>(
                   this, METHODID_DELETE_REGISTERED_MODEL)))
           .addMethod(
             getListRegisteredModelsMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                org.aiflow.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest,
-                org.aiflow.proto.Message.Response>(
+                org.aiflow.client.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest,
+                org.aiflow.client.proto.Message.Response>(
                   this, METHODID_LIST_REGISTERED_MODELS)))
           .addMethod(
             getGetRegisteredModelDetailMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                org.aiflow.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest,
-                org.aiflow.proto.Message.Response>(
+                org.aiflow.client.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest,
+                org.aiflow.client.proto.Message.Response>(
                   this, METHODID_GET_REGISTERED_MODEL_DETAIL)))
           .addMethod(
             getCreateModelVersionMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                org.aiflow.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest,
-                org.aiflow.proto.Message.Response>(
+                org.aiflow.client.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest,
+                org.aiflow.client.proto.Message.Response>(
                   this, METHODID_CREATE_MODEL_VERSION)))
           .addMethod(
             getUpdateModelVersionMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                org.aiflow.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest,
-                org.aiflow.proto.Message.Response>(
+                org.aiflow.client.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest,
+                org.aiflow.client.proto.Message.Response>(
                   this, METHODID_UPDATE_MODEL_VERSION)))
           .addMethod(
             getDeleteModelVersionMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                org.aiflow.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest,
-                org.aiflow.proto.Message.Response>(
+                org.aiflow.client.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest,
+                org.aiflow.client.proto.Message.Response>(
                   this, METHODID_DELETE_MODEL_VERSION)))
           .addMethod(
             getGetModelVersionDetailMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                org.aiflow.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest,
-                org.aiflow.proto.Message.Response>(
+                org.aiflow.client.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest,
+                org.aiflow.client.proto.Message.Response>(
                   this, METHODID_GET_MODEL_VERSION_DETAIL)))
           .build();
     }
@@ -589,8 +589,8 @@ public final class ModelCenterServiceGrpc {
      * Create registered model with metadata of RegisteredModel.
      * </pre>
      */
-    public void createRegisteredModel(org.aiflow.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response> responseObserver) {
+    public void createRegisteredModel(org.aiflow.client.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getCreateRegisteredModelMethod(), getCallOptions()), request, responseObserver);
     }
@@ -600,8 +600,8 @@ public final class ModelCenterServiceGrpc {
      * Update registered model with metadata of RegisteredModel.
      * </pre>
      */
-    public void updateRegisteredModel(org.aiflow.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response> responseObserver) {
+    public void updateRegisteredModel(org.aiflow.client.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getUpdateRegisteredModelMethod(), getCallOptions()), request, responseObserver);
     }
@@ -611,8 +611,8 @@ public final class ModelCenterServiceGrpc {
      * Delete registered model with metadata of RegisteredModel.
      * </pre>
      */
-    public void deleteRegisteredModel(org.aiflow.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response> responseObserver) {
+    public void deleteRegisteredModel(org.aiflow.client.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getDeleteRegisteredModelMethod(), getCallOptions()), request, responseObserver);
     }
@@ -622,8 +622,8 @@ public final class ModelCenterServiceGrpc {
      * List registered models about metadata of RegisteredModel.
      * </pre>
      */
-    public void listRegisteredModels(org.aiflow.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response> responseObserver) {
+    public void listRegisteredModels(org.aiflow.client.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getListRegisteredModelsMethod(), getCallOptions()), request, responseObserver);
     }
@@ -633,8 +633,8 @@ public final class ModelCenterServiceGrpc {
      * Get registered model detail including metadata of RegisteredModel.
      * </pre>
      */
-    public void getRegisteredModelDetail(org.aiflow.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response> responseObserver) {
+    public void getRegisteredModelDetail(org.aiflow.client.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getGetRegisteredModelDetailMethod(), getCallOptions()), request, responseObserver);
     }
@@ -644,8 +644,8 @@ public final class ModelCenterServiceGrpc {
      * Create model version with metadata of ModelVersion.
      * </pre>
      */
-    public void createModelVersion(org.aiflow.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response> responseObserver) {
+    public void createModelVersion(org.aiflow.client.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getCreateModelVersionMethod(), getCallOptions()), request, responseObserver);
     }
@@ -655,8 +655,8 @@ public final class ModelCenterServiceGrpc {
      * Update model version with metadata of ModelVersion.
      * </pre>
      */
-    public void updateModelVersion(org.aiflow.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response> responseObserver) {
+    public void updateModelVersion(org.aiflow.client.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getUpdateModelVersionMethod(), getCallOptions()), request, responseObserver);
     }
@@ -666,8 +666,8 @@ public final class ModelCenterServiceGrpc {
      * Delete model version with metadata of ModelVersion.
      * </pre>
      */
-    public void deleteModelVersion(org.aiflow.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response> responseObserver) {
+    public void deleteModelVersion(org.aiflow.client.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getDeleteModelVersionMethod(), getCallOptions()), request, responseObserver);
     }
@@ -677,8 +677,8 @@ public final class ModelCenterServiceGrpc {
      * Get model version detail with metadata of ModelVersion.
      * </pre>
      */
-    public void getModelVersionDetail(org.aiflow.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response> responseObserver) {
+    public void getModelVersionDetail(org.aiflow.client.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getGetModelVersionDetailMethod(), getCallOptions()), request, responseObserver);
     }
@@ -716,7 +716,7 @@ public final class ModelCenterServiceGrpc {
      * Create registered model with metadata of RegisteredModel.
      * </pre>
      */
-    public org.aiflow.proto.Message.Response createRegisteredModel(org.aiflow.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest request) {
+    public org.aiflow.client.proto.Message.Response createRegisteredModel(org.aiflow.client.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest request) {
       return blockingUnaryCall(
           getChannel(), getCreateRegisteredModelMethod(), getCallOptions(), request);
     }
@@ -726,7 +726,7 @@ public final class ModelCenterServiceGrpc {
      * Update registered model with metadata of RegisteredModel.
      * </pre>
      */
-    public org.aiflow.proto.Message.Response updateRegisteredModel(org.aiflow.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest request) {
+    public org.aiflow.client.proto.Message.Response updateRegisteredModel(org.aiflow.client.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest request) {
       return blockingUnaryCall(
           getChannel(), getUpdateRegisteredModelMethod(), getCallOptions(), request);
     }
@@ -736,7 +736,7 @@ public final class ModelCenterServiceGrpc {
      * Delete registered model with metadata of RegisteredModel.
      * </pre>
      */
-    public org.aiflow.proto.Message.Response deleteRegisteredModel(org.aiflow.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest request) {
+    public org.aiflow.client.proto.Message.Response deleteRegisteredModel(org.aiflow.client.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest request) {
       return blockingUnaryCall(
           getChannel(), getDeleteRegisteredModelMethod(), getCallOptions(), request);
     }
@@ -746,7 +746,7 @@ public final class ModelCenterServiceGrpc {
      * List registered models about metadata of RegisteredModel.
      * </pre>
      */
-    public org.aiflow.proto.Message.Response listRegisteredModels(org.aiflow.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest request) {
+    public org.aiflow.client.proto.Message.Response listRegisteredModels(org.aiflow.client.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest request) {
       return blockingUnaryCall(
           getChannel(), getListRegisteredModelsMethod(), getCallOptions(), request);
     }
@@ -756,7 +756,7 @@ public final class ModelCenterServiceGrpc {
      * Get registered model detail including metadata of RegisteredModel.
      * </pre>
      */
-    public org.aiflow.proto.Message.Response getRegisteredModelDetail(org.aiflow.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest request) {
+    public org.aiflow.client.proto.Message.Response getRegisteredModelDetail(org.aiflow.client.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest request) {
       return blockingUnaryCall(
           getChannel(), getGetRegisteredModelDetailMethod(), getCallOptions(), request);
     }
@@ -766,7 +766,7 @@ public final class ModelCenterServiceGrpc {
      * Create model version with metadata of ModelVersion.
      * </pre>
      */
-    public org.aiflow.proto.Message.Response createModelVersion(org.aiflow.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest request) {
+    public org.aiflow.client.proto.Message.Response createModelVersion(org.aiflow.client.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest request) {
       return blockingUnaryCall(
           getChannel(), getCreateModelVersionMethod(), getCallOptions(), request);
     }
@@ -776,7 +776,7 @@ public final class ModelCenterServiceGrpc {
      * Update model version with metadata of ModelVersion.
      * </pre>
      */
-    public org.aiflow.proto.Message.Response updateModelVersion(org.aiflow.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest request) {
+    public org.aiflow.client.proto.Message.Response updateModelVersion(org.aiflow.client.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest request) {
       return blockingUnaryCall(
           getChannel(), getUpdateModelVersionMethod(), getCallOptions(), request);
     }
@@ -786,7 +786,7 @@ public final class ModelCenterServiceGrpc {
      * Delete model version with metadata of ModelVersion.
      * </pre>
      */
-    public org.aiflow.proto.Message.Response deleteModelVersion(org.aiflow.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest request) {
+    public org.aiflow.client.proto.Message.Response deleteModelVersion(org.aiflow.client.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest request) {
       return blockingUnaryCall(
           getChannel(), getDeleteModelVersionMethod(), getCallOptions(), request);
     }
@@ -796,7 +796,7 @@ public final class ModelCenterServiceGrpc {
      * Get model version detail with metadata of ModelVersion.
      * </pre>
      */
-    public org.aiflow.proto.Message.Response getModelVersionDetail(org.aiflow.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest request) {
+    public org.aiflow.client.proto.Message.Response getModelVersionDetail(org.aiflow.client.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest request) {
       return blockingUnaryCall(
           getChannel(), getGetModelVersionDetailMethod(), getCallOptions(), request);
     }
@@ -834,8 +834,8 @@ public final class ModelCenterServiceGrpc {
      * Create registered model with metadata of RegisteredModel.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.proto.Message.Response> createRegisteredModel(
-        org.aiflow.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.client.proto.Message.Response> createRegisteredModel(
+        org.aiflow.client.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getCreateRegisteredModelMethod(), getCallOptions()), request);
     }
@@ -845,8 +845,8 @@ public final class ModelCenterServiceGrpc {
      * Update registered model with metadata of RegisteredModel.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.proto.Message.Response> updateRegisteredModel(
-        org.aiflow.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.client.proto.Message.Response> updateRegisteredModel(
+        org.aiflow.client.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getUpdateRegisteredModelMethod(), getCallOptions()), request);
     }
@@ -856,8 +856,8 @@ public final class ModelCenterServiceGrpc {
      * Delete registered model with metadata of RegisteredModel.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.proto.Message.Response> deleteRegisteredModel(
-        org.aiflow.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.client.proto.Message.Response> deleteRegisteredModel(
+        org.aiflow.client.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getDeleteRegisteredModelMethod(), getCallOptions()), request);
     }
@@ -867,8 +867,8 @@ public final class ModelCenterServiceGrpc {
      * List registered models about metadata of RegisteredModel.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.proto.Message.Response> listRegisteredModels(
-        org.aiflow.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.client.proto.Message.Response> listRegisteredModels(
+        org.aiflow.client.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getListRegisteredModelsMethod(), getCallOptions()), request);
     }
@@ -878,8 +878,8 @@ public final class ModelCenterServiceGrpc {
      * Get registered model detail including metadata of RegisteredModel.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.proto.Message.Response> getRegisteredModelDetail(
-        org.aiflow.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.client.proto.Message.Response> getRegisteredModelDetail(
+        org.aiflow.client.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getGetRegisteredModelDetailMethod(), getCallOptions()), request);
     }
@@ -889,8 +889,8 @@ public final class ModelCenterServiceGrpc {
      * Create model version with metadata of ModelVersion.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.proto.Message.Response> createModelVersion(
-        org.aiflow.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.client.proto.Message.Response> createModelVersion(
+        org.aiflow.client.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getCreateModelVersionMethod(), getCallOptions()), request);
     }
@@ -900,8 +900,8 @@ public final class ModelCenterServiceGrpc {
      * Update model version with metadata of ModelVersion.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.proto.Message.Response> updateModelVersion(
-        org.aiflow.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.client.proto.Message.Response> updateModelVersion(
+        org.aiflow.client.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getUpdateModelVersionMethod(), getCallOptions()), request);
     }
@@ -911,8 +911,8 @@ public final class ModelCenterServiceGrpc {
      * Delete model version with metadata of ModelVersion.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.proto.Message.Response> deleteModelVersion(
-        org.aiflow.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.client.proto.Message.Response> deleteModelVersion(
+        org.aiflow.client.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getDeleteModelVersionMethod(), getCallOptions()), request);
     }
@@ -922,8 +922,8 @@ public final class ModelCenterServiceGrpc {
      * Get model version detail with metadata of ModelVersion.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.proto.Message.Response> getModelVersionDetail(
-        org.aiflow.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.client.proto.Message.Response> getModelVersionDetail(
+        org.aiflow.client.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getGetModelVersionDetailMethod(), getCallOptions()), request);
     }
@@ -957,40 +957,40 @@ public final class ModelCenterServiceGrpc {
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
         case METHODID_CREATE_REGISTERED_MODEL:
-          serviceImpl.createRegisteredModel((org.aiflow.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest) request,
-              (io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response>) responseObserver);
+          serviceImpl.createRegisteredModel((org.aiflow.client.proto.ModelCenterServiceOuterClass.CreateRegisteredModelRequest) request,
+              (io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response>) responseObserver);
           break;
         case METHODID_UPDATE_REGISTERED_MODEL:
-          serviceImpl.updateRegisteredModel((org.aiflow.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest) request,
-              (io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response>) responseObserver);
+          serviceImpl.updateRegisteredModel((org.aiflow.client.proto.ModelCenterServiceOuterClass.UpdateRegisteredModelRequest) request,
+              (io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response>) responseObserver);
           break;
         case METHODID_DELETE_REGISTERED_MODEL:
-          serviceImpl.deleteRegisteredModel((org.aiflow.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest) request,
-              (io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response>) responseObserver);
+          serviceImpl.deleteRegisteredModel((org.aiflow.client.proto.ModelCenterServiceOuterClass.DeleteRegisteredModelRequest) request,
+              (io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response>) responseObserver);
           break;
         case METHODID_LIST_REGISTERED_MODELS:
-          serviceImpl.listRegisteredModels((org.aiflow.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest) request,
-              (io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response>) responseObserver);
+          serviceImpl.listRegisteredModels((org.aiflow.client.proto.ModelCenterServiceOuterClass.ListRegisteredModelsRequest) request,
+              (io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response>) responseObserver);
           break;
         case METHODID_GET_REGISTERED_MODEL_DETAIL:
-          serviceImpl.getRegisteredModelDetail((org.aiflow.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest) request,
-              (io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response>) responseObserver);
+          serviceImpl.getRegisteredModelDetail((org.aiflow.client.proto.ModelCenterServiceOuterClass.GetRegisteredModelDetailRequest) request,
+              (io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response>) responseObserver);
           break;
         case METHODID_CREATE_MODEL_VERSION:
-          serviceImpl.createModelVersion((org.aiflow.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest) request,
-              (io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response>) responseObserver);
+          serviceImpl.createModelVersion((org.aiflow.client.proto.ModelCenterServiceOuterClass.CreateModelVersionRequest) request,
+              (io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response>) responseObserver);
           break;
         case METHODID_UPDATE_MODEL_VERSION:
-          serviceImpl.updateModelVersion((org.aiflow.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest) request,
-              (io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response>) responseObserver);
+          serviceImpl.updateModelVersion((org.aiflow.client.proto.ModelCenterServiceOuterClass.UpdateModelVersionRequest) request,
+              (io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response>) responseObserver);
           break;
         case METHODID_DELETE_MODEL_VERSION:
-          serviceImpl.deleteModelVersion((org.aiflow.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest) request,
-              (io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response>) responseObserver);
+          serviceImpl.deleteModelVersion((org.aiflow.client.proto.ModelCenterServiceOuterClass.DeleteModelVersionRequest) request,
+              (io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response>) responseObserver);
           break;
         case METHODID_GET_MODEL_VERSION_DETAIL:
-          serviceImpl.getModelVersionDetail((org.aiflow.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest) request,
-              (io.grpc.stub.StreamObserver<org.aiflow.proto.Message.Response>) responseObserver);
+          serviceImpl.getModelVersionDetail((org.aiflow.client.proto.ModelCenterServiceOuterClass.GetModelVersionDetailRequest) request,
+              (io.grpc.stub.StreamObserver<org.aiflow.client.proto.Message.Response>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -1014,7 +1014,7 @@ public final class ModelCenterServiceGrpc {
 
     @java.lang.Override
     public com.google.protobuf.Descriptors.FileDescriptor getFileDescriptor() {
-      return org.aiflow.proto.ModelCenterServiceOuterClass.getDescriptor();
+      return org.aiflow.client.proto.ModelCenterServiceOuterClass.getDescriptor();
     }
 
     @java.lang.Override
