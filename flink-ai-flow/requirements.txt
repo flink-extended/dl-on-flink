@@ -92,3 +92,9 @@ werkzeug~=1.0
 zope.deprecation>=4.0, <5.0
 mysqlclient~=2.0.3
 mongoengine~=0.22.1
+notification-service==0.1.0
+apache-airflow==2.0.0
+apache-airflow-providers-ftp==1.1.0
+apache-airflow-providers-http==1.1.1
+apache-airflow-providers-imap==1.0.1
+apache-airflow-providers-sqlite==1.0.2
