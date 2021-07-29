@@ -17,18 +17,22 @@
 ## specific language governing permissions and limitations
 ## under the License.
 ##
-
 set -e
 
-bin=$(dirname "${BASH_SOURCE[0]}")
-bin=$(cd "$bin"; pwd)
-workdir=$bin/..
+BIN=`dirname "${BASH_SOURCE-$0}"`
+BIN=`cd "$BIN"; pwd`
+. ${BIN}/aiflow-config.sh
 
-# In case of existed typing cause version conflict, uninstall it and then install AI Flow from source
-pip uninstall -y typing
+if [ ! -e ${AIFLOW_PID_DIR}/notification_service.pid ]; then
+  echo "No notification service running"
+fi
 
-# Compile Web UI assets of airflow (yarn is required)
-bash "$workdir"/lib/airflow/airflow/www/compile_assets.sh
-pip install "$workdir"/lib/notification_service
-pip install "$workdir"/lib/airflow
-pip install "$workdir"
+set +e
+echo "Killing notification service"
+for ((i=1;i<=3;i++))
+do
+  kill $(cat ${AIFLOW_PID_DIR}/notification_service.pid) >/dev/null 2>&1 && sleep 1
+done
+
+rm ${AIFLOW_PID_DIR}/notification_service.pid
+echo "notification service killed"

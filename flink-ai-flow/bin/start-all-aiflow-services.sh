@@ -18,21 +18,25 @@
 ## under the License.
 ##
 set -e
+usage="Usage: start-all-aiflow-service.sh [airflow-mysql-conn]"
 
-BIN=`dirname "${BASH_SOURCE-$0}"`
-BIN=`cd "$BIN"; pwd`
-. ${BIN}/init-aiflow-env.sh
-
-if [ ! -e ${AIFLOW_PID_DIR}/aiflow_server.pid ]; then
-  echo "No aiflow server running"
+if [ $# -ne 1 ]; then
+  echo $usage
+  exit 1
 fi
 
-set +e
-echo "Killing AIFlow Server"
-for ((i=1;i<=3;i++))
-do
-  kill $(cat ${AIFLOW_PID_DIR}/aiflow_server.pid) >/dev/null 2>&1 && sleep 1
-done
+AIRFLOW_MYSQL_CONN=$1
+BIN=`dirname "${BASH_SOURCE-$0}"`
+BIN=`cd "$BIN"; pwd`
 
-rm ${AIFLOW_PID_DIR}/aiflow_server.pid
-echo "AIFlow Server killed"
+# init aiflow env
+. ${BIN}/init-aiflow-env.sh
+${BIN}/init-airflow-env.sh ${AIRFLOW_MYSQL_CONN}
+
+# start AIFlow
+${BIN}/start-aiflow.sh
+
+# start airflow scheduler and web server
+${BIN}/start-airflow.sh ${AIRFLOW_MYSQL_CONN}
+
+echo "Visit http://127.0.0.1:8080/ to access the airflow web server."

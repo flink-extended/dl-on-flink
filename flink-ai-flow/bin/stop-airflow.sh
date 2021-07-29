@@ -23,16 +23,22 @@ BIN=`dirname "${BASH_SOURCE-$0}"`
 BIN=`cd "$BIN"; pwd`
 . ${BIN}/init-aiflow-env.sh
 
-if [ ! -e ${AIFLOW_PID_DIR}/aiflow_server.pid ]; then
-  echo "No aiflow server running"
+if [ ! -e ${AIFLOW_PID_DIR}/scheduler.pid ]; then
+  echo "No airflow scheduler running"
+fi
+
+if [ ! -e ${AIFLOW_PID_DIR}/web.pid ]; then
+  echo "No airflow web server running"
 fi
 
 set +e
-echo "Killing AIFlow Server"
+echo "Killing Airflow scheduler and web server"
 for ((i=1;i<=3;i++))
 do
-  kill $(cat ${AIFLOW_PID_DIR}/aiflow_server.pid) >/dev/null 2>&1 && sleep 1
+  kill $(cat ${AIFLOW_PID_DIR}/scheduler.pid) >/dev/null 2>&1 && sleep 1
+  kill $(cat ${AIFLOW_PID_DIR}/web.pid) >/dev/null 2>&1 && sleep 1
 done
 
-rm ${AIFLOW_PID_DIR}/aiflow_server.pid
-echo "AIFlow Server killed"
+rm ${AIFLOW_PID_DIR}/scheduler.pid
+rm ${AIFLOW_PID_DIR}/web.pid
+echo "Airflow scheduler and web server killed"

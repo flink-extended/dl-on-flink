@@ -17,22 +17,16 @@
 ## specific language governing permissions and limitations
 ## under the License.
 ##
-set -e
 
-BIN=`dirname "${BASH_SOURCE-$0}"`
-BIN=`cd "$BIN"; pwd`
-. ${BIN}/init-aiflow-env.sh
+export AIFLOW_HOME=${AIFLOW_HOME:-~/aiflow}
+export AIFLOW_PID_DIR=${AIFLOW_PID_DIR:-/tmp}
+export AIFLOW_LOG_DIR="${AIFLOW_HOME}/logs"
+export AIRFLOW_DEPLOY_PATH="${AIFLOW_HOME}/airflow_deploy"
 
-if [ ! -e ${AIFLOW_PID_DIR}/aiflow_server.pid ]; then
-  echo "No aiflow server running"
-fi
+export AIRFLOW_HOME=${AIRFLOW_HOME:-~/airflow}
 
-set +e
-echo "Killing AIFlow Server"
-for ((i=1;i<=3;i++))
-do
-  kill $(cat ${AIFLOW_PID_DIR}/aiflow_server.pid) >/dev/null 2>&1 && sleep 1
-done
-
-rm ${AIFLOW_PID_DIR}/aiflow_server.pid
-echo "AIFlow Server killed"
+# create directory if not exist
+[ -d ${AIFLOW_HOME} ] || mkdir ${AIFLOW_HOME}
+[ -d ${AIFLOW_LOG_DIR} ] || mkdir ${AIFLOW_LOG_DIR}
+[ -d ${AIRFLOW_HOME} ] || mkdir ${AIRFLOW_HOME}
+[ -d ${AIRFLOW_DEPLOY_PATH} ] || mkdir ${AIRFLOW_DEPLOY_PATH}
