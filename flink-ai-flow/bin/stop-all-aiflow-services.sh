@@ -23,11 +23,6 @@ BIN=`dirname "${BASH_SOURCE-$0}"`
 BIN=`cd "$BIN"; pwd`
 
 ${BIN}/stop-aiflow.sh
+
 ${BIN}/stop-airflow.sh
 
-if ! command -v stop-notification.sh &> /dev/null
-then
-    echo "stop-notification.sh does not exist. Please make sure notification is installed."
-    exit 1
-fi
-stop-notification.sh

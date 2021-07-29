@@ -21,7 +21,7 @@ set -e
 
 BIN=`dirname "${BASH_SOURCE-$0}"`
 BIN=`cd "$BIN"; pwd`
-. ${BIN}/aiflow-config.sh
+. ${BIN}/init-aiflow-env.sh
 
 if [ ! -e ${AIFLOW_PID_DIR}/scheduler.pid ]; then
   echo "No airflow scheduler running"
