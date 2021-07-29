@@ -42,13 +42,13 @@ ${SOURCE_ROOT}/lib/airflow
 ${SOURCE_ROOT}/lib/notification_service
 EOF
 awk "{gsub(\"#\!/usr/bin/env python\", \"#\!${SOURCE_ROOT}/venv/bin/python\"); print \$0}" lib/airflow/airflow/bin/airflow > venv/bin/airflow
-cp bin/start-aiflow.sh venv/bin/
-cp bin/stop-aiflow.sh venv/bin/
+cp bin/start-all-aiflow-services.sh venv/bin/
+cp bin/stop-all-aiflow-services.sh venv/bin/
 awk "{gsub(\"#\!/usr/bin/env python\", \"#\!${SOURCE_ROOT}/venv/bin/python\"); print \$0}" bin/start_aiflow.py > venv/bin/start_aiflow.py
 awk "{gsub(\"#\!/usr/bin/env python\", \"#\!${SOURCE_ROOT}/venv/bin/python\"); print \$0}" bin/start_notification_service.py > venv/bin/start_notification_service.py
 chmod +x venv/bin/airflow
-chmod +x venv/bin/start-aiflow.sh
-chmod +x venv/bin/stop-aiflow.sh
+chmod +x venv/bin/start-all-aiflow-services.sh
+chmod +x venv/bin/stop-all-aiflow-services.sh
 chmod +x venv/bin/start_aiflow.py
 chmod +x venv/bin/start_notification_service.py
 
