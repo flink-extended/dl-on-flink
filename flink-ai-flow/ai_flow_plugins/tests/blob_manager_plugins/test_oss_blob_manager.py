@@ -35,11 +35,11 @@ class TestOSSBlobManager(unittest.TestCase):
             'blob_manager_class': 'ai_flow_plugins.blob_manager_plugins.oss_blob_manager.OssBlobManager',
             'blob_manager_config': {
                 'local_repository': '/tmp',
-                'access_key_id': os.environ.get('access_key_id'),
-                'access_key_secret': os.environ.get('access_key_secret'),
-                'endpoint': os.environ.get('endpoint'),
-                'bucket': os.environ.get('bucket'),
-                'repo_name': os.environ.get('repo_name')
+                'access_key_id': os.environ.get('blob_server.access_key_id'),
+                'access_key_secret': os.environ.get('blob_server.access_key_secret'),
+                'endpoint': os.environ.get('blob_server.endpoint'),
+                'bucket': os.environ.get('blob_server.bucket'),
+                'repo_name': os.environ.get('blob_server.repo_name')
             }
         }
 
