@@ -17,9 +17,10 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+import os
+import subprocess
 from shutil import copytree, rmtree
 from setuptools import setup, find_packages
-import os
 
 CURRENT_DIR = os.path.abspath(os.path.dirname(__file__))
 in_source = os.path.isfile(CURRENT_DIR + "/run_tests.sh")
@@ -34,23 +35,34 @@ def remove_if_exists(file_path):
             rmtree(file_path)
 
 
+def remove_installed_airflow():
+    from distutils.sysconfig import get_python_lib
+
+    local_site_package = get_python_lib()
+    installed_airflow_path = os.path.join(local_site_package, "airflow")
+    for file in os.listdir(installed_airflow_path):
+        abs_path = os.path.join(installed_airflow_path, file)
+        if os.path.isdir(abs_path) and file == 'providers':
+            print("Airflow providers are not being removed.")
+        else:
+            remove_if_exists(abs_path)
+
+
+def compile_assets():  # noqa
+    # """Run a command to compile and build airflow assets."""
+    subprocess.check_call('./lib/airflow/airflow/www/compile_assets.sh')
+
+
 try:
     if in_source:
+        compile_assets()
         AIRFLOW_DIR = CURRENT_DIR + "/lib/airflow"
-        NOTIFICATION_SERVICE_DIR = CURRENT_DIR + "/lib/notification_service"
         try:
             os.symlink(AIRFLOW_DIR + "/airflow", CURRENT_DIR + "/airflow")
-            support_symlinks = True
         except BaseException:  # pylint: disable=broad-except
-            support_symlinks = False
-
-        if support_symlinks:
-            os.symlink(NOTIFICATION_SERVICE_DIR + "/notification_service",
-                       CURRENT_DIR + "/notification_service")
-        else:
             copytree(AIRFLOW_DIR + "/airflow", CURRENT_DIR + "/airflow")
-            copytree(NOTIFICATION_SERVICE_DIR + "/notification_service",
-                     CURRENT_DIR + "/notification_service")
+    else:
+        remove_installed_airflow()
 
     require_file = '{}/{}'.format(os.path.dirname(os.path.abspath(__file__)), "requirements.txt")
     with open(require_file) as f:
@@ -62,20 +74,16 @@ try:
             require_packages.append(line)
 
     packages = find_packages()
-
-    version = "1.0-SNAPSHOT"
-    jar_name = "flink_ai_flow-{}.jar".format(version)
-    main_class = "com.apache.flink.ai.flow.FlinkJobMain"
-
     setup(
         name='ai_flow',
-        version='0.3.0',
-        description='This is an ai flow of the setup',
+        version='0.1.0',
+        description='An open source framework that bridges big data and AI.',
         author='',
-        author_email='',
-        url='',
+        author_email='flink.aiflow@gmail.com',
+        url='https://github.com/alibaba/flink-ai-extended',
         packages=find_packages(),
         install_requires=require_packages,
+        python_requires='>=3.7, <3.8',
         include_package_data=True,
         scripts=['bin/start-aiflow.sh',
                  'bin/stop-aiflow.sh',
@@ -89,5 +97,4 @@ try:
     )
 finally:
     if in_source:
-        remove_if_exists(CURRENT_DIR + "/notification_service")
         remove_if_exists(CURRENT_DIR + "/airflow")
