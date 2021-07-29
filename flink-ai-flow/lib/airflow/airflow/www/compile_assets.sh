@@ -25,5 +25,5 @@ if [[ -d ./static/dist ]]; then
   rm -f ./static/dist/*
 fi
 
-/Users/kenken/BGcodes/flink-ai-extended/node_modules/yarn/bin/yarn install --frozen-lockfile
-/Users/kenken/BGcodes/flink-ai-extended/node_modules/yarn/bin/yarn run build
+yarn install --frozen-lockfile
+yarn run build
