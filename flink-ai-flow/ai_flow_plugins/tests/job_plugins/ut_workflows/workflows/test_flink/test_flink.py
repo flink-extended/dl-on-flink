@@ -103,6 +103,50 @@ class TestFlink(unittest.TestCase):
         self.assertTrue('err' in je.properties)
 
     @unittest.skip("need start flink cluster")
+    def test_cluster_stop_local_flink_task_with_cancel(self):
+        job_name = 'task_3'
+        with af.job_config(job_name):
+            input_example = af.user_define_operation(processor=Source())
+            processed = af.transform(input=[input_example], transform_processor=Transformer2())
+            af.user_define_operation(input=[processed], processor=Sink())
+        w = af.workflow_operation.submit_workflow(workflow_name='test_python')
+        je = af.workflow_operation.start_job_execution(job_name=job_name, execution_id='1')
+        time.sleep(10)
+        af.workflow_operation.stop_job_execution(job_name=job_name, execution_id='1')
+        je = af.workflow_operation.get_job_execution(job_name=job_name, execution_id='1')
+        self.assertEqual(Status.FAILED, je.status)
+        self.assertTrue('err' in je.properties)
+
+    @unittest.skip("need start flink cluster and run (nc -lk 9999)")
+    def test_cluster_stop_local_flink_task_with_stop(self):
+        job_name = 'task_4'
+        flink_home = os.environ.get('FLINK_HOME')
+        word_count_jar = os.path.join(flink_home, 'examples', 'streaming', 'SocketWindowWordCount.jar')
+        jar_dir = os.path.join(project_path, 'dependencies', 'jar')
+        if not os.path.exists(jar_dir):
+            os.makedirs(jar_dir)
+            shutil.copy(word_count_jar, jar_dir)
+
+        args = ['--port', '9999']
+        with af.job_config(job_name):
+            af.user_define_operation(processor=flink.FlinkJavaProcessor(entry_class=None,
+                                                                        main_jar_file='SocketWindowWordCount.jar',
+                                                                        args=args))
+        w = af.workflow_operation.submit_workflow(workflow_name=af.current_workflow_config().workflow_name)
+        je = af.workflow_operation.start_job_execution(job_name=job_name, execution_id='1')
+        time.sleep(10)
+        af.workflow_operation.stop_job_execution(job_name=job_name, execution_id='1')
+        je = af.workflow_operation.get_job_execution(job_name=job_name, execution_id='1')
+        self.assertEqual(Status.FAILED, je.status)
+        self.assertTrue('err' in je.properties)
+        dep_dir = os.path.join(project_path, 'dependencies')
+        if os.path.exists(dep_dir):
+            shutil.rmtree(dep_dir)
+        savepoint_path = '/tmp/savepoint'
+        if os.path.exists(savepoint_path):
+            shutil.rmtree(savepoint_path)
+
+    @unittest.skip("need start flink cluster")
     def test_cluster_flink_java_task(self):
         flink_home = os.environ.get('FLINK_HOME')
         word_count_jar = os.path.join(flink_home, 'examples', 'batch', 'WordCount.jar')
