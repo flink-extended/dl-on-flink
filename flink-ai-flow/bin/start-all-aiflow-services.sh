@@ -31,7 +31,12 @@ BIN=`dirname "${BASH_SOURCE-$0}"`
 BIN=`cd "$BIN"; pwd`
 
 # start notification service
-${BIN}/start-notification.sh ${NOTIFICATION_DATABASE_CONN}
+if ! command -v start-notification.sh &> /dev/null
+then
+    echo "start-notification.sh does not exist. Please make sure notification is installed."
+    exit 1
+fi
+start-notification.sh ${NOTIFICATION_DATABASE_CONN}
 
 # start airflow scheduler and web server
 ${BIN}/start-airflow.sh ${AIRFLOW_MYSQL_CONN}
