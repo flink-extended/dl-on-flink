@@ -113,7 +113,7 @@ class ModelValidator(PythonProcessor):
         self.model_version = None
         self.model_meta = None
 
-    def setup(self, execution_context: ExecutionContext):
+    def open(self, execution_context: ExecutionContext):
         model_meta: af.ModelMeta = execution_context.config.get('model_info')
         self.model_name = model_meta.name
         self.model_meta = af.get_latest_generated_model_version(self.model_name)
@@ -212,7 +212,7 @@ class PredictDatasetReader(PythonProcessor):
         super().__init__()
         self.thread = None
 
-    def setup(self, execution_context: ExecutionContext):
+    def open(self, execution_context: ExecutionContext):
         dataset_meta: af.DatasetMeta = execution_context.config.get('dataset')
         self.thread = DatasetPredictThread(dataset_meta.uri)
         self.thread.start()
@@ -251,7 +251,7 @@ class ModelPredictor(PythonProcessor):
         self.model_version = None
         self.watcher = PredictWatcher()
 
-    def setup(self, execution_context: ExecutionContext):
+    def open(self, execution_context: ExecutionContext):
         # In this class, we show the usage of start_listen_event method which make it possible to send various events.
         # Users can also refer `stream train stream predict` dataset to directly use provided API to get model version.
         af.get_ai_flow_client().start_listen_event(key='START_PREDICTION', watcher=self.watcher)
