@@ -18,30 +18,24 @@
 ## under the License.
 ##
 set -e
-usage="Usage: start-all-aiflow-service.sh [notification-database-conn] [airflow-mysql-conn]"
+usage="Usage: start-all-aiflow-service.sh [airflow-mysql-conn]"
 
-if [ $# -ne 2 ]; then
+if [ $# -ne 1 ]; then
   echo $usage
   exit 1
 fi
 
-NOTIFICATION_DATABASE_CONN=$1
-AIRFLOW_MYSQL_CONN=$2
+AIRFLOW_MYSQL_CONN=$1
 BIN=`dirname "${BASH_SOURCE-$0}"`
 BIN=`cd "$BIN"; pwd`
 
-# start notification service
-if ! command -v start-notification.sh &> /dev/null
-then
-    echo "start-notification.sh does not exist. Please make sure notification is installed."
-    exit 1
-fi
-start-notification.sh ${NOTIFICATION_DATABASE_CONN}
-
-# start airflow scheduler and web server
-${BIN}/start-airflow.sh ${AIRFLOW_MYSQL_CONN}
+# init aiflow env
+${BIN}/init-aiflow-env.sh ${AIRFLOW_MYSQL_CONN}
 
 # start AIFlow
 ${BIN}/start-aiflow.sh
+
+# start airflow scheduler and web server
+${BIN}/start-airflow.sh ${AIRFLOW_MYSQL_CONN}
 
 echo "Visit http://127.0.0.1:8080/ to access the airflow web server."

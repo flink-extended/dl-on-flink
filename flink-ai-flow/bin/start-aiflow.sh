@@ -21,7 +21,7 @@ set -e
 
 BIN=`dirname "${BASH_SOURCE-$0}"`
 BIN=`cd "$BIN"; pwd`
-. ${BIN}/aiflow-config.sh
+. ${BIN}/init-aiflow-env.sh
 
 echo "Starting AIFlow Server"
 LOG_FILE_NAME=aiflow-server-$(date "+%Y%m%d-%H%M%S").log
