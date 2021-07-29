@@ -22,7 +22,7 @@ db_uri: sqlite:///aiflow.db
 db_type: sql_lite
 start_scheduler_service: True
 scheduler:
-  scheduler_class_name: ai_flow_plugins.scheduler_plugins.airflow.airflow_scheduler.AirFlowScheduler
+  scheduler_class: ai_flow_plugins.scheduler_plugins.airflow.airflow_scheduler.AirFlowScheduler
   scheduler_config:
     airflow_deploy_path: /tmp/airflow
     notification_service_uri: localhost:50051

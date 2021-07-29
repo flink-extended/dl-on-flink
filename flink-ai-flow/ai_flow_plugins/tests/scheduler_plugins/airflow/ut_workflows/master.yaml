@@ -22,4 +22,4 @@ db_uri: sqlite:///aiflow.db
 db_type: sql_lite
 start_scheduler_service: True
 scheduler:
-  scheduler_class_name: ai_flow_plugins.tests.scheduler_plugins.airflow.mock_scheduler_plugin.MockScheduler
+  scheduler_class: ai_flow_plugins.tests.scheduler_plugins.airflow.mock_scheduler_plugin.MockScheduler

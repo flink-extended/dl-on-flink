@@ -53,7 +53,7 @@ def create_default_sever_config(root_dir_path, db_uri, airflow_deploy_path):
 
         # scheduler config
         scheduler:
-          scheduler_class_name: ai_flow_plugins.scheduler_plugins.airflow.airflow_scheduler.AirFlowScheduler
+          scheduler_class: ai_flow_plugins.scheduler_plugins.airflow.airflow_scheduler.AirFlowScheduler
           scheduler_config:
             airflow_deploy_path: {airflow_deploy_path}
             notification_service_uri: localhost:50052

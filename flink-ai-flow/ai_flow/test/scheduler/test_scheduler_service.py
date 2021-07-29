@@ -86,7 +86,7 @@ SCHEDULER_CLASS = 'ai_flow.test.scheduler.test_scheduler_service.MockScheduler'
 class TestSchedulerService(unittest.TestCase):
     def setUp(self):
         config = SchedulerServiceConfig()
-        config.set_scheduler_class_name(SCHEDULER_CLASS)
+        config.set_scheduler_class(SCHEDULER_CLASS)
         config.set_scheduler_config({})
         if os.path.exists(_SQLITE_DB_FILE):
             os.remove(_SQLITE_DB_FILE)

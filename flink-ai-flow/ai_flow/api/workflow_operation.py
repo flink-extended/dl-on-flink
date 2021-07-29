@@ -27,7 +27,7 @@ from ai_flow.endpoint.server.workflow_proto_utils import \
 from ai_flow.exception.exceptions import EmptyGraphException
 from ai_flow.meta.project_meta import ProjectMeta
 from ai_flow.meta.workflow_meta import WorkflowMeta
-from ai_flow.plugin_interface.blob_manager_interface import BlobManagerFactory
+from ai_flow.plugin_interface.blob_manager_interface import BlobConfig, BlobManagerFactory
 from ai_flow.plugin_interface.job_plugin_interface import get_registered_job_plugin_factory_list
 from ai_flow.plugin_interface.scheduler_interface import JobExecutionInfo, WorkflowExecutionInfo, WorkflowInfo
 from ai_flow.translator.translator import get_translator
@@ -43,7 +43,9 @@ def _upload_project_package(workflow: Workflow):
 
     :param workflow: The generated :class:`~ai_flow.workflow.workflow.Workflow`.
     """
-    blob_manager = BlobManagerFactory.get_blob_manager(current_project_config().get(WorkflowPropertyKeys.BLOB))
+    blob_config = BlobConfig(current_project_config().get(WorkflowPropertyKeys.BLOB))
+    blob_manager = BlobManagerFactory.create_blob_manager(blob_config.blob_manager_class(),
+                                                          blob_config.blob_manager_config())
     uploaded_project_path = blob_manager.upload_project(str(workflow.workflow_snapshot_id),
                                                         current_project_context().project_path)
     workflow.project_uri = uploaded_project_path
