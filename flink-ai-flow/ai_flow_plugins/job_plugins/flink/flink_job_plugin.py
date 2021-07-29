@@ -152,7 +152,7 @@ class FlinkJobController(JobController):
                 if os.path.exists(job_runtime_env.resource_dir):
                     zip_file_util.make_dir_zipfile(job_runtime_env.resource_dir,
                                                    os.path.join(job_runtime_env.working_dir, 'resources.zip'))
-                bash_command.extend(['-pyarch',
+                    bash_command.extend(['-pyarch',
                                      os.path.join(job_runtime_env.working_dir, 'resources.zip#resources')])
                 bash_command.extend(['-py', script_path,
                                      run_graph_file, job_runtime_env.working_dir, flink_env_file])
