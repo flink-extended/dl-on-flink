@@ -26,10 +26,10 @@ from ai_flow.context.job_context import current_job_name
 
 class AIGraph(Graph):
     """
-    The program defined by ai flow will be represented by AIGraph.
-    AIGraph consists of AINode and edges.
-    AIGraph contains two kinds of edges, the data edge(ai_flow.ai_graph.data_edge.DataEdge) between AINodes in a job
-    and the control edge between(ai_flow.workflow.control_edge.ControlEdge) jobs
+    An AIGraph represents a user-defined workflow.
+    AIGraph consists of AINodes and edges. The edges are of two kinds: the data edge(:class:`~ai_flow.ai_graph.data_edge.DataEdge`) between
+    :class:`~ai_flow.ai_graph.ai_node.AINode` in a job and the control edge
+    (:class:`~ai_flow.workflow.control_edge.ControlEdge`) between jobs.
     """
 
     def __init__(self) -> None:
@@ -38,7 +38,9 @@ class AIGraph(Graph):
 
     def add_node(self, node: AINode):
         """
-        Add an ai node(ai_flow.ai_graph.ai_node.AINode) to AIGraph.
+        Adds an :class:`~ai_flow.ai_graph.ai_node.AINode` to AIGraph.
+
+        :param node: :class:`~ai_flow.ai_graph.ai_node.AINode` to add in the graph.
         """
         if current_workflow_config() is not None \
                 and current_job_name() is not None \
@@ -48,7 +50,10 @@ class AIGraph(Graph):
 
     def get_node_by_id(self, node_id: Text) -> Optional[AINode]:
         """
-        Return the node whose node_id field is node_id.
+        Returns the node whose `node_id` field is node_id.
+
+        :param node_id: id of the :class:`~ai_flow.ai_graph.ai_node.AINode`.
+        :return :class:`~ai_flow.ai_graph.ai_node.AINode`.
         """
         if node_id in self.nodes:
             return self.nodes[node_id]
@@ -57,7 +62,8 @@ class AIGraph(Graph):
 
     def add_channel(self, node_id: Text, channel: Channel):
         """
-        Add a data edge to AIGraph.
+        Adds a data edge to AIGraph.
+
         :param node_id: node_id of the data receiving node.
         :param channel: An output of the data sending node.
         """
@@ -70,7 +76,9 @@ __current_ai_graph__ = AIGraph()
 
 def current_graph() -> AIGraph:
     """
-    Return the current AIGraph.
+    Returns the current AIGraph.
+
+    :return :class:`~ai_flow.ai_graph.ai_graph.AIGraph`.
     """
     return __current_ai_graph__
 
@@ -87,15 +95,25 @@ def add_ai_node_to_graph(node, inputs: Union[None, Channel, List[Channel]]):
 
 class AISubGraph(AIGraph):
     """
-    It consists of a set of ai nodes(ai_flow.ai_graph.ai_node.AINode),
-    all ai nodes have the same job configuration(ai_flow.workflow.job_config.JobConfig)
+    It consists of a set of ai nodes(:class:`~ai_flow.ai_graph.ai_node.AINode`),
+    all :class:`~ai_flow.ai_graph.ai_node.AINode` in sub-graph share the same job configuration
+    (:class:`~ai_flow.workflow.job_config.JobConfig`).
     """
+
     def __init__(self,
                  config: JobConfig,
                  ) -> None:
+        """
+        :param config: :class:`~ai_flow.workflow.job_config.JobConfig` of the job represented by the sub-graph.
+        """
         super().__init__()
         self.config: JobConfig = config
         self.edges: Dict[Text, List[DataEdge]] = {}
 
     def add_node(self, node: AINode):
+        """
+        Adds an :class:`~ai_flow.ai_graph.ai_node.AINode` to AISubGraph.
+
+        :param node: :class:`~ai_flow.ai_graph.ai_node.AINode` to add in the sub-graph.
+        """
         self.nodes[node.node_id] = node
