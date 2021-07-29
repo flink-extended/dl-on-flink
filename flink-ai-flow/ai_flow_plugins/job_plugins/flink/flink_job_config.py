@@ -64,6 +64,18 @@ class FlinkJobConfig(JobConfig):
         else:
             return None
 
+    @property
+    def stop_mode(self):
+        stop_mode_set = {'stop', 'cancel'}
+        if 'stop_mode' in self.properties:
+            stop_mode = self.properties.get('stop_mode')
+            if stop_mode in stop_mode_set:
+                return stop_mode
+            else:
+                raise Exception('The stop_mode: {} is illegal, only stop and cancel are supported!'.format(stop_mode))
+        else:
+            return 'cancel'
+
     @classmethod
     def from_job_config(cls, job_config: JobConfig) -> 'FlinkJobConfig':
         return FlinkJobConfig(job_name=job_config.job_name,
