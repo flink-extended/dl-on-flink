@@ -142,9 +142,9 @@ class TestFlink(unittest.TestCase):
         dep_dir = os.path.join(project_path, 'dependencies')
         if os.path.exists(dep_dir):
             shutil.rmtree(dep_dir)
-        savepoint_path = '/tmp/savepoint'
-        if os.path.exists(savepoint_path):
-            shutil.rmtree(savepoint_path)
+        savepoint_path = '/tmp/savepoint_test_cluster_stop_local_flink_task_with_stop'
+        self.assertTrue(os.path.exists(savepoint_path))
+        shutil.rmtree(savepoint_path)
 
     @unittest.skip("need start flink cluster")
     def test_cluster_flink_java_task(self):
