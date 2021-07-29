@@ -162,7 +162,7 @@ class Predictor(flink.FlinkPythonProcessor):
         super().__init__()
         self.model_name = None
 
-    def setup(self, execution_context: flink.ExecutionContext):
+    def open(self, execution_context: flink.ExecutionContext):
         self.model_name = execution_context.config['model_info'].name
 
     def process(self, execution_context: flink.ExecutionContext, input_list: List[Table] = None) -> List[Table]:

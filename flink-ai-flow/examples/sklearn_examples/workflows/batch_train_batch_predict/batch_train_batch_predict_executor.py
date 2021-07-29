@@ -104,7 +104,7 @@ class ModelEvaluator(PythonProcessor):
         self.model_version = None
         self.artifact = artifact
 
-    def setup(self, execution_context: ExecutionContext):
+    def open(self, execution_context: ExecutionContext):
         model_meta: af.ModelMeta = execution_context.config.get('model_info')
         model = af.get_latest_generated_model_version(model_meta.name)
         self.model_path = model.model_path
@@ -147,7 +147,7 @@ class ModelValidator(PythonProcessor):
         self.model_version = None
         self.artifact = artifact
 
-    def setup(self, execution_context: ExecutionContext):
+    def open(self, execution_context: ExecutionContext):
         model_meta: af.ModelMeta = execution_context.config.get('model_info')
         self.model_name = model_meta.name
         model = af.get_latest_generated_model_version(self.model_name)
