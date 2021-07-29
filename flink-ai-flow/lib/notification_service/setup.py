@@ -22,11 +22,11 @@ from setuptools import setup, find_packages
 
 setup(
     name='notification_service',
-    version='0.1',
-    description='This is an notification setup',
+    version='0.1.0',
+    description='A Python package which provides stable notification service.',
     author='',
-    author_email='',
-    url='',
+    author_email='flink.aiflow@gmail.com',
+    url='https://github.com/alibaba/flink-ai-extended',
     packages=find_packages(exclude=['tests*']),
     install_requires=["protobuf==3.15.6", "grpcio==1.34.0", "sqlalchemy>=1.3.18, <2"]
 )
