@@ -35,6 +35,7 @@ import lazy_object_proxy
 import nvd3
 import sqlalchemy as sqla
 import yaml
+from airflow.contrib.jobs.scheduler_factory import SchedulerFactory
 from flask import (
     Markup,
     Response,
@@ -426,10 +427,11 @@ class AirflowBaseView(BaseView):  # noqa: D101
     }
 
     def render_template(self, *args, **kwargs):
+        scheduler_class = SchedulerFactory.get_default_scheduler()
         return super().render_template(
             *args,
             # Cache this at most once per request, not for the lifetime of the view instance
-            scheduler_job=lazy_object_proxy.Proxy(SchedulerJob.most_recent_job),
+            scheduler_job=lazy_object_proxy.Proxy(scheduler_class.most_recent_job),
             **kwargs,
         )
 
@@ -455,7 +457,8 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
         scheduler_status = 'unhealthy'
         payload['metadatabase'] = {'status': 'healthy'}
         try:
-            scheduler_job = SchedulerJob.most_recent_job()
+            scheduler_class = SchedulerFactory.get_default_scheduler()
+            scheduler_job = scheduler_class.most_recent_job()
 
             if scheduler_job:
                 latest_scheduler_heartbeat = scheduler_job.latest_heartbeat.isoformat()
