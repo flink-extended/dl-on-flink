@@ -30,7 +30,8 @@ BIN=`dirname "${BASH_SOURCE-$0}"`
 BIN=`cd "$BIN"; pwd`
 
 # init aiflow env
-${BIN}/init-aiflow-env.sh ${AIRFLOW_MYSQL_CONN}
+. ${BIN}/init-aiflow-env.sh
+${BIN}/init-airflow-env.sh ${AIRFLOW_MYSQL_CONN}
 
 # start AIFlow
 ${BIN}/start-aiflow.sh
