@@ -68,7 +68,7 @@ class TrainDatasetReader(PythonProcessor):
         super().__init__()
         self.thread = None
 
-    def setup(self, execution_context: ExecutionContext):
+    def open(self, execution_context: ExecutionContext):
         dataset_meta: af.DatasetMeta = execution_context.config.get('dataset')
         self.thread = DatasetTrainThread(dataset_meta.uri)
         self.thread.start()
@@ -147,7 +147,7 @@ class ModelValidator(PythonProcessor):
         self.model_version = None
         self.model_meta = None
 
-    def setup(self, execution_context: ExecutionContext):
+    def open(self, execution_context: ExecutionContext):
         model_meta: af.ModelMeta = execution_context.config.get('model_info')
         self.model_name = model_meta.name
         self.model_meta = af.get_latest_generated_model_version(self.model_name)
@@ -242,7 +242,7 @@ class PredictDatasetReader(PythonProcessor):
         super().__init__()
         self.thread = None
 
-    def setup(self, execution_context: ExecutionContext):
+    def open(self, execution_context: ExecutionContext):
         dataset_meta: af.DatasetMeta = execution_context.config.get('dataset')
         self.thread = DatasetPredictThread(dataset_meta.uri)
         self.thread.start()
@@ -269,7 +269,7 @@ class ModelPredictor(PythonProcessor):
         self.model_name = None
         self.model_version = None
 
-    def setup(self, execution_context: ExecutionContext):
+    def open(self, execution_context: ExecutionContext):
         model_meta: af.ModelMeta = execution_context.config.get('model_info')
         self.model_name = model_meta.name
         print("### {} setup done for {}".format(self.__class__.__name__, self.model_name))

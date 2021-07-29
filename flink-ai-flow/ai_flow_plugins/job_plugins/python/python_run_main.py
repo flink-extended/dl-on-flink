@@ -46,7 +46,7 @@ def python_execute_func(run_graph: RunGraph, job_execution_info: JobExecutionInf
     def setup():
         for ii in range(len(processor)):
             cc = processor[ii]
-            cc.setup(contexts[ii])
+            cc.open(contexts[ii])
 
     def close():
         for ii in range(len(processor)):
