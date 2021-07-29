@@ -38,8 +38,8 @@ If you are installing AI Flow from source, you can install AI Flow by running th
 cd flink-ai-extended
 bash flink-ai-flow/bin/install_aiflow.sh
 ```
-To make it easier to start server, some shell scripts like start-aiflow.sh will be installed with upon commands.
-You could run with `which start-aiflow.sh` to check if the scripts are installed successfully. 
+To make it easier to start server, some shell scripts like start-all-aiflow-services.sh will be installed with upon commands.
+You could run with `which start-all-aiflow-services.sh` to check if the scripts are installed successfully. 
 If not, you can reinstall with `sudo` command. Any other problems during the installation, please refer to the [Troubleshooting](#troubleshooting) section to see if it can help.
 If you meet any problems during the installation, please refer to the [Troubleshooting](#troubleshooting) section to see if it can help.
 
@@ -49,17 +49,17 @@ If you meet any problems during the installation, please refer to the [Troublesh
 Run following command to start Notification service, AI Flow Server and Airflow Server:
 
 ```shell
-start-aiflow.sh
+start-all-aiflow-services.sh
 ```
 
 If you execute this command for the first time, you will get the following output:
 
 ```text
 The ${AIRFLOW_HOME}/airflow.cfg is not exists. You need to provide a mysql database to initialize the airflow, e.g.:
-start-aiflow.sh mysql://root:root@127.0.0.1/airflow
+start-all-aiflow-services.sh mysql://root:root@127.0.0.1/airflow
 ```
 
-Please prepare the MySQL database refer to [Prerequisites](#prerequisites-1) and rerun the `start-aiflow.sh` with the MySQL parameter.
+Please prepare the MySQL database refer to [Prerequisites](#prerequisites-1) and rerun the `start-all-aiflow-services.sh` with the MySQL parameter.
 After that you will get the output like:
 
 ```text
@@ -119,7 +119,7 @@ The outputs of each job can be found under `${AIRFLOW_HOME}/logs/airflow_dag_exa
 Run following command to stop notification server, Airflow Server and AI Flow Server:
 
 ```shell
-stop-aiflow.sh
+stop-all-aiflow-services.sh
 ```
 ## Work with Docker
 The Dockerfile is also provided, which helps users start a Flink AI Flow server. You can build an image like this:

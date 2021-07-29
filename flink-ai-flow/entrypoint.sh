@@ -21,7 +21,7 @@
 mysql_conn=$1
 
 # start ai_flow server and Apache Airflow
-start-aiflow.sh $mysql_conn
+start-all-aiflow-services.sh $mysql_conn
 sleep 3
 
 
