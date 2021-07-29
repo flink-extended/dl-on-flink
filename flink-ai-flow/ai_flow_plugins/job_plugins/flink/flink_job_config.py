@@ -27,6 +27,8 @@ class FlinkJobConfig(JobConfig):
         job_type: flink
         properties:
             run_mode: local or cluster (default local)
+            stop_mode: stop or cancel (default cancel)It means to stop the flink job using the (flink stop job_id)
+                       or (flink cancel job_id) command.
             flink_run_args: The flink run command args(-pym etc.). It's type is List.
                 - -pym
                 - /usr/lib/python
@@ -63,6 +65,18 @@ class FlinkJobConfig(JobConfig):
             return self.properties.get('flink_stop_args')
         else:
             return None
+
+    @property
+    def stop_mode(self):
+        stop_mode_set = {'stop', 'cancel'}
+        if 'stop_mode' in self.properties:
+            stop_mode = self.properties.get('stop_mode')
+            if stop_mode in stop_mode_set:
+                return stop_mode
+            else:
+                raise Exception('The stop_mode: {} is illegal, only stop and cancel are supported!'.format(stop_mode))
+        else:
+            return 'cancel'
 
     @classmethod
     def from_job_config(cls, job_config: JobConfig) -> 'FlinkJobConfig':
