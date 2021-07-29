@@ -559,6 +559,7 @@ class EventBasedSchedulerJob(BaseJob):
                  refresh_dag_dir_interval=conf.getint('scheduler', 'refresh_dag_dir_interval', fallback=1),
                  *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.log.info("Starting event based scheduler with notification server uri: {}".format(server_uri))
         self.mailbox: Mailbox = Mailbox()
         self.dag_trigger: DagTrigger = DagTrigger(
             dag_directory=dag_directory,
