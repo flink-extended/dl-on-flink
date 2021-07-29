@@ -57,23 +57,7 @@ flink-ai-flow/ai_flow.egg-info/*
 flink-ai-flow/ai_flow/test/endpoint/aiflow.db
 flink-ai-flow/ai_flow/test/api/workflow_config.json
 flink-ai-flow/ai_flow/test/common/test.yaml
-flink-ai-flow/examples/*/generated/*
-flink-ai-flow/examples/simple_examples/logs/*
-flink-ai-flow/examples/simple_examples/temp/*
-flink-ai-flow/flink_ai_flow/tests/python_codes/word_count_output.csv
-flink-ai-flow/flink_ai_flow/.idea
-flink-ai-flow/flink_ai_flow/*.iml
-flink-ai-flow/flink_ai_flow/dist
-flink-ai-flow/flink_ai_flow/python/.idea
-flink-ai-flow/flink_ai_flow/python/*.iml
-flink-ai-flow/python_ai_flow/test/logs/*.log
-flink-ai-flow/python_ai_flow/test/python_codes/base_example_component/*.npy
-flink-ai-flow/python_ai_flow/test/python_codes/base_example_component/*.npz
-flink-ai-flow/python_ai_flow/test/python_codes/base_example_component/*.txt
-flink-ai-flow/python_ai_flow/test/python_codes/base_example_component/pandas_output.csv
-flink-ai-flow/python_ai_flow/test/python_codes/evaluate_component/batch_evaluate
-flink-ai-flow/python_ai_flow/test/python_codes/evaluate_component/saved_models/*
-flink-ai-flow/python_ai_flow/test/temp/*
+flink-ai-flow/examples/**/generated/*
 flink-ai-flow/venv/*
 flink-ai-flow/dist/*
 
@@ -260,6 +244,6 @@ flink-ai-flow/lib/airflow/files
 flink-ai-flow/lib/airflow/hive_scratch_dir/
 flink-ai-flow/lib/airflow/.bash_aliases
 flink-ai-flow/lib/airflow/.bash_history
-flink-ai-flow/lib/airflow/.kube
+flink-ai-flow/lib/airflow/.kubeSchedulerServiceConfig
 flink-ai-flow/lib/airflow/.inputrc
 flink-ai-flow/lib/airflow/log.txt*
