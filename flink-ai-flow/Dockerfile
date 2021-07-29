@@ -96,7 +96,7 @@ ENV FLINK_AI_FLOW_SOURCES=${FLINK_AI_FLOW_SOURCES}
 WORKDIR ${FLINK_AI_FLOW_SOURCES}
 COPY . ${FLINK_AI_FLOW_SOURCES}/
 
-RUN bash bin/install_aiflow.sh
+RUN bash install_aiflow.sh
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod 755 /entrypoint.sh

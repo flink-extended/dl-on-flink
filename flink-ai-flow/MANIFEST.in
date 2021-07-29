@@ -36,3 +36,4 @@ graft bin/
 recursive-exclude airflow/www_rbac/node_modules *
 recursive-exclude airflow/providers *
 global-exclude __pycache__  *.pyc
+graft ai_flow/config_templates

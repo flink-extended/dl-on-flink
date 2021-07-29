@@ -17,78 +17,53 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-import argparse
+import logging
 import os
-import textwrap
+
+from typing import Dict
+
 import ai_flow
 from airflow.logging_config import configure_logging
 
 
-def create_default_sever_config(root_dir_path, db_uri, airflow_deploy_path):
+def create_default_sever_config(root_dir_path, param: Dict[str, str]):
     """
     Generate default server config which use Apache Airflow as scheduler.
     """
-    from ai_flow.store.db.db_util import extract_db_engine_from_uri
+    import ai_flow.config_templates
+    if not os.path.exists(root_dir_path):
+        logging.info("{} does not exist, creating the directory".format(root_dir_path))
+        os.makedirs(root_dir_path, exist_ok=False)
+    aiflow_server_config_path = os.path.join(
+        os.path.dirname(ai_flow.config_templates.__file__), "default_aiflow_server.yaml"
+    )
+    if not os.path.exists(aiflow_server_config_path):
+        raise Exception("default aiflow server config is not found at {}.".format(aiflow_server_config_path))
 
-    db_type = extract_db_engine_from_uri(db_uri)
-    content = textwrap.dedent(f"""\
-        # Config of master server
-
-        # endpoint of AI Flow Server
-        server_ip: localhost
-        server_port: 50051
-
-        # uri of database backend of AIFlow server
-        db_uri: {db_uri}
-
-        # type of database backend in master
-        db_type: {db_type}
-
-        # whether to start the scheduler service
-        start_scheduler_service: True
-
-        # Whether to start default notification service, if not a custom URI should be set
-        start_default_notification: False
-        notification_uri: localhost:50052
-
-        # scheduler config
-        scheduler:
-          scheduler_class: ai_flow_plugins.scheduler_plugins.airflow.airflow_scheduler.AirFlowScheduler
-          scheduler_config:
-            airflow_deploy_path: {airflow_deploy_path}
-            notification_service_uri: localhost:50052
-    """)
-    master_yaml_path = root_dir_path + "/master.yaml"
-    with open(master_yaml_path, "w") as f:
-        f.write(content)
-    return master_yaml_path
+    aiflow_server_config_target_path = os.path.join(root_dir_path, "aiflow_server.yaml")
+    with open(aiflow_server_config_path, encoding='utf-8') as config_file:
+        default_config = config_file.read().format(**param)
+    with open(aiflow_server_config_target_path, mode='w', encoding='utf-8') as f:
+        f.write(default_config)
+    return aiflow_server_config_target_path
 
 
-def start_master(master_yaml_path):
-    configure_logging()
-    server_runner = ai_flow.AIFlowServerRunner(config_file=master_yaml_path)
+def start_master(config_file):
+    server_runner = ai_flow.AIFlowServerRunner(config_file=config_file)
     server_runner.start(is_block=True)
     return server_runner
 
 
-def _prepare_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--database-conn', type=str, default=None,
-                        help='Database connection info')
-    parser.add_argument('--airflow-deploy-path', type=str, default=None,
-                        help='The directory which airflow read dags')
-    return parser.parse_args()
-
-
 if __name__ == '__main__':
-    args = _prepare_args()
-    database_conn = args.database_conn
-    airflow_deploy_path = args.airflow_deploy_path
-    if "AIRFLOW_HOME" in os.environ:
-        root_dir = os.environ["AIRFLOW_HOME"]
+    configure_logging()
+    if "AIFLOW_HOME" in os.environ:
+        root_dir = os.environ["AIFLOW_HOME"]
+        logging.info("AIFLOW_HOME is set, looking for aiflow_server.yaml at {}".format(root_dir))
     else:
-        root_dir = os.environ["HOME"] + "/airflow"
-    master_yaml = root_dir + "/master.yaml"
-    if not os.path.exists(master_yaml):
-        master_yaml = create_default_sever_config(root_dir, database_conn, airflow_deploy_path)
-    start_master(master_yaml)
+        root_dir = os.environ["HOME"] + "/aiflow"
+        logging.info("AIFLOW_HOME is not set, looking for aiflow_server.yaml at {}".format(root_dir))
+    aiflow_server_config = root_dir + "/aiflow_server.yaml"
+    if not os.path.exists(aiflow_server_config):
+        logging.info("{} does not exist, creating the default aiflow server config".format(aiflow_server_config))
+        aiflow_server_config = create_default_sever_config(root_dir, {'AIFLOW_HOME': root_dir})
+    start_master(aiflow_server_config)
