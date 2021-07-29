@@ -27,7 +27,8 @@ fi
 
 BIN=`dirname "${BASH_SOURCE-$0}"`
 BIN=`cd "$BIN"; pwd`
-. ${BIN}/init-aiflow-env.sh ${MYSQL_CONN}
+. ${BIN}/init-aiflow-env.sh
+${BIN}/init-airflow-env.sh ${MYSQL_CONN}
 
 echo "Starting Airflow Scheduler"
 SCHEDULER_LOG_FILE_NAME=scheduler-$(date "+%Y%m%d-%H%M%S").log
