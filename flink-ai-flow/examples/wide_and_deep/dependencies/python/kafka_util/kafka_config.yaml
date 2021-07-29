@@ -1,0 +1,7 @@
+bootstrap_servers: localhost:9092
+dataset_uri: /tmp/census_data/adult.data
+time_interval: 100
+census_input_preprocess_topic: census_input_preprocess_topic
+census_train_input_topic: census_train_input_topic
+census_predict_input_topic: census_predict_input_topic
+census_predict_output_topic: census_predict_output_topic

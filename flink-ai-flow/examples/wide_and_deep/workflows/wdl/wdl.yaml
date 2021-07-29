@@ -1,0 +1,40 @@
+census_batch_preprocess:
+  job_type: python
+
+census_batch_train:
+  job_type: flink
+  properties:
+    run_mode: cluster
+
+census_batch_evaluate:
+  job_type: python
+
+census_batch_validate:
+  job_type: python
+
+census_stream_preprocess_train:
+  job_type: flink
+  properties:
+    run_mode: cluster
+
+census_stream_train:
+  job_type: flink
+  properties:
+    run_mode: cluster
+
+census_stream_validate:
+  job_type: python
+
+
+census_stream_push:
+  job_type: python
+
+census_stream_preprocess_predict:
+  job_type: flink
+  properties:
+    run_mode: cluster
+
+census_stream_predict:
+  job_type: flink
+  properties:
+    run_mode: cluster
