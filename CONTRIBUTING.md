@@ -40,8 +40,14 @@ The paths mentioned in following content are all relative paths based on `flink-
 
 ### Establish Development Environment
 
-You can run the shell script `build_venv.sh` to build a Python environment quickly with all the dependencies installed and configured.
-After that You can run `source venv/bin/activate ""` to activate the environment, and configure it as the Project Interpreter if you are using PyCharm as your IDE.
+We strongly recommend using [virtualenv](https://virtualenv.pypa.io/en/latest/index.html) or other similar tools for an isolated Python environment in case of dependencies conflict error, e.g.
+
+```shell
+python3 -m venv /path/to/new/virtual/environment
+source /path/to/new/virtual/environment/bin/activate
+```
+
+Now you can configure it as the Project Interpreter if you are using PyCharm as your IDE.
 
 ### Run Tests
 
