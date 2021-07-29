@@ -29,9 +29,10 @@ class DataEdge(Edge):
                  destination: Text,
                  port: int = 0) -> None:
         """
-        :param source: node_id of the data sending node.
-        :param destination: node_id of the data receiving node.
+        :param source: node_id of the node sending data.
+        :param destination: node_id of the node receiving data.
         :param port: The serial number of the data sending port.
+                     It shows the index of :class:`~ai_flow.graph.channel.Channel` in the source node.
         """
         super().__init__(destination=destination, source=source)
         self.port = port
