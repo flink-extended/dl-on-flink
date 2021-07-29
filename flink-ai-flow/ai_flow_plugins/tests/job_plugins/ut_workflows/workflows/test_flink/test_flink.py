@@ -53,10 +53,12 @@ class TestFlink(unittest.TestCase):
         self.master._clear_db()
 
     def test_local_flink_task(self):
+        flink.set_flink_env(None)
         with af.job_config('task_1'):
             input_example = af.user_define_operation(processor=Source())
             processed = af.transform(input=[input_example], transform_processor=Transformer())
             af.user_define_operation(input=[processed], processor=Sink())
+            flink.set_flink_env(flink.FlinkBatchEnv())
         w = af.workflow_operation.submit_workflow(workflow_name=af.current_workflow_config().workflow_name)
         je = af.workflow_operation.start_job_execution(job_name='task_1', execution_id='1')
         je = af.workflow_operation.get_job_execution(job_name='task_1', execution_id='1')
