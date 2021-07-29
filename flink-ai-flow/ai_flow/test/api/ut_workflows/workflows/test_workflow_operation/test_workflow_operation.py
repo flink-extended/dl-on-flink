@@ -40,7 +40,7 @@ class TestWorkflowOperation(unittest.TestCase):
         if os.path.exists(_SQLITE_DB_FILE):
             os.remove(_SQLITE_DB_FILE)
         config = SchedulerServiceConfig()
-        config.set_scheduler_class_name(SCHEDULER_CLASS)
+        config.set_scheduler_class(SCHEDULER_CLASS)
         cls.server = AIFlowServer(store_uri=_SQLITE_DB_URI, port=_PORT,
                                   start_default_notification=False,
                                   start_meta_service=True,
