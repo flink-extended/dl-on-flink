@@ -28,7 +28,7 @@ from notification_service.client import NotificationClient
 
 def start_scheduler(file_path, port=50051, executor=None):
     if executor is None:
-        executor = LocalExecutor(3)
+        executor = LocalExecutor(15)
 
     scheduler = EventBasedSchedulerJob(
         dag_directory=file_path,
