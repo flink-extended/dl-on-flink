@@ -26,3 +26,18 @@ task_2:
   job_type: flink
   properties:
     run_mode: cluster
+
+task_3:
+  job_type: flink
+  properties:
+    run_mode: cluster
+    stop_mode: cancel
+
+task_4:
+  job_type: flink
+  properties:
+    run_mode: cluster
+    stop_mode: stop
+    flink_stop_args:
+      - -p
+      - /tmp/savepoint

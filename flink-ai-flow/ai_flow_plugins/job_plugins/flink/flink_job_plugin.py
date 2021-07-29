@@ -235,7 +235,8 @@ class FlinkJobController(JobController):
                 copy_path = sys.path.copy()
                 copy_path.insert(0, job_runtime_env.python_dep_dir)
                 env['PYTHONPATH'] = ':'.join(copy_path)
-                bash_command = ['flink', 'stop']
+                stop_mode = job_config.stop_mode
+                bash_command = ['flink', stop_mode]
                 if job_config.flink_stop_args is not None:
                     bash_command.extend(job_config.flink_stop_args)
                 bash_command.append(job_id)
