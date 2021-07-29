@@ -27,6 +27,8 @@ class FlinkJobConfig(JobConfig):
         job_type: flink
         properties:
             run_mode: local or cluster (default local)
+            stop_mode: stop or cancel (default cancel)It means to stop the flink job using the (flink stop job_id)
+                       or (flink cancel job_id) command.
             flink_run_args: The flink run command args(-pym etc.). It's type is List.
                 - -pym
                 - /usr/lib/python

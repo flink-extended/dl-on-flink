@@ -40,4 +40,4 @@ task_4:
     stop_mode: stop
     flink_stop_args:
       - -p
-      - /tmp/savepoint
+      - /tmp/savepoint_test_cluster_stop_local_flink_task_with_stop
