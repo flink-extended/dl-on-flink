@@ -34,6 +34,11 @@ def remove_if_exists(file_path):
             rmtree(file_path)
 
 
+def get_script():
+    bin_dir = os.path.join(CURRENT_DIR, "bin")
+    return [os.path.join("bin", filename) for filename in os.listdir(bin_dir)]
+
+
 try:
     if in_source:
         AIRFLOW_DIR = CURRENT_DIR + "/lib/airflow"
@@ -78,15 +83,7 @@ try:
         packages=packages,
         install_requires=required_packages,
         include_package_data=True,
-        scripts=['bin/start-aiflow.sh',
-                 'bin/stop-aiflow.sh',
-                 'bin/start_aiflow.py',
-                 'bin/start_notification_service.py'],
-        package_data={
-            '': ['airflow/alembic.ini', "airflow/git_version", "*.ipynb",
-                 "airflow/providers/cncf/kubernetes/example_dags/*.yaml"],
-            'airflow.serialization': ["*.json"],
-        }
+        scripts=get_script(),
     )
 finally:
     if in_source:

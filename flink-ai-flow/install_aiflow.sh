@@ -17,22 +17,18 @@
 ## specific language governing permissions and limitations
 ## under the License.
 ##
+
 set -e
 
-BIN=`dirname "${BASH_SOURCE-$0}"`
-BIN=`cd "$BIN"; pwd`
-. ${BIN}/init-aiflow-env.sh
+bin=$(dirname "${BASH_SOURCE[0]}")
+bin=$(cd "$bin"; pwd)
+workdir=$bin
 
-if [ ! -e ${AIFLOW_PID_DIR}/aiflow_server.pid ]; then
-  echo "No aiflow server running"
-fi
+# In case of existed typing cause version conflict, uninstall it and then install AI Flow from source
+pip uninstall -y typing
 
-set +e
-echo "Killing AIFlow Server"
-for ((i=1;i<=3;i++))
-do
-  kill $(cat ${AIFLOW_PID_DIR}/aiflow_server.pid) >/dev/null 2>&1 && sleep 1
-done
-
-rm ${AIFLOW_PID_DIR}/aiflow_server.pid
-echo "AIFlow Server killed"
+# Compile Web UI assets of airflow (yarn is required)
+bash "$workdir"/lib/airflow/airflow/www/compile_assets.sh
+pip install "$workdir"/lib/notification_service
+pip install "$workdir"/lib/airflow
+pip install "$workdir"

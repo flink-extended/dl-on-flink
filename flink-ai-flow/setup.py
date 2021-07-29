@@ -53,6 +53,11 @@ def compile_assets():  # noqa
     subprocess.check_call('./lib/airflow/airflow/www/compile_assets.sh')
 
 
+def get_script():
+    bin_dir = os.path.join(CURRENT_DIR, "bin")
+    return [os.path.join("bin", filename) for filename in os.listdir(bin_dir)]
+
+
 try:
     if in_source:
         compile_assets()
@@ -85,15 +90,7 @@ try:
         install_requires=require_packages,
         python_requires='>=3.7, <3.8',
         include_package_data=True,
-        scripts=['bin/start-aiflow.sh',
-                 'bin/stop-aiflow.sh',
-                 'bin/start_aiflow.py',
-                 'bin/start_notification_service.py'],
-        package_data={
-            '': ['airflow/alembic.ini', "airflow/git_version", "*.ipynb",
-                 "airflow/providers/cncf/kubernetes/example_dags/*.yaml"],
-            'airflow.serialization': ["*.json"],
-        }
+        scripts=get_script(),
     )
 finally:
     if in_source:
