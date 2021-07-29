@@ -74,9 +74,9 @@ class PythonProcessor(object):
         """
         pass
 
-    def setup(self, execution_context: ExecutionContext):
+    def open(self, execution_context: ExecutionContext):
         """
-        Setup method for user-defined function. It can be used as a preparation stage before the process function.
+        Open method for user-defined function. It can be used as a preparation stage before the process function.
         """
         pass
 
