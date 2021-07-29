@@ -34,7 +34,7 @@ from ai_flow.util.file_util import zip_file_util
 from ai_flow.workflow.job import Job
 from ai_flow.workflow.job_config import JobConfig
 from ai_flow.workflow.status import Status
-from ai_flow_plugins.job_plugins.flink.flink_env import get_flink_env, get_flink_env_by_job_name
+from ai_flow_plugins.job_plugins.flink.flink_env import get_global_flink_env, get_flink_env_by_job_name
 from ai_flow_plugins.job_plugins.flink.flink_job_config import FlinkJobConfig
 from ai_flow_plugins.job_plugins.flink.flink_processor import FlinkJavaProcessor, FlinkPythonProcessor
 from ai_flow_plugins.job_plugins.utils.run_graph import RunGraph, build_run_graph
@@ -108,7 +108,7 @@ class FlinkJobGenerator(JobGenerator):
                 job.flink_env_file = os.path.basename(fp.name)
                 flink_env = get_flink_env_by_job_name(job_name=flink_job_config.job_name)
                 if flink_env is None:
-                    flink_env = get_flink_env()
+                    flink_env = get_global_flink_env()
                 fp.write(serialization_utils.serialize(flink_env))
         else:
             with NamedTemporaryFile(mode='w+b', dir=resource_dir,
