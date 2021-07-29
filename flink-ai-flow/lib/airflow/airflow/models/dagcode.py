@@ -200,8 +200,15 @@ class DagCode(Base):
         return struct.unpack('>Q', hashlib.sha1(full_filepath.encode('utf-8')).digest()[-8:])[0] >> 8
 
     def write_dag_file_from_db(self):
-        with open(self.fileloc, 'w') as dag_file:
-            dag_file.write(self.source_code)
+        try:
+            parent = os.path.dirname(self.fileloc)
+            if not os.path.exists(parent):
+                os.makedirs(parent)
+            with open(self.fileloc, 'w') as dag_file:
+                dag_file.write(self.source_code)
+        except Exception as e:
+            self.log.error("Failed to recover dag file {} from database.".format(self.fileloc))
+            raise e
 
     @classmethod
     @provide_session
