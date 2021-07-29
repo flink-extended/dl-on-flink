@@ -76,12 +76,9 @@ def set_flink_env(env: FlinkEnv):
         __job_flink_env_dict__[current_job_name()] = env
 
 
-def get_flink_env() -> FlinkEnv:
-    global __flink_env__, __job_flink_env_dict__
-    if current_job_name() is None:
-        return __flink_env__
-    else:
-        return __job_flink_env_dict__.get(current_job_name())
+def get_global_flink_env() -> FlinkEnv:
+    global __flink_env__
+    return __flink_env__
 
 
 def get_flink_env_by_job_name(job_name: Text) -> FlinkEnv:
