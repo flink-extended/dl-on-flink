@@ -56,14 +56,16 @@ def start_master(config_file):
 
 if __name__ == '__main__':
     configure_logging()
-    if "AIFLOW_HOME" in os.environ:
-        root_dir = os.environ["AIFLOW_HOME"]
-        logging.info("AIFLOW_HOME is set, looking for aiflow_server.yaml at {}".format(root_dir))
-    else:
-        root_dir = os.environ["HOME"] + "/aiflow"
-        logging.info("AIFLOW_HOME is not set, looking for aiflow_server.yaml at {}".format(root_dir))
-    aiflow_server_config = root_dir + "/aiflow_server.yaml"
+    if "AIFLOW_HOME" not in os.environ:
+        os.environ["AIFLOW_HOME"] = os.environ["HOME"] + "/aiflow"
+        logging.info("Set env variable AIFLOW_HOME to {}".format(os.environ["AIFLOW_HOME"]))
+    logging.info("Looking for aiflow_server.yaml at {}".format(os.environ["AIFLOW_HOME"]))
+    aiflow_server_config = os.environ["AIFLOW_HOME"] + "/aiflow_server.yaml"
     if not os.path.exists(aiflow_server_config):
         logging.info("{} does not exist, creating the default aiflow server config".format(aiflow_server_config))
-        aiflow_server_config = create_default_sever_config(root_dir, {'AIFLOW_HOME': root_dir})
+        required_env = {'AIFLOW_HOME', 'AIFLOW_DB_CONN', 'AIFLOW_DB_TYPE'}
+        for key in required_env:
+            if key not in os.environ:
+                raise Exception("Failed to create default aiflow server config, {} env variable not set.".format(key))
+        aiflow_server_config = create_default_sever_config(os.environ["AIFLOW_HOME"], os.environ.copy())
     start_master(aiflow_server_config)
