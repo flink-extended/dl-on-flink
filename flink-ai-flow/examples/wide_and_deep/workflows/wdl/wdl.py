@@ -16,6 +16,10 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+import distutils.util
+import os
+import sys
+
 import ai_flow as af
 from ai_flow_plugins.job_plugins import flink as flink_job
 from ai_flow.model_center.entity.model_version_stage import ModelVersionEventType
@@ -25,6 +29,8 @@ from cencus_stream_train_executors import StreamPreprocessExecutor, StreamValida
     StreamTrainExecutor, StreamTrainSource, StreamTableEnvCreator, StreamPreprocessSource
 from cencus_stream_predict_executors import StreamPredictSource, StreamPredictExecutor, StreamPredictSink, \
     StreamPredictPreprocessSource, StreamPredictPreprocessSink
+
+from ai_flow_plugins.job_plugins.flink import FlinkJavaProcessor
 
 
 def batch_jobs():
@@ -78,7 +84,7 @@ def stream_train():
                       model_info=stream_model_info, name='census_stream_push')
 
 
-def stream_prediction():
+def stream_prediction(use_jar_preprocess):
     """Stream Prediction Jobs"""
     stream_preprocess_input = af.get_dataset_by_name('stream_preprocess_input')
     stream_predict_input = af.get_dataset_by_name('stream_predict_input')
@@ -86,12 +92,21 @@ def stream_prediction():
 
     stream_model_info = af.get_model_by_name('wide_and_deep')
     with af.job_config(job_name='census_stream_preprocess_predict'):
-        stream_predict_preprocess_source = af.read_dataset(dataset_info=stream_preprocess_input,
-                                                           read_dataset_processor=StreamPredictPreprocessSource())
-        stream_predict_preprocess_sink = af.user_define_operation(
-            input=[stream_predict_preprocess_source],
-            processor=StreamPredictPreprocessSink(),
-            name='census_stream_predict_preprocess_sink')
+        if use_jar_preprocess:
+            preprocess_jar_filename = "wdl-preprocess-0.1-SNAPSHOT.jar"
+            check_jar_dependencies(preprocess_jar_filename)
+            af.user_define_operation(processor=FlinkJavaProcessor(entry_class="org.aiflow.StreamPredictPreprocess",
+                                                                  main_jar_file=preprocess_jar_filename,
+                                                                  args=["localhost:9092",
+                                                                        "census_input_preprocess_topic",
+                                                                        "census_predict_input_topic"]))
+        else:
+            stream_predict_preprocess_source = af.read_dataset(dataset_info=stream_preprocess_input,
+                                                               read_dataset_processor=StreamPredictPreprocessSource())
+            stream_predict_preprocess_sink = af.user_define_operation(
+                input=[stream_predict_preprocess_source],
+                processor=StreamPredictPreprocessSink(),
+                name='census_stream_predict_preprocess_sink')
 
     with af.job_config(job_name='census_stream_predict'):
         stream_predict_source = af.read_dataset(dataset_info=stream_predict_input,
@@ -104,12 +119,20 @@ def stream_prediction():
                          write_dataset_processor=StreamPredictSink())
 
 
-def run_workflow():
+def check_jar_dependencies(jar_filename):
+    jar_path = os.path.join(af.current_project_context().get_dependencies_path(), "jar", jar_filename)
+    if not os.path.exists(jar_path):
+        print("{} doesn't exist! \n"
+              "Please put the jar in dependencies/jar".format(jar_path))
+        exit(-1)
+
+
+def run_workflow(use_jar_preprocess):
     af.init_ai_flow_context()
     flink_job.set_flink_env(env=StreamTableEnvCreator())
     batch_jobs()
     stream_train()
-    stream_prediction()
+    stream_prediction(use_jar_preprocess)
 
     af.action_on_job_status(job_name='census_batch_train', upstream_job_name='census_batch_preprocess')
     af.action_on_job_status(job_name='census_batch_evaluate', upstream_job_name='census_batch_train')
@@ -136,10 +159,15 @@ def run_workflow():
                                      model_version_event_type=ModelVersionEventType.MODEL_DEPLOYED)
 
     # Run workflow
+    af.workflow_operation.stop_all_workflow_executions(af.current_workflow_config().workflow_name)
     af.workflow_operation.submit_workflow(af.current_workflow_config().workflow_name)
     workflow_execution = af.workflow_operation.start_new_workflow_execution(af.current_workflow_config().workflow_name)
     print(workflow_execution)
 
 
 if __name__ == '__main__':
-    run_workflow()
+    if len(sys.argv) < 2:
+        use_jar_preprocess = False
+    else:
+        use_jar_preprocess = bool(distutils.util.strtobool(sys.argv[1]))
+    run_workflow(use_jar_preprocess)
