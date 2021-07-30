@@ -59,7 +59,7 @@ start-cluster.sh
 ```
 - Start AIFlow Server
 ```shell
-start-aiflow.sh mysql://admin:admin@127.0.0.1/airflow
+start-all-aiflow-services.sh mysql://admin:admin@127.0.0.1/airflow
 ```
 Note, the user should refer to QuickStart for starting AIFlow correctly.
 
@@ -81,6 +81,21 @@ Then, run the workflow:
 ```shell
 export PYTHONPATH=wide_and_deep/dependencies/python
 python wide_and_deep/workflows/wdl/wdl.py
+```
+
+#### Run the Wide and Deep project's workflow with Flink jar job
+You can also run the workflow that use Flink jar to run the stream predict preprocessing. To do that you want to 
+make the Flink job jar with the following command at wide_and_deep/java/preprocess:
+```
+mvn clean package
+```
+
+Put the `wide_and_deep/java/preprocess/target/wdl-preprocess-0.1-SNAPSHOT.jar` in `wide_and_deep/dependencies/jar`.
+
+Run the workflow with argument:
+```shell
+export PYTHONPATH=wide_and_deep/dependencies/python
+python wide_and_deep/workflows/wdl/wdl.py true
 ```
 
 #### Check results
