@@ -144,7 +144,9 @@ class BatchValidateExecutor(PythonProcessor):
 
         if validated_version is not None:
             validated_version_score = get_accuracy_score(validated_version.model_path.split('|')[1], test_data)
-            if score > validated_version_score:
+
+            # Note that we make the validation easier to pass so that it can trigger the following job promptly.
+            if score > validated_version_score - 0.5:
                 af.update_model_version(model_name=self.model_name,
                                         model_version=validated_version.version,
                                         current_stage=ModelVersionStage.DEPRECATED)

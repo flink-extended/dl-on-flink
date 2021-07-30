@@ -1,0 +1,4 @@
+preprocess:
+  job_type: flink
+  properties:
+    run_mode: cluster
