@@ -18,26 +18,28 @@
 ## under the License.
 ##
 set -e
-usage="Usage: start-all-aiflow-services.sh [airflow-mysql-conn]"
+usage="Usage: start-all-aiflow-services.sh [aiflow-mysql-conn]"
 
 if [ $# -ne 1 ]; then
   echo $usage
   exit 1
 fi
 
-AIRFLOW_MYSQL_CONN=$1
+export AIFLOW_DB_CONN=$1
+export AIFLOW_DB_TYPE="MYSQL"
+
 BIN=`dirname "${BASH_SOURCE-$0}"`
 BIN=`cd "$BIN"; pwd`
 
 # init aiflow env
 . ${BIN}/init-aiflow-env.sh
-${BIN}/init-airflow-env.sh ${AIRFLOW_MYSQL_CONN}
+${BIN}/init-airflow-env.sh ${AIFLOW_DB_CONN}
 
 # start AIFlow
 ${BIN}/start-aiflow.sh
 # Wait for ns to reach the running state
 sleep 5
 # start airflow scheduler and web server
-${BIN}/start-airflow.sh ${AIRFLOW_MYSQL_CONN}
+${BIN}/start-airflow.sh ${AIFLOW_DB_CONN}
 
 echo "Visit http://127.0.0.1:8080/ to access the airflow web server."
