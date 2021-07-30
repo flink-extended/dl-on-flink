@@ -18,7 +18,7 @@
 ## under the License.
 ##
 set -e
-usage="Usage: start-all-aiflow-service.sh [airflow-mysql-conn]"
+usage="Usage: start-all-aiflow-services.sh [airflow-mysql-conn]"
 
 if [ $# -ne 1 ]; then
   echo $usage
