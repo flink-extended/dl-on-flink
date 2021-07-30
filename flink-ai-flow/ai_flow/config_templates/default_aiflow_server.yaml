@@ -21,9 +21,9 @@
 server_ip: localhost
 server_port: 50051
 # uri of database backend for AIFlow server
-db_uri: sqlite:///{AIFLOW_HOME}/aiflow.db
+db_uri: {AIFLOW_DB_CONN}
 # type of database backend for AIFlow server, can be SQL_LITE, MYSQL, MONGODB
-db_type: SQL_LITE
+db_type: {AIFLOW_DB_TYPE}
 
 # High availability is disabled by default
 #enable_ha: false
