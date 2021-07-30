@@ -23,6 +23,10 @@ export AIFLOW_PID_DIR=${AIFLOW_PID_DIR:-/tmp}
 export AIFLOW_LOG_DIR="${AIFLOW_HOME}/logs"
 export AIRFLOW_DEPLOY_PATH="${AIFLOW_HOME}/airflow_deploy"
 
+DEFAULT_DB_CONN="sqlite:///${AIFLOW_HOME}/aiflow.db"
+export AIFLOW_DB_CONN=${AIFLOW_DB_CONN:-${DEFAULT_DB_CONN}}
+export AIFLOW_DB_TYPE=${AIFLOW_DB_TYPE:-SQL_LITE}
+
 export AIRFLOW_HOME=${AIRFLOW_HOME:-~/airflow}
 
 # create directory if not exist
