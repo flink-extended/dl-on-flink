@@ -37,7 +37,7 @@ ${BIN}/init-airflow-env.sh ${AIFLOW_DB_CONN}
 
 # start AIFlow
 ${BIN}/start-aiflow.sh
-# Wait for ns to reach the running state
+# Wait for notification service to reach the running state
 sleep 5
 # start airflow scheduler and web server
 ${BIN}/start-airflow.sh ${AIFLOW_DB_CONN}

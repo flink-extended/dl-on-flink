@@ -30,6 +30,23 @@ BIN=`cd "$BIN"; pwd`
 . ${BIN}/init-aiflow-env.sh
 ${BIN}/init-airflow-env.sh ${MYSQL_CONN}
 
+wait_for_airflow_web_server() {
+  for i in {0..60}; do
+    if grep -q 'Listening at:' ${AIFLOW_LOG_DIR}/$1 || curl -s localhost:8080 > /dev/null ; then
+      break
+    fi
+    sleep 1
+  done
+  echo "Timeout waiting for airflow web server to run. Please check the log at ${AIFLOW_LOG_DIR}/$1"
+  return 1
+}
+
+# Stop the running scheduler and web server if already running
+if [ -e ${AIFLOW_PID_DIR}/scheduler.pid ] || [ -e ${AIFLOW_PID_DIR}/web.pid ]; then
+  echo "Airflow is running, stopping first"
+  ${BIN}/stop-airflow.sh
+fi
+
 echo "Starting Airflow Scheduler"
 SCHEDULER_LOG_FILE_NAME=scheduler-$(date "+%Y%m%d-%H%M%S").log
 airflow event_scheduler --subdir=${AIRFLOW_DEPLOY_PATH} > ${AIFLOW_LOG_DIR}/${SCHEDULER_LOG_FILE_NAME} 2>&1 &
@@ -40,6 +57,7 @@ echo "Starting Airflow Web Server"
 WEB_SERVER_LOG_FILE_NAME=web-$(date "+%Y%m%d-%H%M%S").log
 airflow webserver -p 8080 > ${AIFLOW_LOG_DIR}/${WEB_SERVER_LOG_FILE_NAME} 2>&1 &
 echo $! > ${AIFLOW_PID_DIR}/web.pid
+wait_for_airflow_web_server ${WEB_SERVER_LOG_FILE_NAME}
 echo "Airflow Web Server started"
 
 echo "Scheduler log: ${AIFLOW_LOG_DIR}/${SCHEDULER_LOG_FILE_NAME}"
