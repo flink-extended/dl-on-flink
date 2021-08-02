@@ -30,6 +30,11 @@ if [ $# -ne 1 ]; then
   exit 1
 fi
 
+if [ -e ${AIFLOW_PID_DIR}/notification_service.pid ]; then
+  echo "Notification service is running, stopping first"
+  ${BIN}/stop-notification.sh
+fi
+
 echo "Starting notification service"
 LOG_FILE_NAME=notification_service-$(date "+%Y%m%d-%H%M%S").log
 start_notification_service.py --database-conn=$1 > ${AIFLOW_LOG_DIR}/${LOG_FILE_NAME} 2>&1 &

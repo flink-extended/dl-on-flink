@@ -23,6 +23,11 @@ BIN=`dirname "${BASH_SOURCE-$0}"`
 BIN=`cd "$BIN"; pwd`
 . ${BIN}/init-aiflow-env.sh
 
+if [ -e ${AIFLOW_PID_DIR}/aiflow_server.pid ]; then
+  echo "AiFlow server is running, stopping first"
+  ${BIN}/stop-aiflow.sh
+fi
+
 echo "Starting AIFlow Server"
 LOG_FILE_NAME=aiflow-server-$(date "+%Y%m%d-%H%M%S").log
 start_aiflow.py > ${AIFLOW_LOG_DIR}/${LOG_FILE_NAME} 2>&1 &
