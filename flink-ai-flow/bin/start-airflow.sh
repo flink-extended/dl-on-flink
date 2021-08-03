@@ -33,7 +33,7 @@ ${BIN}/init-airflow-env.sh ${MYSQL_CONN}
 wait_for_airflow_web_server() {
   for i in {0..60}; do
     if grep -q 'Listening at:' ${AIFLOW_LOG_DIR}/$1 || curl -s localhost:8080 > /dev/null ; then
-      break
+      return 0
     fi
     sleep 1
   done
