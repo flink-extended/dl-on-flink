@@ -6,6 +6,8 @@ import org.apache.flink.table.descriptors.DescriptorProperties;
 import org.apache.flink.table.factories.TableSinkFactory;
 import org.apache.flink.table.sinks.TableSink;
 import org.apache.flink.types.Row;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,6 +17,8 @@ import static com.alibaba.flink.ml.operator.ops.table.descriptor.LogTableValidat
 import static org.apache.flink.table.descriptors.ConnectorDescriptorValidator.CONNECTOR_TYPE;
 
 public class LogTableSinkFactory implements TableSinkFactory<Row> {
+
+    private static final Logger LOG = LoggerFactory.getLogger(LogTableSinkFactory.class);
 
     @Override
     public TableSink<Row> createTableSink(Context context) {
@@ -33,7 +37,7 @@ public class LogTableSinkFactory implements TableSinkFactory<Row> {
             RichSinkFunction<Row> richSinkFunction = LogTable.RichSinkFunctionDeserializer.deserialize(serializedRichFunction);
             return new LogTableStreamSink(context.getTable().getSchema(), richSinkFunction);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Fail to create LogTableStreamSink", e);
         }
         return new LogTableStreamSink();
     }
