@@ -60,7 +60,8 @@ def get_script():
 
 try:
     if in_source:
-        compile_assets()
+        if os.getenv('INSTALL_AIRFLOW_WITHOUT_FRONTEND') != 'true':
+            compile_assets()
         AIRFLOW_DIR = CURRENT_DIR + "/lib/airflow"
         try:
             os.symlink(AIRFLOW_DIR + "/airflow", CURRENT_DIR + "/airflow")
