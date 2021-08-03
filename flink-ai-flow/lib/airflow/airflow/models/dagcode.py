@@ -207,7 +207,7 @@ class DagCode(Base):
             with open(self.fileloc, 'w') as dag_file:
                 dag_file.write(self.source_code)
         except Exception as e:
-            self.log.error("Failed to recover dag file {} from database.".format(self.fileloc))
+            log.error("Failed to recover dag file {} from database.".format(self.fileloc))
             raise e
 
     @classmethod
