@@ -25,7 +25,7 @@ import com.alibaba.flink.ml.cluster.master.AMTransitions;
 import com.alibaba.flink.ml.cluster.master.AbstractAMStateMachine;
 import com.alibaba.flink.ml.cluster.master.meta.AMMeta;
 import com.alibaba.flink.ml.cluster.node.MLContext;
-import com.alibaba.flink.ml.cluster.rpc.AppMasterServer;
+import com.alibaba.flink.ml.cluster.rpc.AppMasterServiceImpl;
 import com.alibaba.flink.ml.cluster.statemachine.StateMachine;
 import com.alibaba.flink.ml.cluster.statemachine.StateMachineBuilder;
 import com.alibaba.flink.ml.proto.AMStatus;
@@ -36,8 +36,8 @@ import java.util.EnumSet;
  * tensorflow cluster application master state machine implementation.
  */
 public class TFAMStateMachineImpl extends AbstractAMStateMachine {
-	public TFAMStateMachineImpl(AppMasterServer.AppMasterServiceImpl server, AMMeta amState,
-			MLContext MLContext, BaseEventReporter eventReporter) {
+	public TFAMStateMachineImpl(AppMasterServiceImpl server, AMMeta amState,
+								MLContext MLContext, BaseEventReporter eventReporter) {
 		super(server, amState, MLContext, eventReporter);
 	}
 

@@ -56,11 +56,11 @@ public class AMRegistry {
 		return getAMClient(MLContext.getProperties(), timeout);
 	}
 
-	public static AMClient getAMClient(Map<String, String> propteries, long timeout) throws IOException {
+	public static AMClient getAMClient(Map<String, String> properties, long timeout) throws IOException {
 		Storage storage = null;
 		AMClient client = null;
 		try {
-			storage = StorageFactory.getStorageInstance(propteries);
+			storage = StorageFactory.getStorageInstance(properties);
 			long startTime = System.currentTimeMillis();
 			while (true) {
 				long duration = System.currentTimeMillis() - startTime;

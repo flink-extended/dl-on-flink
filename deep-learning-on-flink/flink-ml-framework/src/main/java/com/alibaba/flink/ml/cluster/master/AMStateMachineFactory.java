@@ -21,7 +21,7 @@ package com.alibaba.flink.ml.cluster.master;
 import com.alibaba.flink.ml.cluster.BaseEventReporter;
 import com.alibaba.flink.ml.cluster.node.MLContext;
 import com.alibaba.flink.ml.cluster.master.meta.AMMeta;
-import com.alibaba.flink.ml.cluster.rpc.AppMasterServer;
+import com.alibaba.flink.ml.cluster.rpc.AppMasterServiceImpl;
 import com.alibaba.flink.ml.util.MLConstants;
 import com.alibaba.flink.ml.util.MLException;
 import com.google.common.base.Preconditions;
@@ -58,7 +58,7 @@ public class AMStateMachineFactory {
 			Preconditions.checkArgument(AbstractAMStateMachine.class.isAssignableFrom(cls),
 					"Invalid implementation class " + impl);
 			Constructor<AbstractAMStateMachine> constructor = cls
-					.getConstructor(AppMasterServer.AppMasterServiceImpl.class,
+					.getConstructor(AppMasterServiceImpl.class,
 							AMMeta.class,
 							MLContext.class,
 							BaseEventReporter.class);

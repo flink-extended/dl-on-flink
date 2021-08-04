@@ -16,13 +16,12 @@
  * limitations under the License.
  */
 
-package com.alibaba.flink.ml.cluster;
+package com.alibaba.flink.ml.cluster.rpc;
 
-import com.alibaba.flink.ml.cluster.rpc.AMClient;
-import com.alibaba.flink.ml.cluster.rpc.AMRegistry;
-import com.alibaba.flink.ml.cluster.rpc.AppMasterServer;
-import com.alibaba.flink.ml.cluster.rpc.RpcCode;
+import com.alibaba.flink.ml.cluster.ExecutionMode;
+import com.alibaba.flink.ml.cluster.MLConfig;
 import com.alibaba.flink.ml.cluster.node.MLContext;
+import com.alibaba.flink.ml.cluster.storage.StorageFactory;
 import com.alibaba.flink.ml.proto.*;
 import com.alibaba.flink.ml.cluster.role.AMRole;
 import com.alibaba.flink.ml.cluster.role.PsRole;
@@ -31,7 +30,6 @@ import com.alibaba.flink.ml.util.*;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
-import org.apache.curator.test.TestingServer;
 import org.junit.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +47,6 @@ import static org.mockito.Mockito.*;
 
 public class AppMasterServerTest {
 
-	private static TestingServer testingServer;
 	private static String IP;
 	private static final Logger LOG = LoggerFactory.getLogger(AppMasterServerTest.class);
 
@@ -60,12 +57,11 @@ public class AppMasterServerTest {
 
 	@Before
 	public void setUp() throws Exception {
-		testingServer = new TestingServer(2181, true);
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		testingServer.stop();
+		StorageFactory.memoryStorage.clear();
 	}
 
 	private static class DummyNodeServer {
@@ -87,8 +83,7 @@ public class AppMasterServerTest {
 		SimpleResponse registerNode() {
 			waitForAMStatus(AMStatus.AM_INIT);
 			version = amClient.getVersion().getVersion();
-			NodeSpec nodeSpec = AMClient
-					.newNodeSpec(mlContext.getRoleName(), IP, mlContext.getIndex(), server.getPort());
+			NodeSpec nodeSpec = newNodeSpec(mlContext.getRoleName(), IP, mlContext.getIndex(), server.getPort());
 			return amClient.registerNode(version, nodeSpec);
 		}
 
@@ -100,8 +95,7 @@ public class AppMasterServerTest {
 		SimpleResponse twiceRegisterNode() {
 			waitForAMStatus(AMStatus.AM_RUNNING);
 			version = amClient.getVersion().getVersion();
-			NodeSpec nodeSpec = AMClient
-					.newNodeSpec(mlContext.getRoleName(), IP, mlContext.getIndex(), server.getPort());
+			NodeSpec nodeSpec = newNodeSpec(mlContext.getRoleName(), IP, mlContext.getIndex(), server.getPort());
 			return amClient.registerNode(version, nodeSpec);
 		}
 
@@ -124,8 +118,7 @@ public class AppMasterServerTest {
 
 		SimpleResponse finishNode() {
 			waitForAMStatus(AMStatus.AM_RUNNING);
-			NodeSpec nodeSpec = AMClient
-					.newNodeSpec(mlContext.getRoleName(), IP, mlContext.getIndex(), server.getPort());
+			NodeSpec nodeSpec = newNodeSpec(mlContext.getRoleName(), IP, mlContext.getIndex(), server.getPort());
 			return amClient.nodeFinish(version, nodeSpec);
 		}
 
@@ -218,10 +211,15 @@ public class AppMasterServerTest {
 		MLContext amContext = new MLContext(ExecutionMode.TRAIN, mlConfig, new AMRole().name(), 0,
 				null, null);
 		AMClient amClient = AMRegistry.getAMClient(amContext);
+		LOG.info("am client: {}:{}", amClient.getHost(), amClient.getPort());
 		while (true) {
-			if (amClient.getAMStatus().equals(AMStatus.AM_RUNNING)) {
-				break;
-			} else {
+			try {
+				if (amClient.getAMStatus().equals(AMStatus.AM_RUNNING)) {
+					break;
+				}
+			} catch (Exception e) {
+				LOG.error("error on getting am status", e);
+			} finally {
 				Thread.sleep(1000);
 			}
 		}
@@ -536,5 +534,23 @@ public class AppMasterServerTest {
 			return null;
 		}).when(dummyService).nodeRestart(any(NodeRestartRequest.class), any(StreamObserver.class));
 		return dummyService;
+	}
+
+	/**
+	 * create node information.
+	 * @param roleName cluster role name.
+	 * @param ip node ip address.
+	 * @param index node index.
+	 * @param clientPort node server port.
+	 * @return node information.
+	 */
+	private static NodeSpec newNodeSpec(String roleName, String ip, int index, int clientPort) {
+		NodeSpec node = NodeSpec.newBuilder()
+				.setRoleName(roleName)
+				.setClientPort(clientPort)
+				.setIndex(index)
+				.setIp(ip)
+				.build();
+		return node;
 	}
 }
