@@ -53,29 +53,6 @@ public class PythonUtil {
 	private static final Logger LOG = LoggerFactory.getLogger(PythonUtil.class);
 	private static final String FIELD_SEP = "\0";
 
-	public static void setUpVirtualEnvEmbedded(MLContext MLContext) throws Exception {
-		String virtualEnv = MLContext.getEnvPath();
-		if (StringUtils.isEmpty(virtualEnv)) {
-			return;
-		}
-		deployVirtualEnv(MLContext);
-		String[] paths = readFromFile();
-		Preconditions.checkState(virtualEnv.equals(paths[0]), "Changing virtual env is not allowed.");
-		Preconditions.checkState(new File(paths[1]).exists(), "Deployed virtual env has been removed");
-		if (!VENV_VAR_SET.exists()) {
-			synchronized (PythonUtil.class) {
-				if (!VENV_VAR_SET.exists()) {
-					String pythonPath = paths[1];
-					String tfPath = pythonPath + "/com/alibaba/flink/ml";
-					setPathVar(MLConstants.PYTHONPATH_ENV, pythonPath, null);
-					setPathVar(MLConstants.LD_LIBRARY_PATH, tfPath, null);
-					Preconditions.checkState(VENV_VAR_SET.createNewFile(),
-							"Cannot create " + VENV_VAR_SET.getAbsolutePath());
-				}
-			}
-		}
-	}
-
 	public static void setupVirtualEnvProcess(MLContext MLContext, ProcessBuilder builder) throws IOException {
 		String virtualEnv = MLContext.getEnvPath();
 		if (StringUtils.isEmpty(virtualEnv)) {
@@ -120,7 +97,7 @@ public class PythonUtil {
 		String pythonPath = findChildByName(envDir, "site-packages").getAbsolutePath();
 		// TODO: support different virtual env for process scriptRunner?
 		String tfPath = pythonPath + "/com/alibaba/flink/ml";
-		String libJvm = "libjvm.so";
+		String libJvm = SystemUtils.IS_OS_MAC ? "libjvm.dylib" : "libjvm.so";
 		String jvmPath = findChildByName(new File(System.getenv("JAVA_HOME")), libJvm).getParent();
 		mlContext.putEnvProperty(MLConstants.LD_LIBRARY_PATH,
 				Joiner.on(File.pathSeparator).join(new String[] { tfPath, jvmPath }));
@@ -130,18 +107,7 @@ public class PythonUtil {
 	private static void setPathVar(String name, String value, ProcessBuilder builder) {
 //        value = appendPathVar(value, builder == null ? System.getenv(name) : builder.environment().get(name));
 		LOG.info("Setting {} to {}", name, value);
-		if (builder != null) {
-			builder.environment().put(name, value);
-		} else {
-			EnvVarUtil.setenv(name, value);
-		}
-	}
-
-	private static String appendPathVar(String value, String current) {
-		if (StringUtils.isEmpty(current)) {
-			return value;
-		}
-		return value + File.pathSeparator + current;
+		builder.environment().put(name, value);
 	}
 
 	private static void deployVirtualEnv(MLContext MLContext) throws IOException {
@@ -196,6 +162,7 @@ public class PythonUtil {
 	}
 
 	private static File findChildByName(File parent, String name) {
+		LOG.info("Looking for {} under directory of {}", name, parent.getAbsolutePath());
 		Deque<File> deque = new ArrayDeque<>();
 		deque.add(parent);
 		while (!deque.isEmpty()) {
@@ -210,17 +177,4 @@ public class PythonUtil {
 		throw new RuntimeException("Cannot find " + name + " in " + parent.getAbsolutePath());
 	}
 
-	public static File storeResourceAsFile(String resourceName, String workDir) throws IOException {
-		System.out.println("resource name=" + resourceName);
-		InputStream is = PythonUtil.class.getClassLoader().getResourceAsStream(resourceName);
-		System.out.println("is=" + is);
-		System.out.println("workDir=" + workDir);
-		File targetFile = new File(workDir + "/" + resourceName);
-		FileUtils.copyInputStreamToFile(is, targetFile);
-		return targetFile;
-	}
-
-	public static File storeResourceAsFile(String resourceName) throws IOException {
-		return storeResourceAsFile(resourceName, System.getProperty("user.dir"));
-	}
 }

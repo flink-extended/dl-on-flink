@@ -37,9 +37,13 @@ public class ZookeeperStorageImplTest {
 
 	@Before
 	public void setUp() throws Exception {
-		server = new TestingServer(2181, true);
+		final int port = 2181;
+		server = new TestingServer(port, true);
 		MLContext context = DummyContext.createDummyMLContext();
 		context.getProperties().put(MLConstants.JOB_VERSION, "0");
+		context.getProperties().put(MLConstants.CONFIG_STORAGE_TYPE, MLConstants.STORAGE_ZOOKEEPER);
+		context.getProperties().put(MLConstants.CONFIG_ZOOKEEPER_CONNECT_STR, "localhost:" + port);
+		context.getProperties().put(MLConstants.CONFIG_ZOOKEEPER_BASE_PATH, "tf-on-flink-test");
 		client = StorageFactory.getStorageInstance(context.getProperties());
 	}
 

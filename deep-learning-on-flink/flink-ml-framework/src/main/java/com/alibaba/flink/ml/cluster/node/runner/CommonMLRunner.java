@@ -32,14 +32,15 @@ import com.alibaba.flink.ml.util.IpHostUtil;
 import com.alibaba.flink.ml.util.MLConstants;
 import com.alibaba.flink.ml.util.MLException;
 import com.alibaba.flink.ml.util.ProtoUtil;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -60,6 +61,8 @@ public class CommonMLRunner implements MLRunner {
 	protected ExecutorService heartbeatService;
 
 	protected MLClusterDef mlClusterDef;
+
+	private Future<?> heartBeatRunnerFuture;
 
 
 	public CommonMLRunner(MLContext mlContext, NodeServer server) {
@@ -272,7 +275,7 @@ public class CommonMLRunner implements MLRunner {
 			heartbeat.setDaemon(true);
 			return heartbeat;
 		});
-		heartbeatService.submit(new NodeHeartBeatRunner(mlContext, server, nodeSpec, version));
+		heartBeatRunnerFuture = heartbeatService.submit(new NodeHeartBeatRunner(mlContext, server, nodeSpec, version));
 	}
 
 	protected void stopHeartBeat(){
@@ -399,6 +402,11 @@ public class CommonMLRunner implements MLRunner {
 			scriptRunner.notifyKillSignal();
 		}
 		resultStatus = ExecutionStatus.KILLED_BY_FLINK;
+	}
+
+	@VisibleForTesting
+	Future<?> getHeartBeatRunnerFuture() {
+		return heartBeatRunnerFuture;
 	}
 }
 
