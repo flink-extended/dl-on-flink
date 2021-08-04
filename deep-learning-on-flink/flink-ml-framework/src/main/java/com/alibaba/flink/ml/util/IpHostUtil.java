@@ -18,6 +18,7 @@
 
 package com.alibaba.flink.ml.util;
 
+import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +34,8 @@ public class IpHostUtil {
 	public static final String TF_ON_FLINK_IP = "TF_ON_FLINK_IP";
 	private static Logger LOG = LoggerFactory.getLogger(IpHostUtil.class);
 
-	private static InetAddress getLocalHostLANAddress() throws Exception {
+	@VisibleForTesting
+	static InetAddress getLocalHostLANAddress() throws Exception {
 		try {
 			InetAddress candidateIpv4 = null;
 			InetAddress candidateIpv6 = null;
@@ -72,12 +74,6 @@ public class IpHostUtil {
 			LOG.error("Fail to get local ip from jdk. ", e);
 		}
 		return null;
-	}
-
-	private static String getHostName() throws UnknownHostException {
-		InetAddress address = InetAddress.getLocalHost();
-		String hostName = address.getHostName();
-		return hostName;
 	}
 
 	private static String getLocalIp() throws Exception {

@@ -114,7 +114,6 @@ public class ProcessPythonRunnerTest extends TestWithNodeService {
 		runner.runScript();
 		byte[] object = dataExchange.read(true);
 		Logger.info("res:" + new String(object));
-
 	}
 
 	@Test

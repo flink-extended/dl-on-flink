@@ -26,9 +26,9 @@ import java.util.List;
  */
 public interface Storage {
 	/**
-	 * get vale by key.
+	 * get value by key.
 	 * @param path key.
-	 * @return value.
+	 * @return value set with the path, and null if the value does not exist.
 	 * @throws IOException
 	 */
 	byte[] getValue(String path) throws IOException;
@@ -36,7 +36,7 @@ public interface Storage {
 	/**
 	 * set a value to a key.
 	 * @param path key.
-	 * @param value
+	 * @param value value associate with the apth.
 	 * @throws IOException
 	 */
 	void setValue(String path, byte[] value) throws IOException;
@@ -58,7 +58,7 @@ public interface Storage {
 
 	/**
 	 * @param path key
-	 * @return true: exist key, false: not exist key.
+	 * @return true: exist key, false: non-exist key.
 	 * @throws IOException
 	 */
 	boolean exists(String path) throws IOException;

@@ -416,7 +416,7 @@ public class MLContext implements Serializable, Closeable {
 	}
 
 	public String getIdentity() {
-		return roleName + ":" + String.valueOf(index);
+		return roleName + ":" + index;
 	}
 
 	public String getNodeServerIP() {
@@ -453,9 +453,12 @@ public class MLContext implements Serializable, Closeable {
 		Map<String, String> props = new HashMap<>();
 		props.putAll(pb.getPropsMap());
 		// TODO: add envPath?
-		Map<String, String> inputCols = new HashMap<>();
-		for (ColumnInfoPB colInfo : pb.getColumnInfosList()) {
-			inputCols.put(colInfo.getName(), colInfo.getType());
+		Map<String, String> inputCols = null;
+		if (pb.getColumnInfosCount() > 0) {
+			inputCols = new HashMap<>();
+			for (ColumnInfoPB colInfo : pb.getColumnInfosList()) {
+				inputCols.put(colInfo.getName(), colInfo.getType());
+			}
 		}
 		// the input/output queues have already been flipped in toPB
 		File inQueueFile = new File(pb.getInQueueName());
@@ -498,16 +501,6 @@ public class MLContext implements Serializable, Closeable {
 		}
 		builder.putAllRoleParallelism(roleParallelismMap);
 		return builder;
-	}
-
-	public File createTempFile(String name) throws IOException {
-		File f = new File(localJobScratchDir, name);
-		Preconditions.checkState(f.createNewFile(), "Failed to create file " + name);
-		return f;
-	}
-
-	public File createTempDir() throws IOException {
-		return createTempDir(null).toFile();
 	}
 
 	public File createTempFile(String prefix, String suffix) throws IOException {

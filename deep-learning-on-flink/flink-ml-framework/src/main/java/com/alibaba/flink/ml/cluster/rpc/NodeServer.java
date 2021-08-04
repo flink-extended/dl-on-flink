@@ -19,15 +19,14 @@
 package com.alibaba.flink.ml.cluster.rpc;
 
 import com.alibaba.flink.ml.cluster.node.MLContext;
-import com.alibaba.flink.ml.proto.*;
 import com.alibaba.flink.ml.cluster.node.runner.MLRunner;
 import com.alibaba.flink.ml.cluster.node.runner.ExecutionStatus;
 import com.alibaba.flink.ml.cluster.node.runner.MLRunnerFactory;
 import com.alibaba.flink.ml.util.*;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
-import io.grpc.stub.StreamObserver;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -153,7 +152,7 @@ public class NodeServer implements Runnable {
 							try {
 								FileUtil.downLoadZipToLocal(workDir, codeFile, codeDirName);
 							} catch (IOException e) {
-								e.printStackTrace();
+								LOG.error("Fail to download zip {} to local {}", codeFile, workDir);
 								throw new RuntimeException(e);
 							}
 						} else {
@@ -202,7 +201,7 @@ public class NodeServer implements Runnable {
 		try {
 			//1. start GRPC server
 			this.server = ServerBuilder.forPort(0)
-					.addService(new NodeServiceImpl()).build();
+					.addService(new NodeServiceImpl(this, this.mlContext)).build();
 			this.server.start();
 			LOG.info("node (" + getDisplayName() + ") server started, listening on " + server.getPort());
 
@@ -323,124 +322,9 @@ public class NodeServer implements Runnable {
 		return amCommand;
 	}
 
-	/**
-	 * machine learning cluster node service.
-	 */
-	public class NodeServiceImpl extends NodeServiceGrpc.NodeServiceImplBase {
-
-		/**
-		 * handle get node info request.
-		 * @param request NodeSpecRequest
-		 * @param responseObserver
-		 */
-		@Override
-		public void getNodeSpec(NodeSpecRequest request, StreamObserver<NodeSpecResponse> responseObserver) {
-			super.getNodeSpec(request, responseObserver);
-		}
-
-		/**
-		 * handle node restart request and restart machine learning runner.
-		 * @param request NodeRestartRequest
-		 * @param responseObserver
-		 */
-		@Override
-		public void nodeRestart(NodeRestartRequest request, StreamObserver<NodeRestartResponse> responseObserver) {
-			LOG.info(mlContext.getIdentity() + " receive restart");
-			NodeRestartResponse restartResponse = NodeRestartResponse.newBuilder()
-					.setCode(RpcCode.OK.ordinal())
-					.setMessage(mlContext.getIdentity()).build();
-			responseObserver.onNext(restartResponse);
-			responseObserver.onCompleted();
-			setAmCommand(AMCommand.RESTART);
-		}
-
-		/**
-		 * handle stop node request, stop machine learning node.
-		 * @param request NodeStopRequest.
-		 * @param responseObserver
-		 */
-		@Override
-		public void nodeStop(NodeStopRequest request, StreamObserver<NodeStopResponse> responseObserver) {
-			NodeStopResponse response = NodeStopResponse.newBuilder()
-					.setCode(RpcCode.OK.ordinal())
-					.setMessage("")
-					.build();
-			String localIp = null;
-			try {
-				localIp = IpHostUtil.getIpAddress();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			LOG.info("Received node stop request for {}. This node is {}:{}", mlContext.getIdentity(), localIp,
-					String.valueOf(server.getPort()));
-			setAmCommand(AMCommand.STOP);
-			responseObserver.onNext(response);
-			responseObserver.onCompleted();
-		}
-
-		/**
-		 * handle get context request and return current machine learning context.
-		 * @param request ContextRequest
-		 * @param responseObserver
-		 */
-		@Override
-		public void getContext(ContextRequest request, StreamObserver<ContextResponse> responseObserver) {
-			ContextProto contextProto
-					= mlContext.getContextProto() == null ? mlContext.toPB() : mlContext.getContextProto();
-			ContextResponse res = ContextResponse.newBuilder().setCode(0).setContext(contextProto)
-					.setMessage("").build();
-			responseObserver.onNext(res);
-			responseObserver.onCompleted();
-		}
-
-		/**
-		 * handle get finished worker list request and return finished worker list.
-		 * @param request NodeSimpleRequest.
-		 * @param responseObserver
-		 */
-		@Override
-		public void getFinishWorker(NodeSimpleRequest request, StreamObserver<FinishWorkerResponse> responseObserver) {
-			try (AMClient amClient = AMRegistry.getAMClient(mlContext)) {
-				GetFinishNodeResponse response = amClient.getFinishedWorker(0);
-
-				FinishWorkerResponse.Builder builder = FinishWorkerResponse.newBuilder()
-						.setCode(0)
-						.setMessage("");
-				for (Integer index : response.getWorkersList()) {
-					builder.addWorkers(index);
-				}
-				responseObserver.onNext(builder.build());
-				responseObserver.onCompleted();
-			} catch (IOException e) {
-				e.printStackTrace();
-				FinishWorkerResponse.Builder builder = FinishWorkerResponse.newBuilder()
-						.setCode(1)
-						.setMessage(e.getMessage());
-				responseObserver.onNext(builder.build());
-				responseObserver.onCompleted();
-			}
-		}
-
-		/**
-		 * handle stop job request and stop the machine learning cluster.
-		 * @param request NodeSimpleRequest.
-		 * @param responseObserver
-		 */
-		@Override
-		public void finishJob(NodeSimpleRequest request, StreamObserver<NodeSimpleResponse> responseObserver) {
-			NodeSimpleResponse.Builder builder = NodeSimpleResponse.newBuilder();
-			try (AMClient amClient = AMRegistry.getAMClient(mlContext)) {
-				amClient.stopJob(0, mlContext.getRoleName(), mlContext.getIndex());
-				builder.setCode(0);
-				builder.setMessage("");
-				responseObserver.onNext(builder.build());
-			} catch (IOException e) {
-				e.printStackTrace();
-				builder.setCode(1);
-				builder.setMessage(e.getMessage());
-				responseObserver.onNext(builder.build());
-			}
-			responseObserver.onCompleted();
-		}
+	@VisibleForTesting
+	MLRunner getRunner() {
+		return runner;
 	}
+
 }

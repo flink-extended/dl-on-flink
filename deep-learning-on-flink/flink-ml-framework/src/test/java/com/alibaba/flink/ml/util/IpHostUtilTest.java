@@ -18,18 +18,28 @@
 
 package com.alibaba.flink.ml.util;
 
+import org.apache.http.conn.util.InetAddressUtils;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.net.InetAddress;
+
+import static org.junit.Assert.assertTrue;
 
 public class IpHostUtilTest {
 	@Test
 	public void getLocalIp() throws Exception {
-		Assert.assertTrue(IpHostUtil.getIpAddress().getClass() == String.class);
+		assertTrue(IpHostUtil.getIpAddress().getClass() == String.class);
 	}
 
 	@Test
 	public void getFreePort() throws Exception {
-		Assert.assertTrue(IpHostUtil.getFreePort() > 0);
+		assertTrue(IpHostUtil.getFreePort() > 0);
 	}
 
+	@Test
+	public void testGetLanIp() throws Exception {
+		final String ip = IpHostUtil.getLocalHostLANAddress().getHostAddress();
+		assertTrue(InetAddressUtils.isIPv4Address(ip) || InetAddressUtils.isIPv6Address(ip));
+	}
 }

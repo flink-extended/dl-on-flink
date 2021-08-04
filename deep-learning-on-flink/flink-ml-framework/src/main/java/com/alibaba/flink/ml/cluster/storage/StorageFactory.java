@@ -70,7 +70,7 @@ public class StorageFactory {
 		return memoryStorage;
 	}
 
-	public static String getZKStorageBasePath(Map<String, String> propMap) {
+	static String getZKStorageBasePath(Map<String, String> propMap) {
 		String version = propMap.get(MLConstants.JOB_VERSION);
 		return propMap.getOrDefault(MLConstants.CONFIG_ZOOKEEPER_BASE_PATH, "") + "/" + version;
 	}

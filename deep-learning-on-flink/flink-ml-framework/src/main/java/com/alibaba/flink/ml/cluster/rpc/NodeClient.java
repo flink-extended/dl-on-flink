@@ -33,38 +33,32 @@ import java.util.concurrent.TimeUnit;
 /**
  * node client to communicate with node service.
  */
-public class NodeClient implements Closeable {
+public class NodeClient extends AbstractGrpcClient {
 	private static final Logger LOG = LoggerFactory.getLogger(NodeClient.class.getName());
 
-	private final ManagedChannel channel;
 	private NodeServiceGrpc.NodeServiceBlockingStub blockingStub;
 	private NodeServiceGrpc.NodeServiceFutureStub futureStub;
 
 
 	public NodeClient(String host, int port) {
-		this(ManagedChannelBuilder.forAddress(host, port)
+		this(host, port, ManagedChannelBuilder.forAddress(host, port)
 				// Channels are secure by default (via SSL/TLS). For the example we disable TLS to avoid
 				// needing certificates.
 				.usePlaintext()
 				.build());
 	}
 
-	@Override
-	public void close() {
-		if (channel != null) {
-			channel.shutdown();
-			try {
-				channel.awaitTermination(2, TimeUnit.MINUTES);
-			} catch (InterruptedException e) {
-			}
-		}
-	}
-
 	/** Construct client for accessing AM server using the existing channel. */
-	private NodeClient(ManagedChannel channel) {
-		this.channel = channel;
+	public NodeClient(String host, int port, ManagedChannel channel) {
+		super(host, port, channel);
 		blockingStub = NodeServiceGrpc.newBlockingStub(channel);
 		futureStub = NodeServiceGrpc.newFutureStub(channel);
+	}
+
+
+	@Override
+	String serverName() {
+		return "Node(" + host + ":" + port + ")";
 	}
 
 	/**
@@ -129,6 +123,5 @@ public class NodeClient implements Closeable {
 				.build();
 		blockingStub.finishJob(request);
 	}
-
 
 }

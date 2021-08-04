@@ -21,7 +21,7 @@ package com.alibaba.flink.ml.cluster.master;
 import com.alibaba.flink.ml.cluster.BaseEventReporter;
 import com.alibaba.flink.ml.cluster.node.MLContext;
 import com.alibaba.flink.ml.cluster.master.meta.AMMeta;
-import com.alibaba.flink.ml.cluster.rpc.AppMasterServer;
+import com.alibaba.flink.ml.cluster.rpc.AppMasterServiceImpl;
 import com.alibaba.flink.ml.cluster.statemachine.StateMachine;
 import com.alibaba.flink.ml.cluster.statemachine.StateMachineBuilder;
 import com.alibaba.flink.ml.proto.AMStatus;
@@ -33,8 +33,8 @@ import java.util.EnumSet;
  * state machine diagram shown as image/design/state_machine.jpg.
  */
 public class AMStateMachineImpl extends AbstractAMStateMachine {
-	public AMStateMachineImpl(AppMasterServer.AppMasterServiceImpl server, AMMeta amState,
-			MLContext MLContext, BaseEventReporter eventReporter) {
+	public AMStateMachineImpl(AppMasterServiceImpl server, AMMeta amState,
+							  MLContext MLContext, BaseEventReporter eventReporter) {
 		super(server, amState, MLContext, eventReporter);
 	}
 
