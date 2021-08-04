@@ -16,10 +16,9 @@
  * limitations under the License.
  */
 
-package com.alibaba.flink.ml.cluster;
+package com.alibaba.flink.ml.cluster.rpc;
 
 import com.alibaba.flink.ml.cluster.master.meta.AMMeta;
-import com.alibaba.flink.ml.cluster.rpc.AMRegistry;
 import com.alibaba.flink.ml.cluster.storage.StorageFactory;
 import com.alibaba.flink.ml.util.MLException;
 import org.junit.Assert;

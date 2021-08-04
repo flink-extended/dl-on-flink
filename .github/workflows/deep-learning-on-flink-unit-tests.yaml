@@ -3,6 +3,9 @@ on:
   push:
     paths:
       - 'deep-learning-on-flink/**'
+  pull_request:
+    paths:
+      - 'deep-learning-on-flink/**'
 jobs:
   build-and-test:
     runs-on: ubuntu-18.04

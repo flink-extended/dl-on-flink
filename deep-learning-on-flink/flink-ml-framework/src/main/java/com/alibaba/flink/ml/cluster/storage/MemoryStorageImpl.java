@@ -48,6 +48,7 @@ public class MemoryStorageImpl implements Storage {
 
 	@Override
 	public List<String> listChildren(String path) throws IOException {
+		// path of memory storage do not have child
 		return null;
 	}
 

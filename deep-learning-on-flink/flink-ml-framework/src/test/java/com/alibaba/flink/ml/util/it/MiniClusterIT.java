@@ -21,8 +21,10 @@ package com.alibaba.flink.ml.util.it;
 import com.alibaba.flink.ml.util.MiniCluster;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class MiniClusterIT {
 	private static MiniCluster miniCluster;
 	private static final int numTMs = 3;
