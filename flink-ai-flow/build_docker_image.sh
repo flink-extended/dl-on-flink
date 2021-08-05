@@ -17,7 +17,23 @@
 ## specific language governing permissions and limitations
 ## under the License.
 ##
-ROOT_DIR=$(cd "$(dirname "$0")";pwd)
-cd ${ROOT_DIR}
+ROOT_DIR=$(cd "$(dirname "$0")" || exit;pwd)
+cd "${ROOT_DIR}" || exit
 
-python3 setup.py bdist_wheel
+function printUsage() {
+    echo "Usage:
+    1. Build full ai flow docker image:
+    build_docker_image.sh name(Name and optionally a tag in the 'name:tag' format)
+    2. Build mini ai flow docker image:
+    build_docker_image.sh name(Name and optionally a tag in the 'name:tag' format) mini
+    "
+}
+
+if [ $# == 1 ] ; then
+  docker build -t "$1" .
+elif [[ $# == 2 && $2 == 'mini' ]]; then
+  docker build -t "$1" . --build-arg ai_flow_package_type=mini
+else
+  printUsage
+  exit 1
+fi

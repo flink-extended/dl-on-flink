@@ -17,7 +17,39 @@
 ## specific language governing permissions and limitations
 ## under the License.
 ##
-ROOT_DIR=$(cd "$(dirname "$0")";pwd)
-cd ${ROOT_DIR}
+ROOT_DIR=$(cd "$(dirname "$0")" || exit;pwd)
+cd "${ROOT_DIR}" || exit
 
-python3 setup.py sdist
+function printUsage() {
+    echo "Usage:
+    1. Build full ai flow sdist package:
+    build_ai_flow_package.sh sdist
+    2. Build full ai flow wheel package:
+    build_ai_flow_package.sh wheel
+    3. Build mini ai flow sdist package:
+    build_ai_flow_package.sh sdist mini
+    4. Build mini ai flow wheel package:
+    build_ai_flow_package.sh wheel mini
+    "
+}
+
+if [ $# == 1 ] ; then
+  package_type=$1
+elif [[ $# == 2 && $2 == 'mini' ]]; then
+  export BUILD_MINI_AI_FLOW_PACKAGE='true'
+  package_type=$1
+else
+  printUsage
+  exit 1
+fi
+
+if [ "$package_type" == 'sdist' ]; then
+  package_type='sdist'
+elif [ "$package_type" == 'wheel' ]; then
+  package_type='bdist_wheel'
+else
+  printUsage
+  exit 1
+fi
+
+python3 setup.py "$package_type"

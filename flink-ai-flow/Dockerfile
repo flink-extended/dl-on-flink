@@ -29,7 +29,11 @@ RUN python3 -m pip install wheel \
 WORKDIR /flink-ai-flow
 
 COPY . /flink-ai-flow
-RUN bash build_whl_package.sh && cp dist/* /tmp/dist
+ARG ai_flow_package_type
+RUN if [ "x$ai_flow_package_type" = "x" ]; then \
+    bash build_ai_flow_package.sh wheel; \
+    else bash build_ai_flow_package.sh wheel mini; fi
+RUN cp dist/* /tmp/dist
 RUN cd lib/notification_service && python3 setup.py bdist_wheel && cp dist/* /tmp/dist
 
 FROM python:3.7-slim-buster
