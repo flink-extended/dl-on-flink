@@ -75,7 +75,10 @@ try:
         context = f.read()
         require_file_lines = context.strip().split('\n')
     require_packages = []
+
     for line in require_file_lines:
+        if os.getenv('BUILD_MINI_AI_FLOW_PACKAGE') == 'true' and line.startswith("# Optional"):
+            break
         if not len(line.strip()) == 0 and not line.startswith("#"):
             require_packages.append(line)
 
