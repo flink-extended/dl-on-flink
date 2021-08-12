@@ -215,3 +215,9 @@ def might_contain_dag(file_path: str, safe_mode: bool, zip_file: Optional[zipfil
             content = dag_file.read()
     content = content.lower()
     return all(s in content for s in (b'dag', b'airflow'))
+
+
+def get_sha1hash(file_path: str) -> str:
+    import hashlib
+    with open(file_path, 'rb') as file:
+        return hashlib.sha1(file.read()).hexdigest()
