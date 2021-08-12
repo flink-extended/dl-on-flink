@@ -18,8 +18,7 @@ import unittest
 from typing import Text, List, Dict
 
 from ai_flow.context.project_context import ProjectContext
-from ai_flow.scheduler.scheduler_factory import SchedulerFactory
-from ai_flow.plugin_interface.scheduler_interface import Scheduler
+from ai_flow.plugin_interface.scheduler_interface import SchedulerFactory, Scheduler
 from ai_flow.workflow.workflow import Workflow
 from ai_flow.plugin_interface.scheduler_interface import JobExecutionInfo, WorkflowExecutionInfo, WorkflowInfo
 

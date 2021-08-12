@@ -21,5 +21,6 @@ server_port: 50051
 db_uri: sqlite:///aiflow.db
 db_type: sql_lite
 start_scheduler_service: True
-scheduler:
-  scheduler_class: ai_flow_plugins.tests.job_plugins.single_job_scheduler.SingleJobScheduler
+scheduler_service:
+  scheduler:
+    scheduler_class: ai_flow_plugins.tests.job_plugins.single_job_scheduler.SingleJobScheduler
