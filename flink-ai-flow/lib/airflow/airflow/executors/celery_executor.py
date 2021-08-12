@@ -52,6 +52,7 @@ from airflow.utils.net import get_hostname
 from airflow.utils.state import State
 from airflow.utils.timeout import timeout
 from airflow.utils.timezone import utcnow
+from airflow.utils.file import get_sha1hash
 
 log = logging.getLogger(__name__)
 
@@ -238,6 +239,11 @@ class CeleryExecutor(BaseExecutor):
         """
         return max(1, int(math.ceil(1.0 * to_send_count / self._sync_parallelism)))
 
+    def _stop_related_process(self, ti: TaskInstance) -> bool:
+        if self.tasks[ti.key] is not None:
+            result = self.tasks[ti.key]
+            result.revoke()
+
     def trigger_tasks(self, open_slots: int) -> None:
         """
         Overwrite trigger_tasks function from BaseExecutor
@@ -285,7 +291,7 @@ class CeleryExecutor(BaseExecutor):
                     )
                     self.task_publish_retries[key] += 1
                     continue
-            self.queued_tasks.pop(key)
+            self.queued_tasks.pop(key, None)
             self.task_publish_retries.pop(key)
             if isinstance(result, ExceptionWithTraceback):
                 self.log.error(  # pylint: disable=logging-not-lazy
@@ -400,6 +406,7 @@ class CeleryExecutor(BaseExecutor):
             state, info = state_and_info_by_celery_task_id.get(async_result.task_id)
             if state:
                 self.update_task_state(key, state, info)
+                self.send_message(key)
 
     def change_state(self, key: TaskInstanceKey, state: str, info=None) -> None:
         super().change_state(key, state, info)
@@ -436,8 +443,19 @@ class CeleryExecutor(BaseExecutor):
         queue: Optional[str] = None,
         executor_config: Optional[Any] = None,
     ):
-        """Do not allow async execution for Celery executor."""
-        raise AirflowException("No Async execution for Celery executor.")
+        ti: Optional[TaskInstance] = self.get_task_instance(key)
+        if not ti:
+            self.log.exception("Executing a nonexistent task instance: " + str(key))
+            return
+        elif "--pickle" in command:
+            pass
+        else:
+            command.extend(["--dag-file-sha1-hash", get_sha1hash(ti.dag_model.fileloc)])
+            command.extend(["--load-dag-from-db"])
+        task_tuples_to_send: List[TaskInstanceInCelery] = [(key, ti, command, queue, execute_command)]
+        if key not in self.task_publish_retries:
+            self.task_publish_retries[key] = 1
+        self._process_tasks(task_tuples_to_send)
 
     def terminate(self):
         pass

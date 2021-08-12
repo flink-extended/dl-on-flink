@@ -38,6 +38,7 @@ from airflow.exceptions import AirflowException
 from airflow.utils import cli_action_loggers
 from airflow.utils.platform import is_terminal_support_colors
 from airflow.utils.session import provide_session
+from airflow.utils.file import get_sha1hash
 
 T = TypeVar("T", bound=Callable)  # pylint: disable=invalid-name
 
@@ -219,13 +220,25 @@ def get_dag_by_pickle(pickle_id, session=None):
     return pickle_dag
 
 
-def get_dag_from_db(subdir: Optional[str], dag_id: str) -> "DAG":
-    """Returns DAG of a given dag_id from database. """
-    from airflow.models import DagBag
+def load_dag_from_db_if_needed(dag_file_path: str, expected_sha1hash: str):
+    """
+    If file does not exists or the sha1 hash of file is not same as expected,
+    load dag file from database.
 
-    dagbag = DagBag(dag_folder=process_subdir(subdir),
-                    read_dags_from_db=True)
-    return dagbag.get_dag(dag_id)
+    param: dag_file_path: the dag file needs to be checked and loaded
+    param: expected_sha1hash: the expected sha1 hash of dag file
+    """
+    from airflow.models.dagcode import DagCode
+
+    if os.path.exists(dag_file_path):
+        local_dag_file_hash = get_sha1hash(dag_file_path)
+        if local_dag_file_hash == expected_sha1hash:
+            return
+    parent = os.path.dirname(dag_file_path)
+    if not os.path.exists(parent):
+        os.makedirs(parent)
+    with open(dag_file_path, 'w') as dag_file:
+        dag_file.write(DagCode.code(dag_file_path))
 
 
 def setup_locations(process, pid=None, stdout=None, stderr=None, log=None):

@@ -154,6 +154,21 @@ ARG_SERVER_URI = Arg(
     ),
     default='localhost:50051'
 )
+ARG_DAG_SHA1_HASH = Arg(
+    ("--dag-file-sha1-hash",),
+    help=(
+        "The SHA1 hash of dag file"
+    ),
+    type=str
+)
+ARG_LOAD_DAG_FROM_DB = Arg(
+    ("--load-dag-from-db",),
+    help=(
+        "Load dag file from database if the local does not exist or is expired."
+    ),
+    action="store_true",
+    default=False
+)
 ARG_START_DATE = Arg(("-s", "--start-date"), help="Override start_date YYYY-MM-DD", type=parsedate)
 ARG_END_DATE = Arg(("-e", "--end-date"), help="Override end_date YYYY-MM-DD", type=parsedate)
 ARG_OUTPUT_PATH = Arg(
@@ -962,7 +977,9 @@ TASKS_COMMANDS = (
             ARG_JOB_ID,
             ARG_INTERACTIVE,
             ARG_SHUT_DOWN_LOGGING,
-            ARG_SERVER_URI
+            ARG_SERVER_URI,
+            ARG_DAG_SHA1_HASH,
+            ARG_LOAD_DAG_FROM_DB
         ),
     ),
     ActionCommand(
