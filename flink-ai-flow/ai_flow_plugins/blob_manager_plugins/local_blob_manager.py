@@ -70,7 +70,7 @@ class LocalBlobManager(BlobManager):
         :param local_path: Download file root path.
         :return The local project path.
         """
-        if local_path is not None or self._local_repo is not None:
+        if self._local_repo is not None:
             repo_path = local_path if local_path is not None else self._local_repo
             local_zip_file_name = 'workflow_{}_project'.format(workflow_snapshot_id)
             extract_path = str(Path(repo_path) / local_zip_file_name)

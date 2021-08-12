@@ -48,10 +48,11 @@ db_type: {AIFLOW_DB_TYPE}
 #start_scheduler_service: True
 
 # scheduler config
-scheduler:
-  scheduler_class: ai_flow_plugins.scheduler_plugins.airflow.airflow_scheduler.AirFlowScheduler
-  scheduler_config:
-    # AirFlow dag file deployment directory, i.e., where the airflow dag will be.
-    airflow_deploy_path: {AIFLOW_HOME}/airflow_deploy
-    # Notification service uri used by the scheduler service.
-    notification_service_uri: localhost:50051
+scheduler_service:
+  scheduler:
+    scheduler_class: ai_flow_plugins.scheduler_plugins.airflow.airflow_scheduler.AirFlowScheduler
+    scheduler_config:
+      # AirFlow dag file deployment directory, i.e., where the airflow dag will be.
+      airflow_deploy_path: {AIFLOW_HOME}/airflow_deploy
+      # Notification service uri used by the AirFlowScheduler.
+      notification_service_uri: localhost:50051

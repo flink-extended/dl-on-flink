@@ -14,21 +14,3 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-from typing import Dict
-
-from ai_flow.common.module_load import import_string
-from ai_flow.plugin_interface.scheduler_interface import Scheduler
-
-
-class SchedulerFactory(object):
-    """
-    SchedulerFactory creates scheduler() based on configuration information.
-    """
-    @classmethod
-    def create_scheduler(cls, class_name, config: Dict) -> Scheduler:
-        """
-        :param class_name: The class name of a scheduler(ai_flow.plugin_interface.scheduler_interface.Scheduler)
-        :param config: The configuration of the scheduler.
-        """
-        class_object = import_string(class_name)
-        return class_object(config)
