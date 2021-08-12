@@ -41,7 +41,7 @@ from airflow.utils.cli import (
     get_dag_by_pickle,
     get_dags,
     suppress_logs_and_warning,
-    get_dag_from_db,
+    load_dag_from_db_if_needed,
 )
 from airflow.utils.log.logging_mixin import StreamLogWriter
 from airflow.utils.net import get_hostname
@@ -214,6 +214,9 @@ def task_run(args, dag=None):
     elif args.pickle:
         print(f'Loading pickle id: {args.pickle}')
         dag = get_dag_by_pickle(args.pickle)
+    elif args.load_dag_from_db:
+        load_dag_from_db_if_needed(args.subdir, args.dag_file_sha1_hash)
+        dag = get_dag(args.subdir, args.dag_id)
     elif not dag:
         dag = get_dag(args.subdir, args.dag_id)
     else:
