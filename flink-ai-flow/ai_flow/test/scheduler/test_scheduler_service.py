@@ -18,9 +18,9 @@ import mock
 import os
 import unittest
 
-from typing import Text, List, Dict
+from typing import Text, List
 
-from ai_flow.scheduler.scheduler_service import SchedulerServiceConfig
+from ai_flow.scheduler_service.service.service import SchedulerServiceConfig
 from ai_flow.workflow.status import Status
 from ai_flow.protobuf.message_pb2 import StateProto
 
@@ -85,9 +85,12 @@ SCHEDULER_CLASS = 'ai_flow.test.scheduler.test_scheduler_service.MockScheduler'
 
 class TestSchedulerService(unittest.TestCase):
     def setUp(self):
-        config = SchedulerServiceConfig()
-        config.set_scheduler_class(SCHEDULER_CLASS)
-        config.set_scheduler_config({})
+        raw_config = {
+            'scheduler': {
+                'scheduler_class': SCHEDULER_CLASS,
+            }
+        }
+        config = SchedulerServiceConfig(raw_config)
         if os.path.exists(_SQLITE_DB_FILE):
             os.remove(_SQLITE_DB_FILE)
         self.server = AIFlowServer(store_uri=_SQLITE_DB_URI, port=_PORT,
