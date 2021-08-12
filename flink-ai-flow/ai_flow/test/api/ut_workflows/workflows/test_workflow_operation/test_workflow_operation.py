@@ -22,8 +22,7 @@ from ai_flow.endpoint.server.server import AIFlowServer
 from ai_flow.api.ai_flow_context import init_ai_flow_context
 from ai_flow.context.workflow_config_loader import current_workflow_config
 from ai_flow.api import workflow_operation
-from ai_flow.scheduler.scheduler_service import SchedulerServiceConfig
-from ai_flow.test.api.mock_plugins import MockJobFactory
+from ai_flow.scheduler_service.service.service import SchedulerServiceConfig
 
 _SQLITE_DB_FILE = 'aiflow.db'
 _SQLITE_DB_URI = '%s%s' % ('sqlite:///', _SQLITE_DB_FILE)
@@ -39,8 +38,12 @@ class TestWorkflowOperation(unittest.TestCase):
 
         if os.path.exists(_SQLITE_DB_FILE):
             os.remove(_SQLITE_DB_FILE)
-        config = SchedulerServiceConfig()
-        config.set_scheduler_class(SCHEDULER_CLASS)
+        raw_config = {
+            'scheduler': {
+                'scheduler_class': SCHEDULER_CLASS,
+            }
+        }
+        config = SchedulerServiceConfig(raw_config)
         cls.server = AIFlowServer(store_uri=_SQLITE_DB_URI, port=_PORT,
                                   start_default_notification=False,
                                   start_meta_service=True,
