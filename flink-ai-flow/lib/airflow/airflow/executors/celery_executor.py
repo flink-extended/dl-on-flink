@@ -38,6 +38,7 @@ from celery.backends.base import BaseKeyValueStoreBackend
 from celery.backends.database import DatabaseBackend, session_cleanup
 from celery.result import AsyncResult
 from celery.signals import import_modules as celery_import_modules
+from celery.worker.control import revoke
 from setproctitle import setproctitle  # pylint: disable=no-name-in-module
 
 import airflow.settings as settings
@@ -240,9 +241,12 @@ class CeleryExecutor(BaseExecutor):
         return max(1, int(math.ceil(1.0 * to_send_count / self._sync_parallelism)))
 
     def _stop_related_process(self, ti: TaskInstance) -> bool:
-        if self.tasks[ti.key] is not None:
+        if ti.key in self.tasks and self.tasks[ti.key] is not None:
             result = self.tasks[ti.key]
-            result.revoke()
+            try:
+                revoke(result.task_id, terminate=True)
+            except Exception:
+                self.log.exception("Failed to revoke celery task with task_id {}".format(result.task_id))
 
     def trigger_tasks(self, open_slots: int) -> None:
         """
