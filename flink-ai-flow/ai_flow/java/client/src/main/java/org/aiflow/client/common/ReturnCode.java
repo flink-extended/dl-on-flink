@@ -21,7 +21,6 @@ package org.aiflow.client.common;
 import org.aiflow.client.proto.Message;
 
 public enum ReturnCode {
-
     SUCCESS(Message.ReturnCode.SUCCESS),
     INTERNAL_ERROR(Message.ReturnCode.INTERNAL_ERROR),
     TEMPORARILY_UNAVAILABLE(Message.ReturnCode.TEMPORARILY_UNAVAILABLE),

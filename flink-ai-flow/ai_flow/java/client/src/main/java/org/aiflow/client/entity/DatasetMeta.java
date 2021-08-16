@@ -48,10 +48,22 @@ public class DatasetMeta {
     private String catalogConnectionUri;
     private String catalogTable;
 
-    public DatasetMeta() {
-    }
+    public DatasetMeta() {}
 
-    public DatasetMeta(String name, String dataFormat, String description, String uri, Long createTime, Long updateTime, Map<String, String> properties, Schema schema, String catalogName, String catalogType, String catalogDatabase, String catalogConnectionUri, String catalogTable) {
+    public DatasetMeta(
+            String name,
+            String dataFormat,
+            String description,
+            String uri,
+            Long createTime,
+            Long updateTime,
+            Map<String, String> properties,
+            Schema schema,
+            String catalogName,
+            String catalogType,
+            String catalogDatabase,
+            String catalogConnectionUri,
+            String catalogTable) {
         this.name = name;
         this.dataFormat = dataFormat;
         this.description = description;
@@ -67,8 +79,35 @@ public class DatasetMeta {
         this.catalogTable = catalogTable;
     }
 
-    public DatasetMeta(Long uuid, String name, String dataFormat, String description, String uri, Long createTime, Long updateTime, Map<String, String> properties, Schema schema, String catalogName, String catalogType, String catalogDatabase, String catalogConnectionUri, String catalogTable) {
-        this(name, dataFormat, description, uri, createTime, updateTime, properties, schema, catalogName, catalogType, catalogDatabase, catalogConnectionUri, catalogTable);
+    public DatasetMeta(
+            Long uuid,
+            String name,
+            String dataFormat,
+            String description,
+            String uri,
+            Long createTime,
+            Long updateTime,
+            Map<String, String> properties,
+            Schema schema,
+            String catalogName,
+            String catalogType,
+            String catalogDatabase,
+            String catalogConnectionUri,
+            String catalogTable) {
+        this(
+                name,
+                dataFormat,
+                description,
+                uri,
+                createTime,
+                updateTime,
+                properties,
+                schema,
+                catalogName,
+                catalogType,
+                catalogDatabase,
+                catalogConnectionUri,
+                catalogTable);
         this.uuid = uuid;
     }
 
@@ -186,42 +225,69 @@ public class DatasetMeta {
 
     @Override
     public String toString() {
-        return "DatasetMeta{" +
-                "uuid=" + uuid +
-                ", name='" + name + '\'' +
-                ", dataFormat='" + dataFormat + '\'' +
-                ", description='" + description + '\'' +
-                ", uri='" + uri + '\'' +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                ", properties=" + properties +
-                ", schema=" + schema +
-                ", catalogName='" + catalogName + '\'' +
-                ", catalogType='" + catalogType + '\'' +
-                ", catalogDatabase='" + catalogDatabase + '\'' +
-                ", catalogConnectionUri='" + catalogConnectionUri + '\'' +
-                ", catalogTable='" + catalogTable + '\'' +
-                '}';
+        return "DatasetMeta{"
+                + "uuid="
+                + uuid
+                + ", name='"
+                + name
+                + '\''
+                + ", dataFormat='"
+                + dataFormat
+                + '\''
+                + ", description='"
+                + description
+                + '\''
+                + ", uri='"
+                + uri
+                + '\''
+                + ", createTime="
+                + createTime
+                + ", updateTime="
+                + updateTime
+                + ", properties="
+                + properties
+                + ", schema="
+                + schema
+                + ", catalogName='"
+                + catalogName
+                + '\''
+                + ", catalogType='"
+                + catalogType
+                + '\''
+                + ", catalogDatabase='"
+                + catalogDatabase
+                + '\''
+                + ", catalogConnectionUri='"
+                + catalogConnectionUri
+                + '\''
+                + ", catalogTable='"
+                + catalogTable
+                + '\''
+                + '}';
     }
 
     public static DatasetMeta buildDatasetMeta(Message.DatasetProto datasetProto) {
-        return datasetProto == null ? null : new DatasetMeta(datasetProto.getUuid(),
-                datasetProto.getName(),
-                datasetProto.getDataFormat().getValue(),
-                datasetProto.getDescription().getValue(),
-                datasetProto.getUri().getValue(),
-                datasetProto.getCreateTime().getValue(),
-                datasetProto.getUpdateTime().getValue(),
-                datasetProto.getPropertiesMap(),
-                buildSchema(datasetProto.getSchema()),
-                datasetProto.getCatalogName().getValue(),
-                datasetProto.getCatalogType().getValue(),
-                datasetProto.getCatalogDatabase().getValue(),
-                datasetProto.getCatalogConnectionUri().getValue(),
-                datasetProto.getCatalogTable().getValue());
+        return datasetProto == null
+                ? null
+                : new DatasetMeta(
+                        datasetProto.getUuid(),
+                        datasetProto.getName(),
+                        datasetProto.getDataFormat().getValue(),
+                        datasetProto.getDescription().getValue(),
+                        datasetProto.getUri().getValue(),
+                        datasetProto.getCreateTime().getValue(),
+                        datasetProto.getUpdateTime().getValue(),
+                        datasetProto.getPropertiesMap(),
+                        buildSchema(datasetProto.getSchema()),
+                        datasetProto.getCatalogName().getValue(),
+                        datasetProto.getCatalogType().getValue(),
+                        datasetProto.getCatalogDatabase().getValue(),
+                        datasetProto.getCatalogConnectionUri().getValue(),
+                        datasetProto.getCatalogTable().getValue());
     }
 
-    public static List<DatasetMeta> buildDatasetMetas(MetadataServiceOuterClass.DatasetListProto datasetListProto) {
+    public static List<DatasetMeta> buildDatasetMetas(
+            MetadataServiceOuterClass.DatasetListProto datasetListProto) {
         if (datasetListProto == null) {
             return null;
         } else {
@@ -236,16 +302,27 @@ public class DatasetMeta {
     public static List<Message.DatasetProto> buildDatasetProtos(List<DatasetMeta> datasetMetas) {
         List<Message.DatasetProto> datasetProtos = new ArrayList<>();
         for (DatasetMeta datasetMeta : datasetMetas) {
-            Message.DatasetProto.Builder builder = Message.DatasetProto.newBuilder().setName(datasetMeta.getName())
-                    .setDataFormat(stringValue(datasetMeta.getDataFormat())).setDescription(stringValue(datasetMeta.getDescription()))
-                    .setUri(stringValue(datasetMeta.getUri()))
-                    .setCreateTime(int64Value(datasetMeta.getCreateTime())).setUpdateTime(int64Value(datasetMeta.getUpdateTime()))
-                    .putAllProperties(datasetMeta.getProperties()).setCatalogName(stringValue(datasetMeta.getCatalogName()))
-                    .setCatalogType(stringValue(datasetMeta.getCatalogType())).setCatalogDatabase(stringValue(datasetMeta.getCatalogDatabase()))
-                    .setCatalogConnectionUri(stringValue(datasetMeta.getCatalogConnectionUri()))
-                    .setCatalogTable(stringValue(datasetMeta.getCatalogTable()));
+            Message.DatasetProto.Builder builder =
+                    Message.DatasetProto.newBuilder()
+                            .setName(datasetMeta.getName())
+                            .setDataFormat(stringValue(datasetMeta.getDataFormat()))
+                            .setDescription(stringValue(datasetMeta.getDescription()))
+                            .setUri(stringValue(datasetMeta.getUri()))
+                            .setCreateTime(int64Value(datasetMeta.getCreateTime()))
+                            .setUpdateTime(int64Value(datasetMeta.getUpdateTime()))
+                            .putAllProperties(datasetMeta.getProperties())
+                            .setCatalogName(stringValue(datasetMeta.getCatalogName()))
+                            .setCatalogType(stringValue(datasetMeta.getCatalogType()))
+                            .setCatalogDatabase(stringValue(datasetMeta.getCatalogDatabase()))
+                            .setCatalogConnectionUri(
+                                    stringValue(datasetMeta.getCatalogConnectionUri()))
+                            .setCatalogTable(stringValue(datasetMeta.getCatalogTable()));
             if (datasetMeta.getSchema() != null) {
-                builder.setSchema(SchemaProto.newBuilder().addAllNameList(datasetMeta.getSchema().getNameList()).addAllTypeList(dataTypeList(datasetMeta.getSchema().getTypeList())));
+                builder.setSchema(
+                        SchemaProto.newBuilder()
+                                .addAllNameList(datasetMeta.getSchema().getNameList())
+                                .addAllTypeList(
+                                        dataTypeList(datasetMeta.getSchema().getTypeList())));
             }
             datasetProtos.add(builder.build());
         }

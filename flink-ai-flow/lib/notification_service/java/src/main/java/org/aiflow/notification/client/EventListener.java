@@ -18,8 +18,8 @@
  */
 package org.aiflow.notification.client;
 
-import org.aiflow.notification.entity.EventMeta;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import org.aiflow.notification.entity.EventMeta;
 import org.aiflow.notification.proto.NotificationServiceGrpc;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -31,81 +31,81 @@ import static org.aiflow.notification.client.NotificationClient.listEvents;
 
 public class EventListener {
 
-	private final NotificationServiceGrpc.NotificationServiceBlockingStub serviceStub;
-	private final List<String> keys;
-	private final long version;
-	private final String eventType;
-	private final long startTime;
-	private final String namespace;
-	private final String sender;
-	private final EventWatcher watcher;
-	private final ExecutorService executorService;
-	private final int timeoutSeconds;
-	private volatile boolean isRunning = true;
+    private final NotificationServiceGrpc.NotificationServiceBlockingStub serviceStub;
+    private final List<String> keys;
+    private final long version;
+    private final String eventType;
+    private final long startTime;
+    private final String namespace;
+    private final String sender;
+    private final EventWatcher watcher;
+    private final ExecutorService executorService;
+    private final int timeoutSeconds;
+    private volatile boolean isRunning = true;
 
-	public EventListener(
-			NotificationServiceGrpc.NotificationServiceBlockingStub serviceStub,
-			List<String> keys,
-			long version,
-			String eventType,
-			long startTime,
-			String namespace,
-			String sender,
-			EventWatcher watcher,
-			Integer timeoutSeconds) {
-		this.serviceStub = serviceStub;
-		this.keys = keys;
-		this.version = version;
-		this.eventType = eventType;
-		this.startTime = startTime;
-		this.namespace = namespace;
-		this.sender = sender;
-		this.watcher = watcher;
-		this.timeoutSeconds = timeoutSeconds;
-		this.executorService =
-				Executors.newSingleThreadExecutor(
-						new ThreadFactoryBuilder()
-								.setDaemon(true)
-								.setNameFormat("listen-notification-%d")
-								.build());
-	}
+    public EventListener(
+            NotificationServiceGrpc.NotificationServiceBlockingStub serviceStub,
+            List<String> keys,
+            long version,
+            String eventType,
+            long startTime,
+            String namespace,
+            String sender,
+            EventWatcher watcher,
+            Integer timeoutSeconds) {
+        this.serviceStub = serviceStub;
+        this.keys = keys;
+        this.version = version;
+        this.eventType = eventType;
+        this.startTime = startTime;
+        this.namespace = namespace;
+        this.sender = sender;
+        this.watcher = watcher;
+        this.timeoutSeconds = timeoutSeconds;
+        this.executorService =
+                Executors.newSingleThreadExecutor(
+                        new ThreadFactoryBuilder()
+                                .setDaemon(true)
+                                .setNameFormat("listen-notification-%d")
+                                .build());
+    }
 
-	public void start() {
-		this.executorService.submit(listenEvents());
-	}
+    public void start() {
+        this.executorService.submit(listenEvents());
+    }
 
-	public void shutdown() {
-		this.isRunning = false;
-		this.executorService.shutdown();
-	}
+    public void shutdown() {
+        this.isRunning = false;
+        this.executorService.shutdown();
+    }
 
-	public Runnable listenEvents() {
-		return () -> {
-			long listenVersion = this.version;
-			while (this.isRunning) {
-				try {
-					if (Thread.currentThread().isInterrupted()) {
-						break;
-					}
-					List<EventMeta> events =
-							listEvents(
-									this.serviceStub,
+    public Runnable listenEvents() {
+        return () -> {
+            long listenVersion = this.version;
+            while (this.isRunning) {
+                try {
+                    if (Thread.currentThread().isInterrupted()) {
+                        break;
+                    }
+                    List<EventMeta> events =
+                            listEvents(
+                                    this.serviceStub,
                                     this.namespace,
-									this.sender,
-									this.keys,
-									listenVersion,
-									this.eventType,
-									this.startTime,
-									this.timeoutSeconds);
-					if (CollectionUtils.isNotEmpty(events)) {
-						this.watcher.process(events);
-						listenVersion = events.get(events.size() - 1).getVersion();
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					throw new RuntimeException("Error while listening notification", e);
-				}
-			}
-		};
-	}
+                                    this.sender,
+                                    this.keys,
+                                    listenVersion,
+                                    this.eventType,
+                                    this.startTime,
+                                    this.timeoutSeconds);
+                    if (CollectionUtils.isNotEmpty(events)) {
+                        this.watcher.process(events);
+                        listenVersion = events.get(events.size() - 1).getVersion();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new RuntimeException("Error while listening notification", e);
+                }
+            }
+        };
+    }
 }

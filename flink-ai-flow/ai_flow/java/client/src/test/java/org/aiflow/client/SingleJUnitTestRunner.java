@@ -34,12 +34,11 @@ public class SingleJUnitTestRunner {
 
         System.out.println(Class.forName(classAndMethod[0]));
         System.out.println(classAndMethod[1]);
-        LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder.request()
-                .selectors(
-                        selectMethod(Class.forName(classAndMethod[0]),
-                                classAndMethod[1])
-                )
-                .build();
+        LauncherDiscoveryRequest request =
+                LauncherDiscoveryRequestBuilder.request()
+                        .selectors(
+                                selectMethod(Class.forName(classAndMethod[0]), classAndMethod[1]))
+                        .build();
         Launcher launcher = LauncherFactory.create();
 
         SummaryGeneratingListener listener = new SummaryGeneratingListener();
@@ -48,7 +47,7 @@ public class SingleJUnitTestRunner {
         launcher.execute(request);
 
         TestExecutionSummary summary = listener.getSummary();
-        for (TestExecutionSummary.Failure failure: summary.getFailures()) {
+        for (TestExecutionSummary.Failure failure : summary.getFailures()) {
             System.out.println(failure.getTestIdentifier());
             System.out.println(failure.getException());
             failure.getException().printStackTrace();

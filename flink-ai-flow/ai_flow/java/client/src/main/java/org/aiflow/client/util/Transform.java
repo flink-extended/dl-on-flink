@@ -18,17 +18,18 @@
  */
 package org.aiflow.client.util;
 
-import com.google.protobuf.GeneratedMessageV3.Builder;
-import com.google.protobuf.Int32Value;
-import com.google.protobuf.Int64Value;
-import com.google.protobuf.StringValue;
-import com.google.protobuf.util.JsonFormat.Parser;
 import org.aiflow.client.common.DataType;
 import org.aiflow.client.common.Status;
 import org.aiflow.client.exception.AIFlowException;
 import org.aiflow.client.proto.Message.DataTypeProto;
 import org.aiflow.client.proto.Message.Response;
 import org.aiflow.client.proto.Message.ReturnCode;
+
+import com.google.protobuf.GeneratedMessageV3.Builder;
+import com.google.protobuf.Int32Value;
+import com.google.protobuf.Int64Value;
+import com.google.protobuf.StringValue;
+import com.google.protobuf.util.JsonFormat.Parser;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -56,11 +57,13 @@ public class Transform {
         return dataTypes;
     }
 
-    public static String metadataDetailResponse(Response response, Parser parser, Builder<?> builder) throws Exception {
+    public static String metadataDetailResponse(
+            Response response, Parser parser, Builder<?> builder) throws Exception {
         if (ReturnCode.SUCCESS.getNumber() == Integer.parseInt(response.getReturnCode())) {
             parser.merge(response.getData(), builder);
             return response.getData();
-        } else if (ReturnCode.RESOURCE_DOES_NOT_EXIST.getNumber() == Integer.parseInt(response.getReturnCode())) {
+        } else if (ReturnCode.RESOURCE_DOES_NOT_EXIST.getNumber()
+                == Integer.parseInt(response.getReturnCode())) {
             return null;
         } else {
             throw new AIFlowException(response.getReturnCode(), response.getReturnMsg());
@@ -70,14 +73,16 @@ public class Transform {
     public static Status metadataDeleteResponse(Response response) throws Exception {
         if (ReturnCode.SUCCESS.getNumber() == Integer.parseInt(response.getReturnCode())) {
             return Status.OK;
-        } else if (ReturnCode.INTERNAL_ERROR.getNumber() == Integer.parseInt(response.getReturnCode())) {
+        } else if (ReturnCode.INTERNAL_ERROR.getNumber()
+                == Integer.parseInt(response.getReturnCode())) {
             return Status.ERROR;
         } else {
             throw new AIFlowException(response.getReturnCode(), response.getReturnMsg());
         }
     }
 
-    public static String buildResponse(Response response, Parser parser, Builder<?> builder) throws Exception {
+    public static String buildResponse(Response response, Parser parser, Builder<?> builder)
+            throws Exception {
         if (ReturnCode.SUCCESS.getNumber() == Integer.parseInt(response.getReturnCode())) {
             if (!StringUtils.isEmpty(response.getData())) {
                 parser.merge(response.getData(), builder);

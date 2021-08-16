@@ -18,11 +18,11 @@
  */
 package org.aiflow.notification.client;
 
-import org.aiflow.notification.entity.EventMeta;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.speedment.common.tuple.Tuple4;
 import com.speedment.common.tuple.internal.nonnullable.Tuple4Impl;
 import io.grpc.ManagedChannelBuilder;
+import org.aiflow.notification.entity.EventMeta;
 import org.aiflow.notification.proto.NotificationServiceGrpc;
 import org.aiflow.notification.proto.NotificationServiceOuterClass;
 import org.apache.commons.lang3.StringUtils;
@@ -42,7 +42,8 @@ public class NotificationClient {
     private final Integer listMemberIntervalMs;
     private final Integer retryIntervalMs;
     private final Integer retryTimeoutMs;
-    private final Map<Tuple4<String, String, String, String>, EventListener> threads; //key, namespace, event_type, sender
+    private final Map<Tuple4<String, String, String, String>, EventListener>
+            threads; // key, namespace, event_type, sender
     private final ExecutorService listMembersService;
     private NotificationServiceGrpc.NotificationServiceBlockingStub notificationServiceStub;
     private Set<NotificationServiceOuterClass.MemberProto> livingMembers;
@@ -131,8 +132,8 @@ public class NotificationClient {
         return parseEventsFromResponse(serviceStub.listEvents(request));
     }
 
-    private static List<EventMeta> parseEventsFromResponse(NotificationServiceOuterClass.ListEventsResponse response)
-            throws Exception {
+    private static List<EventMeta> parseEventsFromResponse(
+            NotificationServiceOuterClass.ListEventsResponse response) throws Exception {
         if (response.getReturnCode() == NotificationServiceOuterClass.ReturnStatus.SUCCESS) {
             List<EventMeta> eventMetas = new ArrayList<>();
             for (NotificationServiceOuterClass.EventProto eventProto : response.getEventsList()) {
@@ -151,7 +152,8 @@ public class NotificationClient {
             Boolean haRunning,
             Integer retryIntervalMs,
             Integer retryTimeoutMs) {
-        return NotificationServiceGrpc.newBlockingStub(ManagedChannelBuilder.forTarget(target).usePlaintext().build())
+        return NotificationServiceGrpc.newBlockingStub(
+                        ManagedChannelBuilder.forTarget(target).usePlaintext().build())
                 .withInterceptors(
                         new NotificationInterceptor(
                                 stub,
@@ -193,8 +195,10 @@ public class NotificationClient {
                         NotificationServiceOuterClass.ListMembersRequest.newBuilder()
                                 .setTimeoutSeconds(listMemberIntervalMs / 1000)
                                 .build();
-                NotificationServiceOuterClass.ListMembersResponse response = notificationServiceStub.listMembers(request);
-                if (response.getReturnCode() == NotificationServiceOuterClass.ReturnStatus.SUCCESS) {
+                NotificationServiceOuterClass.ListMembersResponse response =
+                        notificationServiceStub.listMembers(request);
+                if (response.getReturnCode()
+                        == NotificationServiceOuterClass.ReturnStatus.SUCCESS) {
                     livingMembers = new HashSet<>(response.getMembersList());
                     lastError = false;
                     break;
@@ -222,8 +226,10 @@ public class NotificationClient {
                             NotificationServiceOuterClass.ListMembersRequest.newBuilder()
                                     .setTimeoutSeconds(listMemberIntervalMs / 1000)
                                     .build();
-                    NotificationServiceOuterClass.ListMembersResponse response = notificationServiceStub.listMembers(request);
-                    if (response.getReturnCode() == NotificationServiceOuterClass.ReturnStatus.SUCCESS) {
+                    NotificationServiceOuterClass.ListMembersResponse response =
+                            notificationServiceStub.listMembers(request);
+                    if (response.getReturnCode()
+                            == NotificationServiceOuterClass.ReturnStatus.SUCCESS) {
                         livingMembers = new HashSet<>(response.getMembersList());
                     } else {
                         logger.warn(response.getReturnMsg());
@@ -253,8 +259,7 @@ public class NotificationClient {
      * @param context Context of event updated in Notification Service.
      * @return Object of Event created in Notification Service.
      */
-    public EventMeta sendEvent(
-            String key, String value, String eventType, String context)
+    public EventMeta sendEvent(String key, String value, String eventType, String context)
             throws Exception {
         NotificationServiceOuterClass.SendEventRequest request =
                 NotificationServiceOuterClass.SendEventRequest.newBuilder()
@@ -269,7 +274,8 @@ public class NotificationClient {
                                         .build())
                         .setUuid(UUID.randomUUID().toString())
                         .build();
-        NotificationServiceOuterClass.SendEventsResponse response = notificationServiceStub.sendEvent(request);
+        NotificationServiceOuterClass.SendEventsResponse response =
+                notificationServiceStub.sendEvent(request);
         if (response.getReturnCode() == NotificationServiceOuterClass.ReturnStatus.SUCCESS) {
             return EventMeta.buildEventMeta(response.getEvent());
         } else {
@@ -289,7 +295,12 @@ public class NotificationClient {
      * @return List of Notification updated in Notification Service.
      */
     public List<EventMeta> listEvents(
-            String namespace, List<String> keys, long version, String eventType, long startTime, String sender)
+            String namespace,
+            List<String> keys,
+            long version,
+            String eventType,
+            long startTime,
+            String sender)
             throws Exception {
         return listEvents(
                 notificationServiceStub,
@@ -318,7 +329,8 @@ public class NotificationClient {
                         .setStartVersion(startVersion)
                         .setEndVersion(endVersion)
                         .build();
-        NotificationServiceOuterClass.ListEventsResponse response = notificationServiceStub.listAllEvents(request);
+        NotificationServiceOuterClass.ListEventsResponse response =
+                notificationServiceStub.listAllEvents(request);
         return parseEventsFromResponse(response);
     }
 
@@ -346,7 +358,8 @@ public class NotificationClient {
         String realEventType = StringUtils.isEmpty(eventType) ? ANY_CONDITION : eventType;
         String realSender = StringUtils.isEmpty(sender) ? ANY_CONDITION : sender;
 
-        Tuple4<String, String, String, String> listenKey = new Tuple4Impl<>(realKey, realNamespace, realEventType, realSender);
+        Tuple4<String, String, String, String> listenKey =
+                new Tuple4Impl<>(realKey, realNamespace, realEventType, realSender);
         if (!threads.containsKey(listenKey)) {
             ArrayList<String> curListenerKeys =
                     new ArrayList<String>() {
@@ -384,7 +397,8 @@ public class NotificationClient {
         String realEventType = StringUtils.isEmpty(eventType) ? ANY_CONDITION : eventType;
         String realSender = StringUtils.isEmpty(sender) ? ANY_CONDITION : sender;
 
-        Tuple4<String, String, String, String> listenKey = new Tuple4Impl<>(realKey, realNamespace, realEventType, realSender);
+        Tuple4<String, String, String, String> listenKey =
+                new Tuple4Impl<>(realKey, realNamespace, realEventType, realSender);
 
         if (threads.containsKey(listenKey)) {
             threads.get(listenKey).shutdown();
@@ -414,8 +428,10 @@ public class NotificationClient {
         }
     }
 
-    public long parseLatestVersionFromResponse(NotificationServiceOuterClass.GetLatestVersionResponse response) throws Exception {
-        if (response.getReturnCode().equals(NotificationServiceOuterClass.ReturnStatus.ERROR.toString())) {
+    public long parseLatestVersionFromResponse(
+            NotificationServiceOuterClass.GetLatestVersionResponse response) throws Exception {
+        if (response.getReturnCode()
+                .equals(NotificationServiceOuterClass.ReturnStatus.ERROR.toString())) {
             throw new Exception(response.getReturnMsg());
         } else {
             return response.getVersion();

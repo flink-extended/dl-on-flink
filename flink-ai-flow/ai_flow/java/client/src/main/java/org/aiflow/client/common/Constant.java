@@ -19,6 +19,6 @@
 package org.aiflow.client.common;
 
 public class Constant {
-    public static final String SERVER_URI="localhost:50051";
-    public static final String DEFAULT_NAMESPACE="default";
+    public static final String SERVER_URI = "localhost:50051";
+    public static final String DEFAULT_NAMESPACE = "default";
 }

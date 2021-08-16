@@ -37,7 +37,9 @@ import org.aiflow.client.entity.RegisteredModel;
 import org.aiflow.client.entity.WorkflowMeta;
 import org.aiflow.client.exception.AIFlowException;
 import org.aiflow.client.proto.Message;
+
 import org.aiflow.notification.client.EventWatcher;
+
 import org.aiflow.notification.entity.EventMeta;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -53,9 +55,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-/***
- * This test class is used by python test `flink-ai-flow.ai_flow.test.endpoint.test_java_client.py`,
- * so it cannot run individually.
+/**
+ * * This test class is used by python test
+ * `flink-ai-flow.ai_flow.test.endpoint.test_java_client.py`, so it cannot run individually.
  */
 public class AIFlowClientTest {
 
@@ -68,20 +70,29 @@ public class AIFlowClientTest {
     @BeforeAll
     public static void beforeClass() throws Exception {
         int port = Integer.valueOf(getProperties("port"));
-        client = new AIFlowClient(LOCALHOST + ":" + port, "default", "sender",
-                false, 1 * SEC, 1 * SEC, 1 * SEC);
+        client =
+                new AIFlowClient(
+                        LOCALHOST + ":" + port,
+                        "default",
+                        "sender",
+                        false,
+                        1 * SEC,
+                        1 * SEC,
+                        1 * SEC);
     }
 
     @AfterAll
-    public static void afterClass() throws Exception {
-    }
+    public static void afterClass() throws Exception {}
 
     private static String getProperties(String key) throws IOException {
-        InputStream in = new Object() {
-            public InputStream getInputStream() {
-                return this.getClass().getClassLoader().getResourceAsStream("test.properties");
-            }
-        }.getInputStream();
+        InputStream in =
+                new Object() {
+                    public InputStream getInputStream() {
+                        return this.getClass()
+                                .getClassLoader()
+                                .getResourceAsStream("test.properties");
+                    }
+                }.getInputStream();
         Properties properties = new Properties();
         properties.load(in);
         return properties.getProperty(key);
@@ -92,11 +103,17 @@ public class AIFlowClientTest {
     @Test
     public void testRegisterDataset() throws Exception {
         String datasetName = "dataset_name";
-        client.registerDataset(datasetName, "csv", "good dataset", "mysql://",
-                new HashMap<String, String>() {{
-                    put("key1", "value1");
-                    put("key2", "value2");
-                }},
+        client.registerDataset(
+                datasetName,
+                "csv",
+                "good dataset",
+                "mysql://",
+                new HashMap<String, String>() {
+                    {
+                        put("key1", "value1");
+                        put("key2", "value2");
+                    }
+                },
                 Arrays.asList("col1", "col2"),
                 Arrays.asList(DataType.STRING, DataType.STRING));
         DatasetMeta notExistsDataset = client.getDatasetById(2L);
@@ -115,7 +132,8 @@ public class AIFlowClientTest {
     public void testRegisterDatasetWithCatalog() throws Exception {
         String datasetName = "dataset_name";
         String catalogName = "hive_catalog";
-        client.registerDatasetWithCatalog(datasetName, catalogName, "hive", "/path/to/conf", "my_db",  "my_table");
+        client.registerDatasetWithCatalog(
+                datasetName, catalogName, "hive", "/path/to/conf", "my_db", "my_table");
         DatasetMeta datasetById = client.getDatasetById(1L);
         Assertions.assertEquals(datasetName, datasetById.getName());
         Assertions.assertEquals(catalogName, datasetById.getCatalogName());
@@ -128,47 +146,81 @@ public class AIFlowClientTest {
     @Test
     public void testDoubleRegisterDataset() throws Exception {
         String datasetName = "dataset_name";
-        DatasetMeta dataset1 = client.registerDataset(datasetName, "csv", "good dataset", "mysql://",
-                new HashMap<String, String>() {{
-                    put("key1", "value1");
-                    put("key2", "value2");
-                }},
-                Arrays.asList("col1", "col2"),
-                Arrays.asList(DataType.STRING, DataType.STRING));
-        DatasetMeta dataset2 = client.registerDataset(datasetName, "csv", "good dataset", "mysql://",
-                new HashMap<String, String>() {{
-                    put("key1", "value1");
-                    put("key2", "value2");
-                }},
-                Arrays.asList("col1", "col2"),
-                Arrays.asList(DataType.STRING, DataType.STRING));
+        DatasetMeta dataset1 =
+                client.registerDataset(
+                        datasetName,
+                        "csv",
+                        "good dataset",
+                        "mysql://",
+                        new HashMap<String, String>() {
+                            {
+                                put("key1", "value1");
+                                put("key2", "value2");
+                            }
+                        },
+                        Arrays.asList("col1", "col2"),
+                        Arrays.asList(DataType.STRING, DataType.STRING));
+        DatasetMeta dataset2 =
+                client.registerDataset(
+                        datasetName,
+                        "csv",
+                        "good dataset",
+                        "mysql://",
+                        new HashMap<String, String>() {
+                            {
+                                put("key1", "value1");
+                                put("key2", "value2");
+                            }
+                        },
+                        Arrays.asList("col1", "col2"),
+                        Arrays.asList(DataType.STRING, DataType.STRING));
         Assertions.assertEquals(dataset1.getUuid(), dataset2.getUuid());
-        Assertions.assertThrows(AIFlowException.class, () -> client.registerDataset(
-                datasetName, "txt", "good dataset", "mysql://",
-                new HashMap<String, String>() {{
-                    put("key1", "value1");
-                    put("key2", "value2");
-                }},
-                Arrays.asList("col1", "col2"),
-                Arrays.asList(DataType.STRING, DataType.STRING)));
+        Assertions.assertThrows(
+                AIFlowException.class,
+                () ->
+                        client.registerDataset(
+                                datasetName,
+                                "txt",
+                                "good dataset",
+                                "mysql://",
+                                new HashMap<String, String>() {
+                                    {
+                                        put("key1", "value1");
+                                        put("key2", "value2");
+                                    }
+                                },
+                                Arrays.asList("col1", "col2"),
+                                Arrays.asList(DataType.STRING, DataType.STRING)));
     }
 
     @Test
     public void testListDataset() throws Exception {
         String datasetName1 = "dataset_name_1";
         String datasetName2 = "dataset_name_2";
-        client.registerDataset(datasetName1, "csv", "good dataset", "mysql://",
-                new HashMap<String, String>() {{
-                    put("key1", "value1");
-                    put("key2", "value2");
-                }},
+        client.registerDataset(
+                datasetName1,
+                "csv",
+                "good dataset",
+                "mysql://",
+                new HashMap<String, String>() {
+                    {
+                        put("key1", "value1");
+                        put("key2", "value2");
+                    }
+                },
                 Arrays.asList("col1", "col2"),
                 Arrays.asList(DataType.STRING, DataType.STRING));
-        client.registerDataset(datasetName2, "csv", "good dataset", "mysql://",
-                new HashMap<String, String>() {{
-                    put("key1", "value1");
-                    put("key2", "value2");
-                }},
+        client.registerDataset(
+                datasetName2,
+                "csv",
+                "good dataset",
+                "mysql://",
+                new HashMap<String, String>() {
+                    {
+                        put("key1", "value1");
+                        put("key2", "value2");
+                    }
+                },
                 Arrays.asList("col1", "col2"),
                 Arrays.asList(DataType.STRING, DataType.STRING));
         List<DatasetMeta> datasets = client.listDatasets(5L, 0L);
@@ -201,11 +253,17 @@ public class AIFlowClientTest {
     @Test
     public void testDeleteDataset() throws Exception {
         String datasetName1 = "dataset_name_1";
-        client.registerDataset(datasetName1, "csv", "good dataset", "mysql://",
-                new HashMap<String, String>() {{
-                    put("key1", "value1");
-                    put("key2", "value2");
-                }},
+        client.registerDataset(
+                datasetName1,
+                "csv",
+                "good dataset",
+                "mysql://",
+                new HashMap<String, String>() {
+                    {
+                        put("key1", "value1");
+                        put("key2", "value2");
+                    }
+                },
                 Arrays.asList("col1", "col2"),
                 Arrays.asList(DataType.STRING, DataType.STRING));
         Assertions.assertEquals(Status.OK, client.deleteDatasetByName(datasetName1));
@@ -216,22 +274,38 @@ public class AIFlowClientTest {
     @Test
     public void testUpdateDataset() throws Exception {
         String datasetName1 = "dataset_name_1";
-        client.registerDataset(datasetName1, "csv", "good dataset", "mysql://",
-                new HashMap<String, String>() {{
-                    put("key1", "value1");
-                    put("key2", "value2");
-                }},
+        client.registerDataset(
+                datasetName1,
+                "csv",
+                "good dataset",
+                "mysql://",
+                new HashMap<String, String>() {
+                    {
+                        put("key1", "value1");
+                        put("key2", "value2");
+                    }
+                },
                 Arrays.asList("col1", "col2"),
                 Arrays.asList(DataType.STRING, DataType.STRING));
         long now = System.currentTimeMillis();
-        client.updateDataset(datasetName1, "npz", "", "",
-                new HashMap<String, String>() {{
-                    put("key3", "value3");
-                    put("key4", "value4");
-                }},
+        client.updateDataset(
+                datasetName1,
+                "npz",
+                "",
+                "",
+                new HashMap<String, String>() {
+                    {
+                        put("key3", "value3");
+                        put("key4", "value4");
+                    }
+                },
                 Arrays.asList("col1", "col2"),
                 Arrays.asList(DataType.STRING, DataType.STRING),
-                "", "hive", "", "", "");
+                "",
+                "hive",
+                "",
+                "",
+                "");
         DatasetMeta dataset = client.getDatasetByName(datasetName1);
         Assertions.assertEquals("npz", dataset.getDataFormat());
         Assertions.assertEquals("hive", dataset.getCatalogType());
@@ -260,7 +334,9 @@ public class AIFlowClientTest {
         String uri = "www.code.com";
         client.registerProject(projectName, uri, EMPTY_MAP);
         client.registerProject(projectName, uri, EMPTY_MAP);
-        Assertions.assertThrows(AIFlowException.class, () -> client.registerProject(projectName, uri+ "_new", EMPTY_MAP));
+        Assertions.assertThrows(
+                AIFlowException.class,
+                () -> client.registerProject(projectName, uri + "_new", EMPTY_MAP));
     }
 
     @Test
@@ -310,14 +386,23 @@ public class AIFlowClientTest {
         String workflowName = "workflow_name";
         String uri = "www.code.com";
         ProjectMeta project = client.registerProject(projectName, uri, EMPTY_MAP);
-        WorkflowMeta response = client.registerWorkflow(workflowName, project.getUuid(), new HashMap<String, String>() {{
-            put("key1", "value1");
-            put("key2", "value2");
-        }});
+        WorkflowMeta response =
+                client.registerWorkflow(
+                        workflowName,
+                        project.getUuid(),
+                        new HashMap<String, String>() {
+                            {
+                                put("key1", "value1");
+                                put("key2", "value2");
+                            }
+                        });
         Assertions.assertEquals(workflowName, response.getName());
 
-        Assertions.assertEquals("value1", client.getWorkflowById(response.getUuid()).getProperties().get("key1"));
-        Assertions.assertEquals("value1", client.getWorkflowByName(projectName, workflowName).getProperties().get("key1"));
+        Assertions.assertEquals(
+                "value1", client.getWorkflowById(response.getUuid()).getProperties().get("key1"));
+        Assertions.assertEquals(
+                "value1",
+                client.getWorkflowByName(projectName, workflowName).getProperties().get("key1"));
     }
 
     @Test
@@ -327,8 +412,9 @@ public class AIFlowClientTest {
         String uri = "www.code.com";
         ProjectMeta project = client.registerProject(projectName, uri, EMPTY_MAP);
         WorkflowMeta response = client.registerWorkflow(workflowName, project.getUuid(), EMPTY_MAP);
-        Assertions.assertThrows(AIFlowException.class, () -> client.registerWorkflow(
-                workflowName, project.getUuid(), EMPTY_MAP));
+        Assertions.assertThrows(
+                AIFlowException.class,
+                () -> client.registerWorkflow(workflowName, project.getUuid(), EMPTY_MAP));
     }
 
     @Test
@@ -350,8 +436,10 @@ public class AIFlowClientTest {
         String workflowName2 = "workflow_name_2";
         String uri = "www.code.com";
         ProjectMeta project = client.registerProject(projectName, uri, EMPTY_MAP);
-        WorkflowMeta response1 = client.registerWorkflow(workflowName1, project.getUuid(), EMPTY_MAP);
-        WorkflowMeta response2 = client.registerWorkflow(workflowName2, project.getUuid(), EMPTY_MAP);
+        WorkflowMeta response1 =
+                client.registerWorkflow(workflowName1, project.getUuid(), EMPTY_MAP);
+        WorkflowMeta response2 =
+                client.registerWorkflow(workflowName2, project.getUuid(), EMPTY_MAP);
 
         Assertions.assertNotNull(client.getWorkflowById(response1.getUuid()));
         client.deleteWorkflowById(response1.getUuid());
@@ -368,14 +456,27 @@ public class AIFlowClientTest {
         String workflowName = "workflow_name";
         String uri = "www.code.com";
         ProjectMeta project = client.registerProject(projectName, uri, EMPTY_MAP);
-        WorkflowMeta response = client.registerWorkflow(workflowName, project.getUuid(), new HashMap<String, String>() {{
-            put("key1", "value1");
-        }});
-        Assertions.assertEquals("value1", client.getWorkflowById(response.getUuid()).getProperties().get("key1"));
-        client.updateWorkflow(workflowName, projectName, new HashMap<String, String>() {{
-            put("key1", "value2");
-        }});
-        Assertions.assertEquals("value2", client.getWorkflowById(response.getUuid()).getProperties().get("key1"));
+        WorkflowMeta response =
+                client.registerWorkflow(
+                        workflowName,
+                        project.getUuid(),
+                        new HashMap<String, String>() {
+                            {
+                                put("key1", "value1");
+                            }
+                        });
+        Assertions.assertEquals(
+                "value1", client.getWorkflowById(response.getUuid()).getProperties().get("key1"));
+        client.updateWorkflow(
+                workflowName,
+                projectName,
+                new HashMap<String, String>() {
+                    {
+                        put("key1", "value2");
+                    }
+                });
+        Assertions.assertEquals(
+                "value2", client.getWorkflowById(response.getUuid()).getProperties().get("key1"));
     }
 
     // test model
@@ -408,8 +509,10 @@ public class AIFlowClientTest {
 
         String modelName = "model_name";
         ModelRelationMeta response = client.registerModelRelation(modelName, project.getUuid());
-        Assertions.assertEquals(modelName, client.getModelRelationById(response.getUuid()).getName());
-        Assertions.assertEquals(project.getUuid(), client.getModelRelationByName(modelName).getProjectId());
+        Assertions.assertEquals(
+                modelName, client.getModelRelationById(response.getUuid()).getName());
+        Assertions.assertEquals(
+                project.getUuid(), client.getModelRelationByName(modelName).getProjectId());
     }
 
     @Test
@@ -463,30 +566,60 @@ public class AIFlowClientTest {
         String modelPath = "fs://source1.pkl";
         String modelType = "model_type";
         String versionDesc = "this is a good version";
-        ModelVersionMeta response = client.registerModelVersion(modelPath, modelType, versionDesc, model.getUuid(), Message.ModelVersionStage.GENERATED, null);
+        ModelVersionMeta response =
+                client.registerModelVersion(
+                        modelPath,
+                        modelType,
+                        versionDesc,
+                        model.getUuid(),
+                        Message.ModelVersionStage.GENERATED,
+                        null);
         Assertions.assertEquals("1", response.getVersion());
 
-        ModelVersionMeta modelVersion = client.getModelVersionByVersion(response.getVersion(), model.getUuid());
+        ModelVersionMeta modelVersion =
+                client.getModelVersionByVersion(response.getVersion(), model.getUuid());
         Assertions.assertEquals("fs://source1.pkl", modelVersion.getModelPath());
 
-        ModelVersion update_response = client.updateModelVersion(modelName, modelVersion.getVersion(),
-                modelPath + "_new", modelType + "_new", versionDesc + "_new", ModelStage.DEPLOYED);
+        ModelVersion update_response =
+                client.updateModelVersion(
+                        modelName,
+                        modelVersion.getVersion(),
+                        modelPath + "_new",
+                        modelType + "_new",
+                        versionDesc + "_new",
+                        ModelStage.DEPLOYED);
         Assertions.assertEquals(ModelStage.DEPLOYED, update_response.getCurrentStage());
 
         String modelPath2 = "fs://source2.pkl";
         String modelType2 = "model_type_2";
         String versionDesc2 = "this is a good version 2";
-        ModelVersionMeta response2 = client.registerModelVersion(modelPath2, modelType2, versionDesc2, model.getUuid(), Message.ModelVersionStage.GENERATED,null);
+        ModelVersionMeta response2 =
+                client.registerModelVersion(
+                        modelPath2,
+                        modelType2,
+                        versionDesc2,
+                        model.getUuid(),
+                        Message.ModelVersionStage.GENERATED,
+                        null);
         Assertions.assertEquals("2", response2.getVersion());
 
-        List<ModelVersionRelationMeta> modelVersionRelationList = client.listModelVersionRelation(model.getUuid(), 5L, 0L);
+        List<ModelVersionRelationMeta> modelVersionRelationList =
+                client.listModelVersionRelation(model.getUuid(), 5L, 0L);
         Assertions.assertEquals(2, modelVersionRelationList.size());
 
         client.deleteModelVersionByVersion("2", model.getUuid());
-        List<ModelVersionRelationMeta> modelVersionRelationList2 = client.listModelVersionRelation(model.getUuid(), 5L, 0L);
+        List<ModelVersionRelationMeta> modelVersionRelationList2 =
+                client.listModelVersionRelation(model.getUuid(), 5L, 0L);
         Assertions.assertEquals(1, modelVersionRelationList2.size());
 
-        ModelVersionMeta response3 = client.registerModelVersion(modelPath2, modelType2, versionDesc2, model.getUuid(), Message.ModelVersionStage.GENERATED,null);
+        ModelVersionMeta response3 =
+                client.registerModelVersion(
+                        modelPath2,
+                        modelType2,
+                        versionDesc2,
+                        model.getUuid(),
+                        Message.ModelVersionStage.GENERATED,
+                        null);
         Assertions.assertEquals("2", response3.getVersion());
     }
 
@@ -525,9 +658,12 @@ public class AIFlowClientTest {
         String artifactType = "artifact_type";
         String description = "description";
         String uri = "file:///artifact";
-        ArtifactMeta artifact = client.registerArtifact(artifactName, artifactType, description, uri, EMPTY_MAP);
-        Assertions.assertEquals(artifactType, client.getArtifactById(artifact.getUuid()).getArtifactType());
-        Assertions.assertEquals(artifactType, client.getArtifactByName(artifactName).getArtifactType());
+        ArtifactMeta artifact =
+                client.registerArtifact(artifactName, artifactType, description, uri, EMPTY_MAP);
+        Assertions.assertEquals(
+                artifactType, client.getArtifactById(artifact.getUuid()).getArtifactType());
+        Assertions.assertEquals(
+                artifactType, client.getArtifactByName(artifactName).getArtifactType());
     }
 
     @Test
@@ -536,11 +672,16 @@ public class AIFlowClientTest {
         String artifactType = "artifact_type";
         String description = "description";
         String uri = "file:///artifact";
-        ArtifactMeta artifact1 = client.registerArtifact(artifactName, artifactType, description, uri, EMPTY_MAP);
-        ArtifactMeta artifact2 = client.registerArtifact(artifactName, artifactType, description, uri, EMPTY_MAP);
+        ArtifactMeta artifact1 =
+                client.registerArtifact(artifactName, artifactType, description, uri, EMPTY_MAP);
+        ArtifactMeta artifact2 =
+                client.registerArtifact(artifactName, artifactType, description, uri, EMPTY_MAP);
         Assertions.assertEquals(artifact1.getDescription(), artifact2.getDescription());
-        Assertions.assertThrows(AIFlowException.class, () -> client.registerArtifact(
-                artifactName, artifactType, description, uri + "_new", EMPTY_MAP));
+        Assertions.assertThrows(
+                AIFlowException.class,
+                () ->
+                        client.registerArtifact(
+                                artifactName, artifactType, description, uri + "_new", EMPTY_MAP));
     }
 
     @Test
@@ -561,7 +702,9 @@ public class AIFlowClientTest {
         String description = "description";
         String uri = "file:///artifact";
         client.registerArtifact(artifactName, artifactType, description, uri, EMPTY_MAP);
-        ArtifactMeta response = client.registerArtifact(artifactName + "_new", artifactType, description, uri, EMPTY_MAP);
+        ArtifactMeta response =
+                client.registerArtifact(
+                        artifactName + "_new", artifactType, description, uri, EMPTY_MAP);
         Assertions.assertNotNull(client.getArtifactById(response.getUuid()));
         Assertions.assertNotNull(client.getArtifactByName(artifactName));
 
@@ -577,11 +720,14 @@ public class AIFlowClientTest {
         String artifactType = "artifact_type";
         String description = "description";
         String uri = "file:///artifact";
-        ArtifactMeta response = client.registerArtifact(artifactName, artifactType, description, uri, EMPTY_MAP);
+        ArtifactMeta response =
+                client.registerArtifact(artifactName, artifactType, description, uri, EMPTY_MAP);
 
-        Assertions.assertEquals(description, client.getArtifactById(response.getUuid()).getDescription());
+        Assertions.assertEquals(
+                description, client.getArtifactById(response.getUuid()).getDescription());
         client.updateArtifact(artifactName, artifactType, description + "_new", uri, EMPTY_MAP);
-        Assertions.assertEquals(description + "_new", client.getArtifactById(response.getUuid()).getDescription());
+        Assertions.assertEquals(
+                description + "_new", client.getArtifactById(response.getUuid()).getDescription());
     }
 
     // test model center
@@ -594,14 +740,17 @@ public class AIFlowClientTest {
         Assertions.assertEquals(modelDesc, response.getModelDesc());
         // It's not allowed to create a registered model with the same name but different fields.
         client.createRegisteredModel(modelName, modelDesc);
-        Assertions.assertThrows(AIFlowException.class, () ->  client.createRegisteredModel(modelName, ""));
+        Assertions.assertThrows(
+                AIFlowException.class, () -> client.createRegisteredModel(modelName, ""));
 
         String projectName = "project_name";
         String uri = "www.code.com";
         ProjectMeta project = client.registerProject(projectName, uri, EMPTY_MAP);
         client.registerModel(modelName, modelDesc, project.getUuid());
         client.registerModel(modelName, modelDesc, project.getUuid());
-        Assertions.assertThrows(AIFlowException.class, () -> client.registerModel(modelName, "", project.getUuid()));
+        Assertions.assertThrows(
+                AIFlowException.class,
+                () -> client.registerModel(modelName, "", project.getUuid()));
     }
 
     @Test
@@ -636,7 +785,8 @@ public class AIFlowClientTest {
         String modelType = "{\"flavor.version\":1}";
         String versionDesc = "test get registered model detail1";
 
-        ModelVersion modelVersion = client.createModelVersion(modelName, modelPath1, modelType, versionDesc);
+        ModelVersion modelVersion =
+                client.createModelVersion(modelName, modelPath1, modelType, versionDesc);
         Assertions.assertEquals("1", modelVersion.getModelVersion());
 
         RegisteredModel model = client.getRegisteredModelDetail(modelName);
@@ -648,7 +798,8 @@ public class AIFlowClientTest {
         Assertions.assertEquals(versionDesc, modelVersion.getVersionDesc());
 
         String modelPath2 = "fs://source1.pkl.2";
-        ModelVersion modelVersion2 = client.createModelVersion(modelName, modelPath2, modelType, versionDesc);
+        ModelVersion modelVersion2 =
+                client.createModelVersion(modelName, modelPath2, modelType, versionDesc);
         Assertions.assertEquals("2", modelVersion2.getModelVersion());
         RegisteredModel model2 = client.getRegisteredModelDetail(modelName);
         Assertions.assertEquals(modelDesc, model2.getModelDesc());
@@ -667,11 +818,14 @@ public class AIFlowClientTest {
         String modelType = "{\"flavor.version\":1}";
         String versionDesc = "test update model version1";
 
-        ModelVersion modelVersion = client.createModelVersion(modelName, modelPath1, modelType, versionDesc);
+        ModelVersion modelVersion =
+                client.createModelVersion(modelName, modelPath1, modelType, versionDesc);
         Assertions.assertEquals("1", modelVersion.getModelVersion());
 
         String modelPath2 = "fs://source1.pkl.2";
-        ModelVersion response = client.updateModelVersion(modelName, "1", modelPath2, modelType, modelDesc, ModelStage.VALIDATED);
+        ModelVersion response =
+                client.updateModelVersion(
+                        modelName, "1", modelPath2, modelType, modelDesc, ModelStage.VALIDATED);
         Assertions.assertEquals("1", response.getModelVersion());
         Assertions.assertEquals(modelPath2, response.getModelPath());
         Assertions.assertEquals(ModelStage.VALIDATED, response.getCurrentStage());
@@ -687,7 +841,8 @@ public class AIFlowClientTest {
         String modelType = "{\"flavor.version\":1}";
         String versionDesc = "test delete model version1";
 
-        ModelVersion modelVersion = client.createModelVersion(modelName, modelPath, modelType, versionDesc);
+        ModelVersion modelVersion =
+                client.createModelVersion(modelName, modelPath, modelType, versionDesc);
         Assertions.assertEquals("1", modelVersion.getModelVersion());
 
         ModelVersion detail = client.getModelVersionDetail(modelName, "1");
@@ -710,22 +865,54 @@ public class AIFlowClientTest {
         long startTime = System.currentTimeMillis() / 1000;
         long endTime = startTime + 1;
 
-        client.registerMetricMeta(metricName, MetricType.DATASET, projectName, "", datasetName, null,
-                jobName, startTime, endTime, "uri", tags, EMPTY_MAP);
+        client.registerMetricMeta(
+                metricName,
+                MetricType.DATASET,
+                projectName,
+                "",
+                datasetName,
+                null,
+                jobName,
+                startTime,
+                endTime,
+                "uri",
+                tags,
+                EMPTY_MAP);
         MetricMeta metricMeta = client.getMetricMeta(metricName);
         Assertions.assertEquals(metricName, metricMeta.getName());
         Assertions.assertEquals(MetricType.DATASET, metricMeta.getMetricType());
         Assertions.assertEquals(projectName, metricMeta.getProjectName());
         Assertions.assertEquals(startTime, metricMeta.getStartTime());
 
-        client.updateMetricMeta(metricName, projectName, "new desc", datasetName, null,
-                jobName, startTime, endTime, "uri", tags, EMPTY_MAP);
+        client.updateMetricMeta(
+                metricName,
+                projectName,
+                "new desc",
+                datasetName,
+                null,
+                jobName,
+                startTime,
+                endTime,
+                "uri",
+                tags,
+                EMPTY_MAP);
         metricMeta = client.getMetricMeta(metricName);
         Assertions.assertEquals("new desc", metricMeta.getDescription());
         System.out.println("desc: " + metricMeta.getDescription());
 
-        client.registerMetricMeta(metricName + "_2", MetricType.DATASET, projectName, "", datasetName, null,
-                jobName, startTime, endTime, "uri", tags, EMPTY_MAP);
+        client.registerMetricMeta(
+                metricName + "_2",
+                MetricType.DATASET,
+                projectName,
+                "",
+                datasetName,
+                null,
+                jobName,
+                startTime,
+                endTime,
+                "uri",
+                tags,
+                EMPTY_MAP);
         List<MetricMeta> metricMetaList = client.listDatasetMetricMetas(datasetName, projectName);
         Assertions.assertEquals(2, metricMetaList.size());
 
@@ -745,22 +932,54 @@ public class AIFlowClientTest {
         long startTime = System.currentTimeMillis() / 1000;
         long endTime = startTime + 1;
 
-        client.registerMetricMeta(metricName, MetricType.MODEL, projectName, "", null, modelName,
-                jobName, startTime, endTime, "uri", tags, EMPTY_MAP);
+        client.registerMetricMeta(
+                metricName,
+                MetricType.MODEL,
+                projectName,
+                "",
+                null,
+                modelName,
+                jobName,
+                startTime,
+                endTime,
+                "uri",
+                tags,
+                EMPTY_MAP);
         MetricMeta metricMeta = client.getMetricMeta(metricName);
         Assertions.assertEquals(metricName, metricMeta.getName());
         Assertions.assertEquals(MetricType.MODEL, metricMeta.getMetricType());
         Assertions.assertEquals(projectName, metricMeta.getProjectName());
         Assertions.assertEquals(startTime, metricMeta.getStartTime());
 
-        client.updateMetricMeta(metricName, projectName, "new desc", null, modelName,
-                jobName, startTime, endTime, "uri", tags, EMPTY_MAP);
+        client.updateMetricMeta(
+                metricName,
+                projectName,
+                "new desc",
+                null,
+                modelName,
+                jobName,
+                startTime,
+                endTime,
+                "uri",
+                tags,
+                EMPTY_MAP);
         metricMeta = client.getMetricMeta(metricName);
         Assertions.assertEquals("new desc", metricMeta.getDescription());
         System.out.println("desc: " + metricMeta.getDescription());
 
-        client.registerMetricMeta(metricName + "_2", MetricType.MODEL, projectName, "", null, modelName,
-                jobName, startTime, endTime, "uri", tags, EMPTY_MAP);
+        client.registerMetricMeta(
+                metricName + "_2",
+                MetricType.MODEL,
+                projectName,
+                "",
+                null,
+                modelName,
+                jobName,
+                startTime,
+                endTime,
+                "uri",
+                tags,
+                EMPTY_MAP);
         List<MetricMeta> metricMetaList = client.listModelMetricMetas(modelName, projectName);
         Assertions.assertEquals(2, metricMetaList.size());
 
@@ -778,7 +997,9 @@ public class AIFlowClientTest {
         String metricValue = "0.6";
         String modelVersion = "version1";
 
-        MetricSummary metricSummary = client.registerMetricSummary(metricName, metricKey, metricValue, metricTimestamp, modelVersion, null);
+        MetricSummary metricSummary =
+                client.registerMetricSummary(
+                        metricName, metricKey, metricValue, metricTimestamp, modelVersion, null);
         metricSummary = client.getMetricSummary(metricSummary.getUuid());
         Assertions.assertEquals(1, metricSummary.getUuid());
         Assertions.assertEquals(metricName, metricSummary.getMetricName());
@@ -786,33 +1007,56 @@ public class AIFlowClientTest {
         Assertions.assertEquals(metricValue, metricSummary.getMetricValue());
         Assertions.assertEquals(metricTimestamp, metricSummary.getMetricTimestamp());
 
-        metricSummary = client.updateMetricSummary(metricSummary.getUuid(), metricName, metricKey, metricValue, metricTimestamp, modelVersion, "job_1");
+        metricSummary =
+                client.updateMetricSummary(
+                        metricSummary.getUuid(),
+                        metricName,
+                        metricKey,
+                        metricValue,
+                        metricTimestamp,
+                        modelVersion,
+                        "job_1");
         metricSummary = client.getMetricSummary(metricSummary.getUuid());
         Assertions.assertEquals("job_1", metricSummary.getJobExecutionId());
 
         String newMetricKey = metricKey + "_new";
         String newModelVersion = modelVersion + "_new";
         String newMetricValue = metricValue + "_new";
-        MetricSummary metricSummary2 = client.registerMetricSummary(metricName, newMetricKey, metricValue, metricTimestamp, modelVersion, null);
-        MetricSummary metricSummary3 = client.registerMetricSummary(metricName, newMetricKey, newMetricValue, metricTimestamp, newModelVersion, null);
-        List<MetricSummary> metricSummaryList = client.listMetricSummaries(metricName, null, null, Long.MIN_VALUE, Long.MAX_VALUE);
+        MetricSummary metricSummary2 =
+                client.registerMetricSummary(
+                        metricName, newMetricKey, metricValue, metricTimestamp, modelVersion, null);
+        MetricSummary metricSummary3 =
+                client.registerMetricSummary(
+                        metricName,
+                        newMetricKey,
+                        newMetricValue,
+                        metricTimestamp,
+                        newModelVersion,
+                        null);
+        List<MetricSummary> metricSummaryList =
+                client.listMetricSummaries(metricName, null, null, Long.MIN_VALUE, Long.MAX_VALUE);
         Assertions.assertEquals(3, metricSummaryList.size());
         Assertions.assertEquals(metricKey, metricSummaryList.get(0).getMetricKey());
         Assertions.assertEquals(newMetricKey, metricSummaryList.get(1).getMetricKey());
         Assertions.assertEquals(newMetricKey, metricSummaryList.get(2).getMetricKey());
 
-        metricSummaryList = client.listMetricSummaries(null, newMetricKey, null, Long.MIN_VALUE, Long.MAX_VALUE);
+        metricSummaryList =
+                client.listMetricSummaries(
+                        null, newMetricKey, null, Long.MIN_VALUE, Long.MAX_VALUE);
         Assertions.assertEquals(2, metricSummaryList.size());
         Assertions.assertEquals(modelVersion, metricSummaryList.get(0).getModelVersion());
         Assertions.assertEquals(newModelVersion, metricSummaryList.get(1).getModelVersion());
 
-        metricSummaryList = client.listMetricSummaries(null, null, newModelVersion, Long.MIN_VALUE, Long.MAX_VALUE);
+        metricSummaryList =
+                client.listMetricSummaries(
+                        null, null, newModelVersion, Long.MIN_VALUE, Long.MAX_VALUE);
         Assertions.assertEquals(1, metricSummaryList.size());
         Assertions.assertEquals(newMetricKey, metricSummaryList.get(0).getMetricKey());
         Assertions.assertEquals(newMetricValue, metricSummaryList.get(0).getMetricValue());
 
         Assertions.assertTrue(client.deleteMetricSummary(metricSummary2.getUuid()));
-        metricSummaryList = client.listMetricSummaries(metricName, null, null, Long.MIN_VALUE, Long.MAX_VALUE);
+        metricSummaryList =
+                client.listMetricSummaries(metricName, null, null, Long.MIN_VALUE, Long.MAX_VALUE);
         Assertions.assertEquals(2, metricSummaryList.size());
         Assertions.assertEquals(metricKey, metricSummaryList.get(0).getMetricKey());
         Assertions.assertEquals(metricValue, metricSummaryList.get(0).getMetricValue());
@@ -834,7 +1078,8 @@ public class AIFlowClientTest {
         Assertions.assertEquals(value1, event.getValue());
         Assertions.assertTrue(event.getVersion() > 0);
 
-        List<EventMeta> eventList = client.listEvents(namespace, Arrays.asList(key), 0, eventType, 0, sender);
+        List<EventMeta> eventList =
+                client.listEvents(namespace, Arrays.asList(key), 0, eventType, 0, sender);
         Assertions.assertEquals(1, eventList.size());
         Assertions.assertEquals(key, eventList.get(0).getKey());
         Assertions.assertEquals(value1, eventList.get(0).getValue());
@@ -848,7 +1093,9 @@ public class AIFlowClientTest {
         Assertions.assertEquals(key, eventList.get(1).getKey());
         Assertions.assertEquals(value2, eventList.get(1).getValue());
         Assertions.assertEquals(eventType, eventList.get(1).getEventType());
-        eventList = client.listEvents(namespace, Arrays.asList(key), event.getVersion(), eventType, 0, sender);
+        eventList =
+                client.listEvents(
+                        namespace, Arrays.asList(key), event.getVersion(), eventType, 0, sender);
         Assertions.assertEquals(1, eventList.size());
         Assertions.assertEquals(key, eventList.get(0).getKey());
         Assertions.assertEquals(value2, eventList.get(0).getValue());
