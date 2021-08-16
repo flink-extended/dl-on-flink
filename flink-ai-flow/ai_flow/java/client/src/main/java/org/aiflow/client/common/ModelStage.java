@@ -21,7 +21,6 @@ package org.aiflow.client.common;
 import org.aiflow.client.proto.Message.ModelVersionStage;
 
 public enum ModelStage {
-
     GENERATED(ModelVersionStage.GENERATED),
     VALIDATED(ModelVersionStage.VALIDATED),
     DEPLOYED(ModelVersionStage.DEPLOYED),

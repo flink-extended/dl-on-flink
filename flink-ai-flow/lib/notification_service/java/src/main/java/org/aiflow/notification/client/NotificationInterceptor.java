@@ -18,9 +18,9 @@
  */
 package org.aiflow.notification.client;
 
-import org.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto;
 import io.grpc.*;
 import org.aiflow.notification.proto.NotificationServiceGrpc;
+import org.aiflow.notification.proto.NotificationServiceOuterClass.MemberProto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

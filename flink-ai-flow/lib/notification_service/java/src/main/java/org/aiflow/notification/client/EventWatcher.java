@@ -23,6 +23,5 @@ import org.aiflow.notification.entity.EventMeta;
 import java.util.List;
 
 public interface EventWatcher {
-	void process(List<EventMeta> events);
+    void process(List<EventMeta> events);
 }
-

@@ -35,7 +35,7 @@ public enum MetricType {
     }
 
     public static MetricType getMetricTypeFromValue(Message.MetricTypeProto value) {
-        for (MetricType t: values()) {
+        for (MetricType t : values()) {
             if (t.getMetricType().equals(value)) {
                 return t;
             }

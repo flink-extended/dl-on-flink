@@ -29,10 +29,15 @@ public class ModelVersionMeta {
     private Long modelId;
     private Long projectSnapshotId;
 
-    public ModelVersionMeta() {
-    }
+    public ModelVersionMeta() {}
 
-    public ModelVersionMeta(String version, String modelPath, String modelType, String versionDesc, Long modelId, Long projectSnapshotId) {
+    public ModelVersionMeta(
+            String version,
+            String modelPath,
+            String modelType,
+            String versionDesc,
+            Long modelId,
+            Long projectSnapshotId) {
         this.version = version;
         this.modelPath = modelPath;
         this.modelType = modelType;
@@ -91,20 +96,35 @@ public class ModelVersionMeta {
 
     @Override
     public String toString() {
-        return "ModelVersionMeta{" +
-                "version='" + version + '\'' +
-                ", modelPath='" + modelPath + '\'' +
-                ", modelType='" + modelType + '\'' +
-                ", versionDesc='" + versionDesc + '\'' +
-                ", modelId=" + modelId +
-                ", projectSnapshotId=" + projectSnapshotId +
-                '}';
+        return "ModelVersionMeta{"
+                + "version='"
+                + version
+                + '\''
+                + ", modelPath='"
+                + modelPath
+                + '\''
+                + ", modelType='"
+                + modelType
+                + '\''
+                + ", versionDesc='"
+                + versionDesc
+                + '\''
+                + ", modelId="
+                + modelId
+                + ", projectSnapshotId="
+                + projectSnapshotId
+                + '}';
     }
 
     public static ModelVersionMeta buildModelVersionMeta(ModelVersionProto modelVersionProto) {
-        return modelVersionProto == null ? null : new ModelVersionMeta(modelVersionProto.getVersion().getValue(),
-                modelVersionProto.getModelPath().getValue(),modelVersionProto.getModelType().getValue(),
-                modelVersionProto.getVersionDesc().getValue(), modelVersionProto.getModelId().getValue(),
-                modelVersionProto.getProjectSnapshotId().getValue());
+        return modelVersionProto == null
+                ? null
+                : new ModelVersionMeta(
+                        modelVersionProto.getVersion().getValue(),
+                        modelVersionProto.getModelPath().getValue(),
+                        modelVersionProto.getModelType().getValue(),
+                        modelVersionProto.getVersionDesc().getValue(),
+                        modelVersionProto.getModelId().getValue(),
+                        modelVersionProto.getProjectSnapshotId().getValue());
     }
 }
