@@ -32,8 +32,7 @@ public class ProjectMeta {
     private String uri;
     private Map<String, String> properties;
 
-    public ProjectMeta() {
-    }
+    public ProjectMeta() {}
 
     public ProjectMeta(Long uuid, String name, String uri, Map<String, String> properties) {
         this.uuid = uuid;
@@ -76,19 +75,28 @@ public class ProjectMeta {
 
     @Override
     public String toString() {
-        return "ProjectMeta{" +
-                "uuid=" + uuid +
-                ", name='" + name + '\'' +
-                ", uri='" + uri + '\'' +
-                ", properties=" + properties +
-                '}';
+        return "ProjectMeta{"
+                + "uuid="
+                + uuid
+                + ", name='"
+                + name
+                + '\''
+                + ", uri='"
+                + uri
+                + '\''
+                + ", properties="
+                + properties
+                + '}';
     }
 
     public static ProjectMeta buildProjectMeta(ProjectProto projectProto) {
-        return projectProto == null ? null : new ProjectMeta(projectProto.getUuid(),
-                projectProto.getName(),
-                projectProto.getUri().getValue(),
-                projectProto.getPropertiesMap());
+        return projectProto == null
+                ? null
+                : new ProjectMeta(
+                        projectProto.getUuid(),
+                        projectProto.getName(),
+                        projectProto.getUri().getValue(),
+                        projectProto.getPropertiesMap());
     }
 
     public static List<ProjectMeta> buildProjectMetas(ProjectListProto projectListProto) {
@@ -103,4 +111,3 @@ public class ProjectMeta {
         }
     }
 }
-

@@ -19,7 +19,6 @@
 package org.aiflow.client.common;
 
 public enum Status {
-
     OK,
     ERROR;
 }

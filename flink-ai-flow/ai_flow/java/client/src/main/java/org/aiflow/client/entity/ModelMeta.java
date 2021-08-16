@@ -27,9 +27,7 @@ public class ModelMeta {
     private String name;
     private Long projectId;
 
-    public ModelMeta() {
-    }
-
+    public ModelMeta() {}
 
     public ModelMeta(Long uuid, String modelDesc, String name, Long projectId) {
         this.uuid = uuid;
@@ -72,17 +70,27 @@ public class ModelMeta {
 
     @Override
     public String toString() {
-        return "ModelMeta{" +
-                "uuid=" + uuid +
-                ", modelDesc='" + modelDesc + '\'' +
-                ", name='" + name + '\'' +
-                ", projectId=" + projectId +
-                '}';
+        return "ModelMeta{"
+                + "uuid="
+                + uuid
+                + ", modelDesc='"
+                + modelDesc
+                + '\''
+                + ", name='"
+                + name
+                + '\''
+                + ", projectId="
+                + projectId
+                + '}';
     }
 
     public static ModelMeta buildModelMeta(ModelProto modelProto) {
-        return modelProto == null ? null : new ModelMeta(modelProto.getUuid(),
-                modelProto.getModelDesc().getValue(),
-                modelProto.getName(), modelProto.getProjectId().getValue());
+        return modelProto == null
+                ? null
+                : new ModelMeta(
+                        modelProto.getUuid(),
+                        modelProto.getModelDesc().getValue(),
+                        modelProto.getName(),
+                        modelProto.getProjectId().getValue());
     }
 }

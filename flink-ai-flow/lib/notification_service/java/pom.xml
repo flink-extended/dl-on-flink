@@ -37,6 +37,7 @@
         <mockito.version>2.28.2</mockito.version>
         <jython.version>2.7.0</jython.version>
         <maven.compiler.version>3.1</maven.compiler.version>
+        <maven.spotless.version>2.4.2</maven.spotless.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
@@ -192,6 +193,13 @@
             <build>
                 <plugins>
                     <plugin>
+                        <groupId>com.diffplug.spotless</groupId>
+                        <artifactId>spotless-maven-plugin</artifactId>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
+                    </plugin>
+                    <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
                         <version>1.4</version>
@@ -286,6 +294,35 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>${maven.spotless.version}</version>
+                <configuration>
+                    <java>
+                        <googleJavaFormat>
+                            <version>1.7</version>
+                            <style>AOSP</style>
+                        </googleJavaFormat>
+                        <importOrder>
+                            <order>org.aiflow.notification.client,,javax,java,\#</order>
+                        </importOrder>
+                        <removeUnusedImports/>
+                        <excludes>
+                            <exclude>**/proto/*.java</exclude>
+                        </excludes>
+                    </java>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>spotless-check</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
         <resources>
             <resource>
@@ -294,5 +331,5 @@
             </resource>
         </resources>
     </build>
-    
+
 </project>

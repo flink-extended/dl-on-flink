@@ -21,7 +21,6 @@ package org.aiflow.client.common;
 import org.aiflow.client.proto.Message.DataTypeProto;
 
 public enum DataType {
-
     INT32(DataTypeProto.INT32),
     INT64(DataTypeProto.INT64),
     FLOAT32(DataTypeProto.FLOAT32),

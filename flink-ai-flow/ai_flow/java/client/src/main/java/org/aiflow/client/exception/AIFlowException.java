@@ -18,7 +18,7 @@
  */
 package org.aiflow.client.exception;
 
-public class AIFlowException extends  Exception{
+public class AIFlowException extends Exception {
 
     private String errorCode;
     private String errorMsg;
