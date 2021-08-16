@@ -41,7 +41,19 @@ public class MetricMeta {
 
     public MetricMeta() {}
 
-    public MetricMeta(String name, MetricType metricType, String description, String projectName, String datasetName, String modelName, String jobName, long startTime, long endTime, String uri, String tags, Map<String, String> properties) {
+    public MetricMeta(
+            String name,
+            MetricType metricType,
+            String description,
+            String projectName,
+            String datasetName,
+            String modelName,
+            String jobName,
+            long startTime,
+            long endTime,
+            String uri,
+            String tags,
+            Map<String, String> properties) {
         this.name = name;
         this.metricType = metricType;
         this.description = description;
@@ -153,23 +165,25 @@ public class MetricMeta {
     }
 
     public static MetricMeta buildMetricMeta(Message.MetricMetaProto metricMetaProto) {
-        return metricMetaProto == null ? null : new MetricMeta(
-                metricMetaProto.getMetricName().getValue(),
-                MetricType.getMetricTypeFromValue(metricMetaProto.getMetricType()),
-                metricMetaProto.getMetricDesc().getValue(),
-                metricMetaProto.getProjectName().getValue(),
-                metricMetaProto.getDatasetName().getValue(),
-                metricMetaProto.getModelName().getValue(),
-                metricMetaProto.getJobName().getValue(),
-                metricMetaProto.getStartTime().getValue(),
-                metricMetaProto.getEndTime().getValue(),
-                metricMetaProto.getUri().getValue(),
-                metricMetaProto.getTags().getValue(),
-                metricMetaProto.getPropertiesMap()
-        );
+        return metricMetaProto == null
+                ? null
+                : new MetricMeta(
+                        metricMetaProto.getMetricName().getValue(),
+                        MetricType.getMetricTypeFromValue(metricMetaProto.getMetricType()),
+                        metricMetaProto.getMetricDesc().getValue(),
+                        metricMetaProto.getProjectName().getValue(),
+                        metricMetaProto.getDatasetName().getValue(),
+                        metricMetaProto.getModelName().getValue(),
+                        metricMetaProto.getJobName().getValue(),
+                        metricMetaProto.getStartTime().getValue(),
+                        metricMetaProto.getEndTime().getValue(),
+                        metricMetaProto.getUri().getValue(),
+                        metricMetaProto.getTags().getValue(),
+                        metricMetaProto.getPropertiesMap());
     }
 
-    public static List<MetricMeta> buildMetricMetas(List<Message.MetricMetaProto> metricMetaProtos) {
+    public static List<MetricMeta> buildMetricMetas(
+            List<Message.MetricMetaProto> metricMetaProtos) {
         if (metricMetaProtos == null) {
             return null;
         } else {

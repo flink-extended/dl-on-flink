@@ -30,8 +30,7 @@ public class Schema {
     private List<String> nameList;
     private List<DataType> typeList;
 
-    public Schema() {
-    }
+    public Schema() {}
 
     public Schema(List<String> nameList, List<DataType> typeList) {
         this.nameList = nameList;
@@ -56,10 +55,7 @@ public class Schema {
 
     @Override
     public String toString() {
-        return "Schema{" +
-                "nameList=" + nameList +
-                ", typeList=" + typeList +
-                '}';
+        return "Schema{" + "nameList=" + nameList + ", typeList=" + typeList + '}';
     }
 
     public static Schema buildSchema(SchemaProto schemaProto) {

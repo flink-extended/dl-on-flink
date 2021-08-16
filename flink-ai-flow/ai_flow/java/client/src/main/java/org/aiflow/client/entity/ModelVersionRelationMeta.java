@@ -30,8 +30,7 @@ public class ModelVersionRelationMeta {
     private Long modelId;
     private Long projectSnapshotId;
 
-    public ModelVersionRelationMeta() {
-    }
+    public ModelVersionRelationMeta() {}
 
     public ModelVersionRelationMeta(String version, Long modelId, Long projectSnapshotId) {
         this.version = version;
@@ -65,24 +64,35 @@ public class ModelVersionRelationMeta {
 
     @Override
     public String toString() {
-        return "ModelVersionRelationMeta{" +
-                "version='" + version + '\'' +
-                ", modelId=" + modelId +
-                ", projectSnapshotId=" + projectSnapshotId +
-                '}';
+        return "ModelVersionRelationMeta{"
+                + "version='"
+                + version
+                + '\''
+                + ", modelId="
+                + modelId
+                + ", projectSnapshotId="
+                + projectSnapshotId
+                + '}';
     }
 
-    public static ModelVersionRelationMeta buildModelVersionRelationMeta(ModelVersionRelationProto modelVersionRelationProto) {
-        return modelVersionRelationProto == null ? null : new ModelVersionRelationMeta(modelVersionRelationProto.getVersion().getValue(),
-                modelVersionRelationProto.getModelId().getValue(), modelVersionRelationProto.getProjectSnapshotId().getValue());
+    public static ModelVersionRelationMeta buildModelVersionRelationMeta(
+            ModelVersionRelationProto modelVersionRelationProto) {
+        return modelVersionRelationProto == null
+                ? null
+                : new ModelVersionRelationMeta(
+                        modelVersionRelationProto.getVersion().getValue(),
+                        modelVersionRelationProto.getModelId().getValue(),
+                        modelVersionRelationProto.getProjectSnapshotId().getValue());
     }
 
-    public static List<ModelVersionRelationMeta> buildModelVersionRelationMetas(ModelVersionRelationListProto modelVersionRelationListProto) {
+    public static List<ModelVersionRelationMeta> buildModelVersionRelationMetas(
+            ModelVersionRelationListProto modelVersionRelationListProto) {
         if (modelVersionRelationListProto == null) {
             return null;
         } else {
             List<ModelVersionRelationMeta> modelVersionRelationMetas = new ArrayList<>();
-            for (ModelVersionRelationProto modelRelationProto : modelVersionRelationListProto.getModelVersionsList()) {
+            for (ModelVersionRelationProto modelRelationProto :
+                    modelVersionRelationListProto.getModelVersionsList()) {
                 modelVersionRelationMetas.add(buildModelVersionRelationMeta(modelRelationProto));
             }
             return modelVersionRelationMetas;

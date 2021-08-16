@@ -18,9 +18,9 @@
  */
 package org.aiflow.notification.service;
 
+import io.grpc.stub.StreamObserver;
 import org.aiflow.notification.proto.NotificationServiceGrpc;
 import org.aiflow.notification.proto.NotificationServiceOuterClass;
-import io.grpc.stub.StreamObserver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,86 +28,97 @@ import java.util.List;
 import java.util.Map;
 
 public class LocalNotificationService extends NotificationServiceGrpc.NotificationServiceImplBase {
-	private List<NotificationServiceOuterClass.EventProto> store = new ArrayList<>();
-	private Map<String, Long> versionMap = new HashMap<>();
-	private Long id = 0l;
+    private List<NotificationServiceOuterClass.EventProto> store = new ArrayList<>();
+    private Map<String, Long> versionMap = new HashMap<>();
+    private Long id = 0l;
 
-	@Override
-	public void sendEvent(NotificationServiceOuterClass.SendEventRequest request,
-		StreamObserver<NotificationServiceOuterClass.SendEventsResponse> responseObserver) {
-		id++;
-		if(!versionMap.containsKey(request.getEvent().getKey())){
-			versionMap.put(request.getEvent().getKey(), 0L);
-		}
-		Long version = versionMap.get(request.getEvent().getKey());
-		version++;
-		versionMap.put(request.getEvent().getKey(), version);
+    @Override
+    public void sendEvent(
+            NotificationServiceOuterClass.SendEventRequest request,
+            StreamObserver<NotificationServiceOuterClass.SendEventsResponse> responseObserver) {
+        id++;
+        if (!versionMap.containsKey(request.getEvent().getKey())) {
+            versionMap.put(request.getEvent().getKey(), 0L);
+        }
+        Long version = versionMap.get(request.getEvent().getKey());
+        version++;
+        versionMap.put(request.getEvent().getKey(), version);
 
-		NotificationServiceOuterClass.EventProto eventProto
-			= NotificationServiceOuterClass.EventProto.newBuilder()
-			.setKey(request.getEvent().getKey())
-			.setValue(request.getEvent().getValue())
-			.setEventType(request.getEvent().getEventType())
-			.setCreateTime(System.nanoTime())
-			.setVersion(version.intValue()).build();
+        NotificationServiceOuterClass.EventProto eventProto =
+                NotificationServiceOuterClass.EventProto.newBuilder()
+                        .setKey(request.getEvent().getKey())
+                        .setValue(request.getEvent().getValue())
+                        .setEventType(request.getEvent().getEventType())
+                        .setCreateTime(System.nanoTime())
+                        .setVersion(version.intValue())
+                        .build();
 
-		store.add(eventProto);
-		NotificationServiceOuterClass.SendEventsResponse response
-			= NotificationServiceOuterClass.SendEventsResponse.newBuilder().setEvent(eventProto).setReturnCode(
-			NotificationServiceOuterClass.ReturnStatus.SUCCESS).build();
-		responseObserver.onNext(response);
-		responseObserver.onCompleted();
-	}
+        store.add(eventProto);
+        NotificationServiceOuterClass.SendEventsResponse response =
+                NotificationServiceOuterClass.SendEventsResponse.newBuilder()
+                        .setEvent(eventProto)
+                        .setReturnCode(NotificationServiceOuterClass.ReturnStatus.SUCCESS)
+                        .build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
 
-	@Override
-	public void listEvents(NotificationServiceOuterClass.ListEventsRequest request,
-		StreamObserver<NotificationServiceOuterClass.ListEventsResponse> responseObserver) {
-		String key = request.getKeys(0);
-		long version = request.getStartVersion();
-		List<NotificationServiceOuterClass.EventProto> eventProtos = new ArrayList<>();
-		for (NotificationServiceOuterClass.EventProto eventProto : store) {
-			if (key.equals(eventProto.getKey()) && eventProto.getVersion() > version) {
-				eventProtos.add(eventProto);
-			}
-		}
-		if(request.getTimeoutSeconds() > 0 && eventProtos.size()==0){
-			try {
-				Thread.sleep(request.getTimeoutSeconds()*1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		NotificationServiceOuterClass.ListEventsResponse response
-			= NotificationServiceOuterClass.ListEventsResponse.newBuilder()
-			.addAllEvents(eventProtos).build();
-		responseObserver.onNext(response);
-		responseObserver.onCompleted();
-	}
+    @Override
+    public void listEvents(
+            NotificationServiceOuterClass.ListEventsRequest request,
+            StreamObserver<NotificationServiceOuterClass.ListEventsResponse> responseObserver) {
+        String key = request.getKeys(0);
+        long version = request.getStartVersion();
+        List<NotificationServiceOuterClass.EventProto> eventProtos = new ArrayList<>();
+        for (NotificationServiceOuterClass.EventProto eventProto : store) {
+            if (key.equals(eventProto.getKey()) && eventProto.getVersion() > version) {
+                eventProtos.add(eventProto);
+            }
+        }
+        if (request.getTimeoutSeconds() > 0 && eventProtos.size() == 0) {
+            try {
+                Thread.sleep(request.getTimeoutSeconds() * 1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        NotificationServiceOuterClass.ListEventsResponse response =
+                NotificationServiceOuterClass.ListEventsResponse.newBuilder()
+                        .addAllEvents(eventProtos)
+                        .build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
 
-	@Override
-	public void listAllEvents(NotificationServiceOuterClass.ListAllEventsRequest request,
-		StreamObserver<NotificationServiceOuterClass.ListEventsResponse> responseObserver) {
-		List<NotificationServiceOuterClass.EventProto> eventProtos = new ArrayList<>();
-		for (NotificationServiceOuterClass.EventProto eventProto : store) {
-			if (eventProto.getCreateTime() >= request.getStartTime()) {
-				eventProtos.add(eventProto);
-			}
-		}
-		NotificationServiceOuterClass.ListEventsResponse response
-			= NotificationServiceOuterClass.ListEventsResponse.newBuilder()
-			.addAllEvents(eventProtos).build();
-		responseObserver.onNext(response);
-		responseObserver.onCompleted();
-	}
+    @Override
+    public void listAllEvents(
+            NotificationServiceOuterClass.ListAllEventsRequest request,
+            StreamObserver<NotificationServiceOuterClass.ListEventsResponse> responseObserver) {
+        List<NotificationServiceOuterClass.EventProto> eventProtos = new ArrayList<>();
+        for (NotificationServiceOuterClass.EventProto eventProto : store) {
+            if (eventProto.getCreateTime() >= request.getStartTime()) {
+                eventProtos.add(eventProto);
+            }
+        }
+        NotificationServiceOuterClass.ListEventsResponse response =
+                NotificationServiceOuterClass.ListEventsResponse.newBuilder()
+                        .addAllEvents(eventProtos)
+                        .build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
 
-	@Override
-	public void getLatestVersionByKey(NotificationServiceOuterClass.GetLatestVersionByKeyRequest request,
-									  StreamObserver<NotificationServiceOuterClass.GetLatestVersionResponse> responseObserver) {
-		long latestVersion = this.id;
-		NotificationServiceOuterClass.GetLatestVersionResponse response =
-				NotificationServiceOuterClass.GetLatestVersionResponse.newBuilder()
-						.setVersion(latestVersion).build();
-		responseObserver.onNext(response);
-		responseObserver.onCompleted();
-	}
+    @Override
+    public void getLatestVersionByKey(
+            NotificationServiceOuterClass.GetLatestVersionByKeyRequest request,
+            StreamObserver<NotificationServiceOuterClass.GetLatestVersionResponse>
+                    responseObserver) {
+        long latestVersion = this.id;
+        NotificationServiceOuterClass.GetLatestVersionResponse response =
+                NotificationServiceOuterClass.GetLatestVersionResponse.newBuilder()
+                        .setVersion(latestVersion)
+                        .build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
 }

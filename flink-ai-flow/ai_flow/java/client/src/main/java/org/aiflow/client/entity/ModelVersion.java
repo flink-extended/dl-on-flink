@@ -33,15 +33,21 @@ public class ModelVersion {
     private ModelVersionStatus versionStatus;
     private ModelStage currentStage;
 
-    public ModelVersion() {
-    }
+    public ModelVersion() {}
 
     public ModelVersion(String modelName, String modelVersion) {
         this.modelName = modelName;
         this.modelVersion = modelVersion;
     }
 
-    public ModelVersion(String modelName, String modelVersion, String modelPath, String modelType, String versionDesc, ModelVersionStatus versionStatus, ModelStage currentStage) {
+    public ModelVersion(
+            String modelName,
+            String modelVersion,
+            String modelPath,
+            String modelType,
+            String versionDesc,
+            ModelVersionStatus versionStatus,
+            ModelStage currentStage) {
         this.modelName = modelName;
         this.modelVersion = modelVersion;
         this.modelPath = modelPath;
@@ -109,26 +115,47 @@ public class ModelVersion {
 
     @Override
     public String toString() {
-        return "ModelVersion{" +
-                "modelName='" + modelName + '\'' +
-                ", modelVersion='" + modelVersion + '\'' +
-                ", modelPath='" + modelPath + '\'' +
-                ", modelType='" + modelType + '\'' +
-                ", versionDesc='" + versionDesc + '\'' +
-                ", versionStatus=" + versionStatus +
-                ", currentStage=" + currentStage +
-                '}';
+        return "ModelVersion{"
+                + "modelName='"
+                + modelName
+                + '\''
+                + ", modelVersion='"
+                + modelVersion
+                + '\''
+                + ", modelPath='"
+                + modelPath
+                + '\''
+                + ", modelType='"
+                + modelType
+                + '\''
+                + ", versionDesc='"
+                + versionDesc
+                + '\''
+                + ", versionStatus="
+                + versionStatus
+                + ", currentStage="
+                + currentStage
+                + '}';
     }
 
     public static ModelVersion buildModelVersion(ModelMetaParam modelMetaParam) {
-        return modelMetaParam == null ? null : new ModelVersion(modelMetaParam.getModelName().getValue(),
-                modelMetaParam.getModelVersion().getValue());
+        return modelMetaParam == null
+                ? null
+                : new ModelVersion(
+                        modelMetaParam.getModelName().getValue(),
+                        modelMetaParam.getModelVersion().getValue());
     }
 
     public static ModelVersion buildModelVersion(ModelVersionMeta modelVersionMeta) {
-        return modelVersionMeta == null ? null : new ModelVersion(modelVersionMeta.getModelName(),
-                modelVersionMeta.getModelVersion(), modelVersionMeta.getModelPath().getValue(),
-                modelVersionMeta.getModelType().getValue(), modelVersionMeta.getVersionDesc().getValue(),
-                modelVersionMeta.getVersionStatus(), ModelStage.getModelStage(modelVersionMeta.getCurrentStage()));
+        return modelVersionMeta == null
+                ? null
+                : new ModelVersion(
+                        modelVersionMeta.getModelName(),
+                        modelVersionMeta.getModelVersion(),
+                        modelVersionMeta.getModelPath().getValue(),
+                        modelVersionMeta.getModelType().getValue(),
+                        modelVersionMeta.getVersionDesc().getValue(),
+                        modelVersionMeta.getVersionStatus(),
+                        ModelStage.getModelStage(modelVersionMeta.getCurrentStage()));
     }
 }

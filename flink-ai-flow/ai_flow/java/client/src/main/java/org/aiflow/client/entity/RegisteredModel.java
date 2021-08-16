@@ -32,8 +32,7 @@ public class RegisteredModel {
     private String modelDesc;
     private ModelVersion latestModelVersion;
 
-    public RegisteredModel() {
-    }
+    public RegisteredModel() {}
 
     public RegisteredModel(String modelName) {
         this.modelName = modelName;
@@ -76,34 +75,51 @@ public class RegisteredModel {
 
     @Override
     public String toString() {
-        return "RegisteredModel{" +
-                "modelName='" + modelName + '\'' +
-                ", modelDesc='" + modelDesc + '\'' +
-                ", latestModelVersion=" + latestModelVersion +
-                '}';
+        return "RegisteredModel{"
+                + "modelName='"
+                + modelName
+                + '\''
+                + ", modelDesc='"
+                + modelDesc
+                + '\''
+                + ", latestModelVersion="
+                + latestModelVersion
+                + '}';
     }
 
     public static RegisteredModel buildRegisteredModel(ModelMetaParam modelMetaParam) {
-        return modelMetaParam == null ? null : new RegisteredModel(modelMetaParam.getModelName().getValue());
+        return modelMetaParam == null
+                ? null
+                : new RegisteredModel(modelMetaParam.getModelName().getValue());
     }
 
     public static RegisteredModel buildRegisteredModel(RegisteredModelMeta registeredModelMeta) {
-        return registeredModelMeta == null ? null : new RegisteredModel(registeredModelMeta.getModelName(),
-                registeredModelMeta.getModelDesc().getValue());
+        return registeredModelMeta == null
+                ? null
+                : new RegisteredModel(
+                        registeredModelMeta.getModelName(),
+                        registeredModelMeta.getModelDesc().getValue());
     }
 
-    public static RegisteredModel buildRegisteredModel(RegisteredModelDetail registeredModelDetail) {
-        return registeredModelDetail == null ? null : new RegisteredModel(registeredModelDetail.getRegisteredModel().getModelName(),
-                registeredModelDetail.getRegisteredModel().getModelDesc().getValue(),
-                ModelVersion.buildModelVersion(registeredModelDetail.getLatestModelVersion()));
+    public static RegisteredModel buildRegisteredModel(
+            RegisteredModelDetail registeredModelDetail) {
+        return registeredModelDetail == null
+                ? null
+                : new RegisteredModel(
+                        registeredModelDetail.getRegisteredModel().getModelName(),
+                        registeredModelDetail.getRegisteredModel().getModelDesc().getValue(),
+                        ModelVersion.buildModelVersion(
+                                registeredModelDetail.getLatestModelVersion()));
     }
 
-    public static List<RegisteredModel> buildRegisteredModels(RegisteredModelMetas registeredModelMetas) {
+    public static List<RegisteredModel> buildRegisteredModels(
+            RegisteredModelMetas registeredModelMetas) {
         if (registeredModelMetas == null) {
             return null;
         } else {
             List<RegisteredModel> registeredModels = new ArrayList<>();
-            for (RegisteredModelMeta registeredModelMeta : registeredModelMetas.getRegisteredModelsList()) {
+            for (RegisteredModelMeta registeredModelMeta :
+                    registeredModelMetas.getRegisteredModelsList()) {
                 registeredModels.add(buildRegisteredModel(registeredModelMeta));
             }
             return registeredModels;

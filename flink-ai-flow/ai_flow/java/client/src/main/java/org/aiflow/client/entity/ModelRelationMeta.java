@@ -30,8 +30,7 @@ public class ModelRelationMeta {
     private String name;
     private Long projectId;
 
-    public ModelRelationMeta() {
-    }
+    public ModelRelationMeta() {}
 
     public ModelRelationMeta(Long uuid, String name, Long projectId) {
         this.uuid = uuid;
@@ -65,24 +64,34 @@ public class ModelRelationMeta {
 
     @Override
     public String toString() {
-        return "ModelRelationMeta{" +
-                "uuid=" + uuid +
-                ", name='" + name + '\'' +
-                ", projectId=" + projectId +
-                '}';
+        return "ModelRelationMeta{"
+                + "uuid="
+                + uuid
+                + ", name='"
+                + name
+                + '\''
+                + ", projectId="
+                + projectId
+                + '}';
     }
 
     public static ModelRelationMeta buildModelRelationMeta(ModelRelationProto modelRelationProto) {
-        return modelRelationProto == null ? null : new ModelRelationMeta(modelRelationProto.getUuid(),
-                modelRelationProto.getName(), modelRelationProto.getProjectId().getValue());
+        return modelRelationProto == null
+                ? null
+                : new ModelRelationMeta(
+                        modelRelationProto.getUuid(),
+                        modelRelationProto.getName(),
+                        modelRelationProto.getProjectId().getValue());
     }
 
-    public static List<ModelRelationMeta> buildModelRelationMetas(ModelRelationListProto modelRelationListProto) {
+    public static List<ModelRelationMeta> buildModelRelationMetas(
+            ModelRelationListProto modelRelationListProto) {
         if (modelRelationListProto == null) {
             return null;
         } else {
             List<ModelRelationMeta> modelRelationMetas = new ArrayList<>();
-            for (ModelRelationProto modelRelationProto : modelRelationListProto.getModelRelationsList()) {
+            for (ModelRelationProto modelRelationProto :
+                    modelRelationListProto.getModelRelationsList()) {
                 modelRelationMetas.add(buildModelRelationMeta(modelRelationProto));
             }
             return modelRelationMetas;

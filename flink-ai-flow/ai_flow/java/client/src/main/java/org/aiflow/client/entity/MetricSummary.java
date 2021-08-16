@@ -33,7 +33,14 @@ public class MetricSummary {
     private String modelVersion;
     private String jobExecutionId;
 
-    public MetricSummary(long uuid, String metricName, String metricKey, String metricValue, long metricTimestamp, String modelVersion, String jobExecutionId) {
+    public MetricSummary(
+            long uuid,
+            String metricName,
+            String metricKey,
+            String metricValue,
+            long metricTimestamp,
+            String modelVersion,
+            String jobExecutionId) {
         this.uuid = uuid;
         this.metricName = metricName;
         this.metricKey = metricKey;
@@ -100,17 +107,20 @@ public class MetricSummary {
     }
 
     public static MetricSummary buildMetricSummary(Message.MetricSummaryProto metricSummaryProto) {
-        return metricSummaryProto == null ? null : new MetricSummary(
-                metricSummaryProto.getUuid(),
-                metricSummaryProto.getMetricName().getValue(),
-                metricSummaryProto.getMetricKey().getValue(),
-                metricSummaryProto.getMetricValue().getValue(),
-                metricSummaryProto.getMetricTimestamp().getValue(),
-                metricSummaryProto.getModelVersion().getValue(),
-                metricSummaryProto.getJobExecutionId().getValue());
+        return metricSummaryProto == null
+                ? null
+                : new MetricSummary(
+                        metricSummaryProto.getUuid(),
+                        metricSummaryProto.getMetricName().getValue(),
+                        metricSummaryProto.getMetricKey().getValue(),
+                        metricSummaryProto.getMetricValue().getValue(),
+                        metricSummaryProto.getMetricTimestamp().getValue(),
+                        metricSummaryProto.getModelVersion().getValue(),
+                        metricSummaryProto.getJobExecutionId().getValue());
     }
 
-    public static List<MetricSummary> buildMetricSummaries(List<Message.MetricSummaryProto> metricSummaryProtos) {
+    public static List<MetricSummary> buildMetricSummaries(
+            List<Message.MetricSummaryProto> metricSummaryProtos) {
         if (metricSummaryProtos == null) {
             return null;
         } else {

@@ -35,7 +35,13 @@ public class WorkflowMeta {
 
     public WorkflowMeta() {}
 
-    public WorkflowMeta(Long uuid, String name, Long projectId, Map<String, String> properties, Long createTime, Long updateTime) {
+    public WorkflowMeta(
+            Long uuid,
+            String name,
+            Long projectId,
+            Map<String, String> properties,
+            Long createTime,
+            Long updateTime) {
         this.uuid = uuid;
         this.name = name;
         this.projectId = projectId;
@@ -94,28 +100,43 @@ public class WorkflowMeta {
 
     @Override
     public String toString() {
-        return "WorkflowMeta{" +
-                "uuid=" + uuid +
-                ", name='" + name + '\'' +
-                ", projectId=" + projectId +
-                ", properties=" + properties +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                '}';
+        return "WorkflowMeta{"
+                + "uuid="
+                + uuid
+                + ", name='"
+                + name
+                + '\''
+                + ", projectId="
+                + projectId
+                + ", properties="
+                + properties
+                + ", createTime="
+                + createTime
+                + ", updateTime="
+                + updateTime
+                + '}';
     }
 
     public static WorkflowMeta buildWorkflowMeta(Message.WorkflowMetaProto workflowMetaProto) {
-        return workflowMetaProto == null ? null : new WorkflowMeta(workflowMetaProto.getUuid(),
-                workflowMetaProto.getName(), workflowMetaProto.getProjectId().getValue(), workflowMetaProto.getPropertiesMap(),
-                workflowMetaProto.getCreateTime().getValue(), workflowMetaProto.getUpdateTime().getValue());
+        return workflowMetaProto == null
+                ? null
+                : new WorkflowMeta(
+                        workflowMetaProto.getUuid(),
+                        workflowMetaProto.getName(),
+                        workflowMetaProto.getProjectId().getValue(),
+                        workflowMetaProto.getPropertiesMap(),
+                        workflowMetaProto.getCreateTime().getValue(),
+                        workflowMetaProto.getUpdateTime().getValue());
     }
 
-    public static List<WorkflowMeta> buildWorkflowMetas(MetadataServiceOuterClass.WorkflowListProto workflowListProto) {
+    public static List<WorkflowMeta> buildWorkflowMetas(
+            MetadataServiceOuterClass.WorkflowListProto workflowListProto) {
         if (workflowListProto == null) {
             return null;
         } else {
             List<WorkflowMeta> workflowMetas = new ArrayList<>();
-            for (Message.WorkflowMetaProto workflowMetaProto: workflowListProto.getWorkflowsList()) {
+            for (Message.WorkflowMetaProto workflowMetaProto :
+                    workflowListProto.getWorkflowsList()) {
                 workflowMetas.add(buildWorkflowMeta(workflowMetaProto));
             }
             return workflowMetas;

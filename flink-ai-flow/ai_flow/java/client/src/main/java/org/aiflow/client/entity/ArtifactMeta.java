@@ -36,10 +36,17 @@ public class ArtifactMeta {
     private Long updateTime;
     private Map<String, String> properties;
 
-    public ArtifactMeta() {
-    }
+    public ArtifactMeta() {}
 
-    public ArtifactMeta(Long uuid, String name, String artifactType, String description, String uri, Long createTime, Long updateTime, Map<String, String> properties) {
+    public ArtifactMeta(
+            Long uuid,
+            String name,
+            String artifactType,
+            String description,
+            String uri,
+            Long createTime,
+            Long updateTime,
+            Map<String, String> properties) {
         this.uuid = uuid;
         this.name = name;
         this.artifactType = artifactType;
@@ -116,27 +123,42 @@ public class ArtifactMeta {
 
     @Override
     public String toString() {
-        return "ArtifactMeta{" +
-                "uuid=" + uuid +
-                ", name='" + name + '\'' +
-                ", artifactType='" + artifactType + '\'' +
-                ", description='" + description + '\'' +
-                ", uri='" + uri + '\'' +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                ", properties=" + properties +
-                '}';
+        return "ArtifactMeta{"
+                + "uuid="
+                + uuid
+                + ", name='"
+                + name
+                + '\''
+                + ", artifactType='"
+                + artifactType
+                + '\''
+                + ", description='"
+                + description
+                + '\''
+                + ", uri='"
+                + uri
+                + '\''
+                + ", createTime="
+                + createTime
+                + ", updateTime="
+                + updateTime
+                + ", properties="
+                + properties
+                + '}';
     }
 
     public static ArtifactMeta buildArtifactMeta(ArtifactProto artifactProto) {
-        return artifactProto == null ? null : new ArtifactMeta(artifactProto.getUuid(),
-                artifactProto.getName(),
-                artifactProto.getArtifactType().getValue(),
-                artifactProto.getDescription().getValue(),
-                artifactProto.getUri().getValue(),
-                artifactProto.getCreateTime().getValue(),
-                artifactProto.getUpdateTime().getValue(),
-                artifactProto.getPropertiesMap());
+        return artifactProto == null
+                ? null
+                : new ArtifactMeta(
+                        artifactProto.getUuid(),
+                        artifactProto.getName(),
+                        artifactProto.getArtifactType().getValue(),
+                        artifactProto.getDescription().getValue(),
+                        artifactProto.getUri().getValue(),
+                        artifactProto.getCreateTime().getValue(),
+                        artifactProto.getUpdateTime().getValue(),
+                        artifactProto.getPropertiesMap());
     }
 
     public static List<ArtifactMeta> buildArtifactMetas(ArtifactListProto artifactListProto) {
@@ -151,4 +173,3 @@ public class ArtifactMeta {
         }
     }
 }
-

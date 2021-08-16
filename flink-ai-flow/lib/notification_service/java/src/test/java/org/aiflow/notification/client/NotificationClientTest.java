@@ -20,9 +20,7 @@ package org.aiflow.notification.client;
 
 import org.aiflow.notification.entity.EventMeta;
 import org.aiflow.notification.service.PythonServer;
-import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -46,20 +44,14 @@ public class NotificationClientTest {
         try {
             client =
                     new NotificationClient(
-                            "localhost:50051",
-                            "default",
-                            "test",
-                            false,
-                            5,
-                            10,
-                            2000);
+                            "localhost:50051", "default", "test", false, 5, 10, 2000);
         } catch (Exception e) {
             throw new Exception("Failed to init notification client", e);
         }
     }
 
     @AfterClass
-    public static void tearDown(){
+    public static void tearDown() {
         server.stop();
     }
 
@@ -79,8 +71,7 @@ public class NotificationClientTest {
     public void listAllEvents() throws Exception {
         long startTime = 0;
         for (int i = 0; i < 3; i++) {
-            EventMeta event =
-                    this.client.sendEvent("key", String.valueOf(i), "type", "");
+            EventMeta event = this.client.sendEvent("key", String.valueOf(i), "type", "");
             if (i == 1) {
                 startTime = event.getCreateTime();
             }
@@ -98,7 +89,13 @@ public class NotificationClientTest {
         final Integer[] ii = {0};
         String listenerKey = "key";
         this.client.startListenEvent(
-                "default", listenerKey, events -> ii[0] += events.size(), latestVersion, "type", 0, "*");
+                "default",
+                listenerKey,
+                events -> ii[0] += events.size(),
+                latestVersion,
+                "type",
+                0,
+                "*");
 
         Thread.sleep(10000);
         assertEquals(3, ii[0].intValue());
@@ -111,7 +108,13 @@ public class NotificationClientTest {
         final Integer[] ii = {0};
         String listenerKey = "key_0";
         this.client.startListenEvent(
-                "default", listenerKey, events -> ii[0] += events.size(), latestVersion, "*", 0, "*");
+                "default",
+                listenerKey,
+                events -> ii[0] += events.size(),
+                latestVersion,
+                "*",
+                0,
+                "*");
         Thread.sleep(10000);
         assertEquals(1, ii[0].intValue());
         this.client.stopListenEvent("default", listenerKey, "*", "*");
@@ -123,7 +126,13 @@ public class NotificationClientTest {
         final Integer[] ii = {0};
         String listenerKey = "*";
         this.client.startListenEvent(
-                "default", listenerKey, events -> ii[0] += events.size(), latestVersion, "*", 0, "test");
+                "default",
+                listenerKey,
+                events -> ii[0] += events.size(),
+                latestVersion,
+                "*",
+                0,
+                "test");
         Thread.sleep(10000);
         assertEquals(3, ii[0].intValue());
         this.client.stopListenEvent("default", listenerKey, "*", "test");
@@ -135,7 +144,13 @@ public class NotificationClientTest {
         final Integer[] ii = {0};
         String listenerKey = "*";
         this.client.startListenEvent(
-                "default", listenerKey, events -> ii[0] += events.size(), latestVersion, "*", 0, "test_1");
+                "default",
+                listenerKey,
+                events -> ii[0] += events.size(),
+                latestVersion,
+                "*",
+                0,
+                "test_1");
         Thread.sleep(10000);
         assertEquals(0, ii[0].intValue());
         this.client.stopListenEvent("default", listenerKey, "*", "test_1");
@@ -147,7 +162,13 @@ public class NotificationClientTest {
         final Integer[] ii = {0};
         String listenerKey = "*";
         this.client.startListenEvent(
-                "default", listenerKey, events -> ii[0] += events.size(), latestVersion, "type_1", 0, "test");
+                "default",
+                listenerKey,
+                events -> ii[0] += events.size(),
+                latestVersion,
+                "type_1",
+                0,
+                "test");
         Thread.sleep(10000);
         assertEquals(1, ii[0].intValue());
         this.client.stopListenEvent("default", listenerKey, "type_1", "test");
@@ -156,7 +177,8 @@ public class NotificationClientTest {
     private long sendTestEvents() throws Exception {
         long latestVersion = this.client.getLatestVersion("default", "key");
         for (int i = 0; i < 3; i++) {
-            this.client.sendEvent(String.format("key_%d", i), String.valueOf(i), String.format("type_%d", i), "");
+            this.client.sendEvent(
+                    String.format("key_%d", i), String.valueOf(i), String.format("type_%d", i), "");
         }
         return latestVersion;
     }
