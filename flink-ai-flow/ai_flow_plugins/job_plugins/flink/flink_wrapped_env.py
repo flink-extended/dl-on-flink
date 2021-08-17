@@ -21,6 +21,13 @@ from pyflink.table.table_result import TableResult
 
 
 class WrappedTableEnvironmentContext:
+    """
+    WrappedTableEnvironmentContext provides container to store extra information for WrappedTableEnvironment,
+    including list of TableResult for each execution.
+    It can help to provide these functions:
+    - list of flink job id
+    - wait for execution result
+    """
     def __init__(self):
         self.execute_sql_results:List[TableResult] = []
     
@@ -44,6 +51,11 @@ class WrappedTableEnvironmentContext:
 
 
 class WrappedTableEnvironment(TableEnvironment):
+    """
+    WrappedTableEnvironment override these functions to collect information need for flink_run_main:
+    - execute_sql(self, stmt: str) -> TableResult
+    - create_statement_set(self) -> 'WrappedStatementSet':
+    """
     wrapped_context = WrappedTableEnvironmentContext()
 
     def execute_sql(self, stmt: str) -> TableResult:
@@ -80,6 +92,14 @@ class WrappedStreamTableEnvironment(StreamTableEnvironment, WrappedTableEnvironm
 
 
 class WrappedStatementSetContext:
+    """
+    WrappedStatementSetContext provides container to store extra information for WrappedStatementSet,
+    including list of TableResult for each execution.
+    It can help to provide these functions:
+    - list of flink job id
+    - wait for execution result
+    - whether StatementSet needs to call execute() method based on whether it cantains not executed sql
+    """
     def __init__(self):
         self.execute_results: List[TableResult] = []
         self.need_execute = False
@@ -104,6 +124,12 @@ class WrappedStatementSetContext:
 
 
 class WrappedStatementSet(StatementSet):
+    """
+    WrappedStatementSet override these functions to collect information need for flink_run_main:
+    - execute(self) -> TableResult
+    - add_insert_sql(self, stmt: str) -> 'StatementSet':
+    """
+
     wrapped_context = WrappedStatementSetContext()
 
     def execute(self) -> TableResult:
