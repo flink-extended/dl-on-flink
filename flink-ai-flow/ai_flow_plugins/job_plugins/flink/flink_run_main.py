@@ -80,6 +80,9 @@ def flink_execute_func(run_graph: RunGraph, job_execution_info: JobExecutionInfo
     if len(job_id_list) > 0:
         with open('./job_id', 'w') as fp:
             fp.write(str(job_id_list))
+    
+    table_env.wait_exection_results()
+    statement_set.wait_exection_results()
 
 
 def run_project(run_graph_file, working_dir, flink_env_file):

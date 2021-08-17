@@ -36,6 +36,13 @@ class WrappedTableEnvironmentContext:
                 result.append(job_id)
         return result
 
+    def wait_execution_results(self):
+        for r in self.execute_sql_results:
+            job_client = r.get_job_client()
+            if job_client is not None:
+                job_client.get_job_execution_result(
+                    user_class_loader=None).result()
+
 
 class WrappedTableEnvironment(TableEnvironment):
     wrapped_context = WrappedTableEnvironmentContext()
@@ -49,6 +56,9 @@ class WrappedTableEnvironment(TableEnvironment):
         _s_set = super().create_statement_set()
         s_set = WrappedStatementSet(_s_set._j_statement_set, _s_set._t_env)
         return s_set
+
+    def wait_exection_results(self):
+        self.wrapped_context.wait_execution_results()
 
 class WrappedBatchTableEnvironment(BatchTableEnvironment, WrappedTableEnvironment):
 
@@ -87,6 +97,13 @@ class WrappedStatementSetContext:
                 result.append(job_id)
         return result
 
+    def wait_execution_results(self):
+        for r in self.execute_results:
+            job_client = r.get_job_client()
+            if job_client is not None:
+                job_client.get_job_execution_result(
+                    user_class_loader=None).result()
+
 
 class WrappedStatementSet(StatementSet):
     wrapped_context = WrappedStatementSetContext()
@@ -101,3 +118,6 @@ class WrappedStatementSet(StatementSet):
         result = super().add_insert_sql(stmt)
         self.wrapped_context.need_execute = True
         return result
+
+    def wait_exection_results(self):
+        self.wrapped_context.wait_execution_results()
