@@ -72,11 +72,14 @@ def flink_execute_func(run_graph: RunGraph, job_execution_info: JobExecutionInfo
         else:
             value_map[node.node_id] = c.process(contexts[i], [])
     close()
-    job_client = statement_set.execute().get_job_client()
-    if job_client is not None:
+    
+    if statement_set.wrapped_context.need_execute:
+        statement_set.execute()
+    
+    job_id_list = table_env.wrapped_context.get_job_ids() + statement_set.wrapped_context.get_job_ids()
+    if len(job_id_list) > 0:
         with open('./job_id', 'w') as fp:
-            fp.write(str(job_client.get_job_id()))
-        job_client.get_job_execution_result(user_class_loader=None).result()
+            fp.write(str(job_id_list))
 
 
 def run_project(run_graph_file, working_dir, flink_env_file):
