@@ -40,8 +40,7 @@ class WrappedTableEnvironmentContext:
         for r in self.execute_sql_results:
             job_client = r.get_job_client()
             if job_client is not None:
-                job_client.get_job_execution_result(
-                    user_class_loader=None).result()
+                job_client.get_job_execution_result().result()
 
 
 class WrappedTableEnvironment(TableEnvironment):
@@ -101,8 +100,7 @@ class WrappedStatementSetContext:
         for r in self.execute_results:
             job_client = r.get_job_client()
             if job_client is not None:
-                job_client.get_job_execution_result(
-                    user_class_loader=None).result()
+                job_client.get_job_execution_result().result()
 
 
 class WrappedStatementSet(StatementSet):
