@@ -143,5 +143,10 @@ class WrappedStatementSet(StatementSet):
         self.wrapped_context.need_execute = True
         return result
 
+    def add_insert(self, target_path, table, overwrite:bool=False) -> 'StatementSet':
+        result = super().add_insert(target_path, table, overwrite=overwrite)
+        self.wrapped_context.need_execute = True
+        return result
+
     def wait_exection_results(self):
         self.wrapped_context.wait_execution_results()
