@@ -81,8 +81,8 @@ def flink_execute_func(run_graph: RunGraph, job_execution_info: JobExecutionInfo
         with open('./job_id', 'w') as fp:
             fp.write(str(job_id_list))
     
-    table_env.wait_exection_results()
-    statement_set.wait_exection_results()
+    table_env.wait_execution_results()
+    statement_set.wait_execution_results()
 
 
 def run_project(run_graph_file, working_dir, flink_env_file):
