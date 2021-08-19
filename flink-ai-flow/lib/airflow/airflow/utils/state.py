@@ -101,7 +101,7 @@ class State:
             return 'white'
         return 'black'
 
-    running = frozenset([RUNNING, SENSING])
+    running = frozenset([RUNNING, SENSING, KILLING])
     """
     A list of states indicating that a task is being executed.
     """

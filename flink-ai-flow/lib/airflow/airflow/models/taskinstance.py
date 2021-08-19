@@ -1195,6 +1195,8 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
                 self.set_duration()
                 session.merge(self)
                 return
+            elif self.state == State.KILLED:
+                return
             else:
                 self.handle_failure(e, test_mode, context)
                 raise
