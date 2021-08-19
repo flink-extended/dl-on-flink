@@ -177,3 +177,6 @@ class JobRuntimeEnv(object):
             os.remove(file_path)
         with open(file_path, 'wb') as fp:
             fp.write(serialization_utils.serialize(self._job_execution_info))
+
+    def __str__(self):
+        return self.__dict__.__str__()

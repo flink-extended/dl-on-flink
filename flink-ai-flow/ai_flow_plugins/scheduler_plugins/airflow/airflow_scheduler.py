@@ -162,8 +162,7 @@ class AirFlowScheduler(Scheduler):
             raise Exception("airflow_deploy_path config not set!")
         if not self.dag_exist(dag_id):
             return None
-        # TODO: schedule dag with context
-        context: ExecutionContext = self.airflow_client.schedule_dag(dag_id)
+        context: ExecutionContext = self.airflow_client.schedule_dag(dag_id, workflow_execution_context)
         with create_session() as session:
             dagrun = DagRun.get_run_by_id(session=session, dag_id=dag_id, run_id=context.dagrun_id)
             if dagrun is None:

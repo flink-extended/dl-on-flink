@@ -60,7 +60,8 @@ class AIFlowOperator(BaseOperator):
                                    workflow_info=wi,
                                    start_date=str(datetime_to_int64(context.get('dag_run').start_date)),
                                    end_date=str(datetime_to_int64(context.get('dag_run').end_date)),
-                                   status=context.get('dag_run').get_state())
+                                   status=context.get('dag_run').get_state(),
+                                   context=context.get('dag_run').context)
         je = JobExecutionInfo(job_name=self.job.job_name,
                               job_execution_id=str(context.get('ti').try_number),
                               status=context.get('ti').state,
@@ -105,6 +106,7 @@ class AIFlowOperator(BaseOperator):
     def execute(self, context: Any):
         self.log.info("context:" + str(context))
         try:
+            self.log.info("submitting job with job_runtime_env: {}".format(self.job_runtime_env))
             self.job_handle: JobHandle = self.job_controller.submit_job(self.job, self.job_runtime_env)
             result = self.job_controller.get_result(job_handle=self.job_handle, blocking=True)
         finally:
