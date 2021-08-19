@@ -49,7 +49,7 @@ fi
 
 echo "Starting Airflow Scheduler"
 SCHEDULER_LOG_FILE_NAME=scheduler-$(date "+%Y%m%d-%H%M%S").log
-airflow event_scheduler --subdir=${AIRFLOW_DEPLOY_PATH} > ${AIFLOW_LOG_DIR}/${SCHEDULER_LOG_FILE_NAME} 2>&1 &
+airflow event_scheduler --subdir=${AIRFLOW_DEPLOY_PATH} --server-uri=${NOTIFICATION_SERVER_URI} > ${AIFLOW_LOG_DIR}/${SCHEDULER_LOG_FILE_NAME} 2>&1 &
 echo $! > ${AIFLOW_PID_DIR}/scheduler.pid
 echo "Airflow Scheduler started"
 
