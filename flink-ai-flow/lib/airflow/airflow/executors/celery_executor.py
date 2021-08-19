@@ -33,12 +33,13 @@ from collections import OrderedDict
 from multiprocessing import Pool, cpu_count
 from typing import Any, Dict, List, Mapping, MutableMapping, Optional, Set, Tuple, Union
 
+from airflow.utils.process_utils import reap_process_group, kill_child_processes_by_pids
+from airflow.utils.session import create_session
 from celery import Celery, Task, states as celery_states
 from celery.backends.base import BaseKeyValueStoreBackend
 from celery.backends.database import DatabaseBackend, session_cleanup
 from celery.result import AsyncResult
-from celery.signals import import_modules as celery_import_modules
-from celery.worker.control import revoke
+from celery.signals import import_modules as celery_import_modules, task_revoked
 from setproctitle import setproctitle  # pylint: disable=no-name-in-module
 
 import airflow.settings as settings
@@ -54,6 +55,7 @@ from airflow.utils.state import State
 from airflow.utils.timeout import timeout
 from airflow.utils.timezone import utcnow
 from airflow.utils.file import get_sha1hash
+from airflow.utils.timezone import parse as parse_date
 
 log = logging.getLogger(__name__)
 
@@ -87,6 +89,23 @@ def execute_command(command_to_exec: CommandType) -> None:
         _execute_in_subprocess(command_to_exec)
     else:
         _execute_in_fork(command_to_exec)
+
+
+@task_revoked.connect(sender=execute_command)
+def handle_task_revoked(request=None, **kwargs):
+    pid = _get_pid_of_task_instance(request.args[0])
+    kill_child_processes_by_pids([pid])
+
+
+def _get_pid_of_task_instance(command: CommandType):
+    execution_date = parse_date(command[5])
+    with create_session() as session:
+        ti = session.query(TaskInstance).filter(
+            TaskInstance.dag_id == command[3],
+            TaskInstance.task_id == command[4],
+            TaskInstance.execution_date == execution_date
+        ).first()
+    return ti.pid
 
 
 def _execute_in_fork(command_to_exec: CommandType) -> None:
@@ -244,7 +263,8 @@ class CeleryExecutor(BaseExecutor):
         if ti.key in self.tasks and self.tasks[ti.key] is not None:
             result = self.tasks[ti.key]
             try:
-                revoke(result.task_id, terminate=True)
+                # revoke with SIGINT because SIGTERM will be overridden by celery
+                result.revoke(terminate=True, signal='SIGINT')
             except Exception:
                 self.log.exception("Failed to revoke celery task with task_id {}".format(result.task_id))
 
@@ -410,7 +430,6 @@ class CeleryExecutor(BaseExecutor):
             state, info = state_and_info_by_celery_task_id.get(async_result.task_id)
             if state:
                 self.update_task_state(key, state, info)
-                self.send_message(key)
 
     def change_state(self, key: TaskInstanceKey, state: str, info=None) -> None:
         super().change_state(key, state, info)
@@ -422,8 +441,13 @@ class CeleryExecutor(BaseExecutor):
         try:
             if state == celery_states.SUCCESS:
                 self.success(key, info)
-            elif state in (celery_states.FAILURE, celery_states.REVOKED):
+                self.send_message(key)
+            elif state == celery_states.FAILURE:
                 self.fail(key, info)
+                self.send_message(key)
+            elif state == celery_states.REVOKED:
+                self.change_state(key, State.KILLED, info)
+                self.send_message
             elif state == celery_states.STARTED:
                 # It's now actually running, so know it made it to celery okay!
                 self.adopted_task_timeouts.pop(key, None)
