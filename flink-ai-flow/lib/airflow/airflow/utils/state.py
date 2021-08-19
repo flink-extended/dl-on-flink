@@ -67,6 +67,7 @@ class State:
         SUCCESS,
         RUNNING,
         FAILED,
+        KILLED
     )
 
     state_color = {
