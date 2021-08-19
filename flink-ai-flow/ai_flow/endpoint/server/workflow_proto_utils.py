@@ -86,7 +86,8 @@ def workflow_execution_to_proto(workflow_execution: WorkflowExecutionInfo) -> Wo
                                 execution_state=StateProto.Value(state),
                                 start_time=int64Value(int(start_date)),
                                 end_time=int64Value(int(end_date)),
-                                workflow=workflow_to_proto(workflow_execution.workflow_info))
+                                workflow=workflow_to_proto(workflow_execution.workflow_info),
+                                context=stringValue(workflow_execution.context))
     for k, v in workflow_execution.properties.items():
         wp.properties[k] = v
     return wp

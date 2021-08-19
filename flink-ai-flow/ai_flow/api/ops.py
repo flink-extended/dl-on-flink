@@ -18,6 +18,7 @@
 #
 from typing import Union, Text, Tuple, Optional, List
 
+from ai_flow.api.context_extractor import ContextExtractor
 from notification_service.base_notification import UNDEFINED_EVENT_TYPE, ANY_CONDITION
 from ai_flow.client.ai_flow_client import get_ai_flow_client
 from ai_flow.ai_graph.ai_node import AINode, ReadDatasetNode, WriteDatasetNode
@@ -583,3 +584,12 @@ def action_on_job_status(job_name: Text,
                     event_value=upstream_job_status,
                     action=action,
                     namespace=current_project_config().get_project_name())
+
+
+def set_context_extractor(context_extractor: ContextExtractor):
+    """
+    Set the :class:`ContextExtractor` for the current workflow.
+
+    :param context_extractor: the :class:`ContextExtractor` for the current workflow.
+    """
+    current_graph().set_context_extractor(context_extractor)

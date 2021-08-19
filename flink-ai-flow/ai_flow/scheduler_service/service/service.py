@@ -34,8 +34,8 @@ from ai_flow.protobuf.scheduling_service_pb2 import \
      ListWorkflowExecutionResponse,
      ScheduleJobRequest,
      JobInfoResponse,
-     ListJobInfoResponse)
-from ai_flow.plugin_interface.scheduler_interface import Scheduler, SchedulerFactory, SchedulerConfig
+     ListJobInfoResponse, WorkflowExecutionOnEventRequest)
+from ai_flow.plugin_interface.scheduler_interface import Scheduler, SchedulerFactory, SchedulerConfig, WorkflowInfo
 from ai_flow.workflow.workflow import Workflow
 from ai_flow.endpoint.server.workflow_proto_utils import workflow_to_proto, workflow_list_to_proto, \
     workflow_execution_to_proto, workflow_execution_list_to_proto, job_to_proto, job_list_to_proto
@@ -162,10 +162,23 @@ class SchedulerService(SchedulingServiceServicer):
 
     # workflow execution interface
 
+    def startNewWorkflowExecutionOnEvent(self, request, context):
+        # TODO: impl
+        rq: WorkflowExecutionOnEventRequest = request
+        namespace = rq.namespace
+        workflow_name = rq.workflow_name
+        event_conditions_json = rq.event_conditions_json
+        workflow_info = WorkflowInfo(namespace=namespace, workflow_name=workflow_name,
+                                     properties={'event_conditions_json': event_conditions_json})
+        return WorkflowInfoResponse(result=ResultProto(status=StatusProto.OK),
+                                    workflow=workflow_to_proto(workflow_info))
+
     def startNewWorkflowExecution(self, request, context):
         try:
             rq: WorkflowExecutionRequest = request
-            workflow_execution = self._scheduler.start_new_workflow_execution(rq.namespace, rq.workflow_name)
+            context = rq.context.value if rq.HasField('context') else None
+            workflow_execution = self._scheduler.start_new_workflow_execution(rq.namespace, rq.workflow_name,
+                                                                              context)
             if workflow_execution is None:
                 return WorkflowInfoResponse(
                     result=ResultProto(status=StatusProto.ERROR,
@@ -186,6 +199,17 @@ class SchedulerService(SchedulingServiceServicer):
         except Exception as err:
             return ListWorkflowExecutionResponse(result=ResultProto(status=StatusProto.ERROR,
                                                                     error_message=traceback.format_exc()))
+
+    def killWorkflowExecutionOnEvent(self, request, context):
+        # TODO: impl
+        rq: WorkflowExecutionOnEventRequest = request
+        namespace = rq.namespace
+        workflow_name = rq.workflow_name
+        event_conditions_json = rq.event_conditions_json
+        workflow_info = WorkflowInfo(namespace=namespace, workflow_name=workflow_name,
+                                     properties={'event_conditions_json': event_conditions_json})
+        return WorkflowInfoResponse(result=ResultProto(status=StatusProto.OK),
+                                    workflow=workflow_to_proto(workflow_info))
 
     def killWorkflowExecution(self, request, context):
         try:

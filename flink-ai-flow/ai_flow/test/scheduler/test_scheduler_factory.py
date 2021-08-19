@@ -15,7 +15,7 @@
 # specific language governing permissions and limitations
 # under the License.
 import unittest
-from typing import Text, List, Dict
+from typing import Text, List, Dict, Optional
 
 from ai_flow.context.project_context import ProjectContext
 from ai_flow.plugin_interface.scheduler_interface import SchedulerFactory, Scheduler
@@ -24,6 +24,9 @@ from ai_flow.plugin_interface.scheduler_interface import JobExecutionInfo, Workf
 
 
 class UnitTestScheduler(Scheduler):
+    def stop_workflow_execution_by_context(self, workflow_name: Text, context: Text) -> Optional[WorkflowExecutionInfo]:
+        pass
+
     def delete_workflow(self, project_name: Text, workflow_name: Text) -> WorkflowInfo:
         pass
 
@@ -51,7 +54,8 @@ class UnitTestScheduler(Scheduler):
     def resume_workflow_scheduling(self, project_name: Text, workflow_name: Text) -> WorkflowInfo:
         pass
 
-    def start_new_workflow_execution(self, project_name: Text, workflow_name: Text) -> WorkflowExecutionInfo:
+    def start_new_workflow_execution(self, project_name: Text, workflow_name: Text, context: Text = None) \
+            -> WorkflowExecutionInfo:
         pass
 
     def stop_all_workflow_execution(self, project_name: Text, workflow_name: Text) -> List[WorkflowExecutionInfo]:

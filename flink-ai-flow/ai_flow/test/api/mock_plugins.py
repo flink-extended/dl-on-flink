@@ -75,6 +75,9 @@ class MockJobFactory(JobPluginFactory, JobGenerator, JobController):
 
 class MockScheduler(Scheduler):
 
+    def stop_workflow_execution_by_context(self, workflow_name: Text, context: Text) -> Optional[WorkflowExecutionInfo]:
+        return WorkflowExecutionInfo(workflow_execution_id='1', status=Status.RUNNING)
+
     def delete_workflow(self, project_name: Text, workflow_name: Text) -> WorkflowInfo:
         return WorkflowInfo(namespace=project_name, workflow_name=workflow_name)
 
@@ -87,7 +90,8 @@ class MockScheduler(Scheduler):
     def resume_workflow_scheduling(self, project_name: Text, workflow_name: Text) -> WorkflowInfo:
         return WorkflowInfo(namespace=project_name, workflow_name=workflow_name)
 
-    def start_new_workflow_execution(self, project_name: Text, workflow_name: Text) -> Optional[WorkflowExecutionInfo]:
+    def start_new_workflow_execution(self, project_name: Text, workflow_name: Text, context: Text = None) \
+            -> Optional[WorkflowExecutionInfo]:
         return WorkflowExecutionInfo(workflow_execution_id='1', status=Status.RUNNING)
 
     def stop_all_workflow_execution(self, project_name: Text, workflow_name: Text) -> List[WorkflowExecutionInfo]:
