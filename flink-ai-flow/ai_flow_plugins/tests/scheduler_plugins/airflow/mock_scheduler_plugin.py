@@ -31,6 +31,14 @@ class MockScheduler(Scheduler):
         super().__init__(config)
         self.dag_generator = DAGGenerator()
 
+    def stop_workflow_execution_by_context(self, workflow_name: Text, context: Text) -> Optional[WorkflowExecutionInfo]:
+        workflow_info = WorkflowInfo(workflow_name='workflow_name', namespace='project_name')
+        workflow_execution_info = WorkflowExecutionInfo(workflow_execution_id='1',
+                                                        workflow_info=workflow_info,
+                                                        status=Status.KILLED,
+                                                        start_date=str(int(time.time() * 1000)))
+        return workflow_execution_info
+
     def submit_workflow(self, workflow: Workflow, project_context: ProjectContext, args: Dict = None) -> WorkflowInfo:
         code_text = self.dag_generator.generate(workflow=workflow,
                                                 project_name=project_context.project_name)
@@ -45,7 +53,8 @@ class MockScheduler(Scheduler):
     def resume_workflow_scheduling(self, project_name: Text, workflow_name: Text) -> WorkflowInfo:
         return WorkflowInfo(workflow_name=workflow_name, namespace=project_name)
 
-    def start_new_workflow_execution(self, project_name: Text, workflow_name: Text) -> Optional[WorkflowExecutionInfo]:
+    def start_new_workflow_execution(self, project_name: Text, workflow_name: Text, context: Text = None) \
+            -> Optional[WorkflowExecutionInfo]:
         workflow_info = WorkflowInfo(workflow_name=workflow_name, namespace=project_name)
         workflow_execution_info = WorkflowExecutionInfo(workflow_execution_id='1',
                                                         workflow_info=workflow_info,
