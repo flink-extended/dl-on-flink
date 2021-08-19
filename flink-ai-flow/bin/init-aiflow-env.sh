@@ -34,3 +34,19 @@ export AIRFLOW_HOME=${AIRFLOW_HOME:-~/airflow}
 [ -d ${AIFLOW_LOG_DIR} ] || mkdir ${AIFLOW_LOG_DIR}
 [ -d ${AIRFLOW_HOME} ] || mkdir ${AIRFLOW_HOME}
 [ -d ${AIRFLOW_DEPLOY_PATH} ] || mkdir ${AIRFLOW_DEPLOY_PATH}
+
+
+DEFAULT_NOTIFICATION_SERVER_URI="localhost:50051"
+function get_ip_addr() {
+  SYSTEM=$(uname -s)
+  if [[ ${SYSTEM} == "Darwin" ]]; then
+    DEFAULT_NOTIFICATION_SERVER_URI="$(ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}'):50051"
+  elif [[ ${SYSTEM} == "Linux" ]]; then
+    DEFAULT_NOTIFICATION_SERVER_URI="$(hostname -I | xargs):50051"
+  else
+    echo "Please init AIFlow on Linux or macOS."
+    exit 1
+  fi
+}
+get_ip_addr
+export NOTIFICATION_SERVER_URI=${NOTIFICATION_SERVER_URI:-${DEFAULT_NOTIFICATION_SERVER_URI}}
