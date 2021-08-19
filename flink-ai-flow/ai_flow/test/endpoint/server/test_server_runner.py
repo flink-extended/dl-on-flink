@@ -29,6 +29,9 @@ from ai_flow.workflow.workflow import Workflow
 
 class MockScheduler(Scheduler):
 
+    def stop_workflow_execution_by_context(self, workflow_name: Text, context: Text) -> Optional[WorkflowExecutionInfo]:
+        pass
+
     def delete_workflow(self, project_name: Text, workflow_name: Text) -> WorkflowInfo:
         pass
 
@@ -41,7 +44,8 @@ class MockScheduler(Scheduler):
     def resume_workflow_scheduling(self, project_name: Text, workflow_name: Text) -> WorkflowInfo:
         pass
 
-    def start_new_workflow_execution(self, project_name: Text, workflow_name: Text) -> Optional[WorkflowExecutionInfo]:
+    def start_new_workflow_execution(self, project_name: Text, workflow_name: Text, context: Text = None) \
+            -> Optional[WorkflowExecutionInfo]:
         pass
 
     def stop_all_workflow_execution(self, project_name: Text, workflow_name: Text) -> List[WorkflowExecutionInfo]:

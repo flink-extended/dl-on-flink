@@ -112,6 +112,7 @@ message WorkflowExecutionProto {
     google.protobuf.StringValue signature = 10;
     string execution_id = 11;
     WorkflowProto workflow = 12;
+    google.protobuf.StringValue context = 13;
 }
 
 message ProjectProto {

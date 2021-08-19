@@ -102,7 +102,8 @@ class WorkflowExecutionInfo(json_utils.Jsonable):
                  status: Text = None,
                  properties: Dict = None,
                  start_date: Text = None,
-                 end_date: Text = None):
+                 end_date: Text = None,
+                 context: Text = None):
         if properties is None:
             properties = {}
         self._properties = properties
@@ -111,6 +112,7 @@ class WorkflowExecutionInfo(json_utils.Jsonable):
         self._status = status
         self._start_date = start_date
         self._end_date = end_date
+        self._context = context
 
     @property
     def workflow_execution_id(self):
@@ -159,6 +161,10 @@ class WorkflowExecutionInfo(json_utils.Jsonable):
     @end_date.setter
     def end_date(self, value):
         self._end_date = value
+
+    @property
+    def context(self):
+        return self._context
 
     def __str__(self) -> str:
         return json_utils.dumps(self)
@@ -293,11 +299,13 @@ class Scheduler(ABC):
         pass
 
     @abstractmethod
-    def start_new_workflow_execution(self, project_name: Text, workflow_name: Text) -> Optional[WorkflowExecutionInfo]:
+    def start_new_workflow_execution(self, project_name: Text, workflow_name: Text, context: Text = None) \
+            -> Optional[WorkflowExecutionInfo]:
         """
         Make the scheduler new a workflow execution.
         :param project_name: The project name.
         :param workflow_name: The workflow name.
+        :param context: The context of the new workflow execution.
         :return: The workflow execution information.
         """
         pass
@@ -318,6 +326,18 @@ class Scheduler(ABC):
         Stop the workflow execution by execution id.
         :param workflow_execution_id: The workflow execution id.
         :return: The workflow execution information.
+        """
+        pass
+
+    @abstractmethod
+    def stop_workflow_execution_by_context(self, workflow_name: Text, context: Text) -> Optional[WorkflowExecutionInfo]:
+        """
+        Stop the workflow execution with the given workflow name and workflow execution context.
+
+        :param workflow_name: The workflow name.
+        :param context: The context of the workflow execution to stop.
+        :return: The workflow execution information of the stopped workflow execution. None if the workflow execution
+        is not found.
         """
         pass
 
