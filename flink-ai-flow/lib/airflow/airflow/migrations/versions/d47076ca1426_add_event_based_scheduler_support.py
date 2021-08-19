@@ -52,10 +52,11 @@ def upgrade():
     with op.batch_alter_table('serialized_dag', schema=None) as batch_op:
         batch_op.add_column(sa.Column('event_relationships', sa.String(10240), nullable=True))
 
-    """Apply Add scheduling_job_id,event_ack_id Column to dag_run table"""
+    """Apply Add scheduling_job_id,event_ack_id,context Column to dag_run table"""
     with op.batch_alter_table('dag_run', schema=None) as batch_op:
         batch_op.add_column(sa.Column('scheduling_job_id', sa.Integer(), nullable=True))
         batch_op.add_column(sa.Column('event_ack_id', sa.BigInteger(), nullable=True))
+        batch_op.add_column(sa.Column('context', sa.Text(), nullable=True))
 
     """Add task_state table"""
     if 'task_state' not in tables:
@@ -124,6 +125,7 @@ def downgrade():
     with op.batch_alter_table('dag_run', schema=None) as batch_op:
         batch_op.drop_column('scheduling_job_id')
         batch_op.drop_column('event_ack_id')
+        batch_op.drop_column('context')
 
     op.drop_table('task_state')
     op.drop_table('task_execution')

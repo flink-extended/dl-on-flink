@@ -237,7 +237,7 @@ class EventBasedScheduler(LoggingMixin):
                 self.log.debug('remove periodic task {} {}'.format(run_id, task.task_id))
                 self.periodic_manager.remove_task(run_id, task.task_id)
 
-    def _create_dag_run(self, dag_id, session, run_type=DagRunType.SCHEDULED) -> DagRun:
+    def _create_dag_run(self, dag_id, session, run_type=DagRunType.SCHEDULED, context=None) -> DagRun:
         with prohibit_commit(session) as guard:
             if settings.USE_JOB_SCHEDULE:
                 """
@@ -266,6 +266,7 @@ class EventBasedScheduler(LoggingMixin):
                         session=session,
                         dag_hash=dag_hash,
                         creating_job_id=self.id,
+                        context=context
                     )
                     if run_type == DagRunType.SCHEDULED:
                         self._update_dag_next_dagrun(dag_id, session)
@@ -491,7 +492,8 @@ class EventBasedScheduler(LoggingMixin):
             message.from_json(event.body)
             if message.message_type == UserDefineMessageType.RUN_DAG:
                 # todo make sure dag file is parsed.
-                dagrun = self._create_dag_run(message.dag_id, session=session, run_type=DagRunType.MANUAL)
+                dagrun = self._create_dag_run(message.dag_id, session=session, run_type=DagRunType.MANUAL,
+                                              context=message.context)
                 if not dagrun:
                     self.log.error("Failed to create dag_run.")
                     # TODO Need to add ret_code and errro_msg in ExecutionContext in case of exception

@@ -169,6 +169,9 @@ class WorkflowExecutionInfo(json_utils.Jsonable):
     def __str__(self) -> str:
         return json_utils.dumps(self)
 
+    def __repr__(self):
+        return self.__str__()
+
 
 class JobExecutionInfo(json_utils.Jsonable):
     def __init__(self,
@@ -248,6 +251,9 @@ class JobExecutionInfo(json_utils.Jsonable):
 
     def __str__(self) -> str:
         return json_utils.dumps(self)
+
+    def __repr__(self):
+        return self.__str__()
 
 
 class Scheduler(ABC):
