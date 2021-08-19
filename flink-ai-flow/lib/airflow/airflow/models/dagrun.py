@@ -30,7 +30,7 @@ from sqlalchemy import (
     UniqueConstraint,
     and_,
     func,
-    or_,
+    or_, Text,
 )
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.declarative import declared_attr
@@ -83,6 +83,7 @@ class DagRun(Base, LoggingMixin):
     external_trigger = Column(Boolean, default=True)
     run_type = Column(String(50), nullable=False)
     conf = Column(PickleType)
+    context = Column(Text)
     # When a scheduler last attempted to schedule TIs for this DagRun
     last_scheduling_decision = Column(UtcDateTime)
     dag_hash = Column(String(32))
@@ -125,6 +126,7 @@ class DagRun(Base, LoggingMixin):
         creating_job_id: Optional[int] = None,
         scheduling_job_id: Optional[int] = None,
         event_ack_id: Optional[int] = None,
+        context: Optional[str] = None
     ):
         self.dag_id = dag_id
         self.run_id = run_id
@@ -138,6 +140,7 @@ class DagRun(Base, LoggingMixin):
         self.creating_job_id = creating_job_id
         self.scheduling_job_id = scheduling_job_id
         self.event_ack_id = event_ack_id
+        self.context = context
         super().__init__()
 
     def __repr__(self):

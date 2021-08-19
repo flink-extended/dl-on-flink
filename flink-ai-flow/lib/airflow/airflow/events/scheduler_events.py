@@ -142,9 +142,10 @@ class BaseUserDefineMessage(object):
 
 
 class RunDagMessage(BaseUserDefineMessage):
-    def __init__(self, dag_id):
+    def __init__(self, dag_id, context):
         super().__init__(UserDefineMessageType.RUN_DAG)
         self.dag_id = dag_id
+        self.context = context
 
 
 class StopDagRunMessage(BaseUserDefineMessage):
@@ -263,18 +264,19 @@ class TaskStateChangedEvent(SchedulerInnerEvent):
 
 
 class DagExecutableEvent(SchedulerInnerEvent):
-    def __init__(self, dag_id):
+    def __init__(self, dag_id, context):
         super().__init__()
         self.dag_id = dag_id
+        self.context = context
 
     @classmethod
     def to_base_event(cls, event: 'DagExecutableEvent') -> BaseEvent:
-        return BaseEvent(key=event.dag_id, value='', event_type=SchedulerInnerEventType.DAG_EXECUTABLE.value,
+        return BaseEvent(key=event.dag_id, value=event.context, event_type=SchedulerInnerEventType.DAG_EXECUTABLE.value,
                          namespace=event.dag_id)
 
     @classmethod
     def from_base_event(cls, event: BaseEvent) -> 'DagExecutableEvent':
-        return DagExecutableEvent(dag_id=event.key)
+        return DagExecutableEvent(dag_id=event.key, context=event.value)
 
 
 class DagRunFinishedEvent(SchedulerInnerEvent):

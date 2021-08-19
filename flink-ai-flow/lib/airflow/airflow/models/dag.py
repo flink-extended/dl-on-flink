@@ -1741,6 +1741,7 @@ class DAG(LoggingMixin):
         session=None,
         dag_hash=None,
         creating_job_id=None,
+        context=None,
     ):
         """
         Creates a dag run from this dag including the tasks associated with this dag.
@@ -1791,6 +1792,7 @@ class DAG(LoggingMixin):
             run_type=run_type,
             dag_hash=dag_hash,
             creating_job_id=creating_job_id,
+            context=context
         )
         session.add(run)
         session.flush()
