@@ -35,7 +35,7 @@ class FlinkEnv(object):
     """
 
     @abstractmethod
-    def create_env(self) -> (ExecutionEnvironment, WrappedTableEnvironment, WrappedStatementSet):
+    def create_env(self) -> (ExecutionEnvironment, TableEnvironment, StatementSet):
         pass
 
 
@@ -44,7 +44,7 @@ class FlinkBatchEnv(FlinkEnv):
     FlinkBatchEnv is the default implementation of FlinkEnv, used in flink batch jobs.
     """
 
-    def create_env(self) -> (ExecutionEnvironment, WrappedTableEnvironment, WrappedStatementSet):
+    def create_env(self) -> (ExecutionEnvironment, TableEnvironment, StatementSet):
         exec_env = ExecutionEnvironment.get_execution_environment()
         exec_env.set_parallelism(1)
         t_config = TableConfig()
@@ -60,7 +60,7 @@ class FlinkStreamEnv(FlinkEnv):
     FlinkStreamEnv is the default implementation of FlinkEnv, used in flink streaming jobs.
     """
 
-    def create_env(self) -> (ExecutionEnvironment, WrappedTableEnvironment, WrappedStatementSet):
+    def create_env(self) -> (ExecutionEnvironment, TableEnvironment, StatementSet):
         exec_env = StreamExecutionEnvironment.get_execution_environment()
         exec_env.set_parallelism(1)
         t_config = TableConfig()
