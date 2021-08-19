@@ -14,7 +14,7 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-from typing import List
+from typing import List, Text
 import queue
 import time
 from airflow.contrib.jobs.event_based_scheduler_job import SCHEDULER_NAMESPACE
@@ -67,14 +67,14 @@ class EventSchedulerClient(object):
         handler.stop()
         return True
 
-    def schedule_dag(self, dag_id) -> ExecutionContext:
+    def schedule_dag(self, dag_id, context: Text) -> ExecutionContext:
         id = self.generate_id(dag_id)
         watcher: ResponseWatcher = ResponseWatcher()
         handler: ThreadEventWatcherHandle \
             = self.ns_client.start_listen_event(key=id,
                                                 event_type=SchedulerInnerEventType.RESPONSE.value,
                                                 namespace=SCHEDULER_NAMESPACE, watcher=watcher)
-        self.ns_client.send_event(RequestEvent(request_id=id, body=RunDagMessage(dag_id).to_json()).to_event())
+        self.ns_client.send_event(RequestEvent(request_id=id, body=RunDagMessage(dag_id, context).to_json()).to_event())
         result: ResponseEvent = ResponseEvent.from_base_event(watcher.get_result())
         handler.stop()
         return ExecutionContext(dagrun_id=result.body)

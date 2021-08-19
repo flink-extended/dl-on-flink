@@ -76,7 +76,7 @@ class DagRunnableReportingThread(StoppableThread, LoggingMixin):
 
     def _send_dag_executable(self, dag_models: Set[DagModel]):
         for dag_model in dag_models:
-            self._mailbox.send_message(DagExecutableEvent(dag_model.dag_id).to_event())
+            self._mailbox.send_message(DagExecutableEvent(dag_model.dag_id, dag_model.next_dagrun).to_event())
 
 
 class ParsingStatRetrieveThread(StoppableThread):
