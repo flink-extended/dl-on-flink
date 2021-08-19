@@ -942,6 +942,56 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
+  /dags/{dag_id}/dagRuns/{dag_run_id}/taskExecutions:
+    parameters:
+      - $ref: '#/components/parameters/DAGID'
+      - $ref: '#/components/parameters/DAGRunID'
+    get:
+      summary: List task executions
+      description: >
+        This endpoint allows specifying `~` as the dag_id, dag_run_id to retrieve DAG runs for all DAGs
+        and DAG runs.
+      x-openapi-router-controller: airflow.api_connexion.endpoints.task_execution_endpoint
+      operationId: list_task_executions
+      tags: [ TaskExecution ]
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/TaskExecutionCollection'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/PermissionDenied'
+
+  /dags/{dag_id}/dagRuns/{dag_run_id}/taskInstances/{task_id}/taskExecutions:
+    parameters:
+      - $ref: '#/components/parameters/DAGID'
+      - $ref: '#/components/parameters/DAGRunID'
+      - $ref: '#/components/parameters/TaskID'
+
+    get:
+      summary: List task executions by task id
+      x-openapi-router-controller: airflow.api_connexion.endpoints.task_execution_endpoint
+      operationId: list_task_executions_by_task_id
+      tags: [ TaskExecution ]
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskExecutionCollection'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/PermissionDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
   /variables:
     get:
       summary: List variables
@@ -1822,6 +1872,66 @@ components:
           items:
             $ref: '#/components/schemas/TaskInstanceReference'
 
+    TaskExecution:
+      type: object
+      properties:
+        task_id:
+          type: string
+        dag_id:
+          type: string
+        execution_date:
+          type: string
+          format: datetime
+        start_date:
+          type: string
+          format: datetime
+          nullable: true
+        end_date:
+          type: string
+          format: datetime
+          nullable: true
+        duration:
+          type: number
+          nullable: true
+        state:
+          $ref: '#/components/schemas/TaskState'
+          nullable: true
+        seq_num:
+          type: integer
+        hostname:
+          type: string
+        unixname:
+          type: string
+        pool:
+          type: string
+        pool_slots:
+          type: integer
+        queue:
+          type: string
+        priority_weight:
+          type: integer
+        operator:
+          type: string
+        queued_when:
+          type: string
+          nullable: true
+        pid:
+          type: integer
+          nullable: true
+        executor_config:
+          type: string
+        sla_miss:
+          $ref: '#/components/schemas/SLAMiss'
+          nullable: true
+
+    TaskExecutionCollection:
+      type: object
+      properties:
+        task_instances:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskExecution'
+
     VariableCollectionItem:
       description:
         XCom entry collection item.
@@ -2495,6 +2605,7 @@ components:
         - success
         - running
         - failed
+        - killed
 
     TriggerRule:
       description: Trigger rule.
