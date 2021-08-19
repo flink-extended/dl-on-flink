@@ -21,7 +21,7 @@ import shutil
 from ai_flow import AIFlowServerRunner, init_ai_flow_context
 from ai_flow.workflow.status import Status
 from ai_flow_plugins.job_plugins import flink
-from test_flink_processor import Source, Sink, Transformer, Transformer2
+from test_flink_processor import SinkWithAddInsertSql, SinkWithExecuteSql, Source, Sink, Transformer, Transformer2
 import ai_flow as af
 
 project_path = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
@@ -76,6 +76,46 @@ class TestFlink(unittest.TestCase):
         je = af.workflow_operation.get_job_execution(job_name='task_1', execution_id='1')
         self.assertEqual(Status.FAILED, je.status)
         self.assertTrue('err' in je.properties)
+
+    def test_local_flink_no_statementset_task(self):
+        """
+        This is a test case for issue 475.
+        https://github.com/alibaba/flink-ai-extended/issues/475
+        It calls TableEnv.execute_sql in FlinkPythonProcessor and no need to call 
+        StatementSet.execute().
+        flink_run_main.py should be able to handle this case.
+        """
+        with af.job_config('task_1'):
+            input_example = af.user_define_operation(processor=Source())
+            processed = af.transform(input=[input_example], transform_processor=Transformer())
+            af.user_define_operation(input=[processed], processor=SinkWithExecuteSql())
+        af.workflow_operation.submit_workflow(
+            workflow_name='test_local_flink_no_statementset_task')
+        af.workflow_operation.start_job_execution(job_name='task_1', execution_id='1')
+        je = af.workflow_operation.get_job_execution(job_name='task_1', execution_id='1')
+        self.assertEqual(Status.FINISHED, je.status)
+
+    def test_local_flink_execute_statementset_add_insert_sql_task(self):
+        """
+        This is a test case for issue 475.
+        https://github.com/alibaba/flink-ai-extended/issues/475
+        It calls Statementset.add_insert_sql in FlinkPythonProcessor and need to call 
+        StatementSet.execute().
+        flink_run_main.py should be able to handle this case.
+        """
+        with af.job_config('task_1'):
+            input_example = af.user_define_operation(processor=Source())
+            processed = af.transform(
+                input=[input_example], transform_processor=Transformer())
+            af.user_define_operation(
+                input=[processed], processor=SinkWithAddInsertSql())
+        af.workflow_operation.submit_workflow(
+            workflow_name='test_local_flink_execute_statementset_add_insert_sql_task')
+        af.workflow_operation.start_job_execution(
+            job_name='task_1', execution_id='1')
+        je = af.workflow_operation.get_job_execution(
+            job_name='task_1', execution_id='1')
+        self.assertEqual(Status.FINISHED, je.status)
 
     @unittest.skip("need start flink cluster")
     def test_cluster_flink_task(self):
