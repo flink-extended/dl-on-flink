@@ -14,6 +14,7 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
+from ai_flow.api.context_extractor import ContextExtractor, BroadcastAllContextExtractor
 from ai_flow.graph.graph import Graph
 from ai_flow.graph.channel import Channel
 from ai_flow.ai_graph.ai_node import AINode
@@ -35,6 +36,7 @@ class AIGraph(Graph):
     def __init__(self) -> None:
         super().__init__()
         self.nodes: Dict[Text, AINode] = {}
+        self._context_extractor: ContextExtractor = BroadcastAllContextExtractor()
 
     def add_node(self, node: AINode):
         """
@@ -69,6 +71,22 @@ class AIGraph(Graph):
         """
         edge = DataEdge(destination=node_id, source=channel.node_id, port=channel.port)
         self.add_edge(node_id=node_id, edge=edge)
+
+    def set_context_extractor(self, context_extractor: ContextExtractor):
+        """
+        Set the context extractor to the AIGraph.
+
+        :param context_extractor: The :class:`~ai_flow.api.context_extractor.ContextExtractor` for the AIGraph.
+        """
+
+        self._context_extractor = context_extractor
+
+    def get_context_extractor(self) -> ContextExtractor:
+        """
+        Get the context extractor of the AIGraph.
+        :return: The :class:`ContextExtractor` for the AIGraph.
+        """
+        return self._context_extractor
 
 
 __current_ai_graph__ = AIGraph()

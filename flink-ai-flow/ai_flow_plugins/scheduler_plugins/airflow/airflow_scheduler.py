@@ -153,13 +153,16 @@ class AirFlowScheduler(Scheduler):
         DagModel.get_dagmodel(dag_id=dag_id).set_is_paused(is_paused=False)
         return WorkflowInfo(namespace=project_name, workflow_name=workflow_name)
 
-    def start_new_workflow_execution(self, project_name: Text, workflow_name: Text) -> Optional[WorkflowExecutionInfo]:
+    def start_new_workflow_execution(self, project_name: Text, workflow_name: Text,
+                                     workflow_execution_context: Text = None) \
+            -> Optional[WorkflowExecutionInfo]:
         dag_id = self.airflow_dag_id(project_name, workflow_name)
         deploy_path = self.config.get('airflow_deploy_path')
         if deploy_path is None:
             raise Exception("airflow_deploy_path config not set!")
         if not self.dag_exist(dag_id):
             return None
+        # TODO: schedule dag with context
         context: ExecutionContext = self.airflow_client.schedule_dag(dag_id)
         with create_session() as session:
             dagrun = DagRun.get_run_by_id(session=session, dag_id=dag_id, run_id=context.dagrun_id)
@@ -177,6 +180,10 @@ class AirFlowScheduler(Scheduler):
             if we.status == status.Status.RUNNING:
                 self.stop_workflow_execution(we.workflow_execution_id)
         return workflow_execution_list
+
+    def stop_workflow_execution_by_context(self, workflow_name: Text, context: Text) -> Optional[WorkflowExecutionInfo]:
+        # TODO: impl
+        pass
 
     def stop_workflow_execution(self, workflow_execution_id: Text) -> Optional[WorkflowExecutionInfo]:
         with create_session() as session:

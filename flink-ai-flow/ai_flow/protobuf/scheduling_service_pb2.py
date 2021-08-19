@@ -33,6 +33,7 @@ _sym_db = _symbol_database.Default()
 
 
 from . import message_pb2 as message__pb2
+from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
@@ -40,11 +41,11 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='scheduling_service.proto',
   package='ai_flow',
   syntax='proto3',
-  serialized_options=b'\n\020com.aiflow.protoZ\010/ai_flow\210\001\001\220\001\001',
+  serialized_options=b'\n\027org.aiflow.client.protoZ\010/ai_flow\210\001\001\220\001\001',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x18scheduling_service.proto\x12\x07\x61i_flow\x1a\rmessage.proto\x1a\x1cgoogle/api/annotations.proto\"\xc1\x01\n\x17ScheduleWorkflowRequest\x12\x11\n\tnamespace\x18\x01 \x01(\t\x12\x15\n\rworkflow_name\x18\x02 \x01(\t\x12\x38\n\x04\x61rgs\x18\x03 \x03(\x0b\x32*.ai_flow.ScheduleWorkflowRequest.ArgsEntry\x12\x15\n\rworkflow_json\x18\x04 \x01(\t\x1a+\n\tArgsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xc2\x01\n\x18WorkflowExecutionRequest\x12\x11\n\tnamespace\x18\x01 \x01(\t\x12\x14\n\x0c\x65xecution_id\x18\x02 \x01(\t\x12\x15\n\rworkflow_name\x18\x03 \x01(\t\x12\x39\n\x04\x61rgs\x18\x04 \x03(\x0b\x32+.ai_flow.WorkflowExecutionRequest.ArgsEntry\x1a+\n\tArgsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"O\n\x12ScheduleJobRequest\x12\x11\n\tnamespace\x18\x01 \x01(\t\x12\x10\n\x08job_name\x18\x02 \x01(\t\x12\x14\n\x0c\x65xecution_id\x18\x03 \x01(\t\"f\n\x14WorkflowInfoResponse\x12$\n\x06result\x18\x01 \x01(\x0b\x32\x14.ai_flow.ResultProto\x12(\n\x08workflow\x18\x02 \x01(\x0b\x32\x16.ai_flow.WorkflowProto\"o\n\x18ListWorkflowInfoResponse\x12$\n\x06result\x18\x01 \x01(\x0b\x32\x14.ai_flow.ResultProto\x12-\n\rworkflow_list\x18\x02 \x03(\x0b\x32\x16.ai_flow.WorkflowProto\"~\n\x19WorkflowExecutionResponse\x12$\n\x06result\x18\x01 \x01(\x0b\x32\x14.ai_flow.ResultProto\x12;\n\x12workflow_execution\x18\x02 \x01(\x0b\x32\x1f.ai_flow.WorkflowExecutionProto\"\x87\x01\n\x1dListWorkflowExecutionResponse\x12$\n\x06result\x18\x01 \x01(\x0b\x32\x14.ai_flow.ResultProto\x12@\n\x17workflow_execution_list\x18\x02 \x03(\x0b\x32\x1f.ai_flow.WorkflowExecutionProto\"W\n\x0fJobInfoResponse\x12$\n\x06result\x18\x01 \x01(\x0b\x32\x14.ai_flow.ResultProto\x12\x1e\n\x03job\x18\x02 \x01(\x0b\x32\x11.ai_flow.JobProto\"`\n\x13ListJobInfoResponse\x12$\n\x06result\x18\x01 \x01(\x0b\x32\x14.ai_flow.ResultProto\x12#\n\x08job_list\x18\x02 \x03(\x0b\x32\x11.ai_flow.JobProto2\xcb\x10\n\x11SchedulingService\x12\x80\x01\n\x0esubmitWorkflow\x12 .ai_flow.ScheduleWorkflowRequest\x1a\x1d.ai_flow.WorkflowInfoResponse\"-\x82\xd3\xe4\x93\x02\'\"\"/aiflow/scheduling/workflow/submit:\x01*\x12\x80\x01\n\x0e\x64\x65leteWorkflow\x12 .ai_flow.ScheduleWorkflowRequest\x1a\x1d.ai_flow.WorkflowInfoResponse\"-\x82\xd3\xe4\x93\x02\'\"\"/aiflow/scheduling/workflow/delete:\x01*\x12\x88\x01\n\x17pauseWorkflowScheduling\x12 .ai_flow.ScheduleWorkflowRequest\x1a\x1d.ai_flow.WorkflowInfoResponse\",\x82\xd3\xe4\x93\x02&\"!/aiflow/scheduling/workflow/pause:\x01*\x12\x8a\x01\n\x18resumeWorkflowScheduling\x12 .ai_flow.ScheduleWorkflowRequest\x1a\x1d.ai_flow.WorkflowInfoResponse\"-\x82\xd3\xe4\x93\x02\'\"\"/aiflow/scheduling/workflow/resume:\x01*\x12w\n\x0bgetWorkflow\x12 .ai_flow.ScheduleWorkflowRequest\x1a\x1d.ai_flow.WorkflowInfoResponse\"\'\x82\xd3\xe4\x93\x02!\x12\x1f/aiflow/scheduling/workflow/get\x12~\n\rlistWorkflows\x12 .ai_flow.ScheduleWorkflowRequest\x1a!.ai_flow.ListWorkflowInfoResponse\"(\x82\xd3\xe4\x93\x02\"\x12 /aiflow/scheduling/workflow/list\x12\x9e\x01\n\x19startNewWorkflowExecution\x12!.ai_flow.WorkflowExecutionRequest\x1a\".ai_flow.WorkflowExecutionResponse\":\x82\xd3\xe4\x93\x02\x34\"//aiflow/scheduling/workflow_execution/start_new:\x01*\x12\xa1\x01\n\x19killAllWorkflowExecutions\x12!.ai_flow.WorkflowExecutionRequest\x1a&.ai_flow.ListWorkflowExecutionResponse\"9\x82\xd3\xe4\x93\x02\x33\"./aiflow/scheduling/workflow_execution/kill_all:\x01*\x12\x95\x01\n\x15killWorkflowExecution\x12!.ai_flow.WorkflowExecutionRequest\x1a\".ai_flow.WorkflowExecutionResponse\"5\x82\xd3\xe4\x93\x02/\"*/aiflow/scheduling/workflow_execution/kill:\x01*\x12\x90\x01\n\x14getWorkflowExecution\x12!.ai_flow.WorkflowExecutionRequest\x1a\".ai_flow.WorkflowExecutionResponse\"1\x82\xd3\xe4\x93\x02+\x12)/aiflow/scheduling/workflow_execution/get\x12\x97\x01\n\x16listWorkflowExecutions\x12!.ai_flow.WorkflowExecutionRequest\x1a&.ai_flow.ListWorkflowExecutionResponse\"2\x82\xd3\xe4\x93\x02,\x12*/aiflow/scheduling/workflow_execution/list\x12j\n\x08startJob\x12\x1b.ai_flow.ScheduleJobRequest\x1a\x18.ai_flow.JobInfoResponse\"\'\x82\xd3\xe4\x93\x02!\"\x1c/aiflow/scheduling/job/start:\x01*\x12h\n\x07stopJob\x12\x1b.ai_flow.ScheduleJobRequest\x1a\x18.ai_flow.JobInfoResponse\"&\x82\xd3\xe4\x93\x02 \"\x1b/aiflow/scheduling/job/stop:\x01*\x12n\n\nrestartJob\x12\x1b.ai_flow.ScheduleJobRequest\x1a\x18.ai_flow.JobInfoResponse\")\x82\xd3\xe4\x93\x02#\"\x1e/aiflow/scheduling/job/restart:\x01*\x12\x63\n\x06getJob\x12\x1b.ai_flow.ScheduleJobRequest\x1a\x18.ai_flow.JobInfoResponse\"\"\x82\xd3\xe4\x93\x02\x1c\x12\x1a/aiflow/scheduling/job/get\x12j\n\x08listJobs\x12\x1b.ai_flow.ScheduleJobRequest\x1a\x1c.ai_flow.ListJobInfoResponse\"#\x82\xd3\xe4\x93\x02\x1d\x12\x1b/aiflow/scheduling/job/listB\"\n\x10\x63om.aiflow.protoZ\x08/ai_flow\x88\x01\x01\x90\x01\x01\x62\x06proto3'
+  serialized_pb=b'\n\x18scheduling_service.proto\x12\x07\x61i_flow\x1a\rmessage.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1cgoogle/api/annotations.proto\"\xc1\x01\n\x17ScheduleWorkflowRequest\x12\x11\n\tnamespace\x18\x01 \x01(\t\x12\x15\n\rworkflow_name\x18\x02 \x01(\t\x12\x38\n\x04\x61rgs\x18\x03 \x03(\x0b\x32*.ai_flow.ScheduleWorkflowRequest.ArgsEntry\x12\x15\n\rworkflow_json\x18\x04 \x01(\t\x1a+\n\tArgsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xf1\x01\n\x18WorkflowExecutionRequest\x12\x11\n\tnamespace\x18\x01 \x01(\t\x12\x14\n\x0c\x65xecution_id\x18\x02 \x01(\t\x12\x15\n\rworkflow_name\x18\x03 \x01(\t\x12-\n\x07\x63ontext\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x39\n\x04\x61rgs\x18\x05 \x03(\x0b\x32+.ai_flow.WorkflowExecutionRequest.ArgsEntry\x1a+\n\tArgsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"j\n\x1fWorkflowExecutionOnEventRequest\x12\x11\n\tnamespace\x18\x01 \x01(\t\x12\x15\n\rworkflow_name\x18\x02 \x01(\t\x12\x1d\n\x15\x65vent_conditions_json\x18\x03 \x01(\t\"O\n\x12ScheduleJobRequest\x12\x11\n\tnamespace\x18\x01 \x01(\t\x12\x10\n\x08job_name\x18\x02 \x01(\t\x12\x14\n\x0c\x65xecution_id\x18\x03 \x01(\t\"f\n\x14WorkflowInfoResponse\x12$\n\x06result\x18\x01 \x01(\x0b\x32\x14.ai_flow.ResultProto\x12(\n\x08workflow\x18\x02 \x01(\x0b\x32\x16.ai_flow.WorkflowProto\"o\n\x18ListWorkflowInfoResponse\x12$\n\x06result\x18\x01 \x01(\x0b\x32\x14.ai_flow.ResultProto\x12-\n\rworkflow_list\x18\x02 \x03(\x0b\x32\x16.ai_flow.WorkflowProto\"~\n\x19WorkflowExecutionResponse\x12$\n\x06result\x18\x01 \x01(\x0b\x32\x14.ai_flow.ResultProto\x12;\n\x12workflow_execution\x18\x02 \x01(\x0b\x32\x1f.ai_flow.WorkflowExecutionProto\"\x87\x01\n\x1dListWorkflowExecutionResponse\x12$\n\x06result\x18\x01 \x01(\x0b\x32\x14.ai_flow.ResultProto\x12@\n\x17workflow_execution_list\x18\x02 \x03(\x0b\x32\x1f.ai_flow.WorkflowExecutionProto\"W\n\x0fJobInfoResponse\x12$\n\x06result\x18\x01 \x01(\x0b\x32\x14.ai_flow.ResultProto\x12\x1e\n\x03job\x18\x02 \x01(\x0b\x32\x11.ai_flow.JobProto\"`\n\x13ListJobInfoResponse\x12$\n\x06result\x18\x01 \x01(\x0b\x32\x14.ai_flow.ResultProto\x12#\n\x08job_list\x18\x02 \x03(\x0b\x32\x11.ai_flow.JobProto2\xa8\x13\n\x11SchedulingService\x12\x80\x01\n\x0esubmitWorkflow\x12 .ai_flow.ScheduleWorkflowRequest\x1a\x1d.ai_flow.WorkflowInfoResponse\"-\x82\xd3\xe4\x93\x02\'\"\"/aiflow/scheduling/workflow/submit:\x01*\x12\x80\x01\n\x0e\x64\x65leteWorkflow\x12 .ai_flow.ScheduleWorkflowRequest\x1a\x1d.ai_flow.WorkflowInfoResponse\"-\x82\xd3\xe4\x93\x02\'\"\"/aiflow/scheduling/workflow/delete:\x01*\x12\x88\x01\n\x17pauseWorkflowScheduling\x12 .ai_flow.ScheduleWorkflowRequest\x1a\x1d.ai_flow.WorkflowInfoResponse\",\x82\xd3\xe4\x93\x02&\"!/aiflow/scheduling/workflow/pause:\x01*\x12\x8a\x01\n\x18resumeWorkflowScheduling\x12 .ai_flow.ScheduleWorkflowRequest\x1a\x1d.ai_flow.WorkflowInfoResponse\"-\x82\xd3\xe4\x93\x02\'\"\"/aiflow/scheduling/workflow/resume:\x01*\x12w\n\x0bgetWorkflow\x12 .ai_flow.ScheduleWorkflowRequest\x1a\x1d.ai_flow.WorkflowInfoResponse\"\'\x82\xd3\xe4\x93\x02!\x12\x1f/aiflow/scheduling/workflow/get\x12~\n\rlistWorkflows\x12 .ai_flow.ScheduleWorkflowRequest\x1a!.ai_flow.ListWorkflowInfoResponse\"(\x82\xd3\xe4\x93\x02\"\x12 /aiflow/scheduling/workflow/list\x12\xb0\x01\n startNewWorkflowExecutionOnEvent\x12(.ai_flow.WorkflowExecutionOnEventRequest\x1a\x1d.ai_flow.WorkflowInfoResponse\"C\x82\xd3\xe4\x93\x02=\"8/aiflow/scheduling/workflow_execution/start_new_on_event:\x01*\x12\x9e\x01\n\x19startNewWorkflowExecution\x12!.ai_flow.WorkflowExecutionRequest\x1a\".ai_flow.WorkflowExecutionResponse\":\x82\xd3\xe4\x93\x02\x34\"//aiflow/scheduling/workflow_execution/start_new:\x01*\x12\xa1\x01\n\x19killAllWorkflowExecutions\x12!.ai_flow.WorkflowExecutionRequest\x1a&.ai_flow.ListWorkflowExecutionResponse\"9\x82\xd3\xe4\x93\x02\x33\"./aiflow/scheduling/workflow_execution/kill_all:\x01*\x12\xa7\x01\n\x1ckillWorkflowExecutionOnEvent\x12(.ai_flow.WorkflowExecutionOnEventRequest\x1a\x1d.ai_flow.WorkflowInfoResponse\">\x82\xd3\xe4\x93\x02\x38\"3/aiflow/scheduling/workflow_execution/kill_on_event:\x01*\x12\x95\x01\n\x15killWorkflowExecution\x12!.ai_flow.WorkflowExecutionRequest\x1a\".ai_flow.WorkflowExecutionResponse\"5\x82\xd3\xe4\x93\x02/\"*/aiflow/scheduling/workflow_execution/kill:\x01*\x12\x90\x01\n\x14getWorkflowExecution\x12!.ai_flow.WorkflowExecutionRequest\x1a\".ai_flow.WorkflowExecutionResponse\"1\x82\xd3\xe4\x93\x02+\x12)/aiflow/scheduling/workflow_execution/get\x12\x97\x01\n\x16listWorkflowExecutions\x12!.ai_flow.WorkflowExecutionRequest\x1a&.ai_flow.ListWorkflowExecutionResponse\"2\x82\xd3\xe4\x93\x02,\x12*/aiflow/scheduling/workflow_execution/list\x12j\n\x08startJob\x12\x1b.ai_flow.ScheduleJobRequest\x1a\x18.ai_flow.JobInfoResponse\"\'\x82\xd3\xe4\x93\x02!\"\x1c/aiflow/scheduling/job/start:\x01*\x12h\n\x07stopJob\x12\x1b.ai_flow.ScheduleJobRequest\x1a\x18.ai_flow.JobInfoResponse\"&\x82\xd3\xe4\x93\x02 \"\x1b/aiflow/scheduling/job/stop:\x01*\x12n\n\nrestartJob\x12\x1b.ai_flow.ScheduleJobRequest\x1a\x18.ai_flow.JobInfoResponse\")\x82\xd3\xe4\x93\x02#\"\x1e/aiflow/scheduling/job/restart:\x01*\x12\x63\n\x06getJob\x12\x1b.ai_flow.ScheduleJobRequest\x1a\x18.ai_flow.JobInfoResponse\"\"\x82\xd3\xe4\x93\x02\x1c\x12\x1a/aiflow/scheduling/job/get\x12j\n\x08listJobs\x12\x1b.ai_flow.ScheduleJobRequest\x1a\x1c.ai_flow.ListJobInfoResponse\"#\x82\xd3\xe4\x93\x02\x1d\x12\x1b/aiflow/scheduling/job/listB)\n\x17org.aiflow.client.protoZ\x08/ai_flow\x88\x01\x01\x90\x01\x01\x62\x06proto3'
   ,
-  dependencies=[message__pb2.DESCRIPTOR,google_dot_api_dot_annotations__pb2.DESCRIPTOR,])
+  dependencies=[message__pb2.DESCRIPTOR,google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,google_dot_api_dot_annotations__pb2.DESCRIPTOR,])
 
 
 
@@ -83,8 +84,8 @@ _SCHEDULEWORKFLOWREQUEST_ARGSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=233,
-  serialized_end=276,
+  serialized_start=265,
+  serialized_end=308,
 )
 
 _SCHEDULEWORKFLOWREQUEST = _descriptor.Descriptor(
@@ -135,8 +136,8 @@ _SCHEDULEWORKFLOWREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=83,
-  serialized_end=276,
+  serialized_start=115,
+  serialized_end=308,
 )
 
 
@@ -174,8 +175,8 @@ _WORKFLOWEXECUTIONREQUEST_ARGSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=233,
-  serialized_end=276,
+  serialized_start=265,
+  serialized_end=308,
 )
 
 _WORKFLOWEXECUTIONREQUEST = _descriptor.Descriptor(
@@ -208,8 +209,15 @@ _WORKFLOWEXECUTIONREQUEST = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='args', full_name='ai_flow.WorkflowExecutionRequest.args', index=3,
-      number=4, type=11, cpp_type=10, label=3,
+      name='context', full_name='ai_flow.WorkflowExecutionRequest.context', index=3,
+      number=4, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='args', full_name='ai_flow.WorkflowExecutionRequest.args', index=4,
+      number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -226,8 +234,54 @@ _WORKFLOWEXECUTIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=279,
-  serialized_end=473,
+  serialized_start=311,
+  serialized_end=552,
+)
+
+
+_WORKFLOWEXECUTIONONEVENTREQUEST = _descriptor.Descriptor(
+  name='WorkflowExecutionOnEventRequest',
+  full_name='ai_flow.WorkflowExecutionOnEventRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='namespace', full_name='ai_flow.WorkflowExecutionOnEventRequest.namespace', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='workflow_name', full_name='ai_flow.WorkflowExecutionOnEventRequest.workflow_name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='event_conditions_json', full_name='ai_flow.WorkflowExecutionOnEventRequest.event_conditions_json', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=554,
+  serialized_end=660,
 )
 
 
@@ -272,8 +326,8 @@ _SCHEDULEJOBREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=475,
-  serialized_end=554,
+  serialized_start=662,
+  serialized_end=741,
 )
 
 
@@ -311,8 +365,8 @@ _WORKFLOWINFORESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=556,
-  serialized_end=658,
+  serialized_start=743,
+  serialized_end=845,
 )
 
 
@@ -350,8 +404,8 @@ _LISTWORKFLOWINFORESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=660,
-  serialized_end=771,
+  serialized_start=847,
+  serialized_end=958,
 )
 
 
@@ -389,8 +443,8 @@ _WORKFLOWEXECUTIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=773,
-  serialized_end=899,
+  serialized_start=960,
+  serialized_end=1086,
 )
 
 
@@ -428,8 +482,8 @@ _LISTWORKFLOWEXECUTIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=902,
-  serialized_end=1037,
+  serialized_start=1089,
+  serialized_end=1224,
 )
 
 
@@ -467,8 +521,8 @@ _JOBINFORESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1039,
-  serialized_end=1126,
+  serialized_start=1226,
+  serialized_end=1313,
 )
 
 
@@ -506,13 +560,14 @@ _LISTJOBINFORESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1128,
-  serialized_end=1224,
+  serialized_start=1315,
+  serialized_end=1411,
 )
 
 _SCHEDULEWORKFLOWREQUEST_ARGSENTRY.containing_type = _SCHEDULEWORKFLOWREQUEST
 _SCHEDULEWORKFLOWREQUEST.fields_by_name['args'].message_type = _SCHEDULEWORKFLOWREQUEST_ARGSENTRY
 _WORKFLOWEXECUTIONREQUEST_ARGSENTRY.containing_type = _WORKFLOWEXECUTIONREQUEST
+_WORKFLOWEXECUTIONREQUEST.fields_by_name['context'].message_type = google_dot_protobuf_dot_wrappers__pb2._STRINGVALUE
 _WORKFLOWEXECUTIONREQUEST.fields_by_name['args'].message_type = _WORKFLOWEXECUTIONREQUEST_ARGSENTRY
 _WORKFLOWINFORESPONSE.fields_by_name['result'].message_type = message__pb2._RESULTPROTO
 _WORKFLOWINFORESPONSE.fields_by_name['workflow'].message_type = message__pb2._WORKFLOWPROTO
@@ -528,6 +583,7 @@ _LISTJOBINFORESPONSE.fields_by_name['result'].message_type = message__pb2._RESUL
 _LISTJOBINFORESPONSE.fields_by_name['job_list'].message_type = message__pb2._JOBPROTO
 DESCRIPTOR.message_types_by_name['ScheduleWorkflowRequest'] = _SCHEDULEWORKFLOWREQUEST
 DESCRIPTOR.message_types_by_name['WorkflowExecutionRequest'] = _WORKFLOWEXECUTIONREQUEST
+DESCRIPTOR.message_types_by_name['WorkflowExecutionOnEventRequest'] = _WORKFLOWEXECUTIONONEVENTREQUEST
 DESCRIPTOR.message_types_by_name['ScheduleJobRequest'] = _SCHEDULEJOBREQUEST
 DESCRIPTOR.message_types_by_name['WorkflowInfoResponse'] = _WORKFLOWINFORESPONSE
 DESCRIPTOR.message_types_by_name['ListWorkflowInfoResponse'] = _LISTWORKFLOWINFORESPONSE
@@ -566,6 +622,13 @@ WorkflowExecutionRequest = _reflection.GeneratedProtocolMessageType('WorkflowExe
   })
 _sym_db.RegisterMessage(WorkflowExecutionRequest)
 _sym_db.RegisterMessage(WorkflowExecutionRequest.ArgsEntry)
+
+WorkflowExecutionOnEventRequest = _reflection.GeneratedProtocolMessageType('WorkflowExecutionOnEventRequest', (_message.Message,), {
+  'DESCRIPTOR' : _WORKFLOWEXECUTIONONEVENTREQUEST,
+  '__module__' : 'scheduling_service_pb2'
+  # @@protoc_insertion_point(class_scope:ai_flow.WorkflowExecutionOnEventRequest)
+  })
+_sym_db.RegisterMessage(WorkflowExecutionOnEventRequest)
 
 ScheduleJobRequest = _reflection.GeneratedProtocolMessageType('ScheduleJobRequest', (_message.Message,), {
   'DESCRIPTOR' : _SCHEDULEJOBREQUEST,
@@ -628,8 +691,8 @@ _SCHEDULINGSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1227,
-  serialized_end=3350,
+  serialized_start=1414,
+  serialized_end=3886,
   methods=[
   _descriptor.MethodDescriptor(
     name='submitWorkflow',
@@ -692,9 +755,19 @@ _SCHEDULINGSERVICE = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
+    name='startNewWorkflowExecutionOnEvent',
+    full_name='ai_flow.SchedulingService.startNewWorkflowExecutionOnEvent',
+    index=6,
+    containing_service=None,
+    input_type=_WORKFLOWEXECUTIONONEVENTREQUEST,
+    output_type=_WORKFLOWINFORESPONSE,
+    serialized_options=b'\202\323\344\223\002=\"8/aiflow/scheduling/workflow_execution/start_new_on_event:\001*',
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
     name='startNewWorkflowExecution',
     full_name='ai_flow.SchedulingService.startNewWorkflowExecution',
-    index=6,
+    index=7,
     containing_service=None,
     input_type=_WORKFLOWEXECUTIONREQUEST,
     output_type=_WORKFLOWEXECUTIONRESPONSE,
@@ -704,7 +777,7 @@ _SCHEDULINGSERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='killAllWorkflowExecutions',
     full_name='ai_flow.SchedulingService.killAllWorkflowExecutions',
-    index=7,
+    index=8,
     containing_service=None,
     input_type=_WORKFLOWEXECUTIONREQUEST,
     output_type=_LISTWORKFLOWEXECUTIONRESPONSE,
@@ -712,9 +785,19 @@ _SCHEDULINGSERVICE = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
+    name='killWorkflowExecutionOnEvent',
+    full_name='ai_flow.SchedulingService.killWorkflowExecutionOnEvent',
+    index=9,
+    containing_service=None,
+    input_type=_WORKFLOWEXECUTIONONEVENTREQUEST,
+    output_type=_WORKFLOWINFORESPONSE,
+    serialized_options=b'\202\323\344\223\0028\"3/aiflow/scheduling/workflow_execution/kill_on_event:\001*',
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
     name='killWorkflowExecution',
     full_name='ai_flow.SchedulingService.killWorkflowExecution',
-    index=8,
+    index=10,
     containing_service=None,
     input_type=_WORKFLOWEXECUTIONREQUEST,
     output_type=_WORKFLOWEXECUTIONRESPONSE,
@@ -724,7 +807,7 @@ _SCHEDULINGSERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='getWorkflowExecution',
     full_name='ai_flow.SchedulingService.getWorkflowExecution',
-    index=9,
+    index=11,
     containing_service=None,
     input_type=_WORKFLOWEXECUTIONREQUEST,
     output_type=_WORKFLOWEXECUTIONRESPONSE,
@@ -734,7 +817,7 @@ _SCHEDULINGSERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='listWorkflowExecutions',
     full_name='ai_flow.SchedulingService.listWorkflowExecutions',
-    index=10,
+    index=12,
     containing_service=None,
     input_type=_WORKFLOWEXECUTIONREQUEST,
     output_type=_LISTWORKFLOWEXECUTIONRESPONSE,
@@ -744,7 +827,7 @@ _SCHEDULINGSERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='startJob',
     full_name='ai_flow.SchedulingService.startJob',
-    index=11,
+    index=13,
     containing_service=None,
     input_type=_SCHEDULEJOBREQUEST,
     output_type=_JOBINFORESPONSE,
@@ -754,7 +837,7 @@ _SCHEDULINGSERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='stopJob',
     full_name='ai_flow.SchedulingService.stopJob',
-    index=12,
+    index=14,
     containing_service=None,
     input_type=_SCHEDULEJOBREQUEST,
     output_type=_JOBINFORESPONSE,
@@ -764,7 +847,7 @@ _SCHEDULINGSERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='restartJob',
     full_name='ai_flow.SchedulingService.restartJob',
-    index=13,
+    index=15,
     containing_service=None,
     input_type=_SCHEDULEJOBREQUEST,
     output_type=_JOBINFORESPONSE,
@@ -774,7 +857,7 @@ _SCHEDULINGSERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='getJob',
     full_name='ai_flow.SchedulingService.getJob',
-    index=14,
+    index=16,
     containing_service=None,
     input_type=_SCHEDULEJOBREQUEST,
     output_type=_JOBINFORESPONSE,
@@ -784,7 +867,7 @@ _SCHEDULINGSERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='listJobs',
     full_name='ai_flow.SchedulingService.listJobs',
-    index=15,
+    index=17,
     containing_service=None,
     input_type=_SCHEDULEJOBREQUEST,
     output_type=_LISTJOBINFORESPONSE,
