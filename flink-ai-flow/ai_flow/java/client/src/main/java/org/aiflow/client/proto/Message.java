@@ -18116,6 +18116,12 @@ public final class Message {
      * <code>.google.protobuf.Int64Value update_time = 6;</code>
      */
     com.google.protobuf.Int64ValueOrBuilder getUpdateTimeOrBuilder();
+
+    /**
+     * <code>bytes context_extractor_in_bytes = 7;</code>
+     * @return The contextExtractorInBytes.
+     */
+    com.google.protobuf.ByteString getContextExtractorInBytes();
   }
   /**
    * Protobuf type {@code ai_flow.WorkflowMetaProto}
@@ -18131,6 +18137,7 @@ public final class Message {
     }
     private WorkflowMetaProto() {
       name_ = "";
+      contextExtractorInBytes_ = com.google.protobuf.ByteString.EMPTY;
     }
 
     @java.lang.Override
@@ -18225,6 +18232,11 @@ public final class Message {
                 updateTime_ = subBuilder.buildPartial();
               }
 
+              break;
+            }
+            case 58: {
+
+              contextExtractorInBytes_ = input.readBytes();
               break;
             }
             default: {
@@ -18479,6 +18491,17 @@ public final class Message {
       return getUpdateTime();
     }
 
+    public static final int CONTEXT_EXTRACTOR_IN_BYTES_FIELD_NUMBER = 7;
+    private com.google.protobuf.ByteString contextExtractorInBytes_;
+    /**
+     * <code>bytes context_extractor_in_bytes = 7;</code>
+     * @return The contextExtractorInBytes.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getContextExtractorInBytes() {
+      return contextExtractorInBytes_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -18513,6 +18536,9 @@ public final class Message {
       }
       if (updateTime_ != null) {
         output.writeMessage(6, getUpdateTime());
+      }
+      if (!contextExtractorInBytes_.isEmpty()) {
+        output.writeBytes(7, contextExtractorInBytes_);
       }
       unknownFields.writeTo(output);
     }
@@ -18552,6 +18578,10 @@ public final class Message {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(6, getUpdateTime());
       }
+      if (!contextExtractorInBytes_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(7, contextExtractorInBytes_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -18588,6 +18618,8 @@ public final class Message {
         if (!getUpdateTime()
             .equals(other.getUpdateTime())) return false;
       }
+      if (!getContextExtractorInBytes()
+          .equals(other.getContextExtractorInBytes())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -18620,6 +18652,8 @@ public final class Message {
         hash = (37 * hash) + UPDATE_TIME_FIELD_NUMBER;
         hash = (53 * hash) + getUpdateTime().hashCode();
       }
+      hash = (37 * hash) + CONTEXT_EXTRACTOR_IN_BYTES_FIELD_NUMBER;
+      hash = (53 * hash) + getContextExtractorInBytes().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -18798,6 +18832,8 @@ public final class Message {
           updateTime_ = null;
           updateTimeBuilder_ = null;
         }
+        contextExtractorInBytes_ = com.google.protobuf.ByteString.EMPTY;
+
         return this;
       }
 
@@ -18844,6 +18880,7 @@ public final class Message {
         } else {
           result.updateTime_ = updateTimeBuilder_.build();
         }
+        result.contextExtractorInBytes_ = contextExtractorInBytes_;
         onBuilt();
         return result;
       }
@@ -18909,6 +18946,9 @@ public final class Message {
         }
         if (other.hasUpdateTime()) {
           mergeUpdateTime(other.getUpdateTime());
+        }
+        if (other.getContextExtractorInBytes() != com.google.protobuf.ByteString.EMPTY) {
+          setContextExtractorInBytes(other.getContextExtractorInBytes());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -19530,6 +19570,40 @@ public final class Message {
           updateTime_ = null;
         }
         return updateTimeBuilder_;
+      }
+
+      private com.google.protobuf.ByteString contextExtractorInBytes_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>bytes context_extractor_in_bytes = 7;</code>
+       * @return The contextExtractorInBytes.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString getContextExtractorInBytes() {
+        return contextExtractorInBytes_;
+      }
+      /**
+       * <code>bytes context_extractor_in_bytes = 7;</code>
+       * @param value The contextExtractorInBytes to set.
+       * @return This builder for chaining.
+       */
+      public Builder setContextExtractorInBytes(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        contextExtractorInBytes_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bytes context_extractor_in_bytes = 7;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearContextExtractorInBytes() {
+        
+        contextExtractorInBytes_ = getDefaultInstance().getContextExtractorInBytes();
+        onChanged();
+        return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -34639,112 +34713,112 @@ public final class Message {
       "ow.ProjectProto.PropertiesEntry\022)\n\003uri\030\004" +
       " \001(\0132\034.google.protobuf.StringValue\0321\n\017Pr" +
       "opertiesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(" +
-      "\t:\0028\001\"\267\002\n\021WorkflowMetaProto\022\014\n\004uuid\030\001 \001(" +
+      "\t:\0028\001\"\333\002\n\021WorkflowMetaProto\022\014\n\004uuid\030\001 \001(" +
       "\003\022\014\n\004name\030\002 \001(\t\022/\n\nproject_id\030\003 \001(\0132\033.go" +
       "ogle.protobuf.Int64Value\022>\n\nproperties\030\004" +
       " \003(\0132*.ai_flow.WorkflowMetaProto.Propert" +
       "iesEntry\0220\n\013create_time\030\005 \001(\0132\033.google.p" +
       "rotobuf.Int64Value\0220\n\013update_time\030\006 \001(\0132" +
+      "\033.google.protobuf.Int64Value\022\"\n\032context_" +
+      "extractor_in_bytes\030\007 \001(\014\0321\n\017PropertiesEn" +
+      "try\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"\221\003\n\r" +
+      "ArtifactProto\022\014\n\004uuid\030\001 \001(\003\022\014\n\004name\030\002 \001(" +
+      "\t\022:\n\nproperties\030\003 \003(\0132&.ai_flow.Artifact" +
+      "Proto.PropertiesEntry\0223\n\rartifact_type\030\004" +
+      " \001(\0132\034.google.protobuf.StringValue\022)\n\003ur" +
+      "i\030\005 \001(\0132\034.google.protobuf.StringValue\0221\n" +
+      "\013description\030\006 \001(\0132\034.google.protobuf.Str" +
+      "ingValue\0220\n\013create_time\030\007 \001(\0132\033.google.p" +
+      "rotobuf.Int64Value\0220\n\013update_time\030\010 \001(\0132" +
       "\033.google.protobuf.Int64Value\0321\n\017Properti" +
       "esEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"" +
-      "\221\003\n\rArtifactProto\022\014\n\004uuid\030\001 \001(\003\022\014\n\004name\030" +
-      "\002 \001(\t\022:\n\nproperties\030\003 \003(\0132&.ai_flow.Arti" +
-      "factProto.PropertiesEntry\0223\n\rartifact_ty" +
-      "pe\030\004 \001(\0132\034.google.protobuf.StringValue\022)" +
-      "\n\003uri\030\005 \001(\0132\034.google.protobuf.StringValu" +
-      "e\0221\n\013description\030\006 \001(\0132\034.google.protobuf" +
-      ".StringValue\0220\n\013create_time\030\007 \001(\0132\033.goog" +
-      "le.protobuf.Int64Value\0220\n\013update_time\030\010 " +
-      "\001(\0132\033.google.protobuf.Int64Value\0321\n\017Prop" +
-      "ertiesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:" +
-      "\0028\001\"z\n\024RegisteredModelParam\0220\n\nmodel_nam" +
-      "e\030\001 \001(\0132\034.google.protobuf.StringValue\0220\n" +
-      "\nmodel_desc\030\002 \001(\0132\034.google.protobuf.Stri" +
-      "ngValue\"\336\001\n\021ModelVersionParam\0220\n\nmodel_p" +
-      "ath\030\001 \001(\0132\034.google.protobuf.StringValue\022" +
-      "0\n\nmodel_type\030\002 \001(\0132\034.google.protobuf.St" +
-      "ringValue\0222\n\014version_desc\030\003 \001(\0132\034.google" +
-      ".protobuf.StringValue\0221\n\rcurrent_stage\030\004" +
-      " \001(\0162\032.ai_flow.ModelVersionStage\"w\n\016Mode" +
-      "lMetaParam\0220\n\nmodel_name\030\001 \001(\0132\034.google." +
-      "protobuf.StringValue\0223\n\rmodel_version\030\002 " +
-      "\001(\0132\034.google.protobuf.StringValue\"A\n\010Res" +
-      "ponse\022\023\n\013return_code\030\001 \001(\t\022\022\n\nreturn_msg" +
-      "\030\002 \001(\t\022\014\n\004data\030\003 \001(\t\"[\n\023RegisteredModelM" +
-      "eta\022\022\n\nmodel_name\030\001 \001(\t\0220\n\nmodel_desc\030\002 " +
-      "\001(\0132\034.google.protobuf.StringValue\"\275\002\n\020Mo" +
-      "delVersionMeta\022\022\n\nmodel_name\030\001 \001(\t\022\025\n\rmo" +
-      "del_version\030\002 \001(\t\0220\n\nmodel_path\030\003 \001(\0132\034." +
-      "google.protobuf.StringValue\0220\n\nmodel_typ" +
-      "e\030\005 \001(\0132\034.google.protobuf.StringValue\0222\n" +
-      "\014version_desc\030\006 \001(\0132\034.google.protobuf.St" +
-      "ringValue\0223\n\016version_status\030\007 \001(\0162\033.ai_f" +
-      "low.ModelVersionStatus\0221\n\rcurrent_stage\030" +
-      "\010 \001(\0162\032.ai_flow.ModelVersionStage\"\210\001\n\025Re" +
-      "gisteredModelDetail\0226\n\020registered_model\030" +
-      "\001 \001(\0132\034.ai_flow.RegisteredModelMeta\0227\n\024l" +
-      "atest_model_version\030\002 \001(\0132\031.ai_flow.Mode" +
-      "lVersionMeta\"O\n\024RegisteredModelMetas\0227\n\021" +
-      "registered_models\030\001 \003(\0132\034.ai_flow.Regist" +
-      "eredModelMeta\"J\n\013ResultProto\022$\n\006status\030\001" +
-      " \001(\0162\024.ai_flow.StatusProto\022\025\n\rerror_mess" +
-      "age\030\002 \001(\t\"\230\005\n\017MetricMetaProto\0221\n\013metric_" +
-      "name\030\001 \001(\0132\034.google.protobuf.StringValue" +
-      "\022-\n\013metric_type\030\002 \001(\0162\030.ai_flow.MetricTy" +
-      "peProto\0221\n\013metric_desc\030\003 \001(\0132\034.google.pr" +
-      "otobuf.StringValue\0222\n\014project_name\030\004 \001(\013" +
-      "2\034.google.protobuf.StringValue\0222\n\014datase" +
-      "t_name\030\005 \001(\0132\034.google.protobuf.StringVal" +
-      "ue\0220\n\nmodel_name\030\006 \001(\0132\034.google.protobuf" +
-      ".StringValue\022.\n\010job_name\030\007 \001(\0132\034.google." +
-      "protobuf.StringValue\022/\n\nstart_time\030\010 \001(\013" +
-      "2\033.google.protobuf.Int64Value\022-\n\010end_tim" +
-      "e\030\t \001(\0132\033.google.protobuf.Int64Value\022)\n\003" +
-      "uri\030\n \001(\0132\034.google.protobuf.StringValue\022" +
-      "*\n\004tags\030\013 \001(\0132\034.google.protobuf.StringVa" +
-      "lue\022<\n\nproperties\030\014 \003(\0132(.ai_flow.Metric" +
-      "MetaProto.PropertiesEntry\0321\n\017PropertiesE" +
-      "ntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"\337\002\n" +
-      "\022MetricSummaryProto\022\014\n\004uuid\030\001 \001(\003\0221\n\013met" +
-      "ric_name\030\002 \001(\0132\034.google.protobuf.StringV" +
-      "alue\0220\n\nmetric_key\030\003 \001(\0132\034.google.protob" +
-      "uf.StringValue\0222\n\014metric_value\030\004 \001(\0132\034.g" +
-      "oogle.protobuf.StringValue\0225\n\020metric_tim" +
-      "estamp\030\005 \001(\0132\033.google.protobuf.Int64Valu" +
-      "e\0223\n\rmodel_version\030\006 \001(\0132\034.google.protob" +
-      "uf.StringValue\0226\n\020job_execution_id\030\007 \001(\013" +
-      "2\034.google.protobuf.StringValue*\300\003\n\nRetur" +
-      "nCode\022\013\n\007SUCCESS\020\000\022\022\n\016INTERNAL_ERROR\020\001\022\033" +
-      "\n\027TEMPORARILY_UNAVAILABLE\020\002\022\014\n\010IO_ERROR\020" +
-      "\003\022\017\n\013BAD_REQUEST\020\004\022\034\n\027INVALID_PARAMETER_" +
-      "VALUE\020\350\007\022\027\n\022ENDPOINT_NOT_FOUND\020\351\007\022\026\n\021MAL" +
-      "FORMED_REQUEST\020\352\007\022\022\n\rINVALID_STATE\020\353\007\022\026\n" +
-      "\021PERMISSION_DENIED\020\354\007\022\025\n\020FEATURE_DISABLE" +
-      "D\020\355\007\022\032\n\025CUSTOMER_UNAUTHORIZED\020\356\007\022\033\n\026REQU" +
-      "EST_LIMIT_EXCEEDED\020\357\007\022\034\n\027RESOURCE_ALREAD" +
-      "Y_EXISTS\020\321\017\022\034\n\027RESOURCE_DOES_NOT_EXIST\020\322" +
-      "\017\022\023\n\016QUOTA_EXCEEDED\020\271\027\022\034\n\027MAX_BLOCK_SIZE" +
-      "_EXCEEDED\020\272\027\022\033\n\026MAX_READ_SIZE_EXCEEDED\020\273" +
-      "\027* \n\013StatusProto\022\006\n\002OK\020\000\022\t\n\005ERROR\020\001*\326\001\n\r" +
-      "DataTypeProto\022\031\n\025DATA_TYPE_UNSPECIFIED\020\000" +
-      "\022\t\n\005INT32\020\001\022\t\n\005INT64\020\002\022\013\n\007FLOAT32\020\003\022\013\n\007F" +
-      "LOAT64\020\004\022\n\n\006STRING\020\005\022\016\n\nINT32ARRAY\020\006\022\016\n\n" +
-      "INT64ARRAY\020\007\022\020\n\014FlOAT32ARRAY\020\010\022\020\n\014FLOAT6" +
-      "4ARRAY\020\t\022\017\n\013STRINGARRAY\020\n\022\t\n\005BYTES\020\013\022\016\n\n" +
-      "BYTESARRAY\020\014*{\n\nStateProto\022\025\n\021STATE_UNSP" +
-      "ECIFIED\020\000\022\010\n\004INIT\020\001\022\014\n\010STARTING\020\002\022\013\n\007RUN" +
-      "NING\020\003\022\014\n\010FINISHED\020\004\022\n\n\006FAILED\020\005\022\013\n\007KILL" +
-      "ING\020\006\022\n\n\006KILLED\020\007*F\n\rExecutionMode\022\036\n\032EX" +
-      "ECUTION_MODE_UNSPECIFIED\020\000\022\t\n\005BATCH\020\001\022\n\n" +
-      "\006STREAM\020\002*}\n\022ModelVersionStatus\022\030\n\024PENDI" +
-      "NG_REGISTRATION\020\000\022\027\n\023FAILED_REGISTRATION" +
-      "\020\001\022\t\n\005READY\020\003\022\024\n\020PENDING_DELETION\020\004\022\023\n\017F" +
-      "AILED_DELETION\020\005*\\\n\021ModelVersionStage\022\r\n" +
-      "\tGENERATED\020\000\022\r\n\tVALIDATED\020\001\022\014\n\010DEPLOYED\020" +
-      "\002\022\016\n\nDEPRECATED\020\003\022\013\n\007DELETED\020\004*)\n\017Metric" +
-      "TypeProto\022\013\n\007DATASET\020\000\022\t\n\005MODEL\020\001B)\n\027org" +
-      ".aiflow.client.protoZ\010/ai_flow\210\001\001\220\001\001b\006pr" +
-      "oto3"
+      "z\n\024RegisteredModelParam\0220\n\nmodel_name\030\001 " +
+      "\001(\0132\034.google.protobuf.StringValue\0220\n\nmod" +
+      "el_desc\030\002 \001(\0132\034.google.protobuf.StringVa" +
+      "lue\"\336\001\n\021ModelVersionParam\0220\n\nmodel_path\030" +
+      "\001 \001(\0132\034.google.protobuf.StringValue\0220\n\nm" +
+      "odel_type\030\002 \001(\0132\034.google.protobuf.String" +
+      "Value\0222\n\014version_desc\030\003 \001(\0132\034.google.pro" +
+      "tobuf.StringValue\0221\n\rcurrent_stage\030\004 \001(\016" +
+      "2\032.ai_flow.ModelVersionStage\"w\n\016ModelMet" +
+      "aParam\0220\n\nmodel_name\030\001 \001(\0132\034.google.prot" +
+      "obuf.StringValue\0223\n\rmodel_version\030\002 \001(\0132" +
+      "\034.google.protobuf.StringValue\"A\n\010Respons" +
+      "e\022\023\n\013return_code\030\001 \001(\t\022\022\n\nreturn_msg\030\002 \001" +
+      "(\t\022\014\n\004data\030\003 \001(\t\"[\n\023RegisteredModelMeta\022" +
+      "\022\n\nmodel_name\030\001 \001(\t\0220\n\nmodel_desc\030\002 \001(\0132" +
+      "\034.google.protobuf.StringValue\"\275\002\n\020ModelV" +
+      "ersionMeta\022\022\n\nmodel_name\030\001 \001(\t\022\025\n\rmodel_" +
+      "version\030\002 \001(\t\0220\n\nmodel_path\030\003 \001(\0132\034.goog" +
+      "le.protobuf.StringValue\0220\n\nmodel_type\030\005 " +
+      "\001(\0132\034.google.protobuf.StringValue\0222\n\014ver" +
+      "sion_desc\030\006 \001(\0132\034.google.protobuf.String" +
+      "Value\0223\n\016version_status\030\007 \001(\0162\033.ai_flow." +
+      "ModelVersionStatus\0221\n\rcurrent_stage\030\010 \001(" +
+      "\0162\032.ai_flow.ModelVersionStage\"\210\001\n\025Regist" +
+      "eredModelDetail\0226\n\020registered_model\030\001 \001(" +
+      "\0132\034.ai_flow.RegisteredModelMeta\0227\n\024lates" +
+      "t_model_version\030\002 \001(\0132\031.ai_flow.ModelVer" +
+      "sionMeta\"O\n\024RegisteredModelMetas\0227\n\021regi" +
+      "stered_models\030\001 \003(\0132\034.ai_flow.Registered" +
+      "ModelMeta\"J\n\013ResultProto\022$\n\006status\030\001 \001(\016" +
+      "2\024.ai_flow.StatusProto\022\025\n\rerror_message\030" +
+      "\002 \001(\t\"\230\005\n\017MetricMetaProto\0221\n\013metric_name" +
+      "\030\001 \001(\0132\034.google.protobuf.StringValue\022-\n\013" +
+      "metric_type\030\002 \001(\0162\030.ai_flow.MetricTypePr" +
+      "oto\0221\n\013metric_desc\030\003 \001(\0132\034.google.protob" +
+      "uf.StringValue\0222\n\014project_name\030\004 \001(\0132\034.g" +
+      "oogle.protobuf.StringValue\0222\n\014dataset_na" +
+      "me\030\005 \001(\0132\034.google.protobuf.StringValue\0220" +
+      "\n\nmodel_name\030\006 \001(\0132\034.google.protobuf.Str" +
+      "ingValue\022.\n\010job_name\030\007 \001(\0132\034.google.prot" +
+      "obuf.StringValue\022/\n\nstart_time\030\010 \001(\0132\033.g" +
+      "oogle.protobuf.Int64Value\022-\n\010end_time\030\t " +
+      "\001(\0132\033.google.protobuf.Int64Value\022)\n\003uri\030" +
+      "\n \001(\0132\034.google.protobuf.StringValue\022*\n\004t" +
+      "ags\030\013 \001(\0132\034.google.protobuf.StringValue\022" +
+      "<\n\nproperties\030\014 \003(\0132(.ai_flow.MetricMeta" +
+      "Proto.PropertiesEntry\0321\n\017PropertiesEntry" +
+      "\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"\337\002\n\022Met" +
+      "ricSummaryProto\022\014\n\004uuid\030\001 \001(\003\0221\n\013metric_" +
+      "name\030\002 \001(\0132\034.google.protobuf.StringValue" +
+      "\0220\n\nmetric_key\030\003 \001(\0132\034.google.protobuf.S" +
+      "tringValue\0222\n\014metric_value\030\004 \001(\0132\034.googl" +
+      "e.protobuf.StringValue\0225\n\020metric_timesta" +
+      "mp\030\005 \001(\0132\033.google.protobuf.Int64Value\0223\n" +
+      "\rmodel_version\030\006 \001(\0132\034.google.protobuf.S" +
+      "tringValue\0226\n\020job_execution_id\030\007 \001(\0132\034.g" +
+      "oogle.protobuf.StringValue*\300\003\n\nReturnCod" +
+      "e\022\013\n\007SUCCESS\020\000\022\022\n\016INTERNAL_ERROR\020\001\022\033\n\027TE" +
+      "MPORARILY_UNAVAILABLE\020\002\022\014\n\010IO_ERROR\020\003\022\017\n" +
+      "\013BAD_REQUEST\020\004\022\034\n\027INVALID_PARAMETER_VALU" +
+      "E\020\350\007\022\027\n\022ENDPOINT_NOT_FOUND\020\351\007\022\026\n\021MALFORM" +
+      "ED_REQUEST\020\352\007\022\022\n\rINVALID_STATE\020\353\007\022\026\n\021PER" +
+      "MISSION_DENIED\020\354\007\022\025\n\020FEATURE_DISABLED\020\355\007" +
+      "\022\032\n\025CUSTOMER_UNAUTHORIZED\020\356\007\022\033\n\026REQUEST_" +
+      "LIMIT_EXCEEDED\020\357\007\022\034\n\027RESOURCE_ALREADY_EX" +
+      "ISTS\020\321\017\022\034\n\027RESOURCE_DOES_NOT_EXIST\020\322\017\022\023\n" +
+      "\016QUOTA_EXCEEDED\020\271\027\022\034\n\027MAX_BLOCK_SIZE_EXC" +
+      "EEDED\020\272\027\022\033\n\026MAX_READ_SIZE_EXCEEDED\020\273\027* \n" +
+      "\013StatusProto\022\006\n\002OK\020\000\022\t\n\005ERROR\020\001*\326\001\n\rData" +
+      "TypeProto\022\031\n\025DATA_TYPE_UNSPECIFIED\020\000\022\t\n\005" +
+      "INT32\020\001\022\t\n\005INT64\020\002\022\013\n\007FLOAT32\020\003\022\013\n\007FLOAT" +
+      "64\020\004\022\n\n\006STRING\020\005\022\016\n\nINT32ARRAY\020\006\022\016\n\nINT6" +
+      "4ARRAY\020\007\022\020\n\014FlOAT32ARRAY\020\010\022\020\n\014FLOAT64ARR" +
+      "AY\020\t\022\017\n\013STRINGARRAY\020\n\022\t\n\005BYTES\020\013\022\016\n\nBYTE" +
+      "SARRAY\020\014*{\n\nStateProto\022\025\n\021STATE_UNSPECIF" +
+      "IED\020\000\022\010\n\004INIT\020\001\022\014\n\010STARTING\020\002\022\013\n\007RUNNING" +
+      "\020\003\022\014\n\010FINISHED\020\004\022\n\n\006FAILED\020\005\022\013\n\007KILLING\020" +
+      "\006\022\n\n\006KILLED\020\007*F\n\rExecutionMode\022\036\n\032EXECUT" +
+      "ION_MODE_UNSPECIFIED\020\000\022\t\n\005BATCH\020\001\022\n\n\006STR" +
+      "EAM\020\002*}\n\022ModelVersionStatus\022\030\n\024PENDING_R" +
+      "EGISTRATION\020\000\022\027\n\023FAILED_REGISTRATION\020\001\022\t" +
+      "\n\005READY\020\003\022\024\n\020PENDING_DELETION\020\004\022\023\n\017FAILE" +
+      "D_DELETION\020\005*\\\n\021ModelVersionStage\022\r\n\tGEN" +
+      "ERATED\020\000\022\r\n\tVALIDATED\020\001\022\014\n\010DEPLOYED\020\002\022\016\n" +
+      "\nDEPRECATED\020\003\022\013\n\007DELETED\020\004*)\n\017MetricType" +
+      "Proto\022\013\n\007DATASET\020\000\022\t\n\005MODEL\020\001B)\n\027org.aif" +
+      "low.client.protoZ\010/ai_flow\210\001\001\220\001\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -34846,7 +34920,7 @@ public final class Message {
     internal_static_ai_flow_WorkflowMetaProto_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ai_flow_WorkflowMetaProto_descriptor,
-        new java.lang.String[] { "Uuid", "Name", "ProjectId", "Properties", "CreateTime", "UpdateTime", });
+        new java.lang.String[] { "Uuid", "Name", "ProjectId", "Properties", "CreateTime", "UpdateTime", "ContextExtractorInBytes", });
     internal_static_ai_flow_WorkflowMetaProto_PropertiesEntry_descriptor =
       internal_static_ai_flow_WorkflowMetaProto_descriptor.getNestedTypes().get(0);
     internal_static_ai_flow_WorkflowMetaProto_PropertiesEntry_fieldAccessorTable = new

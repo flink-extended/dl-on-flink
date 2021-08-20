@@ -93,4 +93,5 @@ class ResultToMeta:
                             properties=properties,
                             create_time=workflow_result.create_time,
                             update_time=workflow_result.update_time,
+                            context_extractor_in_bytes=workflow_result.context_extractor_in_bytes,
                             uuid=workflow_result.uuid)

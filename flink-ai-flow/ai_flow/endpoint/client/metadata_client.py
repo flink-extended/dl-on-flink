@@ -16,11 +16,12 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+from ai_flow.api.context_extractor import ContextExtractor, BroadcastAllContextExtractor
 from ai_flow.meta.workflow_meta import WorkflowMeta
 from typing import Optional, Text, List
 
 import grpc
-
+import cloudpickle
 from ai_flow.common.status import Status
 from ai_flow.meta.artifact_meta import ArtifactMeta
 from ai_flow.meta.dataset_meta import DatasetMeta, Properties, DataType
@@ -686,17 +687,20 @@ class MetadataClient(BaseClient):
 
     '''workflow api'''
 
-    def register_workflow(self, name: Text, project_id: int, properties: Properties = None) -> WorkflowMeta:
+    def register_workflow(self, name: Text, project_id: int, properties: Properties = None,
+                          context_extractor: ContextExtractor = BroadcastAllContextExtractor) -> WorkflowMeta:
         """
         Register a workflow in metadata store.
 
         :param name: the workflow name
         :param project_id: the id of project which contains the workflow
         :param properties: the workflow properties
+        :param context_extractor: the :class:`~ai_flow.api.context_extractor.ContextExtractor`
         """
         workflow_request = WorkflowMetaProto(name=name,
                                              project_id=int64Value(project_id),
-                                             properties=properties)
+                                             properties=properties,
+                                             context_extractor_in_bytes=cloudpickle.dumps(context_extractor))
         request = metadata_service_pb2.RegisterWorkflowRequest(workflow=workflow_request)
         response = self.metadata_store_stub.registerWorkflow(request)
         return _unwrap_workflow_response(response)

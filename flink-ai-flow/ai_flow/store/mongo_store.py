@@ -40,7 +40,7 @@ from ai_flow.model_center.entity.model_version_stage import STAGE_DELETED, get_c
 from ai_flow.protobuf.message_pb2 import INVALID_PARAMETER_VALUE, RESOURCE_ALREADY_EXISTS
 from ai_flow.endpoint.server.exception import AIFlowException
 from ai_flow.endpoint.server.high_availability import Member
-from ai_flow.store.abstract_store import AbstractStore
+from ai_flow.store.abstract_store import AbstractStore, BROADCAST_ALL_CONTEXT_EXTRACTOR
 from ai_flow.store.db.db_model import (MongoProject, MongoDataset, MongoModelVersion,
                                        MongoArtifact, MongoRegisteredModel, MongoModelRelation,
                                        MongoMetricSummary, MongoMetricMeta,
@@ -481,12 +481,14 @@ class MongoStore(AbstractStore):
 
     '''workflow api'''
 
-    def register_workflow(self, name, project_id, properties=None) -> WorkflowMeta:
+    def register_workflow(self, name, project_id, context_extractor_in_bytes: bytes = BROADCAST_ALL_CONTEXT_EXTRACTOR,
+                          properties=None) -> WorkflowMeta:
         """
         Register a workflow in metadata store.
 
         :param name: the workflow name
         :param project_id: the id of project which contains the workflow
+        :param context_extractor_in_bytes: serialized context extractor in bytes
         :param properties: the workflow properties
         """
         update_time = create_time = int(time.time() * 1000)
@@ -496,11 +498,13 @@ class MongoStore(AbstractStore):
                                                      properties=properties,
                                                      create_time=create_time,
                                                      update_time=update_time,
+                                                     context_extractor_in_bytes=context_extractor_in_bytes,
                                                      store_type=type(self).__name__)
             workflow.save()
             return WorkflowMeta(uuid=workflow.uuid, name=name,
                                 project_id=project_id, properties=properties,
-                                create_time=create_time, update_time=update_time)
+                                create_time=create_time, update_time=update_time,
+                                context_extractor_in_bytes=context_extractor_in_bytes)
         except mongoengine.OperationError as e:
             raise AIFlowException('Registered Workflow (name={}, project_id={}) already exists. '
                                   'Error: {}'.format(workflow.name, workflow.project_id, str(e)))

@@ -25,13 +25,13 @@ package ai_flow
 
 import (
 	context "context"
-	wrappers "github.com/golang/protobuf/ptypes/wrappers"
 	_ "github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	wrapperspb "google.golang.org/protobuf/types/known/wrapperspb"
 	reflect "reflect"
 	sync "sync"
 )
@@ -362,8 +362,8 @@ type ListDatasetMetricMetasRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	DatasetName string                `protobuf:"bytes,1,opt,name=dataset_name,json=datasetName,proto3" json:"dataset_name,omitempty"`
-	ProjectName *wrappers.StringValue `protobuf:"bytes,2,opt,name=project_name,json=projectName,proto3" json:"project_name,omitempty"`
+	DatasetName string                  `protobuf:"bytes,1,opt,name=dataset_name,json=datasetName,proto3" json:"dataset_name,omitempty"`
+	ProjectName *wrapperspb.StringValue `protobuf:"bytes,2,opt,name=project_name,json=projectName,proto3" json:"project_name,omitempty"`
 }
 
 func (x *ListDatasetMetricMetasRequest) Reset() {
@@ -405,7 +405,7 @@ func (x *ListDatasetMetricMetasRequest) GetDatasetName() string {
 	return ""
 }
 
-func (x *ListDatasetMetricMetasRequest) GetProjectName() *wrappers.StringValue {
+func (x *ListDatasetMetricMetasRequest) GetProjectName() *wrapperspb.StringValue {
 	if x != nil {
 		return x.ProjectName
 	}
@@ -417,8 +417,8 @@ type ListModelMetricMetasRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ModelName   string                `protobuf:"bytes,1,opt,name=model_name,json=modelName,proto3" json:"model_name,omitempty"`
-	ProjectName *wrappers.StringValue `protobuf:"bytes,2,opt,name=project_name,json=projectName,proto3" json:"project_name,omitempty"`
+	ModelName   string                  `protobuf:"bytes,1,opt,name=model_name,json=modelName,proto3" json:"model_name,omitempty"`
+	ProjectName *wrapperspb.StringValue `protobuf:"bytes,2,opt,name=project_name,json=projectName,proto3" json:"project_name,omitempty"`
 }
 
 func (x *ListModelMetricMetasRequest) Reset() {
@@ -460,7 +460,7 @@ func (x *ListModelMetricMetasRequest) GetModelName() string {
 	return ""
 }
 
-func (x *ListModelMetricMetasRequest) GetProjectName() *wrappers.StringValue {
+func (x *ListModelMetricMetasRequest) GetProjectName() *wrapperspb.StringValue {
 	if x != nil {
 		return x.ProjectName
 	}
@@ -535,11 +535,11 @@ type ListMetricSummariesRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	MetricName   *wrappers.StringValue `protobuf:"bytes,1,opt,name=metric_name,json=metricName,proto3" json:"metric_name,omitempty"`
-	MetricKey    *wrappers.StringValue `protobuf:"bytes,2,opt,name=metric_key,json=metricKey,proto3" json:"metric_key,omitempty"`
-	ModelVersion *wrappers.StringValue `protobuf:"bytes,3,opt,name=model_version,json=modelVersion,proto3" json:"model_version,omitempty"`
-	StartTime    *wrappers.Int64Value  `protobuf:"bytes,4,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
-	EndTime      *wrappers.Int64Value  `protobuf:"bytes,5,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
+	MetricName   *wrapperspb.StringValue `protobuf:"bytes,1,opt,name=metric_name,json=metricName,proto3" json:"metric_name,omitempty"`
+	MetricKey    *wrapperspb.StringValue `protobuf:"bytes,2,opt,name=metric_key,json=metricKey,proto3" json:"metric_key,omitempty"`
+	ModelVersion *wrapperspb.StringValue `protobuf:"bytes,3,opt,name=model_version,json=modelVersion,proto3" json:"model_version,omitempty"`
+	StartTime    *wrapperspb.Int64Value  `protobuf:"bytes,4,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
+	EndTime      *wrapperspb.Int64Value  `protobuf:"bytes,5,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
 }
 
 func (x *ListMetricSummariesRequest) Reset() {
@@ -574,35 +574,35 @@ func (*ListMetricSummariesRequest) Descriptor() ([]byte, []int) {
 	return file_metric_service_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *ListMetricSummariesRequest) GetMetricName() *wrappers.StringValue {
+func (x *ListMetricSummariesRequest) GetMetricName() *wrapperspb.StringValue {
 	if x != nil {
 		return x.MetricName
 	}
 	return nil
 }
 
-func (x *ListMetricSummariesRequest) GetMetricKey() *wrappers.StringValue {
+func (x *ListMetricSummariesRequest) GetMetricKey() *wrapperspb.StringValue {
 	if x != nil {
 		return x.MetricKey
 	}
 	return nil
 }
 
-func (x *ListMetricSummariesRequest) GetModelVersion() *wrappers.StringValue {
+func (x *ListMetricSummariesRequest) GetModelVersion() *wrapperspb.StringValue {
 	if x != nil {
 		return x.ModelVersion
 	}
 	return nil
 }
 
-func (x *ListMetricSummariesRequest) GetStartTime() *wrappers.Int64Value {
+func (x *ListMetricSummariesRequest) GetStartTime() *wrapperspb.Int64Value {
 	if x != nil {
 		return x.StartTime
 	}
 	return nil
 }
 
-func (x *ListMetricSummariesRequest) GetEndTime() *wrappers.Int64Value {
+func (x *ListMetricSummariesRequest) GetEndTime() *wrapperspb.Int64Value {
 	if x != nil {
 		return x.EndTime
 	}
@@ -864,9 +864,10 @@ var file_metric_service_proto_rawDesc = []byte{
 	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x2a, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x24, 0x12,
 	0x22, 0x2f, 0x61, 0x69, 0x66, 0x6c, 0x6f, 0x77, 0x2f, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x2f,
 	0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x5f, 0x73, 0x75, 0x6d, 0x6d, 0x61, 0x72, 0x79, 0x2f, 0x6c,
-	0x69, 0x73, 0x74, 0x42, 0x22, 0x0a, 0x10, 0x63, 0x6f, 0x6d, 0x2e, 0x61, 0x69, 0x66, 0x6c, 0x6f,
-	0x77, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x5a, 0x08, 0x2f, 0x61, 0x69, 0x5f, 0x66, 0x6c, 0x6f,
-	0x77, 0x88, 0x01, 0x01, 0x90, 0x01, 0x01, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x69, 0x73, 0x74, 0x42, 0x29, 0x0a, 0x17, 0x6f, 0x72, 0x67, 0x2e, 0x61, 0x69, 0x66, 0x6c, 0x6f,
+	0x77, 0x2e, 0x63, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x5a, 0x08,
+	0x2f, 0x61, 0x69, 0x5f, 0x66, 0x6c, 0x6f, 0x77, 0x88, 0x01, 0x01, 0x90, 0x01, 0x01, 0x62, 0x06,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -896,8 +897,8 @@ var file_metric_service_proto_goTypes = []interface{}{
 	(*ListMetricSummariesResponse)(nil),   // 10: ai_flow.ListMetricSummariesResponse
 	(*MetricMetaProto)(nil),               // 11: ai_flow.MetricMetaProto
 	(*MetricSummaryProto)(nil),            // 12: ai_flow.MetricSummaryProto
-	(*wrappers.StringValue)(nil),          // 13: google.protobuf.StringValue
-	(*wrappers.Int64Value)(nil),           // 14: google.protobuf.Int64Value
+	(*wrapperspb.StringValue)(nil),        // 13: google.protobuf.StringValue
+	(*wrapperspb.Int64Value)(nil),         // 14: google.protobuf.Int64Value
 	(*Response)(nil),                      // 15: ai_flow.Response
 }
 var file_metric_service_proto_depIdxs = []int32{
