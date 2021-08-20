@@ -18,10 +18,10 @@
 #
 from notification_service.base_notification import BaseEvent
 from sqlalchemy import (
-    Column, String, ForeignKey, Integer, PrimaryKeyConstraint, BigInteger, UniqueConstraint, Text, Boolean)
+    Column, String, ForeignKey, Integer, PrimaryKeyConstraint, BigInteger, UniqueConstraint, Binary, Boolean)
 from sqlalchemy.orm import relationship, backref
 from mongoengine import (Document, StringField, IntField, LongField, ReferenceField,
-                         BooleanField, ListField, ObjectIdField, SequenceField)
+                         BooleanField, ListField, ObjectIdField, SequenceField, BinaryField)
 
 from ai_flow.meta.metric_meta import MetricType
 from ai_flow.model_center.entity.model_version_detail import ModelVersionDetail
@@ -125,7 +125,7 @@ class SqlWorkflow(base, Base):
     create_time = Column(BigInteger)
     update_time = Column(BigInteger)
     is_deleted = Column(Boolean, default=False)
-
+    context_extractor_in_bytes = Column(Binary())
     UniqueConstraint(project_id, name)
 
     project = relationship("SqlProject", backref=backref('workflow', cascade='all'))
@@ -151,7 +151,7 @@ class SqlModelVersionRelation(base):
 
     def __repr__(self):
         return '<model_version_relation ({}, {}, {})>'.format(self.version, self.model_id,
-                                                              self.workflow_execution_id)
+                                                              self.project_snapshot_id)
 
 
 class SqlArtifact(base, Base):
@@ -191,7 +191,7 @@ class SqlRegisteredModel(base):
     )
 
     def __repr__(self):
-        return '<SqlRegisteredModel ({}, {}, {})>'.format(self.model_name, self.model_desc)
+        return '<SqlRegisteredModel ({}, {})>'.format(self.model_name, self.model_desc)
 
     # entity mappers
     def to_meta_entity(self):
@@ -409,7 +409,7 @@ class MongoModelRelation(Document):
     model_version_relation = ListField(ReferenceField(MongoModelVersionRelation))
 
     meta = {'db_alias': MONGO_DB_ALIAS_META_SERVICE}
-    
+
     def __repr__(self):
         return '<Document ModelRelation ({}, {}, {})>'.format(
             self.uuid,
@@ -421,7 +421,7 @@ class MongoProject(Document):
     """
     Document of project in metadata backend storage.
     """
-    
+
     uuid = SequenceField(db_alias=MONGO_DB_ALIAS_META_SERVICE)
     name = StringField(max_length=255, required=True, unique=True)
     properties = StringField(max_length=1000)
@@ -474,18 +474,19 @@ class MongoWorkflow(Document):
     create_time = Column(BigInteger)
     update_time = Column(BigInteger)
     is_deleted = BooleanField(default=False)
-
+    context_extractor_in_bytes = BinaryField()
     meta = {'db_alias': MONGO_DB_ALIAS_META_SERVICE}
 
     def __repr__(self):
-        return '<Document Workflow ({}, {}, {}, {}, {}, {}, {})>'.format(
+        return '<Document Workflow ({}, {}, {}, {}, {}, {}, {}, {})>'.format(
             self.uuid,
             self.name,
             self.project_id,
             self.properties,
             self.create_time,
             self.update_time,
-            self.is_deleted)
+            self.is_deleted,
+            self.context_extractor_in_bytes)
 
 
 class MongoModelVersion(Document):
@@ -512,7 +513,7 @@ class MongoModelVersion(Document):
         name_version_current_stage = f'{n}-{v}-{c}'
         kwargs['name_version_current_stage_unique'] = name_version_current_stage
         super().__init__(*args, **kwargs)
-    
+
     def __repr__(self):
         return '<Document ModelVersion ({}, {}, {}, {}, {}, {}, {}, {})>'.format(
             self.model_name,
@@ -639,8 +640,8 @@ class MongoMetricSummary(Document):
 
     def __repr__(self):
         return '<Document MetricSummary ({}, {}, {})>'.format(self.uuid, self.metric_name, self.metric_key,
-                                                                        self.metric_value, self.metric_timestamp,
-                                                                        self.model_version, self.job_execution_id)
+                                                              self.metric_value, self.metric_timestamp,
+                                                              self.model_version, self.job_execution_id)
 
 
 class MongoMember(Document):

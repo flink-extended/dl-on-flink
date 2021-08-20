@@ -110,7 +110,8 @@ class ProtoToMeta:
                             project_id=project_id,
                             properties=properties,
                             create_time=create_time,
-                            update_time=update_time)
+                            update_time=update_time,
+                            context_extractor_in_bytes=workflow_proto.context_extractor_in_bytes)
 
     @staticmethod
     def proto_to_workflow_meta_list(workflows: List[WorkflowMetaProto]) -> List[WorkflowMeta]:
