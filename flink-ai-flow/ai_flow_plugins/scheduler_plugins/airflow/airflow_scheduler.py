@@ -14,14 +14,17 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
+import datetime
 import os
 import shutil
+from abc import ABC
 from tempfile import NamedTemporaryFile
 from typing import Dict, Text, List, Optional
 from ai_flow_plugins.scheduler_plugins.airflow.dag_generator import DAGGenerator
 from ai_flow.context.project_context import ProjectContext
 from ai_flow.plugin_interface.scheduler_interface import Scheduler, \
     WorkflowInfo, JobExecutionInfo, WorkflowExecutionInfo
+from ai_flow_plugins.scheduler_plugins.airflow.airflow_restful_util import AirFlowRestfulUtil
 from ai_flow.workflow.workflow import Workflow
 from ai_flow.workflow import status
 from ai_flow.util.time_utils import datetime_to_int64
@@ -32,9 +35,10 @@ from airflow.models.dagrun import DagRun
 from airflow.utils.db import create_session
 from airflow.utils.state import State
 from airflow.contrib.jobs.scheduler_client import EventSchedulerClient, SCHEDULER_NAMESPACE, ExecutionContext
+from airflow.utils.dates import parse_execution_date
 
 
-class AirFlowScheduler(Scheduler):
+class AirFlowSchedulerBase(Scheduler, ABC):
     """
     AirFlowScheduler is an implementation of a Scheduler interface based on AirFlow.
     AirFlowScheduler contains two configuration items:
@@ -48,7 +52,7 @@ class AirFlowScheduler(Scheduler):
                             'Please add the `notification_service_uri` option under `scheduler_config` option!')
         if 'airflow_deploy_path' not in config:
             raise Exception('`airflow_deploy_path` option of scheduler config is not configured. '
-                            'Please add the `notification_service_uri` option under `airflow_deploy_path` option!')
+                            'Please add the `notification_service_uri` option under `scheduler_config` option!')
         super().__init__(config)
         self.dag_generator = DAGGenerator()
         self._airflow_client = None
@@ -90,15 +94,6 @@ class AirFlowScheduler(Scheduler):
             return State.KILLED
         else:
             return State.NONE
-
-    @classmethod
-    def dag_exist(cls, dag_id):
-        with create_session() as session:
-            dag = session.query(DagModel).filter(DagModel.dag_id == dag_id).first()
-            if dag is None:
-                return False
-            else:
-                return True
 
     @property
     def airflow_client(self):
@@ -142,6 +137,27 @@ class AirFlowScheduler(Scheduler):
                                 properties={'dag_file': airflow_file_path})
         else:
             return None
+
+
+class AirFlowScheduler(AirFlowSchedulerBase):
+    """
+    AirFlowScheduler is an implementation of a Scheduler interface based on AirFlow.
+    AirFlowScheduler contains two configuration items:
+    1. notification_service_uri: The address of NotificationService.
+    2. airflow_deploy_path: AirFlow dag file deployment directory.
+    """
+
+    def __init__(self, config: Dict):
+        super().__init__(config)
+
+    @classmethod
+    def dag_exist(cls, dag_id):
+        with create_session() as session:
+            dag = session.query(DagModel).filter(DagModel.dag_id == dag_id).first()
+            if dag is None:
+                return False
+            else:
+                return True
 
     def pause_workflow_scheduling(self, project_name: Text, workflow_name: Text) -> WorkflowInfo:
         dag_id = self.airflow_dag_id(project_name, workflow_name)
@@ -348,3 +364,247 @@ class AirFlowScheduler(Scheduler):
             else:
                 result = self.build_job_execution_info_list(dagrun, task_list)
                 return result
+
+
+class AirFlowSchedulerRestful(AirFlowSchedulerBase):
+
+    def __init__(self, config: Dict):
+        super().__init__(config)
+        if 'endpoint_url' not in config:
+            raise Exception('`endpoint_url` option of scheduler config is not configured. '
+                            'Please add the `endpoint_url` option under `scheduler_config` option!')
+        if 'username' not in config:
+            raise Exception('`username` option of scheduler config is not configured. '
+                            'Please add the `username` option under `scheduler_config` option!')
+        if 'password' not in config:
+            raise Exception('`password` option of scheduler config is not configured. '
+                            'Please add the `password` option under `scheduler_config` option!')
+        self.restful_util: AirFlowRestfulUtil = AirFlowRestfulUtil(endpoint_url=config.get("endpoint_url"),
+                                                                   user_name=config.get("username"),
+                                                                   password=config.get("password"))
+
+    @classmethod
+    def datetime_str_to_int64_str(cls, datetime_str):
+        if datetime_str is None:
+            return '0'
+        else:
+            return str(datetime_to_int64(parse_execution_date(datetime_str)))
+
+    @classmethod
+    def create_workflow_execution_id(cls, dag_id, run_id) -> Text:
+        return '{}|{}'.format(dag_id, run_id)
+
+    @classmethod
+    def parse_dag_id_and_run_id(cls, workflow_execution_id: Text) -> (Text, Text):
+        return workflow_execution_id.split('|')
+
+    def pause_workflow_scheduling(self, project_name: Text, workflow_name: Text) -> WorkflowInfo:
+        dag_id = self.airflow_dag_id(project_name, workflow_name)
+        self.restful_util.set_dag_is_paused(dag_id=dag_id, is_paused=True)
+        return WorkflowInfo(namespace=project_name, workflow_name=workflow_name)
+
+    def resume_workflow_scheduling(self, project_name: Text, workflow_name: Text) -> WorkflowInfo:
+        dag_id = self.airflow_dag_id(project_name, workflow_name)
+        self.restful_util.set_dag_is_paused(dag_id=dag_id, is_paused=False)
+        return WorkflowInfo(namespace=project_name, workflow_name=workflow_name)
+
+    def start_new_workflow_execution(self, project_name: Text,
+                                     workflow_name: Text,
+                                     context: Text = None) -> Optional[WorkflowExecutionInfo]:
+        dag_id = self.airflow_dag_id(project_name, workflow_name)
+        deploy_path = self.config.get('airflow_deploy_path')
+        if deploy_path is None:
+            raise Exception("airflow_deploy_path config not set!")
+        if not self.restful_util.dag_exist(dag_id):
+            return None
+        context: ExecutionContext = self.airflow_client.schedule_dag(dag_id, context)
+        dagrun = self.restful_util.get_dagrun(dag_id=dag_id, run_id=context.dagrun_id)
+        if dagrun is None:
+            return None
+        else:
+            return WorkflowExecutionInfo(
+                workflow_info=WorkflowInfo(namespace=project_name, workflow_name=workflow_name),
+                workflow_execution_id=self.create_workflow_execution_id(dag_id, context.dagrun_id),
+                status=status.Status.INIT)
+
+    def stop_all_workflow_execution(self, project_name: Text, workflow_name: Text) -> List[WorkflowExecutionInfo]:
+        dag_id = self.airflow_dag_id(project_name, workflow_name)
+        dagrun_list = self.restful_util.list_dagruns(dag_id)
+        result = []
+        for dagrun in dagrun_list:
+            status_ = self.airflow_state_to_status(dagrun.get('state'))
+            workflow_execution_id = self.create_workflow_execution_id(dag_id, dagrun.get('dag_run_id'))
+            if status_ == State.RUNNING:
+                self.stop_workflow_execution(workflow_execution_id)
+            result.append(WorkflowExecutionInfo(workflow_info=WorkflowInfo(namespace=project_name,
+                                                                           workflow_name=workflow_name),
+                                                workflow_execution_id=workflow_execution_id,
+                                                status=status_,
+                                                start_date=self.datetime_str_to_int64_str(dagrun.get('start_date')),
+                                                end_date=self.datetime_str_to_int64_str(dagrun.get('end_date'))
+                                                ))
+        return result
+
+    def stop_workflow_execution(self, workflow_execution_id: Text) -> Optional[WorkflowExecutionInfo]:
+        dag_id, run_id = self.parse_dag_id_and_run_id(workflow_execution_id)
+        dagrun = self.restful_util.get_dagrun(dag_id=dag_id, run_id=run_id)
+        if dagrun is None:
+            return None
+        project_name, workflow_name = self.dag_id_to_namespace_workflow(dag_id)
+        context: ExecutionContext = ExecutionContext(dagrun_id=run_id)
+        current_context = self.airflow_client.stop_dag_run(dag_id, context)
+        return WorkflowExecutionInfo(workflow_info=WorkflowInfo(namespace=project_name,
+                                                                workflow_name=workflow_name),
+                                     workflow_execution_id=workflow_execution_id,
+                                     status=status.Status.KILLED)
+
+    def stop_workflow_execution_by_context(self, workflow_name: Text, context: Text) -> Optional[WorkflowExecutionInfo]:
+        # todo Need to implement the function
+        raise NotImplementedError('Does not implement the top_workflow_execution_by_context function.')
+
+    def get_workflow_execution(self, workflow_execution_id: Text) -> Optional[WorkflowExecutionInfo]:
+        dag_id, run_id = self.parse_dag_id_and_run_id(workflow_execution_id)
+        dagrun = self.restful_util.get_dagrun(dag_id=dag_id, run_id=run_id)
+        print(dagrun)
+        if dagrun is None:
+            return None
+        else:
+            status_ = self.airflow_state_to_status(dagrun.get('state'))
+            project_name, workflow_name = self.dag_id_to_namespace_workflow(dag_id)
+            return WorkflowExecutionInfo(workflow_info=WorkflowInfo(namespace=project_name,
+                                                                    workflow_name=workflow_name),
+                                         workflow_execution_id=workflow_execution_id,
+                                         status=status_,
+                                         start_date=self.datetime_str_to_int64_str(dagrun.get('start_date')),
+                                         end_date=self.datetime_str_to_int64_str(dagrun.get('end_date'))
+                                         )
+
+    def list_workflow_executions(self, project_name: Text, workflow_name: Text) -> List[WorkflowExecutionInfo]:
+        dag_id = self.airflow_dag_id(project_name, workflow_name)
+        dagrun_list = self.restful_util.list_dagruns(dag_id)
+        result = []
+        for dagrun in dagrun_list:
+            status_ = self.airflow_state_to_status(dagrun.get('state'))
+            workflow_execution_id = self.create_workflow_execution_id(dag_id, dagrun.get('dag_run_id'))
+            result.append(WorkflowExecutionInfo(workflow_info=WorkflowInfo(namespace=project_name,
+                                                                           workflow_name=workflow_name),
+                                                workflow_execution_id=workflow_execution_id,
+                                                status=status_,
+                                                start_date=self.datetime_str_to_int64_str(dagrun.get('start_date')),
+                                                end_date=self.datetime_str_to_int64_str(dagrun.get('end_date')),
+                                                ))
+        return result
+
+    def start_job_execution(self, job_name: Text, workflow_execution_id: Text) -> JobExecutionInfo:
+        dag_id, run_id = self.parse_dag_id_and_run_id(workflow_execution_id)
+        dagrun = self.restful_util.get_dagrun(dag_id, run_id)
+        if dagrun is None:
+            return None
+        if dagrun.get('state') != State.RUNNING:
+            raise Exception('execution: {} state: {} can not trigger job.'.format(workflow_execution_id,
+                                                                                  dagrun.get('state')))
+        task = self.restful_util.get_task_instance(dag_id, run_id, job_name)
+        if task is None:
+            return None
+        if task.get('state') in State.running:
+            raise Exception('job:{} state: {} can not start!'.format(job_name, task.get('state')))
+        self.airflow_client.schedule_task(dag_id=dag_id,
+                                          task_id=job_name,
+                                          action=SchedulingAction.START,
+                                          context=ExecutionContext(dagrun_id=run_id))
+        project_name, workflow_name = self.dag_id_to_namespace_workflow(dag_id)
+        return JobExecutionInfo(job_name=job_name,
+                                status=self.airflow_state_to_status(task.get('state')),
+                                workflow_execution
+                                =WorkflowExecutionInfo(workflow_info=WorkflowInfo(namespace=project_name,
+                                                                                  workflow_name=workflow_name),
+                                                       workflow_execution_id=workflow_execution_id,
+                                                       status=self.airflow_state_to_status(dagrun.get('state'))))
+
+    def stop_job_execution(self, job_name: Text, workflow_execution_id: Text) -> JobExecutionInfo:
+        dag_id, run_id = self.parse_dag_id_and_run_id(workflow_execution_id)
+        dagrun = self.restful_util.get_dagrun(dag_id, run_id)
+        if dagrun is None:
+            return None
+        task = self.restful_util.get_task_instance(dag_id, run_id, job_name)
+        if task is None:
+            return None
+        if task.get('state') in State.finished:
+            raise Exception('job:{} state: {} can not stop!'.format(job_name, task.get('state')))
+        else:
+            self.airflow_client.schedule_task(dag_id=dag_id,
+                                              task_id=job_name,
+                                              action=SchedulingAction.STOP,
+                                              context=ExecutionContext(dagrun_id=run_id))
+        project_name, workflow_name = self.dag_id_to_namespace_workflow(dag_id)
+        return JobExecutionInfo(job_name=job_name,
+                                status=self.airflow_state_to_status(task.get('state')),
+                                workflow_execution
+                                =WorkflowExecutionInfo(workflow_info=WorkflowInfo(namespace=project_name,
+                                                                                  workflow_name=workflow_name),
+                                                       workflow_execution_id=workflow_execution_id,
+                                                       status=self.airflow_state_to_status(dagrun.get('state'))))
+
+    def restart_job_execution(self, job_name: Text, workflow_execution_id: Text) -> JobExecutionInfo:
+        dag_id, run_id = self.parse_dag_id_and_run_id(workflow_execution_id)
+        dagrun = self.restful_util.get_dagrun(dag_id, run_id)
+        if dagrun is None:
+            return None
+        if dagrun.get('state') != State.RUNNING:
+            raise Exception('execution: {} state: {} can not trigger job.'.format(workflow_execution_id,
+                                                                                  dagrun.get('state')))
+        task = self.restful_util.get_task_instance(dag_id, run_id, job_name)
+        if task is None:
+            return None
+        self.airflow_client.schedule_task(dag_id=dag_id,
+                                          task_id=job_name,
+                                          action=SchedulingAction.RESTART,
+                                          context=ExecutionContext(dagrun_id=run_id))
+        project_name, workflow_name = self.dag_id_to_namespace_workflow(dag_id)
+        return JobExecutionInfo(job_name=job_name,
+                                status=self.airflow_state_to_status(task.get('state')),
+                                workflow_execution
+                                =WorkflowExecutionInfo(workflow_info=WorkflowInfo(namespace=project_name,
+                                                                                  workflow_name=workflow_name),
+                                                       workflow_execution_id=workflow_execution_id,
+                                                       status=self.airflow_state_to_status(dagrun.get('state'))))
+
+    def build_job_execution_info_list(self, dagrun, task_list):
+        project_name, workflow_name = self.dag_id_to_namespace_workflow(dagrun.get('dag_id'))
+        workflow_execution_id = self.create_workflow_execution_id(dagrun.get('dag_id'), dagrun.get('dag_run_id'))
+        result = []
+        for task in task_list:
+            job = JobExecutionInfo(job_name=task.get('task_id'),
+                                   status=self.airflow_state_to_status(task.get('state')),
+                                   start_date=self.datetime_str_to_int64_str(task.get('start_date')),
+                                   end_date=self.datetime_str_to_int64_str(task.get('end_date')),
+                                   workflow_execution
+                                   =WorkflowExecutionInfo(workflow_info=WorkflowInfo(namespace=project_name,
+                                                                                     workflow_name=workflow_name),
+                                                          workflow_execution_id=workflow_execution_id,
+                                                          status=self.airflow_state_to_status(dagrun.get('state'))))
+            result.append(job)
+        return result
+
+    def get_job_executions(self, job_name: Text, workflow_execution_id: Text) -> List[JobExecutionInfo]:
+        dag_id, run_id = self.parse_dag_id_and_run_id(workflow_execution_id)
+        dagrun = self.restful_util.get_dagrun(dag_id, run_id)
+        if dagrun is None:
+            return None
+        tasks = self.restful_util.list_task_execution_by_task_id(dag_id, run_id, job_name)
+        if tasks is None:
+            return []
+        else:
+            return self.build_job_execution_info_list(dagrun, tasks)
+
+    def list_job_executions(self, workflow_execution_id: Text) -> List[JobExecutionInfo]:
+        dag_id, run_id = self.parse_dag_id_and_run_id(workflow_execution_id)
+        dagrun = self.restful_util.get_dagrun(dag_id, run_id)
+        if dagrun is None:
+            return None
+        task_list = self.restful_util.list_task_execution(dag_id, run_id)
+        if task_list is None:
+            return []
+        else:
+            result = self.build_job_execution_info_list(dagrun, task_list)
+            return result
