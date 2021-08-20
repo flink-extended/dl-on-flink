@@ -51,6 +51,7 @@ def upgrade():
     """Apply Add event_relationships Column to dag table"""
     with op.batch_alter_table('serialized_dag', schema=None) as batch_op:
         batch_op.add_column(sa.Column('event_relationships', sa.String(10240), nullable=True))
+        batch_op.add_column(sa.Column('context_extractor', sa.PickleType(), nullable=True))
 
     """Apply Add scheduling_job_id,event_ack_id,context Column to dag_run table"""
     with op.batch_alter_table('dag_run', schema=None) as batch_op:
@@ -109,8 +110,8 @@ def upgrade():
             sa.Column('complete_time', sa.DateTime(), nullable=True),
             sa.PrimaryKeyConstraint('id')
         )
-        op.create_index('ti_queue_time', 'message', ['queue_time'], unique=False)
-        op.create_index('ti_state', 'message', ['state'], unique=False)
+        op.create_index('message_queue_time', 'message', ['queue_time'], unique=False)
+        op.create_index('message_state', 'message', ['state'], unique=False)
 
 def downgrade():
     conn = op.get_bind()  # pylint: disable=no-member

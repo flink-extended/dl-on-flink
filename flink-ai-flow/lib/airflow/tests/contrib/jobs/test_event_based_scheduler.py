@@ -22,6 +22,11 @@ import unittest
 import threading
 import logging
 
+from airflow.models.serialized_dag import SerializedDagModel
+
+from airflow.utils.types import DagRunType
+
+from airflow.utils import timezone
 from airflow.utils.state import State
 from typing import List
 
@@ -38,7 +43,7 @@ from notification_service.service import NotificationService
 from airflow.contrib.jobs.event_based_scheduler_job import EventBasedSchedulerJob, SchedulerEventWatcher, \
     EventBasedScheduler
 from airflow.executors.local_executor import LocalExecutor
-from airflow.models import TaskInstance, Message
+from airflow.models import TaskInstance, Message, DagBag
 from airflow.jobs.base_job import BaseJob
 from airflow.utils.mailbox import Mailbox
 from airflow.utils.session import create_session, provide_session
@@ -453,3 +458,33 @@ class TestEventBasedScheduler(unittest.TestCase):
         t.setDaemon(True)
         t.start()
         self.start_scheduler(dag_file)
+
+    def test_dag_run_event_filter_by_context(self):
+        dag_file = os.path.join(TEST_DAG_FOLDER, 'test_dag_context_extractor.py')
+        scheduler = EventBasedSchedulerJob(
+            dag_directory=dag_file,
+            server_uri="localhost:{}".format(self.port),
+            executor=LocalExecutor(3),
+            max_runs=-1,
+            refresh_dag_dir_interval=30
+        ).scheduler
+        dag = DagBag(dag_file).dags['test_dag_context_extractor']
+        SerializedDagModel.write_dag(dag=dag)
+
+        dr1 = dag.create_dagrun(state=State.RUNNING,
+                                execution_date=timezone.datetime(2016, 1, 1),
+                                run_type=DagRunType.SCHEDULED,
+                                context='test_context')
+        dr2 = dag.create_dagrun(state=State.RUNNING,
+                                execution_date=timezone.datetime(2016, 1, 2),
+                                run_type=DagRunType.SCHEDULED,
+                                context='invalid_context')
+        with create_session() as session:
+            dag_runs = scheduler._find_dagruns_by_event(BaseEvent(key='k', value='v'), session)
+            self.assertEqual(1, len(dag_runs))
+            self.assertEqual(dr1.dag_id, dag_runs[0].dag_id)
+
+            dag_runs = scheduler._find_dagruns_by_event(BaseEvent(key='broadcast', value='v'), session)
+            self.assertEqual(2, len(dag_runs))
+            self.assertIn(dr1.dag_id, [dr.dag_id for dr in dag_runs])
+            self.assertIn(dr2.dag_id, [dr.dag_id for dr in dag_runs])
