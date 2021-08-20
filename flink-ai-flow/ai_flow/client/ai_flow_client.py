@@ -21,6 +21,7 @@ import threading
 import time
 from functools import wraps
 from random import shuffle
+from typing import Text
 
 import grpc
 from notification_service.base_notification import BaseEvent
@@ -73,7 +74,9 @@ def get_ai_flow_client():
             _default_ai_flow_client \
                 = AIFlowClient(server_uri=_default_server_uri,
                                notification_service_uri=current_project_config().get_notification_service_uri())
-
+        else:
+            # when reuse previous client, confirm once whether server is available
+            _default_ai_flow_client.wait_for_ready_and_throw_error()
         return _default_ai_flow_client
 
 
@@ -81,6 +84,7 @@ class AIFlowClient(MetadataClient, ModelCenterClient, NotificationClient, Metric
     """
     Client of an AIFlow Server that manages metadata store, model center and notification service.
     """
+    CLIENT_INIT_WAIT_READY_TIMEOUT = 5.
 
     def __init__(self,
                  server_uri=_SERVER_URI,
@@ -103,6 +107,8 @@ class AIFlowClient(MetadataClient, ModelCenterClient, NotificationClient, Metric
             self.list_member_interval_ms = project_config.get_list_member_interval_ms()
             self.retry_interval_ms = project_config.get_retry_interval_ms()
             self.retry_timeout_ms = project_config.get_retry_timeout_ms()
+        self.server_uri = server_uri
+        self.wait_for_ready_and_throw_error()
         if notification_service_uri is None:
             NotificationClient.__init__(
                 self,
@@ -147,6 +153,21 @@ class AIFlowClient(MetadataClient, ModelCenterClient, NotificationClient, Metric
             self._replace_aiflow_stubs(self.current_aiflow_uri)
             self.list_aiflow_member_thread = threading.Thread(target=self._list_aiflow_members, daemon=True)
             self.list_aiflow_member_thread.start()
+
+    def wait_for_ready_and_throw_error(self):
+        server_uris = self.server_uri.split(",")
+        available = False
+        for uri in server_uris:
+            try:
+                channel = grpc.insecure_channel(uri)
+                fut = grpc.channel_ready_future(channel)
+                fut.result(self.CLIENT_INIT_WAIT_READY_TIMEOUT)
+                available = True
+                break
+            except:
+                pass
+        if not available:
+            raise Exception(f"Client connection to server({self.server_uri}) is not ready. Please confirm the status of the process for `AIFlowServer`.")
 
     def publish_event(self, key: str, value: str, event_type: str = AI_FLOW_TYPE) -> BaseEvent:
         return self.send_event(BaseEvent(key, value, event_type))
