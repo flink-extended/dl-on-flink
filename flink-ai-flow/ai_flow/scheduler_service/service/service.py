@@ -17,6 +17,17 @@
 from typing import Text, Dict
 import traceback
 
+from ai_flow.workflow.control_edge import WorkflowAction
+
+
+from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
+
+from ai_flow.store.mongo_store import MongoStore
+
+from ai_flow.endpoint.server.server_config import DBType
+
+from ai_flow.store.db.db_util import extract_db_engine_from_uri, parse_mongo_uri
+
 from ai_flow.common.configuration import AIFlowConfiguration
 from ai_flow.workflow.workflow import WorkflowPropertyKeys
 from ai_flow.plugin_interface.blob_manager_interface import BlobConfig, BlobManagerFactory
@@ -71,11 +82,22 @@ class SchedulerServiceConfig(AIFlowConfiguration):
 
 class SchedulerService(SchedulingServiceServicer):
     def __init__(self,
-                 scheduler_service_config: SchedulerServiceConfig):
+                 scheduler_service_config: SchedulerServiceConfig,
+                 db_uri):
         self._scheduler_service_config = scheduler_service_config
         self._scheduler: Scheduler \
             = SchedulerFactory.create_scheduler(scheduler_service_config.scheduler().scheduler_class(),
                                                 scheduler_service_config.scheduler().scheduler_config())
+        db_engine = extract_db_engine_from_uri(db_uri)
+        if DBType.value_of(db_engine) == DBType.MONGODB:
+            username, password, host, port, db = parse_mongo_uri(db_uri)
+            self.store = MongoStore(host=host,
+                                    port=int(port),
+                                    username=username,
+                                    password=password,
+                                    db=db)
+        else:
+            self.store = SqlAlchemyStore(db_uri)
 
     # workflow interface
     def submitWorkflow(self, request, context):
@@ -163,15 +185,22 @@ class SchedulerService(SchedulingServiceServicer):
     # workflow execution interface
 
     def startNewWorkflowExecutionOnEvent(self, request, context):
-        # TODO: impl
-        rq: WorkflowExecutionOnEventRequest = request
-        namespace = rq.namespace
-        workflow_name = rq.workflow_name
-        event_conditions_json = rq.event_conditions_json
-        workflow_info = WorkflowInfo(namespace=namespace, workflow_name=workflow_name,
-                                     properties={'event_conditions_json': event_conditions_json})
-        return WorkflowInfoResponse(result=ResultProto(status=StatusProto.OK),
-                                    workflow=workflow_to_proto(workflow_info))
+        try:
+            rq: WorkflowExecutionOnEventRequest = request
+            namespace = rq.namespace
+            workflow_name = rq.workflow_name
+            event_conditions_json = rq.event_conditions_json
+            workflow = self.store.get_workflow_by_name(namespace, workflow_name)
+            workflow.update_condition(json_utils.loads(event_conditions_json), WorkflowAction.START)
+            self.store.update_workflow(project_name=namespace, workflow_name=workflow_name,
+                                       scheduling_rules=workflow.scheduling_rules)
+
+            workflow_info = WorkflowInfo(namespace=namespace, workflow_name=workflow_name)
+            return WorkflowInfoResponse(result=ResultProto(status=StatusProto.OK),
+                                        workflow=workflow_to_proto(workflow_info))
+        except Exception as err:
+            return WorkflowInfoResponse(result=ResultProto(status=StatusProto.ERROR,
+                                                           error_message=traceback.format_exc()))
 
     def startNewWorkflowExecution(self, request, context):
         try:
@@ -201,15 +230,22 @@ class SchedulerService(SchedulingServiceServicer):
                                                                     error_message=traceback.format_exc()))
 
     def killWorkflowExecutionOnEvent(self, request, context):
-        # TODO: impl
-        rq: WorkflowExecutionOnEventRequest = request
-        namespace = rq.namespace
-        workflow_name = rq.workflow_name
-        event_conditions_json = rq.event_conditions_json
-        workflow_info = WorkflowInfo(namespace=namespace, workflow_name=workflow_name,
-                                     properties={'event_conditions_json': event_conditions_json})
-        return WorkflowInfoResponse(result=ResultProto(status=StatusProto.OK),
-                                    workflow=workflow_to_proto(workflow_info))
+        try:
+            rq: WorkflowExecutionOnEventRequest = request
+            namespace = rq.namespace
+            workflow_name = rq.workflow_name
+            event_conditions_json = rq.event_conditions_json
+            workflow = self.store.get_workflow_by_name(namespace, workflow_name)
+            workflow.update_condition(json_utils.loads(event_conditions_json), WorkflowAction.STOP)
+            self.store.update_workflow(project_name=namespace, workflow_name=workflow_name,
+                                       scheduling_rules=workflow.scheduling_rules)
+
+            workflow_info = WorkflowInfo(namespace=namespace, workflow_name=workflow_name)
+            return WorkflowInfoResponse(result=ResultProto(status=StatusProto.OK),
+                                        workflow=workflow_to_proto(workflow_info))
+        except Exception as err:
+            return WorkflowExecutionResponse(result=ResultProto(status=StatusProto.ERROR,
+                                                                error_message=traceback.format_exc()))
 
     def killWorkflowExecution(self, request, context):
         try:

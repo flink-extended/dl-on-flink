@@ -21,6 +21,9 @@ import time
 from typing import Optional, Text, List, Union
 import sqlalchemy.exc
 import sqlalchemy.orm
+
+from ai_flow.util import json_utils
+from ai_flow.workflow.control_edge import WorkflowSchedulingRule
 from sqlalchemy import and_, cast, Integer
 
 from ai_flow.common.status import Status
@@ -869,12 +872,14 @@ class SqlAlchemyStore(AbstractStore):
             except sqlalchemy.exc.IntegrityError as e:
                 raise AIFlowException(str(e))
 
-    def update_workflow(self, workflow_name, project_name, properties=None) -> Optional[WorkflowMeta]:
+    def update_workflow(self, workflow_name, project_name,
+                        scheduling_rules: List[WorkflowSchedulingRule] = None, properties=None) -> Optional[WorkflowMeta]:
         """
         Update the workflow
 
         :param workflow_name: the workflow name
         :param project_name: the name of project which contains the workflow
+        :param scheduling_rules: the scheduling rules of the workflow
         :param properties: (Optional) the properties need to be updated
         """
         with self.ManagedSessionMaker() as session:
@@ -889,7 +894,7 @@ class SqlAlchemyStore(AbstractStore):
                     return None
                 if properties is not None:
                     workflow.properties = str(properties)
-
+                workflow.scheduling_rules = json_utils.dumps(scheduling_rules)
                 workflow.update_time = int(time.time() * 1000)
                 session.flush()
                 return ResultToMeta.result_to_workflow_meta(workflow)

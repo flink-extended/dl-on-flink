@@ -17,12 +17,16 @@
 # under the License.
 #
 import ast
+
+from ai_flow.store.db.db_model import SqlWorkflow
+
 from ai_flow.meta.artifact_meta import ArtifactMeta
 from ai_flow.meta.dataset_meta import DatasetMeta, DataType, Schema
 from ai_flow.meta.model_relation_meta import ModelRelationMeta, ModelVersionRelationMeta, \
     create_model_version_relation
 from ai_flow.meta.project_meta import ProjectMeta
 from ai_flow.meta.workflow_meta import WorkflowMeta
+from ai_flow.util import json_utils
 
 
 class ResultToMeta:
@@ -88,10 +92,15 @@ class ResultToMeta:
         properties = workflow_result.properties
         if properties is not None:
             properties = ast.literal_eval(properties)
+
+        scheduling_rules = workflow_result.scheduling_rules
+        if workflow_result.scheduling_rules is not None:
+            scheduling_rules = json_utils.loads(workflow_result.scheduling_rules)
         return WorkflowMeta(name=workflow_result.name,
                             project_id=workflow_result.project_id,
                             properties=properties,
                             create_time=workflow_result.create_time,
                             update_time=workflow_result.update_time,
                             context_extractor_in_bytes=workflow_result.context_extractor_in_bytes,
-                            uuid=workflow_result.uuid)
+                            uuid=workflow_result.uuid,
+                            scheduling_rules=scheduling_rules)

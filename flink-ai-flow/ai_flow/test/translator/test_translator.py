@@ -19,7 +19,7 @@
 import unittest
 from ai_flow.meta.dataset_meta import DatasetMeta
 from ai_flow.ai_graph.ai_node import AINode, ReadDatasetNode, WriteDatasetNode
-from ai_flow.workflow.control_edge import SchedulingRule, MeetAnyEventCondition, JobAction
+from ai_flow.workflow.control_edge import JobSchedulingRule, MeetAnyEventCondition, JobAction
 from ai_flow.workflow.job_config import JobConfig
 from ai_flow.project.project_config import ProjectConfig
 from ai_flow.context.workflow_config_loader import init_workflow_config
@@ -53,7 +53,7 @@ def add_data_edge(graph, to_, from_):
 
 
 def add_control_edge(graph, job_name, upstream_job_name):
-    rule = SchedulingRule(MeetAnyEventCondition().add_event('', '', sender=upstream_job_name), JobAction.START)
+    rule = JobSchedulingRule(MeetAnyEventCondition().add_event('', '', sender=upstream_job_name), JobAction.START)
     graph.add_edge(job_name,
                    ControlEdge(destination=job_name,
                                scheduling_rule=rule))
