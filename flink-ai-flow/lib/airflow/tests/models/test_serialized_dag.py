@@ -17,13 +17,13 @@
 # under the License.
 
 """Unit tests for SerializedDagModel."""
-
+import os
 import unittest
 
 from airflow import DAG, example_dags as example_dags_module
 from airflow.models import DagBag
 from airflow.models.dagcode import DagCode
-from airflow.models.serialized_dag import SerializedDagModel as SDM
+from airflow.models.serialized_dag import SerializedDagModel as SDM, SerializedDagModel
 from airflow.serialization.serialized_objects import SerializedDAG
 from airflow.utils.session import create_session
 from tests.test_utils.asserts import assert_queries_count
@@ -101,6 +101,20 @@ class SerializedDagModelTest(unittest.TestCase):
             self.assertNotEqual(s_dag.last_updated, s_dag_2.last_updated)
             self.assertNotEqual(s_dag.dag_hash, s_dag_2.dag_hash)
             self.assertEqual(s_dag_2.data["dag"]["tags"], ["example", "example2", "new_tag"])
+
+    def test_serialized_dag_with_context_extractor(self):
+        dag_folder = os.path.abspath(os.path.dirname(__file__)) + "/../dags"
+        dags = DagBag(dag_folder).dags
+        context_extractor_dag = dags.get("test_dag_context_extractor")
+        SDM.write_dag(dag=context_extractor_dag)
+
+        with create_session() as session:
+            from notification_service.base_notification import BaseEvent
+            s_dag: SerializedDagModel = session.query(SDM).get("test_dag_context_extractor")
+            self.assertTrue(s_dag.context_extractor.extract_context(BaseEvent('broadcast', 'v')).is_broadcast())
+            self.assertFalse(s_dag.context_extractor.extract_context(BaseEvent('k', 'v')).is_broadcast())
+            self.assertTrue('test_context'
+                            in s_dag.context_extractor.extract_context(BaseEvent('k', 'v')).get_contexts())
 
     def test_read_dags(self):
         """DAGs can be read from database."""
