@@ -25,6 +25,8 @@ import cloudpickle
 from notification_service.base_notification import BaseEvent
 
 from ai_flow.api.context_extractor import EventContext, ContextExtractor
+from ai_flow.workflow.control_edge import MeetAllEventCondition, WorkflowSchedulingRule, \
+    WorkflowAction
 
 from ai_flow.common.properties import Properties
 from ai_flow.common.status import Status
@@ -244,10 +246,18 @@ class AbstractTestStore(object):
                                                 project_id=project_response.uuid,
                                                 properties=Properties({'a': 'b'}))
 
+        scheduling_rules = [WorkflowSchedulingRule(MeetAllEventCondition().add_event('k1', 'v1'), WorkflowAction.START),
+                            WorkflowSchedulingRule(MeetAllEventCondition().add_event('k2', 'v2'), WorkflowAction.STOP)]
         updated_workflow = self.store.update_workflow(project_name=project_response.name,
                                                       workflow_name='workflow',
-                                                      properties=Properties({'a': 'c'}))
+                                                      properties=Properties({'a': 'c'}),
+                                                      scheduling_rules=scheduling_rules)
         self.assertEqual(updated_workflow.properties, Properties({'a': 'c'}))
+        self.assertEqual(updated_workflow.scheduling_rules, scheduling_rules)
+
+        workflow = self.store.get_workflow_by_name(project_name=project_response.name, workflow_name='workflow')
+        self.assertEqual(workflow.properties, Properties({'a': 'c'}))
+        self.assertEqual(workflow.scheduling_rules, scheduling_rules)
 
     """test project"""
 

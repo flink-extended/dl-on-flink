@@ -20,7 +20,7 @@ from datetime import datetime
 
 from ai_flow.util import json_utils
 
-from ai_flow.workflow.control_edge import SchedulingRule, MeetAnyEventCondition, EventLife, ValueCondition, JobAction, \
+from ai_flow.workflow.control_edge import JobSchedulingRule, MeetAnyEventCondition, EventLife, ValueCondition, JobAction, \
     MeetAllEventCondition
 from airflow.executors.scheduling_action import SchedulingAction
 from notification_service.base_notification import BaseEvent
@@ -30,7 +30,7 @@ from ai_flow_plugins.scheduler_plugins.airflow.event_handler import AIFlowHandle
 class TestAIFlowEventHandlers(unittest.TestCase):
 
     def test_one_config(self):
-        rule = SchedulingRule(MeetAnyEventCondition().add_event(
+        rule = JobSchedulingRule(MeetAnyEventCondition().add_event(
             event_key="key_1",
             event_value="value_1",
             sender="1-job-name",
@@ -50,7 +50,7 @@ class TestAIFlowEventHandlers(unittest.TestCase):
         condition = MeetAllEventCondition() \
             .add_event(event_key="key_1", event_value="value_1", sender="1-job-name") \
             .add_event(event_key="key_2", event_value="value_2", sender="1-job-name")
-        rule = SchedulingRule(condition, action=JobAction.START)
+        rule = JobSchedulingRule(condition, action=JobAction.START)
         configs = [rule]
         config_str = json_utils.dumps(configs)
         handler = AIFlowHandler(config=config_str)
@@ -73,10 +73,10 @@ class TestAIFlowEventHandlers(unittest.TestCase):
     def test_two_rules(self):
         condition = MeetAnyEventCondition() \
             .add_event(event_key="key_1", event_value="value_1", sender="1-job-name")
-        rule1 = SchedulingRule(condition, action=JobAction.START)
+        rule1 = JobSchedulingRule(condition, action=JobAction.START)
         condition = MeetAllEventCondition() \
             .add_event(event_key="key_2", event_value="value_2", sender="1-job-name")
-        rule2 = SchedulingRule(condition, action=JobAction.START)
+        rule2 = JobSchedulingRule(condition, action=JobAction.START)
         configs = [rule1, rule2]
         config_str = json_utils.dumps(configs)
         handler = AIFlowHandler(config=config_str)
@@ -89,7 +89,7 @@ class TestAIFlowEventHandlers(unittest.TestCase):
         self.assertEqual(SchedulingAction.START, action)
 
     def test_namespace_any(self):
-        rule = SchedulingRule(MeetAllEventCondition().add_event(
+        rule = JobSchedulingRule(MeetAllEventCondition().add_event(
             event_key="key_1",
             event_value="value_1",
             namespace="*",
@@ -113,7 +113,7 @@ class TestAIFlowEventHandlers(unittest.TestCase):
         action, ts = handler.handle_event(event, ts)
         self.assertEqual(SchedulingAction.START, action)
 
-        rule = SchedulingRule(MeetAllEventCondition().add_event(
+        rule = JobSchedulingRule(MeetAllEventCondition().add_event(
             event_key="key_1",
             event_value="value_1",
             namespace="aa",
@@ -131,7 +131,7 @@ class TestAIFlowEventHandlers(unittest.TestCase):
         self.assertEqual(SchedulingAction.NONE, action)
 
     def test_event_type_any(self):
-        rule = SchedulingRule(MeetAllEventCondition().add_event(
+        rule = JobSchedulingRule(MeetAllEventCondition().add_event(
             event_key="key_1",
             event_type="*",
             event_value="value_1",
@@ -158,7 +158,7 @@ class TestAIFlowEventHandlers(unittest.TestCase):
         action, ts = handler.handle_event(event, ts)
         self.assertEqual(SchedulingAction.START, action)
 
-        rule = SchedulingRule(MeetAllEventCondition().add_event(
+        rule = JobSchedulingRule(MeetAllEventCondition().add_event(
             event_key="key_1",
             event_type="aa",
             event_value="value_1",
@@ -177,7 +177,7 @@ class TestAIFlowEventHandlers(unittest.TestCase):
         self.assertEqual(SchedulingAction.NONE, action)
 
     def test_sender_any(self):
-        rule = SchedulingRule(MeetAllEventCondition().add_event(
+        rule = JobSchedulingRule(MeetAllEventCondition().add_event(
             event_key="key_1",
             event_value="value_1",
             namespace="aa",
@@ -201,7 +201,7 @@ class TestAIFlowEventHandlers(unittest.TestCase):
         action, ts = handler.handle_event(event, None)
         self.assertEqual(SchedulingAction.START, action)
 
-        rule = SchedulingRule(MeetAllEventCondition().add_event(
+        rule = JobSchedulingRule(MeetAllEventCondition().add_event(
             event_key="key_1",
             event_value="value_1",
             namespace="aa",
@@ -218,7 +218,7 @@ class TestAIFlowEventHandlers(unittest.TestCase):
         self.assertEqual(SchedulingAction.NONE, action)
 
     def test_key_any(self):
-        rule = SchedulingRule(MeetAllEventCondition().add_event(
+        rule = JobSchedulingRule(MeetAllEventCondition().add_event(
             event_key="*",
             event_value="value_1",
             namespace="aa",
@@ -242,7 +242,7 @@ class TestAIFlowEventHandlers(unittest.TestCase):
         action, ts = handler.handle_event(event, ts)
         self.assertEqual(SchedulingAction.START, action)
 
-        rule = SchedulingRule(MeetAllEventCondition().add_event(
+        rule = JobSchedulingRule(MeetAllEventCondition().add_event(
             event_key="aa",
             event_value="value_1",
             namespace="aa",
@@ -259,7 +259,7 @@ class TestAIFlowEventHandlers(unittest.TestCase):
         self.assertEqual(SchedulingAction.NONE, action)
 
     def test_multiple_any_config(self):
-        rule = SchedulingRule(MeetAllEventCondition().add_event(
+        rule = JobSchedulingRule(MeetAllEventCondition().add_event(
             event_key="key_1",
             event_value="value_1",
             event_type="*",
@@ -296,13 +296,13 @@ class TestAIFlowEventHandlers(unittest.TestCase):
         from airflow.events.scheduler_events import TaskStateChangedEvent
         from airflow.utils.state import State
 
-        rule1 = SchedulingRule(MeetAnyEventCondition().add_event(
+        rule1 = JobSchedulingRule(MeetAnyEventCondition().add_event(
             event_key="dag_1.task_1",
             event_value="RUNNING",
             event_type="TASK_STATUS_CHANGED",
             namespace="test",
             sender="task_1"), action=JobAction.START)
-        rule2 = SchedulingRule(MeetAnyEventCondition().add_event(
+        rule2 = JobSchedulingRule(MeetAnyEventCondition().add_event(
             event_key="dag_1.task_1",
             event_value="FINISHED",
             event_type="TASK_STATUS_CHANGED",
@@ -329,11 +329,11 @@ class TestAIFlowEventHandlers(unittest.TestCase):
     def test_event_handler_schedule_time(self):
         condition = MeetAnyEventCondition() \
             .add_event(event_key="key_1", event_value="value_1", sender="1-job-name")
-        rule1 = SchedulingRule(condition, action=JobAction.START)
+        rule1 = JobSchedulingRule(condition, action=JobAction.START)
         condition = MeetAllEventCondition() \
             .add_event(event_key="key_1", event_value="value_1", sender="1-job-name") \
             .add_event(event_key='key_2', event_value='value_2', sender="1-job-name")
-        rule2 = SchedulingRule(condition, action=JobAction.STOP)
+        rule2 = JobSchedulingRule(condition, action=JobAction.STOP)
 
         configs = [rule1, rule2]
         config_str = json_utils.dumps(configs)
@@ -355,11 +355,11 @@ class TestAIFlowEventHandlers(unittest.TestCase):
     def test_two_rule_trigger_at_same_time_take_action_from_first_rule(self):
         condition = MeetAnyEventCondition() \
             .add_event(event_key="key_1", event_value="value_1", sender="1-job-name")
-        rule1 = SchedulingRule(condition, action=JobAction.START)
+        rule1 = JobSchedulingRule(condition, action=JobAction.START)
         condition = MeetAllEventCondition() \
             .add_event(event_key="key_1", event_value="value_1", sender="1-job-name") \
             .add_event(event_key='key_2', event_value='value_2', sender="1-job-name")
-        rule2 = SchedulingRule(condition, action=JobAction.STOP)
+        rule2 = JobSchedulingRule(condition, action=JobAction.STOP)
 
         configs = [rule1, rule2]
         config_str = json_utils.dumps(configs)
@@ -383,11 +383,11 @@ class TestAIFlowEventHandlers(unittest.TestCase):
     def test_two_rules_trigger_will_clear_all_event_life(self):
         condition = MeetAnyEventCondition() \
             .add_event(event_key="key_1", event_value="value_1", sender="1-job-name")
-        rule1 = SchedulingRule(condition, action=JobAction.START)
+        rule1 = JobSchedulingRule(condition, action=JobAction.START)
         condition = MeetAllEventCondition() \
             .add_event(event_key="key_1", event_value="value_1", sender="1-job-name") \
             .add_event(event_key='key_2', event_value='value_2', sender="1-job-name")
-        rule2 = SchedulingRule(condition, action=JobAction.STOP)
+        rule2 = JobSchedulingRule(condition, action=JobAction.STOP)
 
         configs = [rule1, rule2]
         config_str = json_utils.dumps(configs)
@@ -412,7 +412,7 @@ class TestAIFlowEventHandlers(unittest.TestCase):
     def test_unordered_event_life_once(self):
         condition = MeetAnyEventCondition() \
             .add_event(event_key="key_1", event_value="value_1", sender="1-job-name")
-        rule1 = SchedulingRule(condition, action=JobAction.START)
+        rule1 = JobSchedulingRule(condition, action=JobAction.START)
 
         configs = [rule1]
         config_str = json_utils.dumps(configs)
@@ -435,7 +435,7 @@ class TestAIFlowEventHandlers(unittest.TestCase):
     def test_unordered_event_life_repeated(self):
         condition = MeetAnyEventCondition() \
             .add_event(event_key="key_1", event_value="value_1", sender="1-job-name", life=EventLife.REPEATED)
-        rule1 = SchedulingRule(condition, action=JobAction.START)
+        rule1 = JobSchedulingRule(condition, action=JobAction.START)
 
         configs = [rule1]
         config_str = json_utils.dumps(configs)

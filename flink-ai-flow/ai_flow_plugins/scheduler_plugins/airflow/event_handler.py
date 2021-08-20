@@ -21,7 +21,7 @@ import copy
 
 from ai_flow.util import json_utils
 
-from ai_flow.workflow.control_edge import SchedulingRule, ConditionType, EventLife, ValueCondition, JobAction, \
+from ai_flow.workflow.control_edge import JobSchedulingRule, ConditionType, EventLife, ValueCondition, JobAction, \
     EventMeetConfig, EventCondition
 
 from airflow.utils.state import State
@@ -132,8 +132,8 @@ class AIFlowHandler(EventHandler):
         self.config = config
 
     @staticmethod
-    def _parse_configs(scheduling_rules_json_str: str) -> List[SchedulingRule]:
-        rules: List[SchedulingRule] = json_utils.loads(scheduling_rules_json_str)
+    def _parse_configs(scheduling_rules_json_str: str) -> List[JobSchedulingRule]:
+        rules: List[JobSchedulingRule] = json_utils.loads(scheduling_rules_json_str)
         return rules
 
     def handle_event(self, event: BaseEvent, task_state: object) -> Tuple[SchedulingAction, object]:
@@ -178,7 +178,7 @@ class AIFlowHandler(EventHandler):
                 events.append(event)
         return events
 
-    def _check_rules(self, rules: List[SchedulingRule], ts: AiFlowTs) -> List[JobAction]:
+    def _check_rules(self, rules: List[JobSchedulingRule], ts: AiFlowTs) -> List[JobAction]:
         rule_states = ts.rule_states
         rules_num = len(rules)
         res: List[Optional[JobAction]] = [None] * rules_num
@@ -190,7 +190,7 @@ class AIFlowHandler(EventHandler):
                 res[i] = rule.action
         return res
 
-    def _check_rule(self, rule: SchedulingRule, ts: SchedulingRuleState) -> bool:
+    def _check_rule(self, rule: JobSchedulingRule, ts: SchedulingRuleState) -> bool:
         event_condition = rule.event_condition
         if ConditionType.MEET_ANY == event_condition.condition_type:
             return self._check_meet_any_event_condition(rule.event_condition, ts)

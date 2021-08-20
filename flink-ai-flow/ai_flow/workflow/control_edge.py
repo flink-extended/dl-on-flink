@@ -44,6 +44,17 @@ class JobAction(str, Enum):
     NONE = "NONE"
 
 
+class WorkflowAction(str, Enum):
+    """
+    START: Start a new workflow execution.
+    STOP: Stop the workflow execution.
+    NONE: Do nothing.
+    """
+    START = "START"
+    STOP = "STOP"
+    NONE = "NONE"
+
+
 class EventLife(str, Enum):
     """
     ONCE: The event value will be used only once.
@@ -160,10 +171,10 @@ class MeetAnyEventCondition(EventCondition):
         super(MeetAnyEventCondition, self).__init__(events, ConditionType.MEET_ANY)
 
 
-class SchedulingRule(Jsonable):
+class JobSchedulingRule(Jsonable):
     def __init__(self, event_condition: EventCondition, action: JobAction):
         """
-        A SchedulingRule defines what TaskAction to take when the condition is met.
+        A SchedulingRule defines what JobAction to take when the condition is met.
         :param event_condition: A config that defines the condition.
         :param action: The action to take when condition is met.
         """
@@ -171,7 +182,23 @@ class SchedulingRule(Jsonable):
         self.action = action
 
     def __eq__(self, o):
-        if not isinstance(o, SchedulingRule):
+        if not isinstance(o, JobSchedulingRule):
+            return False
+        return self.event_condition == o.event_condition and self.action == o.action
+
+
+class WorkflowSchedulingRule(Jsonable):
+    def __init__(self, event_condition: EventCondition, action: WorkflowAction):
+        """
+        A SchedulingRule defines what WorkflowAction to take when the condition is met.
+        :param event_condition: A config that defines the condition.
+        :param action: The action to take when condition is met.
+        """
+        self.event_condition = event_condition
+        self.action = action
+
+    def __eq__(self, o):
+        if not isinstance(o, WorkflowSchedulingRule):
             return False
         return self.event_condition == o.event_condition and self.action == o.action
 
@@ -183,7 +210,7 @@ class ControlEdge(Edge):
 
     def __init__(self,
                  destination: Text,
-                 scheduling_rule: SchedulingRule,
+                 scheduling_rule: JobSchedulingRule,
                  ) -> None:
         """
         :param destination: The name of the job which depends on the scheduling rule

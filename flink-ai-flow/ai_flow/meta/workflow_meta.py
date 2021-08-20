@@ -21,8 +21,9 @@ import cloudpickle
 from ai_flow.api.context_extractor import ContextExtractor
 
 from ai_flow.util.json_utils import Jsonable
-from typing import Text
+from typing import Text, List
 from ai_flow.common.properties import Properties
+from ai_flow.workflow.control_edge import WorkflowSchedulingRule, WorkflowAction, EventCondition
 
 
 class WorkflowMeta(Jsonable):
@@ -35,7 +36,8 @@ class WorkflowMeta(Jsonable):
                  create_time: int = None,
                  update_time: int = None,
                  context_extractor_in_bytes: bytes = None,
-                 uuid: int = None
+                 uuid: int = None,
+                 scheduling_rules: List[WorkflowSchedulingRule] = None
                  ) -> None:
         """
 
@@ -46,6 +48,7 @@ class WorkflowMeta(Jsonable):
         :param update_time: update time represented as milliseconds since epoch.
         :param context_extractor_in_bytes: the user-defined logic of how to extract context from event
         :param uuid: uuid in database
+        :param scheduling_rules: A list of scheduling rules of the workflow.
         """
 
         self.name = name
@@ -55,6 +58,19 @@ class WorkflowMeta(Jsonable):
         self.update_time = update_time
         self.uuid = uuid
         self.context_extractor_in_bytes = context_extractor_in_bytes
+        self.scheduling_rules = scheduling_rules
+
+    def get_condition(self, action: WorkflowAction) -> List[EventCondition]:
+        if self.scheduling_rules is None:
+            return []
+        return [rule.event_condition for rule in self.scheduling_rules if rule.action == action]
+
+    def update_condition(self, event_conditions: List[EventCondition], action: WorkflowAction):
+        scheduling_rules = self.scheduling_rules if self.scheduling_rules is not None else []
+        new_scheduling_rules = [rule for rule in scheduling_rules if rule.action != action]
+        new_scheduling_rules.extend(
+            [WorkflowSchedulingRule(condition, action) for condition in event_conditions])
+        self.scheduling_rules = new_scheduling_rules
 
     def __str__(self):
         return '<\n' \
@@ -91,7 +107,7 @@ class WorkflowMeta(Jsonable):
 
 
 def create_workflow(name: Text,
-                    project_id: Text,
+                    project_id: int,
                     properties: Properties = None,
                     create_time: int = None,
                     update_time: int = None,
