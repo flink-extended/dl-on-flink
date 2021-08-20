@@ -37,6 +37,7 @@ psutil==5.6.3
 pandas==0.24.2
 pika==1.1.0
 pyecharts==1.8.1
+cloudpickle==1.2.2
 # Optional dependencies
 apache-flink==1.11.0
 tensorflow==1.15.0
