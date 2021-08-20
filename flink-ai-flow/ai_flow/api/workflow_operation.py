@@ -88,7 +88,7 @@ def _apply_full_info_to_workflow(workflow: Workflow, entry_module_path: Text):
     :param workflow: The generated :class:`~ai_flow.workflow.workflow.Workflow`.
     :param entry_module_path: The entry module path of the workflow.
     """
-    workflow.workflow_config = current_workflow_config()
+    workflow.workflow_config = current_workflow_config() # This line may be redundant as config is set in translation
     _set_entry_module_path(workflow, entry_module_path)
     _upload_project_package(workflow)
     _set_job_plugins(workflow)
@@ -119,7 +119,8 @@ def submit_workflow(workflow_name: Text = None) -> WorkflowInfo:
                                                               workflow_name=workflow_name)
     if workflow_meta is None:
         get_ai_flow_client().register_workflow(name=workflow_name,
-                                               project_id=int(current_project_config().get_project_uuid()))
+                                               project_id=int(current_project_config().get_project_uuid()),
+                                               context_extractor=current_graph().get_context_extractor())
     return proto_to_workflow(get_ai_flow_client()
                              .submit_workflow_to_scheduler(namespace=namespace,
                                                            workflow_json=json_utils.dumps(workflow),

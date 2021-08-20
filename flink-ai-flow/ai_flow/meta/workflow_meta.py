@@ -16,6 +16,10 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+import cloudpickle
+
+from ai_flow.api.context_extractor import ContextExtractor
+
 from ai_flow.util.json_utils import Jsonable
 from typing import Text
 from ai_flow.common.properties import Properties
@@ -30,6 +34,7 @@ class WorkflowMeta(Jsonable):
                  properties: Properties = None,
                  create_time: int = None,
                  update_time: int = None,
+                 context_extractor_in_bytes: bytes = None,
                  uuid: int = None
                  ) -> None:
         """
@@ -39,6 +44,7 @@ class WorkflowMeta(Jsonable):
         :param properties: the workflow properties
         :param create_time: create time represented as milliseconds since epoch.
         :param update_time: update time represented as milliseconds since epoch.
+        :param context_extractor_in_bytes: the user-defined logic of how to extract context from event
         :param uuid: uuid in database
         """
 
@@ -48,6 +54,7 @@ class WorkflowMeta(Jsonable):
         self.create_time = create_time
         self.update_time = update_time
         self.uuid = uuid
+        self.context_extractor_in_bytes = context_extractor_in_bytes
 
     def __str__(self):
         return '<\n' \
@@ -58,12 +65,29 @@ class WorkflowMeta(Jsonable):
                'properties:{},\n' \
                'create_time:{},\n' \
                'update_time:{},\n' \
+               'context_extractor_in_bytes:{},\n' \
                '>'.format(self.uuid,
                           self.name,
                           self.project_id,
                           self.properties,
                           self.create_time,
-                          self.update_time)
+                          self.update_time,
+                          self.context_extractor_in_bytes)
+
+    def get_context_extractor(self) -> ContextExtractor:
+        """
+        Return the deserialized ContextExtractor instance.
+
+        """
+        return cloudpickle.loads(self.context_extractor_in_bytes)
+
+    def set_context_extractor(self, context_extractor: ContextExtractor):
+        """
+        Set the context_extractor_in_bytes from given ContextExtractor instance.
+
+        :param context_extractor: ContextExtractor instance
+        """
+        self.context_extractor_in_bytes = cloudpickle.dumps(context_extractor)
 
 
 def create_workflow(name: Text,
@@ -71,6 +95,8 @@ def create_workflow(name: Text,
                     properties: Properties = None,
                     create_time: int = None,
                     update_time: int = None,
+                    context_extractor_in_bytes: bytes = None,
                     ) -> WorkflowMeta:
-    return WorkflowMeta(name=name, project_id=project_id, properties=properties,
-                        create_time=create_time, update_time=update_time)
+    return WorkflowMeta(name=name, project_id=int(project_id), properties=properties,
+                        create_time=create_time, update_time=update_time,
+                        context_extractor_in_bytes=context_extractor_in_bytes)

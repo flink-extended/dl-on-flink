@@ -96,13 +96,13 @@ class MetaToProto:
         if workflow_meta is None:
             return None
         else:
-            return WorkflowMetaProto(
-                name=workflow_meta.name,
-                project_id=int64Value(workflow_meta.project_id),
-                properties=workflow_meta.properties,
-                create_time=int64Value(workflow_meta.create_time),
-                update_time=int64Value(workflow_meta.update_time),
-                uuid=workflow_meta.uuid)
+            return WorkflowMetaProto(name=workflow_meta.name,
+                                     project_id=int64Value(workflow_meta.project_id),
+                                     properties=workflow_meta.properties,
+                                     create_time=int64Value(workflow_meta.create_time),
+                                     update_time=int64Value(workflow_meta.update_time),
+                                     context_extractor_in_bytes=workflow_meta.context_extractor_in_bytes,
+                                     uuid=workflow_meta.uuid)
 
     @staticmethod
     def workflow_meta_list_to_proto(workflows: List[WorkflowMeta]) -> List[WorkflowMetaProto]:

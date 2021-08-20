@@ -25,13 +25,13 @@ package ai_flow
 
 import (
 	context "context"
-	wrappers "github.com/golang/protobuf/ptypes/wrappers"
 	_ "github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	wrapperspb "google.golang.org/protobuf/types/known/wrapperspb"
 	reflect "reflect"
 	sync "sync"
 )
@@ -402,18 +402,18 @@ type UpdateDatasetRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Name                 string                `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Properties           map[string]string     `protobuf:"bytes,2,rep,name=properties,proto3" json:"properties,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
-	NameList             []string              `protobuf:"bytes,3,rep,name=name_list,json=nameList,proto3" json:"name_list,omitempty"`
-	TypeList             []DataTypeProto       `protobuf:"varint,4,rep,packed,name=type_list,json=typeList,proto3,enum=ai_flow.DataTypeProto" json:"type_list,omitempty"`
-	DataFormat           *wrappers.StringValue `protobuf:"bytes,5,opt,name=data_format,json=dataFormat,proto3" json:"data_format,omitempty"`
-	Uri                  *wrappers.StringValue `protobuf:"bytes,6,opt,name=uri,proto3" json:"uri,omitempty"`
-	Description          *wrappers.StringValue `protobuf:"bytes,7,opt,name=description,proto3" json:"description,omitempty"`
-	CatalogName          *wrappers.StringValue `protobuf:"bytes,9,opt,name=catalog_name,json=catalogName,proto3" json:"catalog_name,omitempty"`
-	CatalogType          *wrappers.StringValue `protobuf:"bytes,10,opt,name=catalog_type,json=catalogType,proto3" json:"catalog_type,omitempty"`
-	CatalogDatabase      *wrappers.StringValue `protobuf:"bytes,11,opt,name=catalog_database,json=catalogDatabase,proto3" json:"catalog_database,omitempty"`
-	CatalogConnectionUri *wrappers.StringValue `protobuf:"bytes,12,opt,name=catalog_connection_uri,json=catalogConnectionUri,proto3" json:"catalog_connection_uri,omitempty"`
-	CatalogTable         *wrappers.StringValue `protobuf:"bytes,13,opt,name=catalog_table,json=catalogTable,proto3" json:"catalog_table,omitempty"`
+	Name                 string                  `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Properties           map[string]string       `protobuf:"bytes,2,rep,name=properties,proto3" json:"properties,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	NameList             []string                `protobuf:"bytes,3,rep,name=name_list,json=nameList,proto3" json:"name_list,omitempty"`
+	TypeList             []DataTypeProto         `protobuf:"varint,4,rep,packed,name=type_list,json=typeList,proto3,enum=ai_flow.DataTypeProto" json:"type_list,omitempty"`
+	DataFormat           *wrapperspb.StringValue `protobuf:"bytes,5,opt,name=data_format,json=dataFormat,proto3" json:"data_format,omitempty"`
+	Uri                  *wrapperspb.StringValue `protobuf:"bytes,6,opt,name=uri,proto3" json:"uri,omitempty"`
+	Description          *wrapperspb.StringValue `protobuf:"bytes,7,opt,name=description,proto3" json:"description,omitempty"`
+	CatalogName          *wrapperspb.StringValue `protobuf:"bytes,9,opt,name=catalog_name,json=catalogName,proto3" json:"catalog_name,omitempty"`
+	CatalogType          *wrapperspb.StringValue `protobuf:"bytes,10,opt,name=catalog_type,json=catalogType,proto3" json:"catalog_type,omitempty"`
+	CatalogDatabase      *wrapperspb.StringValue `protobuf:"bytes,11,opt,name=catalog_database,json=catalogDatabase,proto3" json:"catalog_database,omitempty"`
+	CatalogConnectionUri *wrapperspb.StringValue `protobuf:"bytes,12,opt,name=catalog_connection_uri,json=catalogConnectionUri,proto3" json:"catalog_connection_uri,omitempty"`
+	CatalogTable         *wrapperspb.StringValue `protobuf:"bytes,13,opt,name=catalog_table,json=catalogTable,proto3" json:"catalog_table,omitempty"`
 }
 
 func (x *UpdateDatasetRequest) Reset() {
@@ -476,56 +476,56 @@ func (x *UpdateDatasetRequest) GetTypeList() []DataTypeProto {
 	return nil
 }
 
-func (x *UpdateDatasetRequest) GetDataFormat() *wrappers.StringValue {
+func (x *UpdateDatasetRequest) GetDataFormat() *wrapperspb.StringValue {
 	if x != nil {
 		return x.DataFormat
 	}
 	return nil
 }
 
-func (x *UpdateDatasetRequest) GetUri() *wrappers.StringValue {
+func (x *UpdateDatasetRequest) GetUri() *wrapperspb.StringValue {
 	if x != nil {
 		return x.Uri
 	}
 	return nil
 }
 
-func (x *UpdateDatasetRequest) GetDescription() *wrappers.StringValue {
+func (x *UpdateDatasetRequest) GetDescription() *wrapperspb.StringValue {
 	if x != nil {
 		return x.Description
 	}
 	return nil
 }
 
-func (x *UpdateDatasetRequest) GetCatalogName() *wrappers.StringValue {
+func (x *UpdateDatasetRequest) GetCatalogName() *wrapperspb.StringValue {
 	if x != nil {
 		return x.CatalogName
 	}
 	return nil
 }
 
-func (x *UpdateDatasetRequest) GetCatalogType() *wrappers.StringValue {
+func (x *UpdateDatasetRequest) GetCatalogType() *wrapperspb.StringValue {
 	if x != nil {
 		return x.CatalogType
 	}
 	return nil
 }
 
-func (x *UpdateDatasetRequest) GetCatalogDatabase() *wrappers.StringValue {
+func (x *UpdateDatasetRequest) GetCatalogDatabase() *wrapperspb.StringValue {
 	if x != nil {
 		return x.CatalogDatabase
 	}
 	return nil
 }
 
-func (x *UpdateDatasetRequest) GetCatalogConnectionUri() *wrappers.StringValue {
+func (x *UpdateDatasetRequest) GetCatalogConnectionUri() *wrapperspb.StringValue {
 	if x != nil {
 		return x.CatalogConnectionUri
 	}
 	return nil
 }
 
-func (x *UpdateDatasetRequest) GetCatalogTable() *wrappers.StringValue {
+func (x *UpdateDatasetRequest) GetCatalogTable() *wrapperspb.StringValue {
 	if x != nil {
 		return x.CatalogTable
 	}
@@ -1081,9 +1081,9 @@ type UpdateProjectRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Name       string                `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Properties map[string]string     `protobuf:"bytes,2,rep,name=properties,proto3" json:"properties,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
-	Uri        *wrappers.StringValue `protobuf:"bytes,3,opt,name=uri,proto3" json:"uri,omitempty"`
+	Name       string                  `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Properties map[string]string       `protobuf:"bytes,2,rep,name=properties,proto3" json:"properties,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	Uri        *wrapperspb.StringValue `protobuf:"bytes,3,opt,name=uri,proto3" json:"uri,omitempty"`
 }
 
 func (x *UpdateProjectRequest) Reset() {
@@ -1132,7 +1132,7 @@ func (x *UpdateProjectRequest) GetProperties() map[string]string {
 	return nil
 }
 
-func (x *UpdateProjectRequest) GetUri() *wrappers.StringValue {
+func (x *UpdateProjectRequest) GetUri() *wrapperspb.StringValue {
 	if x != nil {
 		return x.Uri
 	}
@@ -1239,11 +1239,11 @@ type UpdateArtifactRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Name         string                `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Properties   map[string]string     `protobuf:"bytes,2,rep,name=properties,proto3" json:"properties,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
-	ArtifactType *wrappers.StringValue `protobuf:"bytes,3,opt,name=artifact_type,json=artifactType,proto3" json:"artifact_type,omitempty"`
-	Uri          *wrappers.StringValue `protobuf:"bytes,4,opt,name=uri,proto3" json:"uri,omitempty"`
-	Description  *wrappers.StringValue `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
+	Name         string                  `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Properties   map[string]string       `protobuf:"bytes,2,rep,name=properties,proto3" json:"properties,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	ArtifactType *wrapperspb.StringValue `protobuf:"bytes,3,opt,name=artifact_type,json=artifactType,proto3" json:"artifact_type,omitempty"`
+	Uri          *wrapperspb.StringValue `protobuf:"bytes,4,opt,name=uri,proto3" json:"uri,omitempty"`
+	Description  *wrapperspb.StringValue `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
 }
 
 func (x *UpdateArtifactRequest) Reset() {
@@ -1292,21 +1292,21 @@ func (x *UpdateArtifactRequest) GetProperties() map[string]string {
 	return nil
 }
 
-func (x *UpdateArtifactRequest) GetArtifactType() *wrappers.StringValue {
+func (x *UpdateArtifactRequest) GetArtifactType() *wrapperspb.StringValue {
 	if x != nil {
 		return x.ArtifactType
 	}
 	return nil
 }
 
-func (x *UpdateArtifactRequest) GetUri() *wrappers.StringValue {
+func (x *UpdateArtifactRequest) GetUri() *wrapperspb.StringValue {
 	if x != nil {
 		return x.Uri
 	}
 	return nil
 }
 
-func (x *UpdateArtifactRequest) GetDescription() *wrappers.StringValue {
+func (x *UpdateArtifactRequest) GetDescription() *wrapperspb.StringValue {
 	if x != nil {
 		return x.Description
 	}
@@ -2268,10 +2268,11 @@ var file_metadata_service_proto_rawDesc = []byte{
 	0x61, 0x69, 0x5f, 0x66, 0x6c, 0x6f, 0x77, 0x2e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
 	0x22, 0x2c, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x26, 0x12, 0x24, 0x2f, 0x61, 0x69, 0x66, 0x6c, 0x6f,
 	0x77, 0x2f, 0x6d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x5f, 0x73, 0x74, 0x6f, 0x72, 0x65,
-	0x2f, 0x77, 0x6f, 0x72, 0x6b, 0x66, 0x6c, 0x6f, 0x77, 0x2f, 0x6c, 0x69, 0x73, 0x74, 0x42, 0x22,
-	0x0a, 0x10, 0x63, 0x6f, 0x6d, 0x2e, 0x61, 0x69, 0x66, 0x6c, 0x6f, 0x77, 0x2e, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x5a, 0x08, 0x2f, 0x61, 0x69, 0x5f, 0x66, 0x6c, 0x6f, 0x77, 0x88, 0x01, 0x01, 0x90,
-	0x01, 0x01, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x2f, 0x77, 0x6f, 0x72, 0x6b, 0x66, 0x6c, 0x6f, 0x77, 0x2f, 0x6c, 0x69, 0x73, 0x74, 0x42, 0x29,
+	0x0a, 0x17, 0x6f, 0x72, 0x67, 0x2e, 0x61, 0x69, 0x66, 0x6c, 0x6f, 0x77, 0x2e, 0x63, 0x6c, 0x69,
+	0x65, 0x6e, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x5a, 0x08, 0x2f, 0x61, 0x69, 0x5f, 0x66,
+	0x6c, 0x6f, 0x77, 0x88, 0x01, 0x01, 0x90, 0x01, 0x01, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x33,
 }
 
 var (
@@ -2323,7 +2324,7 @@ var file_metadata_service_proto_goTypes = []interface{}{
 	nil,                                         // 32: ai_flow.UpdateWorkflowRequest.PropertiesEntry
 	(*DatasetProto)(nil),                        // 33: ai_flow.DatasetProto
 	(DataTypeProto)(0),                          // 34: ai_flow.DataTypeProto
-	(*wrappers.StringValue)(nil),                // 35: google.protobuf.StringValue
+	(*wrapperspb.StringValue)(nil),              // 35: google.protobuf.StringValue
 	(*ModelRelationProto)(nil),                  // 36: ai_flow.ModelRelationProto
 	(*ModelProto)(nil),                          // 37: ai_flow.ModelProto
 	(*ModelVersionRelationProto)(nil),           // 38: ai_flow.ModelVersionRelationProto

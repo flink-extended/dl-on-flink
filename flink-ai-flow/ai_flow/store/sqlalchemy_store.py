@@ -39,7 +39,7 @@ from ai_flow.model_center.entity.model_version_stage import STAGE_DELETED, get_c
 from ai_flow.protobuf.message_pb2 import INVALID_PARAMETER_VALUE, RESOURCE_ALREADY_EXISTS
 from ai_flow.endpoint.server.exception import AIFlowException
 from ai_flow.endpoint.server.high_availability import Member
-from ai_flow.store.abstract_store import AbstractStore
+from ai_flow.store.abstract_store import AbstractStore, BROADCAST_ALL_CONTEXT_EXTRACTOR
 from ai_flow.store.db.base_model import base
 from ai_flow.store.db.db_model import SqlDataset, SqlModelRelation, SqlModelVersionRelation, SqlProject, \
     SqlWorkflow, SqlEvent, SqlArtifact, SqlMember, SqlProjectSnapshot
@@ -279,7 +279,7 @@ class SqlAlchemyStore(AbstractStore):
             except sqlalchemy.exc.IntegrityError as e:
                 raise AIFlowException(str(e))
 
-    def update_dataset(self, dataset_name: Text,  data_format: Text = None,
+    def update_dataset(self, dataset_name: Text, data_format: Text = None,
                        description: Text = None, uri: Text = None,
                        properties: Properties = None,
                        name_list: List[Text] = None, type_list: List[DataType] = None, catalog_name: Text = None,
@@ -752,12 +752,14 @@ class SqlAlchemyStore(AbstractStore):
 
     '''workflow api'''
 
-    def register_workflow(self, name, project_id, properties=None) -> WorkflowMeta:
+    def register_workflow(self, name, project_id, context_extractor_in_bytes: bytes = BROADCAST_ALL_CONTEXT_EXTRACTOR,
+                          properties=None) -> WorkflowMeta:
         """
         Register a workflow in metadata store.
 
         :param name: the workflow name
         :param project_id: the id of project which contains the workflow
+        :param context_extractor_in_bytes: serialized context extractor in bytes
         :param properties: the workflow properties
         """
         update_time = create_time = int(time.time() * 1000)
@@ -767,12 +769,14 @@ class SqlAlchemyStore(AbstractStore):
                                                          project_id=project_id,
                                                          properties=properties,
                                                          create_time=create_time,
-                                                         update_time=update_time)
+                                                         update_time=update_time,
+                                                         context_extractor_in_bytes=context_extractor_in_bytes)
                 session.add(workflow)
                 session.flush()
                 return WorkflowMeta(uuid=workflow.uuid, name=name,
                                     project_id=project_id, properties=properties,
-                                    create_time=create_time, update_time=update_time)
+                                    create_time=create_time, update_time=update_time,
+                                    context_extractor_in_bytes=context_extractor_in_bytes)
             except sqlalchemy.exc.IntegrityError as e:
                 raise AIFlowException('Error: {}'.format(workflow.name, workflow.project_id, str(e)))
 
@@ -1487,7 +1491,7 @@ class SqlAlchemyStore(AbstractStore):
                 raise AIFlowException('Get dataset metric metas failed! Error: {}.'.format(str(e)))
 
     def list_model_metric_metas(self, model_name, project_name=None) -> Union[
-            None, MetricMeta, List[MetricMeta]]:
+        None, MetricMeta, List[MetricMeta]]:
         with self.ManagedSessionMaker() as session:
             try:
                 conditions = [

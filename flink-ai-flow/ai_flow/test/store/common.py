@@ -18,7 +18,13 @@
 #
 import os
 import time
+from typing import Text, Set
 from unittest import mock
+
+import cloudpickle
+from notification_service.base_notification import BaseEvent
+
+from ai_flow.api.context_extractor import EventContext, ContextExtractor
 
 from ai_flow.common.properties import Properties
 from ai_flow.common.status import Status
@@ -32,8 +38,30 @@ from ai_flow.endpoint.server.exception import AIFlowException
 from ai_flow.test.endpoint import random_str
 
 
-class AbstractTestStore(object):
+class TestContext(EventContext):
+    """
+    This class indicates that the event should be broadcast.
+    """
 
+    def is_broadcast(self) -> bool:
+        return True
+
+    def get_contexts(self) -> Set[Text]:
+        s = set()
+        s.add('hello')
+        return s
+
+
+class TestContextExtractor(ContextExtractor):
+    """
+    BroadcastAllContextExtractor is the default ContextExtractor to used. It marks all events as broadcast events.
+    """
+
+    def extract_context(self, event: BaseEvent) -> EventContext:
+        return TestContext()
+
+
+class AbstractTestStore(object):
     """test dataset"""
 
     def test_save_dataset_get_dataset_by_id_and_name(self):
@@ -150,6 +178,7 @@ class AbstractTestStore(object):
         self.assertEqual(update_dataset_1.catalog_database, 'my_db')
 
     """test workflow"""
+
     def test_save_workflow_get_workflow_by_id_and_name(self):
         project_response = self.store.register_project(name='project', uri='www.code.com')
         self.assertEqual(project_response.uuid, 1)
@@ -172,6 +201,23 @@ class AbstractTestStore(object):
         self.store.register_workflow(name='workflow', project_id=project_response2.uuid)
         self.assertRaises(AIFlowException, self.store.register_workflow, name='workflow',
                           project_id=project_response.uuid)
+
+    def test_get_workflow_with_custom_context_extractor(self):
+        project_response = self.store.register_project(name='project', uri='www.code.com')
+        self.assertEqual(project_response.uuid, 1)
+        context_extractor = TestContextExtractor()
+        context_extractor_in_bytes = cloudpickle.dumps(context_extractor)
+        response = self.store.register_workflow(name='workflow',
+                                                project_id=project_response.uuid,
+                                                properties=Properties({'a': 'b'}),
+                                                context_extractor_in_bytes=context_extractor_in_bytes)
+        self.assertEqual(response.uuid, 1)
+        self.assertEqual(response.properties, Properties({'a': 'b'}))
+        response_by_name = self.store.get_workflow_by_name(project_response.name, response.name)
+        self.assertEqual(context_extractor_in_bytes, response_by_name.context_extractor_in_bytes)
+        context_extractor_from_db = cloudpickle.loads(response_by_name.context_extractor_in_bytes)
+        self.assertTrue(
+            'hello' in context_extractor_from_db.extract_context(BaseEvent(key='1', value='1')).get_contexts())
 
     def test_list_workflows(self):
         project_response = self.store.register_project(name='project', uri='www.code.com')
