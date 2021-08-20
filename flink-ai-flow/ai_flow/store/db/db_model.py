@@ -18,7 +18,7 @@
 #
 from notification_service.base_notification import BaseEvent
 from sqlalchemy import (
-    Column, String, ForeignKey, Integer, PrimaryKeyConstraint, BigInteger, UniqueConstraint, Binary, Boolean)
+    Column, String, ForeignKey, Integer, PrimaryKeyConstraint, BigInteger, UniqueConstraint, Binary, Boolean, Text)
 from sqlalchemy.orm import relationship, backref
 from mongoengine import (Document, StringField, IntField, LongField, ReferenceField,
                          BooleanField, ListField, ObjectIdField, SequenceField, BinaryField)
@@ -126,6 +126,8 @@ class SqlWorkflow(base, Base):
     update_time = Column(BigInteger)
     is_deleted = Column(Boolean, default=False)
     context_extractor_in_bytes = Column(Binary())
+    scheduling_rules = Column(Text)
+
     UniqueConstraint(project_id, name)
 
     project = relationship("SqlProject", backref=backref('workflow', cascade='all'))
@@ -471,10 +473,12 @@ class MongoWorkflow(Document):
     name = StringField(max_length=255, required=True, unique=True)
     project_id = IntField()
     properties = StringField(max_length=1000)
-    create_time = Column(BigInteger)
-    update_time = Column(BigInteger)
+    create_time = LongField()
+    update_time = LongField()
     is_deleted = BooleanField(default=False)
+    scheduling_rules = StringField()
     context_extractor_in_bytes = BinaryField()
+
     meta = {'db_alias': MONGO_DB_ALIAS_META_SERVICE}
 
     def __repr__(self):

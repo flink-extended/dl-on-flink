@@ -46,6 +46,8 @@ from ai_flow.store.db.db_model import (MongoProject, MongoDataset, MongoModelVer
                                        MongoMetricSummary, MongoMetricMeta,
                                        MongoModelVersionRelation, MongoMember, MongoProjectSnapshot, MongoWorkflow)
 from ai_flow.store.db.db_util import parse_mongo_uri
+from ai_flow.util import json_utils
+from ai_flow.workflow.control_edge import WorkflowSchedulingRule
 
 if not hasattr(time, 'time_ns'):
     time.time_ns = lambda: int(time.time() * 1e9)
@@ -471,7 +473,7 @@ class MongoStore(AbstractStore):
                         deleted_model_version_relation_counts + 1)
                     # update for unqine constraint
                     model_version.version_model_id_unique = f'{model_version.version}-{model_version.model_id}'
-                    model_version.version_workflow_execution_id_unique = f'{model_version.version}-{model_version.workflow_execution_id}'
+                    model_version.version_workflow_execution_id_unique = f'{model_version.version}-{model_version.project_snapshot_id}'
                 model_version_list += per_model.model_version_relation
             self._save_all(
                 [project] + project.model_relation + model_version_list)
@@ -591,12 +593,14 @@ class MongoStore(AbstractStore):
         except mongoengine.OperationError as e:
             raise AIFlowException(str(e))
 
-    def update_workflow(self, workflow_name, project_name, properties=None) -> Optional[WorkflowMeta]:
+    def update_workflow(self, workflow_name, project_name, scheduling_rules: List[WorkflowSchedulingRule],
+                        properties=None) -> Optional[WorkflowMeta]:
         """
         Update the workflow
 
         :param workflow_name: the workflow name
         :param project_name: the name of project which contains the workflow
+        :param scheduling_rules: the scheduling rules of the workflow
         :param properties: (Optional) the properties need to be updated
         """
         try:
@@ -610,7 +614,8 @@ class MongoStore(AbstractStore):
             if workflow is None:
                 return None
             if properties is not None:
-                workflow.properties = properties
+                workflow.properties = str(properties)
+            workflow.scheduling_rules = json_utils.dumps(scheduling_rules)
             workflow.update_time = int(time.time() * 1000)
             workflow.save()
             return ResultToMeta.result_to_workflow_meta(workflow)
@@ -738,7 +743,7 @@ class MongoStore(AbstractStore):
                     deleted_model_version_counts + 1)
                 # update for unqine constraint
                 model_version.version_model_id_unique = f'{model_version.version}-{model_version.model_id}'
-                model_version.version_workflow_execution_id_unique = f'{model_version.version}-{model_version.workflow_execution_id}'
+                model_version.version_workflow_execution_id_unique = f'{model_version.version}-{model_version.project_snapshot_id}'
             self._save_all([model] + model.model_version_relation)
             return Status.OK
         except mongoengine.OperationError as e:
@@ -843,7 +848,7 @@ class MongoStore(AbstractStore):
                 deleted_model_version_counts + 1)
             # update for unqine constraint
             model_version.version_model_id_unique = f'{model_version.version}-{model_version.model_id}'
-            model_version.version_workflow_execution_id_unique = f'{model_version.version}-{model_version.workflow_execution_id}'
+            model_version.version_workflow_execution_id_unique = f'{model_version.version}-{model_version.project_snapshot_id}'
             model_version.save()
             return Status.OK
         except mongoengine.OperationError as e:
@@ -1350,14 +1355,14 @@ class MongoStore(AbstractStore):
             if metric_meta is None:
                 return Status.ERROR
             deleted_metric_meta_counts = MongoMetricMeta.objects(
-                name__startswith=deleted_character + metric_meta.metric_name + deleted_character,
+                metric_name__startswith=deleted_character + metric_meta.metric_name + deleted_character,
                 is_deleted=TRUE).count()
             metric_meta.is_deleted = TRUE
             metric_meta.metric_name = deleted_character + metric_meta.metric_name + deleted_character + str(
                 deleted_metric_meta_counts + 1)
             for metric_summary in metric_meta.metric_summary:
                 deleted_metric_summary_counts = MongoMetricSummary.objects(
-                    name__startswith=deleted_character + metric_summary.metric_name + deleted_character,
+                    metric_name__startswith=deleted_character + metric_summary.metric_name + deleted_character,
                     is_deleted=TRUE).count()
                 metric_summary.is_deleted = TRUE
                 metric_summary.metric_name = deleted_character + metric_summary.metric_name + deleted_character + str(

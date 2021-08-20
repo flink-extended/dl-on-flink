@@ -21,7 +21,7 @@ import unittest
 from ai_flow.util import json_utils
 
 from ai_flow.workflow.control_edge import EventMeetConfig, EventLife, ValueCondition, EventCondition, ConditionType, \
-    MeetAnyEventCondition, MeetAllEventCondition, SchedulingRule, JobAction, ControlEdge
+    MeetAnyEventCondition, MeetAllEventCondition, JobSchedulingRule, JobAction, ControlEdge
 from notification_service.base_notification import UNDEFINED_EVENT_TYPE, DEFAULT_NAMESPACE
 
 
@@ -82,14 +82,14 @@ class SchedulingRuleTest(unittest.TestCase):
     def test_scheduling_rule(self):
         condition = MeetAllEventCondition()
         action = JobAction.START
-        rule = SchedulingRule(condition, action)
+        rule = JobSchedulingRule(condition, action)
         self.assertEqual(condition, rule.event_condition)
         self.assertEqual(action, rule.action)
 
     def test_scheduling_rule_serde(self):
         condition = MeetAllEventCondition()
         action = JobAction.START
-        rule = SchedulingRule(condition, action)
+        rule = JobSchedulingRule(condition, action)
         loaded_rule = json_utils.loads(json_utils.dumps(rule))
         self.assertEqual(rule, loaded_rule)
 
@@ -99,7 +99,7 @@ class ControlEdgeTest(unittest.TestCase):
     def test_control_edge(self):
         condition = MeetAllEventCondition()
         action = JobAction.START
-        rule = SchedulingRule(condition, action)
+        rule = JobSchedulingRule(condition, action)
         edge = ControlEdge('task', rule)
         self.assertEqual('*', edge.source)
         self.assertEqual('task', edge.destination)

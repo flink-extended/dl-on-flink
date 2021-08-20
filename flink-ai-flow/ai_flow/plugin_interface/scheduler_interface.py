@@ -18,6 +18,7 @@ from abc import ABC, abstractmethod
 from typing import Dict, Text, List, Optional
 
 from ai_flow.util import json_utils
+from ai_flow.workflow.control_edge import WorkflowSchedulingRule
 from ai_flow.workflow.workflow import Workflow
 from ai_flow.context.project_context import ProjectContext
 from ai_flow.common.configuration import AIFlowConfiguration
@@ -60,12 +61,14 @@ class WorkflowInfo(json_utils.Jsonable):
     def __init__(self,
                  namespace: Text = None,
                  workflow_name: Text = None,
-                 properties: Dict = None):
+                 properties: Dict = None,
+                 scheduling_rules: List[WorkflowSchedulingRule] = None):
         self._namespace = namespace
         self._workflow_name = workflow_name
         if properties is None:
             properties = {}
         self._properties = properties
+        self._scheduling_rules = scheduling_rules
 
     @property
     def namespace(self):
@@ -90,6 +93,10 @@ class WorkflowInfo(json_utils.Jsonable):
     @properties.setter
     def properties(self, value):
         self._properties = value
+
+    @property
+    def scheduling_rules(self):
+        return self._scheduling_rules
 
     def __str__(self) -> str:
         return json_utils.dumps(self)

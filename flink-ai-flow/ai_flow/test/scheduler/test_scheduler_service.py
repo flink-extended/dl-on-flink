@@ -19,7 +19,7 @@ import os
 import unittest
 
 from ai_flow.util import json_utils
-from ai_flow.workflow.control_edge import MeetAllEventCondition, MeetAnyEventCondition
+from ai_flow.workflow.control_edge import MeetAllEventCondition, MeetAnyEventCondition, WorkflowAction
 from typing import Text, List, Optional
 
 from ai_flow.scheduler_service.service.service import SchedulerServiceConfig
@@ -176,26 +176,58 @@ class TestSchedulerService(unittest.TestCase):
             self.assertEqual('test_context', workflow_execution.context.value)
 
     def test_start_new_workflow_execution_on_event(self):
+        store = self.server.scheduler_service.store
+        project_meta = store.register_project('namespace', 'example.com')
+        store.register_workflow('test_workflow', project_meta.uuid)
+
         client = SchedulerClient("localhost:{}".format(_PORT))
         c1 = MeetAllEventCondition().add_event('k1', 'v1')
         c2 = MeetAnyEventCondition().add_event('k2', 'v2')
         workflow_proto = client.start_new_workflow_execution_on_events(namespace='namespace',
-                                                                      workflow_name='test_workflow',
-                                                                      event_conditions=[c1, c2])
+                                                                       workflow_name='test_workflow',
+                                                                       event_conditions=[c1, c2])
         self.assertEqual('namespace', workflow_proto.namespace)
         self.assertEqual('test_workflow', workflow_proto.name)
-        self.assertListEqual([c1, c2], json_utils.loads(workflow_proto.properties['event_conditions_json']))
+
+        workflow_meta = store.get_workflow_by_name('namespace', 'test_workflow')
+        start_event_condition = [rule.event_condition for rule in workflow_meta.scheduling_rules if
+                                 rule.action == WorkflowAction.START]
+        self.assertIn(c1, start_event_condition)
+        self.assertIn(c2, start_event_condition)
+
+        client.start_new_workflow_execution_on_events(namespace='namespace',
+                                                      workflow_name='test_workflow',
+                                                      event_conditions=[])
+        workflow_meta = store.get_workflow_by_name('namespace', 'test_workflow')
+        self.assertEqual(0, len(workflow_meta.scheduling_rules))
+        self.assertEqual([], workflow_meta.get_condition(WorkflowAction.START))
 
     def test_stop_workflow_execution_on_event(self):
+        store = self.server.scheduler_service.store
+        project_meta = store.register_project('namespace', 'example.com')
+        store.register_workflow('test_workflow', project_meta.uuid)
+
         client = SchedulerClient("localhost:{}".format(_PORT))
         c1 = MeetAllEventCondition().add_event('k1', 'v1')
         c2 = MeetAnyEventCondition().add_event('k2', 'v2')
         workflow_proto = client.stop_workflow_execution_on_events(namespace='namespace',
-                                                                 workflow_name='test_workflow',
-                                                                 event_conditions=[c1, c2])
+                                                                  workflow_name='test_workflow',
+                                                                  event_conditions=[c1, c2])
         self.assertEqual('namespace', workflow_proto.namespace)
         self.assertEqual('test_workflow', workflow_proto.name)
-        self.assertListEqual([c1, c2], json_utils.loads(workflow_proto.properties['event_conditions_json']))
+
+        workflow_meta = store.get_workflow_by_name('namespace', 'test_workflow')
+        start_event_condition = [rule.event_condition for rule in workflow_meta.scheduling_rules if
+                                 rule.action == WorkflowAction.STOP]
+        self.assertIn(c1, start_event_condition)
+        self.assertIn(c2, start_event_condition)
+
+        client.stop_workflow_execution_on_events(namespace='namespace',
+                                                 workflow_name='test_workflow',
+                                                 event_conditions=[])
+        workflow_meta = store.get_workflow_by_name('namespace', 'test_workflow')
+        self.assertEqual(0, len(workflow_meta.scheduling_rules))
+        self.assertEqual([], workflow_meta.get_condition(WorkflowAction.STOP))
 
     def test_kill_all_workflow_execution(self):
         with mock.patch(SCHEDULER_CLASS) as mockScheduler:
