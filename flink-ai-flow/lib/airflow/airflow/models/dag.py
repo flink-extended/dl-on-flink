@@ -54,6 +54,7 @@ from sqlalchemy.orm.session import Session
 
 from airflow import settings, utils
 from airflow.configuration import conf
+from airflow.events.context_extractor import ContextExtractor, BroadcastAllContextExtractor
 from airflow.exceptions import AirflowException, DuplicateTaskIdFound, TaskNotFound
 from airflow.models.base import ID_LEN, Base
 from airflow.models.baseoperator import BaseOperator
@@ -361,6 +362,8 @@ class DAG(LoggingMixin):
         self.jinja_environment_kwargs = jinja_environment_kwargs
         self.tags = tags
         self._task_group = TaskGroup.create_root(self)
+
+        self._context_extractor: Optional[ContextExtractor] = BroadcastAllContextExtractor()
 
     def __repr__(self):
         return f"<DAG: {self.dag_id}>"
@@ -722,6 +725,14 @@ class DAG(LoggingMixin):
     @pickle_id.setter
     def pickle_id(self, value: int) -> None:
         self._pickle_id = value
+
+    @property
+    def context_extractor(self) -> Optional[ContextExtractor]:
+        return self._context_extractor
+
+    @context_extractor.setter
+    def context_extractor(self, value):
+        self._context_extractor = value
 
     def param(self, name: str, default=None) -> DagParam:
         """
@@ -2051,6 +2062,7 @@ class DAG(LoggingMixin):
                 'on_failure_callback',
                 'template_undefined',
                 'jinja_environment_kwargs',
+                '_context_extractor'
             }
         return cls.__serialized_fields
 

@@ -25,6 +25,7 @@ import faulthandler
 from typing import Callable, List, Optional
 
 from airflow.contrib.jobs.periodic_manager import PeriodicManager
+from airflow.events.context_extractor import ContextExtractor, EventContext
 from airflow.exceptions import SerializedDagNotFound, AirflowException
 from airflow.models.dagcode import DagCode
 from airflow.models.message import IdentifiedMessage, MessageState
@@ -334,19 +335,23 @@ class EventBasedScheduler(LoggingMixin):
         ).all()
         self.log.debug('dags {}'.format(len(dags)))
 
-        affect_dags = set()
+        affect_dags = {}
         for dag in dags:
             self.log.debug('dag config {}'.format(dag.event_relationships))
             self.log.debug('event key {} {} {}'.format(event.key, event.event_type, event.namespace))
 
             dep: DagEventDependencies = DagEventDependencies.from_json(dag.event_relationships)
             if dep.is_affect(event_key):
-                affect_dags.add(dag.dag_id)
+                context_extractor: ContextExtractor = dag.context_extractor
+                event_context: EventContext = context_extractor.extract_context(event)
+                affect_dags[dag.dag_id] = event_context
         if len(affect_dags) == 0:
             return affect_dag_runs
         for dag_run in dag_runs:
             if dag_run.dag_id in affect_dags:
-                affect_dag_runs.append(dag_run)
+                event_context: EventContext = affect_dags[dag_run.dag_id]
+                if event_context.is_broadcast() or dag_run.context in event_context.get_contexts():
+                    affect_dag_runs.append(dag_run)
         return affect_dag_runs
 
     def _find_scheduled_tasks(

@@ -21,10 +21,12 @@
 import hashlib
 import logging
 from datetime import datetime, timedelta
+
+import cloudpickle
 from typing import Any, Dict, List, Optional
 
 import sqlalchemy_jsonfield
-from sqlalchemy import BigInteger, Column, Index, String, and_
+from sqlalchemy import BigInteger, Column, Index, String, and_, PickleType
 from sqlalchemy.orm import Session, backref, foreign, relationship
 from sqlalchemy.sql import exists
 
@@ -68,6 +70,8 @@ class SerializedDagModel(Base):
     data = Column(sqlalchemy_jsonfield.JSONField(json=json), nullable=False)
     # the event relationships of the dag
     event_relationships = Column(String(10240))
+    context_extractor = Column(PickleType(pickler=cloudpickle))
+
     last_updated = Column(UtcDateTime, nullable=False)
     dag_hash = Column(String(32), nullable=False)
 
@@ -96,6 +100,7 @@ class SerializedDagModel(Base):
         self.last_updated = timezone.utcnow()
         dag_event_deps = DagEventDependencies(dag)
         self.event_relationships = DagEventDependencies.to_json(dag_event_deps)
+        self.context_extractor = dag.context_extractor
         self.dag_hash = hashlib.md5(json.dumps(self.data, sort_keys=True).encode("utf-8")).hexdigest()
 
     def __repr__(self):
