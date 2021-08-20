@@ -1186,7 +1186,7 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
             self.refresh_from_db()
             # for case when task is marked as success/failed externally
             # current behavior doesn't hit the success callback
-            if self.state in {State.SUCCESS, State.FAILED}:
+            if self.state in {State.SUCCESS, State.FAILED, State.KILLED}:
                 return
             elif self.state == State.KILLING:
                 self.state = State.KILLED
@@ -1194,8 +1194,6 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
                 self.set_duration()
                 self.set_duration()
                 session.merge(self)
-                return
-            elif self.state == State.KILLED:
                 return
             else:
                 self.handle_failure(e, test_mode, context)
