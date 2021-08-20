@@ -25,7 +25,7 @@ from ai_flow.ai_graph.ai_node import AINode, ReadDatasetNode, WriteDatasetNode
 from ai_flow.graph.channel import Channel
 from ai_flow.workflow.control_edge import ControlEdge, \
     JobAction, EventLife, ValueCondition, DEFAULT_NAMESPACE, AIFlowInternalEventType, \
-    EventCondition, SchedulingRule, MeetAnyEventCondition
+    EventCondition, JobSchedulingRule, MeetAnyEventCondition
 from ai_flow.ai_graph.ai_graph import current_graph, add_ai_node_to_graph
 from ai_flow.meta.dataset_meta import DatasetMeta
 from ai_flow.meta.model_meta import ModelMeta, ModelVersionMeta
@@ -507,7 +507,7 @@ def action_on_events(job_name: Text, event_condition: EventCondition, action: Jo
     :param action: The :class:`~ai_flow.workflow.control_edge.JobAction` to take when the
                              :class:`~ai_flow.workflow.control_edge.EventCondition` is met.
     """
-    rule = SchedulingRule(event_condition, action)
+    rule = JobSchedulingRule(event_condition, action)
     control_edge = ControlEdge(destination=job_name, scheduling_rule=rule)
     current_graph().add_edge(job_name, control_edge)
 

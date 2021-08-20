@@ -19,7 +19,7 @@
 from typing import Text, List, Dict
 from ai_flow.workflow.job import Job
 from ai_flow.util import json_utils
-from ai_flow.workflow.control_edge import SchedulingRule, AIFlowInternalEventType
+from ai_flow.workflow.control_edge import JobSchedulingRule, AIFlowInternalEventType
 from ai_flow.workflow.periodic_config import PeriodicConfig
 from ai_flow.workflow.workflow import Workflow, WorkflowPropertyKeys
 from airflow.events.scheduler_events import SchedulerInnerEventType
@@ -86,7 +86,7 @@ op_{0} = AIFlowOperator(task_id='{2}', job=job_{0}, workflow=workflow, dag=dag)
     def generate_upstream(self, op_1, op_2):
         return DAGTemplate.UPSTREAM_OP.format(op_1, op_2)
 
-    def generate_event_deps(self, op, from_task_id, rule: SchedulingRule):
+    def generate_event_deps(self, op, from_task_id, rule: JobSchedulingRule):
         code = ""
 
         # subscribe to all the events in the rule
@@ -99,7 +99,7 @@ op_{0} = AIFlowOperator(task_id='{2}', job=job_{0}, workflow=workflow, dag=dag)
                                              event_condition.namespace, sender)
         return code
 
-    def generate_handler(self, op, scheduling_rules: List[SchedulingRule]):
+    def generate_handler(self, op, scheduling_rules: List[JobSchedulingRule]):
         return DAGTemplate.MET_HANDLER.format(op, json_utils.dumps(scheduling_rules))
 
     def generate(self,
@@ -155,7 +155,7 @@ op_{0} = AIFlowOperator(task_id='{2}', job=job_{0}, workflow=workflow, dag=dag)
                 op_name = task_map[job_name]
                 configs = []
                 for edge in edges:
-                    rule: SchedulingRule = edge.scheduling_rule
+                    rule: JobSchedulingRule = edge.scheduling_rule
                     for event in rule.event_condition.events:
                         # Change AIFlowInternalEventType to SchedulerInnerEventType
                         if AIFlowInternalEventType.JOB_STATUS_CHANGED == event.event_type:
