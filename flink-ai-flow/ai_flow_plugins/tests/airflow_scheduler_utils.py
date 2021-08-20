@@ -14,9 +14,13 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
+import signal
 import threading
 import time
-
+import os
+import logging
+import multiprocessing as mp
+from subprocess import Popen
 from ai_flow.plugin_interface.scheduler_interface import WorkflowExecutionInfo
 from airflow.contrib.jobs.event_based_scheduler_job import EventBasedSchedulerJob
 from airflow.events.scheduler_events import StopSchedulerEvent
@@ -39,6 +43,35 @@ def start_scheduler(file_path, port=50051, executor=None):
     )
     print("scheduler starting")
     scheduler.run()
+
+
+def start_airflow_scheduler_server(file_path, port=50051) -> mp.Process:
+    mp.set_start_method('spawn')
+    process = mp.Process(target=start_scheduler, args=(file_path, port))
+    process.start()
+    return process
+
+
+def start_airflow_web_server() -> Popen:
+    def pre_exec():
+        # Restore default signal disposition and invoke setsid
+        for sig in ('SIGPIPE', 'SIGXFZ', 'SIGXFSZ'):
+            if hasattr(signal, sig):
+                signal.signal(getattr(signal, sig), signal.SIG_DFL)
+        os.setsid()
+    env = os.environ.copy()
+    stdout_log = './web.log'
+    with open(stdout_log, 'w') as out:
+        sub_process = Popen(  # pylint: disable=subprocess-popen-preexec-fn
+            'airflow webserver -p 8080',
+            stdout=out,
+            stderr=out,
+            env=env,
+            shell=True,
+            preexec_fn=pre_exec,
+        )
+    logging.info('Process pid: %s', sub_process.pid)
+    return sub_process
 
 
 def run_ai_flow_workflow(dag_id, test_function: Callable[[NotificationClient], None], port=50051, executor=None):
