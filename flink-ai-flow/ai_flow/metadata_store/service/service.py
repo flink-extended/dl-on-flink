@@ -414,7 +414,8 @@ class MetadataService(metadata_service_pb2_grpc.MetadataServiceServicer):
         workflow = transform_workflow_meta(request.workflow)
         response = self.store.register_workflow(name=workflow.name,
                                                 project_id=workflow.project_id,
-                                                properties=workflow.properties)
+                                                properties=workflow.properties,
+                                                context_extractor_in_bytes=workflow.context_extractor_in_bytes)
         return _wrap_meta_response(MetaToProto.workflow_meta_to_proto(response))
 
     @catch_exception

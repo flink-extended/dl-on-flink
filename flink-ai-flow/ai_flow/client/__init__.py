@@ -16,6 +16,8 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+from ai_flow.api.context_extractor import ContextExtractor, BroadcastAllContextExtractor
+
 from ai_flow.context.project_context import current_project_config
 from ai_flow.meta.workflow_meta import WorkflowMeta
 from typing import Optional, Text, List, Tuple, Union
@@ -212,8 +214,10 @@ def delete_project_by_name(project_name) -> Status:
     return get_ai_flow_client().delete_project_by_name(project_name)
 
 
-def register_workflow(name: Text, project_id: int, properties: Properties = None) -> WorkflowMeta:
-    return get_ai_flow_client().register_workflow(name=name, project_id=project_id, properties=properties)
+def register_workflow(name: Text, project_id: int, properties: Properties = None,
+                      context_extractor: ContextExtractor = BroadcastAllContextExtractor) -> WorkflowMeta:
+    return get_ai_flow_client().register_workflow(name=name, project_id=project_id, properties=properties,
+                                                  context_extractor=context_extractor)
 
 
 def get_workflow_by_name(project_name: Text, workflow_name: Text) -> Optional[WorkflowMeta]:

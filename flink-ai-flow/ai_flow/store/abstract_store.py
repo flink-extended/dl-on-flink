@@ -18,11 +18,16 @@
 #
 from abc import abstractmethod, ABCMeta
 
+import cloudpickle
+from ai_flow.api.context_extractor import BroadcastAllContextExtractor
+
 from ai_flow.meta.artifact_meta import ArtifactMeta
 from ai_flow.endpoint.server.high_availability import Member
 from typing import Text, Union, List, Optional
 
 from ai_flow.meta.metric_meta import MetricMeta, MetricSummary
+
+BROADCAST_ALL_CONTEXT_EXTRACTOR = cloudpickle.dumps(BroadcastAllContextExtractor())
 
 
 class AbstractStore(object):
@@ -299,12 +304,14 @@ class AbstractStore(object):
         workflow api
     '''
 
-    def register_workflow(self, name, project_id, properties=None):
+    def register_workflow(self, name, project_id, context_extractor_in_bytes: bytes = BROADCAST_ALL_CONTEXT_EXTRACTOR,
+                          properties=None):
         """
         Register a workflow in metadata store.
 
         :param name: the workflow name
-        :param project_id: the id of project which contains the workflow
+        :param project_id: the id of project which contains the workflow:
+        :param context_extractor_in_bytes: serialized context extractor in bytes
         :param properties: the workflow properties
         """
         pass
