@@ -36,7 +36,6 @@ function run_tests() {
         DIR_NAME=`dirname ${i}`
         cd ${DIR_NAME} && python3 -m unittest ${FILE_NAME}
         cd ${SOURCE_ROOT}
-        sleep 2
     done
 
 }
