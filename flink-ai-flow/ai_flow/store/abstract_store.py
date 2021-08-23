@@ -26,6 +26,7 @@ from ai_flow.endpoint.server.high_availability import Member
 from typing import Text, Union, List, Optional
 
 from ai_flow.meta.metric_meta import MetricMeta, MetricSummary
+from ai_flow.scheduler_service.service.workflow_execution_event_handler_state import WorkflowContextEventHandlerState
 
 BROADCAST_ALL_CONTEXT_EXTRACTOR = cloudpickle.dumps(BroadcastAllContextExtractor())
 
@@ -333,7 +334,7 @@ class AbstractStore(object):
         """
         pass
 
-    def list_workflows(self, project_name):
+    def list_workflows(self, project_name, page_size=None, offset=None):
         """
         List all workflows of the specific project
 
@@ -369,6 +370,66 @@ class AbstractStore(object):
         :param context_extractor_in_bytes: the serialized context extractor in bytes
         :param scheduling_rules: the scheduling rules of the workflow
         :param properties: (Optional) the properties need to be updated
+        """
+        pass
+
+    '''
+    workflow context event handler state api
+    '''
+
+    def register_workflow_context_event_handler_state(self,
+                                                      project_name: Text,
+                                                      workflow_name: Text,
+                                                      context: Text,
+                                                      workflow_execution_id=None,
+                                                      state=None) -> WorkflowContextEventHandlerState:
+        """
+        Register a new workflow context event handler state
+
+        :param project_name: the project name.
+        :param workflow_name: the workflow name.
+        :param context: context of the state belongs to.
+        :param workflow_execution_id: the id of workflow execution under the context.
+        :param state: the event handler state.
+        """
+        pass
+
+    def list_workflow_context_event_handler_states(self, project_name: Text,
+                                                   workflow_name: Text) -> List[WorkflowContextEventHandlerState]:
+        """
+        List all the workflow context event handler state for the workflow.
+        :param project_name: the project name.
+        :param workflow_name: the workflow name.
+        """
+        pass
+
+    def get_workflow_context_event_handler_state(self,
+                                                 project_name: Text,
+                                                 workflow_name: Text,
+                                                 context: Text) -> Optional[WorkflowContextEventHandlerState]:
+        """
+        Get the workflow context event handler state belongs to the given context.
+
+        :param project_name: the project name.
+        :param workflow_name: the workflow name.
+        :param context:
+        """
+        pass
+
+    def update_workflow_context_event_handler_state(self,
+                                                    project_name: Text,
+                                                    workflow_name: Text,
+                                                    context: Text,
+                                                    workflow_execution_id=None,
+                                                    state=None) -> Optional[WorkflowContextEventHandlerState]:
+        """
+        Update the workflow context event handler state belongs to the given context.
+
+        :param project_name: the project name.
+        :param workflow_name: the workflow name.
+        :param context: context of the state belongs to.
+        :param workflow_execution_id: the id of workflow execution under the context.
+        :param state: the event handler state.
         """
         pass
 
