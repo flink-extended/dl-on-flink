@@ -82,7 +82,9 @@ class AIFlowServer(object):
         self.server = grpc.server(self.executor)
         self.start_default_notification = start_default_notification
         self.enabled_ha = enabled_ha
+        self.start_scheduler_service = start_scheduler_service
         server_uri = 'localhost:{}'.format(port)
+        notification_uri = server_uri if start_default_notification and notification_uri is None else notification_uri
         if start_default_notification:
             logging.info("start default notification service.")
             notification_service_pb2_grpc.add_NotificationServiceServicer_to_server(
@@ -90,10 +92,10 @@ class AIFlowServer(object):
                 self.server)
         if start_model_center_service:
             logging.info("start model center service.")
+
             model_center_service_pb2_grpc.add_ModelCenterServiceServicer_to_server(
                 ModelCenterService(store_uri=store_uri,
-                                   notification_uri=server_uri if start_default_notification
-                                                                  and notification_uri is None else notification_uri),
+                                   notification_uri=notification_uri),
                 self.server)
         if start_meta_service:
             logging.info("start meta service.")
@@ -104,17 +106,17 @@ class AIFlowServer(object):
             metric_service_pb2_grpc.add_MetricServiceServicer_to_server(MetricService(db_uri=store_uri), self.server)
 
         if start_scheduler_service:
-            self._add_scheduler_service(scheduler_service_config, store_uri)
+            self._add_scheduler_service(scheduler_service_config, store_uri, notification_uri)
 
         if enabled_ha:
             self._add_ha_service(ha_manager, ha_server_uri, ha_storage, store_uri, ttl_ms)
 
         self.server.add_insecure_port('[::]:' + str(port))
 
-    def _add_scheduler_service(self, scheduler_service_config, db_uri):
+    def _add_scheduler_service(self, scheduler_service_config, db_uri, notification_uri):
         logging.info("start scheduler service.")
         real_config = SchedulerServiceConfig(scheduler_service_config)
-        self.scheduler_service = SchedulerService(real_config, db_uri)
+        self.scheduler_service = SchedulerService(real_config, db_uri, notification_uri)
         scheduling_service_pb2_grpc.add_SchedulingServiceServicer_to_server(self.scheduler_service,
                                                                             self.server)
 
@@ -141,6 +143,8 @@ class AIFlowServer(object):
         if self.enabled_ha:
             self.ha_service.start()
         self.server.start()
+        if self.start_scheduler_service:
+            self.scheduler_service.start()
         logging.info('AIFlow server started.')
         if is_block:
             try:
@@ -152,10 +156,12 @@ class AIFlowServer(object):
             pass
 
     def stop(self, clear_sql_lite_db_file=False):
-        self.executor.shutdown()
+        if self.start_scheduler_service:
+            self.scheduler_service.stop()
         self.server.stop(0)
         if self.enabled_ha:
             self.ha_service.stop()
+        self.executor.shutdown()
 
         if self.db_type == DBType.SQLITE and clear_sql_lite_db_file:
             store = SqlAlchemyStore(self.store_uri)

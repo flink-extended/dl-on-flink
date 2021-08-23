@@ -264,6 +264,77 @@ class AbstractTestStore(object):
         self.assertEqual(workflow.scheduling_rules, scheduling_rules)
         self.assertEqual(workflow.context_extractor_in_bytes, context_extractor_in_bytes)
 
+    """test workflow context event handler state"""
+
+    def test_register_workflow_context_event_handler_state(self):
+        project_name = 'project'
+        workflow_name = 'workflow'
+        context = 'default'
+        workflow_execution_id = '15213'
+        state = 1234
+        self.store.register_workflow_context_event_handler_state(project_name=project_name,
+                                                                 workflow_name=workflow_name,
+                                                                 context=context,
+                                                                 workflow_execution_id=workflow_execution_id,
+                                                                 state=state)
+        handler_state = self.store.get_workflow_context_event_handler_state(project_name=project_name,
+                                                                            workflow_name=workflow_name,
+                                                                            context=context)
+        self.assertEqual(project_name, handler_state.project_name)
+        self.assertEqual(workflow_name, handler_state.workflow_name)
+        self.assertEqual(context, handler_state.context)
+        self.assertEqual(workflow_execution_id, handler_state.workflow_execution_id)
+        self.assertEqual(state, handler_state.state)
+
+    def test_list_workflow_context_event_handler_states(self):
+        project_name = 'project'
+        workflow_name = 'workflow'
+        context = 'default'
+        self.store.register_workflow_context_event_handler_state(project_name=project_name,
+                                                                 workflow_name=workflow_name,
+                                                                 context=context)
+        self.store.register_workflow_context_event_handler_state(project_name=project_name,
+                                                                 workflow_name=workflow_name,
+                                                                 context='c1')
+        handler_states = self.store.list_workflow_context_event_handler_states(project_name=project_name,
+                                                                               workflow_name=workflow_name)
+        contexts = [handler_state.context for handler_state in handler_states]
+        self.assertEqual(2, len(contexts))
+        self.assertIn('default', contexts)
+        self.assertIn('c1', contexts)
+
+    def test_update_workflow_context_event_handler_state(self):
+        self.assertIsNone(self.store.update_workflow_context_event_handler_state(project_name="invalid",
+                                                                                 workflow_name="invalid",
+                                                                                 context="invalid"))
+
+        project_name = 'project'
+        workflow_name = 'workflow'
+        context = 'default'
+        self.store.register_workflow_context_event_handler_state(project_name=project_name,
+                                                                 workflow_name=workflow_name,
+                                                                 context=context)
+        handler_state = self.store.get_workflow_context_event_handler_state(project_name=project_name,
+                                                                            workflow_name=workflow_name,
+                                                                            context=context)
+
+        self.assertIsNone(handler_state.workflow_execution_id)
+        self.assertIsNone(handler_state.state)
+
+        workflow_execution_id = '15213'
+        state = 1234
+
+        self.store.update_workflow_context_event_handler_state(project_name=project_name,
+                                                               workflow_name=workflow_name,
+                                                               context=context,
+                                                               workflow_execution_id=workflow_execution_id,
+                                                               state=state)
+        handler_state = self.store.get_workflow_context_event_handler_state(project_name=project_name,
+                                                                            workflow_name=workflow_name,
+                                                                            context=context)
+        self.assertEqual(workflow_execution_id, handler_state.workflow_execution_id)
+        self.assertEqual(state, handler_state.state)
+
     """test project"""
 
     def test_save_project_get_project_by_id_and_name(self):

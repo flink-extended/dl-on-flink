@@ -65,7 +65,8 @@ def get_ai_flow_client():
             _default_server_uri = current_uri
             _default_ai_flow_client \
                 = AIFlowClient(server_uri=_default_server_uri,
-                               notification_service_uri=current_project_config().get_notification_service_uri())
+                               notification_service_uri=current_project_config().get_notification_service_uri(),
+                               project_config=current_project_config())
             return _default_ai_flow_client
     else:
         current_uri = current_project_config().get_server_uri()
@@ -73,7 +74,8 @@ def get_ai_flow_client():
             _default_server_uri = current_uri
             _default_ai_flow_client \
                 = AIFlowClient(server_uri=_default_server_uri,
-                               notification_service_uri=current_project_config().get_notification_service_uri())
+                               notification_service_uri=current_project_config().get_notification_service_uri(),
+                               project_config=current_project_config())
         else:
             # when reuse previous client, confirm once whether server is available
             _default_ai_flow_client.wait_for_ready_and_throw_error()
@@ -98,11 +100,13 @@ class AIFlowClient(MetadataClient, ModelCenterClient, NotificationClient, Metric
         self.list_member_interval_ms = 5000
         self.retry_interval_ms = 1000
         self.retry_timeout_ms = 10000
+        project_name = None
         if project_config is not None:
             if server_uri is None:
                 server_uri = project_config.get_server_uri()
             if notification_service_uri is None:
                 notification_service_uri = project_config.get_notification_service_uri()
+            project_name = project_config.get_project_name()
             self.enable_ha = project_config.get_enable_ha()
             self.list_member_interval_ms = project_config.get_list_member_interval_ms()
             self.retry_interval_ms = project_config.get_retry_interval_ms()
@@ -116,7 +120,8 @@ class AIFlowClient(MetadataClient, ModelCenterClient, NotificationClient, Metric
                 enable_ha=self.enable_ha,
                 list_member_interval_ms=self.list_member_interval_ms,
                 retry_interval_ms=self.retry_interval_ms,
-                retry_timeout_ms=self.retry_timeout_ms)
+                retry_timeout_ms=self.retry_timeout_ms,
+                default_namespace=project_name)
         else:
             NotificationClient.__init__(
                 self,
@@ -124,7 +129,8 @@ class AIFlowClient(MetadataClient, ModelCenterClient, NotificationClient, Metric
                 enable_ha=self.enable_ha,
                 list_member_interval_ms=self.list_member_interval_ms,
                 retry_interval_ms=self.retry_interval_ms,
-                retry_timeout_ms=self.retry_timeout_ms)
+                retry_timeout_ms=self.retry_timeout_ms,
+                default_namespace=project_name)
         if self.enable_ha:
             server_uris = server_uri.split(",")
             self.living_aiflow_members = []
