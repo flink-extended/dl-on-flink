@@ -688,7 +688,7 @@ class MetadataClient(BaseClient):
     '''workflow api'''
 
     def register_workflow(self, name: Text, project_id: int, properties: Properties = None,
-                          context_extractor: ContextExtractor = BroadcastAllContextExtractor) -> WorkflowMeta:
+                          context_extractor: ContextExtractor = BroadcastAllContextExtractor()) -> WorkflowMeta:
         """
         Register a workflow in metadata store.
 
@@ -763,17 +763,19 @@ class MetadataClient(BaseClient):
         response = self.metadata_store_stub.deleteWorkflowById(request)
         return _unwrap_delete_response(response)
 
-    def update_workflow(self, workflow_name: Text, project_name: Text,
+    def update_workflow(self, workflow_name: Text, project_name: Text, context_extractor: ContextExtractor,
                         properties: Properties = None) -> Optional[WorkflowMeta]:
         """
         Update the workflow
 
         :param workflow_name: the workflow name
         :param project_name: the name of project which contains the workflow
+        :param context_extractor: the  context extractor instance
         :param properties: (Optional) the properties need to be updated
         """
         request = metadata_service_pb2.UpdateWorkflowRequest(workflow_name=workflow_name,
                                                              project_name=project_name,
+                                                             context_extractor_in_bytes=cloudpickle.dumps(context_extractor),
                                                              properties=properties)
         response = self.metadata_store_stub.updateWorkflow(request)
         return _unwrap_workflow_response(response)
