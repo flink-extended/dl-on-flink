@@ -243,10 +243,11 @@ def delete_workflow_by_id(workflow_id: int) -> Status:
     return get_ai_flow_client().delete_workflow_by_id(workflow_id)
 
 
-def update_workflow(workflow_name: Text, project_name: Text,
+def update_workflow(workflow_name: Text, project_name: Text, context_extractor: ContextExtractor,
                     properties: Properties = None) -> Optional[WorkflowMeta]:
     return get_ai_flow_client().update_workflow(workflow_name=workflow_name,
                                                 project_name=project_name,
+                                                context_extractor=context_extractor,
                                                 properties=properties)
 
 
