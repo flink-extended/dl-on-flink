@@ -872,13 +872,14 @@ class SqlAlchemyStore(AbstractStore):
             except sqlalchemy.exc.IntegrityError as e:
                 raise AIFlowException(str(e))
 
-    def update_workflow(self, workflow_name, project_name,
+    def update_workflow(self, workflow_name, project_name, context_extractor_in_bytes,
                         scheduling_rules: List[WorkflowSchedulingRule] = None, properties=None) -> Optional[WorkflowMeta]:
         """
         Update the workflow
 
         :param workflow_name: the workflow name
         :param project_name: the name of project which contains the workflow
+        :param context_extractor_in_bytes: the serialized context extractor in bytes
         :param scheduling_rules: the scheduling rules of the workflow
         :param properties: (Optional) the properties need to be updated
         """
@@ -894,6 +895,7 @@ class SqlAlchemyStore(AbstractStore):
                     return None
                 if properties is not None:
                     workflow.properties = str(properties)
+                workflow.context_extractor_in_bytes = context_extractor_in_bytes
                 workflow.scheduling_rules = json_utils.dumps(scheduling_rules)
                 workflow.update_time = int(time.time() * 1000)
                 session.flush()

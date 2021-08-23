@@ -593,13 +593,14 @@ class MongoStore(AbstractStore):
         except mongoengine.OperationError as e:
             raise AIFlowException(str(e))
 
-    def update_workflow(self, workflow_name, project_name, scheduling_rules: List[WorkflowSchedulingRule],
-                        properties=None) -> Optional[WorkflowMeta]:
+    def update_workflow(self, workflow_name, project_name, context_extractor_in_bytes,
+                        scheduling_rules: List[WorkflowSchedulingRule], properties=None) -> Optional[WorkflowMeta]:
         """
         Update the workflow
 
         :param workflow_name: the workflow name
         :param project_name: the name of project which contains the workflow
+        :param context_extractor_in_bytes: the serialized context extractor in bytes
         :param scheduling_rules: the scheduling rules of the workflow
         :param properties: (Optional) the properties need to be updated
         """
@@ -617,6 +618,7 @@ class MongoStore(AbstractStore):
                 workflow.properties = str(properties)
             workflow.scheduling_rules = json_utils.dumps(scheduling_rules)
             workflow.update_time = int(time.time() * 1000)
+            workflow.context_extractor_in_bytes = context_extractor_in_bytes
             workflow.save()
             return ResultToMeta.result_to_workflow_meta(workflow)
         except mongoengine.OperationError as e:

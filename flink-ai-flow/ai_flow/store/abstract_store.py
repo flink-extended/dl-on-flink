@@ -360,12 +360,13 @@ class AbstractStore(object):
         """
         pass
 
-    def update_workflow(self, workflow_name, project_name, scheduling_rules, properties=None):
+    def update_workflow(self, workflow_name, project_name, context_extractor_in_bytes, scheduling_rules, properties=None):
         """
         Update the workflow
 
         :param workflow_name: the workflow name
         :param project_name: the name of project which contains the workflow
+        :param context_extractor_in_bytes: the serialized context extractor in bytes
         :param scheduling_rules: the scheduling rules of the workflow
         :param properties: (Optional) the properties need to be updated
         """

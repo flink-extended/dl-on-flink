@@ -423,6 +423,7 @@ class MetadataService(metadata_service_pb2_grpc.MetadataServiceServicer):
         properties = None if request.properties == {} else request.properties
         workflow = self.store.update_workflow(workflow_name=request.workflow_name,
                                               project_name=request.project_name,
+                                              context_extractor_in_bytes=request.context_extractor_in_bytes,
                                               properties=properties)
         return _wrap_meta_response(MetaToProto.workflow_meta_to_proto(workflow))
 

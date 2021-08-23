@@ -248,16 +248,21 @@ class AbstractTestStore(object):
 
         scheduling_rules = [WorkflowSchedulingRule(MeetAllEventCondition().add_event('k1', 'v1'), WorkflowAction.START),
                             WorkflowSchedulingRule(MeetAllEventCondition().add_event('k2', 'v2'), WorkflowAction.STOP)]
+        context_extractor = TestContextExtractor()
+        context_extractor_in_bytes = cloudpickle.dumps(context_extractor)
         updated_workflow = self.store.update_workflow(project_name=project_response.name,
                                                       workflow_name='workflow',
+                                                      context_extractor_in_bytes=context_extractor_in_bytes,
                                                       properties=Properties({'a': 'c'}),
                                                       scheduling_rules=scheduling_rules)
         self.assertEqual(updated_workflow.properties, Properties({'a': 'c'}))
         self.assertEqual(updated_workflow.scheduling_rules, scheduling_rules)
+        self.assertEqual(updated_workflow.context_extractor_in_bytes, context_extractor_in_bytes)
 
         workflow = self.store.get_workflow_by_name(project_name=project_response.name, workflow_name='workflow')
         self.assertEqual(workflow.properties, Properties({'a': 'c'}))
         self.assertEqual(workflow.scheduling_rules, scheduling_rules)
+        self.assertEqual(workflow.context_extractor_in_bytes, context_extractor_in_bytes)
 
     """test project"""
 
@@ -738,6 +743,17 @@ class AbstractTestStore(object):
 
     def test_metric_summary(self):
         metric_timestamp = round(time.time())
+        start_time = round(time.time())
+        end_time = start_time + 1
+        metric_meta = self.store.register_metric_meta(metric_name='test_metric_summary_1',
+                                                      metric_type=MetricType.DATASET,
+                                                      metric_desc='test dataset metric meta',
+                                                      project_name='test_metric_meta_project_1',
+                                                      dataset_name='test_metric_meta_dataset_1',
+                                                      start_time=start_time, end_time=end_time,
+                                                      uri='/tmp/metric', tags='test_metric_meta_tag',
+                                                      properties={'a': 'a'})
+        metric_meta = self.store.get_metric_meta(metric_meta.metric_name)
         metric_summary = self.store.register_metric_summary(metric_name='test_metric_summary_1', metric_key='auc',
                                                             metric_value='0.6', metric_timestamp=metric_timestamp)
         metric_summary = self.store.get_metric_summary(metric_summary.uuid)

@@ -196,6 +196,7 @@ class SchedulerService(SchedulingServiceServicer):
             workflow = self.store.get_workflow_by_name(namespace, workflow_name)
             workflow.update_condition(json_utils.loads(event_conditions_json), WorkflowAction.START)
             self.store.update_workflow(project_name=namespace, workflow_name=workflow_name,
+                                       context_extractor_in_bytes=workflow.context_extractor_in_bytes,
                                        scheduling_rules=workflow.scheduling_rules)
 
             workflow_info = WorkflowInfo(namespace=namespace, workflow_name=workflow_name)
@@ -241,6 +242,7 @@ class SchedulerService(SchedulingServiceServicer):
             workflow = self.store.get_workflow_by_name(namespace, workflow_name)
             workflow.update_condition(json_utils.loads(event_conditions_json), WorkflowAction.STOP)
             self.store.update_workflow(project_name=namespace, workflow_name=workflow_name,
+                                       context_extractor_in_bytes=workflow.context_extractor_in_bytes,
                                        scheduling_rules=workflow.scheduling_rules)
 
             workflow_info = WorkflowInfo(namespace=namespace, workflow_name=workflow_name)
