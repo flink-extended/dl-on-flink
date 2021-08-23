@@ -81,7 +81,7 @@ class MockScheduler(Scheduler):
     def delete_workflow(self, project_name: Text, workflow_name: Text) -> WorkflowInfo:
         return WorkflowInfo(namespace=project_name, workflow_name=workflow_name)
 
-    def submit_workflow(self, workflow: Workflow, project_context: ProjectContext) -> WorkflowInfo:
+    def submit_workflow(self, workflow: Workflow, context_extractor, project_context: ProjectContext) -> WorkflowInfo:
         return WorkflowInfo(namespace=project_context.project_name, workflow_name=workflow.workflow_name)
 
     def pause_workflow_scheduling(self, project_name: Text, workflow_name: Text) -> WorkflowInfo:

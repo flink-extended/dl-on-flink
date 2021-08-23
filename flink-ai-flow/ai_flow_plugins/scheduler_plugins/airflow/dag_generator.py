@@ -34,11 +34,13 @@ def import_job_plugins_text(workflow: Workflow):
 
 class DAGTemplate(object):
     AIRFLOW_IMPORT = """
+import os
 from datetime import datetime, timedelta
 from pytz import timezone
 from airflow.models.dag import DAG
 from ai_flow_plugins.scheduler_plugins.airflow.event_handler import AIFlowHandler
 from ai_flow_plugins.scheduler_plugins.airflow.ai_flow_operator import AIFlowOperator
+from ai_flow_plugins.scheduler_plugins.airflow.context_extractor import AIFlowContextExtractorAdaptor 
 from ai_flow.util import json_utils
 
 """
@@ -63,6 +65,11 @@ workflow = json_utils.loads(workflow_json)
 
     MET_HANDLER = """configs_{0}='{1}'
 {0}.set_events_handler(AIFlowHandler(configs_{0}))\n"""
+
+    CONTEXT_EXTRACTOR = """
+context_extractor_pickle_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '{0}')
+dag.context_extractor = AIFlowContextExtractorAdaptor(context_extractor_pickle_path)\n
+    """
 
 
 class DAGGenerator(object):
@@ -129,6 +136,7 @@ op_{0} = AIFlowOperator(task_id='{2}', job=job_{0}, workflow=workflow, dag=dag)
 
         dag_id = '{}.{}'.format(project_name, workflow.workflow_name)
         code_text += DAGTemplate.DAG_DEFINE.format(dag_id)
+        code_text += DAGTemplate.CONTEXT_EXTRACTOR.format('.'.join([dag_id, 'context_extractor', 'pickle']))
 
         task_map = {}
         for name, job in workflow.jobs.items():

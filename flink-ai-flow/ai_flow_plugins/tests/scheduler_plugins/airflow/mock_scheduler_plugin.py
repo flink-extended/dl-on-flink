@@ -39,7 +39,7 @@ class MockScheduler(Scheduler):
                                                         start_date=str(int(time.time() * 1000)))
         return workflow_execution_info
 
-    def submit_workflow(self, workflow: Workflow, project_context: ProjectContext, args: Dict = None) -> WorkflowInfo:
+    def submit_workflow(self, workflow: Workflow, context_extractor, project_context: ProjectContext) -> WorkflowInfo:
         code_text = self.dag_generator.generate(workflow=workflow,
                                                 project_name=project_context.project_name)
         return WorkflowInfo(workflow_name=workflow.workflow_name, properties={'code': code_text})

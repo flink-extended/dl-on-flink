@@ -20,6 +20,9 @@ import shutil
 from abc import ABC
 from tempfile import NamedTemporaryFile
 from typing import Dict, Text, List, Optional
+
+import cloudpickle
+
 from ai_flow_plugins.scheduler_plugins.airflow.dag_generator import DAGGenerator
 from ai_flow.context.project_context import ProjectContext
 from ai_flow.plugin_interface.scheduler_interface import Scheduler, \
@@ -102,7 +105,7 @@ class AirFlowSchedulerBase(Scheduler, ABC):
                                                         namespace=SCHEDULER_NAMESPACE)
         return self._airflow_client
 
-    def submit_workflow(self, workflow: Workflow, project_context: ProjectContext) -> WorkflowInfo:
+    def submit_workflow(self, workflow: Workflow, context_extractor, project_context: ProjectContext) -> WorkflowInfo:
         dag_id = self.airflow_dag_id(project_context.project_name, workflow.workflow_name)
         code_text = self.dag_generator.generate(workflow=workflow,
                                                 project_name=project_context.project_name)
@@ -111,17 +114,25 @@ class AirFlowSchedulerBase(Scheduler, ABC):
             raise Exception("airflow_deploy_path config not set!")
         if not os.path.exists(deploy_path):
             os.makedirs(deploy_path)
-        airflow_file_path = os.path.join(deploy_path,
-                                         dag_id + '.py')
-        if os.path.exists(airflow_file_path):
-            os.remove(airflow_file_path)
-        with NamedTemporaryFile(mode='w+t', prefix=dag_id, suffix='.py', dir='/tmp', delete=False) as f:
-            f.write(code_text)
-        shutil.move(f.name, airflow_file_path)
+
+        airflow_file_path = self._write_to_deploy_path(code_text, dag_id + ".py", deploy_path)
+        context_extractor_bytes = cloudpickle.dumps(context_extractor)
+        self._write_to_deploy_path(context_extractor_bytes, dag_id + ".context_extractor.pickle", deploy_path, 'w+b')
+
         self.airflow_client.trigger_parse_dag(airflow_file_path)
         return WorkflowInfo(namespace=project_context.project_name,
                             workflow_name=workflow.workflow_name,
                             properties={'dag_file': airflow_file_path})
+
+    @staticmethod
+    def _write_to_deploy_path(content, filename, deploy_path, mode='w+t'):
+        airflow_file_path = os.path.join(deploy_path, filename)
+        if os.path.exists(airflow_file_path):
+            os.remove(airflow_file_path)
+        with NamedTemporaryFile(mode=mode, prefix=filename, dir='/tmp', delete=False) as f:
+            f.write(content)
+        shutil.move(f.name, airflow_file_path)
+        return airflow_file_path
 
     def delete_workflow(self, project_name: Text, workflow_name: Text) -> WorkflowInfo:
         dag_id = self.airflow_dag_id(project_name, workflow_name)

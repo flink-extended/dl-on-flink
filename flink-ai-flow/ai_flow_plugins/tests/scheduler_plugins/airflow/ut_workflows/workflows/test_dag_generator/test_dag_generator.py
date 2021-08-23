@@ -159,6 +159,19 @@ class TestDagGenerator(unittest.TestCase):
         self.assertTrue('"event_value": "RUNNING"' in code)
         self.assertTrue('"event_value": "FINISHED"' in code)
 
+    def test_generate_dag_with_context_extractor(self):
+        with af.job_config('task_1'):
+            af.user_define_operation(processor=None)
+        with af.job_config('task_2'):
+            af.user_define_operation(processor=None)
+        w = af.workflow_operation.submit_workflow(workflow_name='test_dag_generator')
+        code = w.properties.get('code')
+        self.assertTrue('import os' in code)
+        self.assertTrue('from ai_flow_plugins.scheduler_plugins.airflow.context_extractor '
+                        'import AIFlowContextExtractorAdaptor' in code)
+        self.assertTrue('context_extractor_pickle_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '
+                        '\'test_project.test_dag_generator.context_extractor.pickle\')' in code)
+        self.assertTrue('dag.context_extractor = AIFlowContextExtractorAdaptor(context_extractor_pickle_path)' in code)
 
 if __name__ == '__main__':
     unittest.main()
