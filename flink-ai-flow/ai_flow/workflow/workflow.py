@@ -17,7 +17,6 @@
 # under the License.
 #
 from typing import List, Dict, Text
-
 from ai_flow.workflow.workflow_config import WorkflowConfig
 from ai_flow.workflow.control_edge import ControlEdge
 from ai_flow.workflow.job import Job
@@ -38,7 +37,6 @@ class Workflow(Graph):
         self.workflow_snapshot_id: Text = None
         # The project package uri is used to download the project package.
         self.project_uri = None
-
 
     @property
     def workflow_name(self):
