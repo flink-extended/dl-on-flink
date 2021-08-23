@@ -22,6 +22,8 @@ import unittest
 from typing import List
 from unittest import TestCase
 
+import cloudpickle
+
 from ai_flow.project.project_config import ProjectConfig
 from notification_service.base_notification import EventWatcher
 
@@ -270,6 +272,7 @@ class AIFlowClientTestCases(object):
 
         updated_workflow = client.update_workflow(project_name=project_response.name,
                                                   workflow_name='workflow',
+                                                  context_extractor=cloudpickle.loads(response.context_extractor_in_bytes),
                                                   properties=Properties({'a': 'c'}))
         self.assertEqual(updated_workflow.properties, Properties({'a': 'c'}))
 

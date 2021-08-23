@@ -47,7 +47,7 @@ def main():
     af.workflow_operation.submit_workflow(workflow_name)
     af.workflow_operation.start_new_workflow_execution(workflow_name)
 
-    t = af.get_ai_flow_client().get_workflow_by_name('demo4', workflow_name)
+    t = af.get_ai_flow_client().get_workflow_by_name('demo', workflow_name)
     cc = cloudpickle.loads(t.context_extractor_in_bytes)
     print(cc.extract_context(BaseEvent(key='1', value='1')).get_contexts())
 
