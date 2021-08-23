@@ -69,7 +69,7 @@ class TestFlink(unittest.TestCase):
             input_example = af.user_define_operation(processor=Source())
             processed = af.transform(input=[input_example], transform_processor=Transformer2())
             af.user_define_operation(input=[processed], processor=Sink())
-        w = af.workflow_operation.submit_workflow(workflow_name='test_python')
+        w = af.workflow_operation.submit_workflow(workflow_name='test_flink')
         je = af.workflow_operation.start_job_execution(job_name='task_1', execution_id='1')
         time.sleep(2)
         af.workflow_operation.stop_job_execution(job_name='task_1', execution_id='1')
