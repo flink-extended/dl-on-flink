@@ -17,6 +17,8 @@
 from abc import ABC, abstractmethod
 from typing import Dict, Text, List, Optional
 
+from ai_flow.api.context_extractor import ContextExtractor
+
 from ai_flow.util import json_utils
 from ai_flow.workflow.control_edge import WorkflowSchedulingRule
 from ai_flow.workflow.workflow import Workflow
@@ -272,10 +274,14 @@ class Scheduler(ABC):
         return self._config
 
     @abstractmethod
-    def submit_workflow(self, workflow: Workflow, project_context: ProjectContext) -> WorkflowInfo:
+    def submit_workflow(self,
+                        workflow: Workflow,
+                        context_extractor: ContextExtractor,
+                        project_context: ProjectContext) -> WorkflowInfo:
         """
         Submit the workflow to scheduler.
         :param workflow: ai_flow.workflow.workflow.Workflow type.
+        :param context_extractor: context_extractor of hte
         :param project_context: ai_flow.context.project_context.ProjectContext type.
         :return: The workflow information.
         """
