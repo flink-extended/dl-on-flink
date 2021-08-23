@@ -19,7 +19,10 @@
 import logging
 import time
 
+import cloudpickle
+
 from ai_flow.meta.workflow_meta import WorkflowMeta
+from ai_flow.scheduler_service.service.workflow_execution_event_handler_state import WorkflowContextEventHandlerState
 from ai_flow.store import MONGO_DB_ALIAS_META_SERVICE
 from typing import Optional, Text, List, Union
 
@@ -44,7 +47,8 @@ from ai_flow.store.abstract_store import AbstractStore, BROADCAST_ALL_CONTEXT_EX
 from ai_flow.store.db.db_model import (MongoProject, MongoDataset, MongoModelVersion,
                                        MongoArtifact, MongoRegisteredModel, MongoModelRelation,
                                        MongoMetricSummary, MongoMetricMeta,
-                                       MongoModelVersionRelation, MongoMember, MongoProjectSnapshot, MongoWorkflow)
+                                       MongoModelVersionRelation, MongoMember, MongoProjectSnapshot, MongoWorkflow,
+                                       MongoWorkflowContextEventHandlerState)
 from ai_flow.store.db.db_util import parse_mongo_uri
 from ai_flow.util import json_utils
 from ai_flow.workflow.control_edge import WorkflowSchedulingRule
@@ -414,7 +418,8 @@ class MongoStore(AbstractStore):
             projects.append(ResultToMeta.result_to_project_meta(project))
         return projects
 
-    def update_project(self, project_name: Text, uri: Text = None, properties: Properties = None) -> Optional[ProjectMeta]:
+    def update_project(self, project_name: Text, uri: Text = None, properties: Properties = None) -> Optional[
+        ProjectMeta]:
         try:
             project: MongoProject = MongoProject.objects(name=project_name, is_deleted__ne=TRUE).first()
             if project is None:
@@ -537,7 +542,7 @@ class MongoStore(AbstractStore):
             return None
         return ResultToMeta.result_to_workflow_meta(workflow_result[0])
 
-    def list_workflows(self, project_name, page_size, offset) -> Optional[List[WorkflowMeta]]:
+    def list_workflows(self, project_name, page_size=None, offset=None) -> Optional[List[WorkflowMeta]]:
         """
         List all workflows of the specific project
 
@@ -548,8 +553,12 @@ class MongoStore(AbstractStore):
         project = self.get_project_by_name(project_name)
         if not project:
             return None
-        workflow_result = MongoWorkflow.objects(project_id=project.uuid, is_deleted__ne=TRUE)\
-            .skip(offset).limit(page_size)
+        workflow_result = MongoWorkflow.objects(project_id=project.uuid, is_deleted__ne=TRUE)
+        if offset:
+            workflow_result.skip(offset)
+        if page_size:
+            workflow_result.limit(page_size)
+
         if len(workflow_result) == 0:
             return None
         workflows = []
@@ -621,6 +630,72 @@ class MongoStore(AbstractStore):
             workflow.context_extractor_in_bytes = context_extractor_in_bytes
             workflow.save()
             return ResultToMeta.result_to_workflow_meta(workflow)
+        except mongoengine.OperationError as e:
+            raise AIFlowException(e)
+
+    """workflow context event handler state"""
+
+    def register_workflow_context_event_handler_state(self, project_name: Text, workflow_name: Text, context: Text,
+                                                      workflow_execution_id=None,
+                                                      state=None) -> WorkflowContextEventHandlerState:
+        handler_state = MongoWorkflowContextEventHandlerState(project_name=project_name,
+                                                              workflow_name=workflow_name,
+                                                              context=context,
+                                                              workflow_execution_id=workflow_execution_id,
+                                                              state=cloudpickle.dumps(state))
+        handler_state.save()
+
+        return WorkflowContextEventHandlerState(project_name, workflow_name, context, workflow_execution_id, state)
+
+    def list_workflow_context_event_handler_states(self,
+                                                   project_name: Text,
+                                                   workflow_name: Text) -> List[WorkflowContextEventHandlerState]:
+
+        handler_states = MongoWorkflowContextEventHandlerState.objects(project_name=project_name,
+                                                                       workflow_name=workflow_name)
+        return [WorkflowContextEventHandlerState(
+            state.project_name,
+            state.workflow_name,
+            state.context,
+            state.workflow_execution_id,
+            cloudpickle.loads(state.state)) for state in handler_states]
+
+    def get_workflow_context_event_handler_state(self, project_name: Text, workflow_name: Text, context: Text) -> \
+            Optional[WorkflowContextEventHandlerState]:
+        handler_states = MongoWorkflowContextEventHandlerState.objects(project_name=project_name,
+                                                                       workflow_name=workflow_name,
+                                                                       context=context)
+        if len(handler_states) == 0:
+            return None
+        handler_state = handler_states[0]
+        return WorkflowContextEventHandlerState(
+            handler_state.project_name,
+            handler_state.workflow_name,
+            handler_state.context,
+            handler_state.workflow_execution_id,
+            cloudpickle.loads(handler_state.state))
+
+    def update_workflow_context_event_handler_state(self,
+                                                    project_name: Text,
+                                                    workflow_name: Text,
+                                                    context: Text,
+                                                    workflow_execution_id=None,
+                                                    state=None) -> Optional[WorkflowContextEventHandlerState]:
+        try:
+            handler_state = MongoWorkflowContextEventHandlerState.objects(project_name=project_name,
+                                                                          workflow_name=workflow_name,
+                                                                          context=context).first()
+            if handler_state is None:
+                return None
+            handler_state.workflow_execution_id = workflow_execution_id
+            handler_state.state = cloudpickle.dumps(state)
+            handler_state.save()
+            return WorkflowContextEventHandlerState(
+                handler_state.project_name,
+                handler_state.workflow_name,
+                handler_state.context,
+                handler_state.workflow_execution_id,
+                cloudpickle.loads(handler_state.state))
         except mongoengine.OperationError as e:
             raise AIFlowException(e)
 
