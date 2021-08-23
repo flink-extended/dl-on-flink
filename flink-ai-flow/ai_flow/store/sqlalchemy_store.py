@@ -22,6 +22,7 @@ from typing import Optional, Text, List, Union
 import sqlalchemy.exc
 import sqlalchemy.orm
 
+from ai_flow.scheduler_service.service.workflow_execution_event_handler_state import WorkflowContextEventHandlerState
 from ai_flow.util import json_utils
 from ai_flow.workflow.control_edge import WorkflowSchedulingRule
 from sqlalchemy import and_, cast, Integer
@@ -45,7 +46,7 @@ from ai_flow.endpoint.server.high_availability import Member
 from ai_flow.store.abstract_store import AbstractStore, BROADCAST_ALL_CONTEXT_EXTRACTOR
 from ai_flow.store.db.base_model import base
 from ai_flow.store.db.db_model import SqlDataset, SqlModelRelation, SqlModelVersionRelation, SqlProject, \
-    SqlWorkflow, SqlEvent, SqlArtifact, SqlMember, SqlProjectSnapshot
+    SqlWorkflow, SqlEvent, SqlArtifact, SqlMember, SqlProjectSnapshot, SqlWorkflowContextEventHandlerState
 from ai_flow.store.db.db_model import SqlMetricMeta, SqlMetricSummary
 from ai_flow.store.db.db_model import SqlRegisteredModel, SqlModelVersion
 from ai_flow.store.db.db_util import extract_db_engine_from_uri, create_sqlalchemy_engine, _get_managed_session_maker
@@ -811,7 +812,7 @@ class SqlAlchemyStore(AbstractStore):
                                                          SqlWorkflow.is_deleted.is_(False)).scalar()
             return None if workflow is None else ResultToMeta.result_to_workflow_meta(workflow)
 
-    def list_workflows(self, project_name, page_size, offset) -> Optional[List[WorkflowMeta]]:
+    def list_workflows(self, project_name, page_size=None, offset=None) -> Optional[List[WorkflowMeta]]:
         """
         List all workflows of the specific project
 
@@ -826,8 +827,12 @@ class SqlAlchemyStore(AbstractStore):
                 raise AIFlowException("The project name you specific doesn't exists, project: \"{}\""
                                       .format(project_name))
             workflow_result = session.query(SqlWorkflow).filter(SqlWorkflow.project_id == project.uuid,
-                                                                SqlWorkflow.is_deleted.is_(False)).limit(
-                page_size).offset(offset).all()
+                                                                SqlWorkflow.is_deleted.is_(False))
+            if page_size:
+                workflow_result.limit(page_size)
+            if offset:
+                workflow_result.offset(offset)
+            workflow_result = workflow_result.all()
             if len(workflow_result) == 0:
                 return None
             workflow_list = []
@@ -900,6 +905,87 @@ class SqlAlchemyStore(AbstractStore):
                 workflow.update_time = int(time.time() * 1000)
                 session.flush()
                 return ResultToMeta.result_to_workflow_meta(workflow)
+            except sqlalchemy.exc.IntegrityError as e:
+                raise AIFlowException(e)
+
+    """workflow context event handler state"""
+
+    def register_workflow_context_event_handler_state(self,
+                                                      project_name: Text,
+                                                      workflow_name: Text,
+                                                      context: Text,
+                                                      workflow_execution_id=None,
+                                                      state=None) -> WorkflowContextEventHandlerState:
+        with self.ManagedSessionMaker() as session:
+            try:
+                handler_state = SqlWorkflowContextEventHandlerState(project_name=project_name,
+                                                                    workflow_name=workflow_name,
+                                                                    context=context,
+                                                                    workflow_execution_id=workflow_execution_id,
+                                                                    state=state)
+                session.add(handler_state)
+                session.flush()
+                return WorkflowContextEventHandlerState(
+                    handler_state.project_name,
+                    handler_state.workflow_name,
+                    handler_state.context,
+                    handler_state.workflow_execution_id,
+                    handler_state.state)
+            except sqlalchemy.exc.IntegrityError as e:
+                raise AIFlowException('Error: {}'.format(str(e)))
+
+    def list_workflow_context_event_handler_states(self, project_name: Text,
+                                                   workflow_name: Text) -> List[WorkflowContextEventHandlerState]:
+        with self.ManagedSessionMaker() as session:
+            states = session.query(SqlWorkflowContextEventHandlerState) \
+                .filter(SqlWorkflowContextEventHandlerState.project_name == project_name,
+                        SqlWorkflowContextEventHandlerState.workflow_name == workflow_name).all()
+            return [WorkflowContextEventHandlerState(
+                state.project_name,
+                state.workflow_name,
+                state.context,
+                state.workflow_execution_id,
+                state.state) for state in states]
+
+    def get_workflow_context_event_handler_state(self,
+                                                 project_name: Text,
+                                                 workflow_name: Text,
+                                                 context: Text) -> Optional[WorkflowContextEventHandlerState]:
+        with self.ManagedSessionMaker() as session:
+            state = session.query(SqlWorkflowContextEventHandlerState) \
+                .filter(SqlWorkflowContextEventHandlerState.project_name == project_name,
+                        SqlWorkflowContextEventHandlerState.workflow_name == workflow_name,
+                        SqlWorkflowContextEventHandlerState.context == context).scalar()
+            return None if state is None else WorkflowContextEventHandlerState(
+                state.project_name,
+                state.workflow_name,
+                state.context,
+                state.workflow_execution_id,
+                state.state)
+
+    def update_workflow_context_event_handler_state(self,
+                                                    project_name: Text,
+                                                    workflow_name: Text,
+                                                    context: Text,
+                                                    workflow_execution_id=None,
+                                                    state=None) -> Optional[WorkflowContextEventHandlerState]:
+        with self.ManagedSessionMaker() as session:
+            try:
+                handler_state = session.query(SqlWorkflowContextEventHandlerState) \
+                    .filter(SqlWorkflowContextEventHandlerState.project_name == project_name,
+                            SqlWorkflowContextEventHandlerState.workflow_name == workflow_name,
+                            SqlWorkflowContextEventHandlerState.context == context).scalar()
+                if handler_state is None:
+                    return None
+                handler_state.workflow_execution_id = workflow_execution_id
+                handler_state.state = state
+                session.flush()
+                return WorkflowContextEventHandlerState(
+                    handler_state.project_name,
+                    handler_state.workflow_name,
+                    handler_state.context,
+                    handler_state.workflow_execution_id,
+                    handler_state.state)
             except sqlalchemy.exc.IntegrityError as e:
                 raise AIFlowException(e)
 

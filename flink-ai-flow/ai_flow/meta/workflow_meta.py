@@ -58,7 +58,7 @@ class WorkflowMeta(Jsonable):
         self.update_time = update_time
         self.uuid = uuid
         self.context_extractor_in_bytes = context_extractor_in_bytes
-        self.scheduling_rules = scheduling_rules
+        self.scheduling_rules = [] if scheduling_rules is None else scheduling_rules
 
     def get_condition(self, action: WorkflowAction) -> List[EventCondition]:
         if self.scheduling_rules is None:

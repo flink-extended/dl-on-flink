@@ -14,11 +14,12 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
+import logging
 from typing import Text, Dict
 import traceback
 
+from ai_flow.scheduler_service.service.workflow_event_manager import WorkflowEventManager
 from ai_flow.workflow.control_edge import WorkflowAction
-
 
 from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
 
@@ -83,7 +84,8 @@ class SchedulerServiceConfig(AIFlowConfiguration):
 class SchedulerService(SchedulingServiceServicer):
     def __init__(self,
                  scheduler_service_config: SchedulerServiceConfig,
-                 db_uri):
+                 db_uri,
+                 notification_uri):
         self._scheduler_service_config = scheduler_service_config
         self._scheduler: Scheduler \
             = SchedulerFactory.create_scheduler(scheduler_service_config.scheduler().scheduler_class(),
@@ -98,6 +100,23 @@ class SchedulerService(SchedulingServiceServicer):
                                     db=db)
         else:
             self.store = SqlAlchemyStore(db_uri)
+
+        if notification_uri is not None:
+            self.workflow_event_manager = WorkflowEventManager(notification_uri=notification_uri,
+                                                               store=self.store,
+                                                               scheduler=self._scheduler)
+        else:
+            self.workflow_event_manager = None
+            logging.warning('notification_uri is None, workflow event manager did not start. '
+                            'WorkflowExecution will not start/stop on events')
+
+    def start(self):
+        if self.workflow_event_manager:
+            self.workflow_event_manager.start()
+
+    def stop(self):
+        if self.workflow_event_manager:
+            self.workflow_event_manager.stop()
 
     # workflow interface
     def submitWorkflow(self, request, context):

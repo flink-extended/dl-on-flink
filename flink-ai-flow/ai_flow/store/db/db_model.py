@@ -16,9 +16,12 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+import cloudpickle
+
 from notification_service.base_notification import BaseEvent
 from sqlalchemy import (
-    Column, String, ForeignKey, Integer, PrimaryKeyConstraint, BigInteger, UniqueConstraint, Binary, Boolean, Text)
+    Column, String, ForeignKey, Integer, PrimaryKeyConstraint, BigInteger, UniqueConstraint, Binary, Boolean, Text,
+    PickleType)
 from sqlalchemy.orm import relationship, backref
 from mongoengine import (Document, StringField, IntField, LongField, ReferenceField,
                          BooleanField, ListField, ObjectIdField, SequenceField, BinaryField)
@@ -135,6 +138,25 @@ class SqlWorkflow(base, Base):
     def __repr__(self):
         return '<workflow ({}, {}, {}, {}, {}, {}, {})>'.format(self.uuid, self.name, self.project_id, self.properties,
                                                                 self.create_time, self.update_time, self.is_deleted)
+
+
+class SqlWorkflowContextEventHandlerState(base, Base):
+    """
+    SQL table of workflow context event handler state.
+    """
+    __tablename__ = 'workflow_execution_event_handler_state'
+    project_name = Column(String(length=256), nullable=False)
+    workflow_name = Column(String(length=256), nullable=False)
+    context = Column(String(length=256), nullable=False)
+    workflow_execution_id = Column(Text, nullable=True)
+    state = Column(PickleType(pickler=cloudpickle), nullable=True)
+
+    UniqueConstraint(project_name, workflow_name, context)
+
+    def __repr__(self):
+        return '<WorkflowExecutionEventHandlerStat ({}, {}, {}, {}, {}, {})>' \
+            .format(self.uuid, self.project_name, self.workflow_name, self.context,
+                    self.workflow_execution_id, self.state)
 
 
 class SqlModelVersionRelation(base):
@@ -491,6 +513,27 @@ class MongoWorkflow(Document):
             self.update_time,
             self.is_deleted,
             self.context_extractor_in_bytes)
+
+
+class MongoWorkflowContextEventHandlerState(Document):
+    """
+    SQL table of workflow context event handler state.
+    """
+    project_name = StringField(max_length=255, required=True)
+    workflow_name = StringField(max_length=255, required=True)
+    context = StringField(required=True)
+    workflow_execution_id = StringField(required=False)
+    state = BinaryField()
+
+    meta = {'db_alias': MONGO_DB_ALIAS_META_SERVICE}
+
+    def __repr__(self) -> str:
+        return '<Document WorkflowExecutionEventHandlerState ({}, {}, {}, {}, {})>'.format(
+            self.project_name,
+            self.workflow_name,
+            self.context,
+            self.workflow_execution_id,
+            self.state)
 
 
 class MongoModelVersion(Document):
