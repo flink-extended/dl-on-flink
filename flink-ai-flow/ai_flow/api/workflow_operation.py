@@ -114,6 +114,15 @@ def submit_workflow(workflow_name: Text = None) -> WorkflowInfo:
     namespace = current_project_config().get_project_name()
     translator = get_translator()
     workflow = translator.translate(graph=current_graph(), project_context=current_project_context())
+    if workflow_name is None:
+        if workflow.workflow_name is None:
+            raise Exception('The workflow name of the current workflow config({}) cannot be null.'.format(workflow))
+        else:
+            workflow_name = workflow.workflow_name
+    elif workflow.workflow_name != workflow_name:
+        raise Exception('The name({}) of workflow submitted is different from '
+                        'the workflow name of the current workflow config({})'.format(workflow_name,
+                                                                                      workflow.workflow_name))
     _apply_full_info_to_workflow(workflow, entry_module_path)
 
     workflow_meta = get_ai_flow_client().get_workflow_by_name(project_name=current_project_config().get_project_name(),
