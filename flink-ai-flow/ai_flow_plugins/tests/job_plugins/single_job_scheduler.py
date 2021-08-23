@@ -37,7 +37,7 @@ class SingleJobScheduler(Scheduler):
         self.job_handler: JobHandle = None
         self.job_runtime_env: JobRuntimeEnv = None
 
-    def submit_workflow(self, workflow: Workflow, project_context: ProjectContext) -> WorkflowInfo:
+    def submit_workflow(self, workflow: Workflow, context_extractor, project_context: ProjectContext) -> WorkflowInfo:
         self.workflow = workflow
         self.project_context = project_context
         return WorkflowInfo(workflow_name=workflow.workflow_name)

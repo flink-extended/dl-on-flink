@@ -60,7 +60,7 @@ class MockScheduler(Scheduler):
     def list_job_executions(self, workflow_execution_id: Text) -> List[JobExecutionInfo]:
         pass
 
-    def submit_workflow(self, workflow: Workflow, project_context: ProjectContext) -> WorkflowInfo:
+    def submit_workflow(self, workflow: Workflow, context_extractor, project_context: ProjectContext) -> WorkflowInfo:
         pass
 
     def pause_workflow_scheduling(self, project_name: Text, workflow_name: Text) -> WorkflowInfo:

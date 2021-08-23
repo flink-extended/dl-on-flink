@@ -120,7 +120,10 @@ class SchedulerService(SchedulingServiceServicer):
             project_context: ProjectContext = build_project_context(project_path)
             project_name = project_context.project_name
 
-            workflow_info = self._scheduler.submit_workflow(workflow, project_context)
+            workflow_meta = \
+                self.store.get_workflow_by_name(project_name=project_name, workflow_name=rq.workflow_name)
+            workflow_info = self._scheduler.submit_workflow(workflow, workflow_meta.get_context_extractor(),
+                                                            project_context)
             if workflow_info is None:
                 return WorkflowInfoResponse(
                     result=ResultProto(status=StatusProto.ERROR,
