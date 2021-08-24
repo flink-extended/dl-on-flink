@@ -43,9 +43,19 @@ class ProjectConfig(AIFlowConfiguration):
 
     def get_server_uri(self):
         """
-        return: The ai_flow.endpoint.server.server.AIFlowServer uri(ip:port).
+        return: The ai_flow.endpoint.server.server.AIFlowServer uri(ip:port,ip:port).
         """
-        return "{}:{}".format(self["server_ip"], self["server_port"])
+        ips = self["server_ip"].split(',')
+        ports = self["server_port"].split(',')
+        if len(ips) != len(ports):
+            raise Exception('The number of ip and port must be the same! ip number({}) port number({})'
+                            .format(len(ips), len(ports)))
+        uris = []
+        for i in range(len(ips)):
+            uri = "{}:{}".format(ips[i], ports[i])
+            uris.append(uri)
+
+        return ','.join(uris)
 
     def get_project_name(self):
         """
