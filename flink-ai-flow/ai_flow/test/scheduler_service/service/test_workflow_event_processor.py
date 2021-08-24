@@ -14,6 +14,7 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
+import multiprocessing
 import unittest
 import unittest.mock as mock
 from multiprocessing import Queue, Value
@@ -34,7 +35,7 @@ from ai_flow.plugin_interface.scheduler_interface import Scheduler, WorkflowExec
 
 from ai_flow.store.abstract_store import AbstractStore
 
-from ai_flow.scheduler_service.service.workflow_event_processor import WorkflowEventProcessor
+from ai_flow.scheduler_service.service.workflow_event_processor import WorkflowEventProcessor, Poison
 
 
 class MyContextExtractor(ContextExtractor):
@@ -60,8 +61,8 @@ class TestWorkflowEventProcessor(unittest.TestCase):
         def mock_event_handler_factory(scheduler_rule):
             return self.mock_event_handler
 
-        self.queue = Queue()
-        self.processor = WorkflowEventProcessor(self.queue, self.mock_store, self.mock_scheduler,
+        self.c1, self.c2 = multiprocessing.connection.Pipe()
+        self.processor = WorkflowEventProcessor(self.c1, self.mock_store, self.mock_scheduler,
                                                 workflow_event_handler_factory=mock_event_handler_factory)
 
         self._prepare_workflows()
@@ -74,16 +75,18 @@ class TestWorkflowEventProcessor(unittest.TestCase):
             self.call_cnt.value += 1
 
         self.processor._process_event = mock__process_event
+        process = multiprocessing.Process(target=self.processor.run)
+        process.start()
 
-        self.processor.start()
         event = BaseEvent('k', 'v', namespace='default')
-        self.queue.put(event)
+        self.c2.send(event)
 
         time.sleep(1)
         self.assertEqual(1, self.call_cnt.value)
 
-        self.processor.stop()
-        self.processor.join()
+        self.c2.send(Poison())
+
+        process.join()
 
     def test__process_event(self):
         self.call_cnt = 0
@@ -143,7 +146,7 @@ class TestWorkflowEventProcessor(unittest.TestCase):
         self.assertEqual(1, len(states))
         self.assertEqual(state, states[0])
         self.mock_store.register_workflow_context_event_handler_state.assert_called_with('project', 'workflow1',
-                                                                                           'context_1')
+                                                                                         'context_1')
 
     def test__get_workflow_execution_state_with_context(self):
         state = WorkflowContextEventHandlerState('project', 'workflow1', 'context_1')
