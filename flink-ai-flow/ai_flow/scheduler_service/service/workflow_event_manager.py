@@ -68,10 +68,12 @@ class WorkflowEventManager(object):
         self.event_processor_process.start()
 
     def stop(self):
+        logging.info("stopping WorkflowEventManager...")
         if self.listen_event_handler:
             self.listen_event_handler.stop()
         self.conn.send(Poison())
         self.event_processor_process.join()
+        logging.info("WorkflowEventManager stopped...")
 
     def _start_workflow_event_processor_process(self):
         db_engine = extract_db_engine_from_uri(self.db_uri)

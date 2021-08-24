@@ -19,6 +19,7 @@
 #
 import logging
 import os
+import signal
 
 from typing import Dict
 
@@ -49,12 +50,20 @@ def create_default_sever_config(root_dir_path, param: Dict[str, str]):
 
 
 def start_master(config_file):
+    global server_runner
     server_runner = ai_flow.AIFlowServerRunner(config_file=config_file)
     server_runner.start(is_block=True)
-    return server_runner
+
+
+def stop_master(signum, frame):
+    global server_runner
+    if server_runner:
+        server_runner.stop()
 
 
 if __name__ == '__main__':
+    signal.signal(signal.SIGTERM, stop_master)
+    server_runner = None
     configure_logging()
     if "AIFLOW_HOME" not in os.environ:
         os.environ["AIFLOW_HOME"] = os.environ["HOME"] + "/aiflow"
