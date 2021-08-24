@@ -15,23 +15,33 @@
 # specific language governing permissions and limitations
 # under the License.
 import logging
-from multiprocessing import Queue
+import multiprocessing as mp
+from multiprocessing import Process
+from multiprocessing.connection import Connection
 from typing import Text, List
 
-from ai_flow.plugin_interface.scheduler_interface import Scheduler
-from ai_flow.scheduler_service.service.workflow_event_processor import WorkflowEventProcessor
-from ai_flow.store.abstract_store import AbstractStore
+from ai_flow.plugin_interface.scheduler_interface import SchedulerFactory
+
+from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
+
+from ai_flow.store.mongo_store import MongoStore
+
+from ai_flow.endpoint.server.server_config import DBType
+
+from ai_flow.store.db.db_util import extract_db_engine_from_uri, parse_mongo_uri
+
+from ai_flow.scheduler_service.service.workflow_event_processor import WorkflowEventProcessor, Poison
 from notification_service.base_notification import EventWatcher, BaseEvent
 from notification_service.client import NotificationClient
 
 
 class WorkflowEventWatcher(EventWatcher):
-    def __init__(self, event_queue: Queue):
-        self._event_queue = event_queue
+    def __init__(self, conn: Connection):
+        self._conn = conn
 
     def process(self, events: List[BaseEvent]):
         for event in events:
-            self._event_queue.put(event)
+            self._conn.send(event)
 
 
 class WorkflowEventManager(object):
@@ -39,34 +49,43 @@ class WorkflowEventManager(object):
     WorkflowEventManager
     """
 
-    def __init__(self, notification_uri: Text, store: AbstractStore, scheduler: Scheduler):
-        """
-
-        :param notification_uri:
-        :param store:
-        :param scheduler:
-        """
+    def __init__(self, notification_uri: Text, db_uri: Text, scheduler_service_config):
+        self.db_uri = db_uri
+        self.scheduler_service_config = scheduler_service_config
         self.notification_client = NotificationClient(server_uri=notification_uri)
 
-        self.event_queue: Queue = Queue()
-        self.event_watcher = WorkflowEventWatcher(self.event_queue)
+        c1, c2 = mp.connection.Pipe(False)
+        self.child_conn = c1
+        self.conn = c2
+
+        self.event_watcher = WorkflowEventWatcher(self.conn)
         self.listen_event_handler = None
-        self.event_processor = WorkflowEventProcessor(self.event_queue, store, scheduler)
+        self.event_processor_process = Process(target=self._start_workflow_event_processor_process)
 
     def start(self):
         logging.info("WorkflowEventManager start listening event")
         self.listen_event_handler = self.notification_client.start_listen_events(self.event_watcher)
-        self.event_processor.start()
+        self.event_processor_process.start()
 
     def stop(self):
         if self.listen_event_handler:
             self.listen_event_handler.stop()
-        self.event_queue.close()
-        self.event_processor.stop()
-        self.event_processor.join()
+        self.conn.send(Poison())
+        self.event_processor_process.join()
 
+    def _start_workflow_event_processor_process(self):
+        db_engine = extract_db_engine_from_uri(self.db_uri)
+        if DBType.value_of(db_engine) == DBType.MONGODB:
+            username, password, host, port, db = parse_mongo_uri(self.db_uri)
+            store = MongoStore(host=host,
+                               port=int(port),
+                               username=username,
+                               password=password,
+                               db=db)
+        else:
+            store = SqlAlchemyStore(self.db_uri)
 
-
-
-
-
+        scheduler = SchedulerFactory.create_scheduler(self.scheduler_service_config.scheduler().scheduler_class(),
+                                                      self.scheduler_service_config.scheduler().scheduler_config())
+        processor = WorkflowEventProcessor(conn=self.child_conn, store=store, scheduler=scheduler)
+        processor.run()

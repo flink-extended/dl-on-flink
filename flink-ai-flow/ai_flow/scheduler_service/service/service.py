@@ -104,8 +104,8 @@ class SchedulerService(SchedulingServiceServicer):
 
         if notification_uri is not None:
             self.workflow_event_manager = WorkflowEventManager(notification_uri=notification_uri,
-                                                               store=self.store,
-                                                               scheduler=self._scheduler)
+                                                               db_uri=db_uri,
+                                                               scheduler_service_config=scheduler_service_config)
         else:
             self.workflow_event_manager = None
             logging.warning('notification_uri is None, workflow event manager did not start. '
