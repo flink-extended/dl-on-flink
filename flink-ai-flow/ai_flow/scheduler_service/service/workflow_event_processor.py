@@ -15,19 +15,15 @@
 # specific language governing permissions and limitations
 # under the License.
 import logging
-from multiprocessing import Queue, Process, Event
-from queue import Empty
 from typing import List, Callable
 
-from ai_flow.workflow.status import Status
-
 from ai_flow.meta.workflow_meta import WorkflowMeta
-
 from ai_flow.plugin_interface.scheduler_interface import Scheduler
 from ai_flow.scheduler_service.service.workflow_event_handler import WorkflowEventHandler
 from ai_flow.scheduler_service.service.workflow_execution_event_handler_state import WorkflowContextEventHandlerState
 from ai_flow.store.abstract_store import AbstractStore
 from ai_flow.workflow.control_edge import WorkflowAction
+from ai_flow.workflow.status import Status
 from notification_service.base_notification import BaseEvent, ANY_CONDITION
 
 WorkflowEventHandlerFactoryType = Callable[[WorkflowMeta], WorkflowEventHandler]
@@ -41,29 +37,34 @@ class EventKey:
         self.sender = sender
 
 
-class WorkflowEventProcessor(Process):
-    def __init__(self, event_queue: Queue, store: AbstractStore, scheduler: Scheduler,
+class Poison(object):
+    pass
+
+
+class WorkflowEventProcessor:
+    def __init__(self, conn, store: AbstractStore, scheduler: Scheduler,
                  workflow_event_handler_factory: WorkflowEventHandlerFactoryType = WorkflowEventHandler):
         super().__init__()
-        self._event_queue = event_queue
-        self.store = store
+        self._conn = conn
         self.scheduler = scheduler
         self._workflow_event_handler_factory = workflow_event_handler_factory
-        self._stop = Event()
+        self.store = store
 
     def run(self) -> None:
-        while not self._stop.is_set():
+        while True:
             try:
-                event: BaseEvent = self._event_queue.get(timeout=1)
-                self._process_event(event)
-            except Empty as _:
-                # ignore
-                pass
+                event = self._conn.recv()
+                if isinstance(event, Poison):
+                    break
+                elif isinstance(event, BaseEvent):
+                    self._process_event(event)
+                else:
+                    logging.error("Receive unknown type of event: {}".format(type(event)))
+            except EOFError as _:
+                logging.info("Event channel is closed exiting")
+                break
             except Exception as e:
                 logging.error("Unexpected Exception", exc_info=e)
-
-    def stop(self):
-        self._stop.set()
 
     def _process_event(self, event: BaseEvent):
         # ignore scheduler event
