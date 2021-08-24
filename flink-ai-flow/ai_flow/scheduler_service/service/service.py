@@ -18,6 +18,7 @@ import logging
 from typing import Text, Dict
 import traceback
 
+from ai_flow.api.context_extractor import WORKFLOW_EXECUTION_DEFAULT_CONTEXT
 from ai_flow.scheduler_service.service.workflow_event_manager import WorkflowEventManager
 from ai_flow.workflow.control_edge import WorkflowAction
 
@@ -217,6 +218,15 @@ class SchedulerService(SchedulingServiceServicer):
             self.store.update_workflow(project_name=namespace, workflow_name=workflow_name,
                                        context_extractor_in_bytes=workflow.context_extractor_in_bytes,
                                        scheduling_rules=workflow.scheduling_rules)
+            context_state = self.store \
+                .get_workflow_context_event_handler_state(project_name=namespace,
+                                                          workflow_name=workflow_name,
+                                                          context=WORKFLOW_EXECUTION_DEFAULT_CONTEXT)
+            if context_state is None:
+                self.store.register_workflow_context_event_handler_state(
+                    project_name=namespace,
+                    workflow_name=workflow_name,
+                    context=WORKFLOW_EXECUTION_DEFAULT_CONTEXT)
 
             workflow_info = WorkflowInfo(namespace=namespace, workflow_name=workflow_name)
             return WorkflowInfoResponse(result=ResultProto(status=StatusProto.OK),
@@ -263,6 +273,15 @@ class SchedulerService(SchedulingServiceServicer):
             self.store.update_workflow(project_name=namespace, workflow_name=workflow_name,
                                        context_extractor_in_bytes=workflow.context_extractor_in_bytes,
                                        scheduling_rules=workflow.scheduling_rules)
+            context_state = self.store \
+                .get_workflow_context_event_handler_state(project_name=namespace,
+                                                          workflow_name=workflow_name,
+                                                          context=WORKFLOW_EXECUTION_DEFAULT_CONTEXT)
+            if context_state is None:
+                self.store.register_workflow_context_event_handler_state(
+                    project_name=namespace,
+                    workflow_name=workflow_name,
+                    context=WORKFLOW_EXECUTION_DEFAULT_CONTEXT)
 
             workflow_info = WorkflowInfo(namespace=namespace, workflow_name=workflow_name)
             return WorkflowInfoResponse(result=ResultProto(status=StatusProto.OK),
