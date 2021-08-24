@@ -14,7 +14,7 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-from typing import List, Text
+from typing import List, Text, Optional
 import queue
 import time
 from airflow.contrib.jobs.event_based_scheduler_job import SCHEDULER_NAMESPACE
@@ -37,8 +37,14 @@ class ResponseWatcher(EventWatcher):
     def process(self, events: List[BaseEvent]):
         self.queue.put(events[0])
 
-    def get_result(self) -> object:
-        return self.queue.get()
+    def get_result(self, timeout: Optional[int] = None) -> object:
+        if timeout is None:
+            return self.queue.get()
+        else:
+            try:
+                return self.queue.get(timeout=timeout)
+            except queue.Empty:
+                raise TimeoutError('Get response timeout({})'.format(timeout))
 
 
 class EventSchedulerClient(object):
@@ -52,7 +58,7 @@ class EventSchedulerClient(object):
     def generate_id(id):
         return '{}_{}'.format(id, time.time_ns())
 
-    def trigger_parse_dag(self, file_path) -> bool:
+    def trigger_parse_dag(self, file_path, timeout: Optional[int] = None) -> bool:
         id = self.generate_id('')
         watcher: ResponseWatcher = ResponseWatcher()
         handler: ThreadEventWatcherHandle \
@@ -63,11 +69,13 @@ class EventSchedulerClient(object):
         self.ns_client.send_event(BaseEvent(key=id,
                                             event_type=SchedulerInnerEventType.PARSE_DAG_REQUEST.value,
                                             value=file_path))
-        result = watcher.get_result()
-        handler.stop()
+        try:
+            result = watcher.get_result(timeout=timeout)
+        finally:
+            handler.stop()
         return True
 
-    def schedule_dag(self, dag_id, context: Text) -> ExecutionContext:
+    def schedule_dag(self, dag_id, context: Text, timeout: Optional[int] = None) -> ExecutionContext:
         id = self.generate_id(dag_id)
         watcher: ResponseWatcher = ResponseWatcher()
         handler: ThreadEventWatcherHandle \
@@ -75,11 +83,13 @@ class EventSchedulerClient(object):
                                                 event_type=SchedulerInnerEventType.RESPONSE.value,
                                                 namespace=SCHEDULER_NAMESPACE, watcher=watcher)
         self.ns_client.send_event(RequestEvent(request_id=id, body=RunDagMessage(dag_id, context).to_json()).to_event())
-        result: ResponseEvent = ResponseEvent.from_base_event(watcher.get_result())
-        handler.stop()
+        try:
+            result: ResponseEvent = ResponseEvent.from_base_event(watcher.get_result(timeout))
+        finally:
+            handler.stop()
         return ExecutionContext(dagrun_id=result.body)
 
-    def stop_dag_run(self, dag_id, context: ExecutionContext) -> ExecutionContext:
+    def stop_dag_run(self, dag_id, context: ExecutionContext, timeout: Optional[int] = None) -> ExecutionContext:
         id = self.generate_id(str(dag_id) + str(context.dagrun_id))
         watcher: ResponseWatcher = ResponseWatcher()
         handler: ThreadEventWatcherHandle \
@@ -90,12 +100,15 @@ class EventSchedulerClient(object):
                                                body=StopDagRunMessage(dag_id=dag_id,
                                                                       dagrun_id=context.dagrun_id)
                                                .to_json()).to_event())
-        result: ResponseEvent = ResponseEvent.from_base_event(watcher.get_result())
-        handler.stop()
+        try:
+            result: ResponseEvent = ResponseEvent.from_base_event(watcher.get_result(timeout))
+        finally:
+            handler.stop()
         return ExecutionContext(dagrun_id=result.body)
 
     def schedule_task(self, dag_id: str, task_id: str,
-                      action: SchedulingAction, context: ExecutionContext) -> ExecutionContext:
+                      action: SchedulingAction, context: ExecutionContext,
+                      timeout: Optional[int] = None) -> ExecutionContext:
         id = self.generate_id(context.dagrun_id)
         watcher: ResponseWatcher = ResponseWatcher()
         handler: ThreadEventWatcherHandle \
@@ -108,6 +121,8 @@ class EventSchedulerClient(object):
                                                                        dagrun_id=context.dagrun_id,
                                                                        action=action.value)
                                                .to_json()).to_event())
-        result: ResponseEvent = ResponseEvent.from_base_event(watcher.get_result())
-        handler.stop()
+        try:
+            result: ResponseEvent = ResponseEvent.from_base_event(watcher.get_result(timeout))
+        finally:
+            handler.stop()
         return ExecutionContext(dagrun_id=result.body)
