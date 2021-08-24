@@ -18,6 +18,7 @@ import mock
 import os
 import unittest
 
+from ai_flow.api.context_extractor import WORKFLOW_EXECUTION_DEFAULT_CONTEXT
 from ai_flow.util import json_utils
 from ai_flow.workflow.control_edge import MeetAllEventCondition, MeetAnyEventCondition, WorkflowAction
 from typing import Text, List, Optional
@@ -202,6 +203,12 @@ class TestSchedulerService(unittest.TestCase):
         self.assertEqual(0, len(workflow_meta.scheduling_rules))
         self.assertEqual([], workflow_meta.get_condition(WorkflowAction.START))
 
+        # default context state is registered
+        context_state = store.get_workflow_context_event_handler_state('namespace', 'test_workflow',
+                                                                       WORKFLOW_EXECUTION_DEFAULT_CONTEXT)
+        self.assertIsNotNone(context_state)
+        self.assertEqual(WORKFLOW_EXECUTION_DEFAULT_CONTEXT, context_state.context)
+
     def test_stop_workflow_execution_on_event(self):
         store = self.server.scheduler_service.store
         project_meta = store.register_project('namespace', 'example.com')
@@ -228,6 +235,12 @@ class TestSchedulerService(unittest.TestCase):
         workflow_meta = store.get_workflow_by_name('namespace', 'test_workflow')
         self.assertEqual(0, len(workflow_meta.scheduling_rules))
         self.assertEqual([], workflow_meta.get_condition(WorkflowAction.STOP))
+
+        # default context state is registered
+        context_state = store.get_workflow_context_event_handler_state('namespace', 'test_workflow',
+                                                                       WORKFLOW_EXECUTION_DEFAULT_CONTEXT)
+        self.assertIsNotNone(context_state)
+        self.assertEqual(WORKFLOW_EXECUTION_DEFAULT_CONTEXT, context_state.context)
 
     def test_kill_all_workflow_execution(self):
         with mock.patch(SCHEDULER_CLASS) as mockScheduler:
