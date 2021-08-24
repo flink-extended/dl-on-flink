@@ -17,7 +17,7 @@
 # under the License.
 #
 import os
-from typing import List, Text
+from typing import List, Text, Dict
 from ai_flow.project.project_config import ProjectConfig
 from ai_flow.util.json_utils import Jsonable
 
@@ -146,3 +146,11 @@ def current_project_config() -> ProjectConfig:
     :return: The current project configuration(ai_flow.project.project_config.ProjectConfig)
     """
     return __current_project_config__
+
+
+def set_current_project_config(config: Dict):
+    global __current_project_config__
+    project_config = ProjectConfig()
+    for k, v in config.items():
+        project_config[k] = v
+    __current_project_config__ = project_config
