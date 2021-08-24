@@ -113,6 +113,8 @@ class AIFlowServer(object):
 
         self.server.add_insecure_port('[::]:' + str(port))
 
+        self._stop = threading.Event()
+
     def _add_scheduler_service(self, scheduler_service_config, db_uri, notification_uri):
         logging.info("start scheduler service.")
         real_config = SchedulerServiceConfig(scheduler_service_config)
@@ -148,14 +150,16 @@ class AIFlowServer(object):
         logging.info('AIFlow server started.')
         if is_block:
             try:
-                while True:
-                    time.sleep(_ONE_DAY_IN_SECONDS)
+                while not self._stop.is_set():
+                    self._stop.wait(_ONE_DAY_IN_SECONDS)
             except KeyboardInterrupt:
+                logging.info("received KeyboardInterrupt")
                 self.stop()
         else:
             pass
 
     def stop(self, clear_sql_lite_db_file=False):
+        logging.info("stopping AIFlow server")
         if self.start_scheduler_service:
             self.scheduler_service.stop()
         self.server.stop(0)
@@ -170,6 +174,7 @@ class AIFlowServer(object):
         elif self.db_type == DBType.MONGODB:
             MongoStoreConnManager().disconnect_all()
 
+        self._stop.set()
         logging.info('AIFlow server stopped.')
 
     def _clear_db(self):

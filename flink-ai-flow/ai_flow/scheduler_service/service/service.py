@@ -116,8 +116,11 @@ class SchedulerService(SchedulingServiceServicer):
             self.workflow_event_manager.start()
 
     def stop(self):
+        logging.info("stopping SchedulerService.")
         if self.workflow_event_manager:
             self.workflow_event_manager.stop()
+        logging.info("SchedulerService stopped.")
+
 
     # workflow interface
     def submitWorkflow(self, request, context):
