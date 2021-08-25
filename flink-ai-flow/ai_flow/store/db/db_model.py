@@ -20,7 +20,7 @@ import cloudpickle
 
 from notification_service.base_notification import BaseEvent
 from sqlalchemy import (
-    Column, String, ForeignKey, Integer, PrimaryKeyConstraint, BigInteger, UniqueConstraint, Binary, Boolean, Text,
+    Column, String, ForeignKey, Integer, PrimaryKeyConstraint, BigInteger, UniqueConstraint, LargeBinary, Boolean, Text,
     PickleType)
 from sqlalchemy.orm import relationship, backref
 from mongoengine import (Document, StringField, IntField, LongField, ReferenceField,
@@ -128,7 +128,7 @@ class SqlWorkflow(base, Base):
     create_time = Column(BigInteger)
     update_time = Column(BigInteger)
     is_deleted = Column(Boolean, default=False)
-    context_extractor_in_bytes = Column(Binary())
+    context_extractor_in_bytes = Column(LargeBinary())
     scheduling_rules = Column(Text)
 
     UniqueConstraint(project_id, name)
