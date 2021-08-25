@@ -273,8 +273,6 @@ class NotificationService(notification_service_pb2_grpc.NotificationServiceServi
                 return_code=notification_service_pb2.ReturnStatus.ERROR, return_msg=str(e))
 
     async def _list_members(self, request):
-        timeout_seconds = request.timeout_seconds
-        time.sleep(timeout_seconds)
         # this method is used in HA mode, so we just return an empty list here.
         return notification_service_pb2.ListMembersResponse(
             return_code=notification_service_pb2.ReturnStatus.SUCCESS,

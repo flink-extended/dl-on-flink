@@ -360,3 +360,28 @@ class HaDbStorageTest(unittest.TestCase, NotificationTest):
         self.client.stop_listen_events()
         self.client.stop_listen_event()
         self.client.disable_high_availability()
+
+
+class HaClientWithNonHaServerTest(unittest.TestCase, NotificationTest):
+
+    @classmethod
+    def set_up_class(cls):
+        cls.storage = DbEventStorage()
+        cls.master = NotificationMaster(NotificationService(cls.storage))
+        cls.master.run()
+
+    @classmethod
+    def setUpClass(cls):
+        cls.set_up_class()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.master.stop()
+
+    def setUp(self):
+        self.storage.clean_up()
+        self.client = NotificationClient(server_uri="localhost:50051", enable_ha=True)
+
+    def tearDown(self):
+        self.client.stop_listen_events()
+        self.client.stop_listen_event()
