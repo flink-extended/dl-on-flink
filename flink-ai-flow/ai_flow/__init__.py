@@ -16,7 +16,7 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-from ai_flow.api.ai_flow_context import init_ai_flow_context
+from ai_flow.api.ai_flow_context import init_ai_flow_context, init_ai_flow_client
 from ai_flow.api import workflow_operation
 from ai_flow.api import context_extractor
 from ai_flow.api.ops import read_dataset, write_dataset, transform, train, predict, evaluate, dataset_validate, \

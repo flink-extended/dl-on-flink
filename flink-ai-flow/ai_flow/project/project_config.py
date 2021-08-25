@@ -43,9 +43,26 @@ class ProjectConfig(AIFlowConfiguration):
 
     def get_server_uri(self):
         """
-        return: The ai_flow.endpoint.server.server.AIFlowServer uri(ip:port).
+        return: The ai_flow.endpoint.server.server.AIFlowServer uri(ip:port,ip:port).
         """
-        return "{}:{}".format(self["server_ip"], self["server_port"])
+        ips = self["server_ip"].split(',')
+        ports = str(self["server_port"]).split(',')
+        if len(ips) != len(ports):
+            raise Exception('The number({}) of ip for the config server_ip must be same as the number({}) of '
+                            'port for the config server_port.'
+                            .format(len(ips), len(ports)))
+        if len(ips) > 1:
+            enable_ha = self.get_enable_ha()
+            if not enable_ha:
+                raise Exception('When setting multiple server addresses, '
+                                'you need to set the configuration enable_ha to true')
+
+        uris = []
+        for i in range(len(ips)):
+            uri = "{}:{}".format(ips[i], ports[i])
+            uris.append(uri)
+
+        return ','.join(uris)
 
     def get_project_name(self):
         """

@@ -16,9 +16,13 @@
 # under the License.
 import os
 import traceback
-from ai_flow.context.project_context import init_project_context, current_project_config
+from typing import Text
+from ai_flow.context.project_context import init_project_context, current_project_config, set_current_project_config
 from ai_flow.context.workflow_config_loader import init_workflow_config
 from ai_flow.client.ai_flow_client import get_ai_flow_client
+
+__init_context_flag__ = False
+__init_client_flag__ = False
 
 
 def init_ai_flow_context():
@@ -30,6 +34,8 @@ def init_ai_flow_context():
     2. Init project configuration
     3. Init workflow configuration.
     """
+    if __init_client_flag__ is True:
+        raise Exception('init_ai_flow_client and init_ai_flow_context cannot be called at the same time.')
     stack = traceback.extract_stack()
     workflow_entry_file = os.path.abspath(stack[-2].filename)
     workflows_path = os.path.dirname(os.path.dirname(workflow_entry_file))
@@ -41,6 +47,8 @@ def init_ai_flow_context():
     # workflow_name/workflow_name.yaml
     init_workflow_config(workflow_config_file
                          =os.path.join(workflows_path, workflow_name, '{}.yaml'.format(workflow_name)))
+    global __init_context_flag__
+    __init_context_flag__ = True
 
 
 def __ensure_project_registered():
@@ -58,3 +66,40 @@ def __ensure_project_registered():
         project_meta = client.update_project(project_name=current_project_config().get_project_name(), properties=pp)
 
     current_project_config().set_project_uuid(str(project_meta.uuid))
+
+
+def init_ai_flow_client(server_uri: Text, project_name: Text = None, **kwargs):
+    """ Initializes the :class:`ai_flow.client.ai_flow_client.AIFlowClient`.
+        It's suitable for using AIFlowClient separately in per job.
+    """
+    if __init_context_flag__ is True:
+        raise Exception('init_ai_flow_client and init_ai_flow_context cannot be called at the same time.')
+    uris = server_uri.split(',')
+    if len(uris) > 1:
+        def get_enable_ha():
+            if "enable_ha" in kwargs:
+                raw = kwargs["enable_ha"]
+                assert str(raw).strip().lower() in {"true", "false"}
+                return bool(str(raw).strip().lower())
+            else:
+                return False
+        enable_ha = get_enable_ha()
+        if not enable_ha:
+            raise Exception('When setting multiple server addresses, '
+                            'you need to set the configuration enable_ha to true')
+    ips = []
+    ports = []
+    for uri in uris:
+        tmp = uri.split(':')
+        ips.append(tmp[0])
+        ports.append(tmp[1])
+    config_dict = {'server_ip': ','.join(ips), 'server_port': ','.join(ports)}
+    if project_name is None:
+        project_name = 'Unknown'
+    config_dict['project_name'] = project_name
+    for k, v in kwargs.items():
+        config_dict[k] = v
+    set_current_project_config(config_dict)
+    __ensure_project_registered()
+    global __init_client_flag__
+    __init_client_flag__ = True
