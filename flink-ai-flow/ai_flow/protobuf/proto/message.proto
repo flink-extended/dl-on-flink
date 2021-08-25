@@ -130,6 +130,7 @@ message WorkflowMetaProto {
     google.protobuf.Int64Value create_time = 5;
     google.protobuf.Int64Value update_time = 6;
     bytes context_extractor_in_bytes = 7;
+    google.protobuf.StringValue graph = 8;
 }
 
 message ArtifactProto {

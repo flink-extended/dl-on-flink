@@ -105,13 +105,15 @@ class ProtoToMeta:
         project_id = workflow_proto.project_id.value if workflow_proto.HasField('project_id') else None
         create_time = workflow_proto.create_time.value if workflow_proto.HasField('create_time') else None
         update_time = workflow_proto.update_time.value if workflow_proto.HasField('update_time') else None
+        graph = workflow_proto.graph.value if workflow_proto.HasField('graph') else None
         return WorkflowMeta(uuid=workflow_proto.uuid,
                             name=workflow_proto.name,
                             project_id=project_id,
                             properties=properties,
                             create_time=create_time,
                             update_time=update_time,
-                            context_extractor_in_bytes=workflow_proto.context_extractor_in_bytes)
+                            context_extractor_in_bytes=workflow_proto.context_extractor_in_bytes,
+                            graph=graph)
 
     @staticmethod
     def proto_to_workflow_meta_list(workflows: List[WorkflowMetaProto]) -> List[WorkflowMeta]:
