@@ -215,9 +215,9 @@ def delete_project_by_name(project_name) -> Status:
 
 
 def register_workflow(name: Text, project_id: int, properties: Properties = None,
-                      context_extractor: ContextExtractor = BroadcastAllContextExtractor) -> WorkflowMeta:
+                      context_extractor: ContextExtractor = BroadcastAllContextExtractor, graph: Text = None) -> WorkflowMeta:
     return get_ai_flow_client().register_workflow(name=name, project_id=project_id, properties=properties,
-                                                  context_extractor=context_extractor)
+                                                  context_extractor=context_extractor, graph=graph)
 
 
 def get_workflow_by_name(project_name: Text, workflow_name: Text) -> Optional[WorkflowMeta]:
@@ -244,11 +244,12 @@ def delete_workflow_by_id(workflow_id: int) -> Status:
 
 
 def update_workflow(workflow_name: Text, project_name: Text, context_extractor: ContextExtractor,
-                    properties: Properties = None) -> Optional[WorkflowMeta]:
+                    properties: Properties = None, graph: Text = None) -> Optional[WorkflowMeta]:
     return get_ai_flow_client().update_workflow(workflow_name=workflow_name,
                                                 project_name=project_name,
                                                 context_extractor=context_extractor,
-                                                properties=properties)
+                                                properties=properties,
+                                                graph=graph)
 
 
 def get_artifact_by_id(artifact_id) -> Optional[ArtifactMeta]:
