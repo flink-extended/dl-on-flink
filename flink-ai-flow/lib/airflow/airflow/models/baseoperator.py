@@ -43,6 +43,7 @@ from typing import (
 
 import attr
 import jinja2
+from airflow.events.scheduler_events import SchedulerInnerEventUtil
 from cached_property import cached_property
 from dateutil.relativedelta import relativedelta
 from sqlalchemy.orm import Session
@@ -183,6 +184,14 @@ class EventOperator(LoggingMixin, Operator):
 
     def has_subscribed_events(self) -> bool:
         if self._subscribed_events is None or len(self._subscribed_events) == 0:
+            return False
+        else:
+            return True
+
+    def has_subscribed_external_events(self) -> bool:
+        subscribed_external_event = [event for event in self._subscribed_events
+                                     if not SchedulerInnerEventUtil.is_inner_event_type(event[2])]
+        if subscribed_external_event is None or len(subscribed_external_event) == 0:
             return False
         else:
             return True
