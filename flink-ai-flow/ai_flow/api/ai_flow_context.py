@@ -35,7 +35,7 @@ def init_ai_flow_context():
     3. Init workflow configuration.
     """
     if __init_client_flag__ is True:
-        raise Exception('Only one of init_ai_client and init_ai_flow_context can take effect at the same time.')
+        raise Exception('init_ai_flow_client and init_ai_flow_context cannot be called at the same time.')
     stack = traceback.extract_stack()
     workflow_entry_file = os.path.abspath(stack[-2].filename)
     workflows_path = os.path.dirname(os.path.dirname(workflow_entry_file))
@@ -68,12 +68,12 @@ def __ensure_project_registered():
     current_project_config().set_project_uuid(str(project_meta.uuid))
 
 
-def init_ai_flow_client(server_uri: Text, project_name: Text = 'Unknown', **kwargs):
+def init_ai_flow_client(server_uri: Text, project_name: Text = None, **kwargs):
     """ Initializes the :class:`ai_flow.client.ai_flow_client.AIFlowClient`.
         It's suitable for using AIFlowClient separately in per job.
     """
     if __init_context_flag__ is True:
-        raise Exception('Only one of init_ai_client and init_ai_flow_context can take effect at the same time.')
+        raise Exception('init_ai_flow_client and init_ai_flow_context cannot be called at the same time.')
     uris = server_uri.split(',')
     if len(uris) > 1:
         def get_enable_ha():
