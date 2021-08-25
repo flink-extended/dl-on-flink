@@ -19,6 +19,7 @@
 project_name: test_project
 server_ip: localhost,localhost
 server_port: 50051,50052
+enable_ha: true
 ai_flow_home: /opt/ai_flow
 ai_flow_job_master.host: "localhost"
 ai_flow_job_master.port: 8081

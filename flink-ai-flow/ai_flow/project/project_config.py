@@ -48,8 +48,15 @@ class ProjectConfig(AIFlowConfiguration):
         ips = self["server_ip"].split(',')
         ports = str(self["server_port"]).split(',')
         if len(ips) != len(ports):
-            raise Exception('The number of ip and port must be the same! ip number({}) port number({})'
+            raise Exception('The number({}) of ip for the config server_ip must be same as the number({}) of '
+                            'port for the config server_port.'
                             .format(len(ips), len(ports)))
+        if len(ips) > 1:
+            enable_ha = self.get_enable_ha()
+            if not enable_ha:
+                raise Exception('When setting multiple server addresses, '
+                                'you need to set the configuration enable_ha to true')
+
         uris = []
         for i in range(len(ips)):
             uri = "{}:{}".format(ips[i], ports[i])

@@ -49,17 +49,17 @@ class TestAIFlowContext(unittest.TestCase):
         base.metadata.drop_all(store.db_engine)
 
     def test_init_ai_client(self):
-        af.init_ai_client(server_uri='localhost:50051', project_name='test')
+        af.init_ai_flow_client(server_uri='localhost:50051', project_name='test')
         project_meta = af.get_project_by_name('test')
         self.assertEqual('test', project_meta.name)
 
     def test_init_ai_client_no_project_name(self):
-        af.init_ai_client(server_uri='localhost:50051', project_name=None)
+        af.init_ai_flow_client(server_uri='localhost:50051', project_name=None)
         project_meta = af.get_project_by_name('Unknown')
         self.assertEqual('Unknown', project_meta.name)
 
     def test_init_ai_client_register_dataset(self):
-        af.init_ai_client(server_uri='localhost:50051', project_name=None)
+        af.init_ai_flow_client(server_uri='localhost:50051', project_name=None)
         af.register_dataset(name='test_dataset', uri='/test')
         dataset_meta = af.get_dataset_by_name('test_dataset')
         self.assertEqual('/test', dataset_meta.uri)

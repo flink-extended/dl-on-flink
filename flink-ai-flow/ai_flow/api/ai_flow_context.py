@@ -68,13 +68,25 @@ def __ensure_project_registered():
     current_project_config().set_project_uuid(str(project_meta.uuid))
 
 
-def init_ai_client(server_uri: Text, project_name: Text = 'Unknown', **kwargs):
-    """ Init the ai flow client.
-        It is used in a separate job.
+def init_ai_flow_client(server_uri: Text, project_name: Text = 'Unknown', **kwargs):
+    """ Initializes the :class:`ai_flow.client.ai_flow_client.AIFlowClient`.
+        It's suitable for using AIFlowClient separately in per job.
     """
     if __init_context_flag__ is True:
         raise Exception('Only one of init_ai_client and init_ai_flow_context can take effect at the same time.')
     uris = server_uri.split(',')
+    if len(uris) > 1:
+        def get_enable_ha():
+            if "enable_ha" in kwargs:
+                raw = kwargs["enable_ha"]
+                assert str(raw).strip().lower() in {"true", "false"}
+                return bool(str(raw).strip().lower())
+            else:
+                return False
+        enable_ha = get_enable_ha()
+        if not enable_ha:
+            raise Exception('When setting multiple server addresses, '
+                            'you need to set the configuration enable_ha to true')
     ips = []
     ports = []
     for uri in uris:
