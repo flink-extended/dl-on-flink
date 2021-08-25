@@ -467,6 +467,8 @@ class SerializedBaseOperator(BaseOperator, BaseSerialization):
                 v = cls._deserialize_deps(v)
             elif k == "_events_handler":
                 v = EventHandler.deserialize(encoded_op["_events_handler"])
+            elif k == "_subscribed_events":
+                v = [cls._deserialize(vv) for vv in v]
             elif k in cls._decorated_fields or k not in op.get_serialized_fields():
                 v = cls._deserialize(v)
             # else use v as it is

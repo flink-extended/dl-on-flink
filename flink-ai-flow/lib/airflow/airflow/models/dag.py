@@ -832,7 +832,7 @@ class DAG(LoggingMixin):
                 self.log.debug('{} has periodic task {}'.format(self.dag_id, task.task_id))
                 is_long_running = True
                 break
-            if task.has_subscribed_events():
+            if task.has_subscribed_external_events():
                 is_long_running = True
                 break
         if is_long_running:

@@ -22,12 +22,13 @@ from unittest import mock
 
 import jinja2
 import pytest
+from airflow.events.scheduler_events import SchedulerInnerEventType
 from parameterized import parameterized
 
 from airflow.exceptions import AirflowException
 from airflow.lineage.entities import File
 from airflow.models import DAG
-from airflow.models.baseoperator import chain, cross_downstream
+from airflow.models.baseoperator import chain, cross_downstream, EventOperator
 from airflow.operators.dummy import DummyOperator
 from airflow.utils.decorators import apply_defaults
 from tests.models import DEFAULT_DATE
@@ -58,6 +59,17 @@ class ClassWithCustomAttributes:
 object1 = ClassWithCustomAttributes(attr="{{ foo }}_1", template_fields=["ref"])
 object2 = ClassWithCustomAttributes(attr="{{ foo }}_2", ref=object1, template_fields=["ref"])
 setattr(object1, 'ref', object2)
+
+
+class TestEventOperator(unittest.TestCase):
+
+    def test_has_subscribed_external_event(self):
+        op = EventOperator()
+        op.subscribe_event('k', SchedulerInnerEventType.TASK_STATUS_CHANGED.value)
+        self.assertFalse(op.has_subscribed_external_events())
+
+        op.subscribe_event('k', 'external_event')
+        self.assertTrue(op.has_subscribed_external_events())
 
 
 class TestBaseOperator(unittest.TestCase):

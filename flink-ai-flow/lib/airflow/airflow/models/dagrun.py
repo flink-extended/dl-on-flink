@@ -493,16 +493,13 @@ class DagRun(Base, LoggingMixin):
         session.merge(self)
         # filter the periodic triggered and subscribed event tasks
         final_schedulable_tis = []
-        if is_long_running_dag:
-            for ti in schedulable_tis:
-                task = dag.get_task(ti.task_id)
-                if task.has_subscribed_events():
-                    continue
-                if task.executor_config is not None and 'periodic_config' in task.executor_config:
-                    continue
-                final_schedulable_tis.append(ti)
-        else:
-            final_schedulable_tis = schedulable_tis
+        for ti in schedulable_tis:
+            task = dag.get_task(ti.task_id)
+            if task.has_subscribed_events():
+                continue
+            if task.executor_config is not None and 'periodic_config' in task.executor_config:
+                continue
+            final_schedulable_tis.append(ti)
         return final_schedulable_tis, callback
 
     @provide_session
