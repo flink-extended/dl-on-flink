@@ -98,6 +98,10 @@ export default function tiTooltip(ti, { includeTryNumber = false } = {}) {
     tt += `<br><strong>Schedule:</strong><br>${escapeHtml(JSON.stringify(ti.periodic_config))}<br>`;
   }
 
+  if (ti.context !== null) {
+    tt += `<br><strong>Context:</strong><br>${escapeHtml(ti.context)}<br>`;
+  }
+
   // dagTZ has been defined in dag.html
   tt += generateTooltipDateTimes(ti.start_date, ti.end_date, dagTZ);
   return tt;
