@@ -464,6 +464,7 @@ message UpdateWorkflowRequest {
     string workflow_name = 2;
     map<string, string> properties = 3;
     bytes context_extractor_in_bytes = 4;
+    google.protobuf.StringValue graph = 5;
 }
 
 message WorkflowListProto {

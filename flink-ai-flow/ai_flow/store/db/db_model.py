@@ -129,6 +129,7 @@ class SqlWorkflow(base, Base):
     update_time = Column(BigInteger)
     is_deleted = Column(Boolean, default=False)
     context_extractor_in_bytes = Column(LargeBinary())
+    graph = Column(Text)
     scheduling_rules = Column(Text)
 
     UniqueConstraint(project_id, name)
@@ -136,8 +137,14 @@ class SqlWorkflow(base, Base):
     project = relationship("SqlProject", backref=backref('workflow', cascade='all'))
 
     def __repr__(self):
-        return '<workflow ({}, {}, {}, {}, {}, {}, {})>'.format(self.uuid, self.name, self.project_id, self.properties,
-                                                                self.create_time, self.update_time, self.is_deleted)
+        return '<workflow ({}, {}, {}, {}, {}, {}, {}, {}, {}, {})>'.format(self.uuid, self.name, self.project_id,
+                                                                            self.properties,
+                                                                            self.create_time,
+                                                                            self.update_time,
+                                                                            self.is_deleted,
+                                                                            self.context_extractor_in_bytes,
+                                                                            self.graph,
+                                                                            self.scheduling_rules)
 
 
 class SqlWorkflowContextEventHandlerState(base, Base):
@@ -500,11 +507,12 @@ class MongoWorkflow(Document):
     is_deleted = BooleanField(default=False)
     scheduling_rules = StringField()
     context_extractor_in_bytes = BinaryField()
+    graph = StringField()
 
     meta = {'db_alias': MONGO_DB_ALIAS_META_SERVICE}
 
     def __repr__(self):
-        return '<Document Workflow ({}, {}, {}, {}, {}, {}, {}, {})>'.format(
+        return '<Document Workflow ({}, {}, {}, {}, {}, {}, {}, {}, {})>'.format(
             self.uuid,
             self.name,
             self.project_id,
@@ -512,7 +520,8 @@ class MongoWorkflow(Document):
             self.create_time,
             self.update_time,
             self.is_deleted,
-            self.context_extractor_in_bytes)
+            self.context_extractor_in_bytes,
+            self.graph)
 
 
 class MongoWorkflowContextEventHandlerState(Document):

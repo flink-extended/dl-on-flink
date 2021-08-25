@@ -415,7 +415,8 @@ class MetadataService(metadata_service_pb2_grpc.MetadataServiceServicer):
         response = self.store.register_workflow(name=workflow.name,
                                                 project_id=workflow.project_id,
                                                 properties=workflow.properties,
-                                                context_extractor_in_bytes=workflow.context_extractor_in_bytes)
+                                                context_extractor_in_bytes=workflow.context_extractor_in_bytes,
+                                                graph=workflow.graph)
         return _wrap_meta_response(MetaToProto.workflow_meta_to_proto(response))
 
     @catch_exception
@@ -424,7 +425,8 @@ class MetadataService(metadata_service_pb2_grpc.MetadataServiceServicer):
         workflow = self.store.update_workflow(workflow_name=request.workflow_name,
                                               project_name=request.project_name,
                                               context_extractor_in_bytes=request.context_extractor_in_bytes,
-                                              properties=properties)
+                                              properties=properties,
+                                              graph=request.graph.value if request.HasField('graph') else None)
         return _wrap_meta_response(MetaToProto.workflow_meta_to_proto(workflow))
 
     def getWorkflowById(self, request, context):
