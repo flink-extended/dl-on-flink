@@ -195,8 +195,7 @@ def task_group_to_dict(task_group):
     if isinstance(task_group, BaseOperator):
         nodes = []
         if task_group.get_subscribed_events():
-            for event_namespace, event_key, event_type, from_task_id in BaseSerialization._deserialize(
-                task_group.get_subscribed_events()):
+            for event_namespace, event_key, event_type, from_task_id in task_group.get_subscribed_events():
                 event = '{},{},{}'.format(event_namespace, event_key, event_type)
                 nodes.append({
                     'id': event,
@@ -356,8 +355,7 @@ def dag_edges(dag):
                 get_downstream(child)
         subscribed_events = task.get_subscribed_events()
         if subscribed_events:
-            for event_namespace, event_key, event_type, from_task_id in BaseSerialization._deserialize(
-                subscribed_events):
+            for event_namespace, event_key, event_type, from_task_id in subscribed_events:
                 to_edge = ('{},{},{}'.format(event_namespace, event_key, event_type), task.task_id)
                 from_edge = ('', '{},{},{}'.format(event_namespace, event_key, event_type))
                 if to_edge not in edges:
@@ -1986,8 +1984,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
         event_tasks: Dict[Tuple, Set] = {}
         for t in dag.tasks:
             if t.get_subscribed_events():
-                for event_namespace, event_key, event_type, from_task_id in BaseSerialization._deserialize(
-                        t.get_subscribed_events()):
+                for event_namespace, event_key, event_type, from_task_id in t.get_subscribed_events():
                     downstream_task = dag.get_task(t.task_id)
                     if from_task_id:
                         event_tuple = (event_namespace, event_key, event_type)
@@ -2151,6 +2148,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
 
         nodes = task_group_to_dict(dag.task_group)
         edges = dag_edges(dag)
+        print(edges)
 
         dt_nr_dr_data = get_date_time_num_runs_dag_runs_form_data(request, session, dag)
         dt_nr_dr_data['arrange'] = arrange
@@ -2184,8 +2182,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
             if t.task_id in task_instances and t.executor_config is not None and 'periodic_config' in t.executor_config:
                 task_instances[t.task_id].update({'periodic_config': t.executor_config['periodic_config']})
             if t.get_subscribed_events():
-                for event_namespace, event_key, event_type, from_task_id in BaseSerialization._deserialize(
-                        t.get_subscribed_events()):
+                for event_namespace, event_key, event_type, from_task_id in t.get_subscribed_events():
                     event = '{},{},{}'.format(event_namespace, event_key, event_type)
                     if event not in events:
                         events[event] = (event_namespace, event_key, event_type)
@@ -2781,8 +2778,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
         events: Dict[str, Tuple[str, str, str]] = {}
         for t in dag.tasks:
             if t.get_subscribed_events():
-                for event_namespace, event_key, event_type, from_task_id in BaseSerialization._deserialize(
-                        t.get_subscribed_events()):
+                for event_namespace, event_key, event_type, from_task_id in t.get_subscribed_events():
                     event = '{},{},{}'.format(event_namespace, event_key, event_type)
                     events[event] = (event_namespace, event_key, event_type)
 
