@@ -151,6 +151,10 @@ class BashJobController(JobController):
             env = os.environ.copy()
             if 'env' in job.job_config.properties:
                 env.update(job.job_config.properties.get('env'))
+            workflow_execution_context = job_runtime_env.job_execution_info.workflow_execution.context
+            if workflow_execution_context:
+                self.log.info("Setting env var WORKFLOW_EXECUTION_CONTEXT={}".format(workflow_execution_context))
+                env['WORKFLOW_EXECUTION_CONTEXT'] = workflow_execution_context
             sub_process = self.submit_one_process(processor=processor,
                                                   env=env,
                                                   working_dir=job_runtime_env.working_dir)
