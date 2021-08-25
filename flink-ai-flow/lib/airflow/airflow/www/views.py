@@ -3479,6 +3479,7 @@ class DagRunModelView(AirflowModelView):
         'end_date',
         'external_trigger',
         'conf',
+        'context'
     ]
     search_columns = [
         'state',
@@ -3490,8 +3491,9 @@ class DagRunModelView(AirflowModelView):
         'end_date',
         'external_trigger',
         'conf',
+        'context'
     ]
-    edit_columns = ['state', 'dag_id', 'execution_date', 'run_id', 'conf']
+    edit_columns = ['state', 'dag_id', 'execution_date', 'run_id', 'conf', 'context']
 
     base_order = ('execution_date', 'desc')
 
@@ -4142,9 +4144,9 @@ class EventModelView(AirflowModelView):
 
     list_columns = ['key', 'version', 'value', 'event_type', 'context', 'namespace', 'sender', 'create_time', 'uuid']
 
-    order_columns = [item for item in list_columns if item not in ['context']]
+    order_columns = [item for item in list_columns]
 
-    search_columns = ['key', 'version', 'event_type', 'namespace', 'sender', 'create_time']
+    search_columns = ['key', 'version', 'event_type', 'context', 'namespace', 'sender', 'create_time']
 
     base_order = ('key', 'asc')
 
