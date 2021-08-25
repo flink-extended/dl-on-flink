@@ -1,0 +1,4 @@
+data_processing:
+  job_type: python
+data_cp:
+  job_type: python

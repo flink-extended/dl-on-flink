@@ -1,0 +1,5 @@
+project_name: workflow_on_event
+server_ip: localhost
+server_port: 50051
+blob:
+  blob_manager_class: ai_flow_plugins.blob_manager_plugins.local_blob_manager.LocalBlobManager
