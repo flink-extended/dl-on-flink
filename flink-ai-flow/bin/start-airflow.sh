@@ -55,7 +55,7 @@ echo "Airflow Scheduler started"
 
 echo "Starting Airflow Web Server"
 WEB_SERVER_LOG_FILE_NAME=web-$(date "+%Y%m%d-%H%M%S").log
-airflow webserver -p 8080 > ${AIFLOW_LOG_DIR}/${WEB_SERVER_LOG_FILE_NAME} 2>&1 &
+airflow webserver -p 8080 --server-uri=${NOTIFICATION_SERVER_URI} > ${AIFLOW_LOG_DIR}/${WEB_SERVER_LOG_FILE_NAME} 2>&1 &
 echo $! > ${AIFLOW_PID_DIR}/web.pid
 wait_for_airflow_web_server ${WEB_SERVER_LOG_FILE_NAME}
 echo "Airflow Web Server started"
