@@ -445,6 +445,10 @@ class BaseExecutor(LoggingMixin):
     def send_message(self, key: TaskInstanceKey):
         if self._mailbox is not None:
             ti = self.get_task_instance(key)
+            if ti is None:
+                self.log.warning("Failed to find TaskInstance {} {} {} {}. It might be deleted manually."
+                                 .format(key.dag_id, key.task_id, key.execution_date, key.try_number))
+                return
             task_status_changed_event = TaskStateChangedEvent(
                 ti.task_id,
                 ti.dag_id,

@@ -20,6 +20,11 @@ import unittest
 from datetime import datetime, timedelta
 from unittest import mock
 
+from airflow.utils.session import provide_session
+
+from airflow.utils import timezone
+from airflow.utils.mailbox import Mailbox
+
 from airflow.executors.base_executor import BaseExecutor
 from airflow.models.baseoperator import BaseOperator
 from airflow.models.dag import DAG
@@ -72,3 +77,10 @@ class TestBaseExecutor(unittest.TestCase):
         key3 = TaskInstance(task=task_3, execution_date=date)
         tis = [key1, key2, key3]
         self.assertEqual(BaseExecutor().try_adopt_task_instances(tis), tis)
+
+    def test_send_event_with_none_exist_task_instance(self):
+        base_executor = BaseExecutor()
+        mailbox = Mailbox()
+        base_executor.set_mailbox(mailbox)
+        base_executor.send_message(TaskInstanceKey('invalid', 'invalid', timezone.utcnow(), 0))
+        self.assertIsNone(mailbox.get_message_with_timeout(1))
