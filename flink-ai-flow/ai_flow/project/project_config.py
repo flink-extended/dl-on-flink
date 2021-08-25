@@ -46,7 +46,7 @@ class ProjectConfig(AIFlowConfiguration):
         return: The ai_flow.endpoint.server.server.AIFlowServer uri(ip:port,ip:port).
         """
         ips = self["server_ip"].split(',')
-        ports = self["server_port"].split(',')
+        ports = str(self["server_port"]).split(',')
         if len(ips) != len(ports):
             raise Exception('The number of ip and port must be the same! ip number({}) port number({})'
                             .format(len(ips), len(ports)))
