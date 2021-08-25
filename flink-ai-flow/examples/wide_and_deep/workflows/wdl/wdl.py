@@ -21,16 +21,15 @@ import os
 import sys
 
 import ai_flow as af
-from ai_flow_plugins.job_plugins import flink as flink_job
 from ai_flow.model_center.entity.model_version_stage import ModelVersionEventType
+from ai_flow_plugins.job_plugins import flink as flink_job
+from ai_flow_plugins.job_plugins.flink import FlinkJavaProcessor
+from cencus_stream_predict_executors import StreamPredictSource, StreamPredictExecutor, StreamPredictSink, \
+    StreamPredictPreprocessSource, StreamPredictPreprocessExecutor, StreamPredictPreprocessSink
+from cencus_stream_train_executors import StreamPreprocessExecutor, StreamValidateExecutor, StreamPushExecutor, \
+    StreamTrainExecutor, StreamTrainSource, StreamTableEnvCreator, StreamPreprocessSource, StreamPreprocessSink
 from census_batch_executors import BatchPreprocessExecutor, BatchTrainExecutor, BatchEvaluateExecutor, \
     BatchValidateExecutor
-from cencus_stream_train_executors import StreamPreprocessExecutor, StreamValidateExecutor, StreamPushExecutor, \
-    StreamTrainExecutor, StreamTrainSource, StreamTableEnvCreator, StreamPreprocessSource
-from cencus_stream_predict_executors import StreamPredictSource, StreamPredictExecutor, StreamPredictSink, \
-    StreamPredictPreprocessSource, StreamPredictPreprocessSink
-
-from ai_flow_plugins.job_plugins.flink import FlinkJavaProcessor
 
 
 def batch_jobs():
@@ -67,6 +66,9 @@ def stream_train():
         stream_preprocess_channel = af.user_define_operation(input=[stream_preprocess_source],
                                                              processor=StreamPreprocessExecutor(),
                                                              name='census_stream_preprocess')
+        af.write_dataset(input=stream_preprocess_channel,
+                         dataset_info=stream_train_input,
+                         write_dataset_processor=StreamPreprocessSink())
 
     with af.job_config(job_name='census_stream_train'):
         stream_train_source = af.read_dataset(dataset_info=stream_train_input,
@@ -103,10 +105,13 @@ def stream_prediction(use_jar_preprocess):
         else:
             stream_predict_preprocess_source = af.read_dataset(dataset_info=stream_preprocess_input,
                                                                read_dataset_processor=StreamPredictPreprocessSource())
-            stream_predict_preprocess_sink = af.user_define_operation(
+            stream_predict_preprocess_channel = af.user_define_operation(
                 input=[stream_predict_preprocess_source],
-                processor=StreamPredictPreprocessSink(),
-                name='census_stream_predict_preprocess_sink')
+                processor=StreamPredictPreprocessExecutor(),
+                name='census_stream_predict_preprocess')
+            af.write_dataset(input=stream_predict_preprocess_channel,
+                             dataset_info=stream_predict_input,
+                             write_dataset_processor=StreamPredictPreprocessSink())
 
     with af.job_config(job_name='census_stream_predict'):
         stream_predict_source = af.read_dataset(dataset_info=stream_predict_input,

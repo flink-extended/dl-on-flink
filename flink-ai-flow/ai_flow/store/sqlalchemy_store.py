@@ -757,7 +757,7 @@ class SqlAlchemyStore(AbstractStore):
     '''workflow api'''
 
     def register_workflow(self, name, project_id, context_extractor_in_bytes: bytes = BROADCAST_ALL_CONTEXT_EXTRACTOR,
-                          properties=None) -> WorkflowMeta:
+                          properties=None, graph=None) -> WorkflowMeta:
         """
         Register a workflow in metadata store.
 
@@ -765,6 +765,7 @@ class SqlAlchemyStore(AbstractStore):
         :param project_id: the id of project which contains the workflow
         :param context_extractor_in_bytes: serialized context extractor in bytes
         :param properties: the workflow properties
+        :param graph: the graph of the workflow
         """
         update_time = create_time = int(time.time() * 1000)
         with self.ManagedSessionMaker() as session:
@@ -774,13 +775,15 @@ class SqlAlchemyStore(AbstractStore):
                                                          properties=properties,
                                                          create_time=create_time,
                                                          update_time=update_time,
-                                                         context_extractor_in_bytes=context_extractor_in_bytes)
+                                                         context_extractor_in_bytes=context_extractor_in_bytes,
+                                                         graph=graph)
                 session.add(workflow)
                 session.flush()
                 return WorkflowMeta(uuid=workflow.uuid, name=name,
                                     project_id=project_id, properties=properties,
                                     create_time=create_time, update_time=update_time,
-                                    context_extractor_in_bytes=context_extractor_in_bytes)
+                                    context_extractor_in_bytes=context_extractor_in_bytes,
+                                    graph=graph)
             except sqlalchemy.exc.IntegrityError as e:
                 raise AIFlowException('Error: {}'.format(workflow.name, workflow.project_id, str(e)))
 
@@ -878,7 +881,8 @@ class SqlAlchemyStore(AbstractStore):
                 raise AIFlowException(str(e))
 
     def update_workflow(self, workflow_name, project_name, context_extractor_in_bytes,
-                        scheduling_rules: List[WorkflowSchedulingRule] = None, properties=None) -> Optional[WorkflowMeta]:
+                        scheduling_rules: List[WorkflowSchedulingRule] = None, properties=None,
+                        graph=None) -> Optional[WorkflowMeta]:
         """
         Update the workflow
 
@@ -887,6 +891,7 @@ class SqlAlchemyStore(AbstractStore):
         :param context_extractor_in_bytes: the serialized context extractor in bytes
         :param scheduling_rules: the scheduling rules of the workflow
         :param properties: (Optional) the properties need to be updated
+        :param graph: (Optional) the graph of the workflow
         """
         with self.ManagedSessionMaker() as session:
             try:
@@ -900,6 +905,8 @@ class SqlAlchemyStore(AbstractStore):
                     return None
                 if properties is not None:
                     workflow.properties = str(properties)
+                if graph is not None:
+                    workflow.graph = graph
                 workflow.context_extractor_in_bytes = context_extractor_in_bytes
                 workflow.scheduling_rules = json_utils.dumps(scheduling_rules)
                 workflow.update_time = int(time.time() * 1000)
