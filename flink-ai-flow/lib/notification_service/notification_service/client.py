@@ -487,6 +487,7 @@ class NotificationClient(BaseNotification):
             else:
                 logging.error("Exception thrown when updating the living members: %s" %
                               response.return_msg)
+            time.sleep(int(self.list_member_interval_ms / 1000))
 
     def _ha_wrapper(self, func):
         @wraps(func)
