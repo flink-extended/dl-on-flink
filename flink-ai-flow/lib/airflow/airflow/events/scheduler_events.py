@@ -361,8 +361,12 @@ class EventHandleEvent(SchedulerInnerEvent):
 class SchedulerInnerEventUtil(object):
     @staticmethod
     def is_inner_event(event: BaseEvent) -> bool:
+        return SchedulerInnerEventUtil.is_inner_event_type(event.event_type)
+
+    @staticmethod
+    def is_inner_event_type(event_type):
         try:
-            SchedulerInnerEventType(event.event_type)
+            SchedulerInnerEventType(event_type)
             return True
         except ValueError as e:
             return False
