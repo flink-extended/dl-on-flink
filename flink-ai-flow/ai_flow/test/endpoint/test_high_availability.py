@@ -67,7 +67,7 @@ class TestHighAvailableAIFlowServer(unittest.TestCase):
         self.config.set_enable_ha(True)
         self.config.set_notification_service_uri('localhost:30031')
         self.config.set_project_name('test_project')
-        self.client = AIFlowClient(server_uri='localhost:50052,localhost:50051', project_config=self.config)
+        self.client = AIFlowClient(server_uri='localhost:50051', project_config=self.config)
 
     def tearDown(self) -> None:
         self.client.stop_listen_event()
