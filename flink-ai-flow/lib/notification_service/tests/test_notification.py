@@ -365,6 +365,17 @@ class HaDbStorageTest(unittest.TestCase, NotificationTest):
 class HaClientWithNonHaServerTest(unittest.TestCase, NotificationTest):
 
     @classmethod
+    def wait_for_master_started(cls, server_uri="localhost:50051"):
+        last_exception = None
+        for i in range(100):
+            try:
+                return NotificationClient(server_uri=server_uri, enable_ha=True)
+            except Exception as e:
+                time.sleep(10)
+                last_exception = e
+        raise Exception("The server %s is unavailable." % server_uri) from last_exception
+
+    @classmethod
     def set_up_class(cls):
         cls.storage = DbEventStorage()
         cls.master = NotificationMaster(NotificationService(cls.storage))
@@ -380,7 +391,7 @@ class HaClientWithNonHaServerTest(unittest.TestCase, NotificationTest):
 
     def setUp(self):
         self.storage.clean_up()
-        self.client = NotificationClient(server_uri="localhost:50051", enable_ha=True)
+        self.client = self.wait_for_master_started(server_uri="localhost:50051")
 
     def tearDown(self):
         self.client.stop_listen_events()
