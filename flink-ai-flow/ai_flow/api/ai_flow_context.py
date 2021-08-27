@@ -74,26 +74,7 @@ def init_ai_flow_client(server_uri: Text, project_name: Text = None, **kwargs):
     """
     if __init_context_flag__ is True:
         raise Exception('init_ai_flow_client and init_ai_flow_context cannot be called at the same time.')
-    uris = server_uri.split(',')
-    if len(uris) > 1:
-        def get_enable_ha():
-            if "enable_ha" in kwargs:
-                raw = kwargs["enable_ha"]
-                assert str(raw).strip().lower() in {"true", "false"}
-                return bool(str(raw).strip().lower())
-            else:
-                return False
-        enable_ha = get_enable_ha()
-        if not enable_ha:
-            raise Exception('When setting multiple server addresses, '
-                            'you need to set the configuration enable_ha to true')
-    ips = []
-    ports = []
-    for uri in uris:
-        tmp = uri.split(':')
-        ips.append(tmp[0])
-        ports.append(tmp[1])
-    config_dict = {'server_ip': ','.join(ips), 'server_port': ','.join(ports)}
+    config_dict = {'server_uri': server_uri}
     if project_name is None:
         project_name = 'Unknown'
     config_dict['project_name'] = project_name

@@ -17,7 +17,6 @@
 ## under the License.
 ##
 project_name: sklearn_examples
-server_ip: localhost
-server_port: 50051
+server_uri: localhost:50051
 blob:
   blob_manager_class: ai_flow_plugins.blob_manager_plugins.local_blob_manager.LocalBlobManager

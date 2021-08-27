@@ -17,7 +17,6 @@
 ## under the License.
 ##
 project_name: test_project
-server_ip: localhost
-server_port: 50051
+server_uri: localhost:50051
 airflow_deploy_path: /tmp/airflow/
 notification_uri: localhost:50052

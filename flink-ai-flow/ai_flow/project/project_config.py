@@ -23,46 +23,18 @@ class ProjectConfig(AIFlowConfiguration):
     """
     Configuration information of ai flow project.
     """
-    def get_server_ip(self):
-        """
-        return: The ai_flow.endpoint.server.server.AIFlowServer ip.
-        """
-        return self["server_ip"]
-
-    def set_server_ip(self, value):
-        self["server_ip"] = value
-
-    def get_server_port(self):
-        """
-        return: The ai_flow.endpoint.server.server.AIFlowServer port.
-        """
-        return self["server_port"]
-
-    def set_server_port(self, value):
-        self["server_port"] = value
 
     def get_server_uri(self):
         """
-        return: The ai_flow.endpoint.server.server.AIFlowServer uri(ip:port,ip:port).
+        return: The list of ai_flow.endpoint.server.server.AIFlowServer server_uri with comma separated.
         """
-        ips = self["server_ip"].split(',')
-        ports = str(self["server_port"]).split(',')
-        if len(ips) != len(ports):
-            raise Exception('The number({}) of ip for the config server_ip must be same as the number({}) of '
-                            'port for the config server_port.'
-                            .format(len(ips), len(ports)))
-        if len(ips) > 1:
-            enable_ha = self.get_enable_ha()
-            if not enable_ha:
-                raise Exception('When setting multiple server addresses, '
-                                'you need to set the configuration enable_ha to true')
+        if len(self["server_uri"].split(',')) > 1 and not self.get_enable_ha():
+            raise Exception('When setting multiple server addresses, '
+                            'you need to set the configuration enable_ha to true')
+        return self["server_uri"]
 
-        uris = []
-        for i in range(len(ips)):
-            uri = "{}:{}".format(ips[i], ports[i])
-            uris.append(uri)
-
-        return ','.join(uris)
+    def set_server_uri(self, value):
+        self["server_uri"] = value
 
     def get_project_name(self):
         """
