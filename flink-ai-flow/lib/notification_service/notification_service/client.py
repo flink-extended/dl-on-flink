@@ -79,19 +79,19 @@ class NotificationClient(BaseNotification):
         """
         The constructor of the NotificationClient.
 
-        :param server_uri: Target server uri/uris. If `enable_ha` is True, multiple uris separated
-                           by "," can be accepted.
+        :param server_uri: Target server uri/uris. If multiple uris separated by "," were provided,
+                           the HA mode would be turned on, regardless of the parameter `enable_ha`.
         :param default_namespace: The default namespace that this client is working on.
         :param enable_ha: Enable high-available functionality.
-        :param list_member_interval_ms: When `enable_ha` is True, this client will request the
+        :param list_member_interval_ms: In HA mode, this client will request the
                                         living members periodically. A member means a server node
                                         of the Notification server cluster. This param specifies
                                         the interval of the listing member requests.
-        :param retry_interval_ms: When `enable_ha` is True and a rpc call has failed on all the
+        :param retry_interval_ms: In HA mode a rpc call has failed on all the
                                   living members, this client will retry until success or timeout.
                                   This param specifies the retry interval.
 
-        :param retry_timeout_ms: When `enable_ha` is True and a rpc call has failed on all the
+        :param retry_timeout_ms: In HA mode a rpc call has failed on all the
                                  living members, this client will retry until success or timeout.
                                  This param specifies the retry timeout.
         :param sender: The identify of the client.
@@ -106,12 +106,12 @@ class NotificationClient(BaseNotification):
         self.retry_interval_ms = retry_interval_ms
         self.retry_timeout_ms = retry_timeout_ms
         self._sender = sender
-        if self.enable_ha:
-            server_uris = server_uri.split(",")
+        server_uri_list = server_uri.split(",")
+        if len(server_uri_list) > 1 or self.enable_ha:
             self.living_members = []
             self.current_uri = None
             last_error = None
-            for server_uri in server_uris:
+            for server_uri in server_uri_list:
                 channel = grpc.insecure_channel(server_uri)
                 notification_stub = notification_service_pb2_grpc.NotificationServiceStub(channel)
                 try:
