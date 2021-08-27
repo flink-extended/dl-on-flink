@@ -31,6 +31,7 @@ export AIRFLOW_HOME=${AIRFLOW_HOME:-~/airflow}
 
 # create directory if not exist
 [ -d ${AIFLOW_HOME} ] || mkdir ${AIFLOW_HOME}
+[ -d ${AIFLOW_PID_DIR} ] || mkdir ${AIFLOW_PID_DIR}
 [ -d ${AIFLOW_LOG_DIR} ] || mkdir ${AIFLOW_LOG_DIR}
 [ -d ${AIRFLOW_HOME} ] || mkdir ${AIRFLOW_HOME}
 [ -d ${AIRFLOW_DEPLOY_PATH} ] || mkdir ${AIRFLOW_DEPLOY_PATH}
