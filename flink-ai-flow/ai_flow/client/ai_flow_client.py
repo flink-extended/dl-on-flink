@@ -96,7 +96,7 @@ class AIFlowClient(MetadataClient, ModelCenterClient, NotificationClient, Metric
         ModelCenterClient.__init__(self, server_uri)
         MetricClient.__init__(self, server_uri)
         SchedulerClient.__init__(self, server_uri)
-        self.enable_ha = False
+        self.aiflow_ha_enabled = False
         self.list_member_interval_ms = 5000
         self.retry_interval_ms = 1000
         self.retry_timeout_ms = 10000
@@ -107,7 +107,7 @@ class AIFlowClient(MetadataClient, ModelCenterClient, NotificationClient, Metric
             if notification_service_uri is None:
                 notification_service_uri = project_config.get_notification_service_uri()
             project_name = project_config.get_project_name()
-            self.enable_ha = project_config.get_enable_ha()
+            self.aiflow_ha_enabled = project_config.get_enable_ha()
             self.list_member_interval_ms = project_config.get_list_member_interval_ms()
             self.retry_interval_ms = project_config.get_retry_interval_ms()
             self.retry_timeout_ms = project_config.get_retry_timeout_ms()
@@ -117,7 +117,6 @@ class AIFlowClient(MetadataClient, ModelCenterClient, NotificationClient, Metric
             NotificationClient.__init__(
                 self,
                 server_uri,
-                enable_ha=self.enable_ha,
                 list_member_interval_ms=self.list_member_interval_ms,
                 retry_interval_ms=self.retry_interval_ms,
                 retry_timeout_ms=self.retry_timeout_ms,
@@ -126,12 +125,11 @@ class AIFlowClient(MetadataClient, ModelCenterClient, NotificationClient, Metric
             NotificationClient.__init__(
                 self,
                 notification_service_uri,
-                enable_ha=self.enable_ha,
                 list_member_interval_ms=self.list_member_interval_ms,
                 retry_interval_ms=self.retry_interval_ms,
                 retry_timeout_ms=self.retry_timeout_ms,
                 default_namespace=project_name)
-        if self.enable_ha:
+        if self.aiflow_ha_enabled:
             server_uris = server_uri.split(",")
             self.living_aiflow_members = []
             self.current_aiflow_uri = None
