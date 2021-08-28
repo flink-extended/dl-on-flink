@@ -16,7 +16,6 @@
 ## specific language governing permissions and limitations
 ## under the License.
 ##
-server_ip: localhost
 server_port: 50051
 db_uri: sqlite:///aiflow.db
 db_type: sql_lite

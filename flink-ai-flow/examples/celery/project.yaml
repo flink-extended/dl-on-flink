@@ -17,8 +17,7 @@
 ## under the License.
 ##
 project_name: celery_examples
-server_ip:
-server_port:
+server_uri:
 blob:
   blob_manager_class: ai_flow_plugins.blob_manager_plugins.oss_blob_manager.OssBlobManager
   blob_manager_config:

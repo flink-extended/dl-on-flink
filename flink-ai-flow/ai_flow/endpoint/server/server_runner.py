@@ -22,6 +22,7 @@ from typing import Text
 from ai_flow.endpoint.server.server import AIFlowServer
 from ai_flow.endpoint.server.server_config import AIFlowServerConfig
 from ai_flow.client.ai_flow_client import get_ai_flow_client
+from ai_flow.util.net_utils import get_ip_addr
 import logging
 
 _SQLITE_DB_FILE = 'aiflow.db'
@@ -76,7 +77,7 @@ class AIFlowServerRunner(object):
             start_scheduler_service=self.server_config.start_scheduler_service(),
             scheduler_service_config=self.server_config.get_scheduler_service_config(),
             enabled_ha=self.server_config.get_enable_ha(),
-            ha_server_uri=self.server_config.get_server_ip() + ":" + str(self.server_config.get_server_port()),
+            ha_server_uri=get_ip_addr() + ":" + str(self.server_config.get_server_port()),
             ttl_ms=self.server_config.get_ha_ttl_ms())
         self.server.run(is_block=is_block)
 
