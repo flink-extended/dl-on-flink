@@ -17,8 +17,7 @@
 
 # Config of AIFlow server
 
-# endpoint of AIFlow server
-server_ip: localhost
+# port of AIFlow server
 server_port: 50051
 # uri of database backend for AIFlow server
 db_uri: {AIFLOW_DB_CONN}
@@ -32,7 +31,7 @@ db_type: {AIFLOW_DB_TYPE}
 
 # whether to start the default notification service, default is True
 # start_default_notification: True
-# uri of the notification service. Use the server_ip: server_port if not set.
+# uri of the notification service. Use the server_uri if not set.
 # notification_uri: localhost:50051
 
 # whether to start the metadata service, default is True
