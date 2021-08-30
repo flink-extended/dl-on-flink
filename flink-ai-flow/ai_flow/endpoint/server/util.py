@@ -390,7 +390,8 @@ def transform_workflow_meta(workflow_proto) -> WorkflowMeta:
                         properties=properties,
                         create_time=workflow_proto.create_time.value if workflow_proto.HasField('create_time') else None,
                         update_time=workflow_proto.update_time.value if workflow_proto.HasField('update_time') else None,
-                        context_extractor_in_bytes=workflow_proto.context_extractor_in_bytes
+                        context_extractor_in_bytes=workflow_proto.context_extractor_in_bytes,
+                        graph=workflow_proto.graph.value if workflow_proto.HasField('graph') else None
                         )
 
 

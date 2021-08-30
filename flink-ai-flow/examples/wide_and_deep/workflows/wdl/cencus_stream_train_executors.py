@@ -85,34 +85,40 @@ class StreamPreprocessSource(FlinkPythonProcessor):
 
 class StreamPreprocessExecutor(FlinkPythonProcessor):
     def process(self, execution_context: ExecutionContext, input_list: List[Table] = None) -> List[Table]:
+        return input_list
+
+
+class StreamPreprocessSink(FlinkPythonProcessor):
+
+    def process(self, execution_context: ExecutionContext, input_list: List[Table] = None) -> List[Table]:
         table_env: TableEnvironment = execution_context.table_env
         statement_set = execution_context.statement_set
         table_env.execute_sql('''
-            create table stream_train_preprocess_sink (
-                age varchar,
-                workclass varchar,
-                fnlwgt varchar,
-                education varchar,
-                education_num varchar,
-                marital_status varchar,
-                occupation varchar,
-                relationship varchar,
-                race varchar,
-                gender varchar,
-                capital_gain varchar,
-                capital_loss varchar,
-                hours_per_week varchar,
-                native_country varchar,
-                income_bracket varchar
-            ) with (
-                'connector' = 'kafka',
-                'topic' = 'census_train_input_topic',
-                'properties.bootstrap.servers' = 'localhost:9092',
-                'properties.group.id' = 'stream_train_preprocess_sink',
-                'format' = 'csv',
-                'scan.startup.mode' = 'earliest-offset'
-            )
-        ''')
+                    create table stream_train_preprocess_sink (
+                        age varchar,
+                        workclass varchar,
+                        fnlwgt varchar,
+                        education varchar,
+                        education_num varchar,
+                        marital_status varchar,
+                        occupation varchar,
+                        relationship varchar,
+                        race varchar,
+                        gender varchar,
+                        capital_gain varchar,
+                        capital_loss varchar,
+                        hours_per_week varchar,
+                        native_country varchar,
+                        income_bracket varchar
+                    ) with (
+                        'connector' = 'kafka',
+                        'topic' = 'census_train_input_topic',
+                        'properties.bootstrap.servers' = 'localhost:9092',
+                        'properties.group.id' = 'stream_train_preprocess_sink',
+                        'format' = 'csv',
+                        'scan.startup.mode' = 'earliest-offset'
+                    )
+                ''')
         statement_set.add_insert('stream_train_preprocess_sink', input_list[0])
         return []
 

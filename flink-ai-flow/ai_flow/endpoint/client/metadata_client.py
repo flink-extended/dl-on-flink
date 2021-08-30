@@ -688,7 +688,8 @@ class MetadataClient(BaseClient):
     '''workflow api'''
 
     def register_workflow(self, name: Text, project_id: int, properties: Properties = None,
-                          context_extractor: ContextExtractor = BroadcastAllContextExtractor()) -> WorkflowMeta:
+                          context_extractor: ContextExtractor = BroadcastAllContextExtractor(),
+                          graph: str = None) -> WorkflowMeta:
         """
         Register a workflow in metadata store.
 
@@ -696,11 +697,13 @@ class MetadataClient(BaseClient):
         :param project_id: the id of project which contains the workflow
         :param properties: the workflow properties
         :param context_extractor: the :class:`~ai_flow.api.context_extractor.ContextExtractor`
+        :param graph: the json of :class:`~ai_flow.ai_graph.ai_graph.AIGraph`
         """
         workflow_request = WorkflowMetaProto(name=name,
                                              project_id=int64Value(project_id),
                                              properties=properties,
-                                             context_extractor_in_bytes=cloudpickle.dumps(context_extractor))
+                                             context_extractor_in_bytes=cloudpickle.dumps(context_extractor),
+                                             graph=stringValue(graph))
         request = metadata_service_pb2.RegisterWorkflowRequest(workflow=workflow_request)
         response = self.metadata_store_stub.registerWorkflow(request)
         return _unwrap_workflow_response(response)
@@ -764,7 +767,7 @@ class MetadataClient(BaseClient):
         return _unwrap_delete_response(response)
 
     def update_workflow(self, workflow_name: Text, project_name: Text, context_extractor: ContextExtractor,
-                        properties: Properties = None) -> Optional[WorkflowMeta]:
+                        properties: Properties = None, graph: str = None) -> Optional[WorkflowMeta]:
         """
         Update the workflow
 
@@ -772,10 +775,13 @@ class MetadataClient(BaseClient):
         :param project_name: the name of project which contains the workflow
         :param context_extractor: the  context extractor instance
         :param properties: (Optional) the properties need to be updated
+        :param graph: the json of :class:`~ai_flow.ai_graph.ai_graph.AIGraph`
         """
         request = metadata_service_pb2.UpdateWorkflowRequest(workflow_name=workflow_name,
                                                              project_name=project_name,
-                                                             context_extractor_in_bytes=cloudpickle.dumps(context_extractor),
-                                                             properties=properties)
+                                                             context_extractor_in_bytes=cloudpickle.dumps(
+                                                                 context_extractor),
+                                                             properties=properties,
+                                                             graph=stringValue(graph))
         response = self.metadata_store_stub.updateWorkflow(request)
         return _unwrap_workflow_response(response)
