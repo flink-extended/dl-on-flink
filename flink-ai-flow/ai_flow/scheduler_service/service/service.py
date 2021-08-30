@@ -15,10 +15,11 @@
 # specific language governing permissions and limitations
 # under the License.
 import logging
-from typing import Text, Dict
+from typing import Text
 import traceback
 
 from ai_flow.api.context_extractor import WORKFLOW_EXECUTION_DEFAULT_CONTEXT
+from ai_flow.scheduler_service.service.config import SchedulerServiceConfig
 from ai_flow.scheduler_service.service.workflow_event_manager import WorkflowEventManager
 from ai_flow.workflow.control_edge import WorkflowAction
 
@@ -30,7 +31,6 @@ from ai_flow.endpoint.server.server_config import DBType
 
 from ai_flow.store.db.db_util import extract_db_engine_from_uri, parse_mongo_uri
 
-from ai_flow.common.configuration import AIFlowConfiguration
 from ai_flow.workflow.workflow import WorkflowPropertyKeys
 from ai_flow.plugin_interface.blob_manager_interface import BlobConfig, BlobManagerFactory
 
@@ -41,45 +41,16 @@ from ai_flow.protobuf.scheduling_service_pb2_grpc import SchedulingServiceServic
 from ai_flow.protobuf.scheduling_service_pb2 import \
     (ScheduleWorkflowRequest,
      WorkflowInfoResponse,
-     ListWorkflowInfoResponse,
      WorkflowExecutionRequest,
      WorkflowExecutionResponse,
      ListWorkflowExecutionResponse,
      ScheduleJobRequest,
      JobInfoResponse,
      ListJobInfoResponse, WorkflowExecutionOnEventRequest)
-from ai_flow.plugin_interface.scheduler_interface import Scheduler, SchedulerFactory, SchedulerConfig, WorkflowInfo
+from ai_flow.plugin_interface.scheduler_interface import Scheduler, SchedulerFactory, WorkflowInfo
 from ai_flow.workflow.workflow import Workflow
-from ai_flow.endpoint.server.workflow_proto_utils import workflow_to_proto, workflow_list_to_proto, \
-    workflow_execution_to_proto, workflow_execution_list_to_proto, job_to_proto, job_list_to_proto
-
-
-class SchedulerServiceConfig(AIFlowConfiguration):
-
-    def __init__(self, config: Dict):
-        super().__init__()
-        if config is None:
-            raise Exception(
-                'The `{}` option is not configured in the {} option. Please add it!'.format('scheduler_service',
-                                                                                            'aiflow_server.yaml'))
-
-        self['repository'] = '/tmp'
-        if config.get('repository') is not None:
-            self['repository'] = config.get('repository')
-        scheduler_meta = SchedulerConfig(config.get('scheduler'))
-        self['scheduler'] = scheduler_meta
-
-    def repository(self):
-        return self['repository']
-
-    def set_repository(self, value):
-        self['repository'] = value
-
-    def scheduler(self):
-        return self['scheduler']
-
-    def set_scheduler(self, value):
-        self['scheduler'] = value
+from ai_flow.endpoint.server.workflow_proto_utils import workflow_to_proto, workflow_execution_to_proto, \
+    workflow_execution_list_to_proto, job_to_proto, job_list_to_proto
 
 
 class SchedulerService(SchedulingServiceServicer):
@@ -120,7 +91,6 @@ class SchedulerService(SchedulingServiceServicer):
         if self.workflow_event_manager:
             self.workflow_event_manager.stop()
         logging.info("SchedulerService stopped.")
-
 
     # workflow interface
     def submitWorkflow(self, request, context):
