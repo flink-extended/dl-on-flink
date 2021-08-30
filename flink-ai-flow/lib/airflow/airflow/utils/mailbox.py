@@ -17,22 +17,49 @@
 import pickle
 import queue
 
-from airflow.configuration import conf
-from airflow.models.message import Message, IdentifiedMessage
+from notification_service.base_notification import BaseEvent
+
+from airflow.models.event_progress import EventProgress
+from airflow.utils import timezone
+from airflow.utils.session import provide_session
+from airflow.models.message import Message, IdentifiedMessage, MessageState
 from airflow.utils.log.logging_mixin import LoggingMixin
 
 
 class Mailbox(LoggingMixin):
 
     def __init__(self) -> None:
+        super().__init__()
         self.queue = queue.Queue()
         self.scheduling_job_id = None
+
+    @provide_session
+    def _save_message_to_db(self, message, session) -> IdentifiedMessage:
+        """ 1. save message to db
+            2. update the event progress
+        """
+        try:
+            if isinstance(message, BaseEvent) and message.version is not None and message.create_time is not None:
+                progress = EventProgress(scheduling_job_id=self.scheduling_job_id,
+                                         last_event_time=message.create_time,
+                                         last_event_version=message.version)
+                session.merge(progress)
+
+            message_obj = Message(message)
+            message_obj.state = MessageState.QUEUED
+            message_obj.scheduling_job_id = self.scheduling_job_id
+            message_obj.queue_time = timezone.utcnow()
+            session.add(message_obj)
+            session.commit()
+            return IdentifiedMessage(serialized_message=message_obj.data, msg_id=message_obj.id)
+        except Exception as e:
+            session.rollback()
+            raise e
 
     def send_message(self, message):
         if not self.scheduling_job_id:
             self.log.warning("scheduling_job_id not set, missing messages cannot be recovered.")
-        message_obj = Message(message)
-        identified_message = message_obj.save_queued_message(self.scheduling_job_id)
+        identified_message = self._save_message_to_db(message)
         self.queue.put(identified_message)
 
     def send_identified_message(self, message: IdentifiedMessage):

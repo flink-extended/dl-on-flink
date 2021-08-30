@@ -113,6 +113,15 @@ def upgrade():
         op.create_index('message_queue_time', 'message', ['queue_time'], unique=False)
         op.create_index('message_state', 'message', ['state'], unique=False)
 
+    if 'event_progress' not in tables:
+        op.create_table(
+            'event_progress',
+            sa.Column('scheduling_job_id', sa.Integer(), nullable=False),
+            sa.Column('last_event_time', sa.BigInteger(), nullable=True),
+            sa.Column('last_event_version', sa.BigInteger(), nullable=True),
+        )
+
+
 def downgrade():
     conn = op.get_bind()  # pylint: disable=no-member
     is_sqlite = bool(conn.dialect.name == "sqlite")
@@ -131,3 +140,4 @@ def downgrade():
     op.drop_table('task_state')
     op.drop_table('task_execution')
     op.drop_table('message')
+    op.drop_table('event_progress')
