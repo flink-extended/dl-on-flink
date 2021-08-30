@@ -22,7 +22,7 @@ from ai_flow.endpoint.server.server import AIFlowServer
 from ai_flow.api.ai_flow_context import init_ai_flow_context
 from ai_flow.context.workflow_config_loader import current_workflow_config
 from ai_flow.api import workflow_operation
-from ai_flow.scheduler_service.service.service import SchedulerServiceConfig
+from ai_flow.scheduler_service.service.config import SchedulerServiceConfig
 
 _SQLITE_DB_FILE = 'aiflow.db'
 _SQLITE_DB_URI = '%s%s' % ('sqlite:///', _SQLITE_DB_FILE)
