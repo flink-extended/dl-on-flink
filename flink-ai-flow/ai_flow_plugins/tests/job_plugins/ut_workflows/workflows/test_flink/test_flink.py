@@ -90,7 +90,7 @@ class TestFlink(unittest.TestCase):
             processed = af.transform(input=[input_example], transform_processor=Transformer())
             af.user_define_operation(input=[processed], processor=SinkWithExecuteSql())
         af.workflow_operation.submit_workflow(
-            workflow_name='test_local_flink_no_statementset_task')
+            workflow_name=af.current_workflow_config().workflow_name)
         af.workflow_operation.start_job_execution(job_name='task_1', execution_id='1')
         je = af.workflow_operation.get_job_execution(job_name='task_1', execution_id='1')
         self.assertEqual(Status.FINISHED, je.status)
@@ -110,7 +110,7 @@ class TestFlink(unittest.TestCase):
             af.user_define_operation(
                 input=[processed], processor=SinkWithAddInsertSql())
         af.workflow_operation.submit_workflow(
-            workflow_name='test_local_flink_execute_statementset_add_insert_sql_task')
+            workflow_name=af.current_workflow_config().workflow_name)
         af.workflow_operation.start_job_execution(
             job_name='task_1', execution_id='1')
         je = af.workflow_operation.get_job_execution(
