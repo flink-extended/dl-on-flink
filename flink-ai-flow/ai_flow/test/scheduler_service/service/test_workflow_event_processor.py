@@ -78,7 +78,7 @@ class TestWorkflowEventProcessor(unittest.TestCase):
         process = multiprocessing.Process(target=self.processor.run)
         process.start()
 
-        event = BaseEvent('k', 'v', namespace='default')
+        event = BaseEvent('k', 'v', namespace='test_namespace')
         self.c2.send(event)
 
         time.sleep(1)
@@ -96,42 +96,58 @@ class TestWorkflowEventProcessor(unittest.TestCase):
 
         self.processor._handle_event_for_workflow = mock__handle_event_for_workflow
 
-        self.processor._process_event(BaseEvent('k', 'v', namespace='default'))
-        self.assertEqual(2, self.call_cnt)
+        self.processor._process_event(BaseEvent('k', 'v', namespace='test_namespace'))
+        self.assertEqual(3, self.call_cnt)
 
     def _prepare_workflows(self):
         context_extractor = MyContextExtractor()
 
-        rule = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k', 'v'), WorkflowAction.STOP)
-        rule1 = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k1', 'v1'), WorkflowAction.START)
-        rule2 = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k2', 'v2'), WorkflowAction.START)
+        rule = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k', 'v', namespace='test_namespace'),
+                                      WorkflowAction.STOP)
+        rule1 = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k1', 'v1', namespace='test_namespace'),
+                                       WorkflowAction.START)
+        rule2 = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k2', 'v2', namespace='test_namespace'),
+                                       WorkflowAction.START)
         w1 = WorkflowMeta('workflow1', 0, context_extractor_in_bytes=cloudpickle.dumps(context_extractor),
                           scheduling_rules=[rule, rule1])
         w2 = WorkflowMeta('workflow2', 1, context_extractor_in_bytes=cloudpickle.dumps(context_extractor),
                           scheduling_rules=[rule, rule2])
-        self.mock_store.list_workflows.return_value = [w1, w2]
+        w3 = WorkflowMeta('workflow3', 1, context_extractor_in_bytes=cloudpickle.dumps(context_extractor),
+                          scheduling_rules=[rule])
+
+        def mock_list_workflows(project_name):
+            if project_name == 'test_project1':
+                return [w1]
+            elif project_name == 'test_project2':
+                return [w2, w3]
+            else:
+                return None
+
+        self.mock_store.list_workflows = mock_list_workflows
+        self.mock_store.list_project.return_value = ['test_project1', 'test_project2']
 
     def test__get_subscribed_workflow(self):
-        e = BaseEvent('k1', 'v1', namespace='default')
-        workflows = self.processor._get_subscribed_workflow(e, 'default')
+        e = BaseEvent('k1', 'v1', namespace='test_namespace')
+        workflows = self.processor._get_subscribed_workflow(e, 'test_project1')
         self.assertEqual(1, len(workflows))
         self.assertEqual('workflow1', workflows[0].name)
 
-        e = BaseEvent('k2', 'v2', namespace='default')
-        workflows = self.processor._get_subscribed_workflow(e, 'default')
+        e = BaseEvent('k2', 'v2', namespace='test_namespace')
+        workflows = self.processor._get_subscribed_workflow(e, 'test_project2')
         self.assertEqual(1, len(workflows))
         self.assertEqual('workflow2', workflows[0].name)
 
-        e = BaseEvent('k', 'v', namespace='default')
-        workflows = self.processor._get_subscribed_workflow(e, 'default')
-        self.assertEqual(2, len(workflows))
-        self.assertIn('workflow1', [workflow.name for workflow in workflows])
-        self.assertIn('workflow2', [workflow.name for workflow in workflows])
+        e = BaseEvent('k', 'v', namespace='test_namespace')
+        workflows1 = self.processor._get_subscribed_workflow(e, 'test_project1')
+        workflows2 = self.processor._get_subscribed_workflow(e, 'test_project2')
+        self.assertEqual(3, len(workflows1 + workflows2))
+        self.assertIn('workflow1', [workflow.name for workflow in workflows1])
+        self.assertIn('workflow2', [workflow.name for workflow in workflows2])
+        self.assertIn('workflow3', [workflow.name for workflow in workflows2])
 
     def test__get_subscribed_workflow_without_workflow(self):
-        self.mock_store.list_workflows.return_value = None
-        e = BaseEvent('k2', 'v2', namespace='default')
-        workflows = self.processor._get_subscribed_workflow(e, 'default')
+        e = BaseEvent('k2', 'v2', namespace='test_namespace')
+        workflows = self.processor._get_subscribed_workflow(e, 'test_not_exist_project')
         self.assertEqual(0, len(workflows))
 
     def test__get_workflow_execution_state_register_state_if_not_exist(self):
@@ -173,15 +189,17 @@ class TestWorkflowEventProcessor(unittest.TestCase):
 
     def test__handler_event_for_workflow_none_action(self):
         context_extractor = MyContextExtractor()
-        rule = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k', 'v'), WorkflowAction.START)
-        rule1 = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k1', 'v1'), WorkflowAction.START)
+        rule = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k', 'v', namespace='test_namespace'),
+                                      WorkflowAction.START)
+        rule1 = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k1', 'v1', namespace='test_namespace'),
+                                       WorkflowAction.START)
         w1 = WorkflowMeta('workflow1', 0, context_extractor_in_bytes=cloudpickle.dumps(context_extractor),
                           scheduling_rules=[rule, rule1])
         state = WorkflowContextEventHandlerState('project', 'workflow1', 'context_1')
         self.mock_store.get_workflow_context_event_handler_state.return_value = state
         self.mock_event_handler.handle_event.return_value = (WorkflowAction.NONE, 1)
 
-        e = BaseEvent('k1', 'v1', namespace='default')
+        e = BaseEvent('k1', 'v1', namespace='test_namespace')
         self.processor._handle_event_for_workflow('project', w1, e)
 
         self.mock_store.update_workflow_context_event_handler_state \
@@ -189,8 +207,10 @@ class TestWorkflowEventProcessor(unittest.TestCase):
 
     def test__handler_event_for_workflow_start_action(self):
         context_extractor = MyContextExtractor()
-        rule = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k', 'v'), WorkflowAction.START)
-        rule1 = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k1', 'v1'), WorkflowAction.START)
+        rule = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k', 'v', namespace='test_namespace'),
+                                      WorkflowAction.START)
+        rule1 = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k1', 'v1', namespace='test_namespace'),
+                                       WorkflowAction.START)
         w1 = WorkflowMeta('workflow1', 0, context_extractor_in_bytes=cloudpickle.dumps(context_extractor),
                           scheduling_rules=[rule, rule1])
         state = WorkflowContextEventHandlerState('project', 'workflow1', 'context_1')
@@ -199,7 +219,7 @@ class TestWorkflowEventProcessor(unittest.TestCase):
         # Start Action
         self.mock_scheduler.start_new_workflow_execution.return_value = WorkflowExecutionInfo('execution_id')
         self.mock_event_handler.handle_event.return_value = (WorkflowAction.START, 1)
-        e = BaseEvent('k1', 'v1', namespace='default')
+        e = BaseEvent('k1', 'v1', namespace='test_namespace')
         self.processor._handle_event_for_workflow('project', w1, e)
 
         self.mock_scheduler.start_new_workflow_execution.assert_called_with('project', 'workflow1', 'context_1')
@@ -208,8 +228,10 @@ class TestWorkflowEventProcessor(unittest.TestCase):
 
     def test__handler_event_for_workflow_start_with_running_workflow_execution(self):
         context_extractor = MyContextExtractor()
-        rule = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k', 'v'), WorkflowAction.START)
-        rule1 = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k1', 'v1'), WorkflowAction.START)
+        rule = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k', 'v', namespace='test_namespace'),
+                                      WorkflowAction.START)
+        rule1 = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k1', 'v1', namespace='test_namespace'),
+                                       WorkflowAction.START)
         w1 = WorkflowMeta('workflow1', 0, context_extractor_in_bytes=cloudpickle.dumps(context_extractor),
                           scheduling_rules=[rule, rule1])
         state = WorkflowContextEventHandlerState('project', 'workflow1', 'context_1', '1')
@@ -218,7 +240,7 @@ class TestWorkflowEventProcessor(unittest.TestCase):
         # Start Action
         self.mock_scheduler.get_workflow_execution.return_value = WorkflowExecutionInfo('1', status=Status.RUNNING)
         self.mock_event_handler.handle_event.return_value = (WorkflowAction.START, 1)
-        e = BaseEvent('k1', 'v1', namespace='default')
+        e = BaseEvent('k1', 'v1', namespace='test_namespace')
         self.processor._handle_event_for_workflow('project', w1, e)
 
         self.mock_scheduler.start_new_workflow_execution.assert_not_called()
@@ -227,8 +249,10 @@ class TestWorkflowEventProcessor(unittest.TestCase):
 
     def test__handler_event_for_workflow_start_with_non_running_workflow_execution(self):
         context_extractor = MyContextExtractor()
-        rule = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k', 'v'), WorkflowAction.START)
-        rule1 = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k1', 'v1'), WorkflowAction.START)
+        rule = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k', 'v', namespace='test_namespace'),
+                                      WorkflowAction.START)
+        rule1 = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k1', 'v1', namespace='test_namespace'),
+                                       WorkflowAction.START)
         w1 = WorkflowMeta('workflow1', 0, context_extractor_in_bytes=cloudpickle.dumps(context_extractor),
                           scheduling_rules=[rule, rule1])
         state = WorkflowContextEventHandlerState('project', 'workflow1', 'context_1', '1')
@@ -238,25 +262,26 @@ class TestWorkflowEventProcessor(unittest.TestCase):
         self.mock_scheduler.get_workflow_execution.return_value = WorkflowExecutionInfo('1', status=Status.FINISHED)
         self.mock_scheduler.start_new_workflow_execution.return_value = WorkflowExecutionInfo('execution_id')
         self.mock_event_handler.handle_event.return_value = (WorkflowAction.START, 1)
-        e = BaseEvent('k1', 'v1', namespace='default')
+        e = BaseEvent('k1', 'v1', namespace='test_namespace')
         self.processor._handle_event_for_workflow('project', w1, e)
 
         self.mock_scheduler.start_new_workflow_execution.assert_called_with('project', 'workflow1', 'context_1')
         self.mock_store.update_workflow_context_event_handler_state \
             .assert_called_with('project', 'workflow1', 'context_1', 'execution_id', 1)
 
-
     def test__handler_event_for_workflow_stop_action(self):
         context_extractor = MyContextExtractor()
-        rule = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k', 'v'), WorkflowAction.START)
-        rule1 = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k1', 'v1'), WorkflowAction.START)
+        rule = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k', 'v', namespace='test_namespace'),
+                                      WorkflowAction.START)
+        rule1 = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k1', 'v1', namespace='test_namespace'),
+                                       WorkflowAction.START)
         w1 = WorkflowMeta('workflow1', 0, context_extractor_in_bytes=cloudpickle.dumps(context_extractor),
                           scheduling_rules=[rule, rule1])
         state = WorkflowContextEventHandlerState('project', 'workflow1', 'context_1')
         self.mock_store.get_workflow_context_event_handler_state.return_value = state
         self.mock_event_handler.handle_event.return_value = (WorkflowAction.STOP, 1)
 
-        e = BaseEvent('k1', 'v1', namespace='default')
+        e = BaseEvent('k1', 'v1', namespace='test_namespace')
         self.processor._handle_event_for_workflow('project', w1, e)
 
         self.mock_store.update_workflow_context_event_handler_state \
@@ -270,13 +295,15 @@ class TestWorkflowEventProcessor(unittest.TestCase):
 
     def test__handler_event_for_workflow_exception(self):
         context_extractor = MyContextExtractor()
-        rule = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k', 'v'), WorkflowAction.START)
-        rule1 = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k1', 'v1'), WorkflowAction.START)
+        rule = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k', 'v', namespace='test_namespace'),
+                                      WorkflowAction.START)
+        rule1 = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k1', 'v1', namespace='test_namespace'),
+                                       WorkflowAction.START)
         w1 = WorkflowMeta('workflow1', 0, context_extractor_in_bytes=cloudpickle.dumps(context_extractor),
                           scheduling_rules=[rule, rule1])
         state = WorkflowContextEventHandlerState('project', 'workflow1', 'context_1')
         self.mock_store.get_workflow_context_event_handler_state.return_value = state
 
         # Start Action
-        e = BaseEvent('k1', 'v1', namespace='default', event_type='exception')
+        e = BaseEvent('k1', 'v1', namespace='test_namespace', event_type='exception')
         self.processor._handle_event_for_workflow('project', w1, e)
