@@ -34,6 +34,7 @@ def event_based_scheduler(args):
     job = EventBasedSchedulerJob(
         dag_directory=process_subdir(args.subdir),
         server_uri=args.server_uri,
+        event_start_time=args.event_start_time
     )
 
     if args.daemon:

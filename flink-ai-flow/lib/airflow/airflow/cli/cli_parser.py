@@ -154,6 +154,14 @@ ARG_SERVER_URI = Arg(
     ),
     default='localhost:50051'
 )
+ARG_EVENT_START_TIME = Arg(
+    ("--event-start-time",),
+    help=(
+        "The scheduler listen for events since this timestamp which is represented as milliseconds since epoch."
+    ),
+    type=int,
+    default=None
+)
 ARG_DAG_SHA1_HASH = Arg(
     ("--dag-file-sha1-hash",),
     help=(
@@ -1473,6 +1481,7 @@ airflow_commands: List[CLICommand] = [
         args=(
             ARG_SUBDIR,
             ARG_SERVER_URI,
+            ARG_EVENT_START_TIME,
             ARG_NUM_RUNS,
             ARG_DO_PICKLE,
             ARG_PID,

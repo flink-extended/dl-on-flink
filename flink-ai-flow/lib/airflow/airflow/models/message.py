@@ -43,6 +43,7 @@ class IdentifiedMessage(object):
     def remove_handled_message(self, session):
         # TODO this function could be asynchronous
         session.query(Message).filter(Message.id == self.msg_id).delete(synchronize_session=False)
+        session.commit()
 
 
 class Message(Base):
