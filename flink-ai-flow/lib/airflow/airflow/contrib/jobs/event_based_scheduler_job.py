@@ -28,6 +28,7 @@ from airflow.contrib.jobs.periodic_manager import PeriodicManager
 from airflow.events.context_extractor import ContextExtractor, EventContext
 from airflow.exceptions import SerializedDagNotFound, AirflowException
 from airflow.models.dagcode import DagCode
+from airflow.models.event_progress import get_event_progress, create_or_update_progress
 from airflow.models.message import IdentifiedMessage, MessageState
 from sqlalchemy import func, not_, or_, asc
 from sqlalchemy.orm import selectinload
@@ -555,13 +556,12 @@ class SchedulerEventWatcher(EventWatcher):
 class EventBasedSchedulerJob(BaseJob):
     """
     1. todo self heartbeat
-    2. todo check other scheduler failed
-    3. todo timeout dagrun
     """
     __mapper_args__ = {'polymorphic_identity': 'EventBasedSchedulerJob'}
 
     def __init__(self, dag_directory,
                  server_uri=None,
+                 event_start_time=None,
                  max_runs=-1,
                  refresh_dag_dir_interval=conf.getint('scheduler', 'refresh_dag_dir_interval', fallback=1),
                  *args, **kwargs):
@@ -594,6 +594,18 @@ class EventBasedSchedulerJob(BaseJob):
             self.periodic_manager
         )
         self.last_scheduling_id = self._last_scheduler_job_id()
+        self.need_recover_state = False
+        self.last_event_version = None
+        if event_start_time is None:
+            if self.last_scheduling_id is None:
+                self.start_time = int(time.time() * 1000)
+            else:
+                # need recover the state of the scheduler
+                self.start_time, self.last_event_version = self._get_progress(self.last_scheduling_id)
+                self.need_recover_state = True
+        else:
+            self.start_time = event_start_time
+        self.log.info('Progress {} {}'.format(self.start_time, self.last_event_version))
 
     @staticmethod
     def _last_scheduler_job_id():
@@ -602,6 +614,14 @@ class EventBasedSchedulerJob(BaseJob):
             return None
         else:
             return last_run.id
+
+    @staticmethod
+    def _get_progress(scheduling_job_id):
+        progress = get_event_progress(scheduling_job_id)
+        if progress is None:
+            return int(time.time()*1000), None
+        else:
+            return progress.last_event_time, progress.last_event_version
 
     def _execute(self):
         # faulthandler.enable()
@@ -613,7 +633,6 @@ class EventBasedSchedulerJob(BaseJob):
         try:
             self.mailbox.set_scheduling_job_id(self.id)
             self.scheduler.id = self.id
-            self._start_listen_events()
             self.dag_trigger.start()
             self.task_event_manager.start()
             self.executor.job_id = self.id
@@ -627,7 +646,13 @@ class EventBasedSchedulerJob(BaseJob):
             execute_start_time = timezone.utcnow()
 
             self.scheduler.submit_sync_thread()
-            self.scheduler.recover(self.last_scheduling_id)
+            if self.need_recover_state:
+                self.scheduler.recover(self.last_scheduling_id)
+
+            self._set_event_progress()
+
+            self._start_listen_events()
+
             self._run_scheduler_loop()
 
             self._stop_listen_events()
@@ -651,12 +676,17 @@ class EventBasedSchedulerJob(BaseJob):
             self.heartbeat(only_if_necessary=True)
         self.scheduler.stop_timer()
 
+    def _set_event_progress(self):
+        create_or_update_progress(scheduling_job_id=self.id,
+                                  last_event_time=self.start_time,
+                                  last_event_version=self.last_event_version)
+
     def _start_listen_events(self):
         watcher = SchedulerEventWatcher(self.mailbox)
         self.notification_client.start_listen_events(
             watcher=watcher,
-            start_time=int(time.time() * 1000),
-            version=None
+            start_time=self.start_time,
+            version=self.last_event_version
         )
 
     def _stop_listen_events(self):
