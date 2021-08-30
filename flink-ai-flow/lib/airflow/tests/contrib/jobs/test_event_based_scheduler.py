@@ -36,7 +36,7 @@ from airflow.contrib.jobs.scheduler_client import EventSchedulerClient
 from airflow.models.taskexecution import TaskExecution
 from notification_service.base_notification import BaseEvent, UNDEFINED_EVENT_TYPE
 from notification_service.client import NotificationClient
-from notification_service.event_storage import MemoryEventStorage
+from notification_service.event_storage import MemoryEventStorage, DbEventStorage
 from notification_service.master import NotificationMaster
 from notification_service.service import NotificationService
 
@@ -64,6 +64,7 @@ class TestEventBasedScheduler(unittest.TestCase):
         db.clear_db_runs()
         db.clear_db_task_execution()
         db.clear_db_message()
+        db.clear_db_event_progress()
         self.scheduler = None
         self.port = 50102
         self.storage = MemoryEventStorage()
@@ -246,7 +247,8 @@ class TestEventBasedScheduler(unittest.TestCase):
                     while True:
                         with create_session() as session_2:
                             tes_2 = session_2.query(TaskExecution).filter(TaskExecution.dag_id == 'event_dag',
-                                                                          TaskExecution.task_id == 'task_2').all()
+                                                                          TaskExecution.task_id == 'task_2',
+                                                                          TaskExecution.state == State.SUCCESS).all()
                             if len(tes_2) > 0:
                                 break
                             else:
@@ -254,6 +256,7 @@ class TestEventBasedScheduler(unittest.TestCase):
                     break
                 else:
                     time.sleep(1)
+        time.sleep(5)
         client.send_event(StopSchedulerEvent(job_id=0).to_event())
 
     def test_run_event_task(self):
@@ -264,6 +267,41 @@ class TestEventBasedScheduler(unittest.TestCase):
         self.start_scheduler(dag_file)
         tes: List[TaskExecution] = self.get_task_execution("event_dag", "task_2")
         self.assertEqual(len(tes), 1)
+
+    def run_recover_message_function(self):
+        client = NotificationClient(server_uri="localhost:{}".format(self.port),
+                                    default_namespace="")
+        while True:
+            with create_session() as session:
+                tes_2 = session.query(TaskExecution).filter(TaskExecution.dag_id == 'event_dag',
+                                                            TaskExecution.task_id == 'task_2').all()
+                if len(tes_2) > 1:
+                    break
+                else:
+                    time.sleep(1)
+        client.send_event(StopSchedulerEvent(job_id=0).to_event())
+
+    def test_recover_message(self):
+        dag_file = os.path.join(TEST_DAG_FOLDER, 'test_event_task_dag.py')
+        t = threading.Thread(target=self.run_event_task_function, args=())
+        t.setDaemon(True)
+        t.start()
+        self.start_scheduler(dag_file)
+        tes: List[TaskExecution] = self.get_task_execution("event_dag", "task_2")
+        self.assertEqual(len(tes), 1)
+        time.sleep(10)
+        client = NotificationClient(server_uri="localhost:{}".format(self.port),
+                                    default_namespace="")
+        client.send_event(BaseEvent(key='start', value='', event_type='', namespace=''))
+        time.sleep(5)
+
+        t = threading.Thread(target=self.run_recover_message_function, args=())
+        t.setDaemon(True)
+        t.start()
+        self.start_scheduler(dag_file)
+
+        tes: List[TaskExecution] = self.get_task_execution("event_dag", "task_2")
+        self.assertEqual(len(tes), 2)
 
     def run_trigger_dag_function(self, dag_file):
         time.sleep(5)

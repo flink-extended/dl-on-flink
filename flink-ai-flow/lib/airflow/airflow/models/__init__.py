@@ -36,3 +36,4 @@ from airflow.models.taskreschedule import TaskReschedule
 from airflow.models.variable import Variable
 from airflow.models.xcom import XCOM_RETURN_KEY, XCom
 from airflow.models.message import Message, IdentifiedMessage
+from airflow.models.event_progress import EventProgress, create_or_update_progress, get_event_progress
