@@ -18122,6 +18122,21 @@ public final class Message {
      * @return The contextExtractorInBytes.
      */
     com.google.protobuf.ByteString getContextExtractorInBytes();
+
+    /**
+     * <code>.google.protobuf.StringValue graph = 8;</code>
+     * @return Whether the graph field is set.
+     */
+    boolean hasGraph();
+    /**
+     * <code>.google.protobuf.StringValue graph = 8;</code>
+     * @return The graph.
+     */
+    com.google.protobuf.StringValue getGraph();
+    /**
+     * <code>.google.protobuf.StringValue graph = 8;</code>
+     */
+    com.google.protobuf.StringValueOrBuilder getGraphOrBuilder();
   }
   /**
    * Protobuf type {@code ai_flow.WorkflowMetaProto}
@@ -18237,6 +18252,19 @@ public final class Message {
             case 58: {
 
               contextExtractorInBytes_ = input.readBytes();
+              break;
+            }
+            case 66: {
+              com.google.protobuf.StringValue.Builder subBuilder = null;
+              if (graph_ != null) {
+                subBuilder = graph_.toBuilder();
+              }
+              graph_ = input.readMessage(com.google.protobuf.StringValue.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(graph_);
+                graph_ = subBuilder.buildPartial();
+              }
+
               break;
             }
             default: {
@@ -18502,6 +18530,32 @@ public final class Message {
       return contextExtractorInBytes_;
     }
 
+    public static final int GRAPH_FIELD_NUMBER = 8;
+    private com.google.protobuf.StringValue graph_;
+    /**
+     * <code>.google.protobuf.StringValue graph = 8;</code>
+     * @return Whether the graph field is set.
+     */
+    @java.lang.Override
+    public boolean hasGraph() {
+      return graph_ != null;
+    }
+    /**
+     * <code>.google.protobuf.StringValue graph = 8;</code>
+     * @return The graph.
+     */
+    @java.lang.Override
+    public com.google.protobuf.StringValue getGraph() {
+      return graph_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : graph_;
+    }
+    /**
+     * <code>.google.protobuf.StringValue graph = 8;</code>
+     */
+    @java.lang.Override
+    public com.google.protobuf.StringValueOrBuilder getGraphOrBuilder() {
+      return getGraph();
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -18539,6 +18593,9 @@ public final class Message {
       }
       if (!contextExtractorInBytes_.isEmpty()) {
         output.writeBytes(7, contextExtractorInBytes_);
+      }
+      if (graph_ != null) {
+        output.writeMessage(8, getGraph());
       }
       unknownFields.writeTo(output);
     }
@@ -18582,6 +18639,10 @@ public final class Message {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(7, contextExtractorInBytes_);
       }
+      if (graph_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(8, getGraph());
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -18620,6 +18681,11 @@ public final class Message {
       }
       if (!getContextExtractorInBytes()
           .equals(other.getContextExtractorInBytes())) return false;
+      if (hasGraph() != other.hasGraph()) return false;
+      if (hasGraph()) {
+        if (!getGraph()
+            .equals(other.getGraph())) return false;
+      }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -18654,6 +18720,10 @@ public final class Message {
       }
       hash = (37 * hash) + CONTEXT_EXTRACTOR_IN_BYTES_FIELD_NUMBER;
       hash = (53 * hash) + getContextExtractorInBytes().hashCode();
+      if (hasGraph()) {
+        hash = (37 * hash) + GRAPH_FIELD_NUMBER;
+        hash = (53 * hash) + getGraph().hashCode();
+      }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -18834,6 +18904,12 @@ public final class Message {
         }
         contextExtractorInBytes_ = com.google.protobuf.ByteString.EMPTY;
 
+        if (graphBuilder_ == null) {
+          graph_ = null;
+        } else {
+          graph_ = null;
+          graphBuilder_ = null;
+        }
         return this;
       }
 
@@ -18881,6 +18957,11 @@ public final class Message {
           result.updateTime_ = updateTimeBuilder_.build();
         }
         result.contextExtractorInBytes_ = contextExtractorInBytes_;
+        if (graphBuilder_ == null) {
+          result.graph_ = graph_;
+        } else {
+          result.graph_ = graphBuilder_.build();
+        }
         onBuilt();
         return result;
       }
@@ -18949,6 +19030,9 @@ public final class Message {
         }
         if (other.getContextExtractorInBytes() != com.google.protobuf.ByteString.EMPTY) {
           setContextExtractorInBytes(other.getContextExtractorInBytes());
+        }
+        if (other.hasGraph()) {
+          mergeGraph(other.getGraph());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -19604,6 +19688,125 @@ public final class Message {
         contextExtractorInBytes_ = getDefaultInstance().getContextExtractorInBytes();
         onChanged();
         return this;
+      }
+
+      private com.google.protobuf.StringValue graph_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> graphBuilder_;
+      /**
+       * <code>.google.protobuf.StringValue graph = 8;</code>
+       * @return Whether the graph field is set.
+       */
+      public boolean hasGraph() {
+        return graphBuilder_ != null || graph_ != null;
+      }
+      /**
+       * <code>.google.protobuf.StringValue graph = 8;</code>
+       * @return The graph.
+       */
+      public com.google.protobuf.StringValue getGraph() {
+        if (graphBuilder_ == null) {
+          return graph_ == null ? com.google.protobuf.StringValue.getDefaultInstance() : graph_;
+        } else {
+          return graphBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.google.protobuf.StringValue graph = 8;</code>
+       */
+      public Builder setGraph(com.google.protobuf.StringValue value) {
+        if (graphBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          graph_ = value;
+          onChanged();
+        } else {
+          graphBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.google.protobuf.StringValue graph = 8;</code>
+       */
+      public Builder setGraph(
+          com.google.protobuf.StringValue.Builder builderForValue) {
+        if (graphBuilder_ == null) {
+          graph_ = builderForValue.build();
+          onChanged();
+        } else {
+          graphBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.google.protobuf.StringValue graph = 8;</code>
+       */
+      public Builder mergeGraph(com.google.protobuf.StringValue value) {
+        if (graphBuilder_ == null) {
+          if (graph_ != null) {
+            graph_ =
+              com.google.protobuf.StringValue.newBuilder(graph_).mergeFrom(value).buildPartial();
+          } else {
+            graph_ = value;
+          }
+          onChanged();
+        } else {
+          graphBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.google.protobuf.StringValue graph = 8;</code>
+       */
+      public Builder clearGraph() {
+        if (graphBuilder_ == null) {
+          graph_ = null;
+          onChanged();
+        } else {
+          graph_ = null;
+          graphBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.google.protobuf.StringValue graph = 8;</code>
+       */
+      public com.google.protobuf.StringValue.Builder getGraphBuilder() {
+        
+        onChanged();
+        return getGraphFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.google.protobuf.StringValue graph = 8;</code>
+       */
+      public com.google.protobuf.StringValueOrBuilder getGraphOrBuilder() {
+        if (graphBuilder_ != null) {
+          return graphBuilder_.getMessageOrBuilder();
+        } else {
+          return graph_ == null ?
+              com.google.protobuf.StringValue.getDefaultInstance() : graph_;
+        }
+      }
+      /**
+       * <code>.google.protobuf.StringValue graph = 8;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder> 
+          getGraphFieldBuilder() {
+        if (graphBuilder_ == null) {
+          graphBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.google.protobuf.StringValue, com.google.protobuf.StringValue.Builder, com.google.protobuf.StringValueOrBuilder>(
+                  getGraph(),
+                  getParentForChildren(),
+                  isClean());
+          graph_ = null;
+        }
+        return graphBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -34713,112 +34916,114 @@ public final class Message {
       "ow.ProjectProto.PropertiesEntry\022)\n\003uri\030\004" +
       " \001(\0132\034.google.protobuf.StringValue\0321\n\017Pr" +
       "opertiesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(" +
-      "\t:\0028\001\"\333\002\n\021WorkflowMetaProto\022\014\n\004uuid\030\001 \001(" +
+      "\t:\0028\001\"\210\003\n\021WorkflowMetaProto\022\014\n\004uuid\030\001 \001(" +
       "\003\022\014\n\004name\030\002 \001(\t\022/\n\nproject_id\030\003 \001(\0132\033.go" +
       "ogle.protobuf.Int64Value\022>\n\nproperties\030\004" +
       " \003(\0132*.ai_flow.WorkflowMetaProto.Propert" +
       "iesEntry\0220\n\013create_time\030\005 \001(\0132\033.google.p" +
       "rotobuf.Int64Value\0220\n\013update_time\030\006 \001(\0132" +
       "\033.google.protobuf.Int64Value\022\"\n\032context_" +
-      "extractor_in_bytes\030\007 \001(\014\0321\n\017PropertiesEn" +
-      "try\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"\221\003\n\r" +
-      "ArtifactProto\022\014\n\004uuid\030\001 \001(\003\022\014\n\004name\030\002 \001(" +
-      "\t\022:\n\nproperties\030\003 \003(\0132&.ai_flow.Artifact" +
-      "Proto.PropertiesEntry\0223\n\rartifact_type\030\004" +
-      " \001(\0132\034.google.protobuf.StringValue\022)\n\003ur" +
-      "i\030\005 \001(\0132\034.google.protobuf.StringValue\0221\n" +
-      "\013description\030\006 \001(\0132\034.google.protobuf.Str" +
-      "ingValue\0220\n\013create_time\030\007 \001(\0132\033.google.p" +
-      "rotobuf.Int64Value\0220\n\013update_time\030\010 \001(\0132" +
-      "\033.google.protobuf.Int64Value\0321\n\017Properti" +
-      "esEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"" +
-      "z\n\024RegisteredModelParam\0220\n\nmodel_name\030\001 " +
-      "\001(\0132\034.google.protobuf.StringValue\0220\n\nmod" +
-      "el_desc\030\002 \001(\0132\034.google.protobuf.StringVa" +
-      "lue\"\336\001\n\021ModelVersionParam\0220\n\nmodel_path\030" +
-      "\001 \001(\0132\034.google.protobuf.StringValue\0220\n\nm" +
-      "odel_type\030\002 \001(\0132\034.google.protobuf.String" +
-      "Value\0222\n\014version_desc\030\003 \001(\0132\034.google.pro" +
-      "tobuf.StringValue\0221\n\rcurrent_stage\030\004 \001(\016" +
-      "2\032.ai_flow.ModelVersionStage\"w\n\016ModelMet" +
-      "aParam\0220\n\nmodel_name\030\001 \001(\0132\034.google.prot" +
-      "obuf.StringValue\0223\n\rmodel_version\030\002 \001(\0132" +
-      "\034.google.protobuf.StringValue\"A\n\010Respons" +
-      "e\022\023\n\013return_code\030\001 \001(\t\022\022\n\nreturn_msg\030\002 \001" +
-      "(\t\022\014\n\004data\030\003 \001(\t\"[\n\023RegisteredModelMeta\022" +
-      "\022\n\nmodel_name\030\001 \001(\t\0220\n\nmodel_desc\030\002 \001(\0132" +
-      "\034.google.protobuf.StringValue\"\275\002\n\020ModelV" +
-      "ersionMeta\022\022\n\nmodel_name\030\001 \001(\t\022\025\n\rmodel_" +
-      "version\030\002 \001(\t\0220\n\nmodel_path\030\003 \001(\0132\034.goog" +
-      "le.protobuf.StringValue\0220\n\nmodel_type\030\005 " +
-      "\001(\0132\034.google.protobuf.StringValue\0222\n\014ver" +
-      "sion_desc\030\006 \001(\0132\034.google.protobuf.String" +
-      "Value\0223\n\016version_status\030\007 \001(\0162\033.ai_flow." +
-      "ModelVersionStatus\0221\n\rcurrent_stage\030\010 \001(" +
-      "\0162\032.ai_flow.ModelVersionStage\"\210\001\n\025Regist" +
-      "eredModelDetail\0226\n\020registered_model\030\001 \001(" +
-      "\0132\034.ai_flow.RegisteredModelMeta\0227\n\024lates" +
-      "t_model_version\030\002 \001(\0132\031.ai_flow.ModelVer" +
-      "sionMeta\"O\n\024RegisteredModelMetas\0227\n\021regi" +
-      "stered_models\030\001 \003(\0132\034.ai_flow.Registered" +
-      "ModelMeta\"J\n\013ResultProto\022$\n\006status\030\001 \001(\016" +
-      "2\024.ai_flow.StatusProto\022\025\n\rerror_message\030" +
-      "\002 \001(\t\"\230\005\n\017MetricMetaProto\0221\n\013metric_name" +
-      "\030\001 \001(\0132\034.google.protobuf.StringValue\022-\n\013" +
-      "metric_type\030\002 \001(\0162\030.ai_flow.MetricTypePr" +
-      "oto\0221\n\013metric_desc\030\003 \001(\0132\034.google.protob" +
-      "uf.StringValue\0222\n\014project_name\030\004 \001(\0132\034.g" +
-      "oogle.protobuf.StringValue\0222\n\014dataset_na" +
-      "me\030\005 \001(\0132\034.google.protobuf.StringValue\0220" +
-      "\n\nmodel_name\030\006 \001(\0132\034.google.protobuf.Str" +
-      "ingValue\022.\n\010job_name\030\007 \001(\0132\034.google.prot" +
-      "obuf.StringValue\022/\n\nstart_time\030\010 \001(\0132\033.g" +
-      "oogle.protobuf.Int64Value\022-\n\010end_time\030\t " +
-      "\001(\0132\033.google.protobuf.Int64Value\022)\n\003uri\030" +
-      "\n \001(\0132\034.google.protobuf.StringValue\022*\n\004t" +
-      "ags\030\013 \001(\0132\034.google.protobuf.StringValue\022" +
-      "<\n\nproperties\030\014 \003(\0132(.ai_flow.MetricMeta" +
-      "Proto.PropertiesEntry\0321\n\017PropertiesEntry" +
-      "\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"\337\002\n\022Met" +
-      "ricSummaryProto\022\014\n\004uuid\030\001 \001(\003\0221\n\013metric_" +
-      "name\030\002 \001(\0132\034.google.protobuf.StringValue" +
-      "\0220\n\nmetric_key\030\003 \001(\0132\034.google.protobuf.S" +
-      "tringValue\0222\n\014metric_value\030\004 \001(\0132\034.googl" +
-      "e.protobuf.StringValue\0225\n\020metric_timesta" +
-      "mp\030\005 \001(\0132\033.google.protobuf.Int64Value\0223\n" +
-      "\rmodel_version\030\006 \001(\0132\034.google.protobuf.S" +
-      "tringValue\0226\n\020job_execution_id\030\007 \001(\0132\034.g" +
-      "oogle.protobuf.StringValue*\300\003\n\nReturnCod" +
-      "e\022\013\n\007SUCCESS\020\000\022\022\n\016INTERNAL_ERROR\020\001\022\033\n\027TE" +
-      "MPORARILY_UNAVAILABLE\020\002\022\014\n\010IO_ERROR\020\003\022\017\n" +
-      "\013BAD_REQUEST\020\004\022\034\n\027INVALID_PARAMETER_VALU" +
-      "E\020\350\007\022\027\n\022ENDPOINT_NOT_FOUND\020\351\007\022\026\n\021MALFORM" +
-      "ED_REQUEST\020\352\007\022\022\n\rINVALID_STATE\020\353\007\022\026\n\021PER" +
-      "MISSION_DENIED\020\354\007\022\025\n\020FEATURE_DISABLED\020\355\007" +
-      "\022\032\n\025CUSTOMER_UNAUTHORIZED\020\356\007\022\033\n\026REQUEST_" +
-      "LIMIT_EXCEEDED\020\357\007\022\034\n\027RESOURCE_ALREADY_EX" +
-      "ISTS\020\321\017\022\034\n\027RESOURCE_DOES_NOT_EXIST\020\322\017\022\023\n" +
-      "\016QUOTA_EXCEEDED\020\271\027\022\034\n\027MAX_BLOCK_SIZE_EXC" +
-      "EEDED\020\272\027\022\033\n\026MAX_READ_SIZE_EXCEEDED\020\273\027* \n" +
-      "\013StatusProto\022\006\n\002OK\020\000\022\t\n\005ERROR\020\001*\326\001\n\rData" +
-      "TypeProto\022\031\n\025DATA_TYPE_UNSPECIFIED\020\000\022\t\n\005" +
-      "INT32\020\001\022\t\n\005INT64\020\002\022\013\n\007FLOAT32\020\003\022\013\n\007FLOAT" +
-      "64\020\004\022\n\n\006STRING\020\005\022\016\n\nINT32ARRAY\020\006\022\016\n\nINT6" +
-      "4ARRAY\020\007\022\020\n\014FlOAT32ARRAY\020\010\022\020\n\014FLOAT64ARR" +
-      "AY\020\t\022\017\n\013STRINGARRAY\020\n\022\t\n\005BYTES\020\013\022\016\n\nBYTE" +
-      "SARRAY\020\014*{\n\nStateProto\022\025\n\021STATE_UNSPECIF" +
-      "IED\020\000\022\010\n\004INIT\020\001\022\014\n\010STARTING\020\002\022\013\n\007RUNNING" +
-      "\020\003\022\014\n\010FINISHED\020\004\022\n\n\006FAILED\020\005\022\013\n\007KILLING\020" +
-      "\006\022\n\n\006KILLED\020\007*F\n\rExecutionMode\022\036\n\032EXECUT" +
-      "ION_MODE_UNSPECIFIED\020\000\022\t\n\005BATCH\020\001\022\n\n\006STR" +
-      "EAM\020\002*}\n\022ModelVersionStatus\022\030\n\024PENDING_R" +
-      "EGISTRATION\020\000\022\027\n\023FAILED_REGISTRATION\020\001\022\t" +
-      "\n\005READY\020\003\022\024\n\020PENDING_DELETION\020\004\022\023\n\017FAILE" +
-      "D_DELETION\020\005*\\\n\021ModelVersionStage\022\r\n\tGEN" +
-      "ERATED\020\000\022\r\n\tVALIDATED\020\001\022\014\n\010DEPLOYED\020\002\022\016\n" +
-      "\nDEPRECATED\020\003\022\013\n\007DELETED\020\004*)\n\017MetricType" +
-      "Proto\022\013\n\007DATASET\020\000\022\t\n\005MODEL\020\001B)\n\027org.aif" +
-      "low.client.protoZ\010/ai_flow\210\001\001\220\001\001b\006proto3"
+      "extractor_in_bytes\030\007 \001(\014\022+\n\005graph\030\010 \001(\0132" +
+      "\034.google.protobuf.StringValue\0321\n\017Propert" +
+      "iesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001" +
+      "\"\221\003\n\rArtifactProto\022\014\n\004uuid\030\001 \001(\003\022\014\n\004name" +
+      "\030\002 \001(\t\022:\n\nproperties\030\003 \003(\0132&.ai_flow.Art" +
+      "ifactProto.PropertiesEntry\0223\n\rartifact_t" +
+      "ype\030\004 \001(\0132\034.google.protobuf.StringValue\022" +
+      ")\n\003uri\030\005 \001(\0132\034.google.protobuf.StringVal" +
+      "ue\0221\n\013description\030\006 \001(\0132\034.google.protobu" +
+      "f.StringValue\0220\n\013create_time\030\007 \001(\0132\033.goo" +
+      "gle.protobuf.Int64Value\0220\n\013update_time\030\010" +
+      " \001(\0132\033.google.protobuf.Int64Value\0321\n\017Pro" +
+      "pertiesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t" +
+      ":\0028\001\"z\n\024RegisteredModelParam\0220\n\nmodel_na" +
+      "me\030\001 \001(\0132\034.google.protobuf.StringValue\0220" +
+      "\n\nmodel_desc\030\002 \001(\0132\034.google.protobuf.Str" +
+      "ingValue\"\336\001\n\021ModelVersionParam\0220\n\nmodel_" +
+      "path\030\001 \001(\0132\034.google.protobuf.StringValue" +
+      "\0220\n\nmodel_type\030\002 \001(\0132\034.google.protobuf.S" +
+      "tringValue\0222\n\014version_desc\030\003 \001(\0132\034.googl" +
+      "e.protobuf.StringValue\0221\n\rcurrent_stage\030" +
+      "\004 \001(\0162\032.ai_flow.ModelVersionStage\"w\n\016Mod" +
+      "elMetaParam\0220\n\nmodel_name\030\001 \001(\0132\034.google" +
+      ".protobuf.StringValue\0223\n\rmodel_version\030\002" +
+      " \001(\0132\034.google.protobuf.StringValue\"A\n\010Re" +
+      "sponse\022\023\n\013return_code\030\001 \001(\t\022\022\n\nreturn_ms" +
+      "g\030\002 \001(\t\022\014\n\004data\030\003 \001(\t\"[\n\023RegisteredModel" +
+      "Meta\022\022\n\nmodel_name\030\001 \001(\t\0220\n\nmodel_desc\030\002" +
+      " \001(\0132\034.google.protobuf.StringValue\"\275\002\n\020M" +
+      "odelVersionMeta\022\022\n\nmodel_name\030\001 \001(\t\022\025\n\rm" +
+      "odel_version\030\002 \001(\t\0220\n\nmodel_path\030\003 \001(\0132\034" +
+      ".google.protobuf.StringValue\0220\n\nmodel_ty" +
+      "pe\030\005 \001(\0132\034.google.protobuf.StringValue\0222" +
+      "\n\014version_desc\030\006 \001(\0132\034.google.protobuf.S" +
+      "tringValue\0223\n\016version_status\030\007 \001(\0162\033.ai_" +
+      "flow.ModelVersionStatus\0221\n\rcurrent_stage" +
+      "\030\010 \001(\0162\032.ai_flow.ModelVersionStage\"\210\001\n\025R" +
+      "egisteredModelDetail\0226\n\020registered_model" +
+      "\030\001 \001(\0132\034.ai_flow.RegisteredModelMeta\0227\n\024" +
+      "latest_model_version\030\002 \001(\0132\031.ai_flow.Mod" +
+      "elVersionMeta\"O\n\024RegisteredModelMetas\0227\n" +
+      "\021registered_models\030\001 \003(\0132\034.ai_flow.Regis" +
+      "teredModelMeta\"J\n\013ResultProto\022$\n\006status\030" +
+      "\001 \001(\0162\024.ai_flow.StatusProto\022\025\n\rerror_mes" +
+      "sage\030\002 \001(\t\"\230\005\n\017MetricMetaProto\0221\n\013metric" +
+      "_name\030\001 \001(\0132\034.google.protobuf.StringValu" +
+      "e\022-\n\013metric_type\030\002 \001(\0162\030.ai_flow.MetricT" +
+      "ypeProto\0221\n\013metric_desc\030\003 \001(\0132\034.google.p" +
+      "rotobuf.StringValue\0222\n\014project_name\030\004 \001(" +
+      "\0132\034.google.protobuf.StringValue\0222\n\014datas" +
+      "et_name\030\005 \001(\0132\034.google.protobuf.StringVa" +
+      "lue\0220\n\nmodel_name\030\006 \001(\0132\034.google.protobu" +
+      "f.StringValue\022.\n\010job_name\030\007 \001(\0132\034.google" +
+      ".protobuf.StringValue\022/\n\nstart_time\030\010 \001(" +
+      "\0132\033.google.protobuf.Int64Value\022-\n\010end_ti" +
+      "me\030\t \001(\0132\033.google.protobuf.Int64Value\022)\n" +
+      "\003uri\030\n \001(\0132\034.google.protobuf.StringValue" +
+      "\022*\n\004tags\030\013 \001(\0132\034.google.protobuf.StringV" +
+      "alue\022<\n\nproperties\030\014 \003(\0132(.ai_flow.Metri" +
+      "cMetaProto.PropertiesEntry\0321\n\017Properties" +
+      "Entry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"\337\002" +
+      "\n\022MetricSummaryProto\022\014\n\004uuid\030\001 \001(\003\0221\n\013me" +
+      "tric_name\030\002 \001(\0132\034.google.protobuf.String" +
+      "Value\0220\n\nmetric_key\030\003 \001(\0132\034.google.proto" +
+      "buf.StringValue\0222\n\014metric_value\030\004 \001(\0132\034." +
+      "google.protobuf.StringValue\0225\n\020metric_ti" +
+      "mestamp\030\005 \001(\0132\033.google.protobuf.Int64Val" +
+      "ue\0223\n\rmodel_version\030\006 \001(\0132\034.google.proto" +
+      "buf.StringValue\0226\n\020job_execution_id\030\007 \001(" +
+      "\0132\034.google.protobuf.StringValue*\300\003\n\nRetu" +
+      "rnCode\022\013\n\007SUCCESS\020\000\022\022\n\016INTERNAL_ERROR\020\001\022" +
+      "\033\n\027TEMPORARILY_UNAVAILABLE\020\002\022\014\n\010IO_ERROR" +
+      "\020\003\022\017\n\013BAD_REQUEST\020\004\022\034\n\027INVALID_PARAMETER" +
+      "_VALUE\020\350\007\022\027\n\022ENDPOINT_NOT_FOUND\020\351\007\022\026\n\021MA" +
+      "LFORMED_REQUEST\020\352\007\022\022\n\rINVALID_STATE\020\353\007\022\026" +
+      "\n\021PERMISSION_DENIED\020\354\007\022\025\n\020FEATURE_DISABL" +
+      "ED\020\355\007\022\032\n\025CUSTOMER_UNAUTHORIZED\020\356\007\022\033\n\026REQ" +
+      "UEST_LIMIT_EXCEEDED\020\357\007\022\034\n\027RESOURCE_ALREA" +
+      "DY_EXISTS\020\321\017\022\034\n\027RESOURCE_DOES_NOT_EXIST\020" +
+      "\322\017\022\023\n\016QUOTA_EXCEEDED\020\271\027\022\034\n\027MAX_BLOCK_SIZ" +
+      "E_EXCEEDED\020\272\027\022\033\n\026MAX_READ_SIZE_EXCEEDED\020" +
+      "\273\027* \n\013StatusProto\022\006\n\002OK\020\000\022\t\n\005ERROR\020\001*\326\001\n" +
+      "\rDataTypeProto\022\031\n\025DATA_TYPE_UNSPECIFIED\020" +
+      "\000\022\t\n\005INT32\020\001\022\t\n\005INT64\020\002\022\013\n\007FLOAT32\020\003\022\013\n\007" +
+      "FLOAT64\020\004\022\n\n\006STRING\020\005\022\016\n\nINT32ARRAY\020\006\022\016\n" +
+      "\nINT64ARRAY\020\007\022\020\n\014FlOAT32ARRAY\020\010\022\020\n\014FLOAT" +
+      "64ARRAY\020\t\022\017\n\013STRINGARRAY\020\n\022\t\n\005BYTES\020\013\022\016\n" +
+      "\nBYTESARRAY\020\014*{\n\nStateProto\022\025\n\021STATE_UNS" +
+      "PECIFIED\020\000\022\010\n\004INIT\020\001\022\014\n\010STARTING\020\002\022\013\n\007RU" +
+      "NNING\020\003\022\014\n\010FINISHED\020\004\022\n\n\006FAILED\020\005\022\013\n\007KIL" +
+      "LING\020\006\022\n\n\006KILLED\020\007*F\n\rExecutionMode\022\036\n\032E" +
+      "XECUTION_MODE_UNSPECIFIED\020\000\022\t\n\005BATCH\020\001\022\n" +
+      "\n\006STREAM\020\002*}\n\022ModelVersionStatus\022\030\n\024PEND" +
+      "ING_REGISTRATION\020\000\022\027\n\023FAILED_REGISTRATIO" +
+      "N\020\001\022\t\n\005READY\020\003\022\024\n\020PENDING_DELETION\020\004\022\023\n\017" +
+      "FAILED_DELETION\020\005*\\\n\021ModelVersionStage\022\r" +
+      "\n\tGENERATED\020\000\022\r\n\tVALIDATED\020\001\022\014\n\010DEPLOYED" +
+      "\020\002\022\016\n\nDEPRECATED\020\003\022\013\n\007DELETED\020\004*)\n\017Metri" +
+      "cTypeProto\022\013\n\007DATASET\020\000\022\t\n\005MODEL\020\001B)\n\027or" +
+      "g.aiflow.client.protoZ\010/ai_flow\210\001\001\220\001\001b\006p" +
+      "roto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -34920,7 +35125,7 @@ public final class Message {
     internal_static_ai_flow_WorkflowMetaProto_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ai_flow_WorkflowMetaProto_descriptor,
-        new java.lang.String[] { "Uuid", "Name", "ProjectId", "Properties", "CreateTime", "UpdateTime", "ContextExtractorInBytes", });
+        new java.lang.String[] { "Uuid", "Name", "ProjectId", "Properties", "CreateTime", "UpdateTime", "ContextExtractorInBytes", "Graph", });
     internal_static_ai_flow_WorkflowMetaProto_PropertiesEntry_descriptor =
       internal_static_ai_flow_WorkflowMetaProto_descriptor.getNestedTypes().get(0);
     internal_static_ai_flow_WorkflowMetaProto_PropertiesEntry_fieldAccessorTable = new

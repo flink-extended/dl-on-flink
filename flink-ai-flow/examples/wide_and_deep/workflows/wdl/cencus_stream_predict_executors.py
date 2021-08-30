@@ -65,34 +65,40 @@ class StreamPredictPreprocessSource(FlinkPythonProcessor):
         return [table]
 
 
+class StreamPredictPreprocessExecutor(FlinkPythonProcessor):
+    def process(self, execution_context: ExecutionContext, input_list: List[Table] = None) -> List[Table]:
+        return input_list
+
+
 class StreamPredictPreprocessSink(FlinkPythonProcessor):
+
     def process(self, execution_context: ExecutionContext, input_list: List[Table] = None) -> List[Table]:
         table_env: TableEnvironment = execution_context.table_env
         table_env.execute_sql('''
-            create table stream_predict_preprocess_sink (
-                age varchar,
-                workclass varchar,
-                fnlwgt varchar,
-                education varchar,
-                education_num varchar,
-                marital_status varchar,
-                occupation varchar,
-                relationship varchar,
-                race varchar,
-                gender varchar,
-                capital_gain varchar,
-                capital_loss varchar,
-                hours_per_week varchar,
-                native_country varchar
-            ) with (
-                'connector' = 'kafka',
-                'topic' = 'census_predict_input_topic',
-                'properties.bootstrap.servers' = 'localhost:9092',
-                'properties.group.id' = 'stream_predict_preprocess_sink',
-                'format' = 'csv',
-                'scan.startup.mode' = 'earliest-offset'
-            )
-        ''')
+                    create table stream_predict_preprocess_sink (
+                        age varchar,
+                        workclass varchar,
+                        fnlwgt varchar,
+                        education varchar,
+                        education_num varchar,
+                        marital_status varchar,
+                        occupation varchar,
+                        relationship varchar,
+                        race varchar,
+                        gender varchar,
+                        capital_gain varchar,
+                        capital_loss varchar,
+                        hours_per_week varchar,
+                        native_country varchar
+                    ) with (
+                        'connector' = 'kafka',
+                        'topic' = 'census_predict_input_topic',
+                        'properties.bootstrap.servers' = 'localhost:9092',
+                        'properties.group.id' = 'stream_predict_preprocess_sink',
+                        'format' = 'csv',
+                        'scan.startup.mode' = 'earliest-offset'
+                    )
+                ''')
         statement_set = execution_context.statement_set
         statement_set.add_insert('stream_predict_preprocess_sink', input_list[0].drop_columns('income_bracket'))
         return []
