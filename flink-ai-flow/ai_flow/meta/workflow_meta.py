@@ -36,6 +36,7 @@ class WorkflowMeta(Jsonable):
                  create_time: int = None,
                  update_time: int = None,
                  context_extractor_in_bytes: bytes = None,
+                 graph: str = None,
                  uuid: int = None,
                  scheduling_rules: List[WorkflowSchedulingRule] = None
                  ) -> None:
@@ -47,6 +48,7 @@ class WorkflowMeta(Jsonable):
         :param create_time: create time represented as milliseconds since epoch.
         :param update_time: update time represented as milliseconds since epoch.
         :param context_extractor_in_bytes: the user-defined logic of how to extract context from event
+        :param graph: the graph of the workflow
         :param uuid: uuid in database
         :param scheduling_rules: A list of scheduling rules of the workflow.
         """
@@ -58,6 +60,7 @@ class WorkflowMeta(Jsonable):
         self.update_time = update_time
         self.uuid = uuid
         self.context_extractor_in_bytes = context_extractor_in_bytes
+        self.graph = graph
         self.scheduling_rules = [] if scheduling_rules is None else scheduling_rules
 
     def get_condition(self, action: WorkflowAction) -> List[EventCondition]:
@@ -82,13 +85,15 @@ class WorkflowMeta(Jsonable):
                'create_time:{},\n' \
                'update_time:{},\n' \
                'context_extractor_in_bytes:{},\n' \
+               'graph:{},\n' \
                '>'.format(self.uuid,
                           self.name,
                           self.project_id,
                           self.properties,
                           self.create_time,
                           self.update_time,
-                          self.context_extractor_in_bytes)
+                          self.context_extractor_in_bytes,
+                          self.graph)
 
     def get_context_extractor(self) -> ContextExtractor:
         """
@@ -112,7 +117,9 @@ def create_workflow(name: Text,
                     create_time: int = None,
                     update_time: int = None,
                     context_extractor_in_bytes: bytes = None,
+                    graph: str = None
                     ) -> WorkflowMeta:
     return WorkflowMeta(name=name, project_id=int(project_id), properties=properties,
                         create_time=create_time, update_time=update_time,
-                        context_extractor_in_bytes=context_extractor_in_bytes)
+                        context_extractor_in_bytes=context_extractor_in_bytes,
+                        graph=graph)

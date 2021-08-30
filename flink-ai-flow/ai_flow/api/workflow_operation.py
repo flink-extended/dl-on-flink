@@ -14,8 +14,6 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-
-from ai_flow.workflow.control_edge import EventCondition
 from typing import Text, List, Optional
 
 from ai_flow.ai_graph.ai_graph import current_graph
@@ -34,6 +32,8 @@ from ai_flow.plugin_interface.job_plugin_interface import get_registered_job_plu
 from ai_flow.plugin_interface.scheduler_interface import JobExecutionInfo, WorkflowExecutionInfo, WorkflowInfo
 from ai_flow.translator.translator import get_translator
 from ai_flow.util import json_utils
+from ai_flow.util.json_utils import dumps
+from ai_flow.workflow.control_edge import EventCondition
 from ai_flow.workflow.job import Job
 from ai_flow.workflow.workflow import Workflow, WorkflowPropertyKeys
 
@@ -130,11 +130,13 @@ def submit_workflow(workflow_name: Text = None) -> WorkflowInfo:
     if workflow_meta is None:
         get_ai_flow_client().register_workflow(name=workflow_name,
                                                project_id=int(current_project_config().get_project_uuid()),
-                                               context_extractor=current_graph().get_context_extractor())
+                                               context_extractor=current_graph().get_context_extractor(),
+                                               graph=dumps(current_graph()))
     else:
         get_ai_flow_client().update_workflow(workflow_name=workflow_name,
                                              project_name=current_project_config().get_project_name(),
-                                             context_extractor=current_graph().get_context_extractor())
+                                             context_extractor=current_graph().get_context_extractor(),
+                                             graph=dumps(current_graph()))
     current_graph().clear_graph()
     return proto_to_workflow(get_ai_flow_client()
                              .submit_workflow_to_scheduler(namespace=namespace,

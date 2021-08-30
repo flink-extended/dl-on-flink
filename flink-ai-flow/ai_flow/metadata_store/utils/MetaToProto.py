@@ -102,6 +102,7 @@ class MetaToProto:
                                      create_time=int64Value(workflow_meta.create_time),
                                      update_time=int64Value(workflow_meta.update_time),
                                      context_extractor_in_bytes=workflow_meta.context_extractor_in_bytes,
+                                     graph=stringValue(workflow_meta.graph),
                                      uuid=workflow_meta.uuid)
 
     @staticmethod

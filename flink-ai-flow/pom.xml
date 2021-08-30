@@ -81,6 +81,9 @@
 						<exclude>**/*.log</exclude>
                         <exclude>**/*.json</exclude>
                         <exclude>**/*.iml</exclude>
+                        <exclude>**/*.babelrc</exclude>
+                        <exclude>**/*.eslintignore</exclude>
+                        <exclude>**/*.styl</exclude>
                         <exclude>**/dependency-reduced-pom.xml</exclude>
                         <exclude>licenses/*</exclude>
                         <exclude>venv/**</exclude>
@@ -104,6 +107,7 @@
                         <exclude>ai_flow/java/target/**/*</exclude>
                         <exclude>ai_flow/java/client/target/**/*</exclude>
                         <exclude>ai_flow/java/.idea/**/*</exclude>
+                        <exclude>ai_flow/frontend/node_modules/**/*</exclude>
                     </excludes>
                 </configuration>
             </plugin>

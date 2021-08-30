@@ -133,7 +133,7 @@ class MetaToTable:
                       project_snapshot_id=project_snapshot_id)
 
     @staticmethod
-    def workflow_to_table(name, project_id, properties, create_time, update_time, context_extractor_in_bytes,
+    def workflow_to_table(name, project_id, properties, create_time, update_time, context_extractor_in_bytes, graph,
                           store_type='SqlAlchemyStore'):
         if properties is not None:
             properties = str(properties)
@@ -146,4 +146,5 @@ class MetaToTable:
                       properties=properties,
                       create_time=create_time,
                       update_time=update_time,
-                      context_extractor_in_bytes=context_extractor_in_bytes)
+                      context_extractor_in_bytes=context_extractor_in_bytes,
+                      graph=graph)
