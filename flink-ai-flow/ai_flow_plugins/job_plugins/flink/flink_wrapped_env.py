@@ -98,7 +98,7 @@ class WrappedStatementSetContext:
     It can help to provide these functions:
     - Lists the ids of the Flink jobs.
     - Waits for the execution result of the Flink job.
-    - Decides whether 'StatementSet' needs to call execute()' method based on whether it contains 'execute_sql'.
+    - Decides whether 'StatementSet' needs to call 'execute()' method based on whether it contains 'execute_sql'.
     """
     def __init__(self):
         self.execute_results: List[TableResult] = []
