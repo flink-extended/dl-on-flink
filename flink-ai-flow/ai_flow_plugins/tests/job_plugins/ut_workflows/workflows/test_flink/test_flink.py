@@ -81,7 +81,7 @@ class TestFlink(unittest.TestCase):
         """
         This is a test case for issue 475.
         https://github.com/alibaba/flink-ai-extended/issues/475
-        It calls TableEnv.execute_sql in FlinkPythonProcessor and no need to call 
+        It calls 'TableEnv.execute_sql' in FlinkPythonProcessor and no need to call 
         StatementSet.execute().
         flink_run_main.py should be able to handle this case.
         """
@@ -99,7 +99,7 @@ class TestFlink(unittest.TestCase):
         """
         This is a test case for issue 475.
         https://github.com/alibaba/flink-ai-extended/issues/475
-        It calls Statementset.add_insert_sql in FlinkPythonProcessor and need to call 
+        It calls 'Statementset.add_insert_sql' in FlinkPythonProcessor and need to call 
         StatementSet.execute().
         flink_run_main.py should be able to handle this case.
         """
