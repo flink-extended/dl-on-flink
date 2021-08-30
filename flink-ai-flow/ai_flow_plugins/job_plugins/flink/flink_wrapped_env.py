@@ -25,8 +25,8 @@ class WrappedTableEnvironmentContext:
     WrappedTableEnvironmentContext provides container to store extra information for WrappedTableEnvironment,
     including list of TableResult for each execution.
     It can help to provide these functions:
-    - list of flink job id
-    - wait for execution result
+    - Lists the ids of the Flink jobs.
+    - Waits for the execution result of the Flink job.
     """
     def __init__(self):
         self.execute_sql_results:List[TableResult] = []
@@ -52,7 +52,7 @@ class WrappedTableEnvironmentContext:
 
 class WrappedTableEnvironment(TableEnvironment):
     """
-    WrappedTableEnvironment override these functions to collect information need for flink_run_main:
+    WrappedTableEnvironment overrides the following functions to collect information needed for 'flink_run_main.py':
     - execute_sql(self, stmt: str) -> TableResult
     - create_statement_set(self) -> 'WrappedStatementSet':
     """
@@ -96,9 +96,9 @@ class WrappedStatementSetContext:
     WrappedStatementSetContext provides container to store extra information for WrappedStatementSet,
     including list of TableResult for each execution.
     It can help to provide these functions:
-    - list of flink job id
-    - wait for execution result
-    - whether StatementSet needs to call execute() method based on whether it cantains not executed sql
+    - Lists the ids of the Flink jobs.
+    - Waits for the execution result of the Flink job.
+    - Decides whether 'StatementSet' needs to call execute()' method based on whether it contains 'execute_sql'.
     """
     def __init__(self):
         self.execute_results: List[TableResult] = []
@@ -125,7 +125,7 @@ class WrappedStatementSetContext:
 
 class WrappedStatementSet(StatementSet):
     """
-    WrappedStatementSet override these functions to collect information need for flink_run_main:
+    WrappedStatementSet overrides the following functions to collect information needed for 'flink_run_main.py':
     - execute(self) -> TableResult
     - add_insert_sql(self, stmt: str) -> 'StatementSet':
     """
