@@ -82,7 +82,7 @@ def get_ai_flow_client():
         return _default_ai_flow_client
 
 
-class AIFlowClient(MetadataClient, ModelCenterClient, NotificationClient, MetricClient, SchedulerClient):
+class AIFlowClient(NotificationClient, MetadataClient, ModelCenterClient, MetricClient, SchedulerClient):
     """
     Client of an AIFlow Server that manages metadata store, model center and notification service.
     """

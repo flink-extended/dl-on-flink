@@ -17,7 +17,7 @@
 # under the License.
 #
 import time
-
+import socket
 from notification_service.base_notification import BaseEvent, Member
 from notification_service.proto import notification_service_pb2
 
@@ -86,3 +86,19 @@ def sleep_and_detecting_running(interval_ms, is_running_callable, min_interval_m
             time.sleep(min_interval_ms / 1000)
         else:
             time.sleep(remaining / 1000)
+
+
+def get_ip_addr() -> str:
+    """
+    Get ip address of localhost by UDP socket.
+    :return: ip address of localhost
+    """
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(('8.8.8.8', 80))
+        ip = s.getsockname()[0]
+    except OSError:
+        ip = '127.0.0.1'
+    finally:
+        s.close()
+        return ip
