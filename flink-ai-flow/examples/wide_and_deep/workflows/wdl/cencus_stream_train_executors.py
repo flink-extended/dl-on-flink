@@ -28,7 +28,7 @@ from pyflink.table import StreamTableEnvironment, EnvironmentSettings, Table, Ta
 
 import ai_flow as af
 from ai_flow.model_center.entity.model_version_stage import ModelVersionStage
-from ai_flow_plugins.job_plugins.flink import FlinkPythonProcessor, ExecutionContext, FlinkEnv
+from ai_flow_plugins.job_plugins.flink import FlinkPythonProcessor, ExecutionContext, FlinkEnv, WrappedStreamTableEnvironment
 from ai_flow_plugins.job_plugins.python import PythonProcessor
 from ai_flow_plugins.job_plugins.python.python_processor import ExecutionContext as PyExecutionContext
 from census_common import get_accuracy_score
@@ -40,9 +40,10 @@ class StreamTableEnvCreator(FlinkEnv):
     def create_env(self):
         stream_env = StreamExecutionEnvironment.get_execution_environment()
         stream_env.set_parallelism(1)
-        t_env = StreamTableEnvironment.create(
+        _t_env = StreamTableEnvironment.create(
             stream_env,
             environment_settings=EnvironmentSettings.new_instance().in_streaming_mode().use_blink_planner().build())
+        t_env = WrappedStreamTableEnvironment.create_from(_t_env)
         statement_set = t_env.create_statement_set()
         t_env.get_config().set_python_executable('python')
         t_env.get_config().get_configuration().set_boolean('python.fn-execution.memory.managed', True)

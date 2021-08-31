@@ -86,3 +86,55 @@ class Sink(flink.FlinkPythonProcessor):
             .create_temporary_table('mySink')
         statement_set.add_insert('mySink', input_list[0])
         return []
+
+class SinkWithExecuteSql(flink.FlinkPythonProcessor):
+    def process(self,
+                execution_context: flink.ExecutionContext,
+                input_list: List[Table] = None) -> List[Table]:
+        output_file = os.path.join(os.getcwd(), 'output')
+        if os.path.exists(output_file):
+            os.remove(output_file)
+
+        t_env = execution_context.table_env
+        t_env.connect(FileSystem().path(output_file)) \
+            .with_format(OldCsv()
+                         .field_delimiter('\t')
+                         .field('word', DataTypes.STRING())
+                         .field('count', DataTypes.BIGINT())) \
+            .with_schema(Schema()
+                         .field('word', DataTypes.STRING())
+                         .field('count', DataTypes.BIGINT())) \
+            .create_temporary_table('mySink')
+        t_env.execute_sql(f"""
+        INSERT INTO mySink
+        SELECT *
+        FROM {input_list[0]}
+        """)
+        return []
+
+
+class SinkWithAddInsertSql(flink.FlinkPythonProcessor):
+    def process(self,
+                execution_context: flink.ExecutionContext,
+                input_list: List[Table] = None) -> List[Table]:
+        output_file = os.path.join(os.getcwd(), 'output')
+        if os.path.exists(output_file):
+            os.remove(output_file)
+
+        t_env = execution_context.table_env
+        s_set = execution_context.statement_set
+        t_env.connect(FileSystem().path(output_file)) \
+            .with_format(OldCsv()
+                         .field_delimiter('\t')
+                         .field('word', DataTypes.STRING())
+                         .field('count', DataTypes.BIGINT())) \
+            .with_schema(Schema()
+                         .field('word', DataTypes.STRING())
+                         .field('count', DataTypes.BIGINT())) \
+            .create_temporary_table('mySink')
+        s_set.add_insert_sql(f"""
+        INSERT INTO mySink
+        SELECT *
+        FROM {input_list[0]}
+        """)
+        return []
