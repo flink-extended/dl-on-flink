@@ -344,8 +344,15 @@ class EventBasedScheduler(LoggingMixin):
             dep: DagEventDependencies = DagEventDependencies.from_json(dag.event_relationships)
             if dep.is_affect(event_key):
                 context_extractor: ContextExtractor = dag.context_extractor
-                event_context: EventContext = context_extractor.extract_context(event)
-                affect_dags[dag.dag_id] = event_context
+                try:
+                    event_context: EventContext = context_extractor.extract_context(event)
+                except Exception as e:
+                    self.log.error(
+                        "Failed to call context extractor, dag {} skips event {}".format(dag.dag_id, event),
+                        exc_info=e)
+                    continue
+                if event_context is not None:
+                    affect_dags[dag.dag_id] = event_context
         if len(affect_dags) == 0:
             return affect_dag_runs
         for dag_run in dag_runs:

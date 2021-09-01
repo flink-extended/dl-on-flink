@@ -17,3 +17,9 @@ class FixedContextExtractor(ContextExtractor):
         context_list = ContextList()
         context_list.add_context(self._context)
         return context_list
+
+
+class ErrorContextExtractor(ContextExtractor):
+
+    def extract_context(self, event: BaseEvent) -> EventContext:
+        raise RuntimeError('ContextExtractor Exception')

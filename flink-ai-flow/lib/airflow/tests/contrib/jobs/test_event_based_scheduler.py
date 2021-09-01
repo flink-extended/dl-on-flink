@@ -526,3 +526,27 @@ class TestEventBasedScheduler(unittest.TestCase):
             self.assertEqual(2, len(dag_runs))
             self.assertIn(dr1.dag_id, [dr.dag_id for dr in dag_runs])
             self.assertIn(dr2.dag_id, [dr.dag_id for dr in dag_runs])
+
+    def test_context_extractor_tolerate_context_extractor_exception(self):
+        dag_file = os.path.join(TEST_DAG_FOLDER, 'test_dag_context_extractor_throw_exception.py')
+        scheduler = EventBasedSchedulerJob(
+            dag_directory=dag_file,
+            server_uri="localhost:{}".format(self.port),
+            executor=LocalExecutor(3),
+            max_runs=-1,
+            refresh_dag_dir_interval=30
+        ).scheduler
+        dag = DagBag(dag_file).dags['test_dag_context_extractor']
+        SerializedDagModel.write_dag(dag=dag)
+
+        dr1 = dag.create_dagrun(state=State.RUNNING,
+                                execution_date=timezone.datetime(2016, 1, 1),
+                                run_type=DagRunType.SCHEDULED,
+                                context='test_context')
+        dr2 = dag.create_dagrun(state=State.RUNNING,
+                                execution_date=timezone.datetime(2016, 1, 2),
+                                run_type=DagRunType.SCHEDULED,
+                                context='invalid_context')
+        with create_session() as session:
+            dag_runs = scheduler._find_dagruns_by_event(BaseEvent(key='k', value='v'), session)
+            self.assertEqual(0, len(dag_runs))

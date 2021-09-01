@@ -21,10 +21,19 @@ import cloudpickle
 
 from notification_service.base_notification import BaseEvent
 
-from ai_flow_plugins.scheduler_plugins.airflow.context_extractor import AIFlowContextExtractorAdaptor
+from ai_flow_plugins.scheduler_plugins.airflow.context_extractor import AIFlowContextExtractorAdaptor, \
+    AIFlowEventContextAdaptor
 
 context_extractor_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                       'context_extractor.pickle')
+
+
+class TestAIFlowEventContextAdaptor(unittest.TestCase):
+
+    def test_ai_flow_event_context_adaptor_none_context(self):
+        context = AIFlowEventContextAdaptor(None)
+        self.assertFalse(context.is_broadcast())
+        self.assertIsNone(context.get_contexts())
 
 
 class TestAIFlowContextExtractorAdaptor(unittest.TestCase):
