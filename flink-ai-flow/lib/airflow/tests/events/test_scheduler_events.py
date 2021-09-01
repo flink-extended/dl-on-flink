@@ -33,14 +33,14 @@ class TestSchedulerEvents(unittest.TestCase):
     def test_to_event(self):
         e_date = timezone.utcnow()
         task_changed_event = TaskStateChangedEvent(task_id='a', dag_id='b',
-                                                   execution_date=e_date, state='running')
+                                                   execution_date=e_date, state='running', try_number=1)
         event = task_changed_event.to_event()
         self.assertEqual('b', event.key)
 
     def test_task_status_changed(self):
         e_date = timezone.utcnow()
         task_changed_event = TaskStateChangedEvent(task_id='a', dag_id='b',
-                                                   execution_date=e_date, state='running')
+                                                   execution_date=e_date, state='running', try_number=1)
         event = TaskStateChangedEvent.to_base_event(task_changed_event)
         task_changed_event_2 = TaskStateChangedEvent.from_base_event(event)
         self.assertEqual(e_date, task_changed_event_2.execution_date)

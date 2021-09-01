@@ -224,55 +224,6 @@ def upgrade():  # noqa: D103
             sa.PrimaryKeyConstraint('id')
         )
 
-    if 'task_state' not in tables:
-        op.create_table(
-            'task_state',
-            sa.Column('task_id', sa.String(length=250), nullable=False),
-            sa.Column('dag_id', sa.String(length=250), nullable=False),
-            sa.Column('execution_date', sa.DateTime(), nullable=False),
-            sa.Column('task_state', sa.PickleType(), nullable=True),
-            sa.Column('event_handler', sa.PickleType(), nullable=True),
-            sa.Column('action', sa.String(length=32), nullable=True),
-            sa.Column('ack_id', sa.Integer(), nullable=True),
-            sa.PrimaryKeyConstraint('task_id', 'dag_id', 'execution_date')
-        )
-
-    if 'task_execution' not in tables:
-        op.create_table(
-            'task_execution',
-            sa.Column('task_id', sa.String(length=250), nullable=False),
-            sa.Column('dag_id', sa.String(length=250), nullable=False),
-            sa.Column('execution_date', sa.DateTime(), nullable=False),
-            sa.Column('seq_num', sa.Integer(), nullable=False),
-            sa.Column('start_date', sa.DateTime(), nullable=True),
-            sa.Column('end_date', sa.DateTime(), nullable=True),
-            sa.Column('duration', sa.Float(), nullable=True),
-            sa.Column('state', sa.String(length=20), nullable=True),
-            sa.Column('hostname', sa.String(length=1000), nullable=True),
-            sa.Column('unixname', sa.String(length=1000), nullable=True),
-            sa.Column('job_id', sa.Integer(), nullable=True),
-            sa.Column('pool', sa.String(length=50), nullable=True),
-            sa.Column('pool_slots', sa.Integer(), default=1),
-            sa.Column('queue', sa.String(length=256), nullable=True),
-            sa.Column('priority_weight', sa.Integer(), nullable=True),
-            sa.Column('operator', sa.String(length=1000), nullable=True),
-            sa.Column('queued_dttm', sa.DateTime(), nullable=True),
-            sa.Column('queued_by_job_id', sa.Integer(), nullable=True),
-            sa.Column('pid', sa.Integer(), nullable=True),
-            sa.Column('executor_config', sa.PickleType(), nullable=True),
-            sa.PrimaryKeyConstraint('task_id', 'dag_id', 'execution_date', 'seq_num')
-        )
-    if conn.dialect.name == "mysql":
-        from sqlalchemy.dialects import mysql
-        with op.batch_alter_table('task_state') as task_state_batch_op:
-            task_state_batch_op.alter_column(column_name='execution_date', type_=mysql.DATETIME(fsp=6), nullable=False)
-        with op.batch_alter_table('task_execution') as task_execution_batch_op:
-            task_execution_batch_op.alter_column(column_name='execution_date', type_=mysql.DATETIME(fsp=6),
-                                                 nullable=False)
-            task_execution_batch_op.alter_column(column_name='start_date', type_=mysql.DATETIME(fsp=6))
-            task_execution_batch_op.alter_column(column_name='end_date', type_=mysql.DATETIME(fsp=6))
-            task_execution_batch_op.alter_column(column_name='queued_dttm', type_=mysql.DATETIME(fsp=6))
-
 
 def downgrade():  # noqa: D103
     op.drop_table('chart')
