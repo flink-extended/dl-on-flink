@@ -18,11 +18,11 @@ from datetime import datetime
 
 from airflow import DAG
 from airflow.operators.bash import BashOperator
-from tests.dags.test_context_extractor import FixedContextExtractor
+from tests.dags.test_context_extractor import ErrorContextExtractor
 
 DEFAULT_DATE = datetime(2016, 1, 1)
 dag = DAG(dag_id="test_dag_context_extractor", start_date=datetime.utcnow(), schedule_interval='@once')
-dag.context_extractor = FixedContextExtractor('test_context')
+dag.context_extractor = ErrorContextExtractor()
 
 op1 = BashOperator(task_id="task_1", dag=dag, owner='airflow', bash_command='echo "hello world 1!"')
 op1.subscribe_event(event_key='k', event_namespace='*', from_task_id='*')
