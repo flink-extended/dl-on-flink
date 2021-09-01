@@ -190,7 +190,11 @@ class BaseExecutor(LoggingMixin):
             pickle_id=ti.dag_model.pickle_id,
             server_uri=self._server_uri,
         )
+        if ti.is_active is False:
+            ti.reset_to_active()
+            ti.register_task_execution()
         ti.set_state(State.QUEUED)
+        ti.increase_run_number()
         self.execute_async(
             key=key,
             command=command,
@@ -453,7 +457,8 @@ class BaseExecutor(LoggingMixin):
                 ti.task_id,
                 ti.dag_id,
                 ti.execution_date,
-                ti.state
+                ti.state,
+                ti.try_number
             )
             self._mailbox.send_message(task_status_changed_event.to_event())
 

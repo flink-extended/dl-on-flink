@@ -305,8 +305,8 @@ class DagRunEventExecutor(LoggingMixin):
         scheduling_actions = dict()
         for operator in operators:
             scheduling_actions[operator.task_id] = self._operator_handle_event(event, operator, dag_run.execution_date)
-        self.log.info("DagRunEventExecutor for dag {}-{} handle event: {} actions: {}"
-                      .format(dag_run.dag_id, dag_run.run_id, event, scheduling_actions))
+        self.log.debug("DagRunEventExecutor for dag {}-{} handle-event: {} actions: {}"
+                       .format(dag_run.dag_id, dag_run.run_id, event, scheduling_actions))
         return scheduling_actions
 
     @staticmethod
