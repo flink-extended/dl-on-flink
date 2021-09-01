@@ -33,9 +33,13 @@ class AIFlowEventContextAdaptor(AirflowEventContext):
         self._ai_flow_event_context = ai_flow_event_context
 
     def is_broadcast(self) -> bool:
+        if self._ai_flow_event_context is None:
+            return False
         return self._ai_flow_event_context.is_broadcast()
 
     def get_contexts(self) -> Set[Text]:
+        if self._ai_flow_event_context is None:
+            return None
         return self._ai_flow_event_context.get_contexts()
 
 
