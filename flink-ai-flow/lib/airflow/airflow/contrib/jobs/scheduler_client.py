@@ -75,7 +75,7 @@ class EventSchedulerClient(object):
             handler.stop()
         return True
 
-    def schedule_dag(self, dag_id, context: Text, timeout: Optional[int] = None) -> ExecutionContext:
+    def schedule_dag(self, dag_id, context: Text = None, timeout: Optional[int] = None) -> ExecutionContext:
         id = self.generate_id(dag_id)
         watcher: ResponseWatcher = ResponseWatcher()
         handler: ThreadEventWatcherHandle \
