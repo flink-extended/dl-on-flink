@@ -1152,6 +1152,7 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
             if not mark_success:
                 context = self.get_template_context()
                 te: TaskExecution = self.register_task_execution()
+                context['task_execution'] = te
                 self._prepare_and_execute_task_with_callbacks(context, task)
             self.refresh_from_db(lock_for_update=True)
             self.state = State.SUCCESS

@@ -21,7 +21,7 @@ import os
 import time
 import unittest
 import urllib
-from typing import List, Optional, Union, cast
+from typing import List, Optional, Union, cast, Any
 from unittest import mock
 from unittest.mock import call, mock_open, patch
 
@@ -42,7 +42,7 @@ from airflow.models import (
     RenderedTaskInstanceFields,
     TaskInstance as TI,
     TaskReschedule,
-    Variable,
+    Variable, BaseOperator,
 )
 from airflow.operators.bash import BashOperator
 from airflow.operators.dummy import DummyOperator
@@ -1369,6 +1369,47 @@ class TestTaskInstance(unittest.TestCase):
             on_success_callback=callback_wrapper.success_handler,
             dag=dag,
         )
+        ti = TI(task=task, execution_date=datetime.datetime.now())
+        ti.state = State.RUNNING
+        session = settings.Session()
+        session.merge(ti)
+
+        dag.create_dagrun(
+            execution_date=ti.execution_date,
+            state=State.RUNNING,
+            run_type=DagRunType.SCHEDULED,
+            session=session,
+        )
+        session.commit()
+
+        callback_wrapper.wrap_task_instance(ti)
+        ti._run_raw_task()
+        self.assertTrue(callback_wrapper.callback_ran)
+        self.assertEqual(callback_wrapper.task_state_in_callback, State.RUNNING)
+        ti.refresh_from_db()
+        self.assertEqual(ti.state, State.SUCCESS)
+
+    def test_context_has_task_execution(self):
+        callback_wrapper = CallbackWrapper()
+        dag = DAG(
+            'test_execution_label',
+            start_date=DEFAULT_DATE,
+            end_date=DEFAULT_DATE + datetime.timedelta(days=10),
+        )
+
+        class MyOperator(BaseOperator):
+
+            def execute(self, context: Any):
+                assert context['task_execution'] is not None
+                context['task_execution'].update_task_execution_label('test')
+
+        task = MyOperator(
+            task_id='op',
+            email='test@test.test',
+            on_success_callback=callback_wrapper.success_handler,
+            dag=dag,
+        )
+
         ti = TI(task=task, execution_date=datetime.datetime.now())
         ti.state = State.RUNNING
         session = settings.Session()

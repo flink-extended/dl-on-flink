@@ -16,9 +16,12 @@
 # under the License.
 
 import logging
-import dill
+from typing import Text
 
-from sqlalchemy import Column, PickleType, String, Integer, Float
+import dill
+from airflow.utils.session import provide_session
+
+from sqlalchemy import Column, PickleType, String, Integer, Float, Text as SqlText
 from airflow.models.base import COLLATION_ARGS, ID_LEN, Base
 from airflow.utils.log.logging_mixin import LoggingMixin
 from airflow.utils.sqlalchemy import UtcDateTime
@@ -47,6 +50,7 @@ class TaskExecution(Base, LoggingMixin):
     queued_by_job_id = Column(Integer)
     pid = Column(Integer)
     executor_config = Column(PickleType(pickler=dill))
+    execution_label = Column(SqlText)
 
     def __init__(self,
                  task_id,
@@ -91,6 +95,12 @@ class TaskExecution(Base, LoggingMixin):
         self.pid = pid
         self.executor_config = executor_config
         self._log = logging.getLogger("airflow.task")
+
+    @provide_session
+    def update_task_execution_label(self, label: Text, session=None):
+        self.execution_label = label
+        session.merge(self)
+        session.commit()
 
     def __repr__(self):
         return f"<TaskExecution: {self.dag_id}.{self.task_id} {self.execution_date} {self.seq_num} [{self.state}]>"
