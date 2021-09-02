@@ -1528,8 +1528,23 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
         #     external_trigger=True,
         #     dag_hash=current_app.dag_bag.dags_hash.get(dag_id),
         # )
+        run_conf = {}
+        if request_conf:
+            try:
+                run_conf = json.loads(request_conf)
+                if not isinstance(run_conf, dict):
+                    flash("Invalid JSON configuration, must be a dict", "error")
+                    return self.render_template(
+                        'airflow/trigger.html', dag_id=dag_id, origin=origin, conf=request_conf
+                    )
+            except json.decoder.JSONDecodeError:
+                flash("Invalid JSON configuration, not parseable", "error")
+                return self.render_template(
+                    'airflow/trigger.html', dag_id=dag_id, origin=origin, conf=request_conf
+                )
+        context = run_conf.get("context") if run_conf.get("context") else ''
         logging.info(f"Scheduler client schedules dag {dag_id}.")
-        self.scheduler_client.schedule_dag(dag_id)
+        self.scheduler_client.schedule_dag(dag_id, context)
 
         flash(f"Triggered {dag_id}, it should start any moment now.")
         return redirect(origin)
