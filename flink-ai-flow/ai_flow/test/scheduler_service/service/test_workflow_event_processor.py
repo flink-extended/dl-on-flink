@@ -20,6 +20,8 @@ import unittest.mock as mock
 from multiprocessing import Queue, Value
 
 import cloudpickle
+from ai_flow.meta.project_meta import ProjectMeta
+
 from ai_flow.workflow.status import Status
 
 from ai_flow.api.context_extractor import ContextExtractor, EventContext, Broadcast, ContextList
@@ -124,7 +126,9 @@ class TestWorkflowEventProcessor(unittest.TestCase):
                 return None
 
         self.mock_store.list_workflows = mock_list_workflows
-        self.mock_store.list_project.return_value = ['test_project1', 'test_project2']
+        p1 = ProjectMeta(name='test_project1', uri='dummy')
+        p2 = ProjectMeta(name='test_project2', uri='dummy')
+        self.mock_store.list_project.return_value = [p1, p2]
 
     def test__get_subscribed_workflow(self):
         e = BaseEvent('k1', 'v1', namespace='test_namespace')
