@@ -23,6 +23,7 @@ import logging
 import math
 import socket
 import sys
+import time
 import traceback
 from collections import defaultdict
 from datetime import datetime, timedelta
@@ -31,11 +32,52 @@ from operator import itemgetter
 from typing import Dict, List, Optional, Set, Tuple
 from urllib.parse import parse_qsl, unquote, urlencode, urlparse
 
+import airflow
 import lazy_object_proxy
 import nvd3
 import sqlalchemy as sqla
 import yaml
+from airflow import models, plugins_manager, settings
+from airflow.api.common.experimental.mark_tasks import (
+    set_dag_run_state_to_failed,
+    set_dag_run_state_to_success,
+)
+from airflow.configuration import AIRFLOW_CONFIG, conf
 from airflow.contrib.jobs.scheduler_factory import SchedulerFactory
+from airflow.events.scheduler_events import SCHEDULER_NAMESPACE, RequestEvent, RunDagMessage, ExecuteTaskMessage
+from airflow.exceptions import AirflowException
+from airflow.executors.scheduling_action import SchedulingAction
+from airflow.jobs.base_job import BaseJob
+from airflow.models import Connection, DagModel, DagTag, Log, SlaMiss, TaskFail, XCom, errors
+from airflow.models.baseoperator import BaseOperator
+from airflow.models.dagcode import DagCode
+from airflow.models.dagrun import DagRun, DagRunType
+from airflow.models.taskexecution import TaskExecution
+from airflow.models.taskinstance import TaskInstance
+from airflow.providers_manager import ProvidersManager
+from airflow.security import permissions
+from airflow.ti_deps.dep_context import DepContext
+from airflow.ti_deps.dependencies_deps import SCHEDULER_QUEUED_DEPS
+from airflow.utils import json as utils_json, timezone
+from airflow.utils.dates import infer_time_unit, scale_time_units
+from airflow.utils.helpers import alchemy_to_dict
+from airflow.utils.log.log_reader import TaskLogReader
+from airflow.utils.session import create_session, provide_session
+from airflow.utils.state import State
+from airflow.version import version
+from airflow.www import auth, utils as wwwutils
+from airflow.www.decorators import action_logging, gzipped
+from airflow.www.forms import (
+    ConnectionForm,
+    DagRunEditForm,
+    DagRunForm,
+    DateTimeForm,
+    DateTimeWithNumRunsForm,
+    DateTimeWithNumRunsWithDagRunsForm,
+    TaskExecutionEditForm,
+    TaskInstanceEditForm,
+)
+from airflow.www.widgets import AirflowModelListWidget
 from flask import (
     Markup,
     Response,
@@ -66,50 +108,6 @@ from sqlalchemy.orm import joinedload
 from wtforms import SelectField, validators
 from wtforms.validators import InputRequired
 
-import airflow
-from airflow import models, plugins_manager, settings
-from airflow.api.common.experimental.mark_tasks import (
-    set_dag_run_state_to_failed,
-    set_dag_run_state_to_success,
-)
-from airflow.configuration import AIRFLOW_CONFIG, conf
-from airflow.contrib.jobs.scheduler_client import EventSchedulerClient, ExecutionContext
-from airflow.events.scheduler_events import SCHEDULER_NAMESPACE
-from airflow.exceptions import AirflowException
-from airflow.executors.scheduling_action import SchedulingAction
-from airflow.jobs.base_job import BaseJob
-from airflow.jobs.scheduler_job import SchedulerJob
-from airflow.models import Connection, DagModel, DagTag, Log, SlaMiss, TaskFail, XCom, errors
-from airflow.models.baseoperator import BaseOperator
-from airflow.models.dagcode import DagCode
-from airflow.models.dagrun import DagRun, DagRunType
-from airflow.models.taskexecution import TaskExecution
-from airflow.models.taskinstance import TaskInstance
-from airflow.providers_manager import ProvidersManager
-from airflow.security import permissions
-from airflow.serialization.serialized_objects import BaseSerialization
-from airflow.ti_deps.dep_context import DepContext
-from airflow.ti_deps.dependencies_deps import SCHEDULER_QUEUED_DEPS
-from airflow.utils import json as utils_json, timezone
-from airflow.utils.dates import infer_time_unit, scale_time_units
-from airflow.utils.helpers import alchemy_to_dict
-from airflow.utils.log.log_reader import TaskLogReader
-from airflow.utils.session import create_session, provide_session
-from airflow.utils.state import State
-from airflow.version import version
-from airflow.www import auth, utils as wwwutils
-from airflow.www.decorators import action_logging, gzipped
-from airflow.www.forms import (
-    ConnectionForm,
-    DagRunEditForm,
-    DagRunForm,
-    DateTimeForm,
-    DateTimeWithNumRunsForm,
-    DateTimeWithNumRunsWithDagRunsForm,
-    TaskExecutionEditForm,
-    TaskInstanceEditForm,
-)
-from airflow.www.widgets import AirflowModelListWidget
 from notification_service.client import NotificationClient
 from notification_service.util.db import EventModel
 
@@ -441,7 +439,6 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
         super().__init__(**kwargs)
         if server_uri:
             self.notification_client: NotificationClient = NotificationClient(server_uri, SCHEDULER_NAMESPACE)
-            self.scheduler_client: EventSchedulerClient = EventSchedulerClient(ns_client=self.notification_client)
 
     @expose('/health')
     def health(self):
@@ -1429,13 +1426,15 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
         #     ignore_ti_state=ignore_ti_state,
         # )
         # executor.heartbeat()
-        dagrun_id = dag.get_dagrun(execution_date).run_id
-        logging.info(
-            f"Scheduler client schedules dag {dag_id} task {task_id} execution_date {execution_date} of dag run "
-            f"{dagrun_id}.")
-        self.scheduler_client.schedule_task(dag_id, task_id, SchedulingAction.START,
-                                            ExecutionContext(dagrun_id))
-        flash(f"Sent {ti} to the message queue, it should start any moment now.")
+        logging.info(f"Schedules dag {dag_id} task {task_id} execution_date {execution_date}.")
+        dagrun = dag.get_dagrun(execution_date)
+        if dagrun is not None:
+            self.notification_client.send_event(RequestEvent(request_id='{}_{}'.format(dagrun.run_id, time.time_ns()),
+                                                             body=ExecuteTaskMessage(dag_id=dag_id, task_id=task_id,
+                                                                                     dagrun_id=dagrun.run_id,
+                                                                                     action=SchedulingAction.START.value)
+                                                             .to_json()).to_event())
+            flash(f"Sent {ti} to the message queue, it should start any moment now.")
         return redirect(origin)
 
     @expose('/delete', methods=['POST'])
@@ -1543,8 +1542,9 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
                     'airflow/trigger.html', dag_id=dag_id, origin=origin, conf=request_conf
                 )
         context = run_conf.get("context") if run_conf.get("context") else ''
-        logging.info(f"Scheduler client schedules dag {dag_id}.")
-        self.scheduler_client.schedule_dag(dag_id, context)
+        logging.info(f"Schedules the dag {dag_id} with the context {context}.")
+        self.notification_client.send_event(RequestEvent(request_id='{}_{}'.format(dag_id, time.time_ns()),
+                                                         body=RunDagMessage(dag_id, context).to_json()).to_event())
 
         flash(f"Triggered {dag_id}, it should start any moment now.")
         return redirect(origin)
