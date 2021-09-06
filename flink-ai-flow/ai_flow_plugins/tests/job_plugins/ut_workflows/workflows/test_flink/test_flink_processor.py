@@ -15,9 +15,11 @@
 # specific language governing permissions and limitations
 # under the License.
 import os
+import shutil
 import time
 from typing import List
 
+from ai_flow_plugins.job_plugins.flink.flink_processor import UDFWrapper
 from pyflink.table import Table, DataTypes, ScalarFunction
 from pyflink.table.descriptors import Schema, OldCsv, FileSystem
 from pyflink.table.udf import udf
@@ -87,6 +89,7 @@ class Sink(flink.FlinkPythonProcessor):
         statement_set.add_insert('mySink', input_list[0])
         return []
 
+
 class SinkWithExecuteSql(flink.FlinkPythonProcessor):
     def process(self,
                 execution_context: flink.ExecutionContext,
@@ -138,3 +141,58 @@ class SinkWithAddInsertSql(flink.FlinkPythonProcessor):
         FROM {input_list[0]}
         """)
         return []
+
+
+class SourceSql(flink.FlinkSqlProcessor):
+    def __init__(self):
+        super().__init__()
+        self.input_file = None
+
+    def open(self, execution_context: flink.ExecutionContext):
+        self.input_file = os.path.join(os.getcwd(), 'resources', 'word_count.txt')
+
+    def sql_statements(self, execution_context: flink.ExecutionContext) -> List[str]:
+        table_source_stmt = '''
+                           CREATE TABLE mySource (
+                               word STRING 
+                           ) WITH (
+                               'connector' = 'filesystem',
+                               'path' = '{uri}',
+                               'format' = 'csv',
+                               'csv.ignore-parse-errors' = 'true'
+                           )
+                            '''.format(uri=self.input_file)
+        return [table_source_stmt]
+
+
+class SinkSql(flink.FlinkSqlProcessor):
+    def __init__(self):
+        super().__init__()
+        self.output_file = None
+
+    def open(self, execution_context: flink.ExecutionContext):
+        self.output_file = os.path.join(os.getcwd(), 'output')
+
+        if os.path.exists(self.output_file):
+            os.remove(self.output_file)
+        if os.path.isdir(self.output_file):
+            shutil.rmtree(self.output_file)
+
+    def udf_list(self, execution_context: flink.ExecutionContext) -> List[UDFWrapper]:
+        return [UDFWrapper(name='pass_func', func=udf(PassUDF(),
+                                                      input_types=[DataTypes.STRING()],
+                                                      result_type=DataTypes.STRING()))]
+
+    def sql_statements(self, execution_context: flink.ExecutionContext) -> List[str]:
+        table_sink_stmt = '''
+                           CREATE TABLE mySink (
+                               newword STRING
+                           ) WITH (
+                               'connector' = 'filesystem',
+                               'path' = '{uri}',
+                               'format' = 'csv',
+                               'csv.ignore-parse-errors' = 'true'
+                           )
+        '''.format(uri=self.output_file)
+        insert_stmt = 'INSERT INTO mySink SELECT pass_func(word) FROM mySource'
+        return [table_sink_stmt, insert_stmt]

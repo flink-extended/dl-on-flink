@@ -21,7 +21,8 @@ import shutil
 from ai_flow import AIFlowServerRunner, init_ai_flow_context
 from ai_flow.workflow.status import Status
 from ai_flow_plugins.job_plugins import flink
-from test_flink_processor import SinkWithAddInsertSql, SinkWithExecuteSql, Source, Sink, Transformer, Transformer2
+from test_flink_processor import SinkWithAddInsertSql, SinkWithExecuteSql, Source, Sink, Transformer, Transformer2, \
+    SourceSql, SinkSql
 import ai_flow as af
 
 project_path = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
@@ -63,6 +64,17 @@ class TestFlink(unittest.TestCase):
         je = af.workflow_operation.start_job_execution(job_name='task_1', execution_id='1')
         je = af.workflow_operation.get_job_execution(job_name='task_1', execution_id='1')
         self.assertEqual(Status.FINISHED, je.status)
+
+    def test_local_flink_task_with_flink_sql_processor(self):
+        flink.set_flink_env(flink.FlinkStreamEnv())
+        with af.job_config('task_1'):
+            af.user_define_operation(processor=SourceSql())
+            af.user_define_operation(processor=SinkSql())
+
+        workflow = af.workflow_operation.submit_workflow(workflow_name=af.current_workflow_config().workflow_name)
+        job_execution = af.workflow_operation.start_job_execution(job_name='task_1', execution_id='1')
+        job_execution = af.workflow_operation.get_job_execution(job_name='task_1', execution_id='1')
+        self.assertEqual(Status.FINISHED, job_execution.status)
 
     def test_stop_local_flink_task(self):
         with af.job_config('task_1'):
