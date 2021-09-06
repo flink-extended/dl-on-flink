@@ -66,10 +66,11 @@ class TestFlink(unittest.TestCase):
         self.assertEqual(Status.FINISHED, je.status)
 
     def test_local_flink_task_with_flink_sql_processor(self):
-        flink.set_flink_env(flink.FlinkStreamEnv())
+        flink.set_flink_env(None)
         with af.job_config('task_1'):
             af.user_define_operation(processor=SourceSql())
             af.user_define_operation(processor=SinkSql())
+            flink.set_flink_env(flink.FlinkStreamEnv())
 
         workflow = af.workflow_operation.submit_workflow(workflow_name=af.current_workflow_config().workflow_name)
         job_execution = af.workflow_operation.start_job_execution(job_name='task_1', execution_id='1')
