@@ -28,10 +28,11 @@ class WrappedTableEnvironmentContext:
     - Lists the ids of the Flink jobs.
     - Waits for the execution result of the Flink job.
     """
+
     def __init__(self):
-        self.execute_sql_results:List[TableResult] = []
-    
-    def add_execute_sql_result(self, result:TableResult):
+        self.execute_sql_results: List[TableResult] = []
+
+    def add_execute_sql_result(self, result: TableResult):
         self.execute_sql_results.append(result)
 
     def get_job_ids(self) -> List[Text]:
@@ -71,6 +72,7 @@ class WrappedTableEnvironment(TableEnvironment):
     def wait_execution_results(self):
         self.wrapped_context.wait_execution_results()
 
+
 class WrappedBatchTableEnvironment(BatchTableEnvironment, WrappedTableEnvironment):
 
     def __init__(self, j_tenv):
@@ -100,6 +102,7 @@ class WrappedStatementSetContext:
     - Waits for the execution result of the Flink job.
     - Decides whether 'StatementSet' needs to call 'execute()' method based on whether it contains 'execute_sql'.
     """
+
     def __init__(self):
         self.execute_results: List[TableResult] = []
         self.need_execute = False
@@ -137,13 +140,13 @@ class WrappedStatementSet(StatementSet):
         self.wrapped_context.add_execute_result(result)
         self.wrapped_context.need_execute = False
         return result
-    
+
     def add_insert_sql(self, stmt: str) -> 'StatementSet':
         result = super().add_insert_sql(stmt)
         self.wrapped_context.need_execute = True
         return result
 
-    def add_insert(self, target_path, table, overwrite:bool=False) -> 'StatementSet':
+    def add_insert(self, target_path, table, overwrite: bool = False) -> 'StatementSet':
         result = super().add_insert(target_path, table, overwrite=overwrite)
         self.wrapped_context.need_execute = True
         return result

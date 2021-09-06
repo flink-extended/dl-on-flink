@@ -16,7 +16,8 @@
 # under the License.
 from ai_flow.plugin_interface import register_job_plugin_factory
 from ai_flow_plugins.job_plugins.flink.flink_job_plugin import FlinkJobPluginFactory
-from ai_flow_plugins.job_plugins.flink.flink_processor import FlinkPythonProcessor, FlinkJavaProcessor, ExecutionContext
+from ai_flow_plugins.job_plugins.flink.flink_processor import FlinkPythonProcessor, FlinkJavaProcessor, \
+    ExecutionContext, FlinkSqlProcessor, UDFWrapper
 from ai_flow_plugins.job_plugins.flink.flink_job_config import FlinkJobConfig
 from ai_flow_plugins.job_plugins.flink.flink_env import set_flink_env, FlinkEnv, \
     FlinkBatchEnv, FlinkStreamEnv, WrappedBatchTableEnvironment, WrappedStreamTableEnvironment
