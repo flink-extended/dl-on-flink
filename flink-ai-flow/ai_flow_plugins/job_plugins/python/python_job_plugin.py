@@ -22,6 +22,8 @@ from subprocess import Popen
 from tempfile import NamedTemporaryFile
 from typing import Text, Any, List
 
+from ai_flow_plugins.job_plugins.python.python_processor import PythonProcessor
+
 from ai_flow.ai_graph.ai_graph import AISubGraph
 from ai_flow.log import log_path_utils
 from ai_flow.plugin_interface.job_plugin_interface import JobPluginFactory, JobHandle, JobRuntimeEnv, \
@@ -58,7 +60,19 @@ class PythonJobHandle(JobHandle):
 
 class PythonJobGenerator(JobGenerator):
 
+    @staticmethod
+    def _validate_sub_graph(sub_graph: AISubGraph):
+        """
+        Check that all the processor in sub_graph is PythonProcessor
+        """
+        for node_name, ai_node in sub_graph.nodes.items():
+            processor = ai_node.get_processor()
+            if not isinstance(processor, PythonProcessor):
+                raise Exception("Invalid sub_graph: node {} in job {} expect to has PythonProcessor but it is {}"
+                                .format(node_name, sub_graph.config.job_name, type(processor)))
+
     def generate(self, sub_graph: AISubGraph, resource_dir: Text = None) -> Job:
+        self._validate_sub_graph(sub_graph)
         python_job_config: PythonJobConfig = sub_graph.config
         run_graph: RunGraph = build_run_graph(sub_graph)
         job = PythonJob(job_config=python_job_config)
