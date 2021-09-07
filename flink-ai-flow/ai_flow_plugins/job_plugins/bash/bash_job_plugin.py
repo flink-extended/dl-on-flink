@@ -63,8 +63,19 @@ class BashJobHandle(JobHandle):
 
 
 class BashJobGenerator(JobGenerator):
+    @staticmethod
+    def _validate_sub_graph(sub_graph: AISubGraph):
+        """
+        Check that all the processor in sub_graph is BashProcessor
+        """
+        for node_name, ai_node in sub_graph.nodes.items():
+            processor = ai_node.get_processor()
+            if not isinstance(processor, BashProcessor):
+                raise Exception("Invalid sub_graph: node {} in job {} expect to has BashProcessor but it is {}"
+                                .format(node_name, sub_graph.config.job_name, type(processor)))
 
     def generate(self, sub_graph: AISubGraph, resource_dir: Text = None) -> Job:
+        self._validate_sub_graph(sub_graph)
         bash_job_config: BashJobConfig = sub_graph.config
         job = BashJob(job_config=bash_job_config)
         processors = {}
