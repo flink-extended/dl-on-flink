@@ -195,11 +195,10 @@ class FlinkSqlProcessor(FlinkPythonProcessor):
                 else:
                     table_env.register_function(udf.name, udf.func)
 
-        a = execution_context.node_type
         for sql_statement in sql_statements:
             if sql_statement.lower().startswith('insert'):
                 statement_set.add_insert_sql(sql_statement)
-            if sql_statement.lower().startswith('create'):
+            elif sql_statement.lower().startswith('create'):
                 # Check if users' DDL are consistent with info they provide in the
                 # :py:class:`ai_flow.meta.dataset_meta.DatasetMeta`
                 if execution_context.node_type == 'read_dataset' or execution_context.node_type == 'write_dataset':
