@@ -118,11 +118,11 @@ class MockScheduler(Scheduler):
         return JobExecutionInfo(job_name='task_1', status=Status.RUNNING)
 
     def get_job_executions(self, job_name: Text, workflow_execution_id: Text) -> List[JobExecutionInfo]:
-        return [JobExecutionInfo(job_name='task_1', status=Status.RUNNING)]
+        return [JobExecutionInfo(job_name='task_1', status=Status.RUNNING, execution_label='test_label')]
 
     def list_job_executions(self, workflow_execution_id: Text) -> List[JobExecutionInfo]:
-        return [JobExecutionInfo(job_name='task_1', status=Status.RUNNING),
-                JobExecutionInfo(job_name='task_2', status=Status.RUNNING)]
+        return [JobExecutionInfo(job_name='task_1', status=Status.RUNNING, execution_label='test_label'),
+                JobExecutionInfo(job_name='task_2', status=Status.RUNNING, execution_label='test_label')]
 
 
 register_job_plugin_factory(MockJobFactory())

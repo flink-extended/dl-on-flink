@@ -14,6 +14,14 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
+import threading
+import time
+
+from airflow.models.taskexecution import TaskExecution
+
+from ai_flow.workflow.status import Status
+
+from ai_flow.util.json_utils import dumps
 from typing import Any, Text
 import os
 from airflow.models.baseoperator import BaseOperator
@@ -21,12 +29,51 @@ from airflow.utils.decorators import apply_defaults
 from ai_flow.common.module_load import import_string
 from ai_flow.runtime.job_runtime_util import prepare_job_runtime_env
 from ai_flow.util.time_utils import datetime_to_int64
-from ai_flow.plugin_interface.blob_manager_interface import BlobConfig, BlobManagerFactory
+from ai_flow.plugin_interface.blob_manager_interface import BlobConfig
 from ai_flow.plugin_interface.job_plugin_interface import JobController, JobHandle, JobRuntimeEnv
-from ai_flow.plugin_interface.scheduler_interface import JobExecutionInfo, WorkflowExecutionInfo, WorkflowInfo
 from ai_flow.context.project_context import build_project_context
+from ai_flow.plugin_interface.blob_manager_interface import BlobManagerFactory
+from ai_flow.plugin_interface.scheduler_interface import JobExecutionInfo, WorkflowExecutionInfo, WorkflowInfo
 from ai_flow.workflow.job import Job
 from ai_flow.workflow.workflow import Workflow, WorkflowPropertyKeys
+
+
+class StoppableThread(threading.Thread):
+    """
+    Thread class with a stop() method. The thread itself has to check regularly for the stopped() condition.
+    """
+
+    def __init__(self, *args, **kwargs):
+        super(StoppableThread, self).__init__(*args, **kwargs)
+        self._ended = threading.Event()
+
+    def stop(self):
+        self._ended.set()
+
+    def stopped(self):
+        return self._ended.is_set()
+
+
+class ExecutionLabelReportThread(StoppableThread):
+    """
+    A thread that reports the execution label of a job periodically.
+    """
+
+    def __init__(self, task_execution, label_update_interval, job_controller, job_handle, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._task_execution = task_execution
+        self._job_controller = job_controller
+        self._job_handle = job_handle
+        self._label_update_interval = label_update_interval
+
+    def run(self) -> None:
+        old_labels = None
+        while not self.stopped() and self._job_controller.get_job_status(self._job_handle) == Status.RUNNING:
+            label = self._job_controller.obtain_job_label(self._job_handle)
+            if label != old_labels and len(label) > 0:
+                self._task_execution.update_task_execution_label(label)
+                old_labels = label
+            self._ended.wait(self._label_update_interval)
 
 
 class AIFlowOperator(BaseOperator):
@@ -34,6 +81,7 @@ class AIFlowOperator(BaseOperator):
     AIFlowOperator implements airflow Operator.
     Its function is to submit and stop the job defined by the ai flow program.
     """
+
     @apply_defaults
     def __init__(
             self,
@@ -105,11 +153,22 @@ class AIFlowOperator(BaseOperator):
 
     def execute(self, context: Any):
         self.log.info("context:" + str(context))
+        execution_label_report_thread = None
         try:
             self.log.info("submitting job with job_runtime_env: {}".format(self.job_runtime_env))
             self.job_handle: JobHandle = self.job_controller.submit_job(self.job, self.job_runtime_env)
+
+            execution_label_report_thread = \
+                ExecutionLabelReportThread(context['task_execution'],
+                                           self.job.job_config.job_label_report_interval,
+                                           self.job_controller,
+                                           self.job_handle)
+            execution_label_report_thread.start()
+
             result = self.job_controller.get_result(job_handle=self.job_handle, blocking=True)
         finally:
+            execution_label_report_thread.stop()
+            execution_label_report_thread.join()
             self.job_controller.cleanup_job(self.job_handle, self.job_runtime_env)
         return result
 

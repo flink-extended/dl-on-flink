@@ -29,6 +29,7 @@ class JobConfig(Jsonable):
     def __init__(self,
                  job_name: Text = None,
                  job_type: Text = None,
+                 job_label_report_interval: float = 5.0,
                  properties: Dict[Text, Jsonable] = None) -> None:
         """
         :param job_name: Name of the configured job.
@@ -38,6 +39,7 @@ class JobConfig(Jsonable):
         super().__init__()
         self.job_name: Text = job_name
         self.job_type = job_type
+        self.job_label_report_interval = job_label_report_interval
         if properties is None:
             self.properties: Dict[Text, Jsonable] = {}
         else:
@@ -53,9 +55,20 @@ class JobConfig(Jsonable):
         job_name = list(data.keys())[0]
         return JobConfig(job_name=job_name,
                          job_type=data[job_name].get('job_type', None),
+                         job_label_report_interval=data[job_name].get('job_label_report_interval',
+                                                                      5.0),
                          properties=data[job_name].get('properties', {}))
 
     @staticmethod
     def to_dict(job_config: 'JobConfig') -> Dict:
         """Convert the JobConfig to a dict"""
-        return {job_config.job_name: {'job_type': job_config.job_type, 'properties': job_config.properties}}
+        return {job_config.job_name: {'job_type': job_config.job_type,
+                                      'job_label_report_interval':
+                                          job_config.job_label_report_interval,
+                                      'properties': job_config.properties}}
+
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
+
+    def __repr__(self):
+        return self.__dict__.__repr__()
