@@ -100,6 +100,14 @@ class JobController(ABC):
         """
         pass
 
+    def obtain_job_label(self, job_handle: JobHandle) -> Text:
+        """
+        Returns the job runtime execution label. The default implementation returns an empty label.
+        :param job_handle: The job handle that contains the necessary information for an execution.
+        :return: job runtime execution label.
+        """
+        return ""
+
 
 class JobControllerManager(BaseRegistry):
     def __init__(self) -> None:

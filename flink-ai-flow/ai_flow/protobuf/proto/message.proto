@@ -89,6 +89,7 @@ message JobProto {
     google.protobuf.StringValue log_uri = 9;
     google.protobuf.StringValue signature = 10;
     WorkflowExecutionProto workflow_execution = 11;
+    google.protobuf.StringValue execution_label = 12;
 }
 
 message WorkflowProto {

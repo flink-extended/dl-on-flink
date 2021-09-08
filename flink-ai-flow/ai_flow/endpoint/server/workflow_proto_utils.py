@@ -142,7 +142,8 @@ def job_to_proto(job: JobExecutionInfo) -> JobProto:
                     start_time=int64Value(int(start_date)),
                     end_time=int64Value(int(end_date)),
                     properties=dict(job.properties),
-                    workflow_execution=workflow_execution_to_proto(job.workflow_execution))
+                    workflow_execution=workflow_execution_to_proto(job.workflow_execution),
+                    execution_label=stringValue(job.execution_label))
 
 
 def proto_to_job(proto: JobProto) -> JobExecutionInfo:
@@ -155,7 +156,8 @@ def proto_to_job(proto: JobProto) -> JobExecutionInfo:
                                 start_date=str(proto.start_time.value),
                                 end_date=str(proto.end_time.value),
                                 properties=dict(proto.properties),
-                                workflow_execution=proto_to_workflow_execution(proto.workflow_execution))
+                                workflow_execution=proto_to_workflow_execution(proto.workflow_execution),
+                                execution_label=proto.execution_label.value)
 
 
 def job_list_to_proto(job_list: List[JobExecutionInfo]) -> List[JobProto]:
