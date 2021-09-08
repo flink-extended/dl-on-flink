@@ -35,7 +35,6 @@ class TaskExecution(Base, LoggingMixin):
     execution_date = Column(UtcDateTime, primary_key=True)
     seq_num = Column(Integer, primary_key=True)
     try_number = Column(Integer, nullable=False)
-    run_number = Column(Integer, nullable=False)
     start_date = Column(UtcDateTime)
     end_date = Column(UtcDateTime)
     duration = Column(Float)
@@ -60,7 +59,6 @@ class TaskExecution(Base, LoggingMixin):
                  execution_date,
                  seq_num,
                  try_number,
-                 run_number,
                  start_date,
                  end_date,
                  duration,
@@ -83,7 +81,6 @@ class TaskExecution(Base, LoggingMixin):
         self.execution_date = execution_date
         self.seq_num = seq_num
         self.try_number = try_number
-        self.run_number = run_number
         self.start_date = start_date
         self.end_date = end_date
         self.duration = duration
