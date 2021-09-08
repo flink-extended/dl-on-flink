@@ -19,6 +19,7 @@
 
 task_1:
   job_type: bash
+  job_label_report_interval: 60.0
 
 task_2:
   job_type: bash
