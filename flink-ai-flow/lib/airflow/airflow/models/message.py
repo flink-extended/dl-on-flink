@@ -18,8 +18,6 @@
 import pickle
 import dill
 from sqlalchemy import Column, Index, Integer, String, PickleType
-from sqlalchemy.orm import Session
-
 from airflow.models.base import ID_LEN, Base
 from airflow.utils import timezone
 from airflow.utils.session import provide_session
@@ -32,9 +30,10 @@ class MessageState:
 
 
 class IdentifiedMessage(object):
-    def __init__(self, serialized_message, msg_id):
+    def __init__(self, serialized_message, msg_id, queue_time):
         self.serialized_message = serialized_message
         self.msg_id = msg_id
+        self.queue_time = queue_time
 
     def deserialize(self):
         return pickle.loads(self.serialized_message)
@@ -75,13 +74,3 @@ class Message(Base):
     @staticmethod
     def get_message_type(obj):
         return type(obj).__name__
-
-    @provide_session
-    def save_queued_message(self, scheduling_job_id: int, session: Session = None) -> IdentifiedMessage:
-        self.state = MessageState.QUEUED
-        self.scheduling_job_id = scheduling_job_id
-        self.queue_time = timezone.utcnow()
-        session.add(self)
-        session.commit()
-        return IdentifiedMessage(self.data, self.id)
-

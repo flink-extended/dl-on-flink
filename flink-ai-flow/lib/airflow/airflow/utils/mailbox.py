@@ -16,7 +16,9 @@
 # under the License.
 import pickle
 import queue
-
+import pytz
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.date import DateTrigger
 from notification_service.base_notification import BaseEvent
 
 from airflow.models.event_progress import EventProgress
@@ -26,15 +28,26 @@ from airflow.models.message import Message, IdentifiedMessage, MessageState
 from airflow.utils.log.logging_mixin import LoggingMixin
 
 
+def put_message_to_queue(queue, message):
+    queue.put(message)
+
+
 class Mailbox(LoggingMixin):
 
     def __init__(self) -> None:
         super().__init__()
         self.queue = queue.Queue()
         self.scheduling_job_id = None
+        self.sc = BackgroundScheduler()
+
+    def start(self):
+        self.sc.start()
+
+    def stop(self):
+        self.sc.shutdown()
 
     @provide_session
-    def _save_message_to_db(self, message, session) -> IdentifiedMessage:
+    def _save_message_to_db(self, message, queue_time, session=None) -> IdentifiedMessage:
         """ 1. save message to db
             2. update the event progress
         """
@@ -48,22 +61,28 @@ class Mailbox(LoggingMixin):
             message_obj = Message(message)
             message_obj.state = MessageState.QUEUED
             message_obj.scheduling_job_id = self.scheduling_job_id
-            message_obj.queue_time = timezone.utcnow()
+            message_obj.queue_time = queue_time
             session.add(message_obj)
             session.commit()
-            return IdentifiedMessage(serialized_message=message_obj.data, msg_id=message_obj.id)
+            return IdentifiedMessage(serialized_message=message_obj.data,
+                                     msg_id=message_obj.id,
+                                     queue_time=message_obj.queue_time)
         except Exception as e:
             session.rollback()
             raise e
 
-    def send_message(self, message):
+    def send_message(self, message, queue_time=timezone.utcnow()):
         if not self.scheduling_job_id:
             self.log.warning("scheduling_job_id not set, missing messages cannot be recovered.")
-        identified_message = self._save_message_to_db(message)
-        self.queue.put(identified_message)
-
-    def send_identified_message(self, message: IdentifiedMessage):
-        self.queue.put(message)
+        identified_message = self._save_message_to_db(message, queue_time)
+        current_time = timezone.utcnow()
+        if current_time >= queue_time:
+            self.queue.put(identified_message)
+        else:
+            self.sc.add_job(func=put_message_to_queue,
+                            args=(self.queue, identified_message),
+                            trigger=DateTrigger(run_date=queue_time,
+                                                timezone=pytz.timezone('UTC')))
 
     def get_message(self):
         identified_message: IdentifiedMessage = self.queue.get()
