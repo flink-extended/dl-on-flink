@@ -144,6 +144,7 @@ class EventBasedScheduler(LoggingMixin):
             elif isinstance(event, TaskStateChangedEvent):
                 dagrun = self._find_dagrun(event.dag_id, event.execution_date, session)
                 if dagrun is not None:
+                    self._handle_task_status_changed(dagrun, event, session)
                     dag_run_id = DagRunId(dagrun.dag_id, dagrun.run_id)
                     self.task_event_manager.handle_event(dag_run_id, origin_event)
                     tasks = self._find_scheduled_tasks(dagrun, session)
@@ -151,7 +152,8 @@ class EventBasedScheduler(LoggingMixin):
                     if dagrun.state in State.finished:
                         self.mailbox.send_message(DagRunFinishedEvent(dagrun.run_id).to_event())
                 else:
-                    self.log.warning("dagrun is None for dag_id:{} execution_date: {}".format(event.dag_id, event.execution_date))
+                    self.log.warning("dagrun is None for dag_id:{} execution_date: {}".format(event.dag_id,
+                                                                                              event.execution_date))
             elif isinstance(event, DagExecutableEvent):
                 dagrun = self._create_dag_run(event.dag_id, session=session)
                 tasks = self._find_scheduled_tasks(dagrun, session)
@@ -187,6 +189,22 @@ class EventBasedScheduler(LoggingMixin):
             session.expunge_all()
             return True
 
+    def _handle_task_status_changed(self, dagrun: DagRun, event: TaskStateChangedEvent, session):
+        ti = dagrun.get_task_instance(task_id=event.task_id)
+        if event.try_number == ti.try_number:
+            if State.UP_FOR_RETRY == event.state:
+                dag = self.dagbag.get_dag(dagrun.dag_id, session=session)
+                ti.task = dag.get_task(ti.task_id)
+                next_retry_datetime = ti.next_retry_datetime()
+                self.mailbox.send_message(message=TaskSchedulingEvent(dag_id=event.dag_id,
+                                                                      task_id=event.task_id,
+                                                                      execution_date=event.execution_date,
+                                                                      try_number=event.try_number,
+                                                                      action=SchedulingAction.START).to_event(),
+                                          queue_time=next_retry_datetime)
+
+            ti.update_latest_task_execution(session=session)
+
     def stop(self) -> None:
         self.mailbox.send_message(StopSchedulerEvent(self.id).to_event())
         self.log.info("Send stop event to the scheduler.")
@@ -201,7 +219,7 @@ class EventBasedScheduler(LoggingMixin):
         self.log.info("Recovering %s messages of last scheduler job with id: %s",
                       len(unprocessed_messages), last_scheduling_id)
         for msg in unprocessed_messages:
-            self.mailbox.send_identified_message(msg)
+            self.mailbox.send_message(msg.deserialize(), msg.queue_time)
 
     @staticmethod
     def get_unprocessed_message(last_scheduling_id: int) -> List[IdentifiedMessage]:
@@ -212,7 +230,7 @@ class EventBasedScheduler(LoggingMixin):
             ).order_by(asc(MSG.id)).all()
         unprocessed: List[IdentifiedMessage] = []
         for msg in results:
-            unprocessed.append(IdentifiedMessage(msg.data, msg.id))
+            unprocessed.append(IdentifiedMessage(msg.data, msg.id, msg.queue_time))
         return unprocessed
 
     def _find_dagrun(self, dag_id, execution_date, session) -> DagRun:
@@ -639,6 +657,7 @@ class EventBasedSchedulerJob(BaseJob):
 
         try:
             self.mailbox.set_scheduling_job_id(self.id)
+            self.mailbox.start()
             self.scheduler.id = self.id
             self.dag_trigger.start()
             self.task_event_manager.start()
@@ -667,6 +686,7 @@ class EventBasedSchedulerJob(BaseJob):
             self.dag_trigger.end()
             self.task_event_manager.end()
             self.executor.end()
+            self.mailbox.stop()
 
             settings.Session.remove()  # type: ignore
         except Exception as e:  # pylint: disable=broad-except

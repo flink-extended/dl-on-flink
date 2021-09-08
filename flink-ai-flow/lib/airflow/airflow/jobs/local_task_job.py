@@ -148,7 +148,8 @@ class LocalTaskJob(BaseJob):
             self.task_instance.task_id,
             self.task_instance.dag_id,
             self.task_instance.execution_date,
-            self.task_instance.state
+            self.task_instance.state,
+            self.task_instance.try_number
         )
         event = task_status_changed_event.to_event()
         client = NotificationClient(self.server_uri, default_namespace=event.namespace, sender=event.sender)

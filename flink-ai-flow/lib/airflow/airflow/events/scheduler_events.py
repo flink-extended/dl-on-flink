@@ -224,12 +224,13 @@ class StopDagEvent(SchedulerInnerEvent):
 
 class TaskStateChangedEvent(SchedulerInnerEvent):
 
-    def __init__(self, task_id, dag_id, execution_date, state, create_time=None):
+    def __init__(self, task_id, dag_id, execution_date, state, try_number, create_time=None):
         super().__init__()
         self.task_id = task_id
         self.dag_id = dag_id
         self.execution_date = execution_date
         self.state = state
+        self.try_number = try_number
         self.create_time = create_time if create_time is not None else int(time.time() * 1000)
 
     @classmethod
@@ -260,6 +261,7 @@ class TaskStateChangedEvent(SchedulerInnerEvent):
                                      dag_id=o['dag_id'],
                                      execution_date=dates.parse_execution_date(o['execution_date']),
                                      state=o['state'],
+                                     try_number=o['try_number'],
                                      create_time=event.create_time)
 
 
