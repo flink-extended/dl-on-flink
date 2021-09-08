@@ -355,6 +355,7 @@ class AirFlowScheduler(AirFlowSchedulerBase):
                                    status=self.airflow_state_to_status(task.state),
                                    start_date=str(datetime_to_int64(task.start_date)),
                                    end_date=str(datetime_to_int64(task.end_date)),
+                                   execution_label=task.execution_label,
                                    workflow_execution
                                    =WorkflowExecutionInfo(workflow_info=WorkflowInfo(namespace=project_name,
                                                                                      workflow_name=workflow_name),
@@ -589,6 +590,7 @@ class AirFlowSchedulerRestful(AirFlowSchedulerBase):
                                    status=self.airflow_state_to_status(task.get('state')),
                                    start_date=self.datetime_str_to_int64_str(task.get('start_date')),
                                    end_date=self.datetime_str_to_int64_str(task.get('end_date')),
+                                   execution_label=task.execution_label,
                                    workflow_execution
                                    =WorkflowExecutionInfo(workflow_info=WorkflowInfo(namespace=project_name,
                                                                                      workflow_name=workflow_name),

@@ -191,6 +191,7 @@ class JobExecutionInfo(json_utils.Jsonable):
                  start_date: Text = None,
                  end_date: Text = None,
                  properties: Dict = None,
+                 execution_label: Text = None
                  ):
         self._job_name = job_name
         self._status = status
@@ -201,6 +202,7 @@ class JobExecutionInfo(json_utils.Jsonable):
         if properties is None:
             properties = {}
         self._properties = properties
+        self._execution_label = execution_label
 
     @property
     def job_name(self):
@@ -257,6 +259,10 @@ class JobExecutionInfo(json_utils.Jsonable):
     @properties.setter
     def properties(self, value):
         self._properties = value
+
+    @property
+    def execution_label(self):
+        return self._execution_label
 
     def __str__(self) -> str:
         return json_utils.dumps(self)

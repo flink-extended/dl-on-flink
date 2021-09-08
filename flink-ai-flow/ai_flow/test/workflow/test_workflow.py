@@ -41,8 +41,10 @@ class TestWorkflow(unittest.TestCase):
 
         self.assertEqual('workflow_1', workflow_config.workflow_name)
         self.assertEqual('bash', workflow_config.job_configs['task_1'].job_type)
+        self.assertEqual(60.0, workflow_config.job_configs['task_1'].job_label_report_interval)
         self.assertEqual("2020,1,1,1,1,1,",
                          workflow_config.job_periodic_config_dict.get('task_2').trigger_config['start_date'])
+        self.assertEqual(5.0, workflow_config.job_configs['task_2'].job_label_report_interval)
         self.assertEqual("* * * * * * *",
                          workflow_config.job_periodic_config_dict.get('task_2').trigger_config['cron'])
         self.assertEqual("1,1,1,1",
