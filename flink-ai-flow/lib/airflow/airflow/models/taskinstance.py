@@ -1116,8 +1116,9 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
         task_execution = session.query(TaskExecution).filter(
             TaskExecution.dag_id == self.dag_id,
             TaskExecution.task_id == self.task_id,
-            TaskExecution.execution_date == self.execution_date
-        ).order_by(desc(TaskExecution.seq_num)).first()
+            TaskExecution.execution_date == self.execution_date,
+            TaskExecution.seq_num == self.seq_num
+        ).first()
         if task_execution is not None:
             task_execution.start_date = self.start_date
             task_execution.end_date = self.end_date

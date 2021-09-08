@@ -59,11 +59,6 @@ def upgrade():
         batch_op.add_column(sa.Column('event_ack_id', sa.BigInteger(), nullable=True))
         batch_op.add_column(sa.Column('context', sa.Text(), nullable=True))
 
-    """Apply Add is_active Column to task_instance table"""
-    with op.batch_alter_table('task_instance', schema=None) as batch_op:
-        batch_op.add_column(sa.Column('is_active', sa.Boolean(), nullable=True))
-        batch_op.add_column(sa.Column('seq_num', sa.Integer(), nullable=True))
-
     """Add task_state table"""
     if 'task_state' not in tables:
         op.create_table(
@@ -83,7 +78,6 @@ def upgrade():
             sa.Column('dag_id', sa.String(length=250), nullable=False),
             sa.Column('execution_date', datetime, nullable=False),
             sa.Column('seq_num', sa.Integer(), nullable=False),
-            sa.Column('try_number', sa.Integer(), nullable=False),
             sa.Column('start_date', datetime, nullable=True),
             sa.Column('end_date', datetime, nullable=True),
             sa.Column('duration', sa.Float(), nullable=True),
@@ -142,10 +136,6 @@ def downgrade():
         batch_op.drop_column('scheduling_job_id')
         batch_op.drop_column('event_ack_id')
         batch_op.drop_column('context')
-
-    with op.batch_alter_table('task_instance', schema=None) as batch_op:
-        batch_op.drop_column('is_active')
-        batch_op.drop_column('seq_num')
 
     op.drop_table('task_state')
     op.drop_table('task_execution')
