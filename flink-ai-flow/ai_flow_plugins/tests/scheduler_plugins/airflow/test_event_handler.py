@@ -312,17 +312,17 @@ class TestAIFlowEventHandlers(unittest.TestCase):
         config_str = json_utils.dumps(configs)
         handler = AIFlowHandler(config=config_str)
 
-        event = TaskStateChangedEvent("task_1", "test.dag_1", datetime.utcnow(), State.RUNNING).to_event()
+        event = TaskStateChangedEvent("task_1", "test.dag_1", datetime.utcnow(), State.RUNNING, 1).to_event()
         action, ts = handler.handle_event(event, None)
         self.assertEqual(SchedulingAction.START, action)
 
         time.sleep(0.01)
-        event = TaskStateChangedEvent("task_1", "test.dag_1", datetime.utcnow(), State.KILLING).to_event()
+        event = TaskStateChangedEvent("task_1", "test.dag_1", datetime.utcnow(), State.KILLING, 1).to_event()
         action, ts = handler.handle_event(event, ts)
         self.assertEqual(SchedulingAction.NONE, action)
 
         time.sleep(0.01)
-        event = TaskStateChangedEvent("task_1", "test.dag_1", datetime.utcnow(), State.SUCCESS).to_event()
+        event = TaskStateChangedEvent("task_1", "test.dag_1", datetime.utcnow(), State.SUCCESS, 1).to_event()
         action, ts = handler.handle_event(event, ts)
         self.assertEqual(SchedulingAction.STOP, action)
 

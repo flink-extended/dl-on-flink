@@ -20,7 +20,6 @@ import sqlalchemy
 import time
 import unittest
 import threading
-import logging
 
 from airflow.models.serialized_dag import SerializedDagModel
 
@@ -30,24 +29,23 @@ from airflow.utils import timezone
 from airflow.utils.state import State
 from typing import List
 
-import psutil
 from airflow.executors.scheduling_action import SchedulingAction
 from airflow.contrib.jobs.scheduler_client import EventSchedulerClient
 from airflow.models.taskexecution import TaskExecution
 from notification_service.base_notification import BaseEvent, UNDEFINED_EVENT_TYPE
 from notification_service.client import NotificationClient
-from notification_service.event_storage import MemoryEventStorage, DbEventStorage
+from notification_service.event_storage import MemoryEventStorage
 from notification_service.master import NotificationMaster
 from notification_service.service import NotificationService
 
 from airflow.contrib.jobs.event_based_scheduler_job import EventBasedSchedulerJob, SchedulerEventWatcher, \
     EventBasedScheduler
 from airflow.executors.local_executor import LocalExecutor
-from airflow.models import TaskInstance, Message, DagBag
+from airflow.models import TaskInstance, Message, DagBag, DagRun
 from airflow.jobs.base_job import BaseJob
 from airflow.utils.mailbox import Mailbox
 from airflow.utils.session import create_session, provide_session
-from airflow.events.scheduler_events import StopSchedulerEvent, StopDagEvent
+from airflow.events.scheduler_events import StopSchedulerEvent, StopDagEvent, TaskSchedulingEvent
 from tests.test_utils import db
 
 TEST_DAG_FOLDER = os.path.join(
@@ -163,10 +161,11 @@ class TestEventBasedScheduler(unittest.TestCase):
     def get_latest_job_id(self, session):
         return session.query(BaseJob).order_by(sqlalchemy.desc(BaseJob.id)).first().id
 
-    def start_scheduler(self, file_path):
+    def start_scheduler(self, file_path, event_start_time=int(time.time()*1000)):
         self.scheduler = EventBasedSchedulerJob(
             dag_directory=file_path,
             server_uri="localhost:{}".format(self.port),
+            event_start_time=event_start_time,
             executor=LocalExecutor(3),
             max_runs=-1,
             refresh_dag_dir_interval=30
@@ -268,13 +267,94 @@ class TestEventBasedScheduler(unittest.TestCase):
         tes: List[TaskExecution] = self.get_task_execution("event_dag", "task_2")
         self.assertEqual(len(tes), 1)
 
+    def run_task_retry_function(self):
+        client = NotificationClient(server_uri="localhost:{}".format(self.port),
+                                    default_namespace="")
+        while True:
+            with create_session() as session:
+                dagruns = session.query(DagRun).filter(DagRun.dag_id == 'task_retry',
+                                                       DagRun.state == State.RUNNING).all()
+                if len(dagruns) > 0:
+                    client.send_event(BaseEvent(key='start', value='', event_type='', namespace=''))
+                    break
+                else:
+                    time.sleep(1)
+        flag_1 = True
+        while True:
+            with create_session() as session:
+                tes = session.query(TaskExecution).filter(TaskExecution.dag_id == 'task_retry',
+                                                          TaskExecution.task_id == 'task_1',
+                                                          TaskExecution.state == State.FAILED).all()
+                if len(tes) == 1 and flag_1:
+                    client.send_event(BaseEvent(key='start', value='', event_type='', namespace=''))
+                    flag_1 = False
+                elif len(tes) == 2:
+                    break
+                else:
+                    time.sleep(1)
+        client.send_event(StopSchedulerEvent(job_id=0).to_event())
+
+    def test_task_retry(self):
+        dag_file = os.path.join(TEST_DAG_FOLDER, 'test_task_retry_dag.py')
+        t = threading.Thread(target=self.run_task_retry_function, args=())
+        t.setDaemon(True)
+        t.start()
+        self.start_scheduler(dag_file)
+        tes: List[TaskExecution] = self.get_task_execution("task_retry", "task_1")
+        self.assertEqual(len(tes), 2)
+
+    def run_kill_task_retry_function(self):
+        client = NotificationClient(server_uri="localhost:{}".format(self.port),
+                                    default_namespace="")
+        while True:
+            with create_session() as session:
+                dagrun = session.query(DagRun).filter(DagRun.dag_id == 'kill_task_retry',
+                                                      DagRun.state == State.RUNNING).first()
+                if dagrun is not None:
+                    client.send_event(BaseEvent(key='start', value='', event_type='', namespace=''))
+                    break
+                else:
+                    time.sleep(1)
+        while True:
+            with create_session() as session:
+                ti = session.query(TaskInstance).filter(TaskInstance.dag_id == 'kill_task_retry',
+                                                        TaskInstance.task_id == 'task_1').first()
+                if ti is not None and ti.state == State.RUNNING:
+                    client.send_event(TaskSchedulingEvent(dag_id=ti.dag_id,
+                                                          task_id=ti.task_id,
+                                                          execution_date=ti.execution_date,
+                                                          try_number=ti.try_number,
+                                                          action=SchedulingAction.STOP).to_event())
+                    break
+                else:
+                    time.sleep(1)
+        while True:
+            with create_session() as session:
+                te = session.query(TaskExecution).filter(TaskExecution.dag_id == 'kill_task_retry',
+                                                         TaskExecution.task_id == 'task_1').first()
+                if te is not None and te.state == State.KILLED:
+                    break
+                else:
+                    time.sleep(1)
+        client.send_event(StopSchedulerEvent(job_id=0).to_event())
+
+    def test_kill_task_retry(self):
+        dag_file = os.path.join(TEST_DAG_FOLDER, 'test_kill_task_retry_dag.py')
+        t = threading.Thread(target=self.run_kill_task_retry_function, args=())
+        t.setDaemon(True)
+        t.start()
+        self.start_scheduler(dag_file)
+        tes: List[TaskExecution] = self.get_task_execution("kill_task_retry", "task_1")
+        self.assertEqual(len(tes), 1)
+
     def run_recover_message_function(self):
         client = NotificationClient(server_uri="localhost:{}".format(self.port),
                                     default_namespace="")
         while True:
             with create_session() as session:
                 tes_2 = session.query(TaskExecution).filter(TaskExecution.dag_id == 'event_dag',
-                                                            TaskExecution.task_id == 'task_2').all()
+                                                            TaskExecution.task_id == 'task_2',
+                                                            TaskExecution.state == State.SUCCESS).all()
                 if len(tes_2) > 1:
                     break
                 else:
@@ -298,7 +378,7 @@ class TestEventBasedScheduler(unittest.TestCase):
         t = threading.Thread(target=self.run_recover_message_function, args=())
         t.setDaemon(True)
         t.start()
-        self.start_scheduler(dag_file)
+        self.start_scheduler(dag_file, None)
 
         tes: List[TaskExecution] = self.get_task_execution("event_dag", "task_2")
         self.assertEqual(len(tes), 2)

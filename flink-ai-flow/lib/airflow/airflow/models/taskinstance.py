@@ -33,7 +33,7 @@ import lazy_object_proxy
 import pendulum
 from airflow.models.taskexecution import TaskExecution
 from jinja2 import TemplateAssertionError, UndefinedError
-from sqlalchemy import Column, Float, Index, Integer, PickleType, String, and_, func, or_, desc
+from sqlalchemy import Column, Float, Index, Integer, Boolean, PickleType, String, and_, func, or_, desc
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import reconstructor, relationship
 from sqlalchemy.orm.session import Session
@@ -231,6 +231,8 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
     queued_dttm = Column(UtcDateTime)
     queued_by_job_id = Column(Integer)
     pid = Column(Integer)
+    is_active = Column(Boolean, default=False)
+    seq_num = Column(Integer, default=0)
     executor_config = Column(PickleType(pickler=dill))
 
     external_executor_id = Column(String(ID_LEN, **COLLATION_ARGS))
@@ -278,6 +280,7 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
         self.execution_date = execution_date
 
         self.try_number = 0
+        self.seq_num = 0
         self.unixname = getpass.getuser()
         if state:
             self.state = state
@@ -300,12 +303,12 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
         Return the try number that this task number will be when it is actually
         run.
 
-        If the TaskInstance is currently running, this will match the column in the
+        If the TaskInstance is currently running or finished, this will match the column in the
         database, in all other cases this will be incremented.
         """
         # This is designed so that task logs end up in the right file.
         # TODO: whether we need sensing here or not (in sensor and task_instance state machine)
-        if self.state in State.running:
+        if self.state in State.running or self.state in State.finished:
             return self._try_number
         return self._try_number + 1
 
@@ -569,6 +572,7 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
             # Get the raw value of try_number column, don't read through the
             # accessor here otherwise it will be incremented by one already.
             self.try_number = ti._try_number  # noqa pylint: disable=protected-access
+            self.seq_num = ti.seq_num
             self.max_tries = ti.max_tries
             self.hostname = ti.hostname
             self.unixname = ti.unixname
@@ -643,6 +647,22 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
             self.end_date = self.end_date or current_time
             self.duration = (self.end_date - self.start_date).total_seconds()
         session.merge(self)
+
+    @provide_session
+    def set_is_active(self, is_active: bool, session=None):
+        self.is_active = is_active
+        session.merge(self)
+        session.commit()
+
+    @provide_session
+    def reset_to_active(self, session=None):
+        self._try_number = 0
+        self.seq_num += 1
+        self.is_active = True
+        self.end_date = None
+        self.duration = None
+        session.merge(self)
+        session.commit()
 
     @property
     def is_premature(self):
@@ -1064,13 +1084,12 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
 
     @provide_session
     def register_task_execution(self, session=None) -> TaskExecution:
-        latest_seq_num = self._get_latest_seq_num()
-        new_seq_num = 1 if latest_seq_num is None else latest_seq_num + 1
         task_execution = TaskExecution(
             task_id=self.task_id,
             dag_id=self.dag_id,
             execution_date=self.execution_date,
-            seq_num=new_seq_num,
+            try_number=self.try_number,
+            seq_num=self.seq_num,
             start_date=timezone.utcnow(),
             end_date=None,
             duration=None,
@@ -1093,25 +1112,24 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
         return task_execution
 
     @provide_session
-    def update_task_execution(self, task_execution, test_mode, session=None):
-        task_execution.end_date = self.end_date
-        task_execution.duration = self.duration
-        task_execution.state = self.state
-        if not test_mode:
-            session.merge(task_execution)
-
-    @provide_session
     def update_latest_task_execution(self, session=None):
         task_execution = session.query(TaskExecution).filter(
             TaskExecution.dag_id == self.dag_id,
             TaskExecution.task_id == self.task_id,
-            TaskExecution.execution_date == self.execution_date
-        ).order_by(desc(TaskExecution.seq_num)).first()
+            TaskExecution.execution_date == self.execution_date,
+            TaskExecution.seq_num == self.seq_num
+        ).first()
         if task_execution is not None:
+            task_execution.start_date = self.start_date
             task_execution.end_date = self.end_date
             task_execution.duration = self.duration
             task_execution.state = self.state
+            task_execution.try_number = self.try_number
+            if self.state in State.finished:
+                self.is_active = False
+                session.merge(self)
             session.merge(task_execution)
+            session.commit()
 
     @provide_session
     @Sentry.enrich_errors
@@ -1151,8 +1169,6 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
         try:
             if not mark_success:
                 context = self.get_template_context()
-                te: TaskExecution = self.register_task_execution()
-                context['task_execution'] = te
                 self._prepare_and_execute_task_with_callbacks(context, task)
             self.refresh_from_db(lock_for_update=True)
             self.state = State.SUCCESS
@@ -1204,7 +1220,6 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
             raise
         finally:
             Stats.incr(f'ti.finish.{task.dag_id}.{task.task_id}.{self.state}')
-            self.update_task_execution(te, test_mode=test_mode)
 
         self._run_success_callback(context, task)
 
@@ -1220,7 +1235,6 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
             self._date_or_empty('end_date'),
         )
         self.set_duration()
-        self.update_task_execution(te, test_mode=test_mode)
         if not test_mode:
             session.add(Log(self.state, self))
             session.merge(self)
@@ -1607,7 +1621,12 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
         ts_nodash_with_tz = ts.replace('-', '').replace(':', '')
         yesterday_ds_nodash = yesterday_ds.replace('-', '')
         tomorrow_ds_nodash = tomorrow_ds.replace('-', '')
-
+        task_execution = session.query(TaskExecution).filter(
+            TaskExecution.dag_id == self.dag_id,
+            TaskExecution.task_id == self.task_id,
+            TaskExecution.execution_date == self.execution_date,
+            TaskExecution.seq_num == self.seq_num
+        ).first()
         ti_key_str = "{dag_id}__{task_id}__{ds_nodash}".format(
             dag_id=task.dag_id, task_id=task.task_id, ds_nodash=ds_nodash
         )
@@ -1705,6 +1724,7 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
             'task_instance_key_str': ti_key_str,
             'test_mode': self.test_mode,
             'ti': self,
+            'te': task_execution,
             'tomorrow_ds': tomorrow_ds,
             'tomorrow_ds_nodash': tomorrow_ds_nodash,
             'ts': ts,
