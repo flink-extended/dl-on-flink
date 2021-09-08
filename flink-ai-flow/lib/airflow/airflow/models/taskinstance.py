@@ -1621,7 +1621,12 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
         ts_nodash_with_tz = ts.replace('-', '').replace(':', '')
         yesterday_ds_nodash = yesterday_ds.replace('-', '')
         tomorrow_ds_nodash = tomorrow_ds.replace('-', '')
-
+        task_execution = session.query(TaskExecution).filter(
+            TaskExecution.dag_id == self.dag_id,
+            TaskExecution.task_id == self.task_id,
+            TaskExecution.execution_date == self.execution_date,
+            TaskExecution.seq_num == self.seq_num
+        ).first()
         ti_key_str = "{dag_id}__{task_id}__{ds_nodash}".format(
             dag_id=task.dag_id, task_id=task.task_id, ds_nodash=ds_nodash
         )
@@ -1719,6 +1724,7 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
             'task_instance_key_str': ti_key_str,
             'test_mode': self.test_mode,
             'ti': self,
+            'te': task_execution,
             'tomorrow_ds': tomorrow_ds,
             'tomorrow_ds_nodash': tomorrow_ds_nodash,
             'ts': ts,
