@@ -62,7 +62,7 @@ def upgrade():
     """Apply Add is_active Column to task_instance table"""
     with op.batch_alter_table('task_instance', schema=None) as batch_op:
         batch_op.add_column(sa.Column('is_active', sa.Boolean(), nullable=True))
-        batch_op.add_column(sa.Column('run_number', sa.Integer(), nullable=True))
+        batch_op.add_column(sa.Column('seq_num', sa.Integer(), nullable=True))
 
     """Add task_state table"""
     if 'task_state' not in tables:
@@ -84,7 +84,6 @@ def upgrade():
             sa.Column('execution_date', datetime, nullable=False),
             sa.Column('seq_num', sa.Integer(), nullable=False),
             sa.Column('try_number', sa.Integer(), nullable=False),
-            sa.Column('run_number', sa.Integer(), nullable=False),
             sa.Column('start_date', datetime, nullable=True),
             sa.Column('end_date', datetime, nullable=True),
             sa.Column('duration', sa.Float(), nullable=True),
@@ -146,7 +145,7 @@ def downgrade():
 
     with op.batch_alter_table('task_instance', schema=None) as batch_op:
         batch_op.drop_column('is_active')
-        batch_op.drop_column('run_number')
+        batch_op.drop_column('seq_num')
 
     op.drop_table('task_state')
     op.drop_table('task_execution')

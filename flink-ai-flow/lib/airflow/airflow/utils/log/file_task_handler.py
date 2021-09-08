@@ -242,7 +242,7 @@ class FileTaskHandler(logging.Handler):
         # writable by both users, then it's possible that re-running a task
         # via the UI (or vice versa) results in a permission error as the task
         # tries to write to a log file created by the other user.
-        number = ti.run_number if ti.run_number > 0 else ti.try_number
+        number = '{}_{}'.format(ti.seq_num, ti.try_number) if ti.seq_num > 0 else ti.try_number
         relative_path = self._render_filename(ti, number)
         full_path = os.path.join(self.local_base, relative_path)
         directory = os.path.dirname(full_path)

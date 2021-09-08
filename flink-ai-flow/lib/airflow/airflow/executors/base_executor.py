@@ -194,7 +194,6 @@ class BaseExecutor(LoggingMixin):
             ti.reset_to_active()
             ti.register_task_execution()
         ti.set_state(State.QUEUED)
-        ti.increase_run_number()
         self.execute_async(
             key=key,
             command=command,
