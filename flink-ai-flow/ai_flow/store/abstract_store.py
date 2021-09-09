@@ -17,18 +17,51 @@
 # under the License.
 #
 from abc import abstractmethod, ABCMeta
+from typing import Text, Union, List, Optional, Any, Tuple
 
 import cloudpickle
+
 from ai_flow.api.context_extractor import BroadcastAllContextExtractor
-
-from ai_flow.meta.artifact_meta import ArtifactMeta
 from ai_flow.endpoint.server.high_availability import Member
-from typing import Text, Union, List, Optional
-
+from ai_flow.meta.artifact_meta import ArtifactMeta
 from ai_flow.meta.metric_meta import MetricMeta, MetricSummary
 from ai_flow.scheduler_service.service.workflow_execution_event_handler_state import WorkflowContextEventHandlerState
 
 BROADCAST_ALL_CONTEXT_EXTRACTOR = cloudpickle.dumps(BroadcastAllContextExtractor())
+
+
+class BaseFilter(object):
+    column_name = None
+
+    def __init__(self, column_name):
+        self.column_name = column_name
+
+    def apply(self, criterion, query, value):
+        raise NotImplementedError
+
+
+class Filters(object):
+    filters: List[Tuple[BaseFilter, Any]] = None
+
+    def __init__(self, filters: List[Tuple[BaseFilter, Any]] = None):
+        self.filters = filters if filters else []
+
+    def add_filter(self, f: Tuple[BaseFilter, Any]):
+        self.filters.append(f)
+
+    def apply_all(self, criterion, query):
+        for flt, value in self.filters:
+            query = flt.apply(criterion, query, value)
+        return query
+
+    def __repr__(self):
+        ret_str = 'Filters:'
+        for flt, value in self.filters:
+            ret_str = ret_str + '%s:%s\n' % (
+                str(flt.column_name),
+                str(value),
+            )
+        return ret_str
 
 
 class AbstractStore(object):
@@ -185,12 +218,13 @@ class AbstractStore(object):
         pass
 
     @abstractmethod
-    def list_datasets(self, page_size, offset):
+    def list_datasets(self, page_size=None, offset=None, filters: Filters = None):
         """
         List registered datasets in metadata store.
 
-        :param page_size: the limitation of the listed datasets.
-        :param offset: the offset of listed datasets.
+        :param page_size: The limitation of the listed datasets.
+        :param offset: The offset of listed datasets.
+        :param filters: A Filter class that contains all filters to apply.
         :return: List of :py:class:`ai_flow.meta.dataset_meta.DatasetMeta` objects,
                  return None if no datasets to be listed.
         """
@@ -271,12 +305,13 @@ class AbstractStore(object):
         pass
 
     @abstractmethod
-    def list_project(self, page_size, offset):
+    def list_projects(self, page_size=None, offset=None, filters: Filters = None):
         """
         List registered projects in metadata store.
 
-        :param page_size: the limitation of the listed projects.
-        :param offset: the offset of listed projects.
+        :param page_size: The limitation of the listed projects.
+        :param offset: The offset of listed projects.
+        :param filters: A Filter class that contains all filters to apply.
         :return: List of :py:class:`ai_flow.meta.project_meta.ProjectMeta` objects,
                  return None if no projects to be listed.
         """
@@ -298,6 +333,17 @@ class AbstractStore(object):
 
         :param project_name: the project name
         :return: Status.OK if the project is successfully deleted, Status.ERROR if the project does not exist otherwise.
+        """
+        pass
+
+    def update_project(self, project_name, uri, properties=None):
+        """
+        Update a project in metadata store.
+
+        :param project_name: the name of the project
+        :param uri: the uri of the project
+        :param properties: the properties of the project
+        :return: A single :py:class:`ai_flow.meta.project.ProjectMeta` object.
         """
         pass
 
@@ -334,13 +380,16 @@ class AbstractStore(object):
         """
         pass
 
-    def list_workflows(self, project_name, page_size=None, offset=None):
+    def list_workflows(self, project_name=None, page_size=None, offset=None, filters: Filters = None):
         """
-        List all workflows of the specific project
+        List registered workflows in metadata store.
 
-        :param project_name: the name of project which contains the workflow
-        :param page_size     limitation of listed workflows.
-        :param offset        offset of listed workflows.
+        :param project_name: The name of project which contains the workflow.
+        :param page_size: The limitation of the listed workflows.
+        :param offset: The offset of listed workflows.
+        :param filters: A Filter class that contains all filters to apply.
+        :return: List of :py:class:`ai_flow.meta.workflow_meta.WorkflowMeta` objects,
+                 return None if no workflows to be listed.
         """
         pass
 
@@ -361,7 +410,8 @@ class AbstractStore(object):
         """
         pass
 
-    def update_workflow(self, workflow_name, project_name, context_extractor_in_bytes, scheduling_rules, properties=None):
+    def update_workflow(self, workflow_name, project_name, context_extractor_in_bytes, scheduling_rules,
+                        properties=None):
         """
         Update the workflow
 
@@ -481,12 +531,13 @@ class AbstractStore(object):
         :return: A single :py:class:`ai_flow.meta.artifact_meta.py.ArtifactMeta` object.
         """
 
-    def list_artifact(self, page_size, offset):
+    def list_artifacts(self, page_size=None, offset=None, filters: Filters = None):
         """
         List registered artifacts in metadata store.
 
-        :param page_size: the limitation of the listed artifacts.
-        :param offset: the offset of listed artifacts.
+        :param page_size: The limitation of the listed artifacts.
+        :param offset: The offset of listed artifacts.
+        :param filters: A Filter class that contains all filters to apply.
         :return: List of :py:class:`ai_flow.meta.artifact_meta.py.ArtifactMeta` objects,
                  return None if no artifacts to be listed.
         """
@@ -549,11 +600,15 @@ class AbstractStore(object):
         pass
 
     @abstractmethod
-    def list_registered_models(self):
+    def list_registered_models(self, page_size=None, offset=None, filters: Filters = None):
         """
         List of all registered models in model repository.
 
-        :return: List of :py:class:`ai_flow.model_center.entity.RegisteredModel` objects.
+        :param page_size: The limitation of the listed models.
+        :param offset: The offset of listed models.
+        :param filters: A Filter class that contains all filters to apply.
+        :return: List of :py:class:`ai_flow.model_center.entity.RegisteredModel` objects,
+                 return None if no models to be listed.
         """
         pass
 
@@ -607,6 +662,19 @@ class AbstractStore(object):
         :param model_version: :py:class:`ai_flow.model_center.entity.ModelVersion` object.
 
         :return: None
+        """
+        pass
+
+    @abstractmethod
+    def list_model_versions(self, page_size=None, offset=None, filters: Filters = None):
+        """
+        List of all model versions in model repository.
+
+        :param page_size: The limitation of the listed model versions.
+        :param offset: The offset of listed model versions.
+        :param filters: A Filter class that contains all filters to apply.
+        :return: List of :py:class:`ai_flow.model_center.entity.ModelVersionDetail` objects,
+                 return None if no model versions to be listed.
         """
         pass
 
