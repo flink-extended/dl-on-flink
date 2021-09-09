@@ -170,10 +170,10 @@ class AIFlowClientTestCases(object):
         self.assertRaises(AIFlowException, client.register_project,
                           name='project', uri='www.code2.com')
 
-    def test_list_project(self):
+    def test_list_projects(self):
         response = client.register_project(name='project', uri='www.code.com')
         client.register_project(name='project1', uri='www.code.com')
-        project_list = client.list_project(2, response.uuid - 1)
+        project_list = client.list_projects(2, response.uuid - 1)
         self.assertEqual(2, len(project_list))
         self.assertEqual('project', project_list[0].name)
         self.assertEqual('project1', project_list[1].name)
@@ -191,7 +191,7 @@ class AIFlowClientTestCases(object):
         self.assertIsNone(client.get_project_by_id(project.uuid))
         self.assertIsNone(client.get_model_relation_by_id(model.uuid))
         self.assertIsNone(client.get_model_version_relation_by_version('1', model.uuid))
-        self.assertIsNone(client.list_project(1, 0))
+        self.assertIsNone(client.list_projects(1, 0))
         self.assertIsNone(client.list_model_relation(1, 0))
         self.assertIsNone(client.list_model_version_relation(1, 1, 0))
 
@@ -208,7 +208,7 @@ class AIFlowClientTestCases(object):
         self.assertIsNone(client.get_project_by_name('project'))
         self.assertIsNone(client.get_model_relation_by_id(model.uuid))
         self.assertIsNone(client.get_model_version_relation_by_version('1', model.uuid))
-        self.assertIsNone(client.list_project(1, 0))
+        self.assertIsNone(client.list_projects(1, 0))
         self.assertIsNone(client.list_model_relation(1, 0))
         self.assertIsNone(client.list_model_version_relation(1, 1, 0))
 
@@ -481,10 +481,10 @@ class AIFlowClientTestCases(object):
         self.assertRaises(AIFlowException, client.register_artifact, name='artifact', artifact_type='json',
                           uri='./artifact.json', description='whatever')
 
-    def test_save_artifact_list_artifact(self):
+    def test_save_artifact_list_artifacts(self):
         client.register_artifact(name='artifact', artifact_type='json', uri='./artifact.json')
         client.register_artifact(name='artifact_1', artifact_type='json', uri='./artifact.json')
-        self.assertEqual(2, len(client.list_artifact(2, 0)))
+        self.assertEqual(2, len(client.list_artifacts(2, 0)))
 
     def test_delete_artifact_by_id_and_name(self):
         client.register_artifact(name='artifact', artifact_type='json', uri='./artifact.json')
