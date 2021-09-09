@@ -69,7 +69,7 @@ class WorkflowEventProcessor:
 
     def _process_event(self, event: BaseEvent):
         subscribed_workflow = []
-        projects = self.store.list_project(sys.maxsize, 0)
+        projects = self.store.list_projects(sys.maxsize, 0)
         if projects is None:
             return
         for project in projects:

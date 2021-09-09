@@ -202,8 +202,8 @@ def update_project(project_name: Text, uri: Text = None, properties: Properties 
     return get_ai_flow_client().update_project(project_name, uri, properties)
 
 
-def list_project(page_size, offset) -> Optional[List[ProjectMeta]]:
-    return get_ai_flow_client().list_project(page_size, offset)
+def list_projects(page_size, offset) -> Optional[List[ProjectMeta]]:
+    return get_ai_flow_client().list_projects(page_size, offset)
 
 
 def delete_project_by_id(project_id) -> Status:
@@ -272,8 +272,8 @@ def update_artifact(artifact_name: Text, artifact_type: Text = None,
     return get_ai_flow_client().update_artifact(artifact_name, artifact_type, description, uri, properties)
 
 
-def list_artifact(page_size, offset) -> Optional[List[ArtifactMeta]]:
-    return get_ai_flow_client().list_artifact(page_size, offset)
+def list_artifacts(page_size, offset) -> Optional[List[ArtifactMeta]]:
+    return get_ai_flow_client().list_artifacts(page_size, offset)
 
 
 def delete_artifact_by_id(artifact_id) -> Status:

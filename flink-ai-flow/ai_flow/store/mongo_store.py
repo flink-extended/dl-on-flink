@@ -18,32 +18,32 @@
 #
 import logging
 import time
-
-import cloudpickle
-
-from ai_flow.meta.workflow_meta import WorkflowMeta
-from ai_flow.scheduler_service.service.workflow_execution_event_handler_state import WorkflowContextEventHandlerState
-from ai_flow.store import MONGO_DB_ALIAS_META_SERVICE
 from typing import Optional, Text, List, Union
 
+import cloudpickle
 import mongoengine
 
 from ai_flow.common.status import Status
+from ai_flow.endpoint.server.exception import AIFlowException
+from ai_flow.endpoint.server.high_availability import Member
 from ai_flow.meta.artifact_meta import ArtifactMeta
 from ai_flow.meta.dataset_meta import DatasetMeta, Properties, DataType, Schema
 from ai_flow.meta.metric_meta import MetricMeta, MetricType, MetricSummary
 from ai_flow.meta.model_relation_meta import ModelRelationMeta, ModelVersionRelationMeta
 from ai_flow.meta.project_meta import ProjectMeta
+from ai_flow.meta.workflow_meta import WorkflowMeta
 from ai_flow.metadata_store.utils.MetaToTable import MetaToTable
 from ai_flow.metadata_store.utils.ResultToMeta import ResultToMeta
 from ai_flow.metric.utils import table_to_metric_meta, table_to_metric_summary, metric_meta_to_table, \
     metric_summary_to_table
+from ai_flow.model_center.entity.model_version_detail import ModelVersionDetail
 from ai_flow.model_center.entity.model_version_stage import STAGE_DELETED, get_canonical_stage, STAGE_GENERATED, \
     STAGE_DEPLOYED, STAGE_VALIDATED
+from ai_flow.model_center.entity.registered_model_detail import RegisteredModelDetail
 from ai_flow.protobuf.message_pb2 import INVALID_PARAMETER_VALUE, RESOURCE_ALREADY_EXISTS
-from ai_flow.endpoint.server.exception import AIFlowException
-from ai_flow.endpoint.server.high_availability import Member
-from ai_flow.store.abstract_store import AbstractStore, BROADCAST_ALL_CONTEXT_EXTRACTOR
+from ai_flow.scheduler_service.service.workflow_execution_event_handler_state import WorkflowContextEventHandlerState
+from ai_flow.store import MONGO_DB_ALIAS_META_SERVICE
+from ai_flow.store.abstract_store import AbstractStore, BROADCAST_ALL_CONTEXT_EXTRACTOR, BaseFilter, Filters
 from ai_flow.store.db.db_model import (MongoProject, MongoDataset, MongoModelVersion,
                                        MongoArtifact, MongoRegisteredModel, MongoModelRelation,
                                        MongoMetricSummary, MongoMetricMeta,
@@ -61,6 +61,13 @@ _logger = logging.getLogger(__name__)
 TRUE = True
 UPDATE_FAIL = -1
 deleted_character = '~~'
+
+
+class FilterEqual(BaseFilter):
+
+    def apply(self, criterion, query, value):
+        query.update({self.column_name: value})
+        return query
 
 
 class MongoStore(AbstractStore):
@@ -293,16 +300,24 @@ class MongoStore(AbstractStore):
         except mongoengine.OperationError as e:
             raise AIFlowException(e)
 
-    def list_datasets(self, page_size, offset) -> Optional[List[DatasetMeta]]:
+    def list_datasets(self, page_size=None, offset=None, filters: Filters = None) -> Optional[List[DatasetMeta]]:
         """
         List registered datasets in metadata store.
 
-        :param page_size: the limitation of the listed datasets.
-        :param offset: the offset of listed datasets.
+        :param page_size: The limitation of the listed datasets.
+        :param offset: The offset of listed datasets.
+        :param filters: A Filter class that contains all filters to apply.
         :return: List of :py:class:`ai_flow.meta.dataset_meta.DatasetMeta` objects,
                  return None if no datasets to be listed.
         """
-        dataset_result = MongoDataset.objects(is_deleted__ne=TRUE).skip(offset).limit(page_size)
+        query = {'is_deleted': 'False'}
+        if filters:
+            query = filters.apply_all(MongoDataset, query)
+        dataset_result = MongoDataset.objects(**query)
+        if offset:
+            dataset_result = dataset_result.skip(offset)
+        if page_size:
+            dataset_result = dataset_result.limit(page_size)
         if len(dataset_result) == 0:
             return None
         dataset_list = []
@@ -400,26 +415,31 @@ class MongoStore(AbstractStore):
             raise AIFlowException('Registered Project (name={}) already exists. '
                                   'Error: {}'.format(project.name, str(e)))
 
-    def list_project(self, page_size, offset) -> Optional[List[ProjectMeta]]:
+    def list_projects(self, page_size=None, offset=None, filters: Filters = None) -> Optional[List[ProjectMeta]]:
         """
         List registered projects in metadata store.
 
-        :param page_size: the limitation of the listed projects.
-        :param offset: the offset of listed projects.
+        :param page_size: The limitation of the listed projects.
+        :param offset: The offset of listed projects.
+        :param filters: A Filter class that contains all filters to apply.
         :return: List of :py:class:`ai_flow.meta.project_meta.ProjectMeta` objects,
                  return None if no projects to be listed.
         """
-
-        project_result = MongoProject.objects(is_deleted__ne=TRUE).skip(offset).limit(page_size)
-        if len(project_result) == 0:
-            return None
+        query = {'is_deleted': 'False'}
+        if filters:
+            query = filters.apply_all(MongoProject, query)
+        project_result = MongoProject.objects(**query)
+        if offset:
+            project_result = project_result.skip(offset)
+        if page_size:
+            project_result = project_result.limit(page_size)
         projects = []
         for project in project_result:
             projects.append(ResultToMeta.result_to_project_meta(project))
         return projects
 
-    def update_project(self, project_name: Text, uri: Text = None, properties: Properties = None) -> Optional[
-        ProjectMeta]:
+    def update_project(self, project_name: Text, uri: Text = None, properties: Properties = None) \
+            -> Optional[ProjectMeta]:
         try:
             project: MongoProject = MongoProject.objects(name=project_name, is_deleted__ne=TRUE).first()
             if project is None:
@@ -545,29 +565,38 @@ class MongoStore(AbstractStore):
             return None
         return ResultToMeta.result_to_workflow_meta(workflow_result[0])
 
-    def list_workflows(self, project_name, page_size=None, offset=None) -> Optional[List[WorkflowMeta]]:
+    def list_workflows(self, project_name=None, page_size=None, offset=None, filters: Filters = None) \
+            -> Optional[List[WorkflowMeta]]:
         """
-        List all workflows of the specific project
+        List registered workflows in metadata store.
 
-        :param project_name: the name of project which contains the workflow
-        :param page_size     limitation of listed workflows.
-        :param offset        offset of listed workflows.
+        :param project_name: The name of project which contains the workflow.
+        :param page_size: The limitation of the listed workflows.
+        :param offset: The offset of listed workflows.
+        :param filters: A Filter class that contains all filters to apply.
+        :return: List of :py:class:`ai_flow.meta.workflow_meta.WorkflowMeta` objects,
+                 return None if no workflows to be listed.
         """
-        project = self.get_project_by_name(project_name)
-        if not project:
-            return None
-        workflow_result = MongoWorkflow.objects(project_id=project.uuid, is_deleted__ne=TRUE)
+        query = {'is_deleted': 'False'}
+        if project_name:
+            project = self.get_project_by_name(project_name)
+            if not project:
+                raise AIFlowException("The project name you specific doesn't exists, project: \"{}\""
+                                      .format(project_name))
+            query.update({'project_id': project.uuid})
+        if filters:
+            query = filters.apply_all(MongoWorkflow, query)
+        workflow_result = MongoWorkflow.objects(**query)
         if offset:
             workflow_result.skip(offset)
         if page_size:
             workflow_result.limit(page_size)
-
         if len(workflow_result) == 0:
             return None
-        workflows = []
+        workflow_list = []
         for workflow in workflow_result:
-            workflows.append(ResultToMeta.result_to_workflow_meta(workflow))
-        return workflows
+            workflow_list.append(ResultToMeta.result_to_workflow_meta(workflow))
+        return workflow_list
 
     def delete_workflow_by_name(self, project_name, workflow_name) -> Status:
         """
@@ -1029,16 +1058,24 @@ class MongoStore(AbstractStore):
         except mongoengine.OperationError as e:
             raise AIFlowException(str(e))
 
-    def list_artifact(self, page_size, offset) -> Optional[List[ArtifactMeta]]:
+    def list_artifacts(self, page_size=None, offset=None, filters: Filters = None) -> Optional[List[ArtifactMeta]]:
         """
         List registered artifacts in metadata store.
 
-        :param page_size: the limitation of the listed artifacts.
-        :param offset: the offset of listed artifacts.
+        :param page_size: The limitation of the listed artifacts.
+        :param offset: The offset of listed artifacts.
+        :param filters: A Filter class that contains all filters to apply.
         :return: List of :py:class:`ai_flow.meta.artifact_meta.py.ArtifactMeta` objects,
                  return None if no artifacts to be listed.
         """
-        artifact_result = MongoArtifact.objects(is_deleted__ne=TRUE).skip(offset).limit(page_size)
+        query = {'is_deleted': 'False'}
+        if filters:
+            query = filters.apply_all(MongoArtifact, query)
+        artifact_result = MongoArtifact.objects(**query)
+        if offset:
+            artifact_result = artifact_result.skip(offset)
+        if page_size:
+            artifact_result = artifact_result.limit(page_size)
         if len(artifact_result) == 0:
             return None
         artifact_list = []
@@ -1193,13 +1230,28 @@ class MongoStore(AbstractStore):
         except mongoengine.OperationError as e:
             raise AIFlowException(str(e))
 
-    def list_registered_models(self):
+    def list_registered_models(self, page_size=None, offset=None, filters: Filters = None) \
+            -> Optional[List[RegisteredModelDetail]]:
         """
-        List of registered models backend in Model Center.
+        List of all registered models in model repository.
 
-        :return: List of :py:class:`ai_flow.model_center.entity.RegisteredModel` objects.
+        :param page_size: The limitation of the listed models.
+        :param offset: The offset of listed models.
+        :param filters: A Filter class that contains all filters to apply.
+        :return: List of :py:class:`ai_flow.model_center.entity.RegisteredModelDetail` objects,
+                 return None if no models to be listed.
         """
-        return [registered_model.to_detail_entity() for registered_model in MongoRegisteredModel.objects()]
+        query = {}
+        if filters:
+            query = filters.apply_all(MongoRegisteredModel, query)
+        registered_model_result = MongoRegisteredModel.objects(**query)
+        if offset:
+            registered_model_result = registered_model_result.skip(offset)
+        if page_size:
+            registered_model_result = registered_model_result.limit(page_size)
+        if len(registered_model_result) == 0:
+            return None
+        return [sql_registered_model.to_detail_entity() for sql_registered_model in registered_model_result]
 
     def get_registered_model_detail(self, registered_model):
         """
@@ -1367,6 +1419,29 @@ class MongoStore(AbstractStore):
         doc_model_version.current_stage = STAGE_DELETED
         doc_model_version.save()
 
+    def list_model_versions(self, page_size=None, offset=None, filters: Filters = None) \
+            -> Optional[List[ModelVersionDetail]]:
+        """
+        List of all model versions in model repository.
+
+        :param page_size: The limitation of the listed model versions.
+        :param offset: The offset of listed model versions.
+        :param filters: A Filter class that contains all filters to apply.
+        :return: List of :py:class:`ai_flow.model_center.entity.ModelVersionDetail` objects,
+                 return None if no model versions to be listed.
+        """
+        query = {}
+        if filters:
+            query = filters.apply_all(MongoModelVersion, query)
+        model_version_result = MongoModelVersion.objects(**query)
+        if offset:
+            model_version_result = model_version_result.skip(offset)
+        if page_size:
+            model_version_result = model_version_result.limit(page_size)
+        if len(model_version_result) == 0:
+            return None
+        return [sql_model_version.to_meta_entity() for sql_model_version in model_version_result]
+
     def get_model_version_detail(self, model_version):
         """
         :param model_version: :py:class:`ai_flow.model_center.entity.ModelVersion` object.
@@ -1490,7 +1565,7 @@ class MongoStore(AbstractStore):
             raise AIFlowException('Get dataset metric metas failed! Error: {}.'.format(str(e)))
 
     def list_model_metric_metas(self, model_name, project_name=None) -> Union[
-            None, MetricMeta, List[MetricMeta]]:
+        None, MetricMeta, List[MetricMeta]]:
         try:
             if project_name is None:
                 metric_meta_tables = MongoMetricMeta.objects(model_name=model_name,

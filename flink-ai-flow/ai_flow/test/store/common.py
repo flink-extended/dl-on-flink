@@ -359,10 +359,10 @@ class AbstractTestStore(object):
         self.assertRaises(AIFlowException, self.store.register_project, name='project',
                           uri='www.code2.com')
 
-    def test_list_project(self):
+    def test_list_projects(self):
         self.store.register_project(name='project', uri='www.code.com')
         self.store.register_project(name='project1', uri='www.code.com')
-        response_list = self.store.list_project(2, 0)
+        response_list = self.store.list_projects(2, 0)
         self.assertEqual(2, len(response_list))
         self.assertEqual('project', response_list[0].name)
         self.assertEqual('project1', response_list[1].name)
@@ -380,7 +380,7 @@ class AbstractTestStore(object):
         self.assertIsNone(self.store.get_project_by_id(1))
         self.assertIsNone(self.store.get_model_relation_by_id(1))
         self.assertIsNone(self.store.get_model_version_relation_by_version('1', '1'))
-        self.assertIsNone(self.store.list_project(1, 0))
+        self.assertIsNone(self.store.list_projects(1, 0))
         self.assertIsNone(self.store.list_model_relation(1, 0))
         self.assertIsNone(self.store.list_model_version_relation(1, 1, 0))
         self.store.register_project(name='project', uri='www.code.com')
@@ -401,7 +401,7 @@ class AbstractTestStore(object):
         self.assertIsNone(self.store.get_project_by_id(1))
         self.assertIsNone(self.store.get_model_relation_by_id(1))
         self.assertIsNone(self.store.get_model_version_relation_by_version('1', '1'))
-        self.assertIsNone(self.store.list_project(1, 0))
+        self.assertIsNone(self.store.list_projects(1, 0))
         self.assertIsNone(self.store.list_model_relation(1, 0))
         self.assertIsNone(self.store.list_model_version_relation(1, 1, 0))
         self.store.register_project(name='project', uri='www.code.com')
@@ -498,12 +498,12 @@ class AbstractTestStore(object):
 
     """test artifact"""
 
-    def test_register_artifact_get_and_list_artifact(self):
+    def test_register_artifact_get_and_list_artifacts(self):
         artifact = self.store.register_artifact(name='artifact_result', uri='../..')
         self.assertEqual(artifact.uuid, self.store.get_artifact_by_id(artifact.uuid).uuid)
         self.assertEqual(artifact.uri, self.store.get_artifact_by_name('artifact_result').uri)
         self.store.register_artifact(name='artifact_result_1', uri='../..')
-        self.assertEqual(2, len(self.store.list_artifact(2, 0)))
+        self.assertEqual(2, len(self.store.list_artifacts(2, 0)))
         self.assertEqual(Status.OK, self.store.delete_artifact_by_id(1))
         self.assertEqual(Status.OK, self.store.delete_artifact_by_name('artifact_result_1'))
         self.assertEqual(Status.ERROR, self.store.delete_artifact_by_name('no artifact'))

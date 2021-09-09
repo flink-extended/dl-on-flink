@@ -85,20 +85,20 @@ class TestHighAvailableAIFlowServer(unittest.TestCase):
 
     def test_server_change(self) -> None:
         self.client.register_project("test_project")
-        projects = self.client.list_project(10, 0)
+        projects = self.client.list_projects(10, 0)
         self.assertEqual(self.client.current_aiflow_uri, "localhost:50051")
         self.assertEqual(projects[0].name, "test_project")
 
         self.server2 = self.start_aiflow_server("localhost", 50052)
         self.wait_for_new_members_detected("localhost:50052")
         self.server1.stop()
-        projects = self.client.list_project(10, 0)
+        projects = self.client.list_projects(10, 0)
         self.assertEqual(self.client.current_aiflow_uri, "localhost:50052")
         self.assertEqual(projects[0].name, "test_project")
 
         self.server3 = self.start_aiflow_server("localhost", 50053)
         self.wait_for_new_members_detected("localhost:50053")
         self.server2.stop()
-        projects = self.client.list_project(10, 0)
+        projects = self.client.list_projects(10, 0)
         self.assertEqual(self.client.current_aiflow_uri, "localhost:50053")
         self.assertEqual(projects[0].name, "test_project")
