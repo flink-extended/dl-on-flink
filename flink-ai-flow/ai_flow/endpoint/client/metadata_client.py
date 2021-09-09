@@ -547,7 +547,7 @@ class MetadataClient(BaseClient):
         response = self.metadata_store_stub.updateProject(request)
         return _unwrap_project_response(response)
 
-    def list_project(self, page_size, offset) -> Optional[List[ProjectMeta]]:
+    def list_projects(self, page_size, offset) -> Optional[List[ProjectMeta]]:
         """
         List registered projects in metadata store.
 
@@ -648,7 +648,7 @@ class MetadataClient(BaseClient):
         response = self.metadata_store_stub.updateArtifact(request)
         return _unwrap_artifact_response(response)
 
-    def list_artifact(self, page_size, offset) -> Optional[List[ArtifactMeta]]:
+    def list_artifacts(self, page_size, offset) -> Optional[List[ArtifactMeta]]:
         """
         List registered artifacts in metadata store.
 

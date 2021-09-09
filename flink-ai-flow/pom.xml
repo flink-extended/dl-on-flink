@@ -74,16 +74,20 @@
 					</licenseFamilies>
                     <excludes>
                         <!-- Additional files like .gitignore etc.-->
-						<exclude>.*/**</exclude>
-
+                        <exclude>.*/**</exclude>
+                        <exclude>**/.*</exclude>
 						<exclude>**/*.md</exclude>
                         <exclude>**/*.csv</exclude>
 						<exclude>**/*.log</exclude>
                         <exclude>**/*.json</exclude>
                         <exclude>**/*.iml</exclude>
+                        <exclude>**/*.less</exclude>
+                        <exclude>**/*.jsx</exclude>
+                        <exclude>**/*.svg</exclude>
                         <exclude>**/*.babelrc</exclude>
                         <exclude>**/*.eslintignore</exclude>
                         <exclude>**/*.styl</exclude>
+                        <exclude>**/yarn.lock</exclude>
                         <exclude>**/dependency-reduced-pom.xml</exclude>
                         <exclude>licenses/*</exclude>
                         <exclude>venv/**</exclude>

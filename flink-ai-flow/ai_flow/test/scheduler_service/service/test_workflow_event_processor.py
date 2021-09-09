@@ -128,7 +128,7 @@ class TestWorkflowEventProcessor(unittest.TestCase):
         self.mock_store.list_workflows = mock_list_workflows
         p1 = ProjectMeta(name='test_project1', uri='dummy')
         p2 = ProjectMeta(name='test_project2', uri='dummy')
-        self.mock_store.list_project.return_value = [p1, p2]
+        self.mock_store.list_projects.return_value = [p1, p2]
 
     def test__get_subscribed_workflow(self):
         e = BaseEvent('k1', 'v1', namespace='test_namespace')

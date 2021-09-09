@@ -334,7 +334,7 @@ class MetadataService(metadata_service_pb2_grpc.MetadataServiceServicer):
 
     @catch_exception
     def listProject(self, request, context):
-        project_meta_list = self.store.list_project(request.page_size, request.offset)
+        project_meta_list = self.store.list_projects(request.page_size, request.offset)
         return _warp_project_list_response(project_meta_list)
 
     @catch_exception
@@ -396,7 +396,7 @@ class MetadataService(metadata_service_pb2_grpc.MetadataServiceServicer):
 
     @catch_exception
     def listArtifact(self, request, context):
-        artifact_meta_list = self.store.list_artifact(request.page_size, request.offset)
+        artifact_meta_list = self.store.list_artifacts(request.page_size, request.offset)
         return _warp_artifact_list_response(artifact_meta_list)
 
     @catch_exception
