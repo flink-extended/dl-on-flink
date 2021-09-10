@@ -41,6 +41,7 @@ class SchedulerInnerEventType(Enum):
     TASK_STATUS_CHANGED = 'TASK_STATUS_CHANGED'
     TASK_SCHEDULING = 'TASK_SCHEDULING'
     DAG_EXECUTABLE = 'DAG_EXECUTABLE'
+    DAG_RUN_CREATED = 'DAG_RUN_CREATED'
     DAG_RUN_FINISHED = 'DAG_RUN_FINISHED'
     EVENT_HANDLE = 'EVENT_HANDLE'
     REQUEST = 'REQUEST'
@@ -281,6 +282,32 @@ class DagExecutableEvent(SchedulerInnerEvent):
         return DagExecutableEvent(dag_id=event.key, context=event.value)
 
 
+class DagRunCreatedEvent(SchedulerInnerEvent):
+    def __init__(self, dag_id, execution_date):
+        super().__init__()
+        self.dag_id = dag_id
+        self.execution_date = execution_date
+
+    @classmethod
+    def to_base_event(cls, event: 'SchedulerInnerEvent') -> BaseEvent:
+        o = {}
+        for k, v in event.__dict__.items():
+            if 'execution_date' == k:
+                o[k] = v.strftime(EXECUTION_DATE_FORMAT)
+            else:
+                o[k] = v
+        return BaseEvent(key='.'.join([event.dag_id, v.strftime(EXECUTION_DATE_FORMAT)],),
+                         value=json.dumps(o),
+                         event_type=SchedulerInnerEventType.DAG_RUN_CREATED.value,
+                         namespace=SCHEDULER_NAMESPACE)
+
+    @classmethod
+    def from_base_event(cls, event: BaseEvent) -> 'SchedulerInnerEvent':
+        o = json.loads(event.value)
+        return DagRunCreatedEvent(dag_id=o['dag_id'],
+                                  execution_date=dates.parse_execution_date(o['execution_date']),)
+
+
 class DagRunFinishedEvent(SchedulerInnerEvent):
     def __init__(self, run_id):
         super().__init__()
@@ -407,5 +434,7 @@ class SchedulerInnerEventUtil(object):
             return DagRunFinishedEvent.from_base_event(event)
         elif SchedulerInnerEventType.PERIODIC_TASK_EVENT == event_type:
             return PeriodicEvent.from_base_event(event)
+        elif SchedulerInnerEventType.DAG_RUN_CREATED == event_type:
+            return DagRunCreatedEvent.from_base_event(event)
         else:
             return None
