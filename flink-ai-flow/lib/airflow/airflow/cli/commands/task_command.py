@@ -151,6 +151,7 @@ def _run_raw_task(args, ti):
         mark_success=args.mark_success,
         job_id=args.job_id,
         pool=args.pool,
+        notification_server_uri=args.server_uri
     )
 
 
