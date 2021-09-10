@@ -1,0 +1,70 @@
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+
+################################
+## Aiflow ConfigMap
+#################################
+{{- $metadataHost := .Values.data.metadataConnection.host | default (printf "%s-%s.%s" .Release.Name "mysql" .Release.Namespace) }}
+{{- $pgbouncerHost := (printf "%s-%s.%s" .Release.Name "pgbouncer" .Release.Namespace) }}
+{{- $host := ternary $pgbouncerHost $metadataHost .Values.pgbouncer.enabled }}
+{{- $port := ((ternary .Values.ports.pgbouncer .Values.data.metadataConnection.port .Values.pgbouncer.enabled) | toString) }}
+{{- $database := (ternary (printf "%s-%s" .Release.Name "metadata") .Values.data.metadataConnection.db .Values.pgbouncer.enabled) }}
+{{- $query := ternary (printf "sslmode=%s" .Values.data.metadataConnection.sslmode) "" (eq .Values.data.metadataConnection.protocol "postgresql") }}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-aiflow-config
+  labels:
+    tier: aiflow
+    component: config
+    release: {{ .Release.Name }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    heritage: {{ .Release.Service }}
+{{- with .Values.labels }}
+{{ toYaml . | indent 4 }}
+{{- end -}}
+{{- if .Values.airflowConfigAnnotations }}
+  annotations:
+{{- toYaml .Values.airflowConfigAnnotations | nindent 4 }}
+{{- end }}
+{{- $Global := . }}
+data:
+  # These are system-specified config overrides.
+  aiflow_server.yaml: |
+    # Config of master server
+
+    # endpoint of master
+    server_ip: 0.0.0.0
+    server_port: 50051
+    # uri of database backend in master
+    {{- with .Values.data.metadataConnection }}
+    db_uri: {{ urlJoin (dict "scheme" .protocol "userinfo" (printf "%s:%s" (.user | urlquery) (.pass | urlquery) ) "host" (printf "%s:%s" $host $port) "path" (printf "/%s" $database) "query" $query) | quote }}
+    {{- end }}
+    # type of database backend in master
+    db_type: mysql
+    # the default notification service is no need to started
+    # when using the airflow scheduler 
+    start_default_notification: False
+    # uri of the notification service
+    notification_uri: {{ .Release.Name }}-notification:50052
+    scheduler_service:
+      scheduler:
+        scheduler_class: ai_flow_plugins.scheduler_plugins.airflow.airflow_scheduler.AirFlowScheduler
+        scheduler_config:
+          airflow_deploy_path: {{ .Values.ai_flow.airflow_deploy_path }}
+          notification_service_uri: {{ .Release.Name }}-notification:50052
