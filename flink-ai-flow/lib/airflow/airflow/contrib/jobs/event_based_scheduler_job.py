@@ -56,7 +56,8 @@ from airflow.utils.mailbox import Mailbox
 from airflow.events.scheduler_events import (
     StopSchedulerEvent, TaskSchedulingEvent, DagExecutableEvent, TaskStateChangedEvent, EventHandleEvent, RequestEvent,
     ResponseEvent, StopDagEvent, ParseDagRequestEvent, ParseDagResponseEvent, SchedulerInnerEventUtil,
-    BaseUserDefineMessage, UserDefineMessageType, SCHEDULER_NAMESPACE, DagRunFinishedEvent, PeriodicEvent)
+    BaseUserDefineMessage, UserDefineMessageType, SCHEDULER_NAMESPACE, DagRunFinishedEvent, PeriodicEvent,
+    DagRunCreatedEvent)
 
 from notification_service.base_notification import BaseEvent
 from notification_service.client import EventWatcher, NotificationClient
@@ -154,6 +155,14 @@ class EventBasedScheduler(LoggingMixin):
                 else:
                     self.log.warning("dagrun is None for dag_id:{} execution_date: {}".format(event.dag_id,
                                                                                               event.execution_date))
+            elif isinstance(event, DagRunCreatedEvent):
+                dagrun = self._find_dagrun(event.dag_id, event.execution_date, session)
+                if dagrun is not None:
+                    tasks = self._find_scheduled_tasks(dagrun, session)
+                    self._send_scheduling_task_events(tasks, SchedulingAction.START)
+                else:
+                    self.log.warning("dagrun is None for dag_id:{} execution_date: {}".format(
+                        event.dag_id, event.execution_date))
             elif isinstance(event, DagExecutableEvent):
                 dagrun = self._create_dag_run(event.dag_id, session=session)
                 tasks = self._find_scheduled_tasks(dagrun, session)

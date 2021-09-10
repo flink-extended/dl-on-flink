@@ -159,6 +159,32 @@ class TestSubDagOperator(unittest.TestCase):
 
         self.assertEqual(3, len(subdag_task._get_dagrun.mock_calls))
 
+    def test_event_based(self):
+        from notification_service.client import NotificationClient
+        from notification_service.event_storage import DbEventStorage
+        from notification_service.master import NotificationMaster
+        from notification_service.service import NotificationService
+        from airflow.events.scheduler_events import DagRunCreatedEvent
+
+        storage = DbEventStorage()
+        storage.clean_up()
+        master = NotificationMaster(NotificationService(storage), port=50060)
+        master.run()
+
+        dag = DAG('parent', default_args=default_args)
+        subdag = DAG('parent.test', default_args=default_args)
+        subdag_task = SubDagOperator(task_id='test', subdag=subdag, dag=dag, poke_interval=1)
+        subdag_task.pre_execute(context={'notification_server_uri': 'localhost:50060',
+                                         'execution_date': DEFAULT_DATE})
+        client = NotificationClient(server_uri="localhost:50060")
+        events = client.list_all_events()
+        self.assertEqual(1, len(events))
+        dag_run_created_event = DagRunCreatedEvent.from_base_event(events[0])
+        self.assertEqual('parent.test', dag_run_created_event.dag_id)
+
+        master.stop()
+        storage.clean_up()
+
     def test_execute_create_dagrun_with_conf(self):
         """
         When SubDagOperator executes, it creates a DagRun if there is no existing one
