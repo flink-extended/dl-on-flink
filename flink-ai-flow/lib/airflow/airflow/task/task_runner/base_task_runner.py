@@ -89,6 +89,7 @@ class BaseTaskRunner(LoggingMixin):
             job_id=local_task_job.id,
             pool=local_task_job.pool,
             cfg_path=cfg_path,
+            notification_server_uri=local_task_job.server_uri
         )
         self.process = None
 
