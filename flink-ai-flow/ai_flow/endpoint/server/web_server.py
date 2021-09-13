@@ -94,6 +94,10 @@ class Edge(Jsonable):
     def id(self) -> str:
         return self._id
 
+    @property
+    def name(self) -> str:
+        return self._name
+
     def to_dict(self):
         return {'id': self._id, 'name': self._name, 'isSignal': self._is_signal,
                 'isClosedLoopNode': self._is_closed_loop_node,
@@ -193,7 +197,7 @@ def generate_graph(workflow_meta: WorkflowMeta):
 
 
 def extract_graph(workflow_meta: WorkflowMeta):
-    graph_meta: Dict[str, str] = json.loads(workflow_meta.graph)
+    graph_meta: Dict[str, str] = json.loads(workflow_meta.graph, strict=False)
     if '_context_extractor' in graph_meta:
         graph_meta.pop('_context_extractor', None)
     return loads(dumps(graph_meta))
@@ -239,14 +243,15 @@ def build_edges(workflow_graph: AIGraph, workflow_nodes: Dict[str, AINode], id_n
                     else destination_node.name
                 destination_edge: Edge = Edge(id=destination_name, name=destination_name,
                                               dag_data_type=dag_data_type)
-                if source_name in children_edges:
-                    children_edges[source_name].append(destination_edge)
-                else:
-                    children_edges[source_name] = [destination_edge]
-                if destination_name in parent_edges:
-                    parent_edges[destination_name].append(source_edge)
-                else:
-                    parent_edges[destination_name] = [source_edge]
+                if source_name != destination_name:
+                    if source_name in children_edges:
+                        children_edges[source_name].append(destination_edge)
+                    else:
+                        children_edges[source_name] = [destination_edge]
+                    if destination_name in parent_edges:
+                        parent_edges[destination_name].append(source_edge)
+                    else:
+                        parent_edges[destination_name] = [source_edge]
             else:
                 control_edge: ControlEdge = graph_edge
                 for event in control_edge.scheduling_rule.event_condition.events:
@@ -270,13 +275,19 @@ def build_edges(workflow_graph: AIGraph, workflow_nodes: Dict[str, AINode], id_n
 
 def build_graph(name_nodes: Dict[str, Node], parent_edges: Dict[str, List[Edge]],
                 children_edges: Dict[str, List[Edge]]):
+    node_layers = {}
+    for name_node in name_nodes.values():
+        name_node.layer = node_layer(name_node, parent_edges, name_nodes)
+        if name_node.id in parent_edges:
+            name_node.parent = parent_edges[name_node.id]
+        if name_node.id in children_edges:
+            name_node.children = children_edges[name_node.id]
+        node_layers.update({name_node.id: name_node})
     graph_nodes = []
-    for graph_node in name_nodes.values():
-        graph_node.layer = node_layer(graph_node, parent_edges, name_nodes)
-        if graph_node.id in parent_edges:
-            graph_node.parent = parent_edges[graph_node.id]
-        if graph_node.id in children_edges:
-            graph_node.children = children_edges[graph_node.id]
+    for graph_node in node_layers.values():
+        if graph_node.parent:
+            for parent_node in graph_node.parent:
+                node_layers[parent_node.id].layer = graph_node.layer - 1
         graph_nodes.append(graph_node.to_dict())
     return json.dumps(graph_nodes)
 
