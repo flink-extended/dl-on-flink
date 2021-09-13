@@ -291,6 +291,7 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
         self.raw = False
         # can be changed when calling 'run'
         self.test_mode = False
+        self._notification_server_uri = ''
 
     @reconstructor
     def init_on_load(self):
@@ -348,6 +349,7 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
         job_id=None,
         pool=None,
         cfg_path=None,
+        notification_server_uri=None,
     ):
         """
         Returns a command that can be executed anywhere where airflow is
@@ -380,6 +382,7 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
             job_id=job_id,
             pool=pool,
             cfg_path=cfg_path,
+            server_uri=notification_server_uri
         )
 
     @staticmethod
@@ -1139,6 +1142,7 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
         test_mode: bool = False,
         job_id: Optional[str] = None,
         pool: Optional[str] = None,
+        notification_server_uri: Optional[str] = None,
         session=None,
     ) -> None:
         """
@@ -1162,6 +1166,7 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
         self.refresh_from_db(session=session)
         self.job_id = job_id
         self.hostname = get_hostname()
+        self._notification_server_uri = notification_server_uri
 
         context = {}  # type: Dict
         actual_start_date = timezone.utcnow()
@@ -1725,6 +1730,7 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
             'test_mode': self.test_mode,
             'ti': self,
             'te': task_execution,
+            'notification_server_uri': self._notification_server_uri,
             'tomorrow_ds': tomorrow_ds,
             'tomorrow_ds_nodash': tomorrow_ds_nodash,
             'ts': ts,
