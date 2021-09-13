@@ -158,17 +158,27 @@ class AIFlowOperator(BaseOperator):
             self.log.info("submitting job with job_runtime_env: {}".format(self.job_runtime_env))
             self.job_handle: JobHandle = self.job_controller.submit_job(self.job, self.job_runtime_env)
 
-            execution_label_report_thread = \
-                ExecutionLabelReportThread(context['task_execution'],
-                                           self.job.job_config.job_label_report_interval,
-                                           self.job_controller,
-                                           self.job_handle)
-            execution_label_report_thread.start()
+            if 'te' in context:
+                self.log.info("Starting execution label report thread.")
+                task_execution = context['te']
+                execution_label_report_thread = \
+                    ExecutionLabelReportThread(task_execution,
+                                               self.job.job_config.job_label_report_interval,
+                                               self.job_controller,
+                                               self.job_handle)
+                execution_label_report_thread.start()
+            else:
+                self.log.warning("te is not in context, execution label will not be reported.")
 
             result = self.job_controller.get_result(job_handle=self.job_handle, blocking=True)
+        except Exception as e:
+            self.log.error("Unexpected exception", e)
+            self.job_controller.stop_job(self.job_handle, self.job_runtime_env)
         finally:
-            execution_label_report_thread.stop()
-            execution_label_report_thread.join()
+            if execution_label_report_thread:
+                self.log.info("Stopping execution label report thread.")
+                execution_label_report_thread.stop()
+                execution_label_report_thread.join()
             self.job_controller.cleanup_job(self.job_handle, self.job_runtime_env)
         return result
 
