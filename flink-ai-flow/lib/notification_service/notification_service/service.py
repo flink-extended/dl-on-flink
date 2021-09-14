@@ -284,7 +284,7 @@ class NotificationService(notification_service_pb2_grpc.NotificationServiceServi
         try:
             return self._notify_new_member(request)
         except Exception as e:
-            return notification_service_pb2.ListMembersResponse(
+            return notification_service_pb2.NotifyNewMemberResponse(
                 return_code=notification_service_pb2.ReturnStatus.ERROR, return_msg=str(e))
 
     async def _notify_new_member(self, request):
@@ -292,6 +292,21 @@ class NotificationService(notification_service_pb2_grpc.NotificationServiceServi
         return notification_service_pb2.NotifyNewMemberResponse(
             return_code=notification_service_pb2.ReturnStatus.SUCCESS,
             return_msg='')
+
+    @asyncio.coroutine
+    def registerClient(self, request, context):
+        try:
+            return self._register_client(request)
+        except Exception as e:
+            return notification_service_pb2.RegisterClientResponse(
+                return_code=notification_service_pb2.ReturnStatus.ERROR, return_msg=str(e))
+
+    async def _register_client(self, request):
+        client_id = self.storage.register_client(request.client_meta.namespace, request.client_meta.sender)
+        return notification_service_pb2.RegisterClientResponse(
+            return_code=notification_service_pb2.ReturnStatus.SUCCESS,
+            return_msg='',
+            client_id=client_id)
 
 
 class HighAvailableNotificationService(NotificationService):
