@@ -18,7 +18,7 @@
 
 syntax = "proto3";
 option java_generic_services = true;
-option java_package = "com.aiflow.notification.proto";
+option java_package = "org.aiflow.notification.proto";
 option go_package = "/notification_service";
 option py_generic_services = true;
 
@@ -83,6 +83,14 @@ service NotificationService {
             get: "/aiflow/notification-service/get_latest_version_by_key"
         };
     }
+
+    // Register notification client in the db of notification service
+    rpc registerClient (RegisterClientRequest) returns (RegisterClientResponse) {
+        option (google.api.http) = {
+            post: "/aiflow/notification-service/register_client"
+            body: "*"
+        };
+    }
 }
 message EventProto {
     string key = 1;
@@ -102,6 +110,10 @@ message SendEventRequest {
     string uuid = 2;
 }
 
+message ClientMeta {
+    string namespace = 1;
+    string sender = 2;
+}
 enum ReturnStatus {
     SUCCESS = 0;
     ERROR = 1;
@@ -185,4 +197,14 @@ message NotifyNewMemberRequest {
 message NotifyNewMemberResponse {
     ReturnStatus return_code = 1;
     string return_msg = 2;
+}
+
+message RegisterClientRequest {
+    ClientMeta client_meta = 1;
+}
+
+message RegisterClientResponse {
+    ReturnStatus return_code = 1;
+    string return_msg = 2;
+    int64 client_id = 3;
 }

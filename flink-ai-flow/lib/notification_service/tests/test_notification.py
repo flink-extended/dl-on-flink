@@ -16,6 +16,7 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+import os
 import time
 from typing import List
 import unittest
@@ -25,6 +26,8 @@ from notification_service.event_storage import MemoryEventStorage, DbEventStorag
 from notification_service.high_availability import SimpleNotificationServerHaManager, DbHighAvailabilityStorage
 from notification_service.master import NotificationMaster
 from notification_service.service import NotificationService, HighAvailableNotificationService
+
+from notification_service.util.db import SQL_ALCHEMY_DB_FILE
 
 
 def start_ha_master(host, port):
@@ -272,6 +275,11 @@ class NotificationTest(object):
         result = self.client.list_events(key='key_1', namespace='*', sender='p')
         self.assertEqual(1, len(result))
 
+    def test_register_client(self):
+        self.assertIsNotNone(self.client.id)
+        tmp_client = NotificationClient(server_uri="localhost:50051")
+        self.assertEqual(1, tmp_client.id - self.client.id)
+
 
 class DbStorageTest(unittest.TestCase, NotificationTest):
 
@@ -288,10 +296,12 @@ class DbStorageTest(unittest.TestCase, NotificationTest):
     @classmethod
     def tearDownClass(cls):
         cls.master.stop()
+        cls.storage.clean_up()
+        os.remove(SQL_ALCHEMY_DB_FILE)
 
     def setUp(self):
         self.storage.clean_up()
-        self.client = NotificationClient(server_uri="localhost:50051")
+        self.client = NotificationClient(server_uri="localhost:50051", enable_idempotent=True)
 
     def tearDown(self):
         self.client.stop_listen_events()
@@ -316,7 +326,7 @@ class MemoryStorageTest(unittest.TestCase, NotificationTest):
 
     def setUp(self):
         self.storage.clean_up()
-        self.client = NotificationClient(server_uri="localhost:50051")
+        self.client = NotificationClient(server_uri="localhost:50051", enable_idempotent=True)
 
     def tearDown(self):
         self.client.stop_listen_events()

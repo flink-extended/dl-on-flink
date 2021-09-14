@@ -33,7 +33,7 @@ from notification_service.base_notification import BaseNotification, EventWatche
 from notification_service.proto import notification_service_pb2_grpc
 from notification_service.proto.notification_service_pb2 \
     import SendEventRequest, ListEventsRequest, EventProto, ReturnStatus, ListAllEventsRequest, \
-    GetLatestVersionByKeyRequest, ListMembersRequest
+    GetLatestVersionByKeyRequest, ListMembersRequest, RegisterClientRequest, ClientMeta
 from notification_service.util.utils import event_proto_to_event, proto_to_member, sleep_and_detecting_running
 
 if not hasattr(time, 'time_ns'):
@@ -75,7 +75,8 @@ class NotificationClient(BaseNotification):
                  list_member_interval_ms: int = 5000,
                  retry_interval_ms: int = 1000,
                  retry_timeout_ms: int = 10000,
-                 sender: str = None):
+                 sender: str = None,
+                 enable_idempotent = False):
         """
         The constructor of the NotificationClient.
 
@@ -94,7 +95,8 @@ class NotificationClient(BaseNotification):
         :param retry_timeout_ms: In HA mode a rpc call has failed on all the
                                  living members, this client will retry until success or timeout.
                                  This param specifies the retry timeout.
-        :param sender: The identify of the client.
+        :param sender: The identifier of the client.
+        :param enable_idempotent: !!Temporary for tests. Should be replaced when merging!!
         """
         channel = grpc.insecure_channel(server_uri)
         self._default_namespace = default_namespace
@@ -134,6 +136,15 @@ class NotificationClient(BaseNotification):
             self.notification_stub = self._wrap_rpcs(self.notification_stub, server_uri)
             self.list_member_thread = threading.Thread(target=self._list_members, daemon=True)
             self.list_member_thread.start()
+
+        self.enable_idempotent = enable_idempotent
+        if self.enable_idempotent:
+            request = RegisterClientRequest(client_meta=ClientMeta(namespace=self._default_namespace, sender=self._sender))
+            response = self.notification_stub.registerClient(request)
+            if response.return_code == ReturnStatus.SUCCESS:
+                self.id = response.client_id
+            else:
+                raise Exception(response.return_msg)
 
     def send_event(self, event: BaseEvent):
         """
