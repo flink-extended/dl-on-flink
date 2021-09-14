@@ -447,7 +447,7 @@ class CeleryExecutor(BaseExecutor):
                 self.send_message(key)
             elif state == celery_states.REVOKED:
                 self.change_state(key, State.KILLED, info)
-                self.send_message
+                self.send_message(key)
             elif state == celery_states.STARTED:
                 # It's now actually running, so know it made it to celery okay!
                 self.adopted_task_timeouts.pop(key, None)
