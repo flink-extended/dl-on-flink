@@ -16,9 +16,10 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-
+import os
 import ai_flow as af
 
+DATASET_URI = os.path.abspath(os.path.join(__file__, "../../../..")) + '/dataset_data/mnist_{}.npz'
 hourly_data_dir = '/tmp/hourly_data'
 process_result_base_path = '/tmp/hourly_processed'
 daily_data_base_path = '/tmp/daily_data'
@@ -26,10 +27,12 @@ daily_result = '/tmp/daily_result'
 
 
 def init():
+    af.register_dataset(name='mnist_train', uri=DATASET_URI.format('train'))
+    af.register_dataset(name='mnist_evaluate', uri=DATASET_URI.format('evaluate'))
+    af.register_dataset(name='mnist_predict', uri=DATASET_URI.format('predict'))
     af.register_dataset(name='hourly_data', uri=hourly_data_dir)
     af.register_dataset(name='hourly_data_processed', uri=process_result_base_path)
     af.register_dataset(name='daily_data', uri=daily_data_base_path)
-    af.register_dataset(name='daily_data_result', uri=daily_result)
 
 
 if __name__ == '__main__':
