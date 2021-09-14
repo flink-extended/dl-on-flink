@@ -120,3 +120,8 @@ class MongoNotificationTest(unittest.TestCase):
         self.client.send_event(BaseEvent(key="key", value="value2"))
         latest_version = self.client.get_latest_version(key="key")
         print("#####latest version of key: {}".format(latest_version))
+
+    def test_register_client(self):
+        self.assertIsNotNone(self.client.id)
+        tmp_client = NotificationClient(server_uri="localhost:50051")
+        self.assertEqual(1, tmp_client.id - self.client.id)

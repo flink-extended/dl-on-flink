@@ -71,6 +71,11 @@ class NotificationServiceStub(object):
                 request_serializer=notification__service__pb2.GetLatestVersionByKeyRequest.SerializeToString,
                 response_deserializer=notification__service__pb2.GetLatestVersionResponse.FromString,
                 )
+        self.registerClient = channel.unary_unary(
+                '/notification_service.NotificationService/registerClient',
+                request_serializer=notification__service__pb2.RegisterClientRequest.SerializeToString,
+                response_deserializer=notification__service__pb2.RegisterClientResponse.FromString,
+                )
 
 
 class NotificationServiceServicer(object):
@@ -129,6 +134,13 @@ class NotificationServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def registerClient(self, request, context):
+        """Register notification client in the db of notification service
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_NotificationServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -166,6 +178,11 @@ def add_NotificationServiceServicer_to_server(servicer, server):
                     servicer.getLatestVersionByKey,
                     request_deserializer=notification__service__pb2.GetLatestVersionByKeyRequest.FromString,
                     response_serializer=notification__service__pb2.GetLatestVersionResponse.SerializeToString,
+            ),
+            'registerClient': grpc.unary_unary_rpc_method_handler(
+                    servicer.registerClient,
+                    request_deserializer=notification__service__pb2.RegisterClientRequest.FromString,
+                    response_serializer=notification__service__pb2.RegisterClientResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -297,5 +314,22 @@ class NotificationService(object):
         return grpc.experimental.unary_unary(request, target, '/notification_service.NotificationService/getLatestVersionByKey',
             notification__service__pb2.GetLatestVersionByKeyRequest.SerializeToString,
             notification__service__pb2.GetLatestVersionResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def registerClient(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/notification_service.NotificationService/registerClient',
+            notification__service__pb2.RegisterClientRequest.SerializeToString,
+            notification__service__pb2.RegisterClientResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
