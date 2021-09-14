@@ -24,12 +24,13 @@ from typing import Union, Tuple
 from mongoengine import connect
 from notification_service.event_storage import BaseEventStorage
 from notification_service.base_notification import BaseEvent
-from notification_service.mongo_notification import MongoEvent
+from notification_service.mongo_notification import MongoEvent, MongoClientModel
 
 
 class MongoEventStorage(BaseEventStorage):
     def __init__(self, *args, **kwargs):
         self.db_conn = self.setup_connection(**kwargs)
+        self.db = None
         self.server_ip = socket.gethostbyname(socket.gethostname())
 
     def setup_connection(self, **kwargs):
@@ -38,6 +39,7 @@ class MongoEventStorage(BaseEventStorage):
             "port": kwargs.get("port"),
             "db": kwargs.get("db"),
         }
+        self.db = db_conf.get('db')
         username = kwargs.get("username", None)
         password = kwargs.get("password", None)
         authentication_source = kwargs.get("authentication_source", "admin")
@@ -103,5 +105,13 @@ class MongoEventStorage(BaseEventStorage):
         res = MongoEvent.get_base_events_by_version(start_version, end_version)
         return res
 
+    def register_client(self, namespace: str = None, sender: str = None) -> int:
+        client = MongoClientModel(namespace=namespace, sender=sender)
+        client.save()
+        return client.id
+
     def clean_up(self):
         MongoEvent.delete_by_client(self.server_ip)
+        if self.db is not None:
+            self.db_conn.drop_database(self.db)
+

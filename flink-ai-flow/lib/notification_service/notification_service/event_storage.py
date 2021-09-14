@@ -23,7 +23,7 @@ from typing import Union, Tuple
 
 from notification_service.base_notification import BaseEvent, ANY_CONDITION
 from notification_service.util import db
-from notification_service.util.db import EventModel
+from notification_service.util.db import EventModel, ClientModel
 
 
 class BaseEventStorage(ABC):
@@ -58,12 +58,17 @@ class BaseEventStorage(ABC):
     def get_latest_version(self, key: str, namespace: str = None):
         pass
 
+    @abstractmethod
+    def register_client(self, namespace: str = None, sender: str = None) -> int:
+        pass
+
 
 class MemoryEventStorage(BaseEventStorage):
 
     def __init__(self):
         self.store = []
         self.max_version = 0
+        self.clients = []
 
     def add_event(self, event: BaseEvent, uuid: str):
         self.max_version += 1
@@ -124,6 +129,10 @@ class MemoryEventStorage(BaseEventStorage):
     def get_latest_version(self, key: str, namespace: str = None):
         return self.max_version
 
+    def register_client(self, namespace: str = None, sender: str = None) -> int:
+        self.clients.append((len(self.clients), namespace, sender))
+        return len(self.clients)
+
     def clean_up(self):
         self.store.clear()
         self.max_version = 0
@@ -136,6 +145,7 @@ class DbEventStorage(BaseEventStorage):
             db.SQL_ALCHEMY_CONN = db_conn
         if create_table_if_not_exists:
             EventModel.create_table(db.SQL_ALCHEMY_CONN)
+            ClientModel.create_table(db.SQL_ALCHEMY_CONN)
 
     def add_event(self, event: BaseEvent, uuid: str):
         return EventModel.add_event(event, uuid)
@@ -157,6 +167,9 @@ class DbEventStorage(BaseEventStorage):
 
     def get_latest_version(self, key: str, namespace: str = None):
         return EventModel.get_latest_version()
+
+    def register_client(self, namespace: str = None, sender: str = None) -> int:
+        return ClientModel.register_client(namespace, sender)
 
     def clean_up(self):
         EventModel.cleanup()

@@ -25,7 +25,7 @@ from enum import Enum
 from functools import wraps
 from typing import Tuple, Union
 
-from sqlalchemy import create_engine, Column, String, BigInteger, Text, Integer
+from sqlalchemy import create_engine, Column, String, BigInteger, Text, Integer, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 
@@ -36,7 +36,8 @@ if not hasattr(time, 'time_ns'):
     time.time_ns = lambda: int(time.time() * 1e9)
 
 # use sqlite by default for testing
-SQL_ALCHEMY_CONN = "sqlite:///notification_service.db"
+SQL_ALCHEMY_DB_FILE = 'notification_service.db'
+SQL_ALCHEMY_CONN = "sqlite:///" + SQL_ALCHEMY_DB_FILE
 engine = None
 Session = None
 
@@ -300,6 +301,34 @@ class EventModel(Base):
     def cleanup(session=None):
         session.query(EventModel).delete()
         session.commit()
+
+
+class ClientModel(Base):
+    __tablename__ = "notification_client"
+    id = Column(BigInteger().with_variant(Integer, "sqlite"), autoincrement=True, primary_key=True)
+    namespace = Column(String(1024))
+    sender = Column(String(1024))
+    create_time = Column(BigInteger)
+
+    @staticmethod
+    @provide_session
+    def register_client(namespace: str = None, sender: str = None, session = None):
+        client = ClientModel()
+        client.namespace = namespace
+        client.sender = sender
+        client.create_time = int(time.time() * 1000)
+        session.add(client)
+        session.commit()
+        return client.id
+
+    @staticmethod
+    def create_table(db_conn=None):
+        if db_conn is not None:
+            global SQL_ALCHEMY_CONN
+            SQL_ALCHEMY_CONN = db_conn
+        prepare_db()
+        if not engine.dialect.has_table(engine, ClientModel.__tablename__):
+            Base.metadata.create_all(engine)
 
 
 class MemberModel(Base):
