@@ -108,6 +108,7 @@ message SendEventRequest {
     EventProto event = 1;
     // use uuid to identify retry
     string uuid = 2;
+    bool enable_idempotence = 3;
 }
 
 message ClientMeta {

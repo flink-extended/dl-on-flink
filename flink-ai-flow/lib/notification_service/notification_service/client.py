@@ -63,6 +63,20 @@ class ThreadEventWatcherHandle(EventWatcherHandle):
             self._notification_client.lock.release()
 
 
+class SequenceNumberManager(object):
+
+    def __init__(self):
+        self._lock = threading.RLock()
+        self._seq_num = 0
+
+    def increment_sequence_number(self):
+        with self._lock:
+            self._seq_num += 1
+
+    def get_sequence_number(self):
+        return self._seq_num
+
+
 class NotificationClient(BaseNotification):
     """
     NotificationClient is the notification client.
@@ -76,7 +90,7 @@ class NotificationClient(BaseNotification):
                  retry_interval_ms: int = 1000,
                  retry_timeout_ms: int = 10000,
                  sender: str = None,
-                 enable_idempotent = False):
+                 properties: Dict[str, str] = None):
         """
         The constructor of the NotificationClient.
 
@@ -96,7 +110,7 @@ class NotificationClient(BaseNotification):
                                  living members, this client will retry until success or timeout.
                                  This param specifies the retry timeout.
         :param sender: The identifier of the client.
-        :param enable_idempotent: !!Temporary for tests. Should be replaced when merging!!
+        :param properties: The properties of NotificationClient
         """
         channel = grpc.insecure_channel(server_uri)
         self._default_namespace = default_namespace
@@ -109,6 +123,20 @@ class NotificationClient(BaseNotification):
         self.retry_timeout_ms = retry_timeout_ms
         self._sender = sender
         server_uri_list = server_uri.split(",")
+
+        self.conf = {} if not properties else properties
+        self._enable_idempotence = 'enable.idempotence' in self.conf \
+                                   and self.conf.get('enable.idempotence').strip().lower() == 'true'
+        if self._enable_idempotence:
+            request = RegisterClientRequest(
+                client_meta=ClientMeta(namespace=self._default_namespace, sender=self._sender))
+            response = self.notification_stub.registerClient(request)
+            if response.return_code == ReturnStatus.SUCCESS:
+                self.client_id = response.client_id
+            else:
+                raise Exception(response.return_msg)
+            self.sequence_num_manager = SequenceNumberManager()
+
         if len(server_uri_list) > 1 or self.enable_ha:
             self.living_members = []
             self.current_uri = None
@@ -137,15 +165,6 @@ class NotificationClient(BaseNotification):
             self.list_member_thread = threading.Thread(target=self._list_members, daemon=True)
             self.list_member_thread.start()
 
-        self.enable_idempotent = enable_idempotent
-        if self.enable_idempotent:
-            request = RegisterClientRequest(client_meta=ClientMeta(namespace=self._default_namespace, sender=self._sender))
-            response = self.notification_stub.registerClient(request)
-            if response.return_code == ReturnStatus.SUCCESS:
-                self.id = response.client_id
-            else:
-                raise Exception(response.return_msg)
-
     def send_event(self, event: BaseEvent):
         """
         Send event to Notification Service.
@@ -153,6 +172,11 @@ class NotificationClient(BaseNotification):
         :param event: the event updated.
         :return: The created event which has version and create time.
         """
+        signature = str(uuid.uuid4())
+        if self._enable_idempotence:
+            seq_num = self.sequence_num_manager.get_sequence_number()
+            signature = '_'.join(['client', str(self.client_id), str(seq_num)])
+
         request = SendEventRequest(
             event=EventProto(
                 key=event.key,
@@ -162,9 +186,12 @@ class NotificationClient(BaseNotification):
                 namespace=self._default_namespace,
                 sender=self._sender
             ),
-            uuid=str(uuid.uuid4()))
+            uuid=signature,
+            enable_idempotence=self._enable_idempotence)
         response = self.notification_stub.sendEvent(request)
         if response.return_code == ReturnStatus.SUCCESS:
+            if self._enable_idempotence:
+                self.sequence_num_manager.increment_sequence_number()
             return event_proto_to_event(response.event)
         else:
             raise Exception(response.return_msg)

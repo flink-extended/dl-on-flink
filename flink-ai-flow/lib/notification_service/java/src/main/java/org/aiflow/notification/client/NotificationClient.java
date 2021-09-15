@@ -22,6 +22,7 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.speedment.common.tuple.Tuple4;
 import com.speedment.common.tuple.internal.nonnullable.Tuple4Impl;
 import io.grpc.ManagedChannelBuilder;
+import org.aiflow.notification.conf.Configuration;
 import org.aiflow.notification.entity.EventMeta;
 import org.aiflow.notification.proto.NotificationServiceGrpc;
 import org.aiflow.notification.proto.NotificationServiceOuterClass;
@@ -32,6 +33,9 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static org.aiflow.notification.conf.Configuration.CLIENT_ENABLE_IDEMPOTENCE_CONFIG_KEY;
 
 public class NotificationClient {
 
@@ -50,6 +54,9 @@ public class NotificationClient {
     private Boolean enableHa;
     private String currentUri;
     private String sender;
+    private Long clientId;
+    private AtomicInteger sequenceNum;
+    private final Configuration conf;
 
     public NotificationClient(
             String target,
@@ -58,13 +65,39 @@ public class NotificationClient {
             Boolean enableHa,
             Integer listMemberIntervalMs,
             Integer retryIntervalMs,
-            Integer retryTimeoutMs) {
+            Integer retryTimeoutMs,
+            Properties properties)
+            throws Exception {
         this.defaultNamespace = defaultNamespace;
         this.sender = sender;
         this.enableHa = enableHa;
         this.listMemberIntervalMs = listMemberIntervalMs;
         this.retryIntervalMs = retryIntervalMs;
         this.retryTimeoutMs = retryTimeoutMs;
+        this.conf = new Configuration(properties);
+
+        boolean enableIdempotence = this.conf.getBoolean(CLIENT_ENABLE_IDEMPOTENCE_CONFIG_KEY);
+        if (enableIdempotence) {
+            initNotificationServiceStub();
+            NotificationServiceOuterClass.RegisterClientRequest registerClientRequest =
+                    NotificationServiceOuterClass.RegisterClientRequest.newBuilder()
+                            .setClientMeta(
+                                    NotificationServiceOuterClass.ClientMeta.newBuilder()
+                                            .setNamespace(defaultNamespace)
+                                            .setSender(sender)
+                                            .build())
+                            .build();
+            NotificationServiceOuterClass.RegisterClientResponse registerClientResponse =
+                    notificationServiceStub.registerClient(registerClientRequest);
+            if (registerClientResponse.getReturnCode()
+                    == NotificationServiceOuterClass.ReturnStatus.SUCCESS) {
+                this.clientId = registerClientResponse.getClientId();
+            } else {
+                throw new Exception(registerClientResponse.getReturnMsg());
+            }
+            this.sequenceNum = new AtomicInteger();
+        }
+
         if (enableHa) {
             String[] serverUris = StringUtils.split(target, ",");
             boolean lastError = true;
@@ -166,12 +199,16 @@ public class NotificationClient {
 
     /** Initialize notification service stub. */
     protected void initNotificationServiceStub() {
-        notificationServiceStub =
-                NotificationServiceGrpc.newBlockingStub(
-                        ManagedChannelBuilder.forTarget(
-                                        StringUtils.isEmpty(currentUri) ? SERVER_URI : currentUri)
-                                .usePlaintext()
-                                .build());
+        if (notificationServiceStub == null) {
+            notificationServiceStub =
+                    NotificationServiceGrpc.newBlockingStub(
+                            ManagedChannelBuilder.forTarget(
+                                            StringUtils.isEmpty(currentUri)
+                                                    ? SERVER_URI
+                                                    : currentUri)
+                                    .usePlaintext()
+                                    .build());
+        }
         if (enableHa) {
             notificationServiceStub =
                     wrapBlockingStub(
@@ -261,6 +298,13 @@ public class NotificationClient {
      */
     public EventMeta sendEvent(String key, String value, String eventType, String context)
             throws Exception {
+        boolean enableIdempotence = this.conf.getBoolean(CLIENT_ENABLE_IDEMPOTENCE_CONFIG_KEY);
+        String signature = UUID.randomUUID().toString();
+        if (enableIdempotence) {
+            int currentSeqNum = this.sequenceNum.get();
+            signature =
+                    StringUtils.join(Arrays.asList("client", this.clientId, currentSeqNum), "_");
+        }
         NotificationServiceOuterClass.SendEventRequest request =
                 NotificationServiceOuterClass.SendEventRequest.newBuilder()
                         .setEvent(
@@ -272,11 +316,15 @@ public class NotificationClient {
                                         .setNamespace(defaultNamespace)
                                         .setSender(sender)
                                         .build())
-                        .setUuid(UUID.randomUUID().toString())
+                        .setUuid(signature)
+                        .setEnableIdempotence(enableIdempotence)
                         .build();
         NotificationServiceOuterClass.SendEventsResponse response =
                 notificationServiceStub.sendEvent(request);
         if (response.getReturnCode() == NotificationServiceOuterClass.ReturnStatus.SUCCESS) {
+            if (enableIdempotence) {
+                this.sequenceNum.getAndIncrement();
+            }
             return EventMeta.buildEventMeta(response.getEvent());
         } else {
             throw new Exception(response.getReturnMsg());
@@ -436,5 +484,9 @@ public class NotificationClient {
         } else {
             return response.getVersion();
         }
+    }
+
+    protected int getSequenceNumValue() {
+        return this.sequenceNum.get();
     }
 }
