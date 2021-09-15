@@ -85,7 +85,9 @@ class NotificationService(notification_service_pb2_grpc.NotificationServiceServi
             sender=None if event_proto.sender == "" else event_proto.sender
         )
         uuid = request.uuid
+        enable_idempotence = request.enable_idempotence
         key = event.key
+        return_msg = ''
         # Lock conditions dict for get/check/update of key
         await self.lock.acquire()
         if self.notification_conditions.get(key) is None:
@@ -93,7 +95,10 @@ class NotificationService(notification_service_pb2_grpc.NotificationServiceServi
         # Release lock after check/update key of notification conditions dict
         self.lock.release()
         async with self.notification_conditions.get(key), self.write_condition:
-            event: BaseEvent = self.storage.add_event(event, uuid)
+            if enable_idempotence and self.storage.get_event_by_uuid(uuid) is not None:
+                return_msg = 'Ignored because event already exists.'
+            else:
+                event: BaseEvent = self.storage.add_event(event, uuid)
             self.notification_conditions.get(key).notify_all()
             self.write_condition.notify_all()
 
@@ -101,7 +106,7 @@ class NotificationService(notification_service_pb2_grpc.NotificationServiceServi
         return notification_service_pb2.SendEventsResponse(
             event=result_event_proto,
             return_code=notification_service_pb2.ReturnStatus.SUCCESS,
-            return_msg='')
+            return_msg=return_msg)
 
     @asyncio.coroutine
     def listEvents(self, request, context):

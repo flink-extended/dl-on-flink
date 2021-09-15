@@ -26,7 +26,9 @@ import org.junit.Test;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 
+import static org.aiflow.notification.conf.Configuration.CLIENT_ENABLE_IDEMPOTENCE_CONFIG_KEY;
 import static org.junit.Assert.assertEquals;
 
 public class NotificationClientTest {
@@ -42,9 +44,11 @@ public class NotificationClientTest {
         Thread.sleep(1000);
         // Create a NotificationClient using the in-process channel
         try {
+            Properties properties = new Properties();
+            properties.put(CLIENT_ENABLE_IDEMPOTENCE_CONFIG_KEY, "true");
             client =
                     new NotificationClient(
-                            "localhost:50051", "default", "test", false, 5, 10, 2000);
+                            "localhost:50051", "default", "test", false, 5, 10, 2000, properties);
         } catch (Exception e) {
             throw new Exception("Failed to init notification client", e);
         }
@@ -191,5 +195,19 @@ public class NotificationClientTest {
         }
         long newLatestVersion = this.client.getLatestVersion("default", "key");
         assertEquals(latestVersion + 3, newLatestVersion);
+    }
+
+    @Test
+    public void testSendEventIdempotence() throws Exception {
+        Properties properties = new Properties();
+        properties.put(CLIENT_ENABLE_IDEMPOTENCE_CONFIG_KEY, "true");
+        NotificationClient idempotent_client =
+                new NotificationClient(
+                        "localhost:50051", "default", "test", false, 5, 10, 2000, properties);
+        assertEquals(0, idempotent_client.getSequenceNumValue());
+        idempotent_client.sendEvent("key1", "value", "type", "");
+        assertEquals(1, idempotent_client.getSequenceNumValue());
+        idempotent_client.sendEvent("key2", "value", "type", "");
+        assertEquals(2, idempotent_client.getSequenceNumValue());
     }
 }

@@ -110,6 +110,9 @@ class MongoEventStorage(BaseEventStorage):
         client.save()
         return client.id
 
+    def get_event_by_uuid(self, uuid: str):
+        return MongoEvent.get_event_by_uuid(uuid)
+
     def clean_up(self):
         MongoEvent.delete_by_client(self.server_ip)
         if self.db is not None:
