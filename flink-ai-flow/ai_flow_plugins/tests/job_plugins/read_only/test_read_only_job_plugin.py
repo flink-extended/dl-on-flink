@@ -99,15 +99,6 @@ class TestReadOnlyJobController(unittest.TestCase):
         self.job_controller.stop_job(handle, job_runtime_env)
         self.assertTrue(self.job_controller._job_stop_events[handle.job].is_set())
 
-    def test_cleanup_job(self):
-        job_runtime_env = mock.Mock()
-        job_execution_info = mock.Mock()
-        job_runtime_env.job_execution_info = job_execution_info
-        handle = self.job_controller.submit_job(self.job, job_runtime_env)
-        self.assertFalse(self.job_controller._job_stop_events[handle.job].is_set())
-        self.job_controller.cleanup_job(handle, job_runtime_env)
-        self.assertTrue(handle.job not in self.job_controller._job_stop_events)
-
     def test_get_result(self):
         job_runtime_env = mock.Mock()
         job_execution_info = mock.Mock()
