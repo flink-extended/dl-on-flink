@@ -62,7 +62,7 @@ class TestReadOnlyJobGenerator(unittest.TestCase):
         sub_graph.add_node(ReadDatasetNode(dataset=DatasetMeta("test"), processor=ReadOnlyProcessor()))
         sub_graph.add_node(AINode(processor=ReadOnlyProcessor()))
         sub_graph.add_node(WriteDatasetNode(dataset=DatasetMeta("test"), processor=ReadOnlyProcessor()))
-        job_generator = ReadOnlyJobGenerator(required_configs={'required_key'})
+        job_generator = ReadOnlyJobGenerator(required_properties={'required_key'})
 
         with self.assertRaises(RuntimeError):
             job_generator.generate(sub_graph)
