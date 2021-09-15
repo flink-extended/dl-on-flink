@@ -2057,7 +2057,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
                     else:
                         upstream_tasks[sender] = value
 
-        def encode_ti(task_instance: Optional[models.TaskInstance]) -> Optional[List]:
+        def encode_ti(task_instance: Optional[models.TaskInstance], dag_run: Optional[Dict]) -> Optional[List]:
             if not task_instance:
                 return None
 
@@ -2069,6 +2069,8 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
                 task_instance.try_number,
                 None,  # start_ts
                 None,  # duration
+                None,
+                None
             ]
 
             if task_instance.start_date:
@@ -2076,7 +2078,11 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
                 task_instance_data[2] = int(task_instance.start_date.timestamp())
                 if task_instance.duration is not None:
                     task_instance_data[3] = int(task_instance.duration)
-
+            if dag_run:
+                task_instance_data[4] = dag_run['context']
+            task_execution = task_instance.get_latest_task_execution()
+            if task_execution:
+                task_instance_data[5] = task_execution.execution_label
             return task_instance_data
 
         def recurse_nodes(task, visited):
@@ -2090,7 +2096,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
 
             node = {
                 'name': task.task_id,
-                'instances': [encode_ti(task_instances.get((task_id, d))) for d in dates],
+                'instances': [encode_ti(task_instances.get((task_id, d)), dag_runs.get(d)) for d in dates],
                 'num_dep': len(task_downstream),
                 'operator': task.task_type,
                 'retries': task.retries,
@@ -2196,7 +2202,6 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
 
         nodes = task_group_to_dict(dag.task_group)
         edges = dag_edges(dag)
-        print(edges)
 
         dt_nr_dr_data = get_date_time_num_runs_dag_runs_form_data(request, session, dag)
         dt_nr_dr_data['arrange'] = arrange
@@ -2218,10 +2223,18 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
         form = GraphForm(data=dt_nr_dr_data)
         form.execution_date.choices = dt_nr_dr_data['dr_choices']
 
-        task_instances:  Dict[str, TaskInstance] = {}
+        dag_run = session.query(DagRun).filter(DagRun.dag_id == dag.dag_id, DagRun.execution_date == dttm).first()
+
+        task_instances:  Dict[str, Dict] = {}
         task_logs: Dict[str, List[str]] = {}
         for ti in dag.get_task_instances(dttm, dttm):
-            task_instances.update({ti.task_id: alchemy_to_dict(ti)})
+            ti_dict = alchemy_to_dict(ti)
+            task_execution = ti.get_latest_task_execution()
+            if dag_run:
+                ti_dict.update({'context': dag_run.context})
+            if task_execution:
+                ti_dict.update({'execution_label': task_execution.execution_label})
+            task_instances.update({ti.task_id: ti_dict})
             if hasattr(ti, 'seq_num') and ti.seq_num > 0:
                 sequence_attempts = []
                 task_executions = ti.get_task_executions()
@@ -2822,7 +2835,8 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
         ]
     )
     @action_logging
-    def nodes(self):
+    @provide_session
+    def nodes(self, session=None):
         """Shows task instances."""
         dag_id = request.args.get('dag_id')
         dag = current_app.dag_bag.get_dag(dag_id)
@@ -2833,7 +2847,17 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
         else:
             return "Error: Invalid execution_date"
 
-        task_instances = {ti.task_id: alchemy_to_dict(ti) for ti in dag.get_task_instances(dttm, dttm)}
+        dag_run = session.query(DagRun).filter(DagRun.dag_id == dag.dag_id, DagRun.execution_date == dttm).first()
+
+        task_instances: Dict[str, Dict] = {}
+        for ti in dag.get_task_instances(dttm, dttm):
+            ti_dict = alchemy_to_dict(ti)
+            task_execution = ti.get_latest_task_execution()
+            if dag_run:
+                ti_dict.update({'context': dag_run.context})
+            if task_execution:
+                ti_dict.update({'execution_label': task_execution.execution_label})
+            task_instances.update({ti.task_id: ti_dict})
 
         events: Dict[str, Tuple[str, str, str]] = {}
         for t in dag.tasks:
@@ -3804,7 +3828,8 @@ class TaskExecutionModelView(AirflowModelView):
         'priority_weight',
         'queue',
         'queued_dttm',
-        'pool'
+        'pool',
+        'execution_label'
     ]
 
     order_columns = [item for item in list_columns if item not in ['try_number', 'log_url']]
@@ -3830,6 +3855,7 @@ class TaskExecutionModelView(AirflowModelView):
         'execution_date',
         'start_date',
         'end_date',
+        'execution_label'
     ]
 
     edit_form = TaskExecutionEditForm
