@@ -17,6 +17,8 @@
 import threading
 import time
 
+from airflow.exceptions import AirflowException
+
 from airflow.models.taskexecution import TaskExecution
 
 from ai_flow.workflow.status import Status
@@ -154,6 +156,7 @@ class AIFlowOperator(BaseOperator):
     def execute(self, context: Any):
         self.log.info("context:" + str(context))
         execution_label_report_thread = None
+        result = None
         try:
             self.log.info("submitting job with job_runtime_env: {}".format(self.job_runtime_env))
             self.job_handle: JobHandle = self.job_controller.submit_job(self.job, self.job_runtime_env)
@@ -171,8 +174,11 @@ class AIFlowOperator(BaseOperator):
                 self.log.warning("te is not in context, execution label will not be reported.")
 
             result = self.job_controller.get_result(job_handle=self.job_handle, blocking=True)
+        except AirflowException as e:
+            self.log.warning("AirflowException during executing", exc_info=e)
+            self.job_controller.stop_job(self.job_handle, self.job_runtime_env)
         except Exception as e:
-            self.log.error("Unexpected exception", e)
+            self.log.error("Unexpected exception", exc_info=e)
             self.job_controller.stop_job(self.job_handle, self.job_runtime_env)
         finally:
             if execution_label_report_thread:
