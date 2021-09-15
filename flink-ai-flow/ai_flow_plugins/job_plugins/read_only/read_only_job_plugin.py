@@ -48,11 +48,11 @@ class ReadOnlyJobHandle(JobHandle):
 
 
 class ReadOnlyJobGenerator(JobGenerator):
-    def __init__(self, required_configs=None):
+    def __init__(self, required_properties=None):
 
-        if required_configs is None:
-            required_configs = set()
-        self._required_configs = required_configs
+        if required_properties is None:
+            required_properties = set()
+        self._required_properties = required_properties
 
     def generate(self, sub_graph: AISubGraph, resource_dir: Text = None) -> Job:
         for node_name, node in sub_graph.nodes.items():
@@ -66,13 +66,13 @@ class ReadOnlyJobGenerator(JobGenerator):
         return ReadOnlyJob(job_config)
 
     def _validate_job_config(self, job_config: JobConfig):
-        missing_config = []
-        for required_config in self._required_configs:
-            if required_config not in job_config.properties:
-                missing_config.append(required_config)
+        missing_properties = []
+        for required_properties in self._required_properties:
+            if required_properties not in job_config.properties:
+                missing_properties.append(required_properties)
 
-        if len(missing_config) != 0:
-            raise RuntimeError("Missing required config: {}".format(missing_config))
+        if len(missing_properties) != 0:
+            raise RuntimeError("Missing required properties: {}".format(missing_properties))
 
 
 class ReadOnlyJobController(JobController):
@@ -99,11 +99,8 @@ class ReadOnlyJobController(JobController):
         self._job_stop_events[job_handle.job].set()
 
     def cleanup_job(self, job_handle: JobHandle, job_runtime_env: JobRuntimeEnv):
-        if self._job_stop_events[job_handle.job]:
-            if self._job_stop_events[job_handle.job].is_set():
-                self.log.warning("cleanup_job is called on a running job, stopping it.")
-                self.stop_job(job_handle, job_runtime_env)
-            del self._job_stop_events[job_handle.job]
+        # do nothing
+        pass
 
     def get_result(self, job_handle: JobHandle, blocking: bool = True) -> object:
         self._check_job_exists(job_handle)
