@@ -47,9 +47,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import static org.aiflow.client.common.Constant.DEFAULT_NAMESPACE;
 import static org.aiflow.client.common.Constant.SERVER_URI;
+import static org.aiflow.notification.conf.Configuration.CLIENT_ENABLE_IDEMPOTENCE_CONFIG_KEY;
 
 /** Client of AIFlow Rest Endpoint that provides Metadata/Model/Notification function service. */
 public class AIFlowClient {
@@ -66,7 +68,8 @@ public class AIFlowClient {
             Boolean enableHa,
             Integer listMemberIntervalMs,
             Integer retryIntervalMs,
-            Integer retryTimeoutMs) {
+            Integer retryTimeoutMs)
+            throws Exception {
         this(
                 ManagedChannelBuilder.forTarget(target).usePlaintext().build(),
                 StringUtils.isEmpty(target) ? SERVER_URI : target,
@@ -86,9 +89,12 @@ public class AIFlowClient {
             Boolean enableHa,
             Integer listMemberIntervalMs,
             Integer retryIntervalMs,
-            Integer retryTimeoutMs) {
+            Integer retryTimeoutMs)
+            throws Exception {
         this.metadataClient = new MetadataClient(channel);
         this.modelCenterClient = new ModelCenterClient(channel);
+        Properties properties = new Properties();
+        properties.put(CLIENT_ENABLE_IDEMPOTENCE_CONFIG_KEY, "true");
         this.notificationClient =
                 new NotificationClient(
                         target,
@@ -97,7 +103,8 @@ public class AIFlowClient {
                         enableHa,
                         listMemberIntervalMs,
                         retryIntervalMs,
-                        retryTimeoutMs);
+                        retryTimeoutMs,
+                        properties);
         this.metricClient = new MetricClient(channel);
     }
 
