@@ -199,15 +199,17 @@ class FileTaskHandler(logging.Handler):
         # So the log for a particular task try will only show up when
         # try number gets incremented in DB, i.e logs produced the time
         # after cli run and before try_number + 1 in DB will not be displayed.
-
-        if try_number is None:
-            next_try = task_instance.next_try_number
-            try_numbers = list(range(1, next_try))
-        elif try_number < 1:
-            logs = [
-                [('default_host', f'Error fetching the logs. Try number {try_number} is invalid.')],
-            ]
-            return logs
+        if isinstance(try_number, int):
+            if try_number is None:
+                next_try = task_instance.next_try_number
+                try_numbers = list(range(1, next_try))
+            elif try_number < 1:
+                logs = [
+                    [('default_host', f'Error fetching the logs. Try number {try_number} is invalid.')],
+                ]
+                return logs
+            else:
+                try_numbers = [try_number]
         else:
             try_numbers = [try_number]
 
@@ -242,7 +244,10 @@ class FileTaskHandler(logging.Handler):
         # writable by both users, then it's possible that re-running a task
         # via the UI (or vice versa) results in a permission error as the task
         # tries to write to a log file created by the other user.
-        number = '{}_{}'.format(ti.seq_num, ti.try_number) if ti.seq_num > 0 else ti.try_number
+        if hasattr(ti, 'seq_num') and ti.seq_num > 0:
+            number = '{}_{}'.format(ti.seq_num, ti.try_number)
+        else:
+            number = ti.try_number
         relative_path = self._render_filename(ti, number)
         full_path = os.path.join(self.local_base, relative_path)
         directory = os.path.dirname(full_path)
