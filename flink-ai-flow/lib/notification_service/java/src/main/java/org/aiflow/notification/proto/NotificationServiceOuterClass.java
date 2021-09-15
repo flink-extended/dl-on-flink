@@ -1638,6 +1638,12 @@ public final class NotificationServiceOuterClass {
      */
     com.google.protobuf.ByteString
         getUuidBytes();
+
+    /**
+     * <code>bool enable_idempotence = 3;</code>
+     * @return The enableIdempotence.
+     */
+    boolean getEnableIdempotence();
   }
   /**
    * Protobuf type {@code notification_service.SendEventRequest}
@@ -1702,6 +1708,11 @@ public final class NotificationServiceOuterClass {
               java.lang.String s = input.readStringRequireUtf8();
 
               uuid_ = s;
+              break;
+            }
+            case 24: {
+
+              enableIdempotence_ = input.readBool();
               break;
             }
             default: {
@@ -1808,6 +1819,17 @@ public final class NotificationServiceOuterClass {
       }
     }
 
+    public static final int ENABLE_IDEMPOTENCE_FIELD_NUMBER = 3;
+    private boolean enableIdempotence_;
+    /**
+     * <code>bool enable_idempotence = 3;</code>
+     * @return The enableIdempotence.
+     */
+    @java.lang.Override
+    public boolean getEnableIdempotence() {
+      return enableIdempotence_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -1828,6 +1850,9 @@ public final class NotificationServiceOuterClass {
       if (!getUuidBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, uuid_);
       }
+      if (enableIdempotence_ != false) {
+        output.writeBool(3, enableIdempotence_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -1843,6 +1868,10 @@ public final class NotificationServiceOuterClass {
       }
       if (!getUuidBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, uuid_);
+      }
+      if (enableIdempotence_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(3, enableIdempotence_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1866,6 +1895,8 @@ public final class NotificationServiceOuterClass {
       }
       if (!getUuid()
           .equals(other.getUuid())) return false;
+      if (getEnableIdempotence()
+          != other.getEnableIdempotence()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -1883,6 +1914,9 @@ public final class NotificationServiceOuterClass {
       }
       hash = (37 * hash) + UUID_FIELD_NUMBER;
       hash = (53 * hash) + getUuid().hashCode();
+      hash = (37 * hash) + ENABLE_IDEMPOTENCE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getEnableIdempotence());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -2024,6 +2058,8 @@ public final class NotificationServiceOuterClass {
         }
         uuid_ = "";
 
+        enableIdempotence_ = false;
+
         return this;
       }
 
@@ -2056,6 +2092,7 @@ public final class NotificationServiceOuterClass {
           result.event_ = eventBuilder_.build();
         }
         result.uuid_ = uuid_;
+        result.enableIdempotence_ = enableIdempotence_;
         onBuilt();
         return result;
       }
@@ -2110,6 +2147,9 @@ public final class NotificationServiceOuterClass {
         if (!other.getUuid().isEmpty()) {
           uuid_ = other.uuid_;
           onChanged();
+        }
+        if (other.getEnableIdempotence() != false) {
+          setEnableIdempotence(other.getEnableIdempotence());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -2351,6 +2391,37 @@ public final class NotificationServiceOuterClass {
   checkByteStringIsUtf8(value);
         
         uuid_ = value;
+        onChanged();
+        return this;
+      }
+
+      private boolean enableIdempotence_ ;
+      /**
+       * <code>bool enable_idempotence = 3;</code>
+       * @return The enableIdempotence.
+       */
+      @java.lang.Override
+      public boolean getEnableIdempotence() {
+        return enableIdempotence_;
+      }
+      /**
+       * <code>bool enable_idempotence = 3;</code>
+       * @param value The enableIdempotence to set.
+       * @return This builder for chaining.
+       */
+      public Builder setEnableIdempotence(boolean value) {
+        
+        enableIdempotence_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool enable_idempotence = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearEnableIdempotence() {
+        
+        enableIdempotence_ = false;
         onChanged();
         return this;
       }
@@ -16637,86 +16708,86 @@ public final class NotificationServiceOuterClass {
       "\"\226\001\n\nEventProto\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 " +
       "\001(\t\022\022\n\nevent_type\030\003 \001(\t\022\017\n\007context\030\004 \001(\t" +
       "\022\021\n\tnamespace\030\005 \001(\t\022\017\n\007version\030\006 \001(\003\022\023\n\013" +
-      "create_time\030\007 \001(\003\022\016\n\006sender\030\010 \001(\t\"Q\n\020Sen" +
+      "create_time\030\007 \001(\003\022\016\n\006sender\030\010 \001(\t\"m\n\020Sen" +
       "dEventRequest\022/\n\005event\030\001 \001(\0132 .notificat" +
-      "ion_service.EventProto\022\014\n\004uuid\030\002 \001(\t\"/\n\n" +
-      "ClientMeta\022\021\n\tnamespace\030\001 \001(\t\022\016\n\006sender\030" +
-      "\002 \001(\t\"\222\001\n\022SendEventsResponse\022/\n\005event\030\001 " +
-      "\001(\0132 .notification_service.EventProto\0227\n" +
-      "\013return_code\030\002 \001(\0162\".notification_servic" +
-      "e.ReturnStatus\022\022\n\nreturn_msg\030\003 \001(\t\"\234\001\n\021L" +
-      "istEventsRequest\022\014\n\004keys\030\001 \003(\t\022\022\n\nevent_" +
-      "type\030\002 \001(\t\022\022\n\nstart_time\030\003 \001(\003\022\025\n\rstart_" +
-      "version\030\004 \001(\003\022\027\n\017timeout_seconds\030\005 \001(\005\022\021" +
-      "\n\tnamespace\030\006 \001(\t\022\016\n\006sender\030\007 \001(\t\"o\n\024Lis" +
-      "tAllEventsRequest\022\027\n\017timeout_seconds\030\001 \001" +
-      "(\005\022\022\n\nstart_time\030\002 \001(\003\022\025\n\rstart_version\030" +
-      "\003 \001(\003\022\023\n\013end_version\030\004 \001(\003\"\223\001\n\022ListEvent" +
-      "sResponse\0227\n\013return_code\030\001 \001(\0162\".notific" +
-      "ation_service.ReturnStatus\022\022\n\nreturn_msg" +
-      "\030\002 \001(\t\0220\n\006events\030\003 \003(\0132 .notification_se" +
-      "rvice.EventProto\"W\n\034GetLatestVersionByKe" +
-      "yRequest\022\013\n\003key\030\001 \001(\t\022\021\n\tnamespace\030\002 \001(\t" +
-      "\022\027\n\017timeout_seconds\030\003 \001(\005\"T\n\030GetLatestVe" +
-      "rsionResponse\022\023\n\013return_code\030\001 \001(\t\022\022\n\nre" +
-      "turn_msg\030\002 \001(\t\022\017\n\007version\030\003 \001(\003\"G\n\013Membe" +
-      "rProto\022\017\n\007version\030\001 \001(\003\022\022\n\nserver_uri\030\002 " +
-      "\001(\t\022\023\n\013update_time\030\003 \001(\003\"(\n\006Notify\022\013\n\003ke" +
-      "y\030\001 \001(\t\022\021\n\tnamespace\030\002 \001(\t\"?\n\rNotifyRequ" +
-      "est\022.\n\010notifies\030\001 \003(\0132\034.notification_ser" +
-      "vice.Notify\"]\n\016NotifyResponse\0227\n\013return_" +
-      "code\030\001 \001(\0162\".notification_service.Return" +
-      "Status\022\022\n\nreturn_msg\030\002 \001(\t\"-\n\022ListMember" +
-      "sRequest\022\027\n\017timeout_seconds\030\001 \001(\005\"\226\001\n\023Li" +
-      "stMembersResponse\0227\n\013return_code\030\001 \001(\0162\"" +
+      "ion_service.EventProto\022\014\n\004uuid\030\002 \001(\t\022\032\n\022" +
+      "enable_idempotence\030\003 \001(\010\"/\n\nClientMeta\022\021" +
+      "\n\tnamespace\030\001 \001(\t\022\016\n\006sender\030\002 \001(\t\"\222\001\n\022Se" +
+      "ndEventsResponse\022/\n\005event\030\001 \001(\0132 .notifi" +
+      "cation_service.EventProto\0227\n\013return_code" +
+      "\030\002 \001(\0162\".notification_service.ReturnStat" +
+      "us\022\022\n\nreturn_msg\030\003 \001(\t\"\234\001\n\021ListEventsReq" +
+      "uest\022\014\n\004keys\030\001 \003(\t\022\022\n\nevent_type\030\002 \001(\t\022\022" +
+      "\n\nstart_time\030\003 \001(\003\022\025\n\rstart_version\030\004 \001(" +
+      "\003\022\027\n\017timeout_seconds\030\005 \001(\005\022\021\n\tnamespace\030" +
+      "\006 \001(\t\022\016\n\006sender\030\007 \001(\t\"o\n\024ListAllEventsRe" +
+      "quest\022\027\n\017timeout_seconds\030\001 \001(\005\022\022\n\nstart_" +
+      "time\030\002 \001(\003\022\025\n\rstart_version\030\003 \001(\003\022\023\n\013end" +
+      "_version\030\004 \001(\003\"\223\001\n\022ListEventsResponse\0227\n" +
+      "\013return_code\030\001 \001(\0162\".notification_servic" +
+      "e.ReturnStatus\022\022\n\nreturn_msg\030\002 \001(\t\0220\n\006ev" +
+      "ents\030\003 \003(\0132 .notification_service.EventP" +
+      "roto\"W\n\034GetLatestVersionByKeyRequest\022\013\n\003" +
+      "key\030\001 \001(\t\022\021\n\tnamespace\030\002 \001(\t\022\027\n\017timeout_" +
+      "seconds\030\003 \001(\005\"T\n\030GetLatestVersionRespons" +
+      "e\022\023\n\013return_code\030\001 \001(\t\022\022\n\nreturn_msg\030\002 \001" +
+      "(\t\022\017\n\007version\030\003 \001(\003\"G\n\013MemberProto\022\017\n\007ve" +
+      "rsion\030\001 \001(\003\022\022\n\nserver_uri\030\002 \001(\t\022\023\n\013updat" +
+      "e_time\030\003 \001(\003\"(\n\006Notify\022\013\n\003key\030\001 \001(\t\022\021\n\tn" +
+      "amespace\030\002 \001(\t\"?\n\rNotifyRequest\022.\n\010notif" +
+      "ies\030\001 \003(\0132\034.notification_service.Notify\"" +
+      "]\n\016NotifyResponse\0227\n\013return_code\030\001 \001(\0162\"" +
       ".notification_service.ReturnStatus\022\022\n\nre" +
-      "turn_msg\030\002 \001(\t\0222\n\007members\030\003 \003(\0132!.notifi" +
-      "cation_service.MemberProto\"K\n\026NotifyNewM" +
-      "emberRequest\0221\n\006member\030\001 \001(\0132!.notificat" +
-      "ion_service.MemberProto\"f\n\027NotifyNewMemb" +
-      "erResponse\0227\n\013return_code\030\001 \001(\0162\".notifi" +
-      "cation_service.ReturnStatus\022\022\n\nreturn_ms" +
-      "g\030\002 \001(\t\"N\n\025RegisterClientRequest\0225\n\013clie" +
-      "nt_meta\030\001 \001(\0132 .notification_service.Cli" +
-      "entMeta\"x\n\026RegisterClientResponse\0227\n\013ret" +
-      "urn_code\030\001 \001(\0162\".notification_service.Re" +
-      "turnStatus\022\022\n\nreturn_msg\030\002 \001(\t\022\021\n\tclient" +
-      "_id\030\003 \001(\003*&\n\014ReturnStatus\022\013\n\007SUCCESS\020\000\022\t" +
-      "\n\005ERROR\020\0012\212\n\n\023NotificationService\022\221\001\n\tse" +
-      "ndEvent\022&.notification_service.SendEvent" +
-      "Request\032(.notification_service.SendEvent" +
-      "sResponse\"2\202\323\344\223\002,\"\'/aiflow/notification-" +
-      "service/send_event:\001*\022\221\001\n\nlistEvents\022\'.n" +
-      "otification_service.ListEventsRequest\032(." +
-      "notification_service.ListEventsResponse\"" +
-      "0\202\323\344\223\002*\022(/aiflow/notification-service/li" +
-      "st_events\022\233\001\n\rlistAllEvents\022*.notificati" +
-      "on_service.ListAllEventsRequest\032(.notifi" +
-      "cation_service.ListEventsResponse\"4\202\323\344\223\002" +
-      ".\022,/aiflow/notification-service/list_all" +
-      "_events\022\203\001\n\006notify\022#.notification_servic" +
-      "e.NotifyRequest\032$.notification_service.N" +
-      "otifyResponse\".\202\323\344\223\002(\"#/aiflow/notificat" +
-      "ion-service/notify:\001*\022\225\001\n\013listMembers\022(." +
-      "notification_service.ListMembersRequest\032" +
-      ").notification_service.ListMembersRespon" +
-      "se\"1\202\323\344\223\002+\022)/aiflow/notification-service" +
-      "/list_members\022\251\001\n\017notifyNewMember\022,.noti" +
-      "fication_service.NotifyNewMemberRequest\032" +
-      "-.notification_service.NotifyNewMemberRe" +
-      "sponse\"9\202\323\344\223\0023\"./aiflow/notification-ser" +
-      "vice/notify_new_member:\001*\022\273\001\n\025getLatestV" +
-      "ersionByKey\0222.notification_service.GetLa" +
-      "testVersionByKeyRequest\032..notification_s" +
-      "ervice.GetLatestVersionResponse\">\202\323\344\223\0028\022" +
-      "6/aiflow/notification-service/get_latest" +
-      "_version_by_key\022\244\001\n\016registerClient\022+.not" +
-      "ification_service.RegisterClientRequest\032" +
-      ",.notification_service.RegisterClientRes" +
-      "ponse\"7\202\323\344\223\0021\",/aiflow/notification-serv" +
-      "ice/register_client:\001*B<\n\035org.aiflow.not" +
-      "ification.protoZ\025/notification_service\210\001" +
-      "\001\220\001\001b\006proto3"
+      "turn_msg\030\002 \001(\t\"-\n\022ListMembersRequest\022\027\n\017" +
+      "timeout_seconds\030\001 \001(\005\"\226\001\n\023ListMembersRes" +
+      "ponse\0227\n\013return_code\030\001 \001(\0162\".notificatio" +
+      "n_service.ReturnStatus\022\022\n\nreturn_msg\030\002 \001" +
+      "(\t\0222\n\007members\030\003 \003(\0132!.notification_servi" +
+      "ce.MemberProto\"K\n\026NotifyNewMemberRequest" +
+      "\0221\n\006member\030\001 \001(\0132!.notification_service." +
+      "MemberProto\"f\n\027NotifyNewMemberResponse\0227" +
+      "\n\013return_code\030\001 \001(\0162\".notification_servi" +
+      "ce.ReturnStatus\022\022\n\nreturn_msg\030\002 \001(\t\"N\n\025R" +
+      "egisterClientRequest\0225\n\013client_meta\030\001 \001(" +
+      "\0132 .notification_service.ClientMeta\"x\n\026R" +
+      "egisterClientResponse\0227\n\013return_code\030\001 \001" +
+      "(\0162\".notification_service.ReturnStatus\022\022" +
+      "\n\nreturn_msg\030\002 \001(\t\022\021\n\tclient_id\030\003 \001(\003*&\n" +
+      "\014ReturnStatus\022\013\n\007SUCCESS\020\000\022\t\n\005ERROR\020\0012\212\n" +
+      "\n\023NotificationService\022\221\001\n\tsendEvent\022&.no" +
+      "tification_service.SendEventRequest\032(.no" +
+      "tification_service.SendEventsResponse\"2\202" +
+      "\323\344\223\002,\"\'/aiflow/notification-service/send" +
+      "_event:\001*\022\221\001\n\nlistEvents\022\'.notification_" +
+      "service.ListEventsRequest\032(.notification" +
+      "_service.ListEventsResponse\"0\202\323\344\223\002*\022(/ai" +
+      "flow/notification-service/list_events\022\233\001" +
+      "\n\rlistAllEvents\022*.notification_service.L" +
+      "istAllEventsRequest\032(.notification_servi" +
+      "ce.ListEventsResponse\"4\202\323\344\223\002.\022,/aiflow/n" +
+      "otification-service/list_all_events\022\203\001\n\006" +
+      "notify\022#.notification_service.NotifyRequ" +
+      "est\032$.notification_service.NotifyRespons" +
+      "e\".\202\323\344\223\002(\"#/aiflow/notification-service/" +
+      "notify:\001*\022\225\001\n\013listMembers\022(.notification" +
+      "_service.ListMembersRequest\032).notificati" +
+      "on_service.ListMembersResponse\"1\202\323\344\223\002+\022)" +
+      "/aiflow/notification-service/list_member" +
+      "s\022\251\001\n\017notifyNewMember\022,.notification_ser" +
+      "vice.NotifyNewMemberRequest\032-.notificati" +
+      "on_service.NotifyNewMemberResponse\"9\202\323\344\223" +
+      "\0023\"./aiflow/notification-service/notify_" +
+      "new_member:\001*\022\273\001\n\025getLatestVersionByKey\022" +
+      "2.notification_service.GetLatestVersionB" +
+      "yKeyRequest\032..notification_service.GetLa" +
+      "testVersionResponse\">\202\323\344\223\0028\0226/aiflow/not" +
+      "ification-service/get_latest_version_by_" +
+      "key\022\244\001\n\016registerClient\022+.notification_se" +
+      "rvice.RegisterClientRequest\032,.notificati" +
+      "on_service.RegisterClientResponse\"7\202\323\344\223\002" +
+      "1\",/aiflow/notification-service/register" +
+      "_client:\001*B<\n\035org.aiflow.notification.pr" +
+      "otoZ\025/notification_service\210\001\001\220\001\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -16734,7 +16805,7 @@ public final class NotificationServiceOuterClass {
     internal_static_notification_service_SendEventRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_notification_service_SendEventRequest_descriptor,
-        new java.lang.String[] { "Event", "Uuid", });
+        new java.lang.String[] { "Event", "Uuid", "EnableIdempotence", });
     internal_static_notification_service_ClientMeta_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_notification_service_ClientMeta_fieldAccessorTable = new

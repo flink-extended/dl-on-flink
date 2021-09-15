@@ -112,6 +112,11 @@ class MongoEvent(Document):
     def delete_by_client(cls, server_ip):
         cls.objects(server_ip=server_ip).delete()
 
+    @classmethod
+    def get_event_by_uuid(cls, uuid):
+        event = cls.objects(uuid=uuid).first()
+        return event.to_base_event()
+
 
 class MongoClientModel(Document):
     id = SequenceField(primary_key=True)

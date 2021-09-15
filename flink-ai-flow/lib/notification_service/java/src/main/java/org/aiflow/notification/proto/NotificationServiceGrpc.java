@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
- package org.aiflow.notification.proto;
+package org.aiflow.notification.proto;
 
 import static io.grpc.MethodDescriptor.generateFullMethodName;
 import static io.grpc.stub.ClientCalls.asyncBidiStreamingCall;

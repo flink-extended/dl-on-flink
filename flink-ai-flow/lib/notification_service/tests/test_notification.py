@@ -45,6 +45,9 @@ def start_ha_master(host, port):
     return master
 
 
+properties = {'enable.idempotence': 'True'}
+
+
 class NotificationTest(object):
 
     def test_send_event(self):
@@ -276,9 +279,26 @@ class NotificationTest(object):
         self.assertEqual(1, len(result))
 
     def test_register_client(self):
-        self.assertIsNotNone(self.client.id)
-        tmp_client = NotificationClient(server_uri="localhost:50051")
-        self.assertEqual(1, tmp_client.id - self.client.id)
+        self.assertIsNotNone(self.client.client_id)
+        tmp_client = NotificationClient(server_uri="localhost:50051", properties=properties)
+        self.assertEqual(1, tmp_client.client_id - self.client.client_id)
+
+    def test_send_event_idempotence(self):
+
+        event = BaseEvent(key="key", value="value1")
+        idempotent_client = NotificationClient(server_uri="localhost:50051", properties=properties)
+        idempotent_client.send_event(event)
+        self.assertEqual(1, idempotent_client.sequence_num_manager.get_sequence_number())
+        self.assertEqual(1, len(idempotent_client.list_events(key="key")))
+
+        idempotent_client.send_event(event)
+        self.assertEqual(2, idempotent_client.sequence_num_manager.get_sequence_number())
+        self.assertEqual(2, len(idempotent_client.list_events(key="key")))
+
+        idempotent_client.sequence_num_manager._seq_num = 1
+        idempotent_client.send_event(event)
+        self.assertEqual(2, idempotent_client.sequence_num_manager.get_sequence_number())
+        self.assertEqual(2, len(idempotent_client.list_events(key="key")))
 
 
 class DbStorageTest(unittest.TestCase, NotificationTest):
@@ -301,7 +321,7 @@ class DbStorageTest(unittest.TestCase, NotificationTest):
 
     def setUp(self):
         self.storage.clean_up()
-        self.client = NotificationClient(server_uri="localhost:50051", enable_idempotent=True)
+        self.client = NotificationClient(server_uri="localhost:50051", properties=properties)
 
     def tearDown(self):
         self.client.stop_listen_events()
@@ -326,7 +346,7 @@ class MemoryStorageTest(unittest.TestCase, NotificationTest):
 
     def setUp(self):
         self.storage.clean_up()
-        self.client = NotificationClient(server_uri="localhost:50051", enable_idempotent=True)
+        self.client = NotificationClient(server_uri="localhost:50051", properties=properties)
 
     def tearDown(self):
         self.client.stop_listen_events()
@@ -364,7 +384,8 @@ class HaDbStorageTest(unittest.TestCase, NotificationTest):
         self.storage.clean_up()
         self.client = NotificationClient(server_uri="localhost:50052", enable_ha=True,
                                          list_member_interval_ms=1000,
-                                         retry_timeout_ms=10000)
+                                         retry_timeout_ms=10000,
+                                         properties=properties)
 
     def tearDown(self):
         self.client.stop_listen_events()
@@ -379,7 +400,7 @@ class HaClientWithNonHaServerTest(unittest.TestCase, NotificationTest):
         last_exception = None
         for i in range(100):
             try:
-                return NotificationClient(server_uri=server_uri, enable_ha=True)
+                return NotificationClient(server_uri=server_uri, enable_ha=True, properties=properties)
             except Exception as e:
                 time.sleep(10)
                 last_exception = e
