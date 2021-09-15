@@ -16,7 +16,7 @@
 # under the License.
 
 import logging
-from typing import Any, Dict, Iterator, List, Optional, Tuple
+from typing import Any, Dict, Iterator, List, Optional, Tuple, Union
 
 from cached_property import cached_property
 
@@ -30,7 +30,7 @@ class TaskLogReader:
     """Task log reader"""
 
     def read_log_chunks(
-        self, ti: TaskInstance, try_number: Optional[int], metadata
+        self, ti: TaskInstance, try_number: Optional[Union[int, str]], metadata
     ) -> Tuple[List[str], Dict[str, Any]]:
         """
         Reads chunks of Task Instance logs.
@@ -39,7 +39,7 @@ class TaskLogReader:
         :type ti: TaskInstance
         :param try_number: If provided, logs for the given try will be returned.
             Otherwise, logs from all attempts are returned.
-        :type try_number: Optional[int]
+        :type try_number: Optional[Union[int, str]]
         :param metadata: A dictionary containing information about how to read the task log
         :type metadata: dict
         :rtype: Tuple[List[str], Dict[str, Any]]
@@ -59,21 +59,29 @@ class TaskLogReader:
         metadata = metadatas[0]
         return logs, metadata
 
-    def read_log_stream(self, ti: TaskInstance, try_number: Optional[int], metadata: dict) -> Iterator[str]:
+    def read_log_stream(self, ti: TaskInstance, try_number: Optional[Union[int, str]], metadata: dict) -> Iterator[str]:
         """
         Used to continuously read log to the end
 
         :param ti: The Task Instance
         :type ti: TaskInstance
         :param try_number: the task try number
-        :type try_number: Optional[int]
+        :type try_number: Optional[Union[int, str]]
         :param metadata: A dictionary containing information about how to read the task log
         :type metadata: dict
         :rtype: Iterator[str]
         """
         if try_number is None:
-            next_try = ti.next_try_number
-            try_numbers = list(range(1, next_try))
+            if hasattr(ti, 'seq_num') and ti.seq_num > 0:
+                try_numbers = []
+                task_executions = ti.get_task_executions()
+                if task_executions:
+                    for te in task_executions:
+                        for i in range(1, te.try_number + 1):
+                            try_numbers.append('{}_{}'.format(te.seq_num, i))
+            else:
+                next_try = ti.next_try_number
+                try_numbers = list(range(1, next_try))
         else:
             try_numbers = [try_number]
         for current_try_number in try_numbers:
@@ -103,14 +111,14 @@ class TaskLogReader:
         """Check if the logging handler supports external links (e.g. to Elasticsearch, Stackdriver, etc)."""
         return isinstance(self.log_handler, ExternalLoggingMixin)
 
-    def render_log_filename(self, ti: TaskInstance, try_number: Optional[int] = None):
+    def render_log_filename(self, ti: TaskInstance, try_number: Optional[Union[int, str]] = None):
         """
         Renders the log attachment filename
 
         :param ti: The task instance
         :type ti: TaskInstance
         :param try_number: The task try number
-        :type try_number: Optional[int]
+        :type try_number: Optional[Union[int, str]]
         :rtype: str
         """
         filename_template = conf.get('logging', 'LOG_FILENAME_TEMPLATE')
