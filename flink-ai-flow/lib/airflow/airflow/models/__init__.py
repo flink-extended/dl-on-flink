@@ -32,6 +32,7 @@ from airflow.models.skipmixin import SkipMixin
 from airflow.models.slamiss import SlaMiss
 from airflow.models.taskfail import TaskFail
 from airflow.models.taskinstance import TaskInstance, clear_task_instances
+from airflow.models.taskexecution import TaskExecution
 from airflow.models.taskreschedule import TaskReschedule
 from airflow.models.variable import Variable
 from airflow.models.xcom import XCOM_RETURN_KEY, XCom
