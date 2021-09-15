@@ -288,6 +288,14 @@ class EventModel(Base):
             .limit(1).first().version
 
     @staticmethod
+    @provide_session
+    def get_event_by_uuid(uuid, session=None):
+        conditions = [
+            EventModel.uuid == uuid
+        ]
+        return session.query(EventModel).filter(*conditions).first()
+
+    @staticmethod
     def create_table(db_conn=None):
         if db_conn is not None:
             global SQL_ALCHEMY_CONN

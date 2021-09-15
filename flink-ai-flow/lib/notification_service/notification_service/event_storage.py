@@ -62,11 +62,15 @@ class BaseEventStorage(ABC):
     def register_client(self, namespace: str = None, sender: str = None) -> int:
         pass
 
+    def get_event_by_uuid(self, uuid: str):
+        pass
+
 
 class MemoryEventStorage(BaseEventStorage):
 
     def __init__(self):
         self.store = []
+        self.store_with_uuid = {}
         self.max_version = 0
         self.clients = []
 
@@ -75,6 +79,7 @@ class MemoryEventStorage(BaseEventStorage):
         event.create_time = int(time.time() * 1000)
         event.version = self.max_version
         self.store.append(event)
+        self.store_with_uuid[uuid] = event
         return event
 
     def list_events(self,
@@ -133,6 +138,9 @@ class MemoryEventStorage(BaseEventStorage):
         self.clients.append((len(self.clients), namespace, sender))
         return len(self.clients)
 
+    def get_event_by_uuid(self, uuid: str):
+        return self.store_with_uuid.get(uuid)
+
     def clean_up(self):
         self.store.clear()
         self.max_version = 0
@@ -170,6 +178,9 @@ class DbEventStorage(BaseEventStorage):
 
     def register_client(self, namespace: str = None, sender: str = None) -> int:
         return ClientModel.register_client(namespace, sender)
+
+    def get_event_by_uuid(self, uuid: str):
+        return EventModel.get_event_by_uuid(uuid)
 
     def clean_up(self):
         EventModel.cleanup()
