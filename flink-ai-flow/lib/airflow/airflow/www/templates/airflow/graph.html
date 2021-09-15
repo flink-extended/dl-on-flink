@@ -148,6 +148,7 @@
       // Below variables are being used in dag.js
       var tasks = {{ tasks|tojson }};
       var task_instances = {{ task_instances|tojson }};
+      var task_logs = {{ task_logs|tojson }};
       var events = {{ events|tojson }};
       var getNodeURL = "{{ url_for('Airflow.nodes') }}" +
         "?dag_id=" + encodeURIComponent(dag_id) + "&execution_date=" +
@@ -210,15 +211,20 @@
           } else if (node_id in tasks) {
             // A task node
             task = tasks[node_id];
+            has_seq_num = task_instances[node_id].seq_num == null || task_instances[node_id].seq_num > 0;
             if (node_id in task_instances)
-              try_number = task_instances[node_id].try_number;
+              if (has_seq_num) {
+                try_number = task_logs[node_id];
+              } else {
+                try_number = task_instances[node_id].try_number;
+              }
             else
               try_number = 0;
 
             if (task.task_type == "SubDagOperator")
-              call_modal(node_id, execution_date, task.extra_links, try_number, true);
+              call_modal(node_id, execution_date, task.extra_links, try_number, true, has_seq_num);
             else
-              call_modal(node_id, execution_date, task.extra_links, try_number, undefined);
+              call_modal(node_id, execution_date, task.extra_links, try_number, undefined, has_seq_num);
           } else if (node_id in events) {
               call_modal_event(node_id, events[node_id])
           } else {

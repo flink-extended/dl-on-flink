@@ -1040,6 +1040,10 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
         dag_id = request.args.get('dag_id')
         task_id = request.args.get('task_id')
         execution_date = request.args.get('execution_date')
+        if request.args.get('seq_num') is not None:
+            seq_num = int(request.args.get('seq_num'))
+        else:
+            seq_num = None
         if request.args.get('try_number') is not None:
             try_number = int(request.args.get('try_number'))
         else:
@@ -1089,7 +1093,8 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
                 error=True,
                 metadata={"end_of_log": True},
             )
-
+        if seq_num is not None:
+            try_number = '{}_{}'.format(seq_num, try_number)
         try:
             dag = current_app.dag_bag.get_dag(dag_id)
             if dag:
@@ -1144,19 +1149,37 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
             .first()
         )
 
-        num_logs = 0
-        if ti is not None:
-            num_logs = ti.next_try_number - 1
-            if ti.state == State.UP_FOR_RESCHEDULE:
-                # Tasks in reschedule state decremented the try number
-                num_logs += 1
-        logs = [''] * num_logs
+        logs = []
+        if ti:
+            if hasattr(ti, 'seq_num') and ti.seq_num > 0:
+                tes = (
+                    session.query(models.TaskExecution)
+                        .filter(
+                            models.TaskExecution.dag_id == dag_id,
+                            models.TaskExecution.task_id == task_id,
+                            models.TaskExecution.execution_date == dttm,
+                        ).all()
+                )
+                if tes:
+                    for te in tes:
+                        for i in range(te.try_number):
+                            logs.append('{}_{}'.format(te.seq_num, i + 1))
+            else:
+                num_logs = 0
+                if ti is not None:
+                    num_logs = ti.next_try_number - 1
+                    if ti.state == State.UP_FOR_RESCHEDULE:
+                        # Tasks in reschedule state decremented the try number
+                        num_logs += 1
+                logs = [''] * num_logs
         root = request.args.get('root', '')
         return self.render_template(
             'airflow/ti_log.html',
             logs=logs,
             dag=dag_model,
-            title="Log by attempts",
+            title='Log by sequences and attempts'
+            if ti and hasattr(ti, 'seq_num') and ti.seq_num > 0
+            else 'Log by attempts',
             dag_id=dag_id,
             task_id=task_id,
             execution_date=execution_date,
@@ -1984,8 +2007,17 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
 
         tis = dag.get_task_instances(start_date=min_date, end_date=base_date)
         task_instances: Dict[Tuple[str, datetime], models.TaskInstance] = {}
+        task_logs: Dict[str, List[str]] = {}
         for ti in tis:
             task_instances[(ti.task_id, ti.execution_date)] = ti
+            if hasattr(ti, 'seq_num') and ti.seq_num > 0:
+                sequence_attempts = []
+                task_executions = ti.get_task_executions()
+                if task_executions:
+                    for te in task_executions:
+                        for i in range(1, te.try_number + 1):
+                            sequence_attempts.append('{}_{}'.format(te.seq_num, i))
+                task_logs.update({ti.task_id: sequence_attempts})
 
         expanded = set()
         # The default recursion traces every path so that tree view has full
@@ -2125,6 +2157,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
             root=root,
             form=form,
             dag=dag,
+            task_logs=task_logs,
             doc_md=doc_md,
             data=data,
             blur=blur,
@@ -2185,7 +2218,18 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
         form = GraphForm(data=dt_nr_dr_data)
         form.execution_date.choices = dt_nr_dr_data['dr_choices']
 
-        task_instances = {ti.task_id: alchemy_to_dict(ti) for ti in dag.get_task_instances(dttm, dttm)}
+        task_instances:  Dict[str, TaskInstance] = {}
+        task_logs: Dict[str, List[str]] = {}
+        for ti in dag.get_task_instances(dttm, dttm):
+            task_instances.update({ti.task_id: alchemy_to_dict(ti)})
+            if hasattr(ti, 'seq_num') and ti.seq_num > 0:
+                sequence_attempts = []
+                task_executions = ti.get_task_executions()
+                if task_executions:
+                    for te in task_executions:
+                        for i in range(1, te.try_number + 1):
+                            sequence_attempts.append('{}_{}'.format(te.seq_num, i))
+                task_logs.update({ti.task_id: sequence_attempts})
         tasks: Dict[str, Dict[str, str]] = {}
         events: Dict[str, Tuple[str, str, str]] = {}
         for t in dag.tasks:
@@ -2247,6 +2291,7 @@ class Airflow(AirflowBaseView):  # noqa: D101  pylint: disable=too-many-public-m
             blur=blur,
             root=root or '',
             task_instances=task_instances,
+            task_logs=task_logs,
             tasks=tasks,
             events=send_events,
             nodes=nodes,

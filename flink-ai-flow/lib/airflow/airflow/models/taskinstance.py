@@ -51,6 +51,7 @@ from airflow.exceptions import (
 )
 from airflow.models.base import COLLATION_ARGS, ID_LEN, Base
 from airflow.models.log import Log
+from airflow.models.taskexecution import TaskExecution
 from airflow.models.taskfail import TaskFail
 from airflow.models.taskreschedule import TaskReschedule
 from airflow.models.variable import Variable
@@ -2059,6 +2060,13 @@ class TaskInstance(Base, LoggingMixin):  # pylint: disable=R0902,R0904
             )
             for ti in tis
         )
+
+    @provide_session
+    def get_task_executions(self, session=None):
+        return session.query(TaskExecution).filter(TaskExecution.dag_id == self.dag_id,
+                                                   TaskExecution.task_id == self.task_id,
+                                                   TaskExecution.execution_date == self.execution_date)\
+            .order_by(TaskExecution.seq_num, TaskExecution.try_number).all()
 
 
 # State of the task instance.

@@ -145,6 +145,7 @@
     var devicePixelRatio = window.devicePixelRatio || 1;
     // JSON.parse is faster for large payloads than an object literal (because the JSON grammer is simpler!)
     var data = JSON.parse({{ data|tojson }});
+    var task_logs = {{ task_logs|tojson }};
     var barHeight = 20;
     var axisHeight = 40;
     var square_x = parseInt(500 * devicePixelRatio);
@@ -331,11 +332,14 @@
           .on("click", function(d){
             if(d.task_id === undefined)
                 call_modal_dag(d);
-            else if(nodeobj[d.task_id].operator=='SubDagOperator')
+            else if(nodeobj[d.task_id].operator=='SubDagOperator') {
+                sequence_attempts = task_logs[d.task_id];
                 // I'm pretty sure that true is not a valid subdag id, which is what call_modal wants
-                call_modal(d.task_id, d.execution_date, nodeobj[d.task_id].extra_links, d.try_number, true);
-            else
-                call_modal(d.task_id, d.execution_date, nodeobj[d.task_id].extra_links, d.try_number, undefined);
+                call_modal(d.task_id, d.execution_date, nodeobj[d.task_id].extra_links, sequence_attempts.length == 0? d.try_number : sequence_attempts, true, sequence_attempts.length != 0);
+            } else {
+                sequence_attempts = task_logs[d.task_id];
+                call_modal(d.task_id, d.execution_date, nodeobj[d.task_id].extra_links, sequence_attempts.length == 0? d.try_number : sequence_attempts, undefined, sequence_attempts.length != 0);
+            }
           })
           .attr("class", function(d) {return "state " + d.state})
           .attr("data-toggle", "tooltip")
