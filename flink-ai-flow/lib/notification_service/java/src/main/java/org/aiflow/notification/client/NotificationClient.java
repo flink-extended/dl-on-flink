@@ -18,6 +18,7 @@
  */
 package org.aiflow.notification.client;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.speedment.common.tuple.Tuple4;
 import com.speedment.common.tuple.internal.nonnullable.Tuple4Impl;
@@ -486,7 +487,8 @@ public class NotificationClient {
         }
     }
 
-    protected int getSequenceNumValue() {
-        return this.sequenceNum.get();
+    @VisibleForTesting
+    protected AtomicInteger getSequenceNum() {
+        return this.sequenceNum;
     }
 }

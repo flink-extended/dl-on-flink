@@ -200,14 +200,27 @@ public class NotificationClientTest {
     @Test
     public void testSendEventIdempotence() throws Exception {
         Properties properties = new Properties();
+        String key = "test_idempotence_key";
         properties.put(CLIENT_ENABLE_IDEMPOTENCE_CONFIG_KEY, "true");
         NotificationClient idempotent_client =
                 new NotificationClient(
                         "localhost:50051", "default", "test", false, 5, 10, 2000, properties);
-        assertEquals(0, idempotent_client.getSequenceNumValue());
-        idempotent_client.sendEvent("key1", "value", "type", "");
-        assertEquals(1, idempotent_client.getSequenceNumValue());
-        idempotent_client.sendEvent("key2", "value", "type", "");
-        assertEquals(2, idempotent_client.getSequenceNumValue());
+        assertEquals(0, idempotent_client.getSequenceNum().get());
+        idempotent_client.sendEvent(key, "value1", "type", "");
+
+        List<String> keyList = Collections.singletonList(key);
+        assertEquals(
+                1, idempotent_client.listEvents("default", keyList, 0, "type", 0, "test").size());
+        assertEquals(1, idempotent_client.getSequenceNum().get());
+
+        idempotent_client.sendEvent(key, "value2", "type", "");
+        assertEquals(
+                2, idempotent_client.listEvents("default", keyList, 0, "type", 0, "test").size());
+        assertEquals(2, idempotent_client.getSequenceNum().getAndDecrement());
+
+        idempotent_client.sendEvent(key, "value3", "type", "");
+        assertEquals(
+                2, idempotent_client.listEvents("default", keyList, 0, "type", 0, "test").size());
+        assertEquals(2, idempotent_client.getSequenceNum().getAndDecrement());
     }
 }
