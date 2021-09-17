@@ -145,28 +145,28 @@ public final class NotificationServiceGrpc {
   }
 
   private static volatile io.grpc.MethodDescriptor<org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest,
-      org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse> getNotifyMethod;
+      org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse> getNotifyMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "notify",
       requestType = org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest.class,
-      responseType = org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse.class,
+      responseType = org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
   public static io.grpc.MethodDescriptor<org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest,
-      org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse> getNotifyMethod() {
-    io.grpc.MethodDescriptor<org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest, org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse> getNotifyMethod;
+      org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse> getNotifyMethod() {
+    io.grpc.MethodDescriptor<org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest, org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse> getNotifyMethod;
     if ((getNotifyMethod = NotificationServiceGrpc.getNotifyMethod) == null) {
       synchronized (NotificationServiceGrpc.class) {
         if ((getNotifyMethod = NotificationServiceGrpc.getNotifyMethod) == null) {
           NotificationServiceGrpc.getNotifyMethod = getNotifyMethod =
-              io.grpc.MethodDescriptor.<org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest, org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse>newBuilder()
+              io.grpc.MethodDescriptor.<org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest, org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "notify"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse.getDefaultInstance()))
+                  org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse.getDefaultInstance()))
               .setSchemaDescriptor(new NotificationServiceMethodDescriptorSupplier("notify"))
               .build();
         }
@@ -207,28 +207,28 @@ public final class NotificationServiceGrpc {
   }
 
   private static volatile io.grpc.MethodDescriptor<org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest,
-      org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse> getNotifyNewMemberMethod;
+      org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse> getNotifyNewMemberMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "notifyNewMember",
       requestType = org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest.class,
-      responseType = org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse.class,
+      responseType = org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
   public static io.grpc.MethodDescriptor<org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest,
-      org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse> getNotifyNewMemberMethod() {
-    io.grpc.MethodDescriptor<org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest, org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse> getNotifyNewMemberMethod;
+      org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse> getNotifyNewMemberMethod() {
+    io.grpc.MethodDescriptor<org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest, org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse> getNotifyNewMemberMethod;
     if ((getNotifyNewMemberMethod = NotificationServiceGrpc.getNotifyNewMemberMethod) == null) {
       synchronized (NotificationServiceGrpc.class) {
         if ((getNotifyNewMemberMethod = NotificationServiceGrpc.getNotifyNewMemberMethod) == null) {
           NotificationServiceGrpc.getNotifyNewMemberMethod = getNotifyNewMemberMethod =
-              io.grpc.MethodDescriptor.<org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest, org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse>newBuilder()
+              io.grpc.MethodDescriptor.<org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest, org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "notifyNewMember"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse.getDefaultInstance()))
+                  org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse.getDefaultInstance()))
               .setSchemaDescriptor(new NotificationServiceMethodDescriptorSupplier("notifyNewMember"))
               .build();
         }
@@ -297,6 +297,68 @@ public final class NotificationServiceGrpc {
       }
     }
     return getRegisterClientMethod;
+  }
+
+  private static volatile io.grpc.MethodDescriptor<org.aiflow.notification.proto.NotificationServiceOuterClass.ClientIdRequest,
+      org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse> getDeleteClientMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "deleteClient",
+      requestType = org.aiflow.notification.proto.NotificationServiceOuterClass.ClientIdRequest.class,
+      responseType = org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<org.aiflow.notification.proto.NotificationServiceOuterClass.ClientIdRequest,
+      org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse> getDeleteClientMethod() {
+    io.grpc.MethodDescriptor<org.aiflow.notification.proto.NotificationServiceOuterClass.ClientIdRequest, org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse> getDeleteClientMethod;
+    if ((getDeleteClientMethod = NotificationServiceGrpc.getDeleteClientMethod) == null) {
+      synchronized (NotificationServiceGrpc.class) {
+        if ((getDeleteClientMethod = NotificationServiceGrpc.getDeleteClientMethod) == null) {
+          NotificationServiceGrpc.getDeleteClientMethod = getDeleteClientMethod =
+              io.grpc.MethodDescriptor.<org.aiflow.notification.proto.NotificationServiceOuterClass.ClientIdRequest, org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "deleteClient"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  org.aiflow.notification.proto.NotificationServiceOuterClass.ClientIdRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new NotificationServiceMethodDescriptorSupplier("deleteClient"))
+              .build();
+        }
+      }
+    }
+    return getDeleteClientMethod;
+  }
+
+  private static volatile io.grpc.MethodDescriptor<org.aiflow.notification.proto.NotificationServiceOuterClass.ClientIdRequest,
+      org.aiflow.notification.proto.NotificationServiceOuterClass.isClientExistsResponse> getIsClientExistsMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "isClientExists",
+      requestType = org.aiflow.notification.proto.NotificationServiceOuterClass.ClientIdRequest.class,
+      responseType = org.aiflow.notification.proto.NotificationServiceOuterClass.isClientExistsResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<org.aiflow.notification.proto.NotificationServiceOuterClass.ClientIdRequest,
+      org.aiflow.notification.proto.NotificationServiceOuterClass.isClientExistsResponse> getIsClientExistsMethod() {
+    io.grpc.MethodDescriptor<org.aiflow.notification.proto.NotificationServiceOuterClass.ClientIdRequest, org.aiflow.notification.proto.NotificationServiceOuterClass.isClientExistsResponse> getIsClientExistsMethod;
+    if ((getIsClientExistsMethod = NotificationServiceGrpc.getIsClientExistsMethod) == null) {
+      synchronized (NotificationServiceGrpc.class) {
+        if ((getIsClientExistsMethod = NotificationServiceGrpc.getIsClientExistsMethod) == null) {
+          NotificationServiceGrpc.getIsClientExistsMethod = getIsClientExistsMethod =
+              io.grpc.MethodDescriptor.<org.aiflow.notification.proto.NotificationServiceOuterClass.ClientIdRequest, org.aiflow.notification.proto.NotificationServiceOuterClass.isClientExistsResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "isClientExists"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  org.aiflow.notification.proto.NotificationServiceOuterClass.ClientIdRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  org.aiflow.notification.proto.NotificationServiceOuterClass.isClientExistsResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new NotificationServiceMethodDescriptorSupplier("isClientExists"))
+              .build();
+        }
+      }
+    }
+    return getIsClientExistsMethod;
   }
 
   /**
@@ -389,7 +451,7 @@ public final class NotificationServiceGrpc {
      * </pre>
      */
     public void notify(org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse> responseObserver) {
+        io.grpc.stub.StreamObserver<org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse> responseObserver) {
       asyncUnimplementedUnaryCall(getNotifyMethod(), responseObserver);
     }
 
@@ -409,7 +471,7 @@ public final class NotificationServiceGrpc {
      * </pre>
      */
     public void notifyNewMember(org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse> responseObserver) {
+        io.grpc.stub.StreamObserver<org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse> responseObserver) {
       asyncUnimplementedUnaryCall(getNotifyNewMemberMethod(), responseObserver);
     }
 
@@ -431,6 +493,26 @@ public final class NotificationServiceGrpc {
     public void registerClient(org.aiflow.notification.proto.NotificationServiceOuterClass.RegisterClientRequest request,
         io.grpc.stub.StreamObserver<org.aiflow.notification.proto.NotificationServiceOuterClass.RegisterClientResponse> responseObserver) {
       asyncUnimplementedUnaryCall(getRegisterClientMethod(), responseObserver);
+    }
+
+    /**
+     * <pre>
+     * Delete notification client
+     * </pre>
+     */
+    public void deleteClient(org.aiflow.notification.proto.NotificationServiceOuterClass.ClientIdRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse> responseObserver) {
+      asyncUnimplementedUnaryCall(getDeleteClientMethod(), responseObserver);
+    }
+
+    /**
+     * <pre>
+     * Check if a notification client has been registered in the db
+     * </pre>
+     */
+    public void isClientExists(org.aiflow.notification.proto.NotificationServiceOuterClass.ClientIdRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.notification.proto.NotificationServiceOuterClass.isClientExistsResponse> responseObserver) {
+      asyncUnimplementedUnaryCall(getIsClientExistsMethod(), responseObserver);
     }
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
@@ -461,7 +543,7 @@ public final class NotificationServiceGrpc {
             asyncUnaryCall(
               new MethodHandlers<
                 org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest,
-                org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse>(
+                org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse>(
                   this, METHODID_NOTIFY)))
           .addMethod(
             getListMembersMethod(),
@@ -475,7 +557,7 @@ public final class NotificationServiceGrpc {
             asyncUnaryCall(
               new MethodHandlers<
                 org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest,
-                org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse>(
+                org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse>(
                   this, METHODID_NOTIFY_NEW_MEMBER)))
           .addMethod(
             getGetLatestVersionByKeyMethod(),
@@ -491,6 +573,20 @@ public final class NotificationServiceGrpc {
                 org.aiflow.notification.proto.NotificationServiceOuterClass.RegisterClientRequest,
                 org.aiflow.notification.proto.NotificationServiceOuterClass.RegisterClientResponse>(
                   this, METHODID_REGISTER_CLIENT)))
+          .addMethod(
+            getDeleteClientMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                org.aiflow.notification.proto.NotificationServiceOuterClass.ClientIdRequest,
+                org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse>(
+                  this, METHODID_DELETE_CLIENT)))
+          .addMethod(
+            getIsClientExistsMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                org.aiflow.notification.proto.NotificationServiceOuterClass.ClientIdRequest,
+                org.aiflow.notification.proto.NotificationServiceOuterClass.isClientExistsResponse>(
+                  this, METHODID_IS_CLIENT_EXISTS)))
           .build();
     }
   }
@@ -554,7 +650,7 @@ public final class NotificationServiceGrpc {
      * </pre>
      */
     public void notify(org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse> responseObserver) {
+        io.grpc.stub.StreamObserver<org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getNotifyMethod(), getCallOptions()), request, responseObserver);
     }
@@ -576,7 +672,7 @@ public final class NotificationServiceGrpc {
      * </pre>
      */
     public void notifyNewMember(org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest request,
-        io.grpc.stub.StreamObserver<org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse> responseObserver) {
+        io.grpc.stub.StreamObserver<org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getNotifyNewMemberMethod(), getCallOptions()), request, responseObserver);
     }
@@ -601,6 +697,28 @@ public final class NotificationServiceGrpc {
         io.grpc.stub.StreamObserver<org.aiflow.notification.proto.NotificationServiceOuterClass.RegisterClientResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getRegisterClientMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     * <pre>
+     * Delete notification client
+     * </pre>
+     */
+    public void deleteClient(org.aiflow.notification.proto.NotificationServiceOuterClass.ClientIdRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getDeleteClientMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     * <pre>
+     * Check if a notification client has been registered in the db
+     * </pre>
+     */
+    public void isClientExists(org.aiflow.notification.proto.NotificationServiceOuterClass.ClientIdRequest request,
+        io.grpc.stub.StreamObserver<org.aiflow.notification.proto.NotificationServiceOuterClass.isClientExistsResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getIsClientExistsMethod(), getCallOptions()), request, responseObserver);
     }
   }
 
@@ -659,7 +777,7 @@ public final class NotificationServiceGrpc {
      * Accepts notifications from other members.
      * </pre>
      */
-    public org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse notify(org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest request) {
+    public org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse notify(org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest request) {
       return blockingUnaryCall(
           getChannel(), getNotifyMethod(), getCallOptions(), request);
     }
@@ -679,7 +797,7 @@ public final class NotificationServiceGrpc {
      * Notify current members that there is a new member added.
      * </pre>
      */
-    public org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse notifyNewMember(org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest request) {
+    public org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse notifyNewMember(org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest request) {
       return blockingUnaryCall(
           getChannel(), getNotifyNewMemberMethod(), getCallOptions(), request);
     }
@@ -702,6 +820,26 @@ public final class NotificationServiceGrpc {
     public org.aiflow.notification.proto.NotificationServiceOuterClass.RegisterClientResponse registerClient(org.aiflow.notification.proto.NotificationServiceOuterClass.RegisterClientRequest request) {
       return blockingUnaryCall(
           getChannel(), getRegisterClientMethod(), getCallOptions(), request);
+    }
+
+    /**
+     * <pre>
+     * Delete notification client
+     * </pre>
+     */
+    public org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse deleteClient(org.aiflow.notification.proto.NotificationServiceOuterClass.ClientIdRequest request) {
+      return blockingUnaryCall(
+          getChannel(), getDeleteClientMethod(), getCallOptions(), request);
+    }
+
+    /**
+     * <pre>
+     * Check if a notification client has been registered in the db
+     * </pre>
+     */
+    public org.aiflow.notification.proto.NotificationServiceOuterClass.isClientExistsResponse isClientExists(org.aiflow.notification.proto.NotificationServiceOuterClass.ClientIdRequest request) {
+      return blockingUnaryCall(
+          getChannel(), getIsClientExistsMethod(), getCallOptions(), request);
     }
   }
 
@@ -763,7 +901,7 @@ public final class NotificationServiceGrpc {
      * Accepts notifications from other members.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse> notify(
+    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse> notify(
         org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getNotifyMethod(), getCallOptions()), request);
@@ -785,7 +923,7 @@ public final class NotificationServiceGrpc {
      * Notify current members that there is a new member added.
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse> notifyNewMember(
+    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse> notifyNewMember(
         org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getNotifyNewMemberMethod(), getCallOptions()), request);
@@ -812,6 +950,28 @@ public final class NotificationServiceGrpc {
       return futureUnaryCall(
           getChannel().newCall(getRegisterClientMethod(), getCallOptions()), request);
     }
+
+    /**
+     * <pre>
+     * Delete notification client
+     * </pre>
+     */
+    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse> deleteClient(
+        org.aiflow.notification.proto.NotificationServiceOuterClass.ClientIdRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(getDeleteClientMethod(), getCallOptions()), request);
+    }
+
+    /**
+     * <pre>
+     * Check if a notification client has been registered in the db
+     * </pre>
+     */
+    public com.google.common.util.concurrent.ListenableFuture<org.aiflow.notification.proto.NotificationServiceOuterClass.isClientExistsResponse> isClientExists(
+        org.aiflow.notification.proto.NotificationServiceOuterClass.ClientIdRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(getIsClientExistsMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_SEND_EVENT = 0;
@@ -822,6 +982,8 @@ public final class NotificationServiceGrpc {
   private static final int METHODID_NOTIFY_NEW_MEMBER = 5;
   private static final int METHODID_GET_LATEST_VERSION_BY_KEY = 6;
   private static final int METHODID_REGISTER_CLIENT = 7;
+  private static final int METHODID_DELETE_CLIENT = 8;
+  private static final int METHODID_IS_CLIENT_EXISTS = 9;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -854,7 +1016,7 @@ public final class NotificationServiceGrpc {
           break;
         case METHODID_NOTIFY:
           serviceImpl.notify((org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyRequest) request,
-              (io.grpc.stub.StreamObserver<org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyResponse>) responseObserver);
+              (io.grpc.stub.StreamObserver<org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse>) responseObserver);
           break;
         case METHODID_LIST_MEMBERS:
           serviceImpl.listMembers((org.aiflow.notification.proto.NotificationServiceOuterClass.ListMembersRequest) request,
@@ -862,7 +1024,7 @@ public final class NotificationServiceGrpc {
           break;
         case METHODID_NOTIFY_NEW_MEMBER:
           serviceImpl.notifyNewMember((org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberRequest) request,
-              (io.grpc.stub.StreamObserver<org.aiflow.notification.proto.NotificationServiceOuterClass.NotifyNewMemberResponse>) responseObserver);
+              (io.grpc.stub.StreamObserver<org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse>) responseObserver);
           break;
         case METHODID_GET_LATEST_VERSION_BY_KEY:
           serviceImpl.getLatestVersionByKey((org.aiflow.notification.proto.NotificationServiceOuterClass.GetLatestVersionByKeyRequest) request,
@@ -871,6 +1033,14 @@ public final class NotificationServiceGrpc {
         case METHODID_REGISTER_CLIENT:
           serviceImpl.registerClient((org.aiflow.notification.proto.NotificationServiceOuterClass.RegisterClientRequest) request,
               (io.grpc.stub.StreamObserver<org.aiflow.notification.proto.NotificationServiceOuterClass.RegisterClientResponse>) responseObserver);
+          break;
+        case METHODID_DELETE_CLIENT:
+          serviceImpl.deleteClient((org.aiflow.notification.proto.NotificationServiceOuterClass.ClientIdRequest) request,
+              (io.grpc.stub.StreamObserver<org.aiflow.notification.proto.NotificationServiceOuterClass.CommonResponse>) responseObserver);
+          break;
+        case METHODID_IS_CLIENT_EXISTS:
+          serviceImpl.isClientExists((org.aiflow.notification.proto.NotificationServiceOuterClass.ClientIdRequest) request,
+              (io.grpc.stub.StreamObserver<org.aiflow.notification.proto.NotificationServiceOuterClass.isClientExistsResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -941,6 +1111,8 @@ public final class NotificationServiceGrpc {
               .addMethod(getNotifyNewMemberMethod())
               .addMethod(getGetLatestVersionByKeyMethod())
               .addMethod(getRegisterClientMethod())
+              .addMethod(getDeleteClientMethod())
+              .addMethod(getIsClientExistsMethod())
               .build();
         }
       }

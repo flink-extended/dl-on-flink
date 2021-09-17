@@ -55,7 +55,7 @@ service NotificationService {
     }
 
     // Accepts notifications from other members.
-    rpc notify (NotifyRequest) returns (NotifyResponse) {
+    rpc notify (NotifyRequest) returns (CommonResponse) {
         option (google.api.http) = {
             post: "/aiflow/notification-service/notify"
             body: "*"
@@ -70,7 +70,7 @@ service NotificationService {
     }
 
     // Notify current members that there is a new member added.
-    rpc notifyNewMember (NotifyNewMemberRequest) returns (NotifyNewMemberResponse) {
+    rpc notifyNewMember (NotifyNewMemberRequest) returns (CommonResponse) {
         option (google.api.http) = {
             post: "/aiflow/notification-service/notify_new_member"
             body: "*"
@@ -88,6 +88,22 @@ service NotificationService {
     rpc registerClient (RegisterClientRequest) returns (RegisterClientResponse) {
         option (google.api.http) = {
             post: "/aiflow/notification-service/register_client"
+            body: "*"
+        };
+    }
+
+    // Delete notification client
+    rpc deleteClient (ClientIdRequest) returns (CommonResponse) {
+        option (google.api.http) = {
+            post: "/aiflow/notification-service/delete_client"
+            body: "*"
+        };
+    }
+
+    // Check if a notification client has been registered in the db
+    rpc isClientExists (ClientIdRequest) returns (isClientExistsResponse) {
+        option (google.api.http) = {
+            post: "/aiflow/notification-service/is_client_exists"
             body: "*"
         };
     }
@@ -176,11 +192,6 @@ message NotifyRequest {
     repeated Notify notifies = 1;
 }
 
-message NotifyResponse {
-    ReturnStatus return_code = 1;
-    string return_msg = 2;
-}
-
 message ListMembersRequest {
     int32 timeout_seconds = 1;
 }
@@ -195,10 +206,6 @@ message NotifyNewMemberRequest {
     MemberProto member = 1;
 }
 
-message NotifyNewMemberResponse {
-    ReturnStatus return_code = 1;
-    string return_msg = 2;
-}
 
 message RegisterClientRequest {
     ClientMeta client_meta = 1;
@@ -208,4 +215,19 @@ message RegisterClientResponse {
     ReturnStatus return_code = 1;
     string return_msg = 2;
     int64 client_id = 3;
+}
+
+message ClientIdRequest {
+    int64 client_id = 1;
+}
+
+message CommonResponse {
+    ReturnStatus return_code = 1;
+    string return_msg = 2;
+}
+
+message isClientExistsResponse {
+    ReturnStatus return_code = 1;
+    string return_msg = 2;
+    bool is_exists = 3;
 }

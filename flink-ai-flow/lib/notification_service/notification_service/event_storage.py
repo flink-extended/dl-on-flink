@@ -62,6 +62,14 @@ class BaseEventStorage(ABC):
     def register_client(self, namespace: str = None, sender: str = None) -> int:
         pass
 
+    @abstractmethod
+    def delete_client(self, client_id):
+        pass
+
+    @abstractmethod
+    def is_client_exists(self, client_id) -> bool:
+        pass
+
     def get_event_by_uuid(self, uuid: str):
         pass
 
@@ -136,7 +144,16 @@ class MemoryEventStorage(BaseEventStorage):
 
     def register_client(self, namespace: str = None, sender: str = None) -> int:
         self.clients.append((len(self.clients), namespace, sender))
-        return len(self.clients)
+        return len(self.clients) - 1
+
+    def delete_client(self, client_id):
+        self.clients.pop(client_id)
+
+    def is_client_exists(self, client_id) -> bool:
+        for item in self.clients:
+            if item[0] == client_id:
+                return True
+        return False
 
     def get_event_by_uuid(self, uuid: str):
         return self.store_with_uuid.get(uuid)
@@ -178,6 +195,12 @@ class DbEventStorage(BaseEventStorage):
 
     def register_client(self, namespace: str = None, sender: str = None) -> int:
         return ClientModel.register_client(namespace, sender)
+
+    def delete_client(self, client_id):
+        ClientModel.delete_client(client_id)
+
+    def is_client_exists(self, client_id) -> bool:
+        return ClientModel.is_client_exists(client_id)
 
     def get_event_by_uuid(self, uuid: str):
         return EventModel.get_event_by_uuid(uuid)

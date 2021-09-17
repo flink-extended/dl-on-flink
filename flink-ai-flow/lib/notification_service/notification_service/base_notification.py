@@ -206,6 +206,12 @@ class BaseNotification(metaclass=abc.ABCMeta):
         """
         pass
 
+    @abc.abstractmethod
+    def close(self):
+        """
+        Clear resources and close the notification client.
+        """
+
 
 class Member(object):
 

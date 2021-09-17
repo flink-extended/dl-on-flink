@@ -33,7 +33,7 @@ from notification_service.base_notification import BaseNotification, EventWatche
 from notification_service.proto import notification_service_pb2_grpc
 from notification_service.proto.notification_service_pb2 \
     import SendEventRequest, ListEventsRequest, EventProto, ReturnStatus, ListAllEventsRequest, \
-    GetLatestVersionByKeyRequest, ListMembersRequest, RegisterClientRequest, ClientMeta
+    GetLatestVersionByKeyRequest, ListMembersRequest, RegisterClientRequest, ClientMeta, ClientIdRequest
 from notification_service.util.utils import event_proto_to_event, proto_to_member, sleep_and_detecting_running
 
 if not hasattr(time, 'time_ns'):
@@ -41,6 +41,7 @@ if not hasattr(time, 'time_ns'):
 
 NOTIFICATION_TIMEOUT_SECONDS = os.environ.get("NOTIFICATION_TIMEOUT_SECONDS", 5)
 ALL_EVENTS_KEY = "_*"
+ENABLE_IDEMPOTENCE_CONFIG = 'enable.idempotence'
 
 
 class ThreadEventWatcherHandle(EventWatcherHandle):
@@ -112,7 +113,8 @@ class NotificationClient(BaseNotification):
         :param sender: The identifier of the client.
         :param properties: The properties of NotificationClient
         """
-        channel = grpc.insecure_channel(server_uri)
+        self.server_uri = server_uri
+        channel = grpc.insecure_channel(self.server_uri)
         self._default_namespace = default_namespace
         self.notification_stub = notification_service_pb2_grpc.NotificationServiceStub(channel)
         self.threads = {}  # type: Dict[Any, List[threading.Thread]]
@@ -122,11 +124,11 @@ class NotificationClient(BaseNotification):
         self.retry_interval_ms = retry_interval_ms
         self.retry_timeout_ms = retry_timeout_ms
         self._sender = sender
-        server_uri_list = server_uri.split(",")
+        server_uri_list = self.server_uri.split(",")
 
         self.conf = {} if not properties else properties
-        self._enable_idempotence = 'enable.idempotence' in self.conf \
-                                   and self.conf.get('enable.idempotence').strip().lower() == 'true'
+        self._enable_idempotence = ENABLE_IDEMPOTENCE_CONFIG in self.conf \
+                                   and self.conf.get(ENABLE_IDEMPOTENCE_CONFIG).strip().lower() == 'true'
         if self._enable_idempotence:
             request = RegisterClientRequest(
                 client_meta=ClientMeta(namespace=self._default_namespace, sender=self._sender))
@@ -164,6 +166,14 @@ class NotificationClient(BaseNotification):
             self.notification_stub = self._wrap_rpcs(self.notification_stub, server_uri)
             self.list_member_thread = threading.Thread(target=self._list_members, daemon=True)
             self.list_member_thread.start()
+
+    def close(self):
+        if self.client_id:
+            request = ClientIdRequest(client_id=self.client_id)
+            response = self.notification_stub.deleteClient(request)
+            if response.return_code != ReturnStatus.SUCCESS:
+                raise Exception("Failed to close notification client: {}".format(self))
+        logging.info("The notification client:{} has been closed.".format(self))
 
     def send_event(self, event: BaseEvent):
         """
@@ -583,3 +593,12 @@ class NotificationClient(BaseNotification):
             method.server_uri = server_uri
             setattr(stub, method_name, self._ha_wrapper(method))
         return stub
+
+    def __str__(self):
+        return "NotificationClient(id={}, namespace={}, sender={}, server_uri={}, properties={})".format(
+            self.client_id,
+            self._default_namespace,
+            self._sender,
+            self.server_uri,
+            self.conf
+        )
