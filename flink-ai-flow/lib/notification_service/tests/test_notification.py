@@ -283,6 +283,17 @@ class NotificationTest(object):
         tmp_client = NotificationClient(server_uri="localhost:50051", properties=properties)
         self.assertEqual(1, tmp_client.client_id - self.client.client_id)
 
+    def test_is_client_exists(self):
+        client_id = self.client.client_id
+        self.assertIsNotNone(client_id)
+        self.assertEqual(True, self.storage.is_client_exists(client_id))
+
+    def test_delete_client(self):
+        client_id = self.client.client_id
+        self.assertIsNotNone(client_id)
+        self.client.close()
+        self.assertEqual(False, self.storage.is_client_exists(client_id))
+
     def test_send_event_idempotence(self):
 
         event = BaseEvent(key="key", value="value1")

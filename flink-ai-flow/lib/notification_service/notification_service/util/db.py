@@ -320,7 +320,7 @@ class ClientModel(Base):
 
     @staticmethod
     @provide_session
-    def register_client(namespace: str = None, sender: str = None, session = None):
+    def register_client(namespace: str = None, sender: str = None, session=None):
         client = ClientModel()
         client.namespace = namespace
         client.sender = sender
@@ -328,6 +328,21 @@ class ClientModel(Base):
         session.add(client)
         session.commit()
         return client.id
+
+    @staticmethod
+    @provide_session
+    def delete_client(client_id, session=None):
+        client_to_delete = session.query(ClientModel).filter(ClientModel.id == client_id).first()
+        if client_to_delete is None:
+            raise Exception("You are trying to delete an non-existing notification client!")
+        session.delete(client_to_delete)
+        session.commit()
+
+    @staticmethod
+    @provide_session
+    def is_client_exists(client_id, session=None):
+        client_to_check = session.query(ClientModel).filter(ClientModel.id == client_id).first()
+        return client_to_check is not None
 
     @staticmethod
     def create_table(db_conn=None):
