@@ -75,4 +75,6 @@ run_tests 'ai_flow_plugins/tests/blob_manager_plugins'
 run_tests 'ai_flow_plugins/tests/job_plugins'
 run_tests 'ai_flow_plugins/tests/scheduler_plugins'
 
+export PYTHONPATH=${SOURCE_ROOT}/lib/high_availability_utils:${PYTHONPATH}
+run_tests 'lib/high_availability_utils/tests'
 run_tests 'lib/notification_service/tests'
