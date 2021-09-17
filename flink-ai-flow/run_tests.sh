@@ -74,3 +74,5 @@ run_test_class 'ai_flow/test/endpoint/' 'test_java_client.JavaAIFlowClientTest'
 run_tests 'ai_flow_plugins/tests/blob_manager_plugins'
 run_tests 'ai_flow_plugins/tests/job_plugins'
 run_tests 'ai_flow_plugins/tests/scheduler_plugins'
+
+run_tests 'lib/notification_service/tests'
