@@ -286,6 +286,16 @@ class EventBasedScheduler(LoggingMixin):
                     if run_type == DagRunType.MANUAL:
                         next_dagrun = timezone.utcnow()
                         external_trigger = True
+
+                    # Explicitly check if the DagRun already exists. This is an edge case
+                    # where a Dag Run is created but `DagModel.next_dagrun` and `DagModel.next_dagrun_create_after`
+                    # are not updated.
+                    active_dagrun = session.query(DagRun)\
+                        .filter(DagRun.dag_id == dag_model.dag_id,
+                                DagRun.execution_date == dag_model.next_dagrun).first()
+                    if active_dagrun is not None:
+                        self.log.info("Dagrun already created, %s", active_dagrun)
+                        return active_dagrun
                     dag_run = dag.create_dagrun(
                         run_type=run_type,
                         execution_date=next_dagrun,
@@ -653,7 +663,7 @@ class EventBasedSchedulerJob(BaseJob):
     def _get_progress(scheduling_job_id):
         progress = get_event_progress(scheduling_job_id)
         if progress is None:
-            return int(time.time()*1000), None
+            return int(time.time() * 1000), None
         else:
             return progress.last_event_time, progress.last_event_version
 
