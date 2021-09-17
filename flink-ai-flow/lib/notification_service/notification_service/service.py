@@ -255,7 +255,7 @@ class NotificationService(notification_service_pb2_grpc.NotificationServiceServi
         try:
             return self._notify(request)
         except Exception as e:
-            return notification_service_pb2.NotifyResponse(
+            return notification_service_pb2.CommonResponse(
                 return_code=notification_service_pb2.ReturnStatus.ERROR, return_msg=str(e))
 
     async def _notify(self, request):
@@ -265,7 +265,7 @@ class NotificationService(notification_service_pb2_grpc.NotificationServiceServi
                     self.notification_conditions.get(notify.key).notify_all()
         async with self.write_condition:
             self.write_condition.notify_all()
-        return notification_service_pb2.NotifyResponse(
+        return notification_service_pb2.CommonResponse(
             return_code=notification_service_pb2.ReturnStatus.SUCCESS,
             return_msg='')
 
@@ -289,12 +289,12 @@ class NotificationService(notification_service_pb2_grpc.NotificationServiceServi
         try:
             return self._notify_new_member(request)
         except Exception as e:
-            return notification_service_pb2.NotifyNewMemberResponse(
+            return notification_service_pb2.CommonResponse(
                 return_code=notification_service_pb2.ReturnStatus.ERROR, return_msg=str(e))
 
     async def _notify_new_member(self, request):
         # this method is used in HA mode, so we just return here.
-        return notification_service_pb2.NotifyNewMemberResponse(
+        return notification_service_pb2.CommonResponse(
             return_code=notification_service_pb2.ReturnStatus.SUCCESS,
             return_msg='')
 
@@ -312,6 +312,35 @@ class NotificationService(notification_service_pb2_grpc.NotificationServiceServi
             return_code=notification_service_pb2.ReturnStatus.SUCCESS,
             return_msg='',
             client_id=client_id)
+
+    @asyncio.coroutine
+    def deleteClient(self, request, context):
+        try:
+            return self._delete_client(request)
+        except Exception as e:
+            return notification_service_pb2.CommonResponse(
+                return_code=notification_service_pb2.ReturnStatus.ERROR, return_msg=str(e))
+
+    async def _delete_client(self, request):
+        self.storage.delete_client(request.client_id)
+        return notification_service_pb2.CommonResponse(
+            return_code=notification_service_pb2.ReturnStatus.SUCCESS,
+            return_msg='')
+
+    @asyncio.coroutine
+    def isClientExists(self, request, context):
+        try:
+            return self._is_client_exists(request)
+        except Exception as e:
+            return notification_service_pb2.isClientExistsResponse(
+                return_code=notification_service_pb2.ReturnStatus.ERROR, return_msg=str(e), is_exists=False)
+
+    async def _is_client_exists(self, request):
+        is_exists = self.storage.is_client_exists(request.client_id)
+        return notification_service_pb2.isClientExistsResponse(
+            return_code=notification_service_pb2.ReturnStatus.SUCCESS,
+            return_msg='',
+            is_exists=is_exists)
 
 
 class HighAvailableNotificationService(NotificationService):
@@ -377,6 +406,6 @@ class HighAvailableNotificationService(NotificationService):
         self.ha_manager.add_living_member(proto_to_member(request.member))
         async with self.member_updated_condition:
             self.member_updated_condition.notify_all()
-        return notification_service_pb2.NotifyNewMemberResponse(
+        return notification_service_pb2.CommonResponse(
             return_code=notification_service_pb2.ReturnStatus.SUCCESS,
             return_msg='')

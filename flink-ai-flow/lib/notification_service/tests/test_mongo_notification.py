@@ -25,6 +25,7 @@ from notification_service.mongo_event_storage import MongoEventStorage
 from notification_service.master import NotificationMaster
 from notification_service.service import NotificationService
 
+properties = {'enable.idempotence': 'True'}
 
 @unittest.skip("To run this test you need to setup a local mongodb")
 @pytest.mark.release
@@ -40,7 +41,7 @@ class MongoNotificationTest(unittest.TestCase):
         cls.storage = MongoEventStorage(**kwargs)
         cls.master = NotificationMaster(NotificationService(cls.storage))
         cls.master.run()
-        cls.client = NotificationClient(server_uri="localhost:50051")
+        cls.client = NotificationClient(server_uri="localhost:50051", properties=properties)
 
     @classmethod
     def tearDownClass(cls):
@@ -106,6 +107,7 @@ class MongoNotificationTest(unittest.TestCase):
 
             def process(self, events: List[BaseEvent]):
                 self.event_list.extend(events)
+
         try:
             self.client.start_listen_events(watcher=TestWatch(event_list))
             self.client.send_event(BaseEvent(key="key1", value="value1"))
@@ -122,6 +124,34 @@ class MongoNotificationTest(unittest.TestCase):
         print("#####latest version of key: {}".format(latest_version))
 
     def test_register_client(self):
-        self.assertIsNotNone(self.client.id)
-        tmp_client = NotificationClient(server_uri="localhost:50051")
-        self.assertEqual(1, tmp_client.id - self.client.id)
+        self.assertIsNotNone(self.client.client_id)
+        tmp_client = NotificationClient(server_uri="localhost:50051", properties=properties)
+        self.assertEqual(1, tmp_client.client_id - self.client.client_id)
+
+    def test_is_client_exists(self):
+        client_id = self.client.client_id
+        self.assertIsNotNone(client_id)
+        self.assertEqual(True, self.storage.is_client_exists(client_id))
+
+    def test_delete_client(self):
+        client_id = self.client.client_id
+        self.assertIsNotNone(client_id)
+        self.client.close()
+        self.assertEqual(False, self.storage.is_client_exists(client_id))
+
+    def test_send_event_idempotence(self):
+
+        event = BaseEvent(key="key", value="value1")
+        idempotent_client = NotificationClient(server_uri="localhost:50051", properties=properties)
+        idempotent_client.send_event(event)
+        self.assertEqual(1, idempotent_client.sequence_num_manager.get_sequence_number())
+        self.assertEqual(1, len(idempotent_client.list_events(key="key")))
+
+        idempotent_client.send_event(event)
+        self.assertEqual(2, idempotent_client.sequence_num_manager.get_sequence_number())
+        self.assertEqual(2, len(idempotent_client.list_events(key="key")))
+
+        idempotent_client.sequence_num_manager._seq_num = 1
+        idempotent_client.send_event(event)
+        self.assertEqual(2, idempotent_client.sequence_num_manager.get_sequence_number())
+        self.assertEqual(2, len(idempotent_client.list_events(key="key")))
