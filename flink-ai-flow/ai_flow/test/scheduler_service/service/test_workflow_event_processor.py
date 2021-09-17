@@ -18,6 +18,7 @@ import multiprocessing
 import unittest
 import unittest.mock as mock
 from multiprocessing import Queue, Value
+from multiprocessing.connection import Pipe
 
 import cloudpickle
 from ai_flow.meta.project_meta import ProjectMeta
@@ -63,7 +64,7 @@ class TestWorkflowEventProcessor(unittest.TestCase):
         def mock_event_handler_factory(scheduler_rule):
             return self.mock_event_handler
 
-        self.c1, self.c2 = multiprocessing.connection.Pipe()
+        self.c1, self.c2 = Pipe()
         self.processor = WorkflowEventProcessor(self.c1, self.mock_store, self.mock_scheduler,
                                                 workflow_event_handler_factory=mock_event_handler_factory)
 
