@@ -534,8 +534,8 @@
       $('#redir_log_try_index > li').remove();
       var startIndex = (has_seq_num? (try_numbers.length > 2 ? 0 : 1) : (try_numbers > 2 ? 0 : 1));
       if (has_seq_num) {
-        for (var index = startIndex; index < (startIndex == 0? try_numbers.length + 1 : try_numbers.length); index++) {
-        sequence_attempt = (startIndex == 0? try_numbers[index - 1] : try_numbers[index]);
+        for (var index = startIndex; index < try_numbers.length + 1; index++) {
+        sequence_attempt = (index == 0? try_numbers[index] : try_numbers[index - 1]);
         var url = '{{ url_for('Airflow.get_logs_with_metadata') }}' +
           '?dag_id=' + encodeURIComponent(dag_id) +
           '&task_id=' + encodeURIComponent(task_id) +
