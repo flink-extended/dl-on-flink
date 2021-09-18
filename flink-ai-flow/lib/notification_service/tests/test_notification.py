@@ -295,7 +295,6 @@ class NotificationTest(object):
         self.assertEqual(False, self.storage.is_client_exists(client_id))
 
     def test_send_event_idempotence(self):
-
         event = BaseEvent(key="key", value="value1")
         idempotent_client = NotificationClient(server_uri="localhost:50051", properties=properties)
         idempotent_client.send_event(event)
@@ -310,6 +309,27 @@ class NotificationTest(object):
         idempotent_client.send_event(event)
         self.assertEqual(2, idempotent_client.sequence_num_manager.get_sequence_number())
         self.assertEqual(2, len(idempotent_client.list_events(key="key")))
+
+    def test_client_recovery(self):
+        event = BaseEvent(key="key", value="value1")
+        client1 = NotificationClient(server_uri="localhost:50051", properties=properties)
+
+        client1.send_event(event)
+        client1.send_event(event)
+        self.assertEqual(2, client1.sequence_num_manager.get_sequence_number())
+        self.assertEqual(2, len(client1.list_events(key="key")))
+
+        properties_new = {'enable.idempotence': 'True',
+                          'client.id': str(client1.client_id),
+                          'initial.sequence.number': '1'}
+        client2 = NotificationClient(server_uri="localhost:50051", properties=properties_new)
+        client2.send_event(event)
+        self.assertEqual(2, client2.sequence_num_manager.get_sequence_number())
+        self.assertEqual(2, len(client2.list_events(key="key")))
+
+        client2.send_event(event)
+        self.assertEqual(3, client2.sequence_num_manager.get_sequence_number())
+        self.assertEqual(3, len(client2.list_events(key="key")))
 
 
 class DbStorageTest(unittest.TestCase, NotificationTest):
@@ -390,6 +410,8 @@ class HaDbStorageTest(unittest.TestCase, NotificationTest):
         cls.master1.stop()
         cls.master2.stop()
         cls.master3.stop()
+        cls.storage.clean_up()
+        os.remove(SQL_ALCHEMY_DB_FILE)
 
     def setUp(self):
         self.storage.clean_up()
@@ -430,6 +452,8 @@ class HaClientWithNonHaServerTest(unittest.TestCase, NotificationTest):
     @classmethod
     def tearDownClass(cls):
         cls.master.stop()
+        cls.storage.clean_up()
+        os.remove(SQL_ALCHEMY_DB_FILE)
 
     def setUp(self):
         self.storage.clean_up()

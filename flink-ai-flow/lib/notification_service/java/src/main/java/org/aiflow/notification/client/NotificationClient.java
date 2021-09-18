@@ -18,7 +18,6 @@
  */
 package org.aiflow.notification.client;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.speedment.common.tuple.Tuple4;
 import com.speedment.common.tuple.internal.nonnullable.Tuple4Impl;
@@ -36,7 +35,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.aiflow.notification.conf.Configuration.CLIENT_ENABLE_IDEMPOTENCE_CONFIG_DEFAULT_VALUE;
 import static org.aiflow.notification.conf.Configuration.CLIENT_ENABLE_IDEMPOTENCE_CONFIG_KEY;
+import static org.aiflow.notification.conf.Configuration.CLIENT_ID_CONFIG_DEFAULT_VALUE;
+import static org.aiflow.notification.conf.Configuration.CLIENT_ID_CONFIG_KEY;
+import static org.aiflow.notification.conf.Configuration.CLIENT_INITIAL_SEQUENCE_NUMBER_CONFIG_DEFAULT_VALUE;
+import static org.aiflow.notification.conf.Configuration.CLIENT_INITIAL_SEQUENCE_NUMBER_CONFIG_KEY;
 
 public class NotificationClient {
 
@@ -77,26 +81,28 @@ public class NotificationClient {
         this.retryTimeoutMs = retryTimeoutMs;
         this.conf = new Configuration(properties);
 
-        boolean enableIdempotence = this.conf.getBoolean(CLIENT_ENABLE_IDEMPOTENCE_CONFIG_KEY);
+        boolean enableIdempotence =
+                this.conf.getBoolean(
+                        CLIENT_ENABLE_IDEMPOTENCE_CONFIG_KEY,
+                        CLIENT_ENABLE_IDEMPOTENCE_CONFIG_DEFAULT_VALUE);
+        long clientId = this.conf.getLong(CLIENT_ID_CONFIG_KEY, CLIENT_ID_CONFIG_DEFAULT_VALUE);
+        int initialSeqNum =
+                this.conf.getInt(
+                        CLIENT_INITIAL_SEQUENCE_NUMBER_CONFIG_KEY,
+                        CLIENT_INITIAL_SEQUENCE_NUMBER_CONFIG_DEFAULT_VALUE);
         if (enableIdempotence) {
             initNotificationServiceStub();
-            NotificationServiceOuterClass.RegisterClientRequest registerClientRequest =
-                    NotificationServiceOuterClass.RegisterClientRequest.newBuilder()
-                            .setClientMeta(
-                                    NotificationServiceOuterClass.ClientMeta.newBuilder()
-                                            .setNamespace(defaultNamespace)
-                                            .setSender(sender)
-                                            .build())
-                            .build();
-            NotificationServiceOuterClass.RegisterClientResponse registerClientResponse =
-                    notificationServiceStub.registerClient(registerClientRequest);
-            if (registerClientResponse.getReturnCode()
-                    == NotificationServiceOuterClass.ReturnStatus.SUCCESS) {
-                this.clientId = registerClientResponse.getClientId();
+            if (clientId < 0) {
+                this.clientId = registerClient();
             } else {
-                throw new Exception(registerClientResponse.getReturnMsg());
+                if (checkClientExists(clientId)) {
+                    this.clientId = clientId;
+                } else {
+                    throw new Exception(
+                            "Init notification client with a client id which have not registered.");
+                }
             }
-            this.sequenceNum = new AtomicInteger();
+            this.sequenceNum = new AtomicInteger(initialSeqNum);
         }
 
         if (enableHa) {
@@ -128,6 +134,45 @@ public class NotificationClient {
                                 .setNameFormat("list-members-%d")
                                 .build());
         listMembersService.submit(listMembers());
+    }
+
+    /**
+     * *
+     *
+     * @return Id of registered client
+     */
+    private long registerClient() throws Exception {
+        NotificationServiceOuterClass.RegisterClientRequest registerClientRequest =
+                NotificationServiceOuterClass.RegisterClientRequest.newBuilder()
+                        .setClientMeta(
+                                NotificationServiceOuterClass.ClientMeta.newBuilder()
+                                        .setNamespace(defaultNamespace)
+                                        .setSender(sender)
+                                        .build())
+                        .build();
+        NotificationServiceOuterClass.RegisterClientResponse registerClientResponse =
+                notificationServiceStub.registerClient(registerClientRequest);
+        if (registerClientResponse.getReturnCode()
+                == NotificationServiceOuterClass.ReturnStatus.SUCCESS) {
+            return registerClientResponse.getClientId();
+        } else {
+            throw new Exception(registerClientResponse.getReturnMsg());
+        }
+    }
+
+    private boolean checkClientExists(long clientId) {
+        NotificationServiceOuterClass.ClientIdRequest request =
+                NotificationServiceOuterClass.ClientIdRequest.newBuilder()
+                        .setClientId(clientId)
+                        .build();
+        NotificationServiceOuterClass.isClientExistsResponse response =
+                notificationServiceStub.isClientExists(request);
+        if (response.getReturnCode() == NotificationServiceOuterClass.ReturnStatus.SUCCESS
+                && response.getIsExists()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -299,7 +344,10 @@ public class NotificationClient {
      */
     public EventMeta sendEvent(String key, String value, String eventType, String context)
             throws Exception {
-        boolean enableIdempotence = this.conf.getBoolean(CLIENT_ENABLE_IDEMPOTENCE_CONFIG_KEY);
+        boolean enableIdempotence =
+                this.conf.getBoolean(
+                        CLIENT_ENABLE_IDEMPOTENCE_CONFIG_KEY,
+                        CLIENT_ENABLE_IDEMPOTENCE_CONFIG_DEFAULT_VALUE);
         String signature = UUID.randomUUID().toString();
         if (enableIdempotence) {
             int currentSeqNum = this.sequenceNum.get();
@@ -487,8 +535,25 @@ public class NotificationClient {
         }
     }
 
-    @VisibleForTesting
-    protected AtomicInteger getSequenceNum() {
+    public AtomicInteger getSequenceNum() {
         return this.sequenceNum;
+    }
+
+    public Long getClientId() {
+        return clientId;
+    }
+
+    public void close() throws Exception {
+        if (this.clientId >= 0) {
+            NotificationServiceOuterClass.ClientIdRequest request =
+                    NotificationServiceOuterClass.ClientIdRequest.newBuilder()
+                            .setClientId(this.clientId)
+                            .build();
+            NotificationServiceOuterClass.CommonResponse response =
+                    notificationServiceStub.deleteClient(request);
+            if (response.getReturnCode() != NotificationServiceOuterClass.ReturnStatus.SUCCESS) {
+                throw new Exception(response.getReturnMsg());
+            }
+        }
     }
 }

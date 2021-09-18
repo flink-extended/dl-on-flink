@@ -25,7 +25,7 @@ from enum import Enum
 from functools import wraps
 from typing import Tuple, Union
 
-from sqlalchemy import create_engine, Column, String, BigInteger, Text, Integer, text
+from sqlalchemy import create_engine, Column, String, BigInteger, Text, Integer, text, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 
@@ -317,6 +317,7 @@ class ClientModel(Base):
     namespace = Column(String(1024))
     sender = Column(String(1024))
     create_time = Column(BigInteger)
+    is_deleted = Column(Boolean, default=False)
 
     @staticmethod
     @provide_session
@@ -335,13 +336,14 @@ class ClientModel(Base):
         client_to_delete = session.query(ClientModel).filter(ClientModel.id == client_id).first()
         if client_to_delete is None:
             raise Exception("You are trying to delete an non-existing notification client!")
-        session.delete(client_to_delete)
-        session.commit()
+        client_to_delete.is_deleted = True
+        session.flush()
 
     @staticmethod
     @provide_session
     def is_client_exists(client_id, session=None):
-        client_to_check = session.query(ClientModel).filter(ClientModel.id == client_id).first()
+        client_to_check = session.query(ClientModel).filter(ClientModel.id == client_id,
+                                                            ClientModel.is_deleted.is_(False)).first()
         return client_to_check is not None
 
     @staticmethod
