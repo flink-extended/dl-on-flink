@@ -15,7 +15,7 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-#
+#s
 import time
 import unittest
 
@@ -33,6 +33,7 @@ _SQLITE_DB_FILE = 'aiflow.db'
 _SQLITE_DB_URI = '%s%s' % ('sqlite:///', _SQLITE_DB_FILE)
 
 
+@unittest.skip("Skip until HA is re-implemented.")
 class TestHighAvailableAIFlowServer(unittest.TestCase):
 
     @staticmethod
