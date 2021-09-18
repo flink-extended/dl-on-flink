@@ -68,7 +68,7 @@ class WorkflowEventManager(object):
         self._stop = False
         self.event_processor_process = self._create_event_processor_process()
         self.process_watcher_thread = threading.Thread(target=self._watch_process)
-        self.event_watcher = WorkflowEventWatcher(self.conn)
+        self.event_watcher = WorkflowEventWatcher(self)
 
     def _create_event_processor_process(self):
         # We use spawn to start the process to avoid problem of running grpc in multiple processes.
