@@ -39,7 +39,10 @@ public class PythonServer {
                 .start();
     }
 
-    public void stop() {
-        process.destroyForcibly();
+    public void stop() throws InterruptedException {
+        while (process.isAlive()) {
+            process.destroyForcibly();
+            Thread.sleep(100);
+        }
     }
 }
