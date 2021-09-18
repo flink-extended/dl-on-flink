@@ -18,13 +18,87 @@ import time
 import unittest
 from unittest import mock
 
+from ai_flow.runtime.job_runtime_env import JobRuntimeEnv
+from ai_flow.workflow.job import Job
+from ai_flow.workflow.job_config import JobConfig
+
+from ai_flow.workflow.workflow import Workflow, WorkflowPropertyKeys
+
 from ai_flow.workflow.status import Status
 
-from ai_flow.plugin_interface.job_plugin_interface import JobController
+from ai_flow.plugin_interface.job_plugin_interface import JobController, JobHandle
+from ai_flow_plugins.job_plugins.read_only import ReadOnlyJob
+from airflow import AirflowException
 
 from airflow.models.taskexecution import TaskExecution
 
-from ai_flow_plugins.scheduler_plugins.airflow.ai_flow_operator import ExecutionLabelReportThread
+from ai_flow_plugins.scheduler_plugins.airflow.ai_flow_operator import ExecutionLabelReportThread, AIFlowOperator
+
+
+class TestingJobController(JobController):
+
+    def submit_job(self, job: Job, job_runtime_env: JobRuntimeEnv) -> JobHandle:
+        pass
+
+    def stop_job(self, job_handle: JobHandle, job_runtime_env: JobRuntimeEnv):
+        pass
+
+    def cleanup_job(self, job_handle: JobHandle, job_runtime_env: JobRuntimeEnv):
+        pass
+
+    def get_result(self, job_handle: JobHandle, blocking: bool = True) -> object:
+        pass
+
+    def get_job_status(self, job_handle: JobHandle) -> Status:
+        pass
+
+
+class TestAIFlowOperator(unittest.TestCase):
+
+    def setUp(self) -> None:
+        workflow = mock.MagicMock()
+        workflow.properties = dict()
+        workflow.properties[WorkflowPropertyKeys.JOB_PLUGINS] = \
+            {'test_job': (TestingJobController.__module__, TestingJobController.__name__)}
+        job_config = JobConfig()
+        job_config.job_type = 'test_job'
+        job = ReadOnlyJob(job_config)
+        self.op = AIFlowOperator(workflow=workflow, job=job, task_id='1')
+
+    def test_execute(self):
+        with mock.patch.object(self.op, 'job_controller', wraps=self.op.job_controller) as job_controller:
+            job_controller.get_result.return_value = 'result'
+            mock_handle = mock.MagicMock()
+            job_controller.submit_job.return_value = mock_handle
+            self.assertEqual('result', self.op.execute({}))
+            job_controller.submit_job.assert_called_once()
+            job_controller.stop_job.assert_not_called()
+            job_controller.get_result.assert_called_once_with(job_handle=mock_handle, blocking=True)
+            job_controller.cleanup_job.assert_called_once_with(mock_handle, mock.ANY)
+
+    def test_execute_raise_AirflowException(self):
+        with mock.patch.object(self.op, 'job_controller', wraps=self.op.job_controller) as job_controller:
+            job_controller.get_result.side_effect = AirflowException("Boom! Shakalaka!")
+            mock_handle = mock.MagicMock()
+            job_controller.submit_job.return_value = mock_handle
+            self.assertEqual(None, self.op.execute({}))
+            job_controller.submit_job.assert_called_once()
+            job_controller.get_result.assert_called_once_with(job_handle=mock_handle, blocking=True)
+            job_controller.stop_job.assert_called_once_with(mock_handle, mock.ANY)
+            job_controller.cleanup_job.assert_called_once_with(mock_handle, mock.ANY)
+
+    def test_execute_raise_unexpected_exception(self):
+        with mock.patch.object(self.op, 'job_controller', wraps=self.op.job_controller) as job_controller:
+            job_controller.get_result.side_effect = RuntimeError("Boom! Shakalaka!")
+            mock_handle = mock.MagicMock()
+            job_controller.submit_job.return_value = mock_handle
+
+            with self.assertRaises(RuntimeError):
+                self.assertEqual(None, self.op.execute({}))
+                job_controller.submit_job.assert_called_once()
+                job_controller.get_result.assert_called_once_with(job_handle=mock_handle, blocking=True)
+                job_controller.stop_job.assert_called_once_with(mock_handle, mock.ANY)
+                job_controller.cleanup_job.assert_called_once_with(mock_handle, mock.ANY)
 
 
 class TestExecutionLabelReportThread(unittest.TestCase):
