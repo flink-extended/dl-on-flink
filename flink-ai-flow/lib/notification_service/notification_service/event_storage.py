@@ -160,6 +160,8 @@ class MemoryEventStorage(BaseEventStorage):
 
     def clean_up(self):
         self.store.clear()
+        self.clients.clear()
+        self.store_with_uuid.clear()
         self.max_version = 0
 
 

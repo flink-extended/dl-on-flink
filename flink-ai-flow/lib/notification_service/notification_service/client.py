@@ -33,7 +33,8 @@ from notification_service.base_notification import BaseNotification, EventWatche
 from notification_service.proto import notification_service_pb2_grpc
 from notification_service.proto.notification_service_pb2 \
     import SendEventRequest, ListEventsRequest, EventProto, ReturnStatus, ListAllEventsRequest, \
-    GetLatestVersionByKeyRequest, ListMembersRequest, RegisterClientRequest, ClientMeta, ClientIdRequest
+    GetLatestVersionByKeyRequest, ListMembersRequest, RegisterClientRequest, ClientMeta, ClientIdRequest, \
+    isClientExistsResponse
 from notification_service.util.utils import event_proto_to_event, proto_to_member, sleep_and_detecting_running
 
 if not hasattr(time, 'time_ns'):
@@ -42,6 +43,8 @@ if not hasattr(time, 'time_ns'):
 NOTIFICATION_TIMEOUT_SECONDS = os.environ.get("NOTIFICATION_TIMEOUT_SECONDS", 5)
 ALL_EVENTS_KEY = "_*"
 ENABLE_IDEMPOTENCE_CONFIG = 'enable.idempotence'
+CLIENT_ID = 'client.id'
+INITIAL_SEQUENCE_NUMBER = 'initial.sequence.number'
 
 
 class ThreadEventWatcherHandle(EventWatcherHandle):
@@ -66,9 +69,9 @@ class ThreadEventWatcherHandle(EventWatcherHandle):
 
 class SequenceNumberManager(object):
 
-    def __init__(self):
+    def __init__(self, seq_num: int = 0):
         self._lock = threading.RLock()
-        self._seq_num = 0
+        self._seq_num = seq_num
 
     def increment_sequence_number(self):
         with self._lock:
@@ -127,17 +130,31 @@ class NotificationClient(BaseNotification):
         server_uri_list = self.server_uri.split(",")
 
         self.conf = {} if not properties else properties
+
         self._enable_idempotence = ENABLE_IDEMPOTENCE_CONFIG in self.conf \
                                    and self.conf.get(ENABLE_IDEMPOTENCE_CONFIG).strip().lower() == 'true'
+        self._client_id = None if CLIENT_ID not in self.conf else int(self.conf.get(CLIENT_ID))
+        self._initial_seq_num = None if INITIAL_SEQUENCE_NUMBER not in self.conf \
+            else int(self.conf.get(INITIAL_SEQUENCE_NUMBER))
+
         if self._enable_idempotence:
-            request = RegisterClientRequest(
-                client_meta=ClientMeta(namespace=self._default_namespace, sender=self._sender))
-            response = self.notification_stub.registerClient(request)
-            if response.return_code == ReturnStatus.SUCCESS:
-                self.client_id = response.client_id
+            if self._client_id is None:
+                request = RegisterClientRequest(
+                    client_meta=ClientMeta(namespace=self._default_namespace, sender=self._sender))
+                response = self.notification_stub.registerClient(request)
+                if response.return_code == ReturnStatus.SUCCESS:
+                    self._client_id = response.client_id
+                else:
+                    raise Exception(response.return_msg)
             else:
-                raise Exception(response.return_msg)
-            self.sequence_num_manager = SequenceNumberManager()
+                request = ClientIdRequest(client_id=self._client_id)
+                response = self.notification_stub.isClientExists(request)
+                if response.return_code != ReturnStatus.SUCCESS:
+                    raise Exception("Failed to close notification client: {}".format(self))
+                elif not response.is_exists:
+                    raise Exception("Init notification client with a client id which have not registered.")
+            seq_num = 0 if self._initial_seq_num is None else int(self._initial_seq_num)
+            self.sequence_num_manager = SequenceNumberManager(seq_num)
 
         if len(server_uri_list) > 1 or self.enable_ha:
             self.living_members = []
@@ -168,12 +185,21 @@ class NotificationClient(BaseNotification):
             self.list_member_thread.start()
 
     def close(self):
-        if self.client_id:
-            request = ClientIdRequest(client_id=self.client_id)
+        if self._client_id is not None:
+            request = ClientIdRequest(client_id=self._client_id)
             response = self.notification_stub.deleteClient(request)
             if response.return_code != ReturnStatus.SUCCESS:
                 raise Exception("Failed to close notification client: {}".format(self))
         logging.info("The notification client:{} has been closed.".format(self))
+
+    @property
+    def client_id(self):
+        """Int. Id of the Client."""
+        return self._client_id
+
+    @property
+    def sequence_number(self):
+        return self.sequence_num_manager.get_sequence_number()
 
     def send_event(self, event: BaseEvent):
         """
@@ -185,7 +211,7 @@ class NotificationClient(BaseNotification):
         signature = str(uuid.uuid4())
         if self._enable_idempotence:
             seq_num = self.sequence_num_manager.get_sequence_number()
-            signature = '_'.join(['client', str(self.client_id), str(seq_num)])
+            signature = '_'.join(['client', str(self._client_id), str(seq_num)])
 
         request = SendEventRequest(
             event=EventProto(
@@ -596,7 +622,7 @@ class NotificationClient(BaseNotification):
 
     def __str__(self):
         return "NotificationClient(id={}, namespace={}, sender={}, server_uri={}, properties={})".format(
-            self.client_id,
+            self._client_id,
             self._default_namespace,
             self._sender,
             self.server_uri,

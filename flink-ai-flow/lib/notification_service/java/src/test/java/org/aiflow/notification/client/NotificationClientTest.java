@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Properties;
 
 import static org.aiflow.notification.conf.Configuration.CLIENT_ENABLE_IDEMPOTENCE_CONFIG_KEY;
+import static org.aiflow.notification.conf.Configuration.CLIENT_ID_CONFIG_KEY;
+import static org.aiflow.notification.conf.Configuration.CLIENT_INITIAL_SEQUENCE_NUMBER_CONFIG_KEY;
 import static org.junit.Assert.assertEquals;
 
 public class NotificationClientTest {
@@ -55,7 +57,7 @@ public class NotificationClientTest {
     }
 
     @AfterClass
-    public static void tearDown() {
+    public static void tearDown() throws InterruptedException {
         server.stop();
     }
 
@@ -222,5 +224,36 @@ public class NotificationClientTest {
         assertEquals(
                 2, idempotent_client.listEvents("default", keyList, 0, "type", 0, "test").size());
         assertEquals(2, idempotent_client.getSequenceNum().getAndDecrement());
+    }
+
+    @Test
+    public void testClientRecovery() throws Exception {
+        Properties properties = new Properties();
+        String key = "test_client_recovery_key";
+        properties.put(CLIENT_ENABLE_IDEMPOTENCE_CONFIG_KEY, "true");
+        NotificationClient client1 =
+                new NotificationClient(
+                        "localhost:50051", "default", "test", false, 5, 10, 2000, properties);
+        assertEquals(0, client1.getSequenceNum().get());
+        client1.sendEvent(key, "value1", "type", "");
+        client1.sendEvent(key, "value2", "type", "");
+        client1.sendEvent(key, "value3", "type", "");
+
+        List<String> keyList = Collections.singletonList(key);
+        assertEquals(3, client1.listEvents("default", keyList, 0, "type", 0, "test").size());
+        assertEquals(3, client1.getSequenceNum().get());
+
+        properties.put(CLIENT_ID_CONFIG_KEY, client1.getClientId().toString());
+        properties.put(CLIENT_INITIAL_SEQUENCE_NUMBER_CONFIG_KEY, "2");
+        NotificationClient client2 =
+                new NotificationClient(
+                        "localhost:50051", "default", "test", false, 5, 10, 2000, properties);
+        client2.sendEvent(key, "value4", "type", "");
+        assertEquals(3, client2.listEvents("default", keyList, 0, "type", 0, "test").size());
+        assertEquals(3, client2.getSequenceNum().get());
+
+        client2.sendEvent(key, "value5", "type", "");
+        assertEquals(4, client2.listEvents("default", keyList, 0, "type", 0, "test").size());
+        assertEquals(4, client2.getSequenceNum().get());
     }
 }

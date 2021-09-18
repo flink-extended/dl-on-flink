@@ -18,7 +18,7 @@
 #
 from typing import Tuple
 
-from mongoengine import (Document, IntField, StringField, SequenceField, LongField)
+from mongoengine import (Document, IntField, StringField, SequenceField, LongField, BooleanField)
 from notification_service.base_notification import BaseEvent, ANY_CONDITION
 
 
@@ -123,9 +123,11 @@ class MongoClientModel(Document):
     namespace = StringField()
     sender = StringField()
     create_time = LongField()
+    is_deleted = BooleanField(default=False)
 
     def __repr__(self):
-        return '<Document Client ({}, {}, {})>'.format(
+        return '<Document Client ({}, {}, {}, {})>'.format(
             self.id,
             self.namespace,
-            self.sender)
+            self.sender,
+            self.is_deleted)

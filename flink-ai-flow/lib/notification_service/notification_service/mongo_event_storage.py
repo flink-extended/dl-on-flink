@@ -106,7 +106,7 @@ class MongoEventStorage(BaseEventStorage):
         return res
 
     def register_client(self, namespace: str = None, sender: str = None) -> int:
-        client = MongoClientModel(namespace=namespace, sender=sender)
+        client = MongoClientModel(namespace=namespace, sender=sender, create_time=int(time.time() * 1000))
         client.save()
         return client.id
 
@@ -114,10 +114,11 @@ class MongoEventStorage(BaseEventStorage):
         client_to_delete = MongoClientModel.objects(id=client_id).first()
         if client_to_delete is None:
             raise Exception("You are trying to delete an non-existing notification client!")
-        client_to_delete.delete()
+        client_to_delete.is_deleted = True
+        client_to_delete.save()
 
     def is_client_exists(self, client_id) -> bool:
-        client_to_check = MongoClientModel.objects(id=client_id).first()
+        client_to_check = MongoClientModel.objects(id=client_id, is_deleted__ne=True).first()
         return client_to_check is not None
 
     def get_event_by_uuid(self, uuid: str):
