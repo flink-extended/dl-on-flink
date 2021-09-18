@@ -178,8 +178,8 @@ class AIFlowOperator(BaseOperator):
             self.log.warning("AirflowException during executing", exc_info=e)
             self.job_controller.stop_job(self.job_handle, self.job_runtime_env)
         except Exception as e:
-            self.log.error("Unexpected exception", exc_info=e)
             self.job_controller.stop_job(self.job_handle, self.job_runtime_env)
+            raise RuntimeError("Unexpected exception during executing") from e
         finally:
             if execution_label_report_thread:
                 self.log.info("Stopping execution label report thread.")
