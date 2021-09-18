@@ -17,7 +17,7 @@
 # under the License.
 #
 import os
-import time
+from time import sleep
 from datetime import datetime, timedelta, date, time
 
 import numpy as np
@@ -61,7 +61,7 @@ class HourlyDataWriter(PythonProcessor):
                 .send_event(BaseEvent(event_type='DATA_EVENT', key='hourly_data', value='ready',
                                       context=current_time.isoformat(timespec='hours')))
             current_time += one_hour
-            time.sleep(self.interval)
+            sleep(self.interval)
         return []
 
 
