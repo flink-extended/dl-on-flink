@@ -24,8 +24,9 @@ from contextlib import contextmanager
 
 import sqlalchemy
 
-from ai_flow.protobuf.message_pb2 import INTERNAL_ERROR
 from ai_flow.endpoint.server.exception import AIFlowException
+from ai_flow.endpoint.server.server_config import DBType
+from ai_flow.protobuf.message_pb2 import INTERNAL_ERROR
 from ai_flow.store import AIFLOW_SQLALCHEMYSTORE_MAX_OVERFLOW, AIFLOW_SQLALCHEMYSTORE_POOL_SIZE
 from ai_flow.store.db.db_engine import DATABASE_ENGINES
 
@@ -100,6 +101,7 @@ def create_sqlalchemy_engine(db_uri):
         _logger.info("Create SQLAlchemy engine with pool options %s", pool_kwargs)
     return sqlalchemy.create_engine(db_uri, pool_pre_ping=True, **pool_kwargs)
 
+
 def parse_mongo_uri(db_uri):
     """
     Parse MongoDB URI-style string to split up and return credentials
@@ -115,3 +117,19 @@ def parse_mongo_uri(db_uri):
     if m is None:
         raise Exception('The URI of MongoDB is invalid')
     return m.group('user'), m.group('pwd'), m.group('host'), m.group('port'), m.group('db')
+
+
+def create_db_store(db_uri):
+    db_engine = extract_db_engine_from_uri(db_uri)
+    if DBType.value_of(db_engine) == DBType.MONGODB:
+        username, password, host, port, db = parse_mongo_uri(db_uri)
+        from ai_flow.store.mongo_store import MongoStore
+        store = MongoStore(host=host,
+                           port=int(port),
+                           username=username,
+                           password=password,
+                           db=db)
+    else:
+        from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
+        store = SqlAlchemyStore(db_uri)
+    return store
