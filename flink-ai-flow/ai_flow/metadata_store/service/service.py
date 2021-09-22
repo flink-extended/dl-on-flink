@@ -18,11 +18,6 @@
 #
 
 from ai_flow.common.status import Status
-from ai_flow.meta.dataset_meta import DataType
-from ai_flow.metadata_store.utils.MetaToProto import MetaToProto
-from ai_flow.metadata_store.utils.ProtoToMeta import ProtoToMeta
-from ai_flow.protobuf import metadata_service_pb2_grpc
-from ai_flow.protobuf.message_pb2 import DataTypeProto
 from ai_flow.endpoint.client.model_center_client import ModelCenterClient
 from ai_flow.endpoint.server.util import _wrap_meta_response, transform_dataset_meta, \
     _warp_dataset_list_response, _wrap_delete_response, transform_model_relation_meta, \
@@ -30,24 +25,17 @@ from ai_flow.endpoint.server.util import _wrap_meta_response, transform_dataset_
     transform_model_version_relation_meta, _warp_project_list_response, transform_project_meta, catch_exception, \
     transform_model_meta, transform_model_version_meta, transform_artifact_meta, _warp_artifact_list_response, \
     transform_workflow_meta, _wrap_workflow_list_response
-from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
-from ai_flow.store.mongo_store import MongoStore
-from ai_flow.store.db.db_util import extract_db_engine_from_uri, parse_mongo_uri
-from ai_flow.endpoint.server.server_config import DBType
+from ai_flow.meta.dataset_meta import DataType
+from ai_flow.metadata_store.utils.MetaToProto import MetaToProto
+from ai_flow.metadata_store.utils.ProtoToMeta import ProtoToMeta
+from ai_flow.protobuf import metadata_service_pb2_grpc
+from ai_flow.protobuf.message_pb2 import DataTypeProto
+from ai_flow.store.db.db_util import create_db_store
 
 
 class MetadataService(metadata_service_pb2_grpc.MetadataServiceServicer):
     def __init__(self, db_uri, server_uri):
-        db_engine = extract_db_engine_from_uri(db_uri)
-        if DBType.value_of(db_engine) == DBType.MONGODB:
-            username, password, host, port, db = parse_mongo_uri(db_uri)
-            self.store = MongoStore(host=host,
-                                    port=int(port),
-                                    username=username,
-                                    password=password,
-                                    db=db)
-        else:
-            self.store = SqlAlchemyStore(db_uri)
+        self.store = create_db_store(db_uri)
         self.model_center_client = ModelCenterClient(server_uri)
 
     '''dataset api'''
