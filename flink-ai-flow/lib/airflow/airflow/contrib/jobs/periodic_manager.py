@@ -14,6 +14,7 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
+from datetime import datetime
 from typing import Dict
 from airflow.utils.mailbox import Mailbox
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -23,8 +24,8 @@ from airflow.events.scheduler_events import PeriodicEvent
 from airflow.utils.log.logging_mixin import LoggingMixin
 
 
-def trigger_periodic_task(mailbox, run_id, task_id):
-    mailbox.send_message(PeriodicEvent(run_id, task_id).to_event())
+def trigger_periodic_task(mailbox, dag_id, execution_date, task_id):
+    mailbox.send_message(PeriodicEvent(dag_id, execution_date, task_id).to_event())
 
 
 class PeriodicManager(LoggingMixin):
@@ -45,10 +46,14 @@ class PeriodicManager(LoggingMixin):
     def shutdown(self):
         self.sc.shutdown()
 
-    def _generate_job_id(self, run_id, task_id):
-        return '{}:{}'.format(run_id, task_id)
+    def _generate_job_id(self, dag_id, execution_date, task_id):
+        return '{}:{}:{}'.format(dag_id, execution_date, task_id)
 
-    def add_task(self, run_id, task_id, periodic_config: Dict):
+    def add_task(self,
+                 dag_id: str,
+                 execution_date: datetime,
+                 task_id: str,
+                 periodic_config: Dict):
         if 'cron' in periodic_config:
             def build_cron_trigger(expr) -> CronTrigger:
                 cron_items = expr.split()
@@ -71,8 +76,8 @@ class PeriodicManager(LoggingMixin):
                     raise ValueError('The cron expression {} is incorrect format, follow the pattern: '
                                      'second minute hour day month day_of_week optional(year).'.format(expr))
 
-            self.sc.add_job(id=self._generate_job_id(run_id, task_id),
-                            func=trigger_periodic_task, args=(self.mailbox, run_id, task_id),
+            self.sc.add_job(id=self._generate_job_id(dag_id, execution_date, task_id),
+                            func=trigger_periodic_task, args=(self.mailbox, dag_id, execution_date, task_id),
                             trigger=build_cron_trigger(periodic_config['cron']))
         elif 'interval' in periodic_config:
             interval_expr: str = periodic_config['interval']
@@ -95,8 +100,8 @@ class PeriodicManager(LoggingMixin):
             if is_zero:
                 raise Exception('The interval config must be greater than 0.')
 
-            self.sc.add_job(id=self._generate_job_id(run_id, task_id),
-                            func=trigger_periodic_task, args=(self.mailbox, run_id, task_id),
+            self.sc.add_job(id=self._generate_job_id(dag_id, execution_date, task_id),
+                            func=trigger_periodic_task, args=(self.mailbox, dag_id, execution_date, task_id),
                             trigger=IntervalTrigger(seconds=temp_list[4],
                                                     minutes=temp_list[3],
                                                     hours=temp_list[2],
@@ -105,5 +110,8 @@ class PeriodicManager(LoggingMixin):
         else:
             self.log.error('Periodic support type cron or interval. current periodic config {}'.format(periodic_config))
 
-    def remove_task(self, run_id, task_id):
-        self.sc.remove_job(job_id=self._generate_job_id(run_id, task_id))
+    def remove_task(self,
+                    dag_id: str,
+                    execution_date: datetime,
+                    task_id: str):
+        self.sc.remove_job(job_id=self._generate_job_id(dag_id, execution_date, task_id))
