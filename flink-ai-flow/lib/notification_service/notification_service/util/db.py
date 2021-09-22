@@ -284,8 +284,12 @@ class EventModel(Base):
     @staticmethod
     @provide_session
     def get_latest_version(session=None):
-        return session.query(EventModel).order_by(EventModel.version.desc()) \
-            .limit(1).first().version
+        event = session.query(EventModel).order_by(EventModel.version.desc()) \
+            .limit(1).first()
+        if event is not None:
+            return event.version
+        else:
+            return 0
 
     @staticmethod
     @provide_session
