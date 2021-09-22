@@ -22,6 +22,7 @@ import sys
 import threading
 import time
 import faulthandler
+import traceback
 from typing import Callable, List, Optional
 
 from airflow.contrib.jobs.periodic_manager import PeriodicManager
@@ -718,8 +719,13 @@ class EventBasedSchedulerJob(BaseJob):
         self.scheduler.restore_unfinished_dag_run()
         should_continue = True
         while should_continue:
-            should_continue = self.scheduler.schedule()
-            self.heartbeat(only_if_necessary=True)
+            try:
+                should_continue = self.scheduler.schedule()
+                self.heartbeat(only_if_necessary=True)
+            except Exception as e:
+                traceback.print_exc()
+                self.log.error('Scheduler error [%s]'.format(traceback.format_exc()))
+                time.sleep(1)
         self.scheduler.stop_timer()
 
     def _set_event_progress(self):
