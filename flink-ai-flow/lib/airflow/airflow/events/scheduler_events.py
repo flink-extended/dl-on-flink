@@ -68,20 +68,30 @@ class SchedulerInnerEvent(object):
 
 class PeriodicEvent(SchedulerInnerEvent):
 
-    def __init__(self, run_id, task_id):
-        self.run_id = run_id
+    def __init__(self, dag_id, execution_date, task_id):
+        self.dag_id = dag_id
+        self.execution_date = execution_date
         self.task_id = task_id
 
     @classmethod
     def to_base_event(cls, event: 'PeriodicEvent') -> BaseEvent:
-        return BaseEvent(key=event.run_id,
-                         value=event.task_id,
+        o = {}
+        for k, v in event.__dict__.items():
+            if 'execution_date' == k:
+                o[k] = v.strftime(EXECUTION_DATE_FORMAT)
+            else:
+                o[k] = v
+        return BaseEvent(key='.'.join([event.dag_id, event.execution_date.strftime(EXECUTION_DATE_FORMAT)]),
+                         value=json.dumps(o),
                          event_type=SchedulerInnerEventType.PERIODIC_TASK_EVENT.value,
                          namespace=SCHEDULER_NAMESPACE)
 
     @classmethod
     def from_base_event(cls, event: BaseEvent) -> 'PeriodicEvent':
-        return PeriodicEvent(event.key, event.value)
+        o = json.loads(event.value)
+        return PeriodicEvent(dag_id=o['dag_id'],
+                             execution_date=dates.parse_execution_date(o['execution_date']),
+                             task_id=o['task_id'])
 
 
 class ParseDagRequestEvent(SchedulerInnerEvent):
@@ -296,31 +306,42 @@ class DagRunCreatedEvent(SchedulerInnerEvent):
                 o[k] = v.strftime(EXECUTION_DATE_FORMAT)
             else:
                 o[k] = v
-        return BaseEvent(key='.'.join([event.dag_id, v.strftime(EXECUTION_DATE_FORMAT)],),
+        return BaseEvent(key='.'.join([event.dag_id, event.execution_date.strftime(EXECUTION_DATE_FORMAT)],),
                          value=json.dumps(o),
                          event_type=SchedulerInnerEventType.DAG_RUN_CREATED.value,
                          namespace=SCHEDULER_NAMESPACE)
 
     @classmethod
-    def from_base_event(cls, event: BaseEvent) -> 'SchedulerInnerEvent':
+    def from_base_event(cls, event: BaseEvent) -> 'DagRunCreatedEvent':
         o = json.loads(event.value)
         return DagRunCreatedEvent(dag_id=o['dag_id'],
                                   execution_date=dates.parse_execution_date(o['execution_date']),)
 
 
 class DagRunFinishedEvent(SchedulerInnerEvent):
-    def __init__(self, run_id):
+    def __init__(self, dag_id, execution_date):
         super().__init__()
-        self.run_id = run_id
+        self.dag_id = dag_id
+        self.execution_date = execution_date
 
     @classmethod
-    def to_base_event(cls, event: 'DagRunFinishedEvent') -> BaseEvent:
-        return BaseEvent(key=event.run_id, value='', event_type=SchedulerInnerEventType.DAG_RUN_FINISHED.value,
+    def to_base_event(cls, event: 'SchedulerInnerEvent') -> BaseEvent:
+        o = {}
+        for k, v in event.__dict__.items():
+            if 'execution_date' == k:
+                o[k] = v.strftime(EXECUTION_DATE_FORMAT)
+            else:
+                o[k] = v
+        return BaseEvent(key='.'.join([event.dag_id, event.execution_date.strftime(EXECUTION_DATE_FORMAT)], ),
+                         value=json.dumps(o),
+                         event_type=SchedulerInnerEventType.DAG_RUN_FINISHED.value,
                          namespace=SCHEDULER_NAMESPACE)
 
     @classmethod
     def from_base_event(cls, event: BaseEvent) -> 'DagRunFinishedEvent':
-        return DagRunFinishedEvent(run_id=event.key)
+        o = json.loads(event.value)
+        return DagRunFinishedEvent(dag_id=o['dag_id'],
+                                   execution_date=dates.parse_execution_date(o['execution_date']),)
 
 
 class TaskSchedulingEvent(SchedulerInnerEvent):

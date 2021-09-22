@@ -21,8 +21,8 @@ import signal
 import sys
 import threading
 import time
-import faulthandler
 import traceback
+import datetime as dt
 from typing import Callable, List, Optional
 
 from airflow.contrib.jobs.periodic_manager import PeriodicManager
@@ -31,7 +31,7 @@ from airflow.exceptions import SerializedDagNotFound, AirflowException
 from airflow.models.dagcode import DagCode
 from airflow.models.event_progress import get_event_progress, create_or_update_progress
 from airflow.models.message import IdentifiedMessage, MessageState
-from sqlalchemy import func, not_, or_, asc
+from sqlalchemy import func, not_, or_, asc, case
 from sqlalchemy.orm import selectinload
 from sqlalchemy.orm.session import Session
 from airflow import models, settings
@@ -152,7 +152,7 @@ class EventBasedScheduler(LoggingMixin):
                     tasks = self._find_scheduled_tasks(dagrun, session)
                     self._send_scheduling_task_events(tasks, SchedulingAction.START)
                     if dagrun.state in State.finished:
-                        self.mailbox.send_message(DagRunFinishedEvent(dagrun.run_id).to_event())
+                        self.mailbox.send_message(DagRunFinishedEvent(dagrun.dag_id, dagrun.execution_date).to_event())
                 else:
                     self.log.warning("dagrun is None for dag_id:{} execution_date: {}".format(event.dag_id,
                                                                                               event.execution_date))
@@ -176,9 +176,15 @@ class EventBasedScheduler(LoggingMixin):
             elif isinstance(event, StopDagEvent):
                 self._stop_dag(event.dag_id, session)
             elif isinstance(event, DagRunFinishedEvent):
-                self._remove_periodic_events(event.run_id)
+                self._remove_periodic_events(event.dag_id, event.execution_date)
+                inactive_dagruns = self._find_inactive_dagruns(event.dag_id, session)
+                for execution_date in inactive_dagruns:
+                    dagrun = self._find_dagrun(event.dag_id, execution_date, session)
+                    if dagrun is not None:
+                        tasks = self._find_scheduled_tasks(dagrun, session)
+                        self._send_scheduling_task_events(tasks, SchedulingAction.START)
             elif isinstance(event, PeriodicEvent):
-                dag_runs = DagRun.find(run_id=event.run_id)
+                dag_runs = DagRun.find(dag_id=event.dag_id, execution_date=event.execution_date)
                 assert len(dag_runs) == 1
                 ti = dag_runs[0].get_task_instance(event.task_id)
                 self._send_scheduling_task_event(ti, SchedulingAction.RESTART)
@@ -250,22 +256,23 @@ class EventBasedScheduler(LoggingMixin):
         ).first()
         return dagrun
 
-    def _register_periodic_events(self, run_id, dag):
+    def _register_periodic_events(self, execution_date, dag):
         for task in dag.tasks:
             if task.executor_config is not None and 'periodic_config' in task.executor_config:
-                self.log.debug('register periodic task {} {}'.format(run_id, task.task_id))
-                self.periodic_manager.add_task(run_id=run_id,
+                self.log.debug('register periodic task {} {} {}'.format(dag.dag_id, execution_date, task.task_id))
+                self.periodic_manager.add_task(dag_id=dag.dag_id,
+                                               execution_date=execution_date,
                                                task_id=task.task_id,
                                                periodic_config=task.executor_config['periodic_config'])
 
     @provide_session
-    def _remove_periodic_events(self, run_id, session=None):
-        dagruns = DagRun.find(run_id=run_id)
+    def _remove_periodic_events(self, dag_id, execution_date, session=None):
+        dagruns = DagRun.find(dag_id=dag_id, execution_date=execution_date)
         dag = self.dagbag.get_dag(dag_id=dagruns[0].dag_id, session=session)
         for task in dag.tasks:
             if task.executor_config is not None and 'periodic_config' in task.executor_config:
-                self.log.debug('remove periodic task {} {}'.format(run_id, task.task_id))
-                self.periodic_manager.remove_task(run_id, task.task_id)
+                self.log.debug('remove periodic task {} {} {}'.format(dag_id, execution_date, task.task_id))
+                self.periodic_manager.remove_task(dag_id, execution_date, task.task_id)
 
     def _create_dag_run(self, dag_id, session, run_type=DagRunType.SCHEDULED, context=None) -> DagRun:
         with prohibit_commit(session) as guard:
@@ -310,7 +317,7 @@ class EventBasedScheduler(LoggingMixin):
                     )
                     if run_type == DagRunType.SCHEDULED:
                         self._update_dag_next_dagrun(dag_id, session)
-                    self._register_periodic_events(dag_run.run_id, dag)
+                    self._register_periodic_events(dag_run.execution_date, dag)
                     # commit the session - Release the write lock on DagModel table.
                     guard.commit()
                     # END: create dagrun
@@ -359,6 +366,29 @@ class EventBasedScheduler(LoggingMixin):
             scheduling_event.try_number
         )
         self.executor.schedule_task(task_key, scheduling_event.action)
+
+    @staticmethod
+    def _find_inactive_dagruns(dag_id, session) -> List[dt.datetime]:
+        running_dagruns = [
+            ed.execution_date for ed in session.query(DagRun.execution_date)
+                .filter(
+                DagRun.dag_id == dag_id,
+                DagRun.state == State.RUNNING
+            ).all()
+        ]
+        dagruns_has_running_task = [
+            ed.execution_date for ed in session.query(
+                TI.execution_date
+            ).filter(
+                TI.dag_id == dag_id,
+                TI.execution_date.in_(running_dagruns),
+                TI.state == State.RUNNING
+            )
+            .group_by(TI.dag_id, TI.execution_date)
+            .all()
+        ]
+        res = [i for i in running_dagruns if i not in dagruns_has_running_task]
+        return res
 
     def _find_dagruns_by_event(self, event, session) -> Optional[List[DagRun]]:
         affect_dag_runs = []
@@ -432,7 +462,7 @@ class EventBasedScheduler(LoggingMixin):
         ).filter(
             TI.dag_id == dag_run.dag_id,
             TI.state.notin_(list(State.finished)),
-        ).all()
+        ).distinct().all()
 
         if check_execution_date and dag_run.execution_date > timezone.utcnow() and not dag.allow_future_exec_dates:
             self.log.warning("Execution date is in future: %s", dag_run.execution_date)
@@ -586,7 +616,8 @@ class EventBasedScheduler(LoggingMixin):
         for ti in dag_run.get_task_instances():
             if ti.state in State.unfinished:
                 self.executor.schedule_task(ti.key, SchedulingAction.STOP)
-        self.mailbox.send_message(DagRunFinishedEvent(run_id=dag_run.run_id).to_event())
+        self.mailbox.send_message(DagRunFinishedEvent(dag_id=dag_run.dag_id,
+                                                      execution_date=dag_run.execution_date).to_event())
 
 
 class SchedulerEventWatcher(EventWatcher):

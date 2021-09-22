@@ -16,8 +16,13 @@
 # under the License.
 #
 import unittest
+
+from airflow.events.scheduler_events import EXECUTION_DATE_FORMAT
+from airflow.utils import timezone
 from airflow.utils.mailbox import Mailbox
 from airflow.contrib.jobs.periodic_manager import PeriodicManager
+
+NOW = timezone.utcnow()
 
 
 class TestPeriodicManager(unittest.TestCase):
@@ -25,20 +30,20 @@ class TestPeriodicManager(unittest.TestCase):
         mailbox = Mailbox()
         periodic_manager = PeriodicManager(mailbox)
         periodic_manager.start()
-        periodic_manager.add_task('1', '1', {'cron': '*/1 * * * * * *'})
+        periodic_manager.add_task('1', NOW, '1', {'cron': '*/1 * * * * * *'})
         event = mailbox.get_message()
-        periodic_manager.remove_task('1', '1')
-        self.assertEqual('1', event.key)
+        periodic_manager.remove_task('1', NOW, '1')
+        self.assertEqual('.'.join(['1', NOW.strftime(EXECUTION_DATE_FORMAT)]), event.key)
 
-        periodic_manager.add_task('2', '2', {'cron': '*/1 * * * * *'})
+        periodic_manager.add_task('2', NOW, '2', {'cron': '*/1 * * * * *'})
         event = mailbox.get_message()
-        self.assertEqual('2', event.key)
-        periodic_manager.remove_task('2', '2')
+        self.assertEqual('.'.join(['2', NOW.strftime(EXECUTION_DATE_FORMAT)]), event.key)
+        periodic_manager.remove_task('2', NOW, '2')
 
-        periodic_manager.add_task('3', '3', {'interval': '0,0,0,0,1'})
+        periodic_manager.add_task('3', NOW, '3', {'interval': '0,0,0,0,1'})
         event = mailbox.get_message()
-        self.assertEqual('3', event.key)
-        periodic_manager.remove_task('3', '3')
+        self.assertEqual('.'.join(['3', NOW.strftime(EXECUTION_DATE_FORMAT)]), event.key)
+        periodic_manager.remove_task('3', NOW, '3')
 
         periodic_manager.shutdown()
 
@@ -47,11 +52,11 @@ class TestPeriodicManager(unittest.TestCase):
         periodic_manager = PeriodicManager(mailbox)
         periodic_manager.start()
         with self.assertRaises(Exception) as context:
-            periodic_manager.add_task('1', '1', {'cron': '*/1 * * * *'})
+            periodic_manager.add_task('1', NOW, '1', {'cron': '*/1 * * * *'})
         self.assertTrue('The cron expression' in str(context.exception))
 
         with self.assertRaises(Exception) as context:
-            periodic_manager.add_task('2', '2', {'interval': '0,0,0,1'})
+            periodic_manager.add_task('2', NOW, '2', {'interval': '0,0,0,1'})
         self.assertTrue('The interval expression' in str(context.exception))
 
         periodic_manager.shutdown()
