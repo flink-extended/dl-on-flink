@@ -468,7 +468,7 @@ class EventBasedScheduler(LoggingMixin):
             self.log.warning("Execution date is in future: %s", dag_run.execution_date)
             return None
 
-        if dag.max_active_runs:
+        if dag.max_active_runs and not dag.is_long_running_dag():
             if (
                 len(currently_active_runs) >= dag.max_active_runs
                 and dag_run.execution_date not in currently_active_runs
