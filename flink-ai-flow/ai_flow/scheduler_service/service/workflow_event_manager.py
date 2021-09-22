@@ -20,13 +20,10 @@ import threading
 import time
 from typing import Text, List
 
-from ai_flow.endpoint.server.server_config import DBType
 from ai_flow.plugin_interface.scheduler_interface import SchedulerFactory
 from ai_flow.scheduler_service.service.config import SchedulerServiceConfig
 from ai_flow.scheduler_service.service.workflow_event_processor import Poison, WorkflowEventProcessor
-from ai_flow.store.db.db_util import extract_db_engine_from_uri, parse_mongo_uri
-from ai_flow.store.mongo_store import MongoStore
-from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
+from ai_flow.store.db.db_util import create_db_store
 from notification_service.base_notification import EventWatcher, BaseEvent
 from notification_service.client import NotificationClient
 
@@ -35,16 +32,7 @@ _MP_START_METHOD = 'spawn'
 
 
 def _start_workflow_event_processor_process(conn, db_uri: Text, scheduler_service_config: SchedulerServiceConfig):
-    db_engine = extract_db_engine_from_uri(db_uri)
-    if DBType.value_of(db_engine) == DBType.MONGODB:
-        username, password, host, port, db = parse_mongo_uri(db_uri)
-        store = MongoStore(host=host,
-                           port=int(port),
-                           username=username,
-                           password=password,
-                           db=db)
-    else:
-        store = SqlAlchemyStore(db_uri)
+    store = create_db_store(db_uri)
 
     scheduler = SchedulerFactory.create_scheduler(scheduler_service_config.scheduler().scheduler_class(),
                                                   scheduler_service_config.scheduler().scheduler_config())

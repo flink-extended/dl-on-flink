@@ -15,29 +15,16 @@
 # specific language governing permissions and limitations
 # under the License.
 import logging
-from typing import Text
 import traceback
+from typing import Text
 
 from ai_flow.api.context_extractor import WORKFLOW_EXECUTION_DEFAULT_CONTEXT
-from ai_flow.scheduler_service.service.config import SchedulerServiceConfig
-from ai_flow.scheduler_service.service.workflow_event_manager import WorkflowEventManager
-from ai_flow.workflow.control_edge import WorkflowAction
-
-from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
-
-from ai_flow.store.mongo_store import MongoStore
-
-from ai_flow.endpoint.server.server_config import DBType
-
-from ai_flow.store.db.db_util import extract_db_engine_from_uri, parse_mongo_uri
-
-from ai_flow.workflow.workflow import WorkflowPropertyKeys
-from ai_flow.plugin_interface.blob_manager_interface import BlobConfig, BlobManagerFactory
-
-from ai_flow.util import json_utils
 from ai_flow.context.project_context import ProjectContext, build_project_context
+from ai_flow.endpoint.server.workflow_proto_utils import workflow_to_proto, workflow_execution_to_proto, \
+    workflow_execution_list_to_proto, job_to_proto, job_list_to_proto
+from ai_flow.plugin_interface.blob_manager_interface import BlobConfig, BlobManagerFactory
+from ai_flow.plugin_interface.scheduler_interface import Scheduler, SchedulerFactory, WorkflowInfo
 from ai_flow.protobuf.message_pb2 import ResultProto, StatusProto
-from ai_flow.protobuf.scheduling_service_pb2_grpc import SchedulingServiceServicer
 from ai_flow.protobuf.scheduling_service_pb2 import \
     (ScheduleWorkflowRequest,
      WorkflowInfoResponse,
@@ -47,10 +34,14 @@ from ai_flow.protobuf.scheduling_service_pb2 import \
      ScheduleJobRequest,
      JobInfoResponse,
      ListJobInfoResponse, WorkflowExecutionOnEventRequest)
-from ai_flow.plugin_interface.scheduler_interface import Scheduler, SchedulerFactory, WorkflowInfo
+from ai_flow.protobuf.scheduling_service_pb2_grpc import SchedulingServiceServicer
+from ai_flow.scheduler_service.service.config import SchedulerServiceConfig
+from ai_flow.scheduler_service.service.workflow_event_manager import WorkflowEventManager
+from ai_flow.store.db.db_util import create_db_store
+from ai_flow.util import json_utils
+from ai_flow.workflow.control_edge import WorkflowAction
 from ai_flow.workflow.workflow import Workflow
-from ai_flow.endpoint.server.workflow_proto_utils import workflow_to_proto, workflow_execution_to_proto, \
-    workflow_execution_list_to_proto, job_to_proto, job_list_to_proto
+from ai_flow.workflow.workflow import WorkflowPropertyKeys
 
 
 class SchedulerService(SchedulingServiceServicer):
@@ -62,16 +53,7 @@ class SchedulerService(SchedulingServiceServicer):
         self._scheduler: Scheduler \
             = SchedulerFactory.create_scheduler(scheduler_service_config.scheduler().scheduler_class(),
                                                 scheduler_service_config.scheduler().scheduler_config())
-        db_engine = extract_db_engine_from_uri(db_uri)
-        if DBType.value_of(db_engine) == DBType.MONGODB:
-            username, password, host, port, db = parse_mongo_uri(db_uri)
-            self.store = MongoStore(host=host,
-                                    port=int(port),
-                                    username=username,
-                                    password=password,
-                                    db=db)
-        else:
-            self.store = SqlAlchemyStore(db_uri)
+        self.store = create_db_store(db_uri)
 
         if notification_uri is not None:
             self.workflow_event_manager = WorkflowEventManager(notification_uri=notification_uri,

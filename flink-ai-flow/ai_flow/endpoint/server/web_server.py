@@ -30,12 +30,9 @@ from ai_flow import WorkflowMeta
 from ai_flow.ai_graph.ai_graph import AIGraph
 from ai_flow.ai_graph.ai_node import AINode, ReadDatasetNode, WriteDatasetNode
 from ai_flow.ai_graph.data_edge import DataEdge
-from ai_flow.endpoint.server.server_config import DBType
 from ai_flow.plugin_interface.scheduler_interface import Scheduler, SchedulerFactory
 from ai_flow.store.abstract_store import Filters, AbstractStore
-from ai_flow.store.db.db_util import extract_db_engine_from_uri, parse_mongo_uri
-from ai_flow.store.mongo_store import MongoStore
-from ai_flow.store.sqlalchemy_store import SqlAlchemyStore
+from ai_flow.store.db.db_util import create_db_store
 from ai_flow.util.json_utils import loads, Jsonable, dumps
 from ai_flow.workflow.control_edge import ControlEdge
 
@@ -65,15 +62,7 @@ airflow: str = None
 
 def init(store_uri: str, scheduler_class: str, airflow_web_server_uri: str):
     global store
-    if DBType.value_of(extract_db_engine_from_uri(store_uri)) == DBType.MONGODB:
-        username, password, host, port, db = parse_mongo_uri(store_uri)
-        store = MongoStore(host=host,
-                           port=int(port),
-                           username=username,
-                           password=password,
-                           db=db)
-    else:
-        store = SqlAlchemyStore(store_uri)
+    store = create_db_store(store_uri)
     global scheduler
     scheduler = SchedulerFactory.create_scheduler(scheduler_class,
                                                   {'notification_service_uri': None, 'airflow_deploy_path': None})
