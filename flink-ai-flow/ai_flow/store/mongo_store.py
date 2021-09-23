@@ -433,6 +433,8 @@ class MongoStore(AbstractStore):
             project_result = project_result.skip(offset)
         if page_size:
             project_result = project_result.limit(page_size)
+        if len(project_result) == 0:
+            return None
         projects = []
         for project in project_result:
             projects.append(ResultToMeta.result_to_project_meta(project))
@@ -636,7 +638,7 @@ class MongoStore(AbstractStore):
 
     def update_workflow(self, workflow_name, project_name, context_extractor_in_bytes,
                         scheduling_rules: List[WorkflowSchedulingRule], properties=None,
-                        graph=None) -> Optional[WorkflowMeta]:
+                        graph=None, last_event_version=None) -> Optional[WorkflowMeta]:
         """
         Update the workflow
 
@@ -646,6 +648,7 @@ class MongoStore(AbstractStore):
         :param scheduling_rules: the scheduling rules of the workflow
         :param properties: (Optional) the properties need to be updated
         :param graph: (Optional) the graph of the workflow
+        :param last_event_version: (Optional) the last processed event version of the workflow
         """
         try:
             project = self.get_project_by_name(project_name)
@@ -663,6 +666,7 @@ class MongoStore(AbstractStore):
             workflow.update_time = int(time.time() * 1000)
             workflow.context_extractor_in_bytes = context_extractor_in_bytes
             workflow.graph = graph
+            workflow.last_event_version = last_event_version
             workflow.save()
             return ResultToMeta.result_to_workflow_meta(workflow)
         except mongoengine.OperationError as e:

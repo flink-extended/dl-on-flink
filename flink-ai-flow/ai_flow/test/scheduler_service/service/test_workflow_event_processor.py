@@ -92,15 +92,27 @@ class TestWorkflowEventProcessor(unittest.TestCase):
         process.join()
 
     def test__process_event(self):
-        self.call_cnt = 0
+        class WorkflowMetaMatcher:
+            def __init__(self, project_id, name):
+                self.project_id = project_id
+                self.name = name
 
-        def mock__handle_event_for_workflow(*args, **kwargs):
-            self.call_cnt += 1
+            def __eq__(self, other):
+                if not isinstance(other, WorkflowMeta):
+                    return False
+                return self.project_id == other.project_id and self.name == other.name
 
-        self.processor._handle_event_for_workflow = mock__handle_event_for_workflow
-
-        self.processor._process_event(BaseEvent('k', 'v', namespace='test_namespace'))
-        self.assertEqual(3, self.call_cnt)
+        with mock.patch.object(self.processor, '_handle_event_for_workflow') as handle_method, \
+                mock.patch.object(self.processor, '_update_workflow_last_event_version') as update_last_event_version:
+            e = BaseEvent('k', 'v', namespace='test_namespace')
+            self.processor._process_event(e)
+            handle_method.assert_has_calls([mock.call('test_project1', WorkflowMetaMatcher(0, 'workflow1'), e),
+                                            mock.call('test_project2', WorkflowMetaMatcher(1, 'workflow2'), e),
+                                            mock.call('test_project2', WorkflowMetaMatcher(1, 'workflow3'), e)])
+            update_last_event_version.assert_has_calls(
+                [mock.call('test_project1', WorkflowMetaMatcher(0, 'workflow1'), e),
+                 mock.call('test_project2', WorkflowMetaMatcher(1, 'workflow2'), e),
+                 mock.call('test_project2', WorkflowMetaMatcher(1, 'workflow3'), e)])
 
     def _prepare_workflows(self):
         context_extractor = MyContextExtractor()
@@ -130,30 +142,6 @@ class TestWorkflowEventProcessor(unittest.TestCase):
         p1 = ProjectMeta(name='test_project1', uri='dummy')
         p2 = ProjectMeta(name='test_project2', uri='dummy')
         self.mock_store.list_projects.return_value = [p1, p2]
-
-    def test__get_subscribed_workflow(self):
-        e = BaseEvent('k1', 'v1', namespace='test_namespace')
-        workflows = self.processor._get_subscribed_workflow(e, 'test_project1')
-        self.assertEqual(1, len(workflows))
-        self.assertEqual('workflow1', workflows[0].name)
-
-        e = BaseEvent('k2', 'v2', namespace='test_namespace')
-        workflows = self.processor._get_subscribed_workflow(e, 'test_project2')
-        self.assertEqual(1, len(workflows))
-        self.assertEqual('workflow2', workflows[0].name)
-
-        e = BaseEvent('k', 'v', namespace='test_namespace')
-        workflows1 = self.processor._get_subscribed_workflow(e, 'test_project1')
-        workflows2 = self.processor._get_subscribed_workflow(e, 'test_project2')
-        self.assertEqual(3, len(workflows1 + workflows2))
-        self.assertIn('workflow1', [workflow.name for workflow in workflows1])
-        self.assertIn('workflow2', [workflow.name for workflow in workflows2])
-        self.assertIn('workflow3', [workflow.name for workflow in workflows2])
-
-    def test__get_subscribed_workflow_without_workflow(self):
-        e = BaseEvent('k2', 'v2', namespace='test_namespace')
-        workflows = self.processor._get_subscribed_workflow(e, 'test_not_exist_project')
-        self.assertEqual(0, len(workflows))
 
     def test__get_workflow_execution_state_register_state_if_not_exist(self):
         state = WorkflowContextEventHandlerState('project', 'workflow1', 'context_1')
@@ -312,3 +300,10 @@ class TestWorkflowEventProcessor(unittest.TestCase):
         # Start Action
         e = BaseEvent('k1', 'v1', namespace='test_namespace', event_type='exception')
         self.processor._handle_event_for_workflow('project', w1, e)
+
+    def test__update_workflow_last_event_version(self):
+        e = BaseEvent('k1', 'v1', namespace='test_project', version=15213)
+        workflow = WorkflowMeta('w', 0)
+        self.processor._update_workflow_last_event_version('test_project', workflow, e)
+        self.mock_store.update_workflow.assert_called_once_with('w', 'test_project', context_extractor_in_bytes=None,
+                                                                scheduling_rules=[], last_event_version=15213)

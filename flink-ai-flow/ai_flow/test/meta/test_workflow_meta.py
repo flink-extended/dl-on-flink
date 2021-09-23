@@ -44,3 +44,7 @@ class TestWorkflowMeta(unittest.TestCase):
 
         meta.update_condition([], WorkflowAction.START)
         self.assertListEqual([], meta.get_condition(WorkflowAction.START))
+
+    def test_workflow_meta_last_event_version(self):
+        meta = WorkflowMeta('workflow', 0)
+        self.assertIsNone(meta.last_event_version)

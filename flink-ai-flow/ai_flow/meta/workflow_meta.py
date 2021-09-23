@@ -38,7 +38,8 @@ class WorkflowMeta(Jsonable):
                  context_extractor_in_bytes: bytes = None,
                  graph: str = None,
                  uuid: int = None,
-                 scheduling_rules: List[WorkflowSchedulingRule] = None
+                 scheduling_rules: List[WorkflowSchedulingRule] = None,
+                 last_event_version: int = None
                  ) -> None:
         """
 
@@ -51,6 +52,8 @@ class WorkflowMeta(Jsonable):
         :param graph: the graph of the workflow
         :param uuid: uuid in database
         :param scheduling_rules: A list of scheduling rules of the workflow.
+        :param last_event_version: last processed event version of the workflow. It is none, if there are no event
+        processed after submit.
         """
 
         self.name = name
@@ -62,6 +65,7 @@ class WorkflowMeta(Jsonable):
         self.context_extractor_in_bytes = context_extractor_in_bytes
         self.graph = graph
         self.scheduling_rules = [] if scheduling_rules is None else scheduling_rules
+        self.last_event_version = last_event_version
 
     def get_condition(self, action: WorkflowAction) -> List[EventCondition]:
         if self.scheduling_rules is None:

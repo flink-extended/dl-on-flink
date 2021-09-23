@@ -271,6 +271,28 @@ class AbstractTestStore(object):
         self.assertEqual(workflow.context_extractor_in_bytes, context_extractor_in_bytes)
         self.assertEqual(workflow.graph, graph)
 
+    def test_workflow_last_event_version(self):
+        project_response = self.store.register_project(name='project', uri='www.code.com')
+        response = self.store.register_workflow(name='workflow',
+                                                project_id=project_response.uuid,
+                                                properties=Properties({'a': 'b'}))
+        self.assertIsNone(response.last_event_version)
+
+    def test_update_workflow_last_event_version(self):
+        project_response = self.store.register_project(name='project', uri='www.code.com')
+        response = self.store.register_workflow(name='workflow',
+                                                project_id=project_response.uuid,
+                                                properties=Properties({'a': 'b'}))
+        self.store.update_workflow(project_name=project_response.name,
+                                   workflow_name='workflow',
+                                   context_extractor_in_bytes=None,
+                                   scheduling_rules=None,
+                                   last_event_version=1)
+        updated_workflow = \
+            self.store.get_workflow_by_name(project_name=project_response.name, workflow_name='workflow')
+
+        self.assertEqual(1, updated_workflow.last_event_version)
+
     """test workflow context event handler state"""
 
     def test_register_workflow_context_event_handler_state(self):

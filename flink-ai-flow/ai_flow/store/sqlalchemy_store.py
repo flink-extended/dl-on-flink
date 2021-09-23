@@ -909,7 +909,8 @@ class SqlAlchemyStore(AbstractStore):
 
     def update_workflow(self, workflow_name, project_name, context_extractor_in_bytes,
                         scheduling_rules: List[WorkflowSchedulingRule] = None, properties=None,
-                        graph=None) -> Optional[WorkflowMeta]:
+                        graph=None,
+                        last_event_version=None) -> Optional[WorkflowMeta]:
         """
         Update the workflow
 
@@ -919,6 +920,7 @@ class SqlAlchemyStore(AbstractStore):
         :param scheduling_rules: the scheduling rules of the workflow
         :param properties: (Optional) the properties need to be updated
         :param graph: (Optional) the graph of the workflow
+        :param last_event_version: (Optional) the last processed event version of the workflow
         """
         with self.ManagedSessionMaker() as session:
             try:
@@ -934,6 +936,8 @@ class SqlAlchemyStore(AbstractStore):
                     workflow.properties = str(properties)
                 if graph is not None:
                     workflow.graph = graph
+                if last_event_version is not None:
+                    workflow.last_event_version = last_event_version
                 workflow.context_extractor_in_bytes = context_extractor_in_bytes
                 workflow.scheduling_rules = json_utils.dumps(scheduling_rules)
                 workflow.update_time = int(time.time() * 1000)
