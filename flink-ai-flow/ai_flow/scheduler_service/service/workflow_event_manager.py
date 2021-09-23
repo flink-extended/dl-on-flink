@@ -20,6 +20,8 @@ import threading
 import time
 from typing import Text, List
 
+from setproctitle import setproctitle
+
 from ai_flow.plugin_interface.scheduler_interface import SchedulerFactory
 from ai_flow.scheduler_service.service.config import SchedulerServiceConfig
 from ai_flow.scheduler_service.service.workflow_event_processor import Poison, WorkflowEventProcessor
@@ -32,6 +34,7 @@ _MP_START_METHOD = 'spawn'
 
 
 def _start_workflow_event_processor_process(conn, db_uri: Text, scheduler_service_config: SchedulerServiceConfig):
+    setproctitle("WorkflowEventProcessor")
     store = create_db_store(db_uri)
 
     scheduler = SchedulerFactory.create_scheduler(scheduler_service_config.scheduler().scheduler_class(),
@@ -56,7 +59,7 @@ class WorkflowEventManager(object):
         self._stop = False
         self.event_processor_process = self._create_event_processor_process()
         self.process_watcher_thread = threading.Thread(target=self._watch_process)
-        self.event_watcher = WorkflowEventWatcher(self)
+        self.store = create_db_store(db_uri)
 
     def _create_event_processor_process(self):
         # We use spawn to start the process to avoid problem of running grpc in multiple processes.
@@ -70,16 +73,16 @@ class WorkflowEventManager(object):
 
     def start(self):
         logging.info("WorkflowEventManager start listening event")
-        self.listen_event_handler = self.notification_client.start_listen_events(self.event_watcher)
+        self._start_listen_events()
         self.event_processor_process.start()
+        logging.info("Started WorkflowEventProcessor pid: {}".format(self.event_processor_process.pid))
         self.process_watcher_thread.start()
 
     def stop(self):
         logging.info("stopping WorkflowEventManager...")
         self._stop = True
         self.process_watcher_thread.join()
-        if self.listen_event_handler:
-            self.listen_event_handler.stop()
+        self._stop_listen_events()
         if self.event_processor_process.is_alive():
             self.conn.send(Poison())
         self.event_processor_process.join()
@@ -108,10 +111,38 @@ class WorkflowEventManager(object):
             if self._stop:
                 break
             logging.info("Restarting process")
+            self._restart_event_listener()
             self.event_processor_process = self._create_event_processor_process()
             self.event_processor_process.start()
             logging.info("Process restarted with pid: {}".format(self.event_processor_process.pid))
         logging.info("Stop watching process")
+
+    def _restart_event_listener(self):
+        self._stop_listen_events()
+        self._start_listen_events()
+
+    def _stop_listen_events(self):
+        logging.info("Stopping listening events")
+        if self.listen_event_handler:
+            self.listen_event_handler.stop()
+            self.notification_client.stop_listen_events()
+
+    def _start_listen_events(self):
+        last_event_version = self._get_event_version_to_listen()
+        logging.info("Starting listening events from version: {}".format(last_event_version))
+        self.listen_event_handler = self.notification_client.start_listen_events(WorkflowEventWatcher(self),
+                                                                                 version=last_event_version)
+
+    def _get_event_version_to_listen(self):
+        workflows = self.store.list_workflows()
+        if workflows is None:
+            return None
+        workflow_event_versions = [workflow.last_event_version for workflow in workflows
+                                   if workflow.last_event_version is not None]
+        if len(workflow_event_versions) == 0:
+            return None
+        last_event_version = min(workflow_event_versions)
+        return last_event_version
 
 
 class WorkflowEventWatcher(EventWatcher):

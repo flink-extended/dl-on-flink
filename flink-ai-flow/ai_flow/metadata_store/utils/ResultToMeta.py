@@ -104,4 +104,5 @@ class ResultToMeta:
                             context_extractor_in_bytes=workflow_result.context_extractor_in_bytes,
                             uuid=workflow_result.uuid,
                             scheduling_rules=scheduling_rules,
-                            graph=workflow_result.graph)
+                            graph=workflow_result.graph,
+                            last_event_version=workflow_result.last_event_version)

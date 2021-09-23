@@ -68,28 +68,31 @@ class WorkflowEventProcessor:
                 logging.error("Unexpected Exception", exc_info=e)
 
     def _process_event(self, event: BaseEvent):
-        subscribed_workflow = []
-        projects = self.store.list_projects(sys.maxsize, 0)
+        from ai_flow import ProjectMeta
+        projects: List[ProjectMeta] = self.store.list_projects(sys.maxsize, 0)
         if projects is None:
             return
         for project in projects:
             project_name = project.name
-            workflows = self._get_subscribed_workflow(event, project_name)
-            if len(workflows) > 0:
-                for workflow in workflows:
-                    subscribed_workflow.append((project_name, workflow))
+            workflows: List[WorkflowMeta] = self.store.list_workflows(project_name=project_name)
+            if workflows is None:
+                continue
+            for workflow in workflows:
+                if workflow.last_event_version is not None and workflow.last_event_version >= event.version:
+                    logging.info("Workflow {} last processed event version is {}, skipping event: {}"
+                                 .format(workflow.name, workflow.last_event_version, event))
+                    continue
 
-        for workflow_tuple in subscribed_workflow:
-            project_name, workflow = workflow_tuple
-            self._handle_event_for_workflow(project_name, workflow, event)
+                if self._is_subscribed(workflow, event):
+                    self._handle_event_for_workflow(project_name, workflow, event)
 
-    def _get_subscribed_workflow(self, event, project_name):
-        workflows: List[WorkflowMeta] = self.store.list_workflows(project_name=project_name)
-        if workflows is None:
-            subscribed_workflow = []
-        else:
-            subscribed_workflow = [workflow for workflow in workflows if self._is_subscribed(workflow, event)]
-        return subscribed_workflow
+                self._update_workflow_last_event_version(project_name, workflow, event)
+
+    def _update_workflow_last_event_version(self, project_name, workflow, event):
+        self.store.update_workflow(workflow.name, project_name,
+                                   context_extractor_in_bytes=workflow.context_extractor_in_bytes,
+                                   scheduling_rules=workflow.scheduling_rules,
+                                   last_event_version=event.version)
 
     def _is_subscribed(self, workflow: WorkflowMeta, event: BaseEvent):
         rules = workflow.scheduling_rules

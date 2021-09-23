@@ -411,7 +411,7 @@ class AbstractStore(object):
         pass
 
     def update_workflow(self, workflow_name, project_name, context_extractor_in_bytes, scheduling_rules,
-                        properties=None):
+                        properties=None, graph=None, last_event_version=None):
         """
         Update the workflow
 

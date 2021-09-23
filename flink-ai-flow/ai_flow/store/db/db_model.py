@@ -131,20 +131,22 @@ class SqlWorkflow(base, Base):
     context_extractor_in_bytes = Column(LargeBinary())
     graph = Column(Text)
     scheduling_rules = Column(Text)
+    last_event_version = Column(BigInteger)
 
     UniqueConstraint(project_id, name)
 
     project = relationship("SqlProject", backref=backref('workflow', cascade='all'))
 
     def __repr__(self):
-        return '<workflow ({}, {}, {}, {}, {}, {}, {}, {}, {}, {})>'.format(self.uuid, self.name, self.project_id,
-                                                                            self.properties,
-                                                                            self.create_time,
-                                                                            self.update_time,
-                                                                            self.is_deleted,
-                                                                            self.context_extractor_in_bytes,
-                                                                            self.graph,
-                                                                            self.scheduling_rules)
+        return '<workflow ({}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {})>'.format(self.uuid, self.name, self.project_id,
+                                                                                self.properties,
+                                                                                self.create_time,
+                                                                                self.update_time,
+                                                                                self.is_deleted,
+                                                                                self.context_extractor_in_bytes,
+                                                                                self.graph,
+                                                                                self.scheduling_rules,
+                                                                                self.latest_event_version)
 
 
 class SqlWorkflowContextEventHandlerState(base, Base):
@@ -508,11 +510,12 @@ class MongoWorkflow(Document):
     scheduling_rules = StringField()
     context_extractor_in_bytes = BinaryField()
     graph = StringField()
+    last_event_version = LongField()
 
     meta = {'db_alias': MONGO_DB_ALIAS_META_SERVICE}
 
     def __repr__(self):
-        return '<Document Workflow ({}, {}, {}, {}, {}, {}, {}, {}, {})>'.format(
+        return '<Document Workflow ({}, {}, {}, {}, {}, {}, {}, {}, {}, {})>'.format(
             self.uuid,
             self.name,
             self.project_id,
@@ -521,7 +524,8 @@ class MongoWorkflow(Document):
             self.update_time,
             self.is_deleted,
             self.context_extractor_in_bytes,
-            self.graph)
+            self.graph,
+            self.last_event_version)
 
 
 class MongoWorkflowContextEventHandlerState(Document):
