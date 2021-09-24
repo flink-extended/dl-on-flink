@@ -23,8 +23,6 @@ Deep Learning on Flink aims to integrate Flink and deep learning frameworks (e.g
 It runs the deep learning tasks inside a Flink operator, so that Flink can help establish a distributed environment, 
 manage the resource, read/write the records and handle the failures.
 
-Currently Deep Learning on Flink only supports TensorFlow.
-
 For more details, please check the [deep-learning-on-flink](deep-learning-on-flink) sub project.
 
 ## Contact Us
