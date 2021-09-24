@@ -81,11 +81,13 @@ class TestAIFlowOperator(unittest.TestCase):
             job_controller.get_result.side_effect = AirflowException("Boom! Shakalaka!")
             mock_handle = mock.MagicMock()
             job_controller.submit_job.return_value = mock_handle
-            self.assertEqual(None, self.op.execute({}))
-            job_controller.submit_job.assert_called_once()
-            job_controller.get_result.assert_called_once_with(job_handle=mock_handle, blocking=True)
-            job_controller.stop_job.assert_called_once_with(mock_handle, mock.ANY)
-            job_controller.cleanup_job.assert_called_once_with(mock_handle, mock.ANY)
+
+            with self.assertRaises(AirflowException):
+                self.assertEqual(None, self.op.execute({}))
+                job_controller.submit_job.assert_called_once()
+                job_controller.get_result.assert_called_once_with(job_handle=mock_handle, blocking=True)
+                job_controller.stop_job.assert_called_once_with(mock_handle, mock.ANY)
+                job_controller.cleanup_job.assert_called_once_with(mock_handle, mock.ANY)
 
     def test_execute_raise_unexpected_exception(self):
         with mock.patch.object(self.op, 'job_controller', wraps=self.op.job_controller) as job_controller:

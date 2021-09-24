@@ -160,6 +160,10 @@ class PythonJobController(JobController):
     def get_result(self, job_handle: JobHandle, blocking: bool = True) -> object:
         handle: PythonJobHandle = job_handle
         if blocking:
+            # We avoid wait on the process here. If the stop_job method is invoked by signal handler while waiting on
+            # process, the stop_job will trap in a infinite loop.
+            while handle.sub_process.poll() is None:
+                time.sleep(1)
             handle.sub_process.wait()
             self.log.info('Command exited with return code %s', handle.sub_process.returncode)
 
