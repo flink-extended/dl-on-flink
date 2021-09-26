@@ -27,6 +27,8 @@ workdir=$bin
 # In case of existed typing cause version conflict, uninstall it and then install AI Flow from source
 pip uninstall -y typing
 
+# Compile Web UI frontend of aiflow (yarn is required)
+bash "$workdir"/ai_flow/frontend/compile_frontend.sh
 # Compile Web UI assets of airflow (yarn is required)
 bash "$workdir"/lib/airflow/airflow/www/compile_assets.sh
 pip install "$workdir"/lib/notification_service

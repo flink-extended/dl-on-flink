@@ -1,4 +1,4 @@
-#
+#!/usr/bin/env bash
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -15,26 +15,15 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-#
-include requirements.txt
-graft airflow/www/templates
-graft airflow/www/static
-graft airflow/www_rbac
-graft airflow/www_rbac/static
-graft airflow/www_rbac/templates
-graft airflow/www_rbac/translations
-graft airflow/_vendor/
-include airflow/alembic.ini
-include airflow/api_connexion/openapi/v1.yaml
-include airflow/git_version
-include airflow/provider.yaml.schema.json
-include airflow/customized_form_field_behaviours.schema.json
-include airflow/serialization/schema.json
-include airflow/utils/python_virtualenv_script.jinja2
-graft airflow/config_templates
-graft bin/
-recursive-exclude airflow/www_rbac/node_modules *
-recursive-exclude airflow/providers *
-global-exclude __pycache__  *.pyc
-graft ai_flow/config_templates
-graft ai_flow/frontend/dist
+
+set -e
+
+cd "$( dirname "${BASH_SOURCE[0]}" )"
+
+# first bump up package.json manually, commit and tag
+if [[ -d ./dist ]]; then
+  rm -rf ./dist
+fi
+
+yarn install
+yarn run build
