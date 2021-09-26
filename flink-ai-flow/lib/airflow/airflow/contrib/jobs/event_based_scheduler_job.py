@@ -22,7 +22,6 @@ import sys
 import threading
 import time
 import traceback
-import datetime as dt
 from typing import Callable, List, Optional
 
 from airflow.contrib.jobs.periodic_manager import PeriodicManager
@@ -38,7 +37,7 @@ from airflow import models, settings
 from airflow.configuration import conf
 from airflow.executors.base_executor import BaseExecutor
 from airflow.jobs.base_job import BaseJob
-from airflow.models import DagModel
+from airflow.models import DagModel, BaseOperator
 from airflow.models.dag import DagEventDependencies, DAG
 from airflow.models.dagbag import DagBag
 from airflow.models.dagrun import DagRun
@@ -149,7 +148,7 @@ class EventBasedScheduler(LoggingMixin):
                     self._handle_task_status_changed(dagrun, event, session)
                     dag_run_id = DagRunId(dagrun.dag_id, dagrun.run_id)
                     self.task_event_manager.handle_event(dag_run_id, origin_event)
-                    tasks = self._find_scheduled_tasks(dagrun, session)
+                    tasks = self._find_downstream_tasks(event.task_id, dagrun, session)
                     self._send_scheduling_task_events(tasks, SchedulingAction.START)
                     if dagrun.state in State.finished:
                         self.mailbox.send_message(DagRunFinishedEvent(dagrun.dag_id, dagrun.execution_date).to_event())
@@ -177,12 +176,6 @@ class EventBasedScheduler(LoggingMixin):
                 self._stop_dag(event.dag_id, session)
             elif isinstance(event, DagRunFinishedEvent):
                 self._remove_periodic_events(event.dag_id, event.execution_date)
-                inactive_dagruns = self._find_inactive_dagruns(event.dag_id, session)
-                for execution_date in inactive_dagruns:
-                    dagrun = self._find_dagrun(event.dag_id, execution_date, session)
-                    if dagrun is not None:
-                        tasks = self._find_scheduled_tasks(dagrun, session)
-                        self._send_scheduling_task_events(tasks, SchedulingAction.START)
             elif isinstance(event, PeriodicEvent):
                 dag_runs = DagRun.find(dag_id=event.dag_id, execution_date=event.execution_date)
                 assert len(dag_runs) == 1
@@ -367,29 +360,6 @@ class EventBasedScheduler(LoggingMixin):
         )
         self.executor.schedule_task(task_key, scheduling_event.action)
 
-    @staticmethod
-    def _find_inactive_dagruns(dag_id, session) -> List[dt.datetime]:
-        running_dagruns = [
-            ed.execution_date for ed in session.query(DagRun.execution_date)
-                .filter(
-                DagRun.dag_id == dag_id,
-                DagRun.state == State.RUNNING
-            ).all()
-        ]
-        dagruns_has_running_task = [
-            ed.execution_date for ed in session.query(
-                TI.execution_date
-            ).filter(
-                TI.dag_id == dag_id,
-                TI.execution_date.in_(running_dagruns),
-                TI.state == State.RUNNING
-            )
-            .group_by(TI.dag_id, TI.execution_date)
-            .all()
-        ]
-        res = [i for i in running_dagruns if i not in dagruns_has_running_task]
-        return res
-
     def _find_dagruns_by_event(self, event, session) -> Optional[List[DagRun]]:
         affect_dag_runs = []
         event_key = EventKey(event.key, event.event_type, event.namespace, event.sender)
@@ -473,13 +443,12 @@ class EventBasedScheduler(LoggingMixin):
                 len(currently_active_runs) >= dag.max_active_runs
                 and dag_run.execution_date not in currently_active_runs
             ):
-                self.log.info(
+                self.log.warning(
                     "DAG %s already has %d active runs, not queuing any tasks for run %s",
                     dag.dag_id,
                     len(currently_active_runs),
                     dag_run.execution_date,
                 )
-                return None
 
         self._verify_integrity_if_dag_changed(dag_run=dag_run, session=session)
 
@@ -489,7 +458,7 @@ class EventBasedScheduler(LoggingMixin):
 
         query = (session.query(TI)
                  .outerjoin(TI.dag_run)
-                 .filter(or_(DR.run_id.is_(None), DR.run_type != DagRunType.BACKFILL_JOB))
+                 .filter(DR.run_id == dag_run.run_id)
                  .join(TI.dag_model)
                  .filter(not_(DM.is_paused))
                  .filter(TI.state == State.SCHEDULED)
@@ -500,6 +469,18 @@ class EventBasedScheduler(LoggingMixin):
             **skip_locked(session=session),
         ).all()
         return scheduled_tis
+
+    def _find_downstream_tasks(self, task_id, dag_run, session) -> Optional[List[TI]]:
+        tasks = self._find_scheduled_tasks(dag_run, session)
+        if not tasks or len(tasks) == 0:
+            return None
+        dag = self.dagbag.get_dag(dag_run.dag_id, session=session)
+        downstream_task_ids = dag.task_dict.get(task_id).downstream_task_ids
+        res = []
+        for task in tasks:
+            if task.task_id in downstream_task_ids:
+                res.append(task)
+        return res
 
     @provide_session
     def _verify_integrity_if_dag_changed(self, dag_run: DagRun, session=None):
@@ -520,6 +501,9 @@ class EventBasedScheduler(LoggingMixin):
     def _send_scheduling_task_event(self, ti: Optional[TI], action: SchedulingAction):
         if ti is None or action == SchedulingAction.NONE:
             return
+        with create_session() as session:
+            ti.state = State.QUEUED
+            session.commit()
         task_scheduling_event = TaskSchedulingEvent(
             ti.task_id,
             ti.dag_id,
@@ -755,7 +739,7 @@ class EventBasedSchedulerJob(BaseJob):
                 self.heartbeat(only_if_necessary=True)
             except Exception as e:
                 traceback.print_exc()
-                self.log.error('Scheduler error [%s]'.format(traceback.format_exc()))
+                self.log.error('Scheduler error [%s]', traceback.format_exc())
                 time.sleep(1)
         self.scheduler.stop_timer()
 
