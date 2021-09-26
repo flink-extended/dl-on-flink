@@ -22,14 +22,15 @@ import sys
 from logging.config import dictConfig
 from typing import List, Dict
 
-from flask import Flask, request
+from django.core.paginator import Paginator
+from flask import Flask, request, render_template
 from flask_cors import CORS
 from werkzeug.local import LocalProxy
 
-from ai_flow import WorkflowMeta
 from ai_flow.ai_graph.ai_graph import AIGraph
 from ai_flow.ai_graph.ai_node import AINode, ReadDatasetNode, WriteDatasetNode
 from ai_flow.ai_graph.data_edge import DataEdge
+from ai_flow.meta.workflow_meta import WorkflowMeta
 from ai_flow.plugin_interface.scheduler_interface import Scheduler, SchedulerFactory
 from ai_flow.store.abstract_store import Filters, AbstractStore
 from ai_flow.store.db.db_util import create_db_store
@@ -52,7 +53,7 @@ dictConfig({
     }
 })
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='./dist', template_folder='./dist', static_url_path='')
 CORS(app=app)
 
 store: AbstractStore = None
@@ -293,7 +294,12 @@ def build_filters(req: LocalProxy):
     return filters
 
 
-@app.route('/api/project')
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
+@app.route('/project')
 def project_metadata():
     project_list = store.list_projects(page_size=int(request.args.get('pageSize')),
                                        offset=(int(request.args.get('pageNo')) - 1) * int(request.args.get('pageSize')),
@@ -301,7 +307,7 @@ def project_metadata():
     return dumps({'data': project_list if project_list else []})
 
 
-@app.route('/api/workflow')
+@app.route('/workflow')
 def workflow_metadata():
     workflow_list = store.list_workflows(page_size=int(request.args.get('pageSize')),
                                          offset=(int(request.args.get('pageNo')) - 1) * int(
@@ -310,7 +316,7 @@ def workflow_metadata():
     return dumps({'data': workflow_list if workflow_list else []})
 
 
-@app.route('/api/workflow/data-view')
+@app.route('/workflow/data-view')
 def data_view():
     project_id = request.args.get('project_id')
     workflow_name = request.args.get('workflow_name')
@@ -324,7 +330,7 @@ def data_view():
         return generate_graph(workflow_meta)
 
 
-@app.route('/api/workflow/task-view')
+@app.route('/workflow/task-view')
 def task_view():
     project_id = request.args.get('project_id')
     workflow_name = request.args.get('workflow_name')
@@ -338,23 +344,25 @@ def task_view():
         return '{}/graph?dag_id={}'.format(airflow, '{}.{}'.format(project_meta.name, workflow_name))
 
 
-@app.route('/api/workflow-execution')
+@app.route('/workflow-execution')
 def workflow_execution_metadata():
     project_name = request.args.get('project_name')
     workflow_name = request.args.get('workflow_name')
     workflow_execution_list = scheduler.list_workflow_executions(project_name,
                                                                  workflow_name) if project_name and workflow_name else None
-    return dumps({'data': workflow_execution_list if workflow_execution_list else []})
+    return dumps({'data': Paginator(workflow_execution_list, int(request.args.get('pageSize'))).get_page(
+        int(request.args.get('pageNo'))).object_list if workflow_execution_list else []})
 
 
-@app.route('/api/job-execution')
+@app.route('/job-execution')
 def job_execution_metadata():
     workflow_execution_id = request.args.get('workflow_execution_id')
     job_execution_list = scheduler.list_job_executions(workflow_execution_id) if workflow_execution_id else None
-    return dumps({'data': job_execution_list if job_execution_list else []})
+    return dumps({'data': Paginator(job_execution_list, int(request.args.get('pageSize'))).get_page(
+        int(request.args.get('pageNo'))).object_list if job_execution_list else []})
 
 
-@app.route('/api/dataset')
+@app.route('/dataset')
 def dataset_metadata():
     dataset_list = store.list_datasets(page_size=int(request.args.get('pageSize')),
                                        offset=(int(request.args.get('pageNo')) - 1) * int(request.args.get('pageSize')),
@@ -362,7 +370,7 @@ def dataset_metadata():
     return dumps({'data': dataset_list if dataset_list else []})
 
 
-@app.route('/api/model')
+@app.route('/model')
 def model_metadata():
     model_list = store.list_registered_models(page_size=int(request.args.get('pageSize')),
                                               offset=(int(request.args.get('pageNo')) - 1) * int(
@@ -372,7 +380,7 @@ def model_metadata():
                                 model_list] if model_list else []})
 
 
-@app.route('/api/model-version')
+@app.route('/model-version')
 def model_version_metadata():
     model_version_list = store.list_model_versions(page_size=int(request.args.get('pageSize')),
                                                    offset=(int(request.args.get('pageNo')) - 1) * int(
@@ -382,7 +390,7 @@ def model_version_metadata():
         {'data': [model_version.__dict__ for model_version in model_version_list] if model_version_list else []})
 
 
-@app.route('/api/artifact')
+@app.route('/artifact')
 def artifact_metadata():
     artifact_list = store.list_artifacts(page_size=int(request.args.get('pageSize')),
                                          offset=(int(request.args.get('pageNo')) - 1) * int(
@@ -392,34 +400,31 @@ def artifact_metadata():
 
 
 def main(argv):
-    port = ''
     store_uri = ''
     scheduler_class = ''
     airflow_web_server_uri = ''
     try:
-        opts, args = getopt.getopt(argv, "hp:s:c:a:",
-                                   ["port=", "store_uri=", "scheduler_class=", "airflow_web_server_uri="])
+        opts, args = getopt.getopt(argv, "hs:c:a:",
+                                   ["store_uri=", "scheduler_class=", "airflow_web_server_uri="])
     except getopt.GetoptError:
-        print('usage: web_server.py -p <port> -s <store_uri> -c <scheduler_class> -a <airflow_web_server_uri>')
+        print('usage: web_server.py -c <scheduler_class> -a <airflow_web_server_uri>')
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print('usage: web_server.py -p <port> -s <store_uri> -c <scheduler_class> -a <airflow_web_server_uri>')
+            print('usage: web_server.py -s <store_uri> -c <scheduler_class> -a <airflow_web_server_uri>')
             sys.exit()
-        elif opt in ("-p", "--port"):
-            port = arg
         elif opt in ("-s", "--store_uri"):
             store_uri = arg
         elif opt in ("-c", "--scheduler_class"):
             scheduler_class = arg
         elif opt in ("-a", "--airflow_web_server_uri"):
             airflow_web_server_uri = arg
-    if not port:
-        port = 50053
     if not scheduler_class:
         scheduler_class = 'ai_flow_plugins.scheduler_plugins.airflow.airflow_scheduler.AirFlowScheduler'
+    if not airflow_web_server_uri:
+        airflow_web_server_uri = 'http://localhost:8080'
     init(store_uri, scheduler_class, airflow_web_server_uri)
-    app.run(host='127.0.0.1', port=port)
+    app.run(host='127.0.0.1', port=8000)
 
 
 if __name__ == '__main__':
