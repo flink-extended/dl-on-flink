@@ -47,6 +47,10 @@ def remove_installed_airflow():
         else:
             remove_if_exists(abs_path)
 
+def compile_frontend():  # noqa
+    # """Run a command to compile and build aiflow frontend."""
+    subprocess.check_call('./ai_flow/frontend/compile_frontend.sh')
+
 
 def compile_assets():  # noqa
     # """Run a command to compile and build airflow assets."""
@@ -69,6 +73,9 @@ try:
             copytree(AIRFLOW_DIR + "/airflow", CURRENT_DIR + "/airflow")
     else:
         remove_installed_airflow()
+
+    if os.getenv('INSTALL_AIFLOW_WITHOUT_FRONTEND') != 'true':
+        compile_frontend()
 
     require_file = '{}/{}'.format(os.path.dirname(os.path.abspath(__file__)), "requirements.txt")
     with open(require_file) as f:
