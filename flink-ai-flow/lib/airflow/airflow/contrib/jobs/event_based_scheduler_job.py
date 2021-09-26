@@ -474,13 +474,9 @@ class EventBasedScheduler(LoggingMixin):
         tasks = self._find_scheduled_tasks(dag_run, session)
         if not tasks or len(tasks) == 0:
             return None
-        downstream_task_ids = set()
-        res = []
         dag = self.dagbag.get_dag(dag_run.dag_id, session=session)
-        for op in dag.tasks:
-            if op.task_id == task_id:
-                downstream_task_ids = op.downstream_task_ids
-                break
+        downstream_task_ids = dag.task_dict.get(task_id).downstream_task_ids
+        res = []
         for task in tasks:
             if task.task_id in downstream_task_ids:
                 res.append(task)
