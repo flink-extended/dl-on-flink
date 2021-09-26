@@ -14,6 +14,7 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
+import datetime
 import os
 import pickle
 import sqlalchemy
@@ -631,46 +632,30 @@ class TestEventBasedScheduler(unittest.TestCase):
             dag_runs = scheduler._find_dagruns_by_event(BaseEvent(key='k', value='v'), session)
             self.assertEqual(0, len(dag_runs))
 
-    def test_find_inactive_dagruns(self):
-        dag_name = 'TEST_DAG_ID'
-        from airflow import DAG
-        from airflow.operators.dummy import DummyOperator
-        dag = DAG(
-            dag_name,
-            start_date=timezone.datetime(2016, 1, 1),
-            end_date=timezone.datetime(2016, 1, 3),
-        )
+    def test__find_downstream_tasks(self):
+        dag_file = os.path.join(TEST_DAG_FOLDER, 'test_event_based_executor.py')
+        scheduler = EventBasedSchedulerJob(
+            dag_directory=dag_file,
+            server_uri="localhost:{}".format(self.port),
+            executor=LocalExecutor(3),
+            max_runs=-1,
+            refresh_dag_dir_interval=30
+        ).scheduler
+        dag = DagBag(dag_file).dags['test_event_based_dag']
+        dag.sync_to_db()
+        SerializedDagModel.write_dag(dag=dag)
+
         dr1 = dag.create_dagrun(state=State.RUNNING,
-                                execution_date=timezone.datetime(2016, 1, 1),
-                                run_type=DagRunType.SCHEDULED)
-
-        dr2 = dag.create_dagrun(state=State.NONE,
-                                execution_date=timezone.datetime(2016, 1, 2),
-                                run_type=DagRunType.SCHEDULED)
-        dr3 = dag.create_dagrun(state=State.NONE,
-                                execution_date=timezone.datetime(2016, 1, 3),
-                                run_type=DagRunType.SCHEDULED)
-        op1 = DummyOperator(
-            task_id="task_1",
-            owner="airflow",
-        )
-        op2 = DummyOperator(
-            task_id="task_2",
-            owner="airflow",
-        )
-        dag.add_tasks([op1, op2])
-
-        ti1 = TaskInstance(task=op1, execution_date=dr1.execution_date, state=State.RUNNING)
-        ti2 = TaskInstance(task=op1, execution_date=dr2.execution_date, state=State.NONE)
-        ti3 = TaskInstance(task=op2, execution_date=dr2.execution_date, state=State.RUNNING)
-        ti4 = TaskInstance(task=op1, execution_date=dr3.execution_date, state=State.SCHEDULED)
-
+                                execution_date=timezone.datetime(2020, 1, 2),
+                                run_type=DagRunType.SCHEDULED,
+                                context='test_context')
+        ti1 = TaskInstance(task=dag.task_dict.get('sleep_1000_secs'), execution_date=dr1.execution_date,
+                           state=State.SUCCESS)
+        ti2 = TaskInstance(task=dag.task_dict.get('sleep'), execution_date=dr1.execution_date,
+                           state=State.NONE)
         with create_session() as session:
-            session.add(ti1)
-            session.add(ti2)
-            session.add(ti3)
-            session.add(ti4)
-            session.flush()
-            dag_runs = EventBasedScheduler._find_inactive_dagruns(session, dag_name)
-            self.assertEqual(1, len(dag_runs))
-            self.assertEqual(timezone.datetime(2016, 1, 3), dag_runs[0])
+            session.merge(ti1)
+            session.merge(ti2)
+            res = scheduler._find_downstream_tasks('sleep_1000_secs', dr1, session)
+            self.assertEqual(1, len(res))
+            self.assertEqual('sleep', res[0].task_id)
