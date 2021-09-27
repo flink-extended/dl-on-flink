@@ -48,6 +48,7 @@ if [[ ! -f "${AIRFLOW_HOME}/airflow.cfg" ]] ; then
       gsub(\"# scheduler =\", \"scheduler = EventBasedSchedulerJob\"); \
       gsub(\"execute_tasks_new_python_interpreter = False\", \"execute_tasks_new_python_interpreter = True\"); \
       gsub(\"min_serialized_dag_update_interval = 30\", \"min_serialized_dag_update_interval = 0\"); \
+      gsub(\"hostname_callable = socket.getfqdn\", \"hostname_callable = socket.gethostname\"); \
       print \$0}" airflow.cfg.tmpl > airflow.cfg
   rm airflow.cfg.tmpl >/dev/null 2>&1 || true
 
