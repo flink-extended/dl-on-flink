@@ -137,25 +137,6 @@ class NotificationClient(BaseNotification):
         self._initial_seq_num = None if INITIAL_SEQUENCE_NUMBER not in self.conf \
             else int(self.conf.get(INITIAL_SEQUENCE_NUMBER))
 
-        if self._enable_idempotence:
-            if self._client_id is None:
-                request = RegisterClientRequest(
-                    client_meta=ClientMeta(namespace=self._default_namespace, sender=self._sender))
-                response = self.notification_stub.registerClient(request)
-                if response.return_code == ReturnStatus.SUCCESS:
-                    self._client_id = response.client_id
-                else:
-                    raise Exception(response.return_msg)
-            else:
-                request = ClientIdRequest(client_id=self._client_id)
-                response = self.notification_stub.isClientExists(request)
-                if response.return_code != ReturnStatus.SUCCESS:
-                    raise Exception("Failed to close notification client: {}".format(self))
-                elif not response.is_exists:
-                    raise Exception("Init notification client with a client id which have not registered.")
-            seq_num = 0 if self._initial_seq_num is None else int(self._initial_seq_num)
-            self.sequence_num_manager = SequenceNumberManager(seq_num)
-
         if len(server_uri_list) > 1 or self.enable_ha:
             self.living_members = []
             self.current_uri = None
@@ -183,6 +164,24 @@ class NotificationClient(BaseNotification):
             self.notification_stub = self._wrap_rpcs(self.notification_stub, server_uri)
             self.list_member_thread = threading.Thread(target=self._list_members, daemon=True)
             self.list_member_thread.start()
+        if self._enable_idempotence:
+            if self._client_id is None:
+                request = RegisterClientRequest(
+                    client_meta=ClientMeta(namespace=self._default_namespace, sender=self._sender))
+                response = self.notification_stub.registerClient(request)
+                if response.return_code == ReturnStatus.SUCCESS:
+                    self._client_id = response.client_id
+                else:
+                    raise Exception(response.return_msg)
+            else:
+                request = ClientIdRequest(client_id=self._client_id)
+                response = self.notification_stub.isClientExists(request)
+                if response.return_code != ReturnStatus.SUCCESS:
+                    raise Exception("Failed to close notification client: {}".format(self))
+                elif not response.is_exists:
+                    raise Exception("Init notification client with a client id which have not registered.")
+            seq_num = 0 if self._initial_seq_num is None else int(self._initial_seq_num)
+            self.sequence_num_manager = SequenceNumberManager(seq_num)
 
     def close(self):
         if self._client_id is not None:
