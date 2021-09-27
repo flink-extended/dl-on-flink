@@ -173,5 +173,15 @@ class TestDagGenerator(unittest.TestCase):
                         '\'test_project.test_dag_generator.context_extractor.pickle\')' in code)
         self.assertTrue('dag.context_extractor = AIFlowContextExtractorAdaptor(context_extractor_pickle_path)' in code)
 
+    def test_one_task_with_airflow_args(self):
+        with af.job_config('task_6'):
+            af.user_define_operation(processor=None)
+        w = af.workflow_operation.submit_workflow(workflow_name='test_dag_generator')
+        code = w.properties.get('code')
+        self.assertTrue('op_0 = AIFlowOperator' in code)
+        self.assertTrue('retries=2' in code)
+        self.assertTrue('retry_delay=timedelta(seconds=5)' in code)
+
+
 if __name__ == '__main__':
     unittest.main()
