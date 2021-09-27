@@ -697,7 +697,6 @@ class EventBasedSchedulerJob(BaseJob):
             self.dag_trigger.start()
             self.task_event_manager.start()
             self.executor.job_id = self.id
-            self.executor.start()
             self.periodic_manager.start()
 
             self.register_signals()
@@ -713,6 +712,7 @@ class EventBasedSchedulerJob(BaseJob):
             self._set_event_progress()
 
             self._start_listen_events()
+            self.executor.start()
 
             self._run_scheduler_loop()
 
