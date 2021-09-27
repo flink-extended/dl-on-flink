@@ -37,4 +37,7 @@ recursive-exclude airflow/www_rbac/node_modules *
 recursive-exclude airflow/providers *
 global-exclude __pycache__  *.pyc
 graft ai_flow/config_templates
+prune ai_flow/frontend
 graft ai_flow/frontend/dist
+include ai_flow/frontend/__init__.py
+include ai_flow/frontend/web_server.py

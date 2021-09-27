@@ -45,3 +45,6 @@ from ai_flow.meta.job_meta import *
 from ai_flow.meta.model_meta import *
 from ai_flow.meta.model_meta import *
 from ai_flow.meta.project_meta import *
+
+# ai_flow.frontend
+import ai_flow.frontend.web_server

@@ -36,3 +36,12 @@ done
 
 rm ${AIFLOW_PID_DIR}/aiflow_server.pid
 echo "AIFlow Server killed"
+
+echo "Killing AIFlow Web"
+for ((i=1;i<=3;i++))
+do
+  kill $(cat ${AIFLOW_PID_DIR}/aiflow_web_server.pid) >/dev/null 2>&1 && sleep 1
+done
+
+rm ${AIFLOW_PID_DIR}/aiflow_web_server.pid
+echo "AIFlow Web killed"

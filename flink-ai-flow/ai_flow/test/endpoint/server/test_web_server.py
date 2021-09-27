@@ -22,7 +22,7 @@ import unittest
 from cloudpickle import cloudpickle
 
 from ai_flow import WorkflowMeta
-from ai_flow.endpoint.server.web_server import generate_graph
+from ai_flow.frontend.web_server import generate_graph
 from ai_flow.test.scheduler_service.service.test_workflow_event_processor import MyContextExtractor
 from ai_flow.workflow.control_edge import WorkflowSchedulingRule, WorkflowAction, MeetAllEventCondition
 
