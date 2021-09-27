@@ -35,3 +35,10 @@ task_5:
   job_type: mock
   periodic_config:
     interval: "1,1,1,1"
+
+task_6:
+  job_type: mock
+  properties:
+    airflow_args:
+      retries: 2
+      retry_delay: timedelta(seconds=5)
