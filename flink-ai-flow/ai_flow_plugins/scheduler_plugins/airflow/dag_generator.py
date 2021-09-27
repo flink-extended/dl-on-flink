@@ -86,17 +86,12 @@ class DAGGenerator(object):
         OP_DEFINE = """
 job_json_{0} = '{1}'
 job_{0} = json_utils.loads(job_json_{0})
-op_{0} = AIFlowOperator(task_id='{2}', job=job_{0}, workflow=workflow, dag=dag)
-"""
-        OP_DEFINE_WITH_ARGS = """
-job_json_{0} = '{1}'
-job_{0} = json_utils.loads(job_json_{0})
 op_{0} = AIFlowOperator(task_id='{2}', job=job_{0}, workflow=workflow, dag=dag"""
         if 'airflow_args' in job.job_config.properties and len(job.job_config.properties.get('airflow_args')) > 0:
 
-            op_code = OP_DEFINE_WITH_ARGS.format(self.op_count,
-                                                 json_utils.dumps(job),
-                                                 job.job_name)
+            op_code = OP_DEFINE.format(self.op_count,
+                                       json_utils.dumps(job),
+                                       job.job_name)
             airflow_args = job.job_config.properties.get('airflow_args')
             end_code = ''
             for k, v in airflow_args.items():
@@ -107,7 +102,7 @@ op_{0} = AIFlowOperator(task_id='{2}', job=job_{0}, workflow=workflow, dag=dag""
         else:
             return 'op_{}'.format(self.op_count), OP_DEFINE.format(self.op_count,
                                                                    json_utils.dumps(job),
-                                                                   job.job_name)
+                                                                   job.job_name) + ')'
 
     def generate_upstream(self, op_1, op_2):
         return DAGTemplate.UPSTREAM_OP.format(op_1, op_2)
