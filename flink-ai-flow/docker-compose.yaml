@@ -1,0 +1,128 @@
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#
+---
+version: '3'
+x-airflow-common:
+  &airflow-common
+  image: ai-flow:latest
+  # build: .
+  environment:
+    &airflow-common-env
+    AIRFLOW_HOME: /usr/local/airflow
+    MYSQL_CONN: mysql://root@mysql/airflow?charset=utf8mb4
+    BROKER_URL: redis://:@redis:6379/0
+    RESULT_BACKEND: redis://:@redis:6379/0
+    NOTIFICATION_SERVER_URI: notification-server-1:50052,notification-server-2:50052
+  depends_on:
+    redis:
+      condition: service_healthy
+
+services:
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 30s
+      retries: 50
+    restart: always
+
+  aiflow-server:
+    <<: *airflow-common
+    stdin_open: true
+    tty: true
+    entrypoint: /bin/bash
+    cap_add:
+      - SYS_PTRACE
+    ports:
+      - "8080:8080"
+      - "50051:50051"
+    restart: always
+    depends_on:
+      airflow-worker:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+
+  mysql:
+    image: mysql:8
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_DATABASE=airflow
+    volumes:
+      - ../mysql/conf.d:/etc/mysql/conf.d:ro
+      - /dev/urandom:/dev/random
+      - mysql-db-volume:/var/lib/mysql
+    ports:
+      - 3307:3306
+    command: ['mysqld', '--character-set-server=utf8mb4',
+              '--collation-server=utf8mb4_unicode_ci']
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: always
+
+  notification-server:
+    <<: *airflow-common
+    command: /bin/bash -c "
+      start_notification_service.py --database-conn=$${MYSQL_CONN} --enable-ha=True --port=50052
+      && /bin/bash"
+    scale: 2
+    healthcheck:
+      disable: true
+    ports:
+      - 50052
+
+  airflow-worker:
+    <<: *airflow-common
+    command: /bin/bash -c "
+        init-airflow-with-celery-executor.sh $${MYSQL_CONN} $${BROKER_URL} $${RESULT_BACKEND}
+        && airflow celery worker"
+    ports:
+      - 8793
+    scale: 3
+    healthcheck:
+      test:
+        - "CMD-SHELL"
+        - 'celery --app airflow.executors.celery_executor.app inspect ping -d "celery@$${HOSTNAME}"'
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: always
+
+  flower:
+    <<: *airflow-common
+    command: /bin/bash -c "
+        init-airflow-with-celery-executor.sh $${MYSQL_CONN} $${BROKER_URL} $${RESULT_BACKEND}
+        && airflow celery flower"
+    ports:
+      - 5555:5555
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:5555/"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: always
+
+volumes:
+  mysql-db-volume:
