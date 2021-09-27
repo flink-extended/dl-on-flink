@@ -54,9 +54,9 @@ def proto_to_member(member_proto):
 
 
 def sleep_and_detecting_running(interval_ms, is_running_callable, min_interval_ms=500):
-    start_time = time.time_ns() / 1000000
-    while is_running_callable() and time.time_ns() / 1000000 < start_time + interval_ms:
-        remaining = time.time_ns() / 1000000 - start_time
+    start_time = time.monotonic() * 1000
+    while is_running_callable() and time.monotonic() * 1000 < start_time + interval_ms:
+        remaining = time.monotonic() * 1000 - start_time
         if remaining > min_interval_ms:
             time.sleep(min_interval_ms / 1000)
         else:
