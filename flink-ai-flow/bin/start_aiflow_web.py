@@ -19,15 +19,23 @@
 #
 import os
 import signal
+import logging
+
 from subprocess import Popen
 
 import ai_flow
 
 
-def stop_web():
+def stop_web(signum, frame):
     global sub_process
     if sub_process:
-        sub_process.kill()
+        try:
+            sub_process.terminate()
+        except Exception as e:
+            logging.error("Fail to terminate process pid: {}, killing the process with SIGKILL"
+                          .format(sub_process.pid))
+        finally:
+            sub_process.kill()
 
 
 if __name__ == '__main__':

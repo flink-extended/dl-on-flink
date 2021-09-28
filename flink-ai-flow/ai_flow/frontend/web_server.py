@@ -399,19 +399,25 @@ def artifact_metadata():
     return dumps({'data': artifact_list if artifact_list else []})
 
 
+usage_message = """
+usage: web_server.py -c <scheduler_class> -a <airflow_web_server_uri> [-H <host>] [-p <port>]
+"""
+
 def main(argv):
     store_uri = ''
     scheduler_class = ''
     airflow_web_server_uri = ''
+    web_server_host = ''
+    web_server_port = ''
     try:
-        opts, args = getopt.getopt(argv, "hs:c:a:",
-                                   ["store_uri=", "scheduler_class=", "airflow_web_server_uri="])
+        opts, args = getopt.getopt(argv, "hs:c:a:H:p:",
+                                   ["store_uri=", "scheduler_class=", "airflow_web_server_uri=", "host=", "port="])
     except getopt.GetoptError:
-        print('usage: web_server.py -c <scheduler_class> -a <airflow_web_server_uri>')
+        print(usage_message)
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print('usage: web_server.py -s <store_uri> -c <scheduler_class> -a <airflow_web_server_uri>')
+            print(usage_message)
             sys.exit()
         elif opt in ("-s", "--store_uri"):
             store_uri = arg
@@ -419,12 +425,20 @@ def main(argv):
             scheduler_class = arg
         elif opt in ("-a", "--airflow_web_server_uri"):
             airflow_web_server_uri = arg
+        elif opt in ("-H", "--host"):
+            web_server_host = arg
+        elif opt in ("-p", "--port"):
+            web_server_port = arg
     if not scheduler_class:
         scheduler_class = 'ai_flow_plugins.scheduler_plugins.airflow.airflow_scheduler.AirFlowScheduler'
     if not airflow_web_server_uri:
         airflow_web_server_uri = 'http://localhost:8080'
+    if not web_server_host:
+        web_server_host = '127.0.0.1'
+    if not web_server_port:
+        web_server_port = '8000'
     init(store_uri, scheduler_class, airflow_web_server_uri)
-    app.run(host='127.0.0.1', port=8000)
+    app.run(host=web_server_host, port=int(web_server_port))
 
 
 if __name__ == '__main__':
