@@ -29,6 +29,7 @@ from notification_service.util.utils import get_ip_addr
 def start_notification_service(port: int = 50052,
                                db_conn: str = None,
                                enable_ha: bool = False,
+                               advertised_uri: str = None,
                                create_table_if_not_exists: bool = True):
     if db_conn:
         storage = DbEventStorage(db_conn, create_table_if_not_exists)
@@ -36,7 +37,7 @@ def start_notification_service(port: int = 50052,
         raise Exception('Failed to start notification service without database connection info.')
 
     if enable_ha:
-        server_uri = get_ip_addr() + ':' + str(port)
+        server_uri = advertised_uri if advertised_uri is not None else get_ip_addr() + ':' + str(port)
         ha_storage = DbHighAvailabilityStorage(db_conn=db_conn)
         ha_manager = SimpleNotificationServerHaManager()
         service = HighAvailableNotificationService(
@@ -62,6 +63,9 @@ def _prepare_args():
                         help='Database connection info')
     parser.add_argument('--enable-ha', type=bool, default=False,
                         help='Whether to start a notification service with HA enabled, default is False')
+    parser.add_argument('--advertised-uri', type=str, default=None,
+                        help='Hostname and port the server will advertise to clients when HA enabled. '
+                             'If not set, it will use the local ip and configured port')
     return parser.parse_args()
 
 
@@ -71,7 +75,9 @@ if __name__ == '__main__':
     ns_port = args.port
     database_conn = args.database_conn
     enable_ha = args.enable_ha
+    advertised_uri = args.advertised_uri
 
     start_notification_service(port=ns_port,
                                db_conn=database_conn,
-                               enable_ha=enable_ha)
+                               enable_ha=enable_ha,
+                               advertised_uri=advertised_uri)
