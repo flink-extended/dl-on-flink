@@ -162,11 +162,14 @@ class SubDagOperator(BaseSensorOperator):
                     dag_id=self.subdag.dag_id,
                     execution_date=dag_run.execution_date
                 ).to_event()
-                client = NotificationClient(server_uri=context['notification_server_uri'],
-                                            default_namespace=dag_run_created_event.namespace,
-                                            sender=dag_run_created_event.sender)
-                self.log.info("SubDagOperator sending event: {}".format(dag_run_created_event))
-                client.send_event(dag_run_created_event)
+                try:
+                    client = NotificationClient(server_uri=context['notification_server_uri'],
+                                                default_namespace=dag_run_created_event.namespace,
+                                                sender=dag_run_created_event.sender)
+                    self.log.info("SubDagOperator sending event: {}".format(dag_run_created_event))
+                    client.send_event(dag_run_created_event)
+                finally:
+                    client.close()
         else:
             self.log.info("Found existing DagRun: %s", dag_run.run_id)
             if dag_run.state == State.FAILED:
