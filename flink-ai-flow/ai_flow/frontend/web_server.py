@@ -299,6 +299,16 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/metadata/<meta>')
+def metadata(meta):
+    return render_template('index.html')
+
+
+@app.route('/graph/<project_id>/<workflow_name>')
+def graph(project_id, workflow_name):
+    return render_template('index.html')
+
+
 @app.route('/project')
 def project_metadata():
     project_list = store.list_projects(page_size=int(request.args.get('pageSize')),
