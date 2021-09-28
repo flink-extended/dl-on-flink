@@ -15,6 +15,8 @@
 # specific language governing permissions and limitations
 # under the License.
 import os
+from datetime import datetime, date, time as d_time, timedelta
+
 import numpy as np
 import time
 import uuid
@@ -82,24 +84,29 @@ class KafkaUtil(object):
     def list_topics(self):
         return self.admin_client.list_topics()
 
-    def producer_loop(self, file_path, topic, max_num=None, interval=10):
+    def producer_loop(self, file_path, topic, interval=10, days=2):
         producer = KafkaProducer(bootstrap_servers=[self.bootstrap_servers])
         mnist_data = MNISTData(file_path)
         csv_buffer = CSVBuffer()
-        np.savetxt(csv_buffer, mnist_data.test_data(), '%d', ',')
+        np.savetxt(csv_buffer, mnist_data.test_data(), '%d')
         num = 0
-        while True:
-            timestamp = str(time.time_ns())
-            for line in csv_buffer.buffer:
-                l = '{},{}'.format(line, timestamp)
+        current_datetime = datetime.combine(date.today(), d_time())
+        second = timedelta(seconds=1)
+        expect_interval_ms = interval / 3600 * 1000
+        for hour in range(days * 24):
+            idx = np.random.choice(np.arange(len(csv_buffer.buffer)), 3600, replace=False)
+
+            for i in idx:
+                expect_time = time.time_ns() // 1000_000 + expect_interval_ms
+                sample = '{},{}'.format(csv_buffer.buffer[i], current_datetime.isoformat(' '))
                 producer.send(topic, key=bytes(str(uuid.uuid1()), encoding='utf8'),
-                              value=bytes(l, encoding='utf8'))
-            if 0 == num % 5:
-                print("send data {}".format(num))
-            num += 1
-            time.sleep(interval)
-            if max_num is not None and num > max_num:
-                break
+                              value=bytes(sample, encoding='utf8'))
+                current_datetime += second
+
+                sleep_time = (expect_time - time.time_ns() // 1000_000) / 1000
+                if sleep_time > 0:
+                    time.sleep(sleep_time)
+            print("current datetime {}".format(current_datetime))
 
     def clear_topic(self, topic):
         self.delete_topic(topic)
@@ -118,7 +125,10 @@ class KafkaUtil(object):
 
 
 if __name__ == '__main__':
-    pass
+    DATASET_URI = os.path.abspath(os.path.join(__file__, "../../../..")) + '/dataset_data/mnist_train.npz'
+
+    k = KafkaUtil('localhost:9092')
+    k.producer_loop(DATASET_URI, 'test')
 
 
 
