@@ -30,13 +30,13 @@ fi
 
 echo "Starting AIFlow Server"
 LOG_FILE_NAME=aiflow-server-$(date "+%Y%m%d-%H%M%S").log
-start_aiflow.py > ${AIFLOW_LOG_DIR}/${LOG_FILE_NAME} 2>&1 &
+${BIN}/start_aiflow.py > ${AIFLOW_LOG_DIR}/${LOG_FILE_NAME} 2>&1 &
 echo $! > ${AIFLOW_PID_DIR}/aiflow_server.pid
 echo "AIFlow Server started"
 
 echo "Starting AIFlow Web"
 WEB_LOG_FILE_NAME=aiflow-webserver-$(date "+%Y%m%d-%H%M%S").log
-start_aiflow_web.py > ${AIFLOW_LOG_DIR}/${WEB_LOG_FILE_NAME} 2>&1 &
+${BIN}/start_aiflow_web.py > ${AIFLOW_LOG_DIR}/${WEB_LOG_FILE_NAME} 2>&1 &
 echo $! > ${AIFLOW_PID_DIR}/aiflow_web_server.pid
 echo "AIFlow Web started"
 
