@@ -33,13 +33,16 @@ def stop_web(signum, frame):
             sub_process.terminate()
         except Exception as e:
             logging.error("Fail to terminate process pid: {}, killing the process with SIGKILL"
-                          .format(sub_process.pid))
+                          .format(sub_process.pid), exc_info=e)
         finally:
             sub_process.kill()
 
 
 if __name__ == '__main__':
     signal.signal(signal.SIGTERM, stop_web)
-    aiflow_web_command = ['python', ai_flow.frontend.web_server.__file__, '-s', os.environ["AIFLOW_DB_CONN"]]
+    aiflow_web_command = ['python', ai_flow.frontend.web_server.__file__,
+                          '-s', os.environ["AIFLOW_DB_CONN"],
+                          '-H', os.environ["AIFLOW_WEB_SERVER_HOST"],
+                          '-p', os.environ["AIFLOW_WEB_SERVER_PORT"]]
     sub_process = Popen(aiflow_web_command)
     sub_process.wait()
