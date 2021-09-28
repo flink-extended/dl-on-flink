@@ -27,7 +27,6 @@ x-airflow-common:
     MYSQL_CONN: mysql://root@mysql/airflow?charset=utf8mb4
     BROKER_URL: redis://:@redis:6379/0
     RESULT_BACKEND: redis://:@redis:6379/0
-    NOTIFICATION_SERVER_URI: notification-server-1:50052,notification-server-2:50052
   depends_on:
     redis:
       condition: service_healthy
@@ -81,17 +80,6 @@ services:
       timeout: 10s
       retries: 5
     restart: always
-
-  notification-server:
-    <<: *airflow-common
-    command: /bin/bash -c "
-      start_notification_service.py --database-conn=$${MYSQL_CONN} --enable-ha=True --port=50052
-      && /bin/bash"
-    scale: 2
-    healthcheck:
-      disable: true
-    ports:
-      - 50052
 
   airflow-worker:
     <<: *airflow-common
