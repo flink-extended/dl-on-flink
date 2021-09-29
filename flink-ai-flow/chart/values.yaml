@@ -118,6 +118,30 @@ ingress:
     # Http paths to add to the web Ingress after the default path
     succeedingPaths: []
 
+  # Configs for the Ingress of the aiflow web Service
+  aiflowWeb:
+    # Annotations for the web Ingress
+    annotations: {}
+
+    # The path for the web Ingress
+    path: ""
+
+    # The hostname for the web Ingress
+    host: ""
+
+    # configs for web Ingress TLS
+    tls:
+      # Enable TLS termination for the web Ingress
+      enabled: false
+      # the name of a pre-created Secret containing a TLS private key and certificate
+      secretName: ""
+
+    # HTTP paths to add to the web Ingress before the default path
+    precedingPaths: []
+
+    # Http paths to add to the web Ingress after the default path
+    succeedingPaths: []
+
   # Configs for the Ingress of the flower Service
   flower:
     # Annotations for the flower Ingress
@@ -796,7 +820,7 @@ flower:
 
 # Statsd settings
 statsd:
-  enabled: true
+  enabled: false
 
   # Create ServiceAccount
   serviceAccount:
@@ -1017,6 +1041,7 @@ elasticsearch:
 ports:
   flowerUI: 5555
   airflowUI: 8080
+  aiflowUI: 8000
   workerLogs: 8793
   redisDB: 6379
   statsdIngest: 9125
@@ -1300,5 +1325,113 @@ notification:
             labelSelector:
               matchLabels:
                 component: notification
+            topologyKey: "kubernetes.io/hostname"
+  tolerations: []
+
+# AIFlow webserver settings
+aiflowWebserver:
+  allowPodLogReading: true
+  livenessProbe:
+    initialDelaySeconds: 15
+    timeoutSeconds: 30
+    failureThreshold: 20
+    periodSeconds: 5
+
+  readinessProbe:
+    initialDelaySeconds: 15
+    timeoutSeconds: 30
+    failureThreshold: 20
+    periodSeconds: 5
+
+  # Number of webservers
+  replicas: 1
+
+  # Command to use when running the Airflow webserver (templated).
+  command: ~
+  # Args to use when running the Airflow webserver (templated).
+  args: ["bash", "-c", "start_aiflow_web.py"]
+
+  # Create ServiceAccount
+  serviceAccount:
+    # Specifies whether a ServiceAccount should be created
+    create: true
+    # The name of the ServiceAccount to use.
+    # If not set and create is true, a name is generated using the release name
+    name: ~
+
+    # Annotations to add to webserver kubernetes service account.
+    annotations: {}
+
+  # Allow overriding Update Strategy for Webserver
+  strategy: ~
+
+  # Additional network policies as needed (Deprecated - renamed to `webserver.networkPolicy.ingress.from`)
+  extraNetworkPolicies: []
+  networkPolicy:
+    ingress:
+      # Peers for webserver NetworkPolicy ingress
+      from: []
+      # Ports for webserver NetworkPolicy ingress (if `from` is set)
+      ports:
+        - port: airflow-ui
+
+  resources: {}
+  #   limits:
+  #     cpu: 100m
+  #     memory: 128Mi
+  #   requests:
+  #     cpu: 100m
+  #     memory: 128Mi
+
+  # Launch additional containers into webserver.
+  extraContainers: []
+  # Add additional init containers into webserver.
+  extraInitContainers: []
+
+  # Mount additional volumes into webserver.
+  extraVolumes: []
+  extraVolumeMounts: []
+
+  # This string (can be templated) will be mounted into the Airflow Webserver as a custom
+  # webserver_config.py. You can bake a webserver_config.py in to your image instead.
+  webserverConfig: ~
+  # webserverConfig: |
+  #   from airflow import configuration as conf
+
+  #   # The SQLAlchemy connection string.
+  #   SQLALCHEMY_DATABASE_URI = conf.get('core', 'SQL_ALCHEMY_CONN')
+
+  #   # Flask-WTF flag for CSRF
+  #   CSRF_ENABLED = True
+
+  service:
+    type: ClusterIP
+    ## service annotations
+    annotations: {}
+    ports:
+      - name: aiflow-ui
+        port: "{{ .Values.ports.aiflowUI }}"
+    # To change the port used to access the webserver:
+    # ports:
+    #   - name: aiflow-ui
+    #     port: 80
+    #     targetPort: aiflow-ui
+    # To only expose a sidecar, not the webserver directly:
+    # ports:
+    #   - name: only_sidecar
+    #     port: 80
+    #     targetPort: 8888
+    loadBalancerIP: ~
+
+  # Select certain nodes for airflow webserver pods.
+  nodeSelector: {}
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                component: aiflow_webserver
             topologyKey: "kubernetes.io/hostname"
   tolerations: []

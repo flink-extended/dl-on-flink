@@ -27,6 +27,7 @@ Your release is named {{ .Release.Name }}.
 You can now access your service(s) by following defined Ingress urls:
 
 Airflow Webserver:     http{{ if .Values.ingress.web.tls.enabled }}s{{ end }}://{{ .Values.ingress.web.host }}{{ .Values.ingress.web.path }}/
+AIFlow Webserver:     http{{ if .Values.ingress.aiflowWeb.tls.enabled }}s{{ end }}://{{ .Values.ingress.aiflowWeb.host }}{{ .Values.ingress.aiflowWeb.path }}/
 {{- if or (eq .Values.executor "CeleryExecutor") (eq .Values.executor "CeleryKubernetesExecutor") }}
 Flower dashboard:      http{{ if .Values.ingress.flower.tls.enabled }}s{{ end }}://{{ .Values.ingress.flower.host }}{{ .Values.ingress.flower.path }}/
 {{- end }}

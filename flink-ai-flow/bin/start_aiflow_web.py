@@ -44,5 +44,8 @@ if __name__ == '__main__':
                           '-s', os.environ["AIFLOW_DB_CONN"],
                           '-H', os.environ["AIFLOW_WEB_SERVER_HOST"],
                           '-p', os.environ["AIFLOW_WEB_SERVER_PORT"]]
+    airflow_web_server_uri = os.environ.get("AIFLOW_WEB_SERVER_AIRFLOW_WEB_SERVER_URI")
+    if airflow_web_server_uri is not None:
+        aiflow_web_command.extend(['-a', airflow_web_server_uri])
     sub_process = Popen(aiflow_web_command)
     sub_process.wait()

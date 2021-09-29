@@ -429,6 +429,16 @@ Create the name of the webserver service account to use
 {{- end -}}
 {{- end -}}
 
+Create the name of the AIFlow webserver service account to use
+*/}}
+{{- define "aiflowWebserver.serviceAccountName" -}}
+{{- if .Values.aiflowWebserver.serviceAccount.create -}}
+    {{ default (printf "%s-aiflow-webserver" (include "airflow.fullname" .)) .Values.aiflowWebserver.serviceAccount.name }}
+{{- else -}}
+    {{ default "default" .Values.aiflowWebserver.serviceAccount.name }}
+{{- end -}}
+{{- end -}}
+
 {{/*
 Create the name of the redis service account to use
 */}}

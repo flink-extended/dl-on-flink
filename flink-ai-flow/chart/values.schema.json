@@ -158,6 +158,55 @@
                         }
                     }
                 },
+                "aiflowWeb": {
+                    "description": "Configuration for the Ingress of the aiflow web Service.",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "annotations": {
+                            "description": "Annotations for the web Ingress.",
+                            "type": "object",
+                            "default": {}
+                        },
+                        "path": {
+                            "description": "The path for the web Ingress.",
+                            "type": "string",
+                            "default": ""
+                        },
+                        "host": {
+                            "description": "The hostname for the web Ingress.",
+                            "type": "string",
+                            "default": ""
+                        },
+                        "tls": {
+                            "description": "Configuration for web Ingress TLS.",
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "enabled": {
+                                    "description": "Enable TLS termination for the web Ingress.",
+                                    "type": "boolean",
+                                    "default": false
+                                },
+                                "secretName": {
+                                    "description": "The name of a pre-created Secret containing a TLS private key and certificate.",
+                                    "type": "string",
+                                    "default": ""
+                                }
+                            }
+                        },
+                        "precedingPaths": {
+                            "description": "HTTP paths to add to the web Ingress before the default path.",
+                            "type": "array",
+                            "default": []
+                        },
+                        "succeedingPaths": {
+                            "description": "HTTP paths to add to the web Ingress after the default path.",
+                            "type": "array",
+                            "default": []
+                        }
+                    }
+                },
                 "flower": {
                     "description": "Configuration for the Ingress of the flower Service.",
                     "type": "object",
@@ -2638,6 +2687,11 @@
                     "description": "Airflow UI port.",
                     "type": "integer",
                     "default": 8080
+                },
+                "aiflowUI": {
+                    "description": "AIFlow UI port.",
+                    "type": "integer",
+                    "default": 8000
                 },
                 "workerLogs": {
                     "description": "Worker logs port.",
