@@ -26,7 +26,6 @@ import { ACCESS_TOKEN } from '@/store/mutation-types'
 
 // 创建 axios 实例
 const request = axios.create({
-  baseURL: process.env.VUE_APP_API_BASE_URL,
   timeout: 6000
 })
 
