@@ -96,13 +96,13 @@ op_{0} = AIFlowOperator(task_id='{2}', job=job_{0}, workflow=workflow, dag=dag""
             end_code = ''
             for k, v in airflow_args.items():
                 end_code += ', {}={}'.format(k, v)
-            end_code += ')'
+            end_code += ')\n'
             op_code += end_code
             return 'op_{}'.format(self.op_count), op_code
         else:
             return 'op_{}'.format(self.op_count), OP_DEFINE.format(self.op_count,
                                                                    json_utils.dumps(job),
-                                                                   job.job_name) + ')'
+                                                                   job.job_name) + ')\n'
 
     def generate_upstream(self, op_1, op_2):
         return DAGTemplate.UPSTREAM_OP.format(op_1, op_2)
