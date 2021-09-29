@@ -108,7 +108,8 @@ class AirFlowSchedulerBase(Scheduler, ABC):
     def submit_workflow(self, workflow: Workflow, context_extractor, project_context: ProjectContext) -> WorkflowInfo:
         dag_id = self.airflow_dag_id(project_context.project_name, workflow.workflow_name)
         code_text = self.dag_generator.generate(workflow=workflow,
-                                                project_name=project_context.project_name)
+                                                project_name=project_context.project_name,
+                                                context_extractor=context_extractor)
         deploy_path = self.config.get('airflow_deploy_path')
         if deploy_path is None:
             raise Exception("airflow_deploy_path config not set!")
@@ -116,8 +117,6 @@ class AirFlowSchedulerBase(Scheduler, ABC):
             os.makedirs(deploy_path)
 
         airflow_file_path = self._write_to_deploy_path(code_text, dag_id + ".py", deploy_path)
-        context_extractor_bytes = cloudpickle.dumps(context_extractor)
-        self._write_to_deploy_path(context_extractor_bytes, dag_id + ".context_extractor.pickle", deploy_path, 'w+b')
 
         self.airflow_client.trigger_parse_dag(airflow_file_path)
         return WorkflowInfo(namespace=project_context.project_name,

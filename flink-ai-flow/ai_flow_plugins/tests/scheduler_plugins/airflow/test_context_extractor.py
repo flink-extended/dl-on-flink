@@ -14,6 +14,7 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
+import base64
 import os
 import unittest
 
@@ -49,7 +50,10 @@ class TestAIFlowContextExtractorAdaptor(unittest.TestCase):
         os.remove(context_extractor_path)
 
     def test_ai_flow_context_extractor_adaptor_serde(self):
-        extractor = AIFlowContextExtractorAdaptor(context_extractor_path)
+        with open(context_extractor_path, 'rb') as f:
+            bytes = f.read()
+            context_extractor_base64_str = base64.b64encode(bytes).decode('utf-8')
+        extractor = AIFlowContextExtractorAdaptor(context_extractor_base64_str)
         extractor_bytes = cloudpickle.dumps(extractor)
         e = cloudpickle.loads(extractor_bytes)
 
