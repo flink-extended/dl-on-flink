@@ -34,6 +34,9 @@ from notification_service.util import db
 from notification_service.util.db import MemberModel
 from notification_service.util.utils import sleep_and_detecting_running, member_to_proto
 
+if not hasattr(time, 'time_ns'):
+    time.time_ns = lambda: int(time.time() * 1e9)
+
 
 class NotificationServerHaManager(ABC):
 
