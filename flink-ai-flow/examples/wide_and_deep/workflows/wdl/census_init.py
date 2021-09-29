@@ -21,7 +21,7 @@ import os
 
 import ai_flow as af
 from ai_flow.context.project_context import init_project_config
-from ai_flow.api.ai_flow_context import __ensure_project_registered
+from ai_flow.api.ai_flow_context import ensure_project_registered
 
 
 def get_project_path():
@@ -59,5 +59,5 @@ def init():
 
 if __name__ == '__main__':
     init_project_config(get_project_path() + '/project.yaml')
-    __ensure_project_registered()
+    ensure_project_registered()
     init()
