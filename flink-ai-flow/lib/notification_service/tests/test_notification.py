@@ -117,6 +117,7 @@ class NotificationTest(object):
         # listen by event_type
         print('listen by event_type')
         event_list.clear()
+        time.sleep(1)
         h = self.client.start_listen_event(key="key",
                                            watcher=TestWatch(event_list),
                                            start_time=int(time.time() * 1000),
@@ -127,6 +128,7 @@ class NotificationTest(object):
         self.assertEqual(1, len(event_list))
 
         event_list.clear()
+        time.sleep(1)
         h = self.client.start_listen_event(key="key",
                                            start_time=int(time.time() * 1000),
                                            watcher=TestWatch(event_list))
@@ -139,6 +141,7 @@ class NotificationTest(object):
         print("listen by namespace")
         self.client._default_namespace = "a"
         event_list.clear()
+        time.sleep(1)
         h = self.client.start_listen_event(key="key",
                                            start_time=int(time.time() * 1000),
                                            watcher=TestWatch(event_list),
@@ -150,6 +153,7 @@ class NotificationTest(object):
         self.assertEqual(1, len(event_list))
 
         event_list.clear()
+        time.sleep(1)
         h = self.client.start_listen_event(key="key",
                                            start_time=int(time.time() * 1000),
                                            watcher=TestWatch(event_list),
@@ -164,6 +168,7 @@ class NotificationTest(object):
         # listen by sender
         print("listen by sender")
         event_list.clear()
+        time.sleep(1)
         h = self.client.start_listen_event(key="key",
                                            watcher=TestWatch(event_list),
                                            start_time=int(time.time() * 1000),
@@ -177,6 +182,7 @@ class NotificationTest(object):
         self.assertEqual(1, len(event_list))
 
         event_list.clear()
+        time.sleep(1)
         h = self.client.start_listen_event(key="key",
                                            watcher=TestWatch(event_list),
                                            start_time=int(time.time() * 1000),
