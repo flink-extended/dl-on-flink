@@ -128,8 +128,10 @@ spec:
             - name: AIFLOW_DB_CONN
               value: {{ urlJoin (dict "scheme" .protocol "userinfo" (printf "%s:%s" (.user | urlquery) (.pass | urlquery) ) "host" (printf "%s:%s" $host $port) "path" (printf "/%s" $database) "query" $query) | quote }}
             {{- end }}
-            - name: VUE_APP_API_BASE_URL
-              value: {{ .Values.ingress.aiflowWeb.host }}
+            {{- if .Values.ingress.enabled }}
+            - name: AIFLOW_WEB_SERVER_AIRFLOW_WEB_SERVER_URI
+              value: http{{ if .Values.ingress.web.tls.enabled }}s{{ end }}://{{ .Values.ingress.web.host }}{{ .Values.ingress.web.path }}
+            {{- end}}
 {{- if .Values.aiflowWebserver.extraContainers }}
 {{- toYaml .Values.aiflowWebserver.extraContainers | nindent 8 }}
 {{- end }}
