@@ -99,7 +99,7 @@ try:
         url='https://github.com/alibaba/flink-ai-extended',
         packages=find_packages(),
         install_requires=require_packages,
-        python_requires='>=3.7, <3.8',
+        python_requires='>=3.6, <3.8' if os.getenv('BUILD_MINI_AI_FLOW_PACKAGE') == 'true' else '>=3.7, <3.8',
         include_package_data=True,
         scripts=get_script(),
     )
