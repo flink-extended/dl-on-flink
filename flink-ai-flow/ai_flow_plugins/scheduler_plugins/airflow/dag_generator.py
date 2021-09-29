@@ -168,10 +168,12 @@ op_{0} = AIFlowOperator(task_id='{2}', job=job_{0}, workflow=workflow, dag=dag""
             if name in workflow.workflow_config.job_periodic_config_dict:
                 periodic_config: PeriodicConfig = workflow.workflow_config.job_periodic_config_dict.get(name)
                 if periodic_config.trigger_config.get('cron') is not None:
+                    periodic_cron = {'cron': periodic_config.trigger_config.get('cron')}
+                    if periodic_config.trigger_config.get('timezone') is not None:
+                        periodic_cron.update({'timezone': periodic_config.trigger_config.get('timezone')})
                     code_text += \
                         DAGTemplate.PERIODIC_CONFIG.format(op_name,
-                                                           str({'cron': periodic_config.trigger_config.get(
-                                                               'cron')}))
+                                                           str(periodic_cron))
                 elif periodic_config.trigger_config.get('interval') is not None:
                     code_text += DAGTemplate. \
                         PERIODIC_CONFIG.format(op_name,
@@ -230,6 +232,8 @@ op_{0} = AIFlowOperator(task_id='{2}', job=job_{0}, workflow=workflow, dag=dag""
             cron_airflow = ' '.join([cron_items[1], cron_items[2], cron_items[4],
                                      cron_items[6], cron_items[5], cron_items[0]])
             exec_args['schedule_interval'] = """'{}'""".format(cron_airflow)
+            if periodic_config.trigger_config.get('timezone'):
+                exec_args['timezone'] = """'{}'""".format(periodic_config.trigger_config.get('timezone'))
         elif periodic_config.trigger_config.get('interval') is not None:
             items = periodic_config.get_interval_items()
             exec_args['schedule_interval'] = DAGTemplate.DELTA_TIME.format(items[0], items[1], items[2], items[3])
