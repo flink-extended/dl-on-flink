@@ -43,7 +43,7 @@ def init_ai_flow_context():
     workflow_name = os.path.basename(workflow_entry_file)[:-3]
     project_path = os.path.dirname(workflows_path)
     init_project_context(project_path)
-    __ensure_project_registered()
+    ensure_project_registered()
     # workflow_name/workflow_name.yaml
     init_workflow_config(workflow_config_file
                          =os.path.join(workflows_path, workflow_name, '{}.yaml'.format(workflow_name)))
@@ -51,7 +51,7 @@ def init_ai_flow_context():
     __init_context_flag__ = True
 
 
-def __ensure_project_registered():
+def ensure_project_registered():
     """ Ensure the project configured in project.yaml has been registered. """
 
     client = get_ai_flow_client()
@@ -81,6 +81,6 @@ def init_ai_flow_client(server_uri: Text, project_name: Text = None, **kwargs):
     for k, v in kwargs.items():
         config_dict[k] = v
     set_current_project_config(config_dict)
-    __ensure_project_registered()
+    ensure_project_registered()
     global __init_client_flag__
     __init_client_flag__ = True

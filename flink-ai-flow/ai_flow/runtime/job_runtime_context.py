@@ -14,7 +14,6 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-from ai_flow.project.project_config import ProjectConfig
 from ai_flow.context.job_context import set_current_job_name
 from ai_flow.context.project_context import init_project_config
 from ai_flow.context.workflow_config_loader import init_workflow_config

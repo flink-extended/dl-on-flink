@@ -19,7 +19,7 @@ from __future__ import division
 from __future__ import print_function
 import os
 import numbers
-from ai_flow.api.ai_flow_context import __ensure_project_registered
+from ai_flow.api.ai_flow_context import ensure_project_registered
 from ai_flow.context.project_context import init_project_config
 
 import ai_flow as af
