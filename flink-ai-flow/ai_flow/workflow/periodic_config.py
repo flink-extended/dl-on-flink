@@ -15,7 +15,7 @@
 # specific language governing permissions and limitations
 # under the License.
 from ai_flow.util.json_utils import Jsonable
-from typing import Text, Dict, List
+from typing import Dict, List
 from datetime import datetime, timedelta
 from pytz import timezone
 
@@ -30,11 +30,13 @@ class PeriodicConfig(Jsonable):
                  trigger_config: Dict) -> None:
         """
         :param trigger_config: Support two types of configuration:
-        1. cron config: {'start_date': 'start_date_expression', 'cron': 'cron_expression'}
+        1. cron config: {'start_date': 'start_date_expression', 'cron': 'cron_expression', 'timezone': 'timezone'}
         start_date_expression:
         year:int,month:int,day:int,hour:int,minute:int,second:int,Option[tzinfo: str]
         cron_expression:
         seconds minutes hours days months weeks years
+        timezone:
+        utc
         2. interval config {'start_date': 'start_date_expression', 'interval': 'interval_expression'}
         start_date_expression:
         year:int,month:int,day:int,hour:int,minute:int,second:int,Option[tzinfo: str]
@@ -47,15 +49,19 @@ class PeriodicConfig(Jsonable):
     @classmethod
     def to_dict(cls, config: 'PeriodicConfig') -> Dict:
         if 'cron' in config.trigger_config:
-            return {'start_date': config.trigger_config.get('start_date'),
-                    'cron': config.trigger_config.get('cron')}
+            periodic_dict = {'start_date': config.trigger_config.get('start_date'),
+                             'cron': config.trigger_config.get('cron')}
+            return {**periodic_dict, **{'timezone': config.trigger_config.get(
+                'timezone')}} if 'timezone' in config.trigger_config else periodic_dict
         elif 'interval' in config.trigger_config:
             return {'start_date': config.trigger_config.get('start_date'),
                     'interval': config.trigger_config.get('interval')}
         else:
             raise Exception('Periodic config must be one of:\n'
-                            """1. cron config: {'start_date': 'start_date_expression', 'cron': 'cron_expression'}\n"""
-                            """2. interval config {'start_date': 'start_date_expression', 'interval': 'interval_expression'}""")
+                            """1. cron config: {'start_date': 'start_date_expression', 'cron': 'cron_expression', 
+                            'timezone': 'timezone'}\n"""
+                            """2. interval config {'start_date': 'start_date_expression', 'interval': 
+                            'interval_expression'}""")
 
     @classmethod
     def from_dict(cls, data: Dict) -> 'PeriodicConfig':
@@ -136,3 +142,6 @@ class PeriodicConfig(Jsonable):
                          hours=tmp[1],
                          minutes=tmp[2],
                          seconds=tmp[3])
+
+    def get_timezone(self):
+        return self.trigger_config.get('timezone')
