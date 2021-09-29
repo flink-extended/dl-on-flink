@@ -14,6 +14,7 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
+import base64
 from typing import Set, Text
 
 import cloudpickle
@@ -45,10 +46,10 @@ class AIFlowEventContextAdaptor(AirflowEventContext):
 
 class AIFlowContextExtractorAdaptor(AirflowContextExtractor):
 
-    def __init__(self, ai_flow_context_extractor_pickle_path):
-        self._ai_flow_context_extractor_pickle_path = ai_flow_context_extractor_pickle_path
+    def __init__(self, ai_flow_context_extractor_base_64_str: str):
+        self.ai_flow_context_extractor_base_64 = ai_flow_context_extractor_base_64_str.encode('utf-8')
 
     def extract_context(self, event: BaseEvent) -> AirflowEventContext:
-        with open(self._ai_flow_context_extractor_pickle_path, 'rb') as f:
-            context_extractor: AIFlowContextExtractor = cloudpickle.load(f)
-            return AIFlowEventContextAdaptor(context_extractor.extract_context(event))
+        context_extractor: AIFlowContextExtractor = \
+            cloudpickle.loads(base64.b64decode(self.ai_flow_context_extractor_base_64))
+        return AIFlowEventContextAdaptor(context_extractor.extract_context(event))

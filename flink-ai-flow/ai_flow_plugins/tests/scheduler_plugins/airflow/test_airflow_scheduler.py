@@ -64,13 +64,6 @@ class TestAirflowScheduler(unittest.TestCase):
         with open(dag_file_path, 'rt') as f:
             self.assertEqual(mock_generated_code, f.read())
 
-        context_extractor_pickle_path = \
-            os.path.join(self.temp_deploy_path, '.'.join([project_name, workflow_name, 'context_extractor', 'pickle']))
-        self.assertTrue(os.path.exists(context_extractor_pickle_path))
-        with open(context_extractor_pickle_path, 'rb') as f:
-            extractor = cloudpickle.load(f)
-            self.assertEqual(context_extractor.__class__, extractor.__class__)
-
     def test_airflow_scheduler_submit_workflow_with_customized_context_extractor(self):
         script_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'context_extractor_pickle_maker.py')
         os.system('python {}'.format(script_path))
@@ -96,12 +89,6 @@ class TestAirflowScheduler(unittest.TestCase):
             with open(dag_file_path, 'rt') as f:
                 self.assertEqual(mock_generated_code, f.read())
 
-            context_extractor_pickle_path = \
-                os.path.join(self.temp_deploy_path, '.'.join([project_name, workflow_name, 'context_extractor', 'pickle']))
-            self.assertTrue(os.path.exists(context_extractor_pickle_path))
-            with open(context_extractor_pickle_path, 'rb') as f:
-                extractor = cloudpickle.load(f)
-                self.assertEqual(context_extractor.__class__, extractor.__class__)
         finally:
             os.remove(context_extractor_path)
 

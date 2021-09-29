@@ -16,7 +16,13 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+import base64
 from typing import Text, List, Dict
+
+from cloudpickle import cloudpickle
+
+from ai_flow.api.context_extractor import ContextExtractor, BroadcastAllContextExtractor
+
 from ai_flow.workflow.job import Job
 from ai_flow.util import json_utils
 from ai_flow.workflow.control_edge import JobSchedulingRule, AIFlowInternalEventType
@@ -68,8 +74,8 @@ workflow = json_utils.loads(workflow_json)
 {0}.set_events_handler(AIFlowHandler(configs_{0}))\n"""
 
     CONTEXT_EXTRACTOR = """
-context_extractor_pickle_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '{0}')
-dag.context_extractor = AIFlowContextExtractorAdaptor(context_extractor_pickle_path)\n
+context_extractor_base64_str = '{0}'
+dag.context_extractor = AIFlowContextExtractorAdaptor(context_extractor_base64_str)\n
     """
 
 
@@ -125,7 +131,8 @@ op_{0} = AIFlowOperator(task_id='{2}', job=job_{0}, workflow=workflow, dag=dag""
 
     def generate(self,
                  workflow: Workflow,
-                 project_name: Text) -> Text:
+                 project_name: Text,
+                 context_extractor: ContextExtractor = BroadcastAllContextExtractor()) -> Text:
         code_text = DAGTemplate.AIRFLOW_IMPORT
         code_text += import_job_plugins_text(workflow)
         code_text += DAGTemplate.LOAD_CONFIG.format(json_utils.dumps(workflow))
@@ -150,7 +157,8 @@ op_{0} = AIFlowOperator(task_id='{2}', job=job_{0}, workflow=workflow, dag=dag""
 
         dag_id = '{}.{}'.format(project_name, workflow.workflow_name)
         code_text += DAGTemplate.DAG_DEFINE.format(dag_id)
-        code_text += DAGTemplate.CONTEXT_EXTRACTOR.format('.'.join([dag_id, 'context_extractor', 'pickle']))
+        context_extractor_base64_str = base64.b64encode(cloudpickle.dumps(context_extractor)).decode('utf-8')
+        code_text += DAGTemplate.CONTEXT_EXTRACTOR.format(context_extractor_base64_str)
 
         task_map = {}
         for name, job in workflow.jobs.items():
