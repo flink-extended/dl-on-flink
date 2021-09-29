@@ -8,11 +8,11 @@ public class Configuration {
 
     /**
      * * When set to 'true', the client will ensure that exactly one copy of each message is written
-     * in the notification server. Default value: 'false'
+     * in the notification server. Default value: 'true'
      */
     public static final String CLIENT_ENABLE_IDEMPOTENCE_CONFIG_KEY = "enable.idempotence";
 
-    public static final boolean CLIENT_ENABLE_IDEMPOTENCE_CONFIG_DEFAULT_VALUE = false;
+    public static final boolean CLIENT_ENABLE_IDEMPOTENCE_CONFIG_DEFAULT_VALUE = true;
 
     /**
      * The id of notification client. You can assign a client id which is registered before, so that

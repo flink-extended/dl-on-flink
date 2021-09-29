@@ -53,13 +53,20 @@ class WorkflowEventManager(object):
                  scheduler_service_config: SchedulerServiceConfig):
         self.db_uri = db_uri
         self.scheduler_service_config = scheduler_service_config
-        self.notification_client = NotificationClient(server_uri=notification_uri)
+        self._notification_uri = notification_uri
+        self._notification_client = None
         self.listen_event_handler = None
 
         self._stop = False
         self.event_processor_process = self._create_event_processor_process()
         self.process_watcher_thread = threading.Thread(target=self._watch_process)
         self.store = create_db_store(db_uri)
+
+    @property
+    def notification_client(self) -> NotificationClient:
+        if self._notification_client is None:
+            self._notification_client = NotificationClient(server_uri=self._notification_uri)
+        return self._notification_client
 
     def _create_event_processor_process(self):
         # We use spawn to start the process to avoid problem of running grpc in multiple processes.

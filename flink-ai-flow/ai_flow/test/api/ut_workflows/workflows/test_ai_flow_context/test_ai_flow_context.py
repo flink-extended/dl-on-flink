@@ -33,7 +33,7 @@ class TestAIFlowContext(unittest.TestCase):
         if os.path.exists(_SQLITE_DB_FILE):
             os.remove(_SQLITE_DB_FILE)
         self.server = AIFlowServer(store_uri=_SQLITE_DB_URI, port=_PORT,
-                                   start_default_notification=False,
+                                   start_default_notification=True,
                                    start_meta_service=True,
                                    start_metric_service=False,
                                    start_model_center_service=False,

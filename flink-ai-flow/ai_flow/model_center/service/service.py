@@ -36,9 +36,16 @@ class ModelCenterService(model_center_service_pb2_grpc.ModelCenterServiceService
 
     def __init__(self, store_uri, notification_uri=None):
         self.model_repo_store = create_db_store(store_uri)
-        self.notification_client = None
-        if notification_uri is not None:
-            self.notification_client = NotificationClient(notification_uri, default_namespace=DEFAULT_NAMESPACE)
+        self._notification_uri = notification_uri
+        self._notification_client = None
+
+    @property
+    def notification_client(self) -> NotificationClient:
+        if self._notification_uri is None:
+            return None
+        elif self._notification_client is None:
+            self._notification_client = NotificationClient(self._notification_uri, default_namespace=DEFAULT_NAMESPACE)
+        return self._notification_client
 
     @catch_exception
     def createRegisteredModel(self, request, context):

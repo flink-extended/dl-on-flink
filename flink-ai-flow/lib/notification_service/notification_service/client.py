@@ -127,12 +127,13 @@ class NotificationClient(BaseNotification):
         self.retry_interval_ms = retry_interval_ms
         self.retry_timeout_ms = retry_timeout_ms
         self._sender = sender
+        self._enable_idempotence = True
         server_uri_list = self.server_uri.split(",")
 
         self.conf = {} if not properties else properties
-
-        self._enable_idempotence = ENABLE_IDEMPOTENCE_CONFIG in self.conf \
-                                   and self.conf.get(ENABLE_IDEMPOTENCE_CONFIG).strip().lower() == 'true'
+        if ENABLE_IDEMPOTENCE_CONFIG in self.conf \
+                and self.conf.get(ENABLE_IDEMPOTENCE_CONFIG).strip().lower() == 'false':
+            self._enable_idempotence = False
         self._client_id = None if CLIENT_ID not in self.conf else int(self.conf.get(CLIENT_ID))
         self._initial_seq_num = None if INITIAL_SEQUENCE_NUMBER not in self.conf \
             else int(self.conf.get(INITIAL_SEQUENCE_NUMBER))

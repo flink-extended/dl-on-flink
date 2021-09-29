@@ -99,14 +99,14 @@ class TestWorkflowEventManager(unittest.TestCase):
 
     def test__start_listen_events(self):
         with mock.patch.object(self.workflow_event_manager, '_get_event_version_to_listen') as get_version_method, \
-                mock.patch.object(self.workflow_event_manager, 'notification_client') as notification_client:
+                mock.patch.object(self.workflow_event_manager, '_notification_client') as notification_client:
             get_version_method.return_value = 10
             self.workflow_event_manager._start_listen_events()
             notification_client.start_listen_events.assert_called_once_with(mock.ANY, version=10)
 
     def test__stop_listen_events(self):
         with mock.patch.object(self.workflow_event_manager, 'listen_event_handler') as handler, \
-                mock.patch.object(self.workflow_event_manager, 'notification_client') as notification_client:
+                mock.patch.object(self.workflow_event_manager, '_notification_client') as notification_client:
             self.workflow_event_manager._stop_listen_events()
             handler.stop.assert_called_once()
             notification_client.stop_listen_events.assert_called_once()

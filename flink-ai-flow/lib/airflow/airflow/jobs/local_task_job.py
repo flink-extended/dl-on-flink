@@ -144,17 +144,20 @@ class LocalTaskJob(BaseJob):
             self.on_kill()
 
     def _send_task_status_change_event(self):
-        task_status_changed_event = TaskStateChangedEvent(
-            self.task_instance.task_id,
-            self.task_instance.dag_id,
-            self.task_instance.execution_date,
-            self.task_instance.state,
-            self.task_instance.try_number
-        )
-        event = task_status_changed_event.to_event()
-        client = NotificationClient(self.server_uri, default_namespace=event.namespace, sender=event.sender)
-        self.log.info("LocalTaskJob sending event: {}".format(event))
-        client.send_event(event)
+        try:
+            task_status_changed_event = TaskStateChangedEvent(
+                self.task_instance.task_id,
+                self.task_instance.dag_id,
+                self.task_instance.execution_date,
+                self.task_instance.state,
+                self.task_instance.try_number
+            )
+            event = task_status_changed_event.to_event()
+            client = NotificationClient(self.server_uri, default_namespace=event.namespace, sender=event.sender)
+            self.log.info("LocalTaskJob sending event: {}".format(event))
+            client.send_event(event)
+        finally:
+            client.close()
 
     def on_kill(self):
         self.task_runner.terminate()
