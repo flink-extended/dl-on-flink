@@ -18,7 +18,6 @@ import os
 import signal
 import sys
 import time
-import copy
 from subprocess import Popen, PIPE, STDOUT
 from tempfile import NamedTemporaryFile
 from typing import Text, List
@@ -243,10 +242,8 @@ class FlinkJobController(JobController):
                 if job_config.flink_stop_args is not None:
                     bash_command.extend(job_config.flink_stop_args)
                 for job_id in job_id_list:
-                    command = copy.deepcopy(bash_command)
-                    command.append(job_id)
-                    self.log.info(' '.join(command))
-                    sp = Popen(command,
+                    self.log.info(' '.join(bash_command + [job_id]))
+                    sp = Popen(bash_command + [job_id],
                                stdout=PIPE,
                                stderr=STDOUT,
                                cwd=job_runtime_env.working_dir,
