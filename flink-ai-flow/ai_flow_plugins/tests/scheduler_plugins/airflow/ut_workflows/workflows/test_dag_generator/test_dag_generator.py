@@ -140,9 +140,9 @@ class TestDagGenerator(unittest.TestCase):
         w = af.workflow_operation.submit_workflow(workflow_name='test_dag_generator')
         code = w.properties.get('code')
         self.assertTrue(
-            "op_1.subscribe_event('test_dag_generator.task_1', 'TASK_STATUS_CHANGED', 'test_project', 'task_1')" in code)
+            "\nop_1.subscribe_event('test_dag_generator.task_1', 'TASK_STATUS_CHANGED', 'test_project', 'task_1')" in code)
         self.assertTrue(
-            "op_2.subscribe_event('test_dag_generator.task_2', 'TASK_STATUS_CHANGED', 'test_project', 'task_2')" in code)
+            "\nop_2.subscribe_event('test_dag_generator.task_2', 'TASK_STATUS_CHANGED', 'test_project', 'task_2')" in code)
 
     def test_action_on_job_status_two_status(self):
         with af.job_config('task_1'):
