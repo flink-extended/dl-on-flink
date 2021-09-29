@@ -46,7 +46,7 @@ from ai_flow.util import json_utils
 
 """
     LOAD_CONFIG = """
-workflow_json = '{}'
+workflow_json = '''{}'''
 workflow = json_utils.loads(workflow_json)
 """
     DATETIME = """datetime(year={0},month={1},day={2},hour={3},minute={4},second={5})"""
@@ -84,7 +84,7 @@ class DAGGenerator(object):
     def generate_op_code(self, job):
         self.op_count += 1
         OP_DEFINE = """
-job_json_{0} = '{1}'
+job_json_{0} = '''{1}'''
 job_{0} = json_utils.loads(job_json_{0})
 op_{0} = AIFlowOperator(task_id='{2}', job=job_{0}, workflow=workflow, dag=dag"""
         if 'airflow_args' in job.job_config.properties and len(job.job_config.properties.get('airflow_args')) > 0:
