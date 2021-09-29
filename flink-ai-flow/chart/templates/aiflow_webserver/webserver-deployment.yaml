@@ -119,7 +119,13 @@ spec:
             timeoutSeconds: {{ .Values.aiflowWebserver.readinessProbe.timeoutSeconds | default 30 }}
             failureThreshold: {{ .Values.aiflowWebserver.readinessProbe.failureThreshold | default 20 }}
             periodSeconds: {{ .Values.aiflowWebserver.readinessProbe.periodSeconds | default 5 }}
+          volumeMounts:
+            - name: config
+              mountPath: {{ template "airflow_config_path" . }}
+              subPath: airflow.cfg
+              readOnly: true
           env:
+          {{- include "standard_airflow_environment" . | indent 10 }}
             - name: AIFLOW_WEB_SERVER_PORT
               value: "{{ .Values.ports.aiflowUI }}"
             - name: AIFLOW_WEB_SERVER_HOST
@@ -136,6 +142,9 @@ spec:
 {{- toYaml .Values.aiflowWebserver.extraContainers | nindent 8 }}
 {{- end }}
       volumes:
+        - name: config
+          configMap:
+            name: {{ template "airflow_config" . }}
 {{- if .Values.aiflowWebserver.extraVolumes }}
 {{ toYaml .Values.aiflowWebserver.extraVolumes | indent 8 }}
 {{- end }}
