@@ -190,6 +190,7 @@ class NotificationTest(object):
 
     def test_all_listen_events(self):
         self.client.send_event(BaseEvent(key="key", value="value1"))
+        time.sleep(1.0)
         event2 = self.client.send_event(BaseEvent(key="key", value="value2"))
         start_time = event2.create_time
         self.client.send_event(BaseEvent(key="key", value="value3"))
