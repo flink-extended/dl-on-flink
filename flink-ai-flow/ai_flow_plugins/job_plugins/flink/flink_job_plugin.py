@@ -226,9 +226,11 @@ class FlinkJobController(JobController):
         job_config: FlinkJobConfig = FlinkJobConfig.from_job_config(job_handle.job.job_config)
         if job_config.run_mode == 'cluster':
             job_id_file = os.path.join(job_runtime_env.working_dir, 'job_id')
+            job_id_list = []
             if os.path.exists(job_id_file):
                 with open(job_id_file, 'r') as fp:
-                    job_id = fp.read()
+                    for line in fp.readlines():
+                        job_id_list.append(line.strip())
                 env = os.environ.copy()
                 env.update(job_config.properties.get('env', {}))
                 # Add PYTHONPATH
@@ -239,14 +241,14 @@ class FlinkJobController(JobController):
                 bash_command = ['flink', stop_mode]
                 if job_config.flink_stop_args is not None:
                     bash_command.extend(job_config.flink_stop_args)
-                bash_command.append(job_id)
-                self.log.info(' '.join(bash_command))
-                sp = Popen(bash_command,
-                           stdout=PIPE,
-                           stderr=STDOUT,
-                           cwd=job_runtime_env.working_dir,
-                           env=env)
-                sp.wait()
+                for job_id in job_id_list:
+                    self.log.info(' '.join(bash_command + [job_id]))
+                    sp = Popen(bash_command + [job_id],
+                               stdout=PIPE,
+                               stderr=STDOUT,
+                               cwd=job_runtime_env.working_dir,
+                               env=env)
+                    sp.wait()
         self.log.info('Output:')
         sub_process = handle.sub_process
         self.log.info('Sending SIGTERM signal to process group')
