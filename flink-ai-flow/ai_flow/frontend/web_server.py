@@ -294,6 +294,14 @@ def build_filters(req: LocalProxy):
     return filters
 
 
+def pagination_response(page_no: int, total_count: int, data: List):
+    return dumps({'pageNo': page_no, 'totalCount': total_count, 'data': data})
+
+
+def json_pagination_response(page_no: int, total_count: int, data: List):
+    return json.dumps({'pageNo': page_no, 'totalCount': total_count, 'data': data})
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -311,19 +319,23 @@ def graph(project_id, workflow_name):
 
 @app.route('/project')
 def project_metadata():
+    project_count = store.count_projects(filters=build_filters(request))
     project_list = store.list_projects(page_size=int(request.args.get('pageSize')),
                                        offset=(int(request.args.get('pageNo')) - 1) * int(request.args.get('pageSize')),
                                        filters=build_filters(request))
-    return dumps({'data': project_list if project_list else []})
+    return pagination_response(page_no=int(request.args.get('pageNo')), total_count=project_count,
+                               data=project_list if project_list else [])
 
 
 @app.route('/workflow')
 def workflow_metadata():
+    workflow_count = store.count_workflows(filters=build_filters(request))
     workflow_list = store.list_workflows(page_size=int(request.args.get('pageSize')),
                                          offset=(int(request.args.get('pageNo')) - 1) * int(
                                              request.args.get('pageSize')),
                                          filters=build_filters(request))
-    return dumps({'data': workflow_list if workflow_list else []})
+    return pagination_response(page_no=int(request.args.get('pageNo')), total_count=workflow_count,
+                               data=workflow_list if workflow_list else [])
 
 
 @app.route('/workflow/data-view')
@@ -360,58 +372,71 @@ def workflow_execution_metadata():
     workflow_name = request.args.get('workflow_name')
     workflow_execution_list = scheduler.list_workflow_executions(project_name,
                                                                  workflow_name) if project_name and workflow_name else None
-    return dumps({'data': Paginator(workflow_execution_list, int(request.args.get('pageSize'))).get_page(
-        int(request.args.get('pageNo'))).object_list if workflow_execution_list else []})
+    return pagination_response(page_no=int(request.args.get('pageNo')),
+                               total_count=len(workflow_execution_list) if workflow_execution_list else 0,
+                               data=Paginator(workflow_execution_list, int(request.args.get('pageSize'))).get_page(
+                                 int(request.args.get('pageNo'))).object_list if workflow_execution_list else [])
 
 
 @app.route('/job-execution')
 def job_execution_metadata():
     workflow_execution_id = request.args.get('workflow_execution_id')
     job_execution_list = scheduler.list_job_executions(workflow_execution_id) if workflow_execution_id else None
-    return dumps({'data': Paginator(job_execution_list, int(request.args.get('pageSize'))).get_page(
-        int(request.args.get('pageNo'))).object_list if job_execution_list else []})
+    return pagination_response(page_no=int(request.args.get('pageNo')),
+                               total_count=len(job_execution_list) if job_execution_list else 0,
+                               data=Paginator(job_execution_list, int(request.args.get('pageSize'))).get_page(
+                                 int(request.args.get('pageNo'))).object_list if job_execution_list else [])
 
 
 @app.route('/dataset')
 def dataset_metadata():
+    dataset_count = store.count_datasets(filters=build_filters(request))
     dataset_list = store.list_datasets(page_size=int(request.args.get('pageSize')),
                                        offset=(int(request.args.get('pageNo')) - 1) * int(request.args.get('pageSize')),
                                        filters=build_filters(request))
-    return dumps({'data': dataset_list if dataset_list else []})
+    return pagination_response(page_no=int(request.args.get('pageNo')), total_count=dataset_count,
+                               data=dataset_list if dataset_list else [])
 
 
 @app.route('/model')
 def model_metadata():
+    model_count = store.count_registered_models(filters=build_filters(request))
     model_list = store.list_registered_models(page_size=int(request.args.get('pageSize')),
                                               offset=(int(request.args.get('pageNo')) - 1) * int(
-                                                  request.args.get('pageSize')),
+                                                request.args.get('pageSize')),
                                               filters=build_filters(request))
-    return json.dumps({'data': [{'model_name': model.model_name, 'model_desc': model.model_desc} for model in
-                                model_list] if model_list else []})
+    return json_pagination_response(page_no=int(request.args.get('pageNo')), total_count=model_count,
+                                    data=[{'model_name': model.model_name, 'model_desc': model.model_desc} for model in
+                                          model_list] if model_list else [])
 
 
 @app.route('/model-version')
 def model_version_metadata():
+    model_version_count = store.count_model_versions(filters=build_filters(request))
     model_version_list = store.list_model_versions(page_size=int(request.args.get('pageSize')),
                                                    offset=(int(request.args.get('pageNo')) - 1) * int(
-                                                       request.args.get('pageSize')),
+                                                     request.args.get('pageSize')),
                                                    filters=build_filters(request))
-    return json.dumps(
-        {'data': [model_version.__dict__ for model_version in model_version_list] if model_version_list else []})
+    return json_pagination_response(page_no=int(request.args.get('pageNo')), total_count=model_version_count,
+                                    data=[model_version.__dict__ for model_version in
+                                          model_version_list] if model_version_list else [])
 
 
 @app.route('/artifact')
 def artifact_metadata():
+    artifact_count = store.count_artifacts(filters=build_filters(request))
     artifact_list = store.list_artifacts(page_size=int(request.args.get('pageSize')),
                                          offset=(int(request.args.get('pageNo')) - 1) * int(
                                              request.args.get('pageSize')),
                                          filters=build_filters(request))
-    return dumps({'data': artifact_list if artifact_list else []})
+    return pagination_response(page_no=int(request.args.get('pageNo')), total_count=artifact_count,
+                               data=artifact_list if artifact_list else [])
 
 
 usage_message = """
 usage: web_server.py -c <scheduler_class> -a <airflow_web_server_uri> [-H <host>] [-p <port>]
 """
+
 
 def main(argv):
     store_uri = ''
