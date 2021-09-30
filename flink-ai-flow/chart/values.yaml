@@ -37,7 +37,7 @@ airflowHome: /opt/airflow
 defaultAirflowRepository: flinkaiflow/flink-ai-flow
 
 # Default airflow tag to deploy
-defaultAirflowTag: "0.1.0"
+defaultAirflowTag: "0.2.0"
 
 # Airflow version (Used to make some decisions based on Airflow Version being deployed)
 airflowVersion: "2.0.0"
