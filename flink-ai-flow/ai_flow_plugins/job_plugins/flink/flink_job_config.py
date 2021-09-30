@@ -38,8 +38,9 @@ class FlinkJobConfig(JobConfig):
     """
 
     def __init__(self, job_name: Text = None,
+                 job_label_report_interval: float = 5.0,
                  properties: Dict[Text, Jsonable] = None) -> None:
-        super().__init__(job_name, 'flink', properties)
+        super().__init__(job_name, 'flink', job_label_report_interval, properties)
 
     @property
     def env(self):
@@ -81,4 +82,5 @@ class FlinkJobConfig(JobConfig):
     @classmethod
     def from_job_config(cls, job_config: JobConfig) -> 'FlinkJobConfig':
         return FlinkJobConfig(job_name=job_config.job_name,
+                              job_label_report_interval=job_config.job_label_report_interval,
                               properties=job_config.properties)
