@@ -87,8 +87,7 @@ function padLeftZero (str) {
 const columns = [
   {
     title: 'Workflow Execution ID',
-    dataIndex: '_workflow_execution_id',
-    sorter: true
+    dataIndex: '_workflow_execution_id'
   },
   {
     title: 'Status',
@@ -107,13 +106,11 @@ const columns = [
   {
     title: 'Start Date',
     dataIndex: '_start_date',
-    sorter: true,
     customRender: (t) => formateDate(new Date(parseInt(t)), 'YYYY-MM-dd hh:mm')
   },
   {
     title: 'End Date',
     dataIndex: '_end_date',
-    sorter: true,
     customRender: (t) => formateDate(new Date(parseInt(t)), 'YYYY-MM-dd hh:mm')
   }
 ]
