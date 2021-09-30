@@ -361,6 +361,19 @@ class SqlAlchemyStore(AbstractStore):
                 dataset_list.append(ResultToMeta.result_to_dataset_meta(dataset))
             return dataset_list
 
+    def count_datasets(self, filters: Filters = None) -> int:
+        """
+        Count registered datasets in metadata store.
+
+        :param filters: A Filter class that contains all filters to apply.
+        :return: Count of :py:class:`ai_flow.meta.dataset_meta.DatasetMeta` objects.
+        """
+        with self.ManagedSessionMaker() as session:
+            query = session.query(SqlDataset).filter(SqlDataset.is_deleted == 'False')
+            if filters:
+                query = filters.apply_all(SqlDataset, query)
+            return query.count()
+
     def delete_dataset_by_name(self, dataset_name) -> Status:
         """
         Delete the registered dataset by dataset name .
@@ -483,6 +496,19 @@ class SqlAlchemyStore(AbstractStore):
             for project in project_result:
                 projects.append(ResultToMeta.result_to_project_meta(project))
             return projects
+
+    def count_projects(self, filters: Filters = None) -> int:
+        """
+        Count registered projects in metadata store.
+
+        :param filters: A Filter class that contains all filters to apply.
+        :return: Count of :py:class:`ai_flow.meta.project_meta.ProjectMeta` objects.
+        """
+        with self.ManagedSessionMaker() as session:
+            query = session.query(SqlProject).filter(SqlProject.is_deleted == 'False')
+            if filters:
+                query = filters.apply_all(SqlProject, query)
+            return query.count()
 
     def update_project(self, project_name: Text, uri: Text = None, properties: Properties = None) \
             -> Optional[ProjectMeta]:
@@ -870,6 +896,26 @@ class SqlAlchemyStore(AbstractStore):
                 workflow_list.append(ResultToMeta.result_to_workflow_meta(workflow))
             return workflow_list
 
+    def count_workflows(self, project_name=None,filters: Filters = None) -> int:
+        """
+        Count registered workflows in metadata store.
+
+        :param project_name: The name of project which contains the workflow.
+        :param filters: A Filter class that contains all filters to apply.
+        :return: Count of :py:class:`ai_flow.meta.workflow_meta.WorkflowMeta` objects.
+        """
+        with self.ManagedSessionMaker() as session:
+            query = session.query(SqlWorkflow).filter(SqlWorkflow.is_deleted.is_(False))
+            if project_name:
+                project = self.get_project_by_name(project_name)
+                if not project:
+                    raise AIFlowException("The project name you specific doesn't exists, project: \"{}\""
+                                          .format(project_name))
+                query = query.filter(SqlWorkflow.project_id == project.uuid)
+            if filters:
+                query = filters.apply_all(SqlWorkflow, query)
+            return query.count()
+
     def delete_workflow_by_name(self, project_name, workflow_name) -> Status:
         """
         Delete the workflow by specific project and workflow name
@@ -1153,6 +1199,19 @@ class SqlAlchemyStore(AbstractStore):
                 artifact_list.append(ResultToMeta.result_to_artifact_meta(artifact))
             return artifact_list
 
+    def count_artifacts(self, filters: Filters = None) -> int:
+        """
+        Count registered artifacts in metadata store.
+
+        :param filters: A Filter class that contains all filters to apply.
+        :return: Count of :py:class:`ai_flow.meta.artifact_meta.py.ArtifactMeta` objects.
+        """
+        with self.ManagedSessionMaker() as session:
+            query = session.query(SqlArtifact).filter(SqlArtifact.is_deleted == 'False')
+            if filters:
+                query = filters.apply_all(SqlArtifact, query)
+            return query.count()
+
     def delete_artifact_by_id(self, artifact_id) -> Status:
         """
         Delete the registered artifact by artifact id .
@@ -1327,6 +1386,19 @@ class SqlAlchemyStore(AbstractStore):
             if offset:
                 query = query.offset(offset)
             return [sql_registered_model.to_detail_entity() for sql_registered_model in query.all()]
+
+    def count_registered_models(self, filters: Filters = None) -> int:
+        """
+        Count of all registered models in model repository.
+
+        :param filters: A Filter class that contains all filters to apply.
+        :return: Count of :py:class:`ai_flow.model_center.entity.RegisteredModelDetail` objects.
+        """
+        with self.ManagedSessionMaker() as session:
+            query = session.query(SqlRegisteredModel)
+            if filters:
+                query = filters.apply_all(SqlRegisteredModel, query)
+            return query.count()
 
     def get_registered_model_detail(self, registered_model):
         """
@@ -1521,6 +1593,19 @@ class SqlAlchemyStore(AbstractStore):
             if offset:
                 query = query.offset(offset)
             return [sql_model_version.to_meta_entity() for sql_model_version in query.all()]
+
+    def count_model_versions(self, filters: Filters = None) -> int:
+        """
+        Count of all model versions in model repository.
+
+        :param filters: A Filter class that contains all filters to apply.
+        :return: Count of :py:class:`ai_flow.model_center.entity.ModelVersionDetail` objects.
+        """
+        with self.ManagedSessionMaker() as session:
+            query = session.query(SqlModelVersion).filter(SqlModelVersion.current_stage != STAGE_DELETED)
+            if filters:
+                query = filters.apply_all(SqlModelVersion, query)
+            return query.count()
 
     def get_model_version_detail(self, model_version):
         """

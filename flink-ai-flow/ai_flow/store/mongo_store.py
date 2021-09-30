@@ -325,6 +325,18 @@ class MongoStore(AbstractStore):
             dataset_list.append(ResultToMeta.result_to_dataset_meta(dataset))
         return dataset_list
 
+    def count_datasets(self, filters: Filters = None) -> int:
+        """
+        Count registered datasets in metadata store.
+
+        :param filters: A Filter class that contains all filters to apply.
+        :return: Count of :py:class:`ai_flow.meta.dataset_meta.DatasetMeta` objects.
+        """
+        query = {'is_deleted': 'False'}
+        if filters:
+            query = filters.apply_all(MongoDataset, query)
+        return MongoDataset.objects(**query).count()
+
     def delete_dataset_by_name(self, dataset_name) -> Status:
         """
         Delete the registered dataset by dataset name .
@@ -439,6 +451,18 @@ class MongoStore(AbstractStore):
         for project in project_result:
             projects.append(ResultToMeta.result_to_project_meta(project))
         return projects
+
+    def count_projects(self, filters: Filters = None) -> int:
+        """
+        Count registered projects in metadata store.
+
+        :param filters: A Filter class that contains all filters to apply.
+        :return: Count of :py:class:`ai_flow.meta.project_meta.ProjectMeta` objects.
+        """
+        query = {'is_deleted': 'False'}
+        if filters:
+            query = filters.apply_all(MongoProject, query)
+        return MongoProject.objects(**query).count()
 
     def update_project(self, project_name: Text, uri: Text = None, properties: Properties = None) \
             -> Optional[ProjectMeta]:
@@ -599,6 +623,25 @@ class MongoStore(AbstractStore):
         for workflow in workflow_result:
             workflow_list.append(ResultToMeta.result_to_workflow_meta(workflow))
         return workflow_list
+
+    def count_workflows(self, project_name=None, filters: Filters = None) -> int:
+        """
+        Count registered workflows in metadata store.
+
+        :param project_name: The name of project which contains the workflow.
+        :param filters: A Filter class that contains all filters to apply.
+        :return: Count of :py:class:`ai_flow.meta.workflow_meta.WorkflowMeta` objects.
+        """
+        query = {'is_deleted': 'False'}
+        if project_name:
+            project = self.get_project_by_name(project_name)
+            if not project:
+                raise AIFlowException("The project name you specific doesn't exists, project: \"{}\""
+                                      .format(project_name))
+            query.update({'project_id': project.uuid})
+        if filters:
+            query = filters.apply_all(MongoWorkflow, query)
+        return MongoWorkflow.objects(**query).count()
 
     def delete_workflow_by_name(self, project_name, workflow_name) -> Status:
         """
@@ -1087,6 +1130,18 @@ class MongoStore(AbstractStore):
             artifact_list.append(ResultToMeta.result_to_artifact_meta(artifact))
         return artifact_list
 
+    def count_artifacts(self, filters: Filters = None) -> int:
+        """
+        Count registered artifacts in metadata store.
+
+        :param filters: A Filter class that contains all filters to apply.
+        :return: Count of :py:class:`ai_flow.meta.artifact_meta.py.ArtifactMeta` objects.
+        """
+        query = {'is_deleted': 'False'}
+        if filters:
+            query = filters.apply_all(MongoArtifact, query)
+        return MongoArtifact.objects(**query).count()
+
     def delete_artifact_by_id(self, artifact_id) -> Status:
         """
         Delete the registered artifact by artifact id .
@@ -1256,6 +1311,18 @@ class MongoStore(AbstractStore):
         if len(registered_model_result) == 0:
             return None
         return [sql_registered_model.to_detail_entity() for sql_registered_model in registered_model_result]
+
+    def count_registered_models(self, filters: Filters = None) -> int:
+        """
+        Count of all registered models in model repository.
+
+        :param filters: A Filter class that contains all filters to apply.
+        :return: Count of :py:class:`ai_flow.model_center.entity.RegisteredModel` objects.
+        """
+        query = {}
+        if filters:
+            query = filters.apply_all(MongoRegisteredModel, query)
+        return MongoRegisteredModel.objects(**query).count()
 
     def get_registered_model_detail(self, registered_model):
         """
@@ -1445,6 +1512,18 @@ class MongoStore(AbstractStore):
         if len(model_version_result) == 0:
             return None
         return [sql_model_version.to_meta_entity() for sql_model_version in model_version_result]
+
+    def count_model_versions(self, filters: Filters = None) -> int:
+        """
+        Count of all model versions in model repository.
+
+        :param filters: A Filter class that contains all filters to apply.
+        :return: Count of :py:class:`ai_flow.model_center.entity.ModelVersionDetail` objects.
+        """
+        query = {}
+        if filters:
+            query = filters.apply_all(MongoModelVersion, query)
+        return MongoModelVersion.objects(**query).count()
 
     def get_model_version_detail(self, model_version):
         """

@@ -231,6 +231,16 @@ class AbstractStore(object):
         pass
 
     @abstractmethod
+    def count_datasets(self, filters: Filters = None):
+        """
+        Count registered datasets in metadata store.
+
+        :param filters: A Filter class that contains all filters to apply.
+        :return: Count of :py:class:`ai_flow.meta.dataset_meta.DatasetMeta` objects.
+        """
+        pass
+
+    @abstractmethod
     def register_dataset(self, name, data_format,
                          description, uri,
                          properties,
@@ -318,6 +328,16 @@ class AbstractStore(object):
         pass
 
     @abstractmethod
+    def count_projects(self, filters: Filters = None):
+        """
+        Count registered projects in metadata store.
+
+        :param filters: A Filter class that contains all filters to apply.
+        :return: Count of :py:class:`ai_flow.meta.project_meta.ProjectMeta` objects.
+        """
+        pass
+
+    @abstractmethod
     def delete_project_by_id(self, project_id):
         """
         Delete the registered project by project id .
@@ -390,6 +410,16 @@ class AbstractStore(object):
         :param filters: A Filter class that contains all filters to apply.
         :return: List of :py:class:`ai_flow.meta.workflow_meta.WorkflowMeta` objects,
                  return None if no workflows to be listed.
+        """
+        pass
+
+    def count_workflows(self, project_name=None, filters: Filters = None):
+        """
+        Count registered workflows in metadata store.
+
+        :param project_name: The name of project which contains the workflow.
+        :param filters: A Filter class that contains all filters to apply.
+        :return: Count of :py:class:`ai_flow.meta.workflow_meta.WorkflowMeta` objects.
         """
         pass
 
@@ -542,6 +572,14 @@ class AbstractStore(object):
                  return None if no artifacts to be listed.
         """
 
+    def count_artifacts(self, filters: Filters = None):
+        """
+        Count registered artifacts in metadata store.
+
+        :param filters: A Filter class that contains all filters to apply.
+        :return: Count of :py:class:`ai_flow.meta.artifact_meta.py.ArtifactMeta` objects.
+        """
+
     def delete_artifact_by_id(self, artifact_id):
         """
         Delete the registered artifact by artifact id .
@@ -613,6 +651,16 @@ class AbstractStore(object):
         pass
 
     @abstractmethod
+    def count_registered_models(self, filters: Filters = None):
+        """
+        Count of all registered models in model repository.
+
+        :param filters: A Filter class that contains all filters to apply.
+        :return: Count of :py:class:`ai_flow.model_center.entity.RegisteredModel` objects.
+        """
+        pass
+
+    @abstractmethod
     def get_registered_model_detail(self, registered_model):
         """
         :param registered_model: :py:class:`ai_flow.model_center.entity.RegisteredModel` object.
@@ -675,6 +723,16 @@ class AbstractStore(object):
         :param filters: A Filter class that contains all filters to apply.
         :return: List of :py:class:`ai_flow.model_center.entity.ModelVersionDetail` objects,
                  return None if no model versions to be listed.
+        """
+        pass
+
+    @abstractmethod
+    def count_model_versions(self, filters: Filters = None):
+        """
+        Count of all model versions in model repository.
+
+        :param filters: A Filter class that contains all filters to apply.
+        :return: Count of :py:class:`ai_flow.model_center.entity.ModelVersionDetail` objects.
         """
         pass
 

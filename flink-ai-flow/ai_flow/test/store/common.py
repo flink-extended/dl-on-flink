@@ -117,7 +117,7 @@ class AbstractTestStore(object):
                           data_format='csv', properties=Properties({'a': 'b'}),
                           name_list=['a'], type_list=[DataType.STRING])
 
-    def test_list_datasets(self):
+    def test_list_and_count_datasets(self):
         self.store.register_dataset(name='dataset_1', data_format='csv', description='it is mq data',
                                     uri='mysql://', properties=Properties({'a': 'b'}), name_list=['a'],
                                     type_list=[DataType.INT32])
@@ -128,6 +128,8 @@ class AbstractTestStore(object):
         self.assertEqual(len(response_list), 2)
         self.assertEqual('dataset_1', response_list[0].name)
         self.assertEqual('dataset_2', response_list[1].name)
+        dataset_count = self.store.count_datasets()
+        self.assertEqual(2, dataset_count)
 
     def test_save_datasets_list_datasets(self):
         schema = Schema(name_list=['a'],
@@ -224,13 +226,15 @@ class AbstractTestStore(object):
         self.assertTrue(
             'hello' in context_extractor_from_db.extract_context(BaseEvent(key='1', value='1')).get_contexts())
 
-    def test_list_workflows(self):
+    def test_list_and_count_workflows(self):
         project_response = self.store.register_project(name='project', uri='www.code.com')
         self.store.register_workflow(name='workflow1', project_id=project_response.uuid)
         self.store.register_workflow(name='workflow2', project_id=project_response.uuid)
         response_list = self.store.list_workflows(project_response.name, 2, 0)
         self.assertEqual('workflow1', response_list[0].name)
         self.assertEqual('workflow2', response_list[1].name)
+        workflow_count = self.store.count_workflows(project_response.name)
+        self.assertEqual(2, workflow_count)
 
     def test_delete_workflow(self):
         project_response = self.store.register_project(name='project', uri='www.code.com')
@@ -381,14 +385,15 @@ class AbstractTestStore(object):
         self.assertRaises(AIFlowException, self.store.register_project, name='project',
                           uri='www.code2.com')
 
-    def test_list_projects(self):
+    def test_list_and_count_projects(self):
         self.store.register_project(name='project', uri='www.code.com')
         self.store.register_project(name='project1', uri='www.code.com')
         response_list = self.store.list_projects(2, 0)
         self.assertEqual(2, len(response_list))
         self.assertEqual('project', response_list[0].name)
         self.assertEqual('project1', response_list[1].name)
-        print(response_list[1])
+        project_count = self.store.count_projects()
+        self.assertEqual(2, project_count)
 
     def test_delete_project_by_id(self):
         self.store.register_project(name='project', uri='www.code.com')
@@ -526,6 +531,7 @@ class AbstractTestStore(object):
         self.assertEqual(artifact.uri, self.store.get_artifact_by_name('artifact_result').uri)
         self.store.register_artifact(name='artifact_result_1', uri='../..')
         self.assertEqual(2, len(self.store.list_artifacts(2, 0)))
+        self.assertEqual(2, self.store.count_artifacts())
         self.assertEqual(Status.OK, self.store.delete_artifact_by_id(1))
         self.assertEqual(Status.OK, self.store.delete_artifact_by_name('artifact_result_1'))
         self.assertEqual(Status.ERROR, self.store.delete_artifact_by_name('no artifact'))
@@ -627,12 +633,14 @@ class AbstractTestStore(object):
         # delete model
         self.store.delete_registered_model(registered_model)
 
-    def test_list_registered_model(self):
+    def test_list_and_count_registered_models(self):
         self._create_registered_model('M')
         registered_models = self.store.list_registered_models()
         self.assertEqual(len(registered_models), 1)
         self.assertEqual(registered_models[0].model_name, 'M')
         self.assertIsInstance(registered_models[0], RegisteredModelDetail)
+        registered_model_count = self.store.count_registered_models()
+        self.assertEqual(1, registered_model_count)
 
         self._create_registered_model('N')
         self.assertEqual(set([registered_model.model_name for registered_model in self.store.list_registered_models()]),
@@ -644,6 +652,7 @@ class AbstractTestStore(object):
         self._create_registered_model('NNO')
         self.assertEqual(set([rm.model_name for rm in self.store.list_registered_models()]),
                          {'M', 'N', 'NN', 'NM', 'MN', 'NNO'})
+        self.assertEqual(6, self.store.count_registered_models())
 
     def test_get_registered_model_detail(self):
         model_name = 'test_model'
