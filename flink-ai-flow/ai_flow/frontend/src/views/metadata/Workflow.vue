@@ -92,8 +92,7 @@ function padLeftZero (str) {
 const columns = [
   {
     title: 'ID',
-    dataIndex: 'uuid',
-    sorter: true
+    dataIndex: 'uuid'
   },
   {
     title: 'Name',
@@ -101,8 +100,7 @@ const columns = [
   },
   {
     title: 'Project ID',
-    dataIndex: 'project_id',
-    sorter: true
+    dataIndex: 'project_id'
   },
   {
     title: 'Properties',
@@ -117,13 +115,11 @@ const columns = [
   {
     title: 'Create Time',
     dataIndex: 'create_time',
-    sorter: true,
     customRender: (t) => formateDate(new Date(t), 'YYYY-MM-dd hh:mm')
   },
   {
     title: 'Update Time',
     dataIndex: 'update_time',
-    sorter: true,
     customRender: (t) => formateDate(new Date(t), 'YYYY-MM-dd hh:mm')
   },
   {
