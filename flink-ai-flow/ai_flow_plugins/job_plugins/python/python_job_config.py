@@ -34,8 +34,9 @@ class PythonJobConfig(JobConfig):
                     b: b
     """
     def __init__(self, job_name: Text = None,
+                 job_label_report_interval: float = 5.0,
                  properties: Dict[Text, Jsonable] = None) -> None:
-        super().__init__(job_name, 'python', properties)
+        super().__init__(job_name, 'python', job_label_report_interval, properties)
 
     @property
     def env(self):
