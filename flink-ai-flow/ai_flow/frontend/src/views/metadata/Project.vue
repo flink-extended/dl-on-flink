@@ -63,8 +63,7 @@ import { getProjects, getRoleList } from '@/api/manage'
 const columns = [
   {
     title: 'ID',
-    dataIndex: 'uuid',
-    sorter: true
+    dataIndex: 'uuid'
   },
   {
     title: 'Name',

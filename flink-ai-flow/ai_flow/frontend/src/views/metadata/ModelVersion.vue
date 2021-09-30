@@ -67,8 +67,7 @@ const columns = [
   },
   {
     title: 'Model Version',
-    dataIndex: '_model_version',
-    sorter: true
+    dataIndex: '_model_version'
   },
   {
     title: 'Model Path',
