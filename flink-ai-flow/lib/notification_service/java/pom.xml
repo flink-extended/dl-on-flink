@@ -24,7 +24,7 @@
 
     <groupId>org.ai-flow</groupId>
     <artifactId>notification-client</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.2.0</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <grpc.version>1.27.2</grpc.version>
