@@ -186,7 +186,7 @@ class StreamTrainExecutor(FlinkPythonProcessor):
         return []
 
 
-class StreamValidateExecutor(FlinkPythonProcessor):
+class StreamValidateExecutor(PythonProcessor):
     def __init__(self):
         super().__init__()
         self.path = None
