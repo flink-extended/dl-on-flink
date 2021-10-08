@@ -55,7 +55,7 @@ class PeriodicManager(LoggingMixin):
                  task_id: str,
                  periodic_config: Dict):
         if 'cron' in periodic_config:
-            def build_cron_trigger(expr) -> CronTrigger:
+            def build_cron_trigger(expr, time_zone) -> CronTrigger:
                 cron_items = expr.split()
                 if len(cron_items) == 7:
                     return CronTrigger(second=cron_items[0],
@@ -64,21 +64,24 @@ class PeriodicManager(LoggingMixin):
                                        day=cron_items[3],
                                        month=cron_items[4],
                                        day_of_week=cron_items[5],
-                                       year=cron_items[6])
+                                       year=cron_items[6],
+                                       timezone=time_zone)
                 elif len(cron_items) == 6:
                     return CronTrigger(second=cron_items[0],
                                        minute=cron_items[1],
                                        hour=cron_items[2],
                                        day=cron_items[3],
                                        month=cron_items[4],
-                                       day_of_week=cron_items[5])
+                                       day_of_week=cron_items[5],
+                                       timezone=time_zone)
                 else:
                     raise ValueError('The cron expression {} is incorrect format, follow the pattern: '
                                      'second minute hour day month day_of_week optional(year).'.format(expr))
 
             self.sc.add_job(id=self._generate_job_id(dag_id, execution_date, task_id),
                             func=trigger_periodic_task, args=(self.mailbox, dag_id, execution_date, task_id),
-                            trigger=build_cron_trigger(periodic_config['cron']))
+                            trigger=build_cron_trigger(periodic_config['cron'], periodic_config[
+                                'timezone'] if 'timezone' in periodic_config else None))
         elif 'interval' in periodic_config:
             interval_expr: str = periodic_config['interval']
             interval_items = interval_expr.split(',')
