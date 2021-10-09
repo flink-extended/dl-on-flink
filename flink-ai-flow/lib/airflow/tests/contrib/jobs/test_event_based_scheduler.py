@@ -64,6 +64,7 @@ class TestEventBasedScheduler(unittest.TestCase):
         db.clear_db_task_execution()
         db.clear_db_message()
         db.clear_db_event_progress()
+        db.clear_db_periodic_task_model()
         self.scheduler = None
         self.port = 50102
         self.storage = MemoryEventStorage()

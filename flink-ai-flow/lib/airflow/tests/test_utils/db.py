@@ -34,7 +34,8 @@ from airflow.models import (
     XCom,
     errors,
     Message,
-    EventProgress
+    EventProgress,
+    PeriodicTaskModel
 )
 from airflow.models.dagcode import DagCode
 from airflow.models.serialized_dag import SerializedDagModel
@@ -153,3 +154,8 @@ def clear_db_message():
 def clear_db_event_progress():
     with create_session() as session:
         session.query(EventProgress).delete()
+
+
+def clear_db_periodic_task_model():
+    with create_session() as session:
+        session.query(PeriodicTaskModel).delete()
