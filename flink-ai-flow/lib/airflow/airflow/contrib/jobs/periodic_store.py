@@ -34,13 +34,18 @@ except ImportError:  # pragma: nocover
     raise ImportError('SQLAlchemyJobStore requires SQLAlchemy installed')
 
 
-class AirFlowSQLAlchemyJobStore(BaseJobStore):
+class PeriodicTaskSQLAlchemyJobStore(BaseJobStore):
+    """ The class saves the periodic scheduling information of periodic tasks to database. """
     def __init__(self, pickle_protocol=pickle.HIGHEST_PROTOCOL):
-        super(AirFlowSQLAlchemyJobStore, self).__init__()
+        super(PeriodicTaskSQLAlchemyJobStore, self).__init__()
         self.pickle_protocol = pickle_protocol
         self.session = None
 
     def set_session(self, session):
+        """
+        If you set an external session, after calling the interfaces(add_job, update_job, remove_job, remove_all_jobs),
+        you need to call session.commit() to update to the database.
+        """
         self.session = session
 
     def unset_session(self):
@@ -147,8 +152,8 @@ class AirFlowSQLAlchemyJobStore(BaseJobStore):
         for job in selectable_jobs:
             try:
                 jobs.append(self._reconstitute_job(job.job_state))
-            except BaseException:
-                self._logger.exception('Unable to restore job "%s" -- removing it', job.id)
+            except BaseException as e:
+                self._logger.exception('Unable to restore job "%s exception [%s]" -- removing it', job.id, str(e))
                 failed_job_ids.add(job.id)
         # Remove all the jobs we failed to restore
         if failed_job_ids:

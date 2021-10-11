@@ -21,7 +21,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.triggers.interval import IntervalTrigger
 
-from airflow.contrib.jobs.periodic_store import AirFlowSQLAlchemyJobStore
+from airflow.contrib.jobs.periodic_store import PeriodicTaskSQLAlchemyJobStore
 from airflow.events.scheduler_events import PeriodicEvent
 from airflow.utils.log.logging_mixin import LoggingMixin
 from airflow.utils.mailbox import Mailbox
@@ -50,7 +50,7 @@ class PeriodicManager(LoggingMixin):
         super().__init__()
         self.mailbox = mailbox
         set_global_mailbox(mailbox)
-        self.store = AirFlowSQLAlchemyJobStore()
+        self.store = PeriodicTaskSQLAlchemyJobStore()
         jobstores = {
             'default': self.store
         }

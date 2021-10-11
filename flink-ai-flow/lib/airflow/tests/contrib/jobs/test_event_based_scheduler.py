@@ -538,6 +538,36 @@ class TestEventBasedScheduler(unittest.TestCase):
         tes: List[TaskExecution] = self.get_task_execution("single", "task_1")
         self.assertGreater(len(tes), 1)
 
+    def run_interval_periodic_task_twice_function(self, num):
+        while True:
+            with create_session() as session:
+                tes = session.query(TaskExecution).filter(TaskExecution.dag_id == 'single',
+                                                          TaskExecution.task_id == 'task_1').all()
+                if len(tes) > num:
+                    break
+                else:
+                    time.sleep(1)
+        self.client.send_event(StopSchedulerEvent(job_id=0).to_event())
+
+    def test_run_interval_periodic_task_twice(self):
+        dag_file = os.path.join(TEST_DAG_FOLDER, 'test_periodic_interval_task_dag.py')
+        t = threading.Thread(target=self.run_interval_periodic_task_function, args=())
+        t.setDaemon(True)
+        t.start()
+        self.start_scheduler(dag_file, int(time.time()*1000))
+        tes: List[TaskExecution] = self.get_task_execution("single", "task_1")
+        first_task_num = len(tes)
+        self.assertGreater(first_task_num, 1)
+
+        t = threading.Thread(target=self.run_interval_periodic_task_twice_function, args=(first_task_num,))
+        t.setDaemon(True)
+        t.start()
+        # db.clear_db_event_progress()
+        self.start_scheduler(dag_file, int(time.time()*1000))
+        tes: List[TaskExecution] = self.get_task_execution("single", "task_1")
+        twice_task_num = len(tes)
+        self.assertGreater(twice_task_num, first_task_num)
+
     def run_one_task_function(self):
         self.wait_for_running()
         self.client.send_event(BaseEvent(key='a', value='a'))
