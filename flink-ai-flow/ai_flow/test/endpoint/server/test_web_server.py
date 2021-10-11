@@ -29,7 +29,7 @@ from ai_flow.workflow.control_edge import WorkflowSchedulingRule, WorkflowAction
 
 class TestWebServer(unittest.TestCase):
 
-    def test_generate_graph(self):
+    def test_generate_acyclic_graph(self):
         context_extractor = MyContextExtractor()
         rule = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k', 'v', namespace='test_namespace'),
                                       WorkflowAction.STOP)
@@ -40,7 +40,6 @@ class TestWebServer(unittest.TestCase):
         self.assertIsNotNone(workflow_graph)
         graph_nodes = json.loads(workflow_graph)
         for graph_node in graph_nodes:
-            print(graph_node['id'])
             if graph_node['id'] == 'daily_data':
                 self.assertEqual(graph_node['layer'], 1)
             if graph_node['id'] == 'daily_train_result':
@@ -53,6 +52,24 @@ class TestWebServer(unittest.TestCase):
                 self.assertEqual(graph_node['layer'], 3)
             if graph_node['id'] == 'daily_validate_result':
                 self.assertEqual(graph_node['layer'], 4)
+
+    def test_generate_ring_graph(self):
+        context_extractor = MyContextExtractor()
+        rule = WorkflowSchedulingRule(MeetAllEventCondition().add_event('k', 'v', namespace='test_namespace'),
+                                      WorkflowAction.STOP)
+        workflow_meta = WorkflowMeta('workflow', 0, context_extractor_in_bytes=cloudpickle.dumps(context_extractor),
+                                     scheduling_rules=[rule],
+                                     graph='{"__af_object_type__": "jsonable", "__class__": "AIGraph", "__module__": "ai_flow.ai_graph.ai_graph", "_context_extractor": {"__af_object_type__": "jsonable", "__class__": "BroadcastAllContextExtractor", "__module__": "ai_flow.api.context_extractor"}, "edges": {"task_2": [{"__af_object_type__": "jsonable", "__class__": "ControlEdge", "__module__": "ai_flow.workflow.control_edge", "destination": "task_2", "scheduling_rule": {"__af_object_type__": "jsonable", "__class__": "JobSchedulingRule", "__module__": "ai_flow.workflow.control_edge", "action": "START", "event_condition": {"__af_object_type__": "jsonable", "__class__": "MeetAnyEventCondition", "__module__": "ai_flow.workflow.control_edge", "condition_type": "MEET_ANY", "events": [{"__af_object_type__": "jsonable", "__class__": "EventMeetConfig", "__module__": "ai_flow.workflow.control_edge", "event_key": "simple_workflow.task_1", "event_type": "JOB_STATUS_CHANGED", "event_value": "FINISHED", "life": "ONCE", "namespace": "celery_examples", "sender": "task_1", "value_condition": "EQUALS"}]}}, "source": "*"}, {"__af_object_type__": "jsonable", "__class__": "ControlEdge", "__module__": "ai_flow.workflow.control_edge", "destination": "task_2", "scheduling_rule": {"__af_object_type__": "jsonable", "__class__": "JobSchedulingRule", "__module__": "ai_flow.workflow.control_edge", "action": "STOP", "event_condition": {"__af_object_type__": "jsonable", "__class__": "MeetAnyEventCondition", "__module__": "ai_flow.workflow.control_edge", "condition_type": "MEET_ANY", "events": [{"__af_object_type__": "jsonable", "__class__": "EventMeetConfig", "__module__": "ai_flow.workflow.control_edge", "event_key": "simple_workflow.task_3", "event_type": "JOB_STATUS_CHANGED", "event_value": "FINISHED", "life": "ONCE", "namespace": "celery_examples", "sender": "task_3", "value_condition": "EQUALS"}]}}, "source": "*"}], "task_3": [{"__af_object_type__": "jsonable", "__class__": "ControlEdge", "__module__": "ai_flow.workflow.control_edge", "destination": "task_3", "scheduling_rule": {"__af_object_type__": "jsonable", "__class__": "JobSchedulingRule", "__module__": "ai_flow.workflow.control_edge", "action": "START", "event_condition": {"__af_object_type__": "jsonable", "__class__": "MeetAnyEventCondition", "__module__": "ai_flow.workflow.control_edge", "condition_type": "MEET_ANY", "events": [{"__af_object_type__": "jsonable", "__class__": "EventMeetConfig", "__module__": "ai_flow.workflow.control_edge", "event_key": "simple_workflow.task_2", "event_type": "JOB_STATUS_CHANGED", "event_value": "RUNNING", "life": "ONCE", "namespace": "celery_examples", "sender": "task_2", "value_condition": "EQUALS"}]}}, "source": "*"}]}, "name": null, "node_id": "AIGraph_0", "nodes": {"AINode_0": {"__af_object_type__": "jsonable", "__class__": "AINode", "__module__": "ai_flow.ai_graph.ai_node", "config": {"__af_object_type__": "jsonable", "__class__": "JobConfig", "__module__": "ai_flow.workflow.job_config", "job_label_report_interval": 5.0, "job_name": "task_1", "job_type": "bash", "properties": {"entry_module_path": "simple_workflow"}}, "name": null, "node_config": {"name": null, "node_type": "user_define_operation", "properties": null}, "node_id": "AINode_0", "output_num": 1, "processor": {"__af_object_type__": "bytes", "__class__": "bytes", "__data__": "\u0080\u0003cai_flow_plugins.job_plugins.bash.bash_processor\nBashProcessor\nq\u0000)\u0081q\u0001}q\u0002(X\f\u0000\u0000\u0000bash_commandq\u0003X\u0011\u0000\u0000\u0000echo before_sleepq\u0004X\u000f\u0000\u0000\u0000output_encodingq\u0005X\u0005\u0000\u0000\u0000utf-8q\u0006ub.", "__module__": "builtins"}, "properties": {}}, "AINode_1": {"__af_object_type__": "jsonable", "__class__": "AINode", "__module__": "ai_flow.ai_graph.ai_node", "config": {"__af_object_type__": "jsonable", "__class__": "JobConfig", "__module__": "ai_flow.workflow.job_config", "job_label_report_interval": 5.0, "job_name": "task_2", "job_type": "bash", "properties": {"entry_module_path": "simple_workflow"}}, "name": null, "node_config": {"name": null, "node_type": "user_define_operation", "properties": null}, "node_id": "AINode_1", "output_num": 1, "processor": {"__af_object_type__": "bytes", "__class__": "bytes", "__data__": "\u0080\u0003cai_flow_plugins.job_plugins.bash.bash_processor\nBashProcessor\nq\u0000)\u0081q\u0001}q\u0002(X\f\u0000\u0000\u0000bash_commandq\u0003X\t\u0000\u0000\u0000sleep 100q\u0004X\u000f\u0000\u0000\u0000output_encodingq\u0005X\u0005\u0000\u0000\u0000utf-8q\u0006ub.", "__module__": "builtins"}, "properties": {}}, "AINode_2": {"__af_object_type__": "jsonable", "__class__": "AINode", "__module__": "ai_flow.ai_graph.ai_node", "config": {"__af_object_type__": "jsonable", "__class__": "JobConfig", "__module__": "ai_flow.workflow.job_config", "job_label_report_interval": 5.0, "job_name": "task_3", "job_type": "bash", "properties": {"entry_module_path": "simple_workflow"}}, "name": null, "node_config": {"name": null, "node_type": "user_define_operation", "properties": null}, "node_id": "AINode_2", "output_num": 1, "processor": {"__af_object_type__": "bytes", "__class__": "bytes", "__data__": "\u0080\u0003cai_flow_plugins.job_plugins.bash.bash_processor\nBashProcessor\nq\u0000)\u0081q\u0001}q\u0002(X\f\u0000\u0000\u0000bash_commandq\u0003X\b\u0000\u0000\u0000sleep 10q\u0004X\u000f\u0000\u0000\u0000output_encodingq\u0005X\u0005\u0000\u0000\u0000utf-8q\u0006ub.", "__module__": "builtins"}, "properties": {}}}, "output_num": 0, "properties": {}}')
+        workflow_graph = generate_graph(workflow_meta)
+        self.assertIsNotNone(workflow_graph)
+        graph_nodes = json.loads(workflow_graph)
+        for graph_node in graph_nodes:
+            if graph_node['id'] == 'task_1':
+                self.assertEqual(graph_node['layer'], 1)
+            if graph_node['id'] == 'task_2':
+                self.assertEqual(graph_node['layer'], 2)
+            if graph_node['id'] == 'task_3':
+                self.assertEqual(graph_node['layer'], 1)
 
 
 if __name__ == '__main__':
