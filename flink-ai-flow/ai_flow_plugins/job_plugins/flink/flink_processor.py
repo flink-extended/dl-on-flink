@@ -68,7 +68,7 @@ class ExecutionContext(json_utils.Jsonable):
         return self._execution_env
 
     @property
-    def table_env(self) -> TableEnvironment:
+    def table_env(self) -> WrappedTableEnvironment:
         return self._table_env
 
     @property
