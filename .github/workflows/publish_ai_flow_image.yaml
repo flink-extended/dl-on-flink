@@ -1,0 +1,27 @@
+name: Publish AIFlow Docker Image
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 16 * * *'
+
+jobs:
+  push_to_registry:
+    name: Push Docker image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      
+      - name: Log in to to docker registry
+        run: |
+          docker login --username=${{ secrets.IMAGE_REGISTRY_USERNAME }} --password=${{ secrets.IMAGE_REGISTRY_PASSWORD }} ${{ secrets.LOGIN_REGISTRY }}
+      
+      - name: Build Image
+        run: |
+          cd ./flink-ai-flow
+          bash build_docker_image.sh ${{ secrets.IMAGE_REGISTRY }}/flink-ai-flow:${GITHUB_REF##*/}-`echo ${GITHUB_SHA} | cut -c1-8`
+      
+      - name: Push Image
+        run: |
+          docker push  ${{ secrets.IMAGE_REGISTRY }}/flink-ai-flow:${GITHUB_REF##*/}-`echo ${GITHUB_SHA} | cut -c1-8`
