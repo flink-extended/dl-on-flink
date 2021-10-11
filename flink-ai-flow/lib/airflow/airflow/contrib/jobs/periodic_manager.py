@@ -16,16 +16,27 @@
 # under the License.
 from datetime import datetime
 from typing import Dict
-from airflow.utils.mailbox import Mailbox
+
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.triggers.interval import IntervalTrigger
+
+from airflow.contrib.jobs.periodic_store import PeriodicTaskSQLAlchemyJobStore
 from airflow.events.scheduler_events import PeriodicEvent
 from airflow.utils.log.logging_mixin import LoggingMixin
+from airflow.utils.mailbox import Mailbox
+
+_mailbox: Mailbox = None
 
 
-def trigger_periodic_task(mailbox, dag_id, execution_date, task_id):
-    mailbox.send_message(PeriodicEvent(dag_id, execution_date, task_id).to_event())
+def set_global_mailbox(mailbox):
+    global _mailbox
+    _mailbox = mailbox
+
+
+def trigger_periodic_task(dag_id, execution_date, task_id):
+    global _mailbox
+    _mailbox.send_message(PeriodicEvent(dag_id, execution_date, task_id).to_event())
 
 
 class PeriodicManager(LoggingMixin):
@@ -38,7 +49,12 @@ class PeriodicManager(LoggingMixin):
     def __init__(self, mailbox: Mailbox):
         super().__init__()
         self.mailbox = mailbox
-        self.sc = BackgroundScheduler()
+        set_global_mailbox(mailbox)
+        self.store = PeriodicTaskSQLAlchemyJobStore()
+        jobstores = {
+            'default': self.store
+        }
+        self.sc = BackgroundScheduler(jobstores=jobstores)
 
     def start(self):
         self.sc.start()
@@ -77,7 +93,7 @@ class PeriodicManager(LoggingMixin):
                                      'second minute hour day month day_of_week optional(year).'.format(expr))
 
             self.sc.add_job(id=self._generate_job_id(dag_id, execution_date, task_id),
-                            func=trigger_periodic_task, args=(self.mailbox, dag_id, execution_date, task_id),
+                            func=trigger_periodic_task, args=(dag_id, execution_date, task_id),
                             trigger=build_cron_trigger(periodic_config['cron']))
         elif 'interval' in periodic_config:
             interval_expr: str = periodic_config['interval']
@@ -101,7 +117,7 @@ class PeriodicManager(LoggingMixin):
                 raise Exception('The interval config must be greater than 0.')
 
             self.sc.add_job(id=self._generate_job_id(dag_id, execution_date, task_id),
-                            func=trigger_periodic_task, args=(self.mailbox, dag_id, execution_date, task_id),
+                            func=trigger_periodic_task, args=(dag_id, execution_date, task_id),
                             trigger=IntervalTrigger(seconds=temp_list[4],
                                                     minutes=temp_list[3],
                                                     hours=temp_list[2],
@@ -114,4 +130,7 @@ class PeriodicManager(LoggingMixin):
                     dag_id: str,
                     execution_date: datetime,
                     task_id: str):
-        self.sc.remove_job(job_id=self._generate_job_id(dag_id, execution_date, task_id))
+        job_id = self._generate_job_id(dag_id, execution_date, task_id)
+        job = self.sc.get_job(job_id)
+        if job is not None:
+            self.sc.remove_job(job_id=job_id)
