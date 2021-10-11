@@ -118,6 +118,7 @@ class TestPeriodicStore(unittest.TestCase):
 
     def test_restart_scheduler_job(self):
         global run_num
+        run_num = 0
         for i in range(0, 2):
             self.sc.add_job(func=func, kwargs={'a': 'a', 'b': 'b'}, id=str(i),
                             trigger=DateTrigger(run_date=dt.datetime.utcnow() + dt.timedelta(seconds=5*i+2),
