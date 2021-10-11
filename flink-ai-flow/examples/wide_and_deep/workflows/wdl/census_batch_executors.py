@@ -86,6 +86,7 @@ class BatchTrainExecutor(FlinkPythonProcessor):
 
         train(execution_context.execution_env, execution_context.table_env, execution_context.statement_set,
               input_tb, tf_config, output_schema)
+        execution_context.statement_set.wrapped_context.need_execute = True
         return []
 
 
