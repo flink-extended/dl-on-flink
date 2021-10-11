@@ -249,7 +249,8 @@ class EventBasedScheduler(LoggingMixin):
         ).first()
         return dagrun
 
-    def _register_periodic_events(self, execution_date, dag):
+    def _register_periodic_events(self, execution_date, dag, session=None):
+        self.periodic_manager.store.set_session(session)
         for task in dag.tasks:
             if task.executor_config is not None and 'periodic_config' in task.executor_config:
                 self.log.debug('register periodic task {} {} {}'.format(dag.dag_id, execution_date, task.task_id))
@@ -257,6 +258,7 @@ class EventBasedScheduler(LoggingMixin):
                                                execution_date=execution_date,
                                                task_id=task.task_id,
                                                periodic_config=task.executor_config['periodic_config'])
+        self.periodic_manager.store.unset_session()
 
     @provide_session
     def _remove_periodic_events(self, dag_id, execution_date, session=None):
@@ -310,7 +312,7 @@ class EventBasedScheduler(LoggingMixin):
                     )
                     if run_type == DagRunType.SCHEDULED:
                         self._update_dag_next_dagrun(dag_id, session)
-                    self._register_periodic_events(dag_run.execution_date, dag)
+                    self._register_periodic_events(dag_run.execution_date, dag, session)
                     # commit the session - Release the write lock on DagModel table.
                     guard.commit()
                     # END: create dagrun
