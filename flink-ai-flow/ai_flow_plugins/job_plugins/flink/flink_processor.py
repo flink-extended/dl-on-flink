@@ -17,13 +17,14 @@
 from abc import abstractmethod
 from typing import List, Dict, Text, Optional, Union
 
+from pyflink.dataset import ExecutionEnvironment
+from pyflink.table import TableEnvironment, Table
 from pyflink.table.udf import UserDefinedScalarFunctionWrapper
 
 from ai_flow import DatasetMeta
 from ai_flow.plugin_interface.scheduler_interface import JobExecutionInfo
 from ai_flow.util import json_utils
-from pyflink.dataset import ExecutionEnvironment
-from pyflink.table import TableEnvironment, StatementSet, Table
+from ai_flow_plugins.job_plugins.flink.flink_wrapped_env import WrappedStatementSet, WrappedTableEnvironment
 
 
 class ExecutionContext(json_utils.Jsonable):
@@ -37,8 +38,8 @@ class ExecutionContext(json_utils.Jsonable):
                  job_execution_info: JobExecutionInfo,
                  config: Dict,
                  execution_env: ExecutionEnvironment,
-                 table_env: TableEnvironment,
-                 statement_set: StatementSet
+                 table_env: WrappedTableEnvironment,
+                 statement_set: WrappedStatementSet
                  ):
         self._job_execution_info = job_execution_info
         self._config: Dict = config
@@ -71,7 +72,7 @@ class ExecutionContext(json_utils.Jsonable):
         return self._table_env
 
     @property
-    def statement_set(self) -> StatementSet:
+    def statement_set(self) -> WrappedStatementSet:
         return self._statement_set
 
 
