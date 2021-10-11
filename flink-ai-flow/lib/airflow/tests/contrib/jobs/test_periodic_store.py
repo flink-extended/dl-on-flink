@@ -24,24 +24,27 @@ from apscheduler.triggers.date import DateTrigger
 from apscheduler.triggers.interval import IntervalTrigger
 
 from airflow.models.periodic_task_model import PeriodicTaskModel
-from airflow.contrib.jobs.periodic_store import AirFlowSQLAlchemyJobStore
+from airflow.contrib.jobs.periodic_store import PeriodicTaskSQLAlchemyJobStore
 from airflow.utils.session import create_session
 from tests.test_utils import db
 
+run_num = 0
+
 
 def func(a, b):
-    print(dt.datetime.utcnow())
+    global run_num
     print(a, b)
+    run_num += 1
 
 
 class TestPeriodicStore(unittest.TestCase):
     def setUp(self) -> None:
         db.clear_db_periodic_task_model()
-        self.store = AirFlowSQLAlchemyJobStore()
-        jobstores = {
+        self.store = PeriodicTaskSQLAlchemyJobStore()
+        self.jobstores = {
             'default': self.store
         }
-        self.sc = BackgroundScheduler(jobstores=jobstores)
+        self.sc = BackgroundScheduler(jobstores=self.jobstores)
         self.sc.start()
 
     def tearDown(self) -> None:
@@ -112,6 +115,24 @@ class TestPeriodicStore(unittest.TestCase):
         self.assertEqual(1, len(self.store.get_all_jobs()))
         self.store.remove_all_jobs()
         self.assertEqual(0, len(self.store.get_all_jobs()))
+
+    def test_restart_scheduler_job(self):
+        global run_num
+        for i in range(0, 2):
+            self.sc.add_job(func=func, kwargs={'a': 'a', 'b': 'b'}, id=str(i),
+                            trigger=DateTrigger(run_date=dt.datetime.utcnow() + dt.timedelta(seconds=5*i+2),
+                                                timezone=pytz.timezone('UTC')))
+        self.assertEqual(2, len(self.sc.get_jobs()))
+        time.sleep(2)
+        self.assertEqual(1, len(self.sc.get_jobs()))
+        self.sc.shutdown()
+        self.assertEqual(1, run_num)
+        self.sc = BackgroundScheduler(jobstores=self.jobstores)
+        self.sc.start()
+        self.assertEqual(1, len(self.sc.get_jobs()))
+        time.sleep(7)
+        self.assertEqual(0, len(self.sc.get_jobs()))
+        self.assertEqual(2, run_num)
 
 
 if __name__ == '__main__':
