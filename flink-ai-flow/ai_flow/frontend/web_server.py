@@ -167,15 +167,18 @@ class Node(Jsonable):
                 'materialParentProjectId': self._material_parent_project_id}
 
 
-def node_layer(node: Node, parent_edges: Dict, nodes: Dict):
+def node_layer(node: Node, parent_edges: Dict, nodes: Dict, parent_nodes: List = None):
     if node.id not in parent_edges:
         return 1
     else:
         max_layer = 1
+        parent_nodes = parent_nodes if parent_nodes else [node.id]
         for parent_edge in parent_edges[node.id]:
-            layer = 1 + node_layer(nodes[parent_edge.id], parent_edges, nodes)
-            if layer > max_layer:
-                max_layer = layer
+            if parent_edge.id not in parent_nodes:
+                parent_nodes.append(parent_edge.id)
+                layer = 1 + node_layer(nodes[parent_edge.id], parent_edges, nodes, parent_nodes)
+                if layer > max_layer:
+                    max_layer = layer
         return max_layer
 
 
