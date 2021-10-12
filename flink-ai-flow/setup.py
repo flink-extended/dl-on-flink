@@ -92,7 +92,7 @@ try:
     packages = find_packages()
     setup(
         name='ai_flow',
-        version='0.2.0',
+        version='0.2.dev0',
         description='An open source framework that bridges big data and AI.',
         author='',
         author_email='flink.aiflow@gmail.com',
