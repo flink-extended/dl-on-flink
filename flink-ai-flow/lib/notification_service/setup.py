@@ -31,7 +31,7 @@ def get_script():
 
 setup(
     name='notification_service',
-    version='0.2.0',
+    version='0.2.1',
     description='A Python package which provides stable notification service.',
     author='',
     author_email='flink.aiflow@gmail.com',
