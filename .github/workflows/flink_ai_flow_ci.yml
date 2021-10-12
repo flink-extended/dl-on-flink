@@ -39,10 +39,10 @@ jobs:
       run: |
         # stop the build if there are Python syntax erroservice.pys or undefined names
         flake8 flink-ai-flow --count --select=E9,F63,F7,F82 --show-source --statistics \
-          --exclude flink-ai-flow/ai_flow/frontend/node_modules
+          --exclude flink-ai-flow/ai_flow/frontend/node_modules,flink-ai-flow/ai_flow/frontend/dist
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 flink-ai-flow --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics \
-          --exclude flink-ai-flow/ai_flow/frontend/node_modules
+          --exclude flink-ai-flow/ai_flow/frontend/node_modules,flink-ai-flow/ai_flow/frontend/dist
     - name: Test with pytest
       run: |
         /bin/bash flink-ai-flow/run_tests.sh
