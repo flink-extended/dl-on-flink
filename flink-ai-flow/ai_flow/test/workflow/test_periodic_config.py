@@ -37,6 +37,11 @@ class TestPeriodicConfig(unittest.TestCase):
     def test_periodic_config_from_dict(self):
         pc = PeriodicConfig.from_dict({'start_date': "2020,1,1,1,1,1,", 'cron': '* * * * * * *'})
         self.assertEqual(datetime(2020, 1, 1, 1, 1, 1), pc.get_start_date())
+        self.assertIsNone(pc.get_timezone())
+        pc = PeriodicConfig.from_dict({'start_date': "2020,1,1,1,1,1,", 'cron': '* * * * * * *',
+                                       'timezone': 'Asia/Shanghai'})
+        self.assertEqual(datetime(2020, 1, 1, 1, 1, 1), pc.get_start_date())
+        self.assertEqual('Asia/Shanghai', pc.get_timezone())
 
         pc = PeriodicConfig.from_dict({'start_date': "2020,1,1,1,1,1,", 'interval': '1,1,1,1'})
         self.assertEqual(timedelta(days=1, hours=1, minutes=1, seconds=1), pc.get_interval())
@@ -46,6 +51,13 @@ class TestPeriodicConfig(unittest.TestCase):
         data = PeriodicConfig.to_dict(pc)
         self.assertEqual('2020,1,1,1,1,1,', data.get('start_date'))
         self.assertEqual('* * * * * * *', data.get('cron'))
+        self.assertIsNone(data.get('timezone'))
+        pc = PeriodicConfig.from_dict(
+            {'start_date': "2020,1,1,1,1,1,", 'cron': '* * * * * * *', 'timezone': 'Asia/Shanghai'})
+        data = PeriodicConfig.to_dict(pc)
+        self.assertEqual('2020,1,1,1,1,1,', data.get('start_date'))
+        self.assertEqual('* * * * * * *', data.get('cron'))
+        self.assertEqual('Asia/Shanghai', data.get('timezone'))
 
         pc = PeriodicConfig.from_dict({'start_date': "2020,1,1,1,1,1,", 'interval': '1,1,1,1'})
         data = PeriodicConfig.to_dict(pc)

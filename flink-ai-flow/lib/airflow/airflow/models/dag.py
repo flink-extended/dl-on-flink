@@ -302,7 +302,8 @@ class DAG(LoggingMixin):
             self.timezone = self.default_args['start_date'].tzinfo
 
         if not hasattr(self, 'timezone') or not self.timezone:
-            self.timezone = settings.TIMEZONE
+            self.timezone = self.default_args['timezone'] if 'timezone' in self.default_args and self.default_args[
+                'timezone'] else settings.TIMEZONE
 
         # Apply the timezone we settled on to end_date if it wasn't supplied
         if 'end_date' in self.default_args and self.default_args['end_date']:
