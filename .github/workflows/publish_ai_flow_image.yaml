@@ -39,7 +39,8 @@ jobs:
       - name: Build Image
         run: |
           cd ./flink-ai-flow
-          bash build_docker_image.sh ${{ secrets.IMAGE_REGISTRY }}/flink-ai-flow:${GITHUB_REF##*/}-`echo ${GITHUB_SHA} | cut -c1-8`
+          echo building image with repo: ${{ env.IMAGE_REPO }} tag: ${{ env.IMAGE_TAG }}
+          bash build_docker_image.sh ${{ env.IMAGE_REPO }}:${{ env.IMAGE_TAG }}
 
       - name: Push Image
         run: |
