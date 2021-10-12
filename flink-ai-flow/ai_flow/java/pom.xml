@@ -23,7 +23,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.ai-flow</groupId>
     <artifactId>aiflow-parent</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.2.1</version>
     <packaging>pom</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -44,7 +44,7 @@
         <maven.spotless.version>2.4.2</maven.spotless.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <notification-client.version>0.2-SNAPSHOT</notification-client.version>
+        <notification-client.version>0.2.1</notification-client.version>
     </properties>
 
     <licenses>

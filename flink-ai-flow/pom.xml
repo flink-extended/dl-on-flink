@@ -24,7 +24,7 @@
 
     <groupId>com.apache.flink.ai</groupId>
     <artifactId>ai_flow</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.2.1</version>
     <build>
         <plugins>
             <plugin>
