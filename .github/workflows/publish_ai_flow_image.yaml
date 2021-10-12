@@ -1,0 +1,47 @@
+name: Publish AIFlow Docker Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_repository:
+        description: 'Image Repository'
+        required: false
+        default: 'flinkaiflow/flink-ai-flow-dev'
+      image_tag:
+        description: 'Image Tag'
+        required: false
+        default: ''
+  schedule:
+    - cron: '0 16 * * *'
+
+jobs:
+  push_to_registry:
+    name: Push Docker image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Set variables
+        env:
+          DEFAULT_IMAGE_REPO: 'flinkaiflow/flink-ai-flow-dev'
+        run: |
+          IMAGE_REPO=${{ github.event.inputs.image_repository || env.DEFAULT_IMAGE_REPO }}
+          IMAGE_TAG=${{ github.event.inputs.image_tag }}
+          [ -z ${IMAGE_TAG} ] && IMAGE_TAG=${GITHUB_REF##*/}-`echo ${GITHUB_SHA} | cut -c1-8`
+          echo "IMAGE_REPO=${IMAGE_REPO}" >> $GITHUB_ENV
+          echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_ENV
+
+      - name: Log in to to docker registry
+        run: |
+          docker login --username=${{ secrets.IMAGE_REGISTRY_USERNAME }} --password=${{ secrets.IMAGE_REGISTRY_PASSWORD }} ${{ secrets.LOGIN_REGISTRY }}
+
+      - name: Build Image
+        run: |
+          cd ./flink-ai-flow
+          bash build_docker_image.sh ${{ secrets.IMAGE_REGISTRY }}/flink-ai-flow:${GITHUB_REF##*/}-`echo ${GITHUB_SHA} | cut -c1-8`
+
+      - name: Push Image
+        run: |
+          echo pushing ${{ env.IMAGE_REPO }}:${{ env.IMAGE_TAG }}
+          docker push  ${{ env.IMAGE_REPO }}:${{ env.IMAGE_TAG }}
