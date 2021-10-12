@@ -112,6 +112,7 @@
                         <exclude>ai_flow/java/client/target/**/*</exclude>
                         <exclude>ai_flow/java/.idea/**/*</exclude>
                         <exclude>ai_flow/frontend/node_modules/**/*</exclude>
+                        <exclude>ai_flow/frontend/dist/**/*</exclude>
                     </excludes>
                 </configuration>
             </plugin>
