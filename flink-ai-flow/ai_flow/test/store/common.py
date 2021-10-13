@@ -31,13 +31,14 @@ from ai_flow.workflow.control_edge import MeetAllEventCondition, WorkflowSchedul
 from ai_flow.common.properties import Properties
 from ai_flow.common.status import Status
 from ai_flow.meta.dataset_meta import DataType, DatasetMeta, Schema
-from ai_flow.meta.job_meta import State
 from ai_flow.meta.metric_meta import MetricType
 from ai_flow.model_center.entity.registered_model_detail import RegisteredModelDetail
 from ai_flow.protobuf.message_pb2 import RESOURCE_ALREADY_EXISTS, \
     INVALID_PARAMETER_VALUE
 from ai_flow.endpoint.server.exception import AIFlowException
 from ai_flow.test.endpoint import random_str
+from ai_flow.store.abstract_store import Orders
+from ai_flow.store.sqlalchemy_store import OrderBy
 
 
 class TestContext(EventContext):
@@ -128,6 +129,10 @@ class AbstractTestStore(object):
         self.assertEqual(len(response_list), 2)
         self.assertEqual('dataset_1', response_list[0].name)
         self.assertEqual('dataset_2', response_list[1].name)
+        response_list = self.store.list_datasets(5, 0, orders=Orders([(OrderBy('uuid'), 'descend')]))
+        self.assertEqual(len(response_list), 2)
+        self.assertEqual('dataset_2', response_list[0].name)
+        self.assertEqual('dataset_1', response_list[1].name)
         dataset_count = self.store.count_datasets()
         self.assertEqual(2, dataset_count)
 
@@ -233,6 +238,10 @@ class AbstractTestStore(object):
         response_list = self.store.list_workflows(project_response.name, 2, 0)
         self.assertEqual('workflow1', response_list[0].name)
         self.assertEqual('workflow2', response_list[1].name)
+        response_list = self.store.list_workflows(project_response.name, 2, 0,
+                                                  orders=Orders([(OrderBy('uuid'), 'descend')]))
+        self.assertEqual('workflow2', response_list[0].name)
+        self.assertEqual('workflow1', response_list[1].name)
         workflow_count = self.store.count_workflows(project_response.name)
         self.assertEqual(2, workflow_count)
 
@@ -392,6 +401,10 @@ class AbstractTestStore(object):
         self.assertEqual(2, len(response_list))
         self.assertEqual('project', response_list[0].name)
         self.assertEqual('project1', response_list[1].name)
+        response_list = self.store.list_projects(2, 0, orders=Orders([(OrderBy('uuid'), 'descend')]))
+        self.assertEqual(2, len(response_list))
+        self.assertEqual('project1', response_list[0].name)
+        self.assertEqual('project', response_list[1].name)
         project_count = self.store.count_projects()
         self.assertEqual(2, project_count)
 
@@ -531,6 +544,7 @@ class AbstractTestStore(object):
         self.assertEqual(artifact.uri, self.store.get_artifact_by_name('artifact_result').uri)
         self.store.register_artifact(name='artifact_result_1', uri='../..')
         self.assertEqual(2, len(self.store.list_artifacts(2, 0)))
+        self.assertEqual(2, len(self.store.list_artifacts(2, 0, orders=Orders([(OrderBy('uuid'), 'descend')]))))
         self.assertEqual(2, self.store.count_artifacts())
         self.assertEqual(Status.OK, self.store.delete_artifact_by_id(1))
         self.assertEqual(Status.OK, self.store.delete_artifact_by_name('artifact_result_1'))
@@ -645,6 +659,9 @@ class AbstractTestStore(object):
         self._create_registered_model('N')
         self.assertEqual(set([registered_model.model_name for registered_model in self.store.list_registered_models()]),
                          {'M', 'N'})
+        self.assertEqual(set([registered_model.model_name for registered_model in
+                              self.store.list_registered_models(orders=Orders([(OrderBy('model_name'), 'descend')]))]),
+                         {'N', 'M'})
 
         self._create_registered_model('NN')
         self._create_registered_model('NM')
