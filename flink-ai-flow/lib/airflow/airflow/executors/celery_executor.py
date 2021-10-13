@@ -425,8 +425,11 @@ class CeleryExecutor(BaseExecutor):
         self.log.debug("Inquiring about %s celery task(s)", len(self.tasks))
         state_and_info_by_celery_task_id = self.bulk_state_fetcher.get_many(self.tasks.values())
 
+        self.log.info("All tasks list: %s", str(self.tasks))
+        self.log.info('State and info from celery: %s', str(state_and_info_by_celery_task_id))
         self.log.debug("Inquiries completed.")
         for key, async_result in list(self.tasks.items()):
+            self.log.info("Getting result of task id : %s", async_result.task_id)
             state, info = state_and_info_by_celery_task_id.get(async_result.task_id)
             if state:
                 self.update_task_state(key, state, info)
@@ -590,8 +593,10 @@ class BulkStateFetcher(LoggingMixin):
         """Gets status for many Celery tasks using the best method available."""
         if isinstance(app.backend, BaseKeyValueStoreBackend):
             result = self._get_many_from_kv_backend(async_results)
+            self.log.info("Enter _get_many_from_kv_backend.")
             return result
         if isinstance(app.backend, DatabaseBackend):
+            self.log.info("Enter _get_many_from_db_backend.")
             result = self._get_many_from_db_backend(async_results)
             return result
         result = self._get_many_using_multiprocessing(async_results)
@@ -613,7 +618,7 @@ class BulkStateFetcher(LoggingMixin):
         task_cls = app.backend.task_cls
         with session_cleanup(session):
             tasks = session.query(task_cls).filter(task_cls.task_id.in_(task_ids)).all()
-
+        self.log.info("In _get_many_from_db_backend, filtered task id: %s", str(tasks))
         task_results = [app.backend.meta_from_decoded(task.to_dict()) for task in tasks]
         task_results_by_task_id = {task_result["task_id"]: task_result for task_result in task_results}
         return self._prepare_state_and_info_by_task_dict(task_ids, task_results_by_task_id)
