@@ -43,7 +43,8 @@ from ai_flow.model_center.entity.registered_model_detail import RegisteredModelD
 from ai_flow.protobuf.message_pb2 import INVALID_PARAMETER_VALUE, RESOURCE_ALREADY_EXISTS
 from ai_flow.scheduler_service.service.workflow_execution_event_handler_state import WorkflowContextEventHandlerState
 from ai_flow.store import MONGO_DB_ALIAS_META_SERVICE
-from ai_flow.store.abstract_store import AbstractStore, BROADCAST_ALL_CONTEXT_EXTRACTOR, BaseFilter, Filters
+from ai_flow.store.abstract_store import AbstractStore, BROADCAST_ALL_CONTEXT_EXTRACTOR, BaseFilter, Filters, Orders, \
+    BaseOrder
 from ai_flow.store.db.db_model import (MongoProject, MongoDataset, MongoModelVersion,
                                        MongoArtifact, MongoRegisteredModel, MongoModelRelation,
                                        MongoMetricSummary, MongoMetricMeta,
@@ -67,6 +68,17 @@ class FilterEqual(BaseFilter):
 
     def apply(self, criterion, query, value):
         query.update({self.column_name: value})
+        return query
+
+
+class OrderBy(BaseOrder):
+
+    def apply(self, criterion, query, value):
+        if value == 'ascend':
+            query.append('+' + self.column_name)
+            return query
+        elif value == 'descend':
+            query.append('-' + self.column_name)
         return query
 
 
@@ -300,13 +312,15 @@ class MongoStore(AbstractStore):
         except mongoengine.OperationError as e:
             raise AIFlowException(e)
 
-    def list_datasets(self, page_size=None, offset=None, filters: Filters = None) -> Optional[List[DatasetMeta]]:
+    def list_datasets(self, page_size=None, offset=None, filters: Filters = None,
+                      orders: Orders = None) -> Optional[List[DatasetMeta]]:
         """
         List registered datasets in metadata store.
 
         :param page_size: The limitation of the listed datasets.
         :param offset: The offset of listed datasets.
         :param filters: A Filter class that contains all filters to apply.
+        :param orders: A Order class that contains all orders to apply.
         :return: List of :py:class:`ai_flow.meta.dataset_meta.DatasetMeta` objects,
                  return None if no datasets to be listed.
         """
@@ -314,6 +328,8 @@ class MongoStore(AbstractStore):
         if filters:
             query = filters.apply_all(MongoDataset, query)
         dataset_result = MongoDataset.objects(**query)
+        if orders:
+            dataset_result = dataset_result.order_by(*orders.apply_all(MongoDataset, []))
         if offset:
             dataset_result = dataset_result.skip(offset)
         if page_size:
@@ -427,13 +443,15 @@ class MongoStore(AbstractStore):
             raise AIFlowException('Registered Project (name={}) already exists. '
                                   'Error: {}'.format(project.name, str(e)))
 
-    def list_projects(self, page_size=None, offset=None, filters: Filters = None) -> Optional[List[ProjectMeta]]:
+    def list_projects(self, page_size=None, offset=None, filters: Filters = None,
+                      orders: Orders = None) -> Optional[List[ProjectMeta]]:
         """
         List registered projects in metadata store.
 
         :param page_size: The limitation of the listed projects.
         :param offset: The offset of listed projects.
         :param filters: A Filter class that contains all filters to apply.
+        :param orders: A Order class that contains all orders to apply.
         :return: List of :py:class:`ai_flow.meta.project_meta.ProjectMeta` objects,
                  return None if no projects to be listed.
         """
@@ -441,6 +459,8 @@ class MongoStore(AbstractStore):
         if filters:
             query = filters.apply_all(MongoProject, query)
         project_result = MongoProject.objects(**query)
+        if orders:
+            project_result = project_result.order_by(*orders.apply_all(MongoProject, []))
         if offset:
             project_result = project_result.skip(offset)
         if page_size:
@@ -591,8 +611,8 @@ class MongoStore(AbstractStore):
             return None
         return ResultToMeta.result_to_workflow_meta(workflow_result[0])
 
-    def list_workflows(self, project_name=None, page_size=None, offset=None, filters: Filters = None) \
-            -> Optional[List[WorkflowMeta]]:
+    def list_workflows(self, project_name=None, page_size=None, offset=None, filters: Filters = None,
+                       orders: Orders = None) -> Optional[List[WorkflowMeta]]:
         """
         List registered workflows in metadata store.
 
@@ -600,6 +620,7 @@ class MongoStore(AbstractStore):
         :param page_size: The limitation of the listed workflows.
         :param offset: The offset of listed workflows.
         :param filters: A Filter class that contains all filters to apply.
+        :param orders: A Order class that contains all orders to apply.
         :return: List of :py:class:`ai_flow.meta.workflow_meta.WorkflowMeta` objects,
                  return None if no workflows to be listed.
         """
@@ -613,6 +634,8 @@ class MongoStore(AbstractStore):
         if filters:
             query = filters.apply_all(MongoWorkflow, query)
         workflow_result = MongoWorkflow.objects(**query)
+        if orders:
+            workflow_result = workflow_result.order_by(*orders.apply_all(MongoWorkflow, []))
         if offset:
             workflow_result.skip(offset)
         if page_size:
@@ -1105,13 +1128,15 @@ class MongoStore(AbstractStore):
         except mongoengine.OperationError as e:
             raise AIFlowException(str(e))
 
-    def list_artifacts(self, page_size=None, offset=None, filters: Filters = None) -> Optional[List[ArtifactMeta]]:
+    def list_artifacts(self, page_size=None, offset=None, filters: Filters = None,
+                       orders: Orders = None) -> Optional[List[ArtifactMeta]]:
         """
         List registered artifacts in metadata store.
 
         :param page_size: The limitation of the listed artifacts.
         :param offset: The offset of listed artifacts.
         :param filters: A Filter class that contains all filters to apply.
+        :param orders: A Order class that contains all orders to apply.
         :return: List of :py:class:`ai_flow.meta.artifact_meta.py.ArtifactMeta` objects,
                  return None if no artifacts to be listed.
         """
@@ -1119,6 +1144,8 @@ class MongoStore(AbstractStore):
         if filters:
             query = filters.apply_all(MongoArtifact, query)
         artifact_result = MongoArtifact.objects(**query)
+        if orders:
+            artifact_result = artifact_result.order_by(*orders.apply_all(MongoArtifact, []))
         if offset:
             artifact_result = artifact_result.skip(offset)
         if page_size:
@@ -1289,14 +1316,15 @@ class MongoStore(AbstractStore):
         except mongoengine.OperationError as e:
             raise AIFlowException(str(e))
 
-    def list_registered_models(self, page_size=None, offset=None, filters: Filters = None) \
-            -> Optional[List[RegisteredModelDetail]]:
+    def list_registered_models(self, page_size=None, offset=None, filters: Filters = None,
+                               orders: Orders = None) -> Optional[List[RegisteredModelDetail]]:
         """
         List of all registered models in model repository.
 
         :param page_size: The limitation of the listed models.
         :param offset: The offset of listed models.
         :param filters: A Filter class that contains all filters to apply.
+        :param orders: A Order class that contains all orders to apply.
         :return: List of :py:class:`ai_flow.model_center.entity.RegisteredModelDetail` objects,
                  return None if no models to be listed.
         """
@@ -1304,6 +1332,8 @@ class MongoStore(AbstractStore):
         if filters:
             query = filters.apply_all(MongoRegisteredModel, query)
         registered_model_result = MongoRegisteredModel.objects(**query)
+        if orders:
+            registered_model_result = registered_model_result.order_by(*orders.apply_all(MongoRegisteredModel, []))
         if offset:
             registered_model_result = registered_model_result.skip(offset)
         if page_size:
@@ -1490,14 +1520,15 @@ class MongoStore(AbstractStore):
         doc_model_version.current_stage = STAGE_DELETED
         doc_model_version.save()
 
-    def list_model_versions(self, page_size=None, offset=None, filters: Filters = None) \
-            -> Optional[List[ModelVersionDetail]]:
+    def list_model_versions(self, page_size=None, offset=None, filters: Filters = None,
+                            orders: Orders = None) -> Optional[List[ModelVersionDetail]]:
         """
         List of all model versions in model repository.
 
         :param page_size: The limitation of the listed model versions.
         :param offset: The offset of listed model versions.
         :param filters: A Filter class that contains all filters to apply.
+        :param orders: A Order class that contains all orders to apply.
         :return: List of :py:class:`ai_flow.model_center.entity.ModelVersionDetail` objects,
                  return None if no model versions to be listed.
         """
@@ -1505,6 +1536,8 @@ class MongoStore(AbstractStore):
         if filters:
             query = filters.apply_all(MongoModelVersion, query)
         model_version_result = MongoModelVersion.objects(**query)
+        if orders:
+            model_version_result = model_version_result.order_by(*orders.apply_all(MongoModelVersion, []))
         if offset:
             model_version_result = model_version_result.skip(offset)
         if page_size:

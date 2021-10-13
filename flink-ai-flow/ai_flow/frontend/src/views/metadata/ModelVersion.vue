@@ -63,11 +63,13 @@ import { getModelVersions, getRoleList } from '@/api/manage'
 const columns = [
   {
     title: 'Model Name',
-    dataIndex: '_model_name'
+    dataIndex: '_model_name',
+    sorter: true
   },
   {
     title: 'Model Version',
-    dataIndex: '_model_version'
+    dataIndex: '_model_version',
+    sorter: true
   },
   {
     title: 'Model Path',

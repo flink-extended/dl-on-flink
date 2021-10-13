@@ -32,7 +32,7 @@ from ai_flow.ai_graph.ai_node import AINode, ReadDatasetNode, WriteDatasetNode
 from ai_flow.ai_graph.data_edge import DataEdge
 from ai_flow.meta.workflow_meta import WorkflowMeta
 from ai_flow.plugin_interface.scheduler_interface import Scheduler, SchedulerFactory
-from ai_flow.store.abstract_store import Filters, AbstractStore
+from ai_flow.store.abstract_store import Filters, AbstractStore, Orders
 from ai_flow.store.db.db_util import create_db_store
 from ai_flow.util.json_utils import loads, Jsonable, dumps
 from ai_flow.workflow.control_edge import ControlEdge
@@ -285,16 +285,23 @@ def build_graph(name_nodes: Dict[str, Node], parent_edges: Dict[str, List[Edge]]
     return json.dumps(graph_nodes)
 
 
-def filter_class(filter_name: str):
-    return getattr(sys.modules[store.__module__], filter_name)
+def store_inner_class(inner_name: str):
+    return getattr(sys.modules[store.__module__], inner_name)
 
 
 def build_filters(req: LocalProxy):
     filters = Filters()
     for key, value in req.args.items():
-        if key not in ('pageNo', 'pageSize') and value:
-            filters.add_filter((filter_class('FilterEqual')(key), value))
+        if key not in ('pageNo', 'pageSize', 'sortField', 'sortOrder') and value:
+            filters.add_filter((store_inner_class('FilterEqual')(key), value))
     return filters
+
+
+def build_orders(req: LocalProxy):
+    orders = Orders()
+    if 'sortField' in req.args.keys() and 'sortOrder' in req.args.keys():
+        orders.add_order((store_inner_class('OrderBy')(req.args['sortField']), req.args['sortOrder']))
+    return orders
 
 
 def pagination_response(page_no: int, total_count: int, data: List):
@@ -325,7 +332,7 @@ def project_metadata():
     project_count = store.count_projects(filters=build_filters(request))
     project_list = store.list_projects(page_size=int(request.args.get('pageSize')),
                                        offset=(int(request.args.get('pageNo')) - 1) * int(request.args.get('pageSize')),
-                                       filters=build_filters(request))
+                                       filters=build_filters(request), orders=build_orders(request))
     return pagination_response(page_no=int(request.args.get('pageNo')), total_count=project_count,
                                data=project_list if project_list else [])
 
@@ -336,7 +343,7 @@ def workflow_metadata():
     workflow_list = store.list_workflows(page_size=int(request.args.get('pageSize')),
                                          offset=(int(request.args.get('pageNo')) - 1) * int(
                                              request.args.get('pageSize')),
-                                         filters=build_filters(request))
+                                         filters=build_filters(request), orders=build_orders(request))
     return pagination_response(page_no=int(request.args.get('pageNo')), total_count=workflow_count,
                                data=workflow_list if workflow_list else [])
 
@@ -378,7 +385,7 @@ def workflow_execution_metadata():
     return pagination_response(page_no=int(request.args.get('pageNo')),
                                total_count=len(workflow_execution_list) if workflow_execution_list else 0,
                                data=Paginator(workflow_execution_list, int(request.args.get('pageSize'))).get_page(
-                                 int(request.args.get('pageNo'))).object_list if workflow_execution_list else [])
+                                   int(request.args.get('pageNo'))).object_list if workflow_execution_list else [])
 
 
 @app.route('/job-execution')
@@ -388,7 +395,7 @@ def job_execution_metadata():
     return pagination_response(page_no=int(request.args.get('pageNo')),
                                total_count=len(job_execution_list) if job_execution_list else 0,
                                data=Paginator(job_execution_list, int(request.args.get('pageSize'))).get_page(
-                                 int(request.args.get('pageNo'))).object_list if job_execution_list else [])
+                                   int(request.args.get('pageNo'))).object_list if job_execution_list else [])
 
 
 @app.route('/dataset')
@@ -396,7 +403,7 @@ def dataset_metadata():
     dataset_count = store.count_datasets(filters=build_filters(request))
     dataset_list = store.list_datasets(page_size=int(request.args.get('pageSize')),
                                        offset=(int(request.args.get('pageNo')) - 1) * int(request.args.get('pageSize')),
-                                       filters=build_filters(request))
+                                       filters=build_filters(request), orders=build_orders(request))
     return pagination_response(page_no=int(request.args.get('pageNo')), total_count=dataset_count,
                                data=dataset_list if dataset_list else [])
 
@@ -406,8 +413,8 @@ def model_metadata():
     model_count = store.count_registered_models(filters=build_filters(request))
     model_list = store.list_registered_models(page_size=int(request.args.get('pageSize')),
                                               offset=(int(request.args.get('pageNo')) - 1) * int(
-                                                request.args.get('pageSize')),
-                                              filters=build_filters(request))
+                                                  request.args.get('pageSize')),
+                                              filters=build_filters(request), orders=build_orders(request))
     return json_pagination_response(page_no=int(request.args.get('pageNo')), total_count=model_count,
                                     data=[{'model_name': model.model_name, 'model_desc': model.model_desc} for model in
                                           model_list] if model_list else [])
@@ -418,8 +425,8 @@ def model_version_metadata():
     model_version_count = store.count_model_versions(filters=build_filters(request))
     model_version_list = store.list_model_versions(page_size=int(request.args.get('pageSize')),
                                                    offset=(int(request.args.get('pageNo')) - 1) * int(
-                                                     request.args.get('pageSize')),
-                                                   filters=build_filters(request))
+                                                       request.args.get('pageSize')),
+                                                   filters=build_filters(request), orders=build_orders(request))
     return json_pagination_response(page_no=int(request.args.get('pageNo')), total_count=model_version_count,
                                     data=[model_version.__dict__ for model_version in
                                           model_version_list] if model_version_list else [])
@@ -431,7 +438,7 @@ def artifact_metadata():
     artifact_list = store.list_artifacts(page_size=int(request.args.get('pageSize')),
                                          offset=(int(request.args.get('pageNo')) - 1) * int(
                                              request.args.get('pageSize')),
-                                         filters=build_filters(request))
+                                         filters=build_filters(request), orders=build_orders(request))
     return pagination_response(page_no=int(request.args.get('pageNo')), total_count=artifact_count,
                                data=artifact_list if artifact_list else [])
 

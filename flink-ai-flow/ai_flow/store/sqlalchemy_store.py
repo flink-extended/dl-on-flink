@@ -22,7 +22,7 @@ from typing import Optional, Text, List, Union
 
 import sqlalchemy.exc
 import sqlalchemy.orm
-from sqlalchemy import and_, cast, Integer
+from sqlalchemy import and_, cast, Integer, asc, desc
 
 from ai_flow.common.status import Status
 from ai_flow.endpoint.server.exception import AIFlowException
@@ -43,7 +43,8 @@ from ai_flow.model_center.entity.model_version_stage import STAGE_DELETED, get_c
 from ai_flow.model_center.entity.registered_model_detail import RegisteredModelDetail
 from ai_flow.protobuf.message_pb2 import INVALID_PARAMETER_VALUE, RESOURCE_ALREADY_EXISTS
 from ai_flow.scheduler_service.service.workflow_execution_event_handler_state import WorkflowContextEventHandlerState
-from ai_flow.store.abstract_store import AbstractStore, BROADCAST_ALL_CONTEXT_EXTRACTOR, Filters, BaseFilter
+from ai_flow.store.abstract_store import AbstractStore, BROADCAST_ALL_CONTEXT_EXTRACTOR, Filters, BaseFilter, Orders, \
+    BaseOrder
 from ai_flow.store.db.base_model import base
 from ai_flow.store.db.db_model import SqlDataset, SqlModelRelation, SqlModelVersionRelation, SqlProject, \
     SqlWorkflow, SqlEvent, SqlArtifact, SqlMember, SqlProjectSnapshot, SqlWorkflowContextEventHandlerState
@@ -69,6 +70,15 @@ class FilterEqual(BaseFilter):
 
     def apply(self, criterion, query, value):
         return query.filter(getattr(criterion, self.column_name) == value)
+
+
+class OrderBy(BaseOrder):
+
+    def apply(self, criterion, query, value):
+        if value == 'ascend':
+            return query.order_by(asc(getattr(criterion, self.column_name)))
+        elif value == 'descend':
+            return query.order_by(desc(getattr(criterion, self.column_name)))
 
 
 class SqlAlchemyStore(AbstractStore):
@@ -335,13 +345,15 @@ class SqlAlchemyStore(AbstractStore):
             except sqlalchemy.exc.IntegrityError as e:
                 raise AIFlowException(e)
 
-    def list_datasets(self, page_size=None, offset=None, filters: Filters = None) -> Optional[List[DatasetMeta]]:
+    def list_datasets(self, page_size=None, offset=None, filters: Filters = None,
+                      orders: Orders = None) -> Optional[List[DatasetMeta]]:
         """
         List registered datasets in metadata store.
 
         :param page_size: The limitation of the listed datasets.
         :param offset: The offset of listed datasets.
         :param filters: A Filter class that contains all filters to apply.
+        :param orders: A Order class that contains all orders to apply.
         :return: List of :py:class:`ai_flow.meta.dataset_meta.DatasetMeta` objects,
                  return None if no datasets to be listed.
         """
@@ -349,6 +361,8 @@ class SqlAlchemyStore(AbstractStore):
             query = session.query(SqlDataset).filter(SqlDataset.is_deleted == 'False')
             if filters:
                 query = filters.apply_all(SqlDataset, query)
+            if orders:
+                query = orders.apply_all(SqlDataset, query)
             if page_size:
                 query = query.limit(page_size)
             if offset:
@@ -471,13 +485,15 @@ class SqlAlchemyStore(AbstractStore):
                 raise AIFlowException('Registered Project (name={}) already exists. '
                                       'Error: {}'.format(project.name, str(e)))
 
-    def list_projects(self, page_size=None, offset=None, filters: Filters = None) -> Optional[List[ProjectMeta]]:
+    def list_projects(self, page_size=None, offset=None, filters: Filters = None,
+                      orders: Orders = None) -> Optional[List[ProjectMeta]]:
         """
         List registered projects in metadata store.
 
         :param page_size: The limitation of the listed projects.
         :param offset: The offset of listed projects.
         :param filters: A Filter class that contains all filters to apply.
+        :param orders: A Order class that contains all orders to apply.
         :return: List of :py:class:`ai_flow.meta.project_meta.ProjectMeta` objects,
                  return None if no projects to be listed.
         """
@@ -485,6 +501,8 @@ class SqlAlchemyStore(AbstractStore):
             query = session.query(SqlProject).filter(SqlProject.is_deleted == 'False')
             if filters:
                 query = filters.apply_all(SqlProject, query)
+            if orders:
+                query = orders.apply_all(SqlProject, query)
             if page_size:
                 query = query.limit(page_size)
             if offset:
@@ -862,8 +880,8 @@ class SqlAlchemyStore(AbstractStore):
                                                          SqlWorkflow.is_deleted.is_(False)).scalar()
             return None if workflow is None else ResultToMeta.result_to_workflow_meta(workflow)
 
-    def list_workflows(self, project_name=None, page_size=None, offset=None, filters: Filters = None) \
-            -> Optional[List[WorkflowMeta]]:
+    def list_workflows(self, project_name=None, page_size=None, offset=None, filters: Filters = None,
+                       orders: Orders = None) -> Optional[List[WorkflowMeta]]:
         """
         List registered workflows in metadata store.
 
@@ -871,6 +889,7 @@ class SqlAlchemyStore(AbstractStore):
         :param page_size: The limitation of the listed workflows.
         :param offset: The offset of listed workflows.
         :param filters: A Filter class that contains all filters to apply.
+        :param orders: A Order class that contains all orders to apply.
         :return: List of :py:class:`ai_flow.meta.workflow_meta.WorkflowMeta` objects,
                  return None if no workflows to be listed.
         """
@@ -884,6 +903,8 @@ class SqlAlchemyStore(AbstractStore):
                 query = query.filter(SqlWorkflow.project_id == project.uuid)
             if filters:
                 query = filters.apply_all(SqlWorkflow, query)
+            if orders:
+                query = orders.apply_all(SqlWorkflow, query)
             if page_size:
                 query = query.limit(page_size)
             if offset:
@@ -896,7 +917,7 @@ class SqlAlchemyStore(AbstractStore):
                 workflow_list.append(ResultToMeta.result_to_workflow_meta(workflow))
             return workflow_list
 
-    def count_workflows(self, project_name=None,filters: Filters = None) -> int:
+    def count_workflows(self, project_name=None, filters: Filters = None) -> int:
         """
         Count registered workflows in metadata store.
 
@@ -1173,13 +1194,15 @@ class SqlAlchemyStore(AbstractStore):
             except sqlalchemy.exc.IntegrityError as e:
                 raise AIFlowException(str(e))
 
-    def list_artifacts(self, page_size=None, offset=None, filters: Filters = None) -> Optional[List[ArtifactMeta]]:
+    def list_artifacts(self, page_size=None, offset=None, filters: Filters = None,
+                       orders: Orders = None) -> Optional[List[ArtifactMeta]]:
         """
         List registered artifacts in metadata store.
 
         :param page_size: The limitation of the listed artifacts.
         :param offset: The offset of listed artifacts.
         :param filters: A Filter class that contains all filters to apply.
+        :param orders: A Order class that contains all orders to apply.
         :return: List of :py:class:`ai_flow.meta.artifact_meta.py.ArtifactMeta` objects,
                  return None if no artifacts to be listed.
         """
@@ -1187,6 +1210,8 @@ class SqlAlchemyStore(AbstractStore):
             query = session.query(SqlArtifact).filter(SqlArtifact.is_deleted == 'False')
             if filters:
                 query = filters.apply_all(SqlArtifact, query)
+            if orders:
+                query = orders.apply_all(SqlArtifact, query)
             if page_size:
                 query = query.limit(page_size)
             if offset:
@@ -1366,14 +1391,15 @@ class SqlAlchemyStore(AbstractStore):
             if sql_registered_model is not None:
                 session.delete(sql_registered_model)
 
-    def list_registered_models(self, page_size=None, offset=None, filters: Filters = None) \
-            -> Optional[List[RegisteredModelDetail]]:
+    def list_registered_models(self, page_size=None, offset=None, filters: Filters = None,
+                               orders: Orders = None) -> Optional[List[RegisteredModelDetail]]:
         """
         List of all registered models in model repository.
 
         :param page_size: The limitation of the listed models.
         :param offset: The offset of listed models.
         :param filters: A Filter class that contains all filters to apply.
+        :param orders: A Order class that contains all orders to apply.
         :return: List of :py:class:`ai_flow.model_center.entity.RegisteredModelDetail` objects,
                  return None if no models to be listed.
         """
@@ -1381,6 +1407,8 @@ class SqlAlchemyStore(AbstractStore):
             query = session.query(SqlRegisteredModel)
             if filters:
                 query = filters.apply_all(SqlRegisteredModel, query)
+            if orders:
+                query = orders.apply_all(SqlRegisteredModel, query)
             if page_size:
                 query = query.limit(page_size)
             if offset:
@@ -1573,14 +1601,15 @@ class SqlAlchemyStore(AbstractStore):
                 sql_model_version.current_stage = STAGE_DELETED
                 self._save_to_db(session, sql_model_version)
 
-    def list_model_versions(self, page_size=None, offset=None, filters: Filters = None) \
-            -> Optional[List[ModelVersionDetail]]:
+    def list_model_versions(self, page_size=None, offset=None, filters: Filters = None,
+                            orders: Orders = None) -> Optional[List[ModelVersionDetail]]:
         """
         List of all model versions in model repository.
 
         :param page_size: The limitation of the listed model versions.
         :param offset: The offset of listed model versions.
         :param filters: A Filter class that contains all filters to apply.
+        :param orders: A Order class that contains all orders to apply.
         :return: List of :py:class:`ai_flow.model_center.entity.ModelVersionDetail` objects,
                  return None if no model versions to be listed.
         """
@@ -1588,6 +1617,8 @@ class SqlAlchemyStore(AbstractStore):
             query = session.query(SqlModelVersion).filter(SqlModelVersion.current_stage != STAGE_DELETED)
             if filters:
                 query = filters.apply_all(SqlModelVersion, query)
+            if orders:
+                query = orders.apply_all(SqlModelVersion, query)
             if page_size:
                 query = query.limit(page_size)
             if offset:

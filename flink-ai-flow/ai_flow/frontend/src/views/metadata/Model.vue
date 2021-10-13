@@ -51,7 +51,8 @@ import { getModels, getRoleList } from '@/api/manage'
 const columns = [
   {
     title: 'Model Name',
-    dataIndex: 'model_name'
+    dataIndex: 'model_name',
+    sorter: true
   },
   {
     title: 'Model Desc',

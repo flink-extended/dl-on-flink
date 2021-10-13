@@ -64,6 +64,40 @@ class Filters(object):
         return ret_str
 
 
+class BaseOrder(object):
+    column_name = None
+
+    def __init__(self, column_name):
+        self.column_name = column_name
+
+    def apply(self, criterion, query, direction):
+        raise NotImplementedError
+
+
+class Orders(object):
+    orders: List[Tuple[BaseOrder, str]] = None
+
+    def __init__(self, orders: List[Tuple[BaseOrder, str]] = None):
+        self.orders = orders if orders else []
+
+    def add_order(self, o: Tuple[BaseOrder, str]):
+        self.orders.append(o)
+
+    def apply_all(self, criterion, query):
+        for order, direction in self.orders:
+            query = order.apply(criterion, query, direction)
+        return query
+
+    def __repr__(self):
+        ret_str = 'Orders:'
+        for order, direction in self.orders:
+            ret_str = ret_str + '%s:%s\n' % (
+                str(order.column_name),
+                str(direction),
+            )
+        return ret_str
+
+
 class AbstractStore(object):
     __metaclass__ = ABCMeta
 
@@ -218,13 +252,14 @@ class AbstractStore(object):
         pass
 
     @abstractmethod
-    def list_datasets(self, page_size=None, offset=None, filters: Filters = None):
+    def list_datasets(self, page_size=None, offset=None, filters: Filters = None, orders: Orders = None):
         """
         List registered datasets in metadata store.
 
         :param page_size: The limitation of the listed datasets.
         :param offset: The offset of listed datasets.
         :param filters: A Filter class that contains all filters to apply.
+        :param orders: A Order class that contains all orders to apply.
         :return: List of :py:class:`ai_flow.meta.dataset_meta.DatasetMeta` objects,
                  return None if no datasets to be listed.
         """
@@ -315,13 +350,14 @@ class AbstractStore(object):
         pass
 
     @abstractmethod
-    def list_projects(self, page_size=None, offset=None, filters: Filters = None):
+    def list_projects(self, page_size=None, offset=None, filters: Filters = None, orders: Orders = None):
         """
         List registered projects in metadata store.
 
         :param page_size: The limitation of the listed projects.
         :param offset: The offset of listed projects.
         :param filters: A Filter class that contains all filters to apply.
+        :param orders: A Order class that contains all orders to apply.
         :return: List of :py:class:`ai_flow.meta.project_meta.ProjectMeta` objects,
                  return None if no projects to be listed.
         """
@@ -400,7 +436,8 @@ class AbstractStore(object):
         """
         pass
 
-    def list_workflows(self, project_name=None, page_size=None, offset=None, filters: Filters = None):
+    def list_workflows(self, project_name=None, page_size=None, offset=None, filters: Filters = None,
+                       orders: Orders = None):
         """
         List registered workflows in metadata store.
 
@@ -408,6 +445,7 @@ class AbstractStore(object):
         :param page_size: The limitation of the listed workflows.
         :param offset: The offset of listed workflows.
         :param filters: A Filter class that contains all filters to apply.
+        :param orders: A Order class that contains all orders to apply.
         :return: List of :py:class:`ai_flow.meta.workflow_meta.WorkflowMeta` objects,
                  return None if no workflows to be listed.
         """
@@ -561,13 +599,14 @@ class AbstractStore(object):
         :return: A single :py:class:`ai_flow.meta.artifact_meta.py.ArtifactMeta` object.
         """
 
-    def list_artifacts(self, page_size=None, offset=None, filters: Filters = None):
+    def list_artifacts(self, page_size=None, offset=None, filters: Filters = None, orders: Orders = None):
         """
         List registered artifacts in metadata store.
 
         :param page_size: The limitation of the listed artifacts.
         :param offset: The offset of listed artifacts.
         :param filters: A Filter class that contains all filters to apply.
+        :param orders: A Order class that contains all orders to apply.
         :return: List of :py:class:`ai_flow.meta.artifact_meta.py.ArtifactMeta` objects,
                  return None if no artifacts to be listed.
         """
@@ -638,13 +677,14 @@ class AbstractStore(object):
         pass
 
     @abstractmethod
-    def list_registered_models(self, page_size=None, offset=None, filters: Filters = None):
+    def list_registered_models(self, page_size=None, offset=None, filters: Filters = None, orders: Orders = None):
         """
         List of all registered models in model repository.
 
         :param page_size: The limitation of the listed models.
         :param offset: The offset of listed models.
         :param filters: A Filter class that contains all filters to apply.
+        :param orders: A Order class that contains all orders to apply.
         :return: List of :py:class:`ai_flow.model_center.entity.RegisteredModel` objects,
                  return None if no models to be listed.
         """
@@ -714,13 +754,14 @@ class AbstractStore(object):
         pass
 
     @abstractmethod
-    def list_model_versions(self, page_size=None, offset=None, filters: Filters = None):
+    def list_model_versions(self, page_size=None, offset=None, filters: Filters = None, orders: Orders = None):
         """
         List of all model versions in model repository.
 
         :param page_size: The limitation of the listed model versions.
         :param offset: The offset of listed model versions.
         :param filters: A Filter class that contains all filters to apply.
+        :param orders: A Order class that contains all orders to apply.
         :return: List of :py:class:`ai_flow.model_center.entity.ModelVersionDetail` objects,
                  return None if no model versions to be listed.
         """
