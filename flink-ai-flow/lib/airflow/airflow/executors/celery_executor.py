@@ -27,6 +27,8 @@ import math
 import operator
 import os
 import subprocess
+import sys
+import threading
 import time
 import traceback
 from collections import OrderedDict
@@ -420,19 +422,34 @@ class CeleryExecutor(BaseExecutor):
             "\n\t".join(map(repr, self.adopted_task_timeouts.items())),
         )
 
+    def print_log(self, log_str):
+        from airflow.utils import timezone
+        now = timezone.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')
+        thread_name = threading.currentThread().getName()
+        print("[" + str(now) + "] " + str(thread_name) + "## " + str(log_str))
+        sys.stdout.flush()
+
     def update_all_task_states(self) -> None:
         """Updates states of the tasks."""
         self.log.debug("Inquiring about %s celery task(s)", len(self.tasks))
         state_and_info_by_celery_task_id = self.bulk_state_fetcher.get_many(self.tasks.values())
 
-        self.log.info("All tasks list: %s", str(self.tasks))
-        self.log.info('State and info from celery: %s', str(state_and_info_by_celery_task_id))
+        self.print_log("All tasks list: " + str(self.tasks))
+        self.print_log('State and info from celery: ' + str(state_and_info_by_celery_task_id))
         self.log.debug("Inquiries completed.")
         for key, async_result in list(self.tasks.items()):
-            self.log.info("Getting result of task id : %s", async_result.task_id)
-            state, info = state_and_info_by_celery_task_id.get(async_result.task_id)
-            if state:
-                self.update_task_state(key, state, info)
+            try:
+                self.print_log("Getting result of task id " + str(async_result.task_id))
+                state, info = state_and_info_by_celery_task_id.get(async_result.task_id)
+                if state:
+                    self.update_task_state(key, state, info)
+            except Exception as e:
+                self.log.error("Error occurred when updating task states, task id: %s", str(async_result.task_id))
+                log.exception(e)
+                self.print_log("Error occurred when updating task states, task id: " + str(async_result.task_id))
+                self.print_log(str(e))
+                traceback.print_exc()
+                sys.stdout.flush()
 
     def change_state(self, key: TaskInstanceKey, state: str, info=None) -> None:
         super().change_state(key, state, info)
