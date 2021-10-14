@@ -19,7 +19,7 @@
 version: '3'
 x-airflow-common:
   &airflow-common
-  image: flinkaiflow/flink-ai-flow:0.2.0
+  image: flinkaiflow/flink-ai-flow-dev:fix-celery-with-timestamp-log3
   # build: .
   environment:
     &airflow-common-env

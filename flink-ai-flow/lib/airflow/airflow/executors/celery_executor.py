@@ -630,30 +630,51 @@ class BulkStateFetcher(LoggingMixin):
         return self._prepare_state_and_info_by_task_dict(task_ids, task_results_by_task_id)
 
     def _get_many_from_db_backend(self, async_tasks) -> Mapping[str, EventBufferValueType]:
+        self.log.info("async_tasks are: " + str(async_tasks))
+
         task_ids = _tasks_list_to_task_ids(async_tasks)
+        self.log.info("task_ids are: " + str(task_ids))
+
         session = app.backend.ResultSession()
         task_cls = app.backend.task_cls
         with session_cleanup(session):
             tasks = session.query(task_cls).filter(task_cls.task_id.in_(task_ids)).all()
         self.log.info("In _get_many_from_db_backend, filtered task id: %s", str(tasks))
+
         task_results = [app.backend.meta_from_decoded(task.to_dict()) for task in tasks]
+        self.log.info("task_results are: %s", str(task_results))
+
         task_results_by_task_id = {task_result["task_id"]: task_result for task_result in task_results}
+        self.log.info("task_results_by_task_id are: %s", str(task_results_by_task_id))
+
         return self._prepare_state_and_info_by_task_dict(task_ids, task_results_by_task_id)
 
     @staticmethod
     def _prepare_state_and_info_by_task_dict(
         task_ids, task_results_by_task_id
     ) -> Mapping[str, EventBufferValueType]:
+        def print_log(log_str):
+            from airflow.utils import timezone
+            now = timezone.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')
+            thread_name = threading.currentThread().getName()
+            print("[" + str(now) + "] " + str(thread_name) + "## " + str(log_str))
+            sys.stdout.flush()
+
         state_info: MutableMapping[str, EventBufferValueType] = {}
         for task_id in task_ids:
+            print_log("Processing task_id : " + str(task_id))
             task_result = task_results_by_task_id.get(task_id)
             if task_result:
                 state = task_result["status"]
+                print_log("Enter if, state is " + str(state))
                 info = None if not hasattr(task_result, "info") else task_result["info"]
             else:
+                print_log("Enter Else")
                 state = celery_states.PENDING
                 info = None
             state_info[task_id] = state, info
+
+        print_log("_prepare_state_and_info_by_task_dict returns: " + str(state_info))
         return state_info
 
     def _get_many_using_multiprocessing(self, async_results) -> Mapping[str, EventBufferValueType]:
