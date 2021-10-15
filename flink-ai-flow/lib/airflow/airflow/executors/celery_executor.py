@@ -432,12 +432,14 @@ class CeleryExecutor(BaseExecutor):
     def update_all_task_states(self) -> None:
         """Updates states of the tasks."""
         self.log.debug("Inquiring about %s celery task(s)", len(self.tasks))
-        state_and_info_by_celery_task_id = self.bulk_state_fetcher.get_many(self.tasks.values())
+        import copy
+        tasks_copy = copy.deepcopy(self.tasks)
+        state_and_info_by_celery_task_id = self.bulk_state_fetcher.get_many(tasks_copy.values())
 
-        self.print_log("All tasks list: " + str(self.tasks))
+        self.print_log("All tasks list: " + str(tasks_copy))
         self.print_log('State and info from celery: ' + str(state_and_info_by_celery_task_id))
         self.log.debug("Inquiries completed.")
-        for key, async_result in list(self.tasks.items()):
+        for key, async_result in list(tasks_copy.items()):
             try:
                 self.print_log("Getting result of task id " + str(async_result.task_id))
                 state, info = state_and_info_by_celery_task_id.get(async_result.task_id)
