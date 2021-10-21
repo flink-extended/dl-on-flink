@@ -5,7 +5,7 @@ Currently it contains the following two subprojects.
 
 ## Flink AI Flow
  
- **FLink AI Flow has moved to https://github.com/flink-extended/ai-flow**
+### Note: Flink AI Flow has moved to https://github.com/flink-extended/ai-flow
 
 Flink AI Flow is an open source framework that bridges big data and AI. 
 It manages the entire machine learning project lifecycle as a unified workflow, including feature engineering, 
@@ -16,8 +16,6 @@ In addition to the capability of orchestrating a group of batch jobs,
 by leveraging an event-based scheduler(enhanced version of Airflow), 
 Flink AI Flow also supports workflows that contain streaming jobs. Such capability is quite useful for complicated 
 real-time machine learning systems as well as other real-time workflows in general.
-
-For more details, please check the [flink-ai-flow](flink-ai-flow) sub project.
 
 ## Deep Learning on Flink
 
