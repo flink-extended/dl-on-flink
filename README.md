@@ -4,6 +4,8 @@ Flink AI Extended is a project extending Flink to various machine learning scena
 Currently it contains the following two subprojects.
 
 ## Flink AI Flow
+ 
+ **FLink AI Flow has moved to https://github.com/flink-extended/ai-flow**
 
 Flink AI Flow is an open source framework that bridges big data and AI. 
 It manages the entire machine learning project lifecycle as a unified workflow, including feature engineering, 

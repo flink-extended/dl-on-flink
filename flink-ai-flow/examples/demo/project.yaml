@@ -1,4 +1,0 @@
-project_name: demo
-server_uri: localhost:50051
-blob:
-  blob_manager_class: ai_flow_plugins.blob_manager_plugins.local_blob_manager.LocalBlobManager
