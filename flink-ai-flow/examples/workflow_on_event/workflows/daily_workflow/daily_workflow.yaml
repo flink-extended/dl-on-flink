@@ -1,4 +1,0 @@
-daily_training:
-  job_type: python
-daily_validate:
-  job_type: python

@@ -1,6 +1,0 @@
-data_processing:
-  job_type: python
-data_cp:
-  job_type: bash
-daily_data_ready_sensor:
-  job_type: python
