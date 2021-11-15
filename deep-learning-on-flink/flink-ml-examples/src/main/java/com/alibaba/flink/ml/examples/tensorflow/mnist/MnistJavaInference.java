@@ -51,6 +51,7 @@ import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.TableSchema;
 import org.apache.flink.table.api.Types;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+import org.apache.flink.table.api.internal.TableEnvironmentInternal;
 import org.apache.flink.table.functions.TableFunction;
 import org.apache.flink.table.sources.StreamTableSource;
 import org.apache.flink.types.Row;
@@ -154,7 +155,7 @@ public class MnistJavaInference {
 		StatementSet statementSet = tableEnv.createStatementSet();
 		String tfrTblName = "tfr_input_table";
 		StreamTableSource<Row> tableSource = new DelayedTFRTableSourceStream(paths, 1, OUT_ROW_TYPE, CONVERTERS);
-		tableEnv.registerTableSource(tfrTblName, tableSource);
+		((TableEnvironmentInternal) tableEnv).registerTableSourceInternal(tfrTblName, tableSource);
 		TableFunction extractFunc = new MnistTFRExtractRowForJavaFunction();
 		String extFuncName = "tfr_extract";
 		FlinkUtil.registerTableFunction(tableEnv, extFuncName, extractFunc);
@@ -180,7 +181,7 @@ public class MnistJavaInference {
 		fs = new Path(checkPointURI).getFileSystem(hadoopConf);
 		URI fsURI = fs.getUri();
 		Path outDir = new Path(fsURI.getScheme(), fsURI.getAuthority(), SINK_OUTPUT_PATH);
-		tableEnv.registerTableSink("sink", new LogTableStreamSink(new LogInferAccSink(outDir.toString())));
+		((TableEnvironmentInternal) tableEnv).registerTableSinkInternal("sink", new LogTableStreamSink(new LogInferAccSink(outDir.toString())));
 		predicted.insertInto("sink");
 		// work around table env issue
 		flinkEnv.execute();

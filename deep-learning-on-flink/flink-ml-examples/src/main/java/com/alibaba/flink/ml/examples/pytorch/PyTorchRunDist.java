@@ -130,7 +130,7 @@ public class PyTorchRunDist {
 		StatementSet statementSet = tableEnv.createStatementSet();
 		PyTorchUtil.train(streamEnv, tableEnv, statementSet, null, pytorchConfig, null);
 		statementSet.execute().getJobClient().get()
-				.getJobExecutionResult(Thread.currentThread().getContextClassLoader())
+				.getJobExecutionResult()
 				.get();
 	}
 

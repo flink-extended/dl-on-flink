@@ -186,7 +186,7 @@ public class TFUtilsTest {
 		TFUtils.startTensorBoard(streamEnv, tableEnv, statementSet, tbConfig);
 
 		statementSet.execute().getJobClient().get()
-				.getJobExecutionResult(Thread.currentThread().getContextClassLoader()).get();
+				.getJobExecutionResult().get();
 	}
 
 	@Test
@@ -203,6 +203,6 @@ public class TFUtilsTest {
 	public static void execTableJobCustom(MLConfig mlConfig, StreamExecutionEnvironment streamEnv,
 										  TableEnvironment tableEnv, StatementSet statementSet) throws Exception {
 		statementSet.execute().getJobClient().get()
-				.getJobExecutionResult(Thread.currentThread().getContextClassLoader()).get();
+				.getJobExecutionResult().get();
 	}
 }

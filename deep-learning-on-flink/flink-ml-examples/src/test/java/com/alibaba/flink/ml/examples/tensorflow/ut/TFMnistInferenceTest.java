@@ -207,7 +207,7 @@ public class TFMnistInferenceTest {
 				.createTemporaryTable("predict_sink");
 		statementSet.addInsert("predict_sink", predictTbl);
 		statementSet.execute().getJobClient().get()
-				.getJobExecutionResult(Thread.currentThread().getContextClassLoader()).get();
+				.getJobExecutionResult().get();
 	}
 
 	@Test
@@ -298,6 +298,6 @@ public class TFMnistInferenceTest {
 				.createTemporaryTable("inference_sink");
 		statementSet.addInsert("inference_sink", predicted);
 		statementSet.execute().getJobClient().get()
-				.getJobExecutionResult(Thread.currentThread().getContextClassLoader()).get();
+				.getJobExecutionResult().get();
 	}
 }
