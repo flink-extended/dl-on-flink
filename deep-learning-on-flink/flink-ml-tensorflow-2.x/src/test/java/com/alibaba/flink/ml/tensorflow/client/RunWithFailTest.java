@@ -117,8 +117,7 @@ public class RunWithFailTest {
 		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 		TFUtils.train(streamEnv, null, tfConfig);
 
-		expectedException.expect(ExecutionException.class);
-		expectedException.expectCause(IsInstanceOf.instanceOf(JobExecutionException.class));
+		expectedException.expect(JobExecutionException.class);
 		expectedException.expectMessage("Job execution failed");
 		streamEnv.execute();
 	}

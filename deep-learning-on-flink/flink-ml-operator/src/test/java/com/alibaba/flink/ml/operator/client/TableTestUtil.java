@@ -27,7 +27,7 @@ public class TableTestUtil {
 
     public static void execTableJobCustom(MLConfig mlConfig, StreamExecutionEnvironment streamEnv, TableEnvironment tableEnv, StatementSet statementSet) throws Exception {
         statementSet.execute().getJobClient().get()
-                .getJobExecutionResult(Thread.currentThread().getContextClassLoader()).get();
+                .getJobExecutionResult().get();
     }
 
 }

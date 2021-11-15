@@ -208,7 +208,7 @@ public class MnistDist {
 		TFConfig tfConfig = prepareTrain(trainPy);
 		TFUtils.train(flinkEnv, tableEnv, statementSet, null, tfConfig, null);
 		statementSet.execute().getJobClient().get()
-				.getJobExecutionResult(Thread.currentThread().getContextClassLoader()).get();
+				.getJobExecutionResult().get();
 	}
 
 	private RestartStrategies.RestartStrategyConfiguration restartStrategy() {

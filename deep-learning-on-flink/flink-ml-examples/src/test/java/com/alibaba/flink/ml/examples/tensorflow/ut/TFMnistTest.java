@@ -112,7 +112,7 @@ public class TFMnistTest {
 		TFUtils.train(flinkEnv, tableEnv, statementSet, null, config, null);
 
 		statementSet.execute().getJobClient().get()
-				.getJobExecutionResult(Thread.currentThread().getContextClassLoader()).get();
+				.getJobExecutionResult().get();
 	}
 
 	@Test
@@ -179,7 +179,7 @@ public class TFMnistTest {
 		Table inputTable = tableEnv.from("input");
 		TFUtils.train(streamEnv, tableEnv, statementSet, inputTable, config, null);
 		statementSet.execute().getJobClient().get()
-				.getJobExecutionResult(Thread.currentThread().getContextClassLoader()).get();
+				.getJobExecutionResult().get();
 	}
 
 }

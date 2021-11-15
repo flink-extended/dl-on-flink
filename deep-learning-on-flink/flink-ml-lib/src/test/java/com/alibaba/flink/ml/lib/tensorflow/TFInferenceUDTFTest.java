@@ -74,7 +74,7 @@ public class TFInferenceUDTFTest {
 		tableEnv.executeSql(
 				"INSERT INTO sink SELECT d FROM source, LATERAL TABLE(inference(a, b)) as T(d)")
 				.getJobClient().get()
-				.getJobExecutionResult(Thread.currentThread().getContextClassLoader()).get();
+				.getJobExecutionResult().get();
 	}
 
 	@Test
@@ -109,7 +109,7 @@ public class TFInferenceUDTFTest {
 		tableEnv.executeSql(
 				"INSERT INTO sink SELECT d, e FROM source, LATERAL TABLE(inference(a, b)) as T(d, e)")
 				.getJobClient().get()
-				.getJobExecutionResult(Thread.currentThread().getContextClassLoader()).get();
+				.getJobExecutionResult().get();
 	}
 
 	@Test
@@ -143,7 +143,7 @@ public class TFInferenceUDTFTest {
 		tableEnv.executeSql(
 				"INSERT INTO sink SELECT d, e FROM source, LATERAL TABLE(inference(a, b)) as T(d, e)")
 				.getJobClient().get()
-				.getJobExecutionResult(Thread.currentThread().getContextClassLoader()).get();
+				.getJobExecutionResult().get();
 	}
 
 	@Test
@@ -185,7 +185,7 @@ public class TFInferenceUDTFTest {
 		tableEnv.executeSql(
 				"INSERT INTO sink SELECT d, f, h FROM source, LATERAL TABLE(inference(a, b, c)) as T(d, f, h)")
 				.getJobClient().get()
-				.getJobExecutionResult(Thread.currentThread().getContextClassLoader()).get();
+				.getJobExecutionResult().get();
 	}
 
 	@Test
@@ -225,6 +225,6 @@ public class TFInferenceUDTFTest {
 		tableEnv.executeSql(
 				"INSERT INTO sink SELECT d, f, h FROM source, LATERAL TABLE(inference(a, b, c)) as T(d, f, h)")
 				.getJobClient().get()
-				.getJobExecutionResult(Thread.currentThread().getContextClassLoader()).get();
+				.getJobExecutionResult().get();
 	}
 }
