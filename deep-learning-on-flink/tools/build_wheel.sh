@@ -31,14 +31,14 @@ fi
 
 echo '############## building flink_ml_framework ##############'
 frameworkPath=${basePath}/../flink-ml-framework/python/
-cd ${frameworkPath}
+cd ${frameworkPath} && [ -d ./build ] && echo "removing previous build dir" && rm -rf ./build
 ${PY} setup.py bdist_wheel
 cp ${frameworkPath}/dist/* ${distPath}/
 rm -rf ${frameworkPath}/build/ ${frameworkPath}/dist/ ${frameworkPath}/flink_ml_framework.egg-info
 
 echo '############## building flink_ml_tensorflow ##############'
 tensorflowPath=${basePath}/../flink-ml-tensorflow/python/
-cd ${tensorflowPath}
+cd ${tensorflowPath} && [ -d ./build ] && echo "removing previous build dir" && rm -rf ./build
 ${PY} -m pip install -r build-requirements.txt
 ${PY} setup.py bdist_wheel
 cp ${tensorflowPath}/dist/* ${distPath}/
@@ -46,7 +46,7 @@ rm -rf ${tensorflowPath}/build/ ${tensorflowPath}/dist/ ${tensorflowPath}/flink_
 
 echo '############## building flink_ml_tensorflow-2.x ##############'
 tensorflowPath2=${basePath}/../flink-ml-tensorflow-2.x/python/
-cd ${tensorflowPath2}
+cd ${tensorflowPath2} && [ -d ./build ] && echo "removing previous build dir" && rm -rf ./build
 ${PY} -m pip install -r build-requirements.txt
 ${PY} setup.py bdist_wheel
 cp ${tensorflowPath2}/dist/* ${distPath}/
