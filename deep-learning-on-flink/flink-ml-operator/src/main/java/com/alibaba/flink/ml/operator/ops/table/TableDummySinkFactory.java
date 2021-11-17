@@ -1,28 +1,33 @@
 package com.alibaba.flink.ml.operator.ops.table;
 
-import org.apache.flink.table.factories.TableSinkFactory;
-import org.apache.flink.table.sinks.TableSink;
-import org.apache.flink.types.Row;
+import org.apache.flink.configuration.ConfigOption;
+import org.apache.flink.table.catalog.ResolvedSchema;
+import org.apache.flink.table.connector.sink.DynamicTableSink;
+import org.apache.flink.table.factories.DynamicTableSinkFactory;
 
 import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
-import static org.apache.flink.table.descriptors.ConnectorDescriptorValidator.CONNECTOR_TYPE;
+public class TableDummySinkFactory implements DynamicTableSinkFactory {
 
-public class TableDummySinkFactory implements TableSinkFactory<Row> {
     @Override
-    public TableSink<Row> createTableSink(Context context) {
-        return new TableStreamDummySink();
+    public DynamicTableSink createDynamicTableSink(Context context) {
+        final ResolvedSchema resolvedSchema = context.getCatalogTable().getResolvedSchema();
+        return new TableStreamDummySink(resolvedSchema);
     }
 
     @Override
-    public Map<String, String> requiredContext() {
-        return Collections.singletonMap(CONNECTOR_TYPE, "DummyTable");
+    public String factoryIdentifier() {
+        return "DummyTable";
     }
 
     @Override
-    public List<String> supportedProperties() {
-        return Collections.singletonList("*");
+    public Set<ConfigOption<?>> requiredOptions() {
+        return Collections.emptySet();
+    }
+
+    @Override
+    public Set<ConfigOption<?>> optionalOptions() {
+        return Collections.emptySet();
     }
 }

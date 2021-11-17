@@ -19,21 +19,18 @@
 package com.alibaba.flink.ml.operator.table;
 
 import com.alibaba.flink.ml.operator.source.DebugRowSource;
-import com.alibaba.flink.ml.operator.util.TypeUtil;
-import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
-import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.table.api.TableSchema;
-import org.apache.flink.table.sources.StreamTableSource;
-import org.apache.flink.types.Row;
+import org.apache.flink.table.connector.ChangelogMode;
+import org.apache.flink.table.connector.source.DynamicTableSource;
+import org.apache.flink.table.connector.source.ScanTableSource;
+import org.apache.flink.table.connector.source.SourceFunctionProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 
 
-public class TableDebugRowSource implements StreamTableSource<Row>, Serializable {
+public class TableDebugRowSource implements ScanTableSource, Serializable {
 
     private RowTypeInfo typeInfo;
 
@@ -43,26 +40,24 @@ public class TableDebugRowSource implements StreamTableSource<Row>, Serializable
         this.typeInfo = DebugRowSource.typeInfo;
     }
 
-
     @Override
-    public TypeInformation<Row> getReturnType() {
-        return typeInfo;
+    public DynamicTableSource copy() {
+        return new TableDebugRowSource();
     }
 
     @Override
-    public TableSchema getTableSchema() {
-        return TypeUtil.rowTypeInfoToSchema(typeInfo);
-    }
-
-    @Override
-    public String explainSource() {
+    public String asSummaryString() {
         return "debug_source";
     }
 
     @Override
-    public DataStream<Row> getDataStream(StreamExecutionEnvironment execEnv) {
-        return execEnv.addSource(new DebugRowSource())
-            .name(explainSource());
+    public ChangelogMode getChangelogMode() {
+        return ChangelogMode.insertOnly();
     }
 
+    @Override
+    public ScanRuntimeProvider getScanRuntimeProvider(ScanContext runtimeProviderContext) {
+        final DebugRowSource debugRowSource = new DebugRowSource();
+        return SourceFunctionProvider.of(debugRowSource, true);
+    }
 }

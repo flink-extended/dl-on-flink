@@ -2,23 +2,26 @@ package com.alibaba.flink.ml.operator.ops.table;
 
 import com.alibaba.flink.ml.cluster.ExecutionMode;
 import com.alibaba.flink.ml.cluster.MLConfig;
-import com.alibaba.flink.ml.cluster.role.AMRole;
 import com.alibaba.flink.ml.cluster.role.BaseRole;
-import com.alibaba.flink.ml.cluster.role.PsRole;
-import com.alibaba.flink.ml.cluster.role.WorkerRole;
 import org.apache.flink.table.api.TableSchema;
 import org.apache.flink.table.descriptors.DescriptorProperties;
 import org.apache.flink.table.factories.TableSourceFactory;
 import org.apache.flink.table.sources.TableSource;
 import org.apache.flink.types.Row;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.alibaba.flink.ml.operator.ops.table.descriptor.MLTableValidator.*;
+import static com.alibaba.flink.ml.operator.ops.table.descriptor.MLTableValidator.CONNECTOR_EXECUTION_MODE;
+import static com.alibaba.flink.ml.operator.ops.table.descriptor.MLTableValidator.CONNECTOR_ML_CONFIG_ENV_PATH;
+import static com.alibaba.flink.ml.operator.ops.table.descriptor.MLTableValidator.CONNECTOR_ML_CONFIG_FUNC_NAME;
+import static com.alibaba.flink.ml.operator.ops.table.descriptor.MLTableValidator.CONNECTOR_ML_CONFIG_PROPERTIES;
+import static com.alibaba.flink.ml.operator.ops.table.descriptor.MLTableValidator.CONNECTOR_ML_CONFIG_PYTHON_FILES;
+import static com.alibaba.flink.ml.operator.ops.table.descriptor.MLTableValidator.CONNECTOR_ML_CONFIG_ROLE_PARALLELISM_MAP;
+import static com.alibaba.flink.ml.operator.ops.table.descriptor.MLTableValidator.CONNECTOR_PARALLELISM;
+import static com.alibaba.flink.ml.operator.ops.table.descriptor.MLTableValidator.CONNECTOR_ROLE_CLASS;
 import static org.apache.flink.table.descriptors.ConnectorDescriptorValidator.CONNECTOR_TYPE;
 
 public class MLTableSourceFactory implements TableSourceFactory<Row> {

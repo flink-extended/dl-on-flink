@@ -19,33 +19,41 @@
 package com.alibaba.flink.ml.operator.ops.table;
 
 import com.alibaba.flink.ml.operator.ops.sink.DummySink;
-
-import org.apache.flink.api.common.typeinfo.TypeInformation;
-import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.datastream.DataStreamSink;
-import org.apache.flink.table.api.TableSchema;
-import org.apache.flink.table.sinks.AppendStreamTableSink;
-import org.apache.flink.table.sinks.TableSink;
-import org.apache.flink.types.Row;
+import org.apache.flink.table.catalog.ResolvedSchema;
+import org.apache.flink.table.connector.ChangelogMode;
+import org.apache.flink.table.connector.sink.DynamicTableSink;
+import org.apache.flink.table.connector.sink.SinkFunctionProvider;
+import org.apache.flink.table.data.RowData;
 
 /**
  * flink table sink wrap DummySink.
  */
-public class TableStreamDummySink extends TableDummySinkBase implements AppendStreamTableSink<Row> {
-	public TableStreamDummySink() {
-	}
+public class TableStreamDummySink extends TableDummySinkBase {
+    private final ResolvedSchema schema;
 
-	TableStreamDummySink(TableSchema schema) {
-		super(schema);
-	}
+    public TableStreamDummySink(ResolvedSchema schema) {
+        super(schema);
+        this.schema = schema;
+    }
 
-	@Override
-	public TableSink<Row> configure(String[] strings, TypeInformation<?>[] typeInformations) {
-		return new TableStreamDummySink(createSchema(strings, typeInformations));
-	}
+    @Override
+    public ChangelogMode getChangelogMode(ChangelogMode requestedMode) {
+        return ChangelogMode.all();
+    }
 
-	@Override
-	public DataStreamSink<?> consumeDataStream(DataStream<Row> dataStream) {
-		return dataStream.addSink(new DummySink<>()).setParallelism(1);
-	}
+    @Override
+    public SinkRuntimeProvider getSinkRuntimeProvider(Context context) {
+        final DummySink<RowData> sink = new DummySink<>();
+        return SinkFunctionProvider.of(sink);
+    }
+
+    @Override
+    public DynamicTableSink copy() {
+        return new TableStreamDummySink(this.schema);
+    }
+
+    @Override
+    public String asSummaryString() {
+        return "DummySink";
+    }
 }

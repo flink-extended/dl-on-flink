@@ -23,6 +23,7 @@ import com.alibaba.flink.ml.coding.Coding;
 import com.alibaba.flink.ml.coding.CodingException;
 import com.alibaba.flink.ml.operator.util.DataTypes;
 import com.alibaba.flink.ml.util.MLConstants;
+import org.apache.flink.table.data.StringData;
 import org.apache.flink.types.Row;
 
 /**
@@ -91,7 +92,7 @@ public class RowCSVCoding implements Coding<Row> {
 					break;
 				}
 				case STRING: {
-					row.setField(i, tmp[i]);
+					row.setField(i, StringData.fromString(tmp[i]));
 					break;
 				}
 				default:
