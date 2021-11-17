@@ -21,7 +21,6 @@ package com.alibaba.flink.ml.examples.tensorflow.mnist.ops;
 
 import com.alibaba.flink.ml.operator.util.TypeUtil;
 import com.alibaba.flink.ml.tensorflow.io.TFRExtractRowHelper;
-
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -34,44 +33,44 @@ import java.util.Arrays;
 
 public class DelayedTFRTableSourceStream implements StreamTableSource<Row> {
 
-	private static final long DEFAULT_DELAY_BOUND = 20;
+    private static final long DEFAULT_DELAY_BOUND = 20;
 
-	private final String[] paths;
-	private final Long delayBound;
-	private final RowTypeInfo outRowType;
-	private final TFRExtractRowHelper.ScalarConverter[] converters;
+    private final String[] paths;
+    private final Long delayBound;
+    private final RowTypeInfo outRowType;
+    private final TFRExtractRowHelper.ScalarConverter[] converters;
 
-	private DelayedTFRTableSourceStream(String[] paths, int epochs, Long delayBound,
-			RowTypeInfo outRowType, TFRExtractRowHelper.ScalarConverter[] converters) {
-		this.paths = paths;
-		this.delayBound = delayBound;
-		this.outRowType = outRowType;
-		this.converters = converters;
-	}
+    private DelayedTFRTableSourceStream(String[] paths, int epochs, Long delayBound,
+                                        RowTypeInfo outRowType, TFRExtractRowHelper.ScalarConverter[] converters) {
+        this.paths = paths;
+        this.delayBound = delayBound;
+        this.outRowType = outRowType;
+        this.converters = converters;
+    }
 
-	public DelayedTFRTableSourceStream(String[] paths, int epochs, RowTypeInfo outRowType,
-			TFRExtractRowHelper.ScalarConverter[] converters) {
-		this(paths, epochs, DEFAULT_DELAY_BOUND, outRowType, converters);
-	}
+    public DelayedTFRTableSourceStream(String[] paths, int epochs, RowTypeInfo outRowType,
+                                       TFRExtractRowHelper.ScalarConverter[] converters) {
+        this(paths, epochs, DEFAULT_DELAY_BOUND, outRowType, converters);
+    }
 
-	@Override
-	public TypeInformation<Row> getReturnType() {
-		return outRowType;
-	}
+    @Override
+    public TypeInformation<Row> getReturnType() {
+        return outRowType;
+    }
 
-	@Override
-	public TableSchema getTableSchema() {
-		return TypeUtil.rowTypeInfoToSchema(outRowType);
-	}
+    @Override
+    public TableSchema getTableSchema() {
+        return TypeUtil.rowTypeInfoToTableSchema(outRowType);
+    }
 
-	@Override
-	public String explainSource() {
-		return "Delayed TFRecord source " + Arrays.toString(paths);
-	}
+    @Override
+    public String explainSource() {
+        return "Delayed TFRecord source " + Arrays.toString(paths);
+    }
 
-	@Override
-	public DataStream<Row> getDataStream(StreamExecutionEnvironment execEnv) {
-		return execEnv.addSource(new DelayedTFRSourceFunction(paths, delayBound, outRowType, converters))
-				.setParallelism(1).name(explainSource());
-	}
+    @Override
+    public DataStream<Row> getDataStream(StreamExecutionEnvironment execEnv) {
+        return execEnv.addSource(new DelayedTFRSourceFunction(paths, delayBound, outRowType, converters))
+                .setParallelism(1).name(explainSource());
+    }
 }

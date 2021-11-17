@@ -2,32 +2,73 @@ package com.alibaba.flink.ml.tensorflow.io;
 
 import com.alibaba.flink.ml.operator.util.TypeUtil;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
-import org.apache.flink.table.descriptors.DescriptorProperties;
-import org.apache.flink.table.factories.TableSourceFactory;
-import org.apache.flink.table.sources.TableSource;
-import org.apache.flink.types.Row;
+import org.apache.flink.configuration.ConfigOption;
+import org.apache.flink.table.connector.source.DynamicTableSource;
+import org.apache.flink.table.factories.DynamicTableFactory;
+import org.apache.flink.table.factories.DynamicTableSourceFactory;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import static com.alibaba.flink.ml.tensorflow.io.descriptor.TFRToRowTableValidator.CONNECTOR_CONVERTERS;
 import static com.alibaba.flink.ml.tensorflow.io.descriptor.TFRToRowTableValidator.CONNECTOR_EPOCHS;
 import static com.alibaba.flink.ml.tensorflow.io.descriptor.TFRToRowTableValidator.CONNECTOR_OUT_COL_ALIASES;
 import static com.alibaba.flink.ml.tensorflow.io.descriptor.TFRToRowTableValidator.CONNECTOR_PATH;
-import static org.apache.flink.table.descriptors.ConnectorDescriptorValidator.CONNECTOR_TYPE;
+import static org.apache.flink.configuration.ConfigOptions.key;
 
-public class TFRToRowTableSourceFactory implements TableSourceFactory<Row> {
+public class TFRToRowTableSourceFactory implements DynamicTableSourceFactory {
+
+    public static final ConfigOption<String> CONNECTOR_CONVERTERS_OPTION =
+            key(CONNECTOR_CONVERTERS)
+                    .stringType()
+                    .noDefaultValue();
+
+    public static final ConfigOption<String> CONNECTOR_OUT_COL_ALIASES_OPTION =
+            key(CONNECTOR_OUT_COL_ALIASES)
+                    .stringType()
+                    .noDefaultValue();
+    public static final ConfigOption<String> CONNECTOR_EPOCHS_OPTION =
+            key(CONNECTOR_EPOCHS)
+                    .stringType()
+                    .noDefaultValue();
+    public static final ConfigOption<String> CONNECTOR_PATH_OPTION =
+            key(CONNECTOR_PATH)
+                    .stringType()
+                    .noDefaultValue();
+
+
+    private TFRExtractRowHelper.ScalarConverter[] getConverters(Map<String, String> properties) {
+        return Arrays.stream(properties.get(CONNECTOR_CONVERTERS).split(","))
+                .map(TFRExtractRowHelper.ScalarConverter::valueOf)
+                .toArray(TFRExtractRowHelper.ScalarConverter[]::new);
+    }
+
+    private String[] getOutColAliases(Map<String, String> properties) {
+        if (!properties.containsKey(CONNECTOR_OUT_COL_ALIASES)) {
+            return null;
+        }
+        return properties.get(CONNECTOR_OUT_COL_ALIASES).split(",");
+    }
+
+    private int getEpochs(Map<String, String> properties) {
+        return Integer.parseInt(properties.get(CONNECTOR_EPOCHS));
+    }
+
+    private String[] getPaths(Map<String, String> properties) {
+        return properties.get(CONNECTOR_PATH).split(",");
+    }
+
     @Override
-    public TableSource<Row> createTableSource(Context context) {
-        DescriptorProperties properties = new DescriptorProperties();
-        properties.putProperties(context.getTable().toProperties());
+    public DynamicTableSource createDynamicTableSource(DynamicTableFactory.Context context) {
+        final Map<String, String> options = context.getCatalogTable().getOptions();
 
-        String[] paths = getPaths(properties);
-        int epochs = getEpochs(properties);
-        String[] outColAliases = getOutColAliases(properties);
-        TFRExtractRowHelper.ScalarConverter[] converters = getConverters(properties);
-        RowTypeInfo outRowType = TypeUtil.schemaToRowTypeInfo(context.getTable().getSchema());
+        String[] paths = getPaths(options);
+        int epochs = getEpochs(options);
+        String[] outColAliases = getOutColAliases(options);
+        TFRExtractRowHelper.ScalarConverter[] converters = getConverters(options);
+        RowTypeInfo outRowType = TypeUtil.schemaToRowTypeInfo(context.getCatalogTable().getResolvedSchema());
         if (outColAliases != null) {
 
             return new TFRToRowTableSource(paths, epochs, outRowType,
@@ -35,40 +76,26 @@ public class TFRToRowTableSourceFactory implements TableSourceFactory<Row> {
         } else {
             return new TFRToRowTableSource(paths, epochs, outRowType, converters);
         }
-
-    }
-
-    private TFRExtractRowHelper.ScalarConverter[] getConverters(DescriptorProperties properties) {
-        return properties.getFixedIndexedProperties(CONNECTOR_CONVERTERS, Collections.singletonList("name"))
-                .stream().map(m -> m.get("name"))
-                .map(k -> TFRExtractRowHelper.ScalarConverter.valueOf(properties.getString(k)))
-                .toArray(TFRExtractRowHelper.ScalarConverter[]::new);
-    }
-
-    private String[] getOutColAliases(DescriptorProperties properties) {
-        if (!properties.containsKey(CONNECTOR_OUT_COL_ALIASES)) {
-            return null;
-        }
-        return properties.getFixedIndexedProperties(CONNECTOR_OUT_COL_ALIASES, Collections.singletonList("name"))
-                .stream().map(m -> m.get("name")).map(properties::getString).toArray(String[]::new);
-    }
-
-    private int getEpochs(DescriptorProperties properties) {
-        return properties.getInt(CONNECTOR_EPOCHS);
-    }
-
-    private String[] getPaths(DescriptorProperties properties) {
-        return properties.getFixedIndexedProperties(CONNECTOR_PATH, Collections.singletonList("name"))
-                .stream().map(m -> m.get("name")).map(properties::getString).toArray(String[]::new);
     }
 
     @Override
-    public Map<String, String> requiredContext() {
-        return Collections.singletonMap(CONNECTOR_TYPE, "TFRToRowTable");
+    public String factoryIdentifier() {
+        return "TFRToRow";
     }
 
     @Override
-    public List<String> supportedProperties() {
-        return Collections.singletonList("*");
+    public Set<ConfigOption<?>> requiredOptions() {
+        Set<ConfigOption<?>> options = new HashSet<>();
+        options.add(CONNECTOR_CONVERTERS_OPTION);
+        options.add(CONNECTOR_EPOCHS_OPTION);
+        options.add(CONNECTOR_PATH_OPTION);
+        return options;
+    }
+
+    @Override
+    public Set<ConfigOption<?>> optionalOptions() {
+        Set<ConfigOption<?>> options = new HashSet<>();
+        options.add(CONNECTOR_OUT_COL_ALIASES_OPTION);
+        return options;
     }
 }

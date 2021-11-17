@@ -19,16 +19,12 @@
 package com.alibaba.flink.ml.tensorflow.io;
 
 
-import com.alibaba.flink.ml.operator.util.TypeUtil;
 import com.google.common.base.Preconditions;
-
-import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
-import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.table.api.TableSchema;
-import org.apache.flink.table.sources.StreamTableSource;
-import org.apache.flink.types.Row;
+import org.apache.flink.table.connector.ChangelogMode;
+import org.apache.flink.table.connector.source.DynamicTableSource;
+import org.apache.flink.table.connector.source.InputFormatProvider;
+import org.apache.flink.table.connector.source.ScanTableSource;
 
 import java.io.File;
 import java.util.Arrays;
@@ -36,58 +32,58 @@ import java.util.Arrays;
 /**
  * TFRToRowInputFormat corresponds to flink table source function.
  */
-public class TFRToRowTableSource implements StreamTableSource<Row> {
+public class TFRToRowTableSource implements ScanTableSource {
 
-	private final String[] paths;
-	private final int epochs;
-	private final RowTypeInfo outRowType;
-	private final String[] outColAliases;
-	private final TFRExtractRowHelper.ScalarConverter[] converters;
+    private final String[] paths;
+    private final int epochs;
+    private final RowTypeInfo outRowType;
+    private final String[] outColAliases;
+    private final TFRExtractRowHelper.ScalarConverter[] converters;
 
-	public TFRToRowTableSource(String[] paths, int epochs, RowTypeInfo outRowType, String[] outColAliases,
-			TFRExtractRowHelper.ScalarConverter[] converters) {
-		Preconditions.checkArgument(outRowType.getArity() == outColAliases.length);
-		this.paths = paths;
-		this.epochs = epochs;
-		this.outRowType = outRowType;
-		this.outColAliases = outColAliases;
-		this.converters = converters;
-	}
+    public TFRToRowTableSource(String[] paths, int epochs, RowTypeInfo outRowType, String[] outColAliases,
+                               TFRExtractRowHelper.ScalarConverter[] converters) {
+        Preconditions.checkArgument(outRowType.getArity() == outColAliases.length);
+        this.paths = paths;
+        this.epochs = epochs;
+        this.outRowType = outRowType;
+        this.outColAliases = outColAliases;
+        this.converters = converters;
+    }
 
-	public TFRToRowTableSource(String[] paths, int epochs, RowTypeInfo outRowType,
-			TFRExtractRowHelper.ScalarConverter[] converters) {
-		this(paths, epochs, outRowType, outRowType.getFieldNames(), converters);
-	}
+    public TFRToRowTableSource(String[] paths, int epochs, RowTypeInfo outRowType,
+                               TFRExtractRowHelper.ScalarConverter[] converters) {
+        this(paths, epochs, outRowType, outRowType.getFieldNames(), converters);
+    }
 
-	public TFRToRowTableSource(File[] files, int epochs, RowTypeInfo outRowType,
-			TFRExtractRowHelper.ScalarConverter[] converters) {
-		this(files, epochs, outRowType, outRowType.getFieldNames(), converters);
-	}
+    public TFRToRowTableSource(File[] files, int epochs, RowTypeInfo outRowType,
+                               TFRExtractRowHelper.ScalarConverter[] converters) {
+        this(files, epochs, outRowType, outRowType.getFieldNames(), converters);
+    }
 
-	public TFRToRowTableSource(File[] files, int epochs, RowTypeInfo outRowType, String[] outColAliases,
-			TFRExtractRowHelper.ScalarConverter[] converters) {
-		this(Arrays.stream(files).map(f -> f.getAbsolutePath()).toArray(String[]::new), epochs, outRowType,
-				outColAliases, converters);
-	}
+    public TFRToRowTableSource(File[] files, int epochs, RowTypeInfo outRowType, String[] outColAliases,
+                               TFRExtractRowHelper.ScalarConverter[] converters) {
+        this(Arrays.stream(files).map(f -> f.getAbsolutePath()).toArray(String[]::new), epochs, outRowType,
+                outColAliases, converters);
+    }
 
-	@Override
-	public TypeInformation<Row> getReturnType() {
-		return new RowTypeInfo(outRowType.getFieldTypes(), outColAliases);
-	}
+    @Override
+    public ChangelogMode getChangelogMode() {
+        return ChangelogMode.insertOnly();
+    }
 
-	@Override
-	public TableSchema getTableSchema() {
-		return TypeUtil.rowTypeInfoToSchema((outRowType));
-	}
+    @Override
+    public ScanRuntimeProvider getScanRuntimeProvider(ScanContext runtimeProviderContext) {
+        final TFRToRowInputFormat tfrToRowInputFormat = new TFRToRowInputFormat(paths, epochs, outRowType, outColAliases, converters);
+        return InputFormatProvider.of(new TFRToRowDataInputFormat(tfrToRowInputFormat));
+    }
 
-	@Override
-	public String explainSource() {
-		return String.format("TFRecord source %s to %s", Arrays.toString(paths), outRowType.toString());
-	}
+    @Override
+    public DynamicTableSource copy() {
+        return new TFRToRowTableSource(this.paths, this.epochs, this.outRowType, this.outColAliases, this.converters);
+    }
 
-	@Override
-	public DataStream<Row> getDataStream(StreamExecutionEnvironment execEnv) {
-		return execEnv.createInput(new TFRToRowInputFormat(paths, epochs, outRowType, outColAliases, converters))
-				.setParallelism(paths.length).name(explainSource());
-	}
+    @Override
+    public String asSummaryString() {
+        return String.format("TFRecord source %s to %s", Arrays.toString(paths), outRowType.toString());
+    }
 }
