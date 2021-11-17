@@ -26,7 +26,6 @@ import com.alibaba.flink.ml.operator.coding.RowCSVCoding;
 import com.alibaba.flink.ml.operator.sink.DebugJsonSink;
 import com.alibaba.flink.ml.operator.source.DebugJsonSource;
 import com.alibaba.flink.ml.operator.source.DebugRowSource;
-import com.alibaba.flink.ml.operator.table.descriptor.TableDebugRowDescriptor;
 import com.alibaba.flink.ml.operator.util.PythonFileUtil;
 import com.alibaba.flink.ml.operator.util.TypeUtil;
 import com.alibaba.flink.ml.util.DummyContext;
@@ -35,15 +34,16 @@ import com.alibaba.flink.ml.util.SysUtil;
 import com.alibaba.flink.ml.util.TestUtil;
 import org.apache.curator.test.TestingServer;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
-import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.DataTypes;
+import org.apache.flink.table.api.Schema;
 import org.apache.flink.table.api.StatementSet;
 import org.apache.flink.table.api.Table;
+import org.apache.flink.table.api.TableDescriptor;
 import org.apache.flink.table.api.TableEnvironment;
-import org.apache.flink.table.api.TableSchema;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
-import org.apache.flink.table.descriptors.Schema;
+import org.apache.flink.table.types.DataType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -69,7 +69,7 @@ public class RoleUtilsTest {
     }
 
     @Test
-    public void greeterJob() throws Exception{
+    public void greeterJob() throws Exception {
         LOG.info("RUN TEST:" + SysUtil._FUNC_());
         MLConfig mlConfig = DummyContext.createDummyMLConfig();
         mlConfig.setRoleNum(new WorkerRole().name(), 2);
@@ -78,13 +78,13 @@ public class RoleUtilsTest {
         mlConfig.setFuncName("map_func");
         StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
         PythonFileUtil.registerPythonFiles(streamEnv, mlConfig);
-        RoleUtils.addAMRole(streamEnv,mlConfig);
+        RoleUtils.addAMRole(streamEnv, mlConfig);
         RoleUtils.addRole(streamEnv, ExecutionMode.TRAIN, null, mlConfig, null, new WorkerRole());
         streamEnv.execute();
     }
 
     @Test
-    public void outputJob() throws Exception{
+    public void outputJob() throws Exception {
         LOG.info("RUN TEST:" + SysUtil._FUNC_());
         MLConfig mlConfig = DummyContext.createDummyMLConfig();
         mlConfig.setRoleNum(new WorkerRole().name(), 3);
@@ -93,14 +93,14 @@ public class RoleUtilsTest {
         mlConfig.setFuncName("map_func");
         StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
         PythonFileUtil.registerPythonFiles(streamEnv, mlConfig);
-        RoleUtils.addAMRole(streamEnv,mlConfig);
+        RoleUtils.addAMRole(streamEnv, mlConfig);
         RoleUtils.addRole(streamEnv, ExecutionMode.TRAIN, null, mlConfig, TypeInformation.of(JSONObject.class), new WorkerRole())
                 .addSink(new DebugJsonSink()).setParallelism(3);
         streamEnv.execute();
     }
 
     @Test
-    public void inputOutputJob() throws Exception{
+    public void inputOutputJob() throws Exception {
         LOG.info("RUN TEST:" + SysUtil._FUNC_());
         MLConfig mlConfig = DummyContext.createDummyMLConfig();
         mlConfig.setRoleNum(new WorkerRole().name(), 3);
@@ -110,14 +110,14 @@ public class RoleUtilsTest {
         StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
         PythonFileUtil.registerPythonFiles(streamEnv, mlConfig);
         DataStreamSource<JSONObject> input = streamEnv.addSource(new DebugJsonSource()).setParallelism(3);
-        RoleUtils.addAMRole(streamEnv,mlConfig);
+        RoleUtils.addAMRole(streamEnv, mlConfig);
         RoleUtils.addRole(streamEnv, ExecutionMode.TRAIN, input, mlConfig, TypeInformation.of(JSONObject.class), new WorkerRole())
-        .addSink(new DebugJsonSink()).setParallelism(3);
+                .addSink(new DebugJsonSink()).setParallelism(3);
         streamEnv.execute();
     }
 
     @Test
-    public void greeterJobTable() throws Exception{
+    public void greeterJobTable() throws Exception {
         LOG.info("RUN TEST:" + SysUtil._FUNC_());
         MLConfig mlConfig = DummyContext.createDummyMLConfig();
         mlConfig.setRoleNum(new WorkerRole().name(), 2);
@@ -134,7 +134,7 @@ public class RoleUtilsTest {
     }
 
     @Test
-    public void outputJobTable() throws Exception{
+    public void outputJobTable() throws Exception {
         LOG.info("RUN TEST:" + SysUtil._FUNC_());
         MLConfig mlConfig = DummyContext.createDummyMLConfig();
         mlConfig.setRoleNum(new WorkerRole().name(), 3);
@@ -144,10 +144,10 @@ public class RoleUtilsTest {
         mlConfig.getProperties().put(MLConstants.ENCODING_CLASS, RowCSVCoding.class.getCanonicalName());
         mlConfig.getProperties().put(MLConstants.DECODING_CLASS, RowCSVCoding.class.getCanonicalName());
         StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < 4; i++){
+        for (int i = 0; i < 4; i++) {
             sb.append(com.alibaba.flink.ml.operator.util.DataTypes.STRING.name()).append(",");
         }
-        sb.deleteCharAt(sb.length()-1);
+        sb.deleteCharAt(sb.length() - 1);
         mlConfig.getProperties().put(RowCSVCoding.DECODE_TYPES, sb.toString());
 
         StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -156,11 +156,13 @@ public class RoleUtilsTest {
         PythonFileUtil.registerPythonFiles(streamEnv, mlConfig);
         RoleUtils.addAMRole(tableEnv, statementSet, mlConfig);
         String[] names = {"a", "b", "c", "d"};
-        TypeInformation[] types = {Types.STRING, Types.STRING,Types.STRING, Types.STRING,};
-        TableSchema outputSchema = new TableSchema(names, types);
-        tableEnv.connect(new TableDebugRowDescriptor())
-                .withSchema(new Schema().schema(outputSchema))
-                .createTemporaryTable("row_sink");
+        DataType[] types = {DataTypes.STRING(), DataTypes.STRING(), DataTypes.STRING(), DataTypes.STRING(),};
+        Schema outputSchema = Schema.newBuilder().fromFields(names, types).build();
+        tableEnv.createTemporaryTable("row_sink",
+                TableDescriptor
+                        .forConnector("TableDebug")
+                        .schema(outputSchema)
+                        .build());
         Table table = RoleUtils.addRole(tableEnv, statementSet, ExecutionMode.TRAIN, null, mlConfig, outputSchema, new WorkerRole());
         statementSet.addInsert("row_sink", table);
 
@@ -168,7 +170,7 @@ public class RoleUtilsTest {
     }
 
     @Test
-    public void inputOutputJobTable() throws Exception{
+    public void inputOutputJobTable() throws Exception {
         LOG.info("RUN TEST:" + SysUtil._FUNC_());
         MLConfig mlConfig = DummyContext.createDummyMLConfig();
         mlConfig.setRoleNum(new WorkerRole().name(), 3);
@@ -189,18 +191,23 @@ public class RoleUtilsTest {
         mlConfig.getProperties().put(RowCSVCoding.DECODE_TYPES, sb.toString());
 
         StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
+        streamEnv.setParallelism(1);
         TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
         StatementSet statementSet = tableEnv.createStatementSet();
         PythonFileUtil.registerPythonFiles(streamEnv, mlConfig);
 
-        tableEnv.connect(new TableDebugRowDescriptor())
-                .withSchema(new Schema().schema(TypeUtil.rowTypeInfoToSchema(DebugRowSource.typeInfo)))
-                .createTemporaryTable("debug_source");
+        tableEnv.createTemporaryTable("debug_source",
+                TableDescriptor
+                        .forConnector("TableDebug")
+                        .schema(TypeUtil.rowTypeInfoToSchema(DebugRowSource.typeInfo))
+                        .build());
         Table input = tableEnv.from("debug_source");
         RoleUtils.addAMRole(tableEnv, statementSet, mlConfig);
-        tableEnv.connect(new TableDebugRowDescriptor())
-                .withSchema(new Schema().schema(TypeUtil.rowTypeInfoToSchema(DebugRowSource.typeInfo)))
-                .createTemporaryTable("debug_row_sink");
+        tableEnv.createTemporaryTable("debug_row_sink",
+                TableDescriptor
+                        .forConnector("TableDebug")
+                        .schema(TypeUtil.rowTypeInfoToSchema(DebugRowSource.typeInfo))
+                        .build());
         Table table = RoleUtils.addRole(tableEnv, statementSet, ExecutionMode.TRAIN, input, mlConfig,
                 TypeUtil.rowTypeInfoToSchema(DebugRowSource.typeInfo), new WorkerRole());
         statementSet.addInsert("debug_row_sink", table);

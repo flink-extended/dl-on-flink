@@ -19,54 +19,55 @@
 package com.alibaba.flink.ml.operator.ops.table;
 
 import com.alibaba.flink.ml.operator.ops.sink.LogSink;
-import com.google.common.annotations.VisibleForTesting;
-import org.apache.flink.api.common.typeinfo.TypeInformation;
-import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.datastream.DataStreamSink;
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
-import org.apache.flink.table.api.TableSchema;
-import org.apache.flink.table.sinks.AppendStreamTableSink;
-import org.apache.flink.table.sinks.TableSink;
-import org.apache.flink.types.Row;
+import org.apache.flink.table.catalog.ResolvedSchema;
+import org.apache.flink.table.connector.ChangelogMode;
+import org.apache.flink.table.connector.sink.DynamicTableSink;
+import org.apache.flink.table.connector.sink.SinkFunctionProvider;
+import org.apache.flink.table.data.RowData;
 
 /**
  * LogSink class flink table sink wrapped function.
  */
-public class LogTableStreamSink extends TableDummySinkBase implements AppendStreamTableSink<Row> {
+public class LogTableStreamSink extends TableDummySinkBase {
 
-	private final RichSinkFunction<Row> sinkFunction;
-
-
-	public LogTableStreamSink() {
-		sinkFunction = new LogSink<>();
-	}
-
-	public LogTableStreamSink(TableSchema schema) {
-		this(schema, new LogSink<>());
-	}
-
-	public LogTableStreamSink(RichSinkFunction<Row> sinkFunction) {
-		this.sinkFunction = sinkFunction;
-	}
-
-	public LogTableStreamSink(TableSchema schema, RichSinkFunction<Row> sinkFunction) {
-		super(schema);
-		this.sinkFunction = sinkFunction;
-	}
+    private final RichSinkFunction<RowData> sinkFunction;
 
 
-	@Override
-	public TableSink<Row> configure(String[] strings, TypeInformation<?>[] typeInformations) {
-		return new LogTableStreamSink(new TableSchema(strings, typeInformations), sinkFunction);
-	}
+    public LogTableStreamSink() {
+        sinkFunction = new LogSink<>();
+    }
 
-	@Override
-	public DataStreamSink<?> consumeDataStream(DataStream<Row> dataStream) {
-		return dataStream.addSink(sinkFunction);
-	}
+    public LogTableStreamSink(ResolvedSchema schema) {
+        this(schema, new LogSink<>());
+    }
 
-	@VisibleForTesting
-	RichSinkFunction<Row> getSinkFunction() {
-		return sinkFunction;
-	}
+    public LogTableStreamSink(RichSinkFunction<RowData> sinkFunction) {
+        this.sinkFunction = sinkFunction;
+    }
+
+    public LogTableStreamSink(ResolvedSchema schema, RichSinkFunction<RowData> sinkFunction) {
+        super(schema);
+        this.sinkFunction = sinkFunction;
+    }
+
+    @Override
+    public ChangelogMode getChangelogMode(ChangelogMode requestedMode) {
+        return ChangelogMode.all();
+    }
+
+    @Override
+    public SinkRuntimeProvider getSinkRuntimeProvider(Context context) {
+        return SinkFunctionProvider.of(sinkFunction);
+    }
+
+    @Override
+    public DynamicTableSink copy() {
+        return new LogTableStreamSink(this.sinkFunction);
+    }
+
+    @Override
+    public String asSummaryString() {
+        return "LogTableStreamSink";
+    }
 }

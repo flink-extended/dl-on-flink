@@ -1,13 +1,20 @@
 package com.alibaba.flink.ml.operator.ops.table;
 
 import com.alibaba.flink.ml.operator.ops.table.descriptor.LogTable;
+import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
-import org.apache.flink.table.api.TableSchema;
+import org.apache.flink.table.api.DataTypes;
+import org.apache.flink.table.catalog.Catalog;
 import org.apache.flink.table.catalog.CatalogTable;
-import org.apache.flink.table.factories.TableFactoryUtil;
-import org.apache.flink.table.factories.TableSinkFactory.Context;
-import org.apache.flink.table.sinks.TableSink;
-import org.apache.flink.types.Row;
+import org.apache.flink.table.catalog.Column;
+import org.apache.flink.table.catalog.GenericInMemoryCatalog;
+import org.apache.flink.table.catalog.ObjectIdentifier;
+import org.apache.flink.table.catalog.ResolvedCatalogTable;
+import org.apache.flink.table.catalog.ResolvedSchema;
+import org.apache.flink.table.connector.sink.DynamicTableSink;
+import org.apache.flink.table.connector.sink.SinkFunctionProvider;
+import org.apache.flink.table.data.RowData;
+import org.apache.flink.table.factories.FactoryUtil;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -17,39 +24,59 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.alibaba.flink.ml.operator.ops.table.descriptor.LogTableValidator.CONNECTOR_RICH_SINK_FUNCTION;
-import static org.apache.flink.table.descriptors.ConnectorDescriptorValidator.CONNECTOR_TYPE;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
 
 public class LogTableSinkFactoryTest {
-	@Test
-	public void testCreateTableSink() {
-		final Context context = Mockito.mock(Context.class);
-		final CatalogTable table = Mockito.mock(CatalogTable.class);
-		Mockito.when(context.getTable()).thenReturn(table);
-		Mockito.when(table.toProperties()).thenReturn(Collections.singletonMap(CONNECTOR_TYPE, "LogTable"));
-		Mockito.when(table.getSchema()).thenReturn(TableSchema.builder().build());
-		final TableSink<Object> tableSink = TableFactoryUtil.findAndCreateTableSink(context);
-		assertThat(tableSink, instanceOf(LogTableStreamSink.class));
-	}
+    @Test
+    public void testCreateTableSink() {
+        final Catalog catalog = new GenericInMemoryCatalog("default");
+        ResolvedSchema schema =
+                ResolvedSchema.of(
+                        Column.physical("a", DataTypes.STRING()));
 
-	@Test
-	public void testCreateTableSinkWithRickSinkFunction() throws IOException {
-		final Context context = Mockito.mock(Context.class);
-		final CatalogTable table = Mockito.mock(CatalogTable.class);
-		Mockito.when(context.getTable()).thenReturn(table);
+        final CatalogTable table = Mockito.mock(CatalogTable.class);
+        Mockito.when(table.getOptions()).thenReturn(Collections.singletonMap("connector", "LogTable"));
 
-		Map<String, String> map = new HashMap<>();
-		map.put(CONNECTOR_TYPE, "LogTable");
-		final RichSinkFunction<Row> function = new MySinkFunction();
-		map.put(CONNECTOR_RICH_SINK_FUNCTION, LogTable.RichSinkFunctionSerializer.serialize(function));
-		Mockito.when(table.toProperties()).thenReturn(map);
-		Mockito.when(table.getSchema()).thenReturn(TableSchema.builder().build());
-		final TableSink<Row> tableSink = TableFactoryUtil.findAndCreateTableSink(context);
-		assertThat(tableSink, instanceOf(LogTableStreamSink.class));
-		assertThat(((LogTableStreamSink)tableSink).getSinkFunction(), instanceOf(MySinkFunction.class));
-	}
+        final DynamicTableSink tableSink = FactoryUtil.createTableSink(catalog,
+                ObjectIdentifier.of("default", "test", "test"),
+                new ResolvedCatalogTable(table, schema),
+                new Configuration(),
+                Thread.currentThread().getContextClassLoader(),
+                true);
+        assertThat(tableSink, instanceOf(LogTableStreamSink.class));
+    }
 
-	public static class MySinkFunction extends RichSinkFunction<Row> {
-	}
+    @Test
+    public void testCreateTableSinkWithRickSinkFunction() throws IOException {
+        final DynamicTableSink.Context context = Mockito.mock(DynamicTableSink.Context.class);
+
+        Map<String, String> map = new HashMap<>();
+        map.put("connector", "LogTable");
+        final RichSinkFunction<RowData> function = new MySinkFunction();
+        map.put(CONNECTOR_RICH_SINK_FUNCTION, LogTable.RichSinkFunctionSerializer.serialize(function));
+
+        final Catalog catalog = new GenericInMemoryCatalog("default");
+        ResolvedSchema schema =
+                ResolvedSchema.of(
+                        Column.physical("a", DataTypes.STRING()));
+
+        final CatalogTable table = Mockito.mock(CatalogTable.class);
+        Mockito.when(table.getOptions()).thenReturn(map);
+
+        final DynamicTableSink tableSink = FactoryUtil.createTableSink(catalog,
+                ObjectIdentifier.of("default", "test", "test"),
+                new ResolvedCatalogTable(table, schema),
+                new Configuration(),
+                Thread.currentThread().getContextClassLoader(),
+                true);
+
+
+        assertThat(tableSink, instanceOf(LogTableStreamSink.class));
+        assertThat(((SinkFunctionProvider) tableSink.getSinkRuntimeProvider(context)).createSinkFunction(),
+                instanceOf(MySinkFunction.class));
+    }
+
+    public static class MySinkFunction extends RichSinkFunction<RowData> {
+    }
 }

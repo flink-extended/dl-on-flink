@@ -19,17 +19,13 @@
 package com.alibaba.flink.ml.operator.table;
 
 import com.alibaba.flink.ml.operator.sink.DebugRowSink;
-import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
-import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.datastream.DataStreamSink;
-import org.apache.flink.table.sinks.AppendStreamTableSink;
-import org.apache.flink.table.sinks.TableSink;
-
-import org.apache.flink.types.Row;
+import org.apache.flink.table.connector.ChangelogMode;
+import org.apache.flink.table.connector.sink.DynamicTableSink;
+import org.apache.flink.table.connector.sink.SinkFunctionProvider;
 
 
-public class TableDebugRowSink implements AppendStreamTableSink<Row> {
+public class TableDebugRowSink implements DynamicTableSink {
     private RowTypeInfo typeInfo;
 
     public TableDebugRowSink(RowTypeInfo typeInfo) {
@@ -37,27 +33,22 @@ public class TableDebugRowSink implements AppendStreamTableSink<Row> {
     }
 
     @Override
-    public TypeInformation<Row> getOutputType() {
-        return typeInfo;
+    public ChangelogMode getChangelogMode(ChangelogMode requestedMode) {
+        return ChangelogMode.all();
     }
 
     @Override
-    public String[] getFieldNames() {
-        return typeInfo.getFieldNames();
+    public SinkRuntimeProvider getSinkRuntimeProvider(Context context) {
+        return SinkFunctionProvider.of(new DebugRowSink());
     }
 
     @Override
-    public TypeInformation<?>[] getFieldTypes() {
-        return typeInfo.getFieldTypes();
+    public DynamicTableSink copy() {
+        return new TableDebugRowSink(this.typeInfo);
     }
 
     @Override
-    public TableSink<Row> configure(String[] strings, TypeInformation<?>[] typeInformations) {
-        return new TableDebugRowSink(new RowTypeInfo(typeInformations, strings));
-    }
-
-    @Override
-    public DataStreamSink<Row> consumeDataStream(DataStream<Row> dataStream) {
-        return dataStream.addSink(new DebugRowSink());
+    public String asSummaryString() {
+        return "DebugRowSink";
     }
 }

@@ -20,11 +20,10 @@ package com.alibaba.flink.ml.operator.ops.table;
 
 import com.alibaba.flink.ml.cluster.ExecutionMode;
 import com.alibaba.flink.ml.cluster.MLConfig;
+import com.alibaba.flink.ml.cluster.role.BaseRole;
 import com.alibaba.flink.ml.operator.ops.source.NodeSource;
 import com.alibaba.flink.ml.operator.util.TypeUtil;
-import com.alibaba.flink.ml.cluster.role.BaseRole;
 import com.alibaba.flink.ml.util.MLConstants;
-
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -33,7 +32,6 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.TableSchema;
 import org.apache.flink.table.sources.StreamTableSource;
 import org.apache.flink.types.Row;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,47 +41,55 @@ import java.io.Serializable;
  * flink table source function wrap NodeSource class.
  */
 public class MLTableSource implements StreamTableSource<Row>, Serializable {
-	private final MLConfig config;
-	private final ExecutionMode mode;
-	private final BaseRole role;
-	private final RowTypeInfo rowType;
-	private final int parallelism;
+    private final MLConfig config;
+    private final ExecutionMode mode;
+    private final BaseRole role;
+    private final RowTypeInfo rowType;
+    private final int parallelism;
 
-	private static Logger LOG = LoggerFactory.getLogger(MLTableSource.class);
+    private static Logger LOG = LoggerFactory.getLogger(MLTableSource.class);
 
-	public MLTableSource(ExecutionMode mode, BaseRole role, MLConfig config, TableSchema outSchema, int parallelism) {
-		this.mode = mode;
-		this.config = config;
-		this.role = role;
-		this.rowType = TypeUtil.schemaToRowTypeInfo(outSchema);
-		this.parallelism = parallelism;
-	}
+    public MLTableSource(ExecutionMode mode, BaseRole role, MLConfig config, TableSchema outSchema, int parallelism) {
+        this.mode = mode;
+        this.config = config;
+        this.role = role;
+        this.rowType = TypeUtil.schemaToRowTypeInfo(outSchema);
+        this.parallelism = parallelism;
+    }
 
-	public MLTableSource(ExecutionMode mode, BaseRole role, MLConfig config, TableSchema outSchema) {
-		this(mode, role, config, outSchema, -1);
-	}
+    public MLTableSource(ExecutionMode mode, BaseRole role, MLConfig config, TableSchema outSchema) {
+        this(mode, role, config, outSchema, -1);
+    }
 
-	@Override
-	public TypeInformation<Row> getReturnType() {
-		return rowType;
-	}
+    private MLTableSource(ExecutionMode mode, BaseRole role, MLConfig config, RowTypeInfo rowType, int parallelism) {
+        this.mode = mode;
+        this.config = config;
+        this.role = role;
+        this.rowType = rowType;
+        this.parallelism = parallelism;
+    }
 
-	@Override
-	public TableSchema getTableSchema() {
-		return TypeUtil.rowTypeInfoToSchema(rowType);
-	}
+    @Override
+    public TypeInformation<Row> getReturnType() {
+        return rowType;
+    }
 
-	@Override
-	public String explainSource() {
-		return this.config.getProperties().getOrDefault(MLConstants.FLINK_VERTEX_NAME, role.name());
-	}
+    @Override
+    public TableSchema getTableSchema() {
+        return TypeUtil.rowTypeInfoToTableSchema(rowType);
+    }
 
-	@Override
-	public DataStream<Row> getDataStream(StreamExecutionEnvironment execEnv) {
-		DataStreamSource source = execEnv.addSource(NodeSource.createSource(mode, role, config, rowType));
-		if (parallelism > 0) {
-			source = source.setParallelism(parallelism);
-		}
-		return (DataStream<Row>) source.name(explainSource());
-	}
+    @Override
+    public String explainSource() {
+        return this.config.getProperties().getOrDefault(MLConstants.FLINK_VERTEX_NAME, role.name());
+    }
+
+    @Override
+    public DataStream<Row> getDataStream(StreamExecutionEnvironment execEnv) {
+        DataStreamSource source = execEnv.addSource(NodeSource.createSource(mode, role, config, rowType));
+        if (parallelism > 0) {
+            source = source.setParallelism(parallelism);
+        }
+        return (DataStream<Row>) source.name(explainSource());
+    }
 }

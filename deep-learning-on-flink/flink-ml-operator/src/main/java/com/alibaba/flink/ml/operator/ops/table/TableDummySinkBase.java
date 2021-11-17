@@ -18,49 +18,33 @@
 
 package com.alibaba.flink.ml.operator.ops.table;
 
+import com.alibaba.flink.ml.operator.util.TypeUtil;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
-import org.apache.flink.table.api.TableSchema;
-import org.apache.flink.table.api.Types;
-import org.apache.flink.table.sinks.TableSink;
-
+import org.apache.flink.table.api.DataTypes;
+import org.apache.flink.table.catalog.Column;
+import org.apache.flink.table.catalog.ResolvedSchema;
+import org.apache.flink.table.connector.sink.DynamicTableSink;
+import org.apache.flink.table.runtime.typeutils.InternalTypeInfo;
 import org.apache.flink.types.Row;
 
 /**
  * a common flink table sink function.
  */
-public abstract class TableDummySinkBase implements TableSink<Row> {
-	private final TypeInformation<Row> outType;
-	private String[] columnNames;
-	private final TypeInformation[] colTypes;
+public abstract class TableDummySinkBase implements DynamicTableSink {
+    private final TypeInformation<Row> outType;
+    private String[] columnNames;
+    private final TypeInformation[] colTypes;
 
-	protected TableDummySinkBase() {
-		this(TableSchema.builder().field("dummy", Types.STRING()).build());
-	}
+    protected TableDummySinkBase() {
+        this(ResolvedSchema.of(Column.physical("dummy", DataTypes.STRING())));
+//		this(TableSchema.builder().field("dummy", Types.STRING()).build());
+    }
 
-	public TableDummySinkBase(TableSchema schema) {
-		outType = Types.ROW(schema.getFieldNames(), schema.getFieldTypes());
-		columnNames = schema.getFieldNames();
-		colTypes = schema.getFieldTypes();
-	}
-
-
-	@Override
-	public TypeInformation<Row> getOutputType() {
-		return outType;
-	}
-
-	@Override
-	public String[] getFieldNames() {
-		return columnNames;
-	}
-
-	@Override
-	public TypeInformation<?>[] getFieldTypes() {
-		return colTypes;
-	}
-
-
-	TableSchema createSchema(String[] fieldNames, TypeInformation[] fieldTypes) {
-		return new TableSchema(fieldNames, fieldTypes);
-	}
+    public TableDummySinkBase(ResolvedSchema schema) {
+        outType = TypeUtil.schemaToRowTypeInfo(schema);
+        columnNames = schema.getColumnNames().toArray(new String[0]);
+        colTypes = schema.getColumnDataTypes().stream()
+                .map(dataType -> InternalTypeInfo.of(dataType.getLogicalType()))
+                .toArray(TypeInformation[]::new);
+    }
 }
