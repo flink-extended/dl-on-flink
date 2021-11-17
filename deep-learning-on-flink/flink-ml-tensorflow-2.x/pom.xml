@@ -42,6 +42,11 @@
             <version>${tensorflow.java.version}</version>
             <classifier>macosx-x86_64${javacpp.platform.extension}</classifier>
         </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table-runtime_${scala.major.version}</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
@@ -70,6 +75,10 @@
                 <exclusion>
                     <groupId>com.google.guava</groupId>
                     <artifactId>guava</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-math</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
