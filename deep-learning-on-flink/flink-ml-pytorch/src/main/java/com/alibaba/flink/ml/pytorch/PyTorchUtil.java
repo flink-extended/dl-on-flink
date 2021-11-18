@@ -27,6 +27,7 @@ import com.alibaba.flink.ml.util.MLConstants;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.Schema;
 import org.apache.flink.table.api.StatementSet;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
@@ -73,7 +74,7 @@ public class PyTorchUtil {
 	 */
 	public static Table run(StreamExecutionEnvironment streamEnv, TableEnvironment tableEnv, StatementSet statementSet, ExecutionMode mode,
 							Table input, PyTorchConfig pytorchConfig,
-							TableSchema outputSchema) throws IOException {
+							Schema outputSchema) throws IOException {
 		pytorchConfig.getMlConfig().getProperties()
 				.put(MLConstants.ML_RUNNER_CLASS, PyTorchRunner.class.getCanonicalName());
 		PythonFileUtil.registerPythonFiles(streamEnv, pytorchConfig.getMlConfig());
@@ -129,7 +130,7 @@ public class PyTorchUtil {
 	 */
 	public static Table train(StreamExecutionEnvironment streamEnv, TableEnvironment tableEnv,
 							  StatementSet statementSet, Table input, PyTorchConfig pytorchConfig,
-							  TableSchema outputSchema) throws IOException {
+							  Schema outputSchema) throws IOException {
 		return run(streamEnv, tableEnv, statementSet, ExecutionMode.TRAIN, input, pytorchConfig, outputSchema);
 	}
 
@@ -146,7 +147,7 @@ public class PyTorchUtil {
 	 */
 	public static Table inference(StreamExecutionEnvironment streamEnv, TableEnvironment tableEnv,
 								  StatementSet statementSet, Table input, PyTorchConfig pytorchConfig,
-								  TableSchema outputSchema) throws IOException {
+								  Schema outputSchema) throws IOException {
 		return run(streamEnv, tableEnv, statementSet, ExecutionMode.INFERENCE, input, pytorchConfig, outputSchema);
 	}
 }
