@@ -20,11 +20,9 @@ package com.alibaba.flink.ml.examples.tensorflow.mnist.ops;
 
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.tuple.ImmutablePair;
-
 import org.apache.flink.streaming.api.checkpoint.ListCheckpointed;
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
-import org.apache.flink.types.Row;
-
+import org.apache.flink.table.data.RowData;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
@@ -36,72 +34,72 @@ import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.List;
 
-public class LogInferAccSink extends RichSinkFunction<Row> implements ListCheckpointed<ImmutablePair<Long, Long>> {
+public class LogInferAccSink extends RichSinkFunction<RowData> implements ListCheckpointed<ImmutablePair<Long, Long>> {
 
-	private static final Logger LOG = LoggerFactory.getLogger(LogInferAccSink.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LogInferAccSink.class);
 
-	private transient long total = 0;
-	private transient long correct = 0;
-	// Hadoop path is not serializable
-	private final String pathStr;
+    private transient long total = 0;
+    private transient long correct = 0;
+    // Hadoop path is not serializable
+    private final String pathStr;
 
-	public LogInferAccSink() {
-		this(null);
-	}
+    public LogInferAccSink() {
+        this(null);
+    }
 
-	public LogInferAccSink(String pathStr) {
-		this.pathStr = pathStr;
-	}
+    public LogInferAccSink(String pathStr) {
+        this.pathStr = pathStr;
+    }
 
-	@Override
-	public void open(org.apache.flink.configuration.Configuration parameters) throws Exception {
-		super.open(parameters);
-		if (total != 0 || correct != 0) {
-			LOG.info("Restored state: total={}, correct={}", total, correct);
-		}
-	}
+    @Override
+    public void open(org.apache.flink.configuration.Configuration parameters) throws Exception {
+        super.open(parameters);
+        if (total != 0 || correct != 0) {
+            LOG.info("Restored state: total={}, correct={}", total, correct);
+        }
+    }
 
-	@Override
-	public void invoke(Row value, Context context) throws Exception {
-		total++;
-		if (((long) value.getField(0)) == ((long) value.getField(1))) {
-			correct++;
-		}
-		if (total % 100 == 0) {
-			System.out.println("Processed value:" + value.toString());
-		}
-	}
+    @Override
+    public void invoke(RowData value, Context context) throws Exception {
+        total++;
+        if (value.getLong(0) == value.getLong(1)) {
+            correct++;
+        }
+        if (total % 100 == 0) {
+            System.out.println("Processed value:" + value.toString());
+        }
+    }
 
-	@Override
-	public void close() throws Exception {
-		DecimalFormat df = new DecimalFormat("#.##");
-		LOG.info(String.format("Records processed: %d, Accuracy: %s%%",
-				total, total > 0 ? df.format(100.0 * correct / total) : "0"));
-		if (pathStr != null) {
-			Path outDir = new Path(pathStr);
-			FileSystem fs = FileSystem.get(outDir.toUri(), new Configuration());
-			fs.mkdirs(outDir);
-			Path outFile = new Path(outDir, String.valueOf(getRuntimeContext().getIndexOfThisSubtask()));
-			if (fs.exists(outFile)) {
-				LOG.info("{} already exists. Tying to delete it", outFile.toString());
-				Preconditions.checkState(fs.delete(outFile, false), "Cannot delete previous output file " + outFile);
-			}
-			LOG.info("Writing result to " + outFile.toString());
-			try (FSDataOutputStream out = fs.create(outFile)) {
-				out.writeUTF(String.valueOf(total));
-			}
-		}
-	}
+    @Override
+    public void close() throws Exception {
+        DecimalFormat df = new DecimalFormat("#.##");
+        LOG.info(String.format("Records processed: %d, Accuracy: %s%%",
+                total, total > 0 ? df.format(100.0 * correct / total) : "0"));
+        if (pathStr != null) {
+            Path outDir = new Path(pathStr);
+            FileSystem fs = FileSystem.get(outDir.toUri(), new Configuration());
+            fs.mkdirs(outDir);
+            Path outFile = new Path(outDir, String.valueOf(getRuntimeContext().getIndexOfThisSubtask()));
+            if (fs.exists(outFile)) {
+                LOG.info("{} already exists. Tying to delete it", outFile.toString());
+                Preconditions.checkState(fs.delete(outFile, false), "Cannot delete previous output file " + outFile);
+            }
+            LOG.info("Writing result to " + outFile.toString());
+            try (FSDataOutputStream out = fs.create(outFile)) {
+                out.writeUTF(String.valueOf(total));
+            }
+        }
+    }
 
-	@Override
-	public List<ImmutablePair<Long, Long>> snapshotState(long l, long l1) throws Exception {
-		return Collections.singletonList(ImmutablePair.of(total, correct));
-	}
+    @Override
+    public List<ImmutablePair<Long, Long>> snapshotState(long l, long l1) throws Exception {
+        return Collections.singletonList(ImmutablePair.of(total, correct));
+    }
 
-	@Override
-	public void restoreState(List<ImmutablePair<Long, Long>> list) throws Exception {
-		ImmutablePair<Long, Long> pair = list.get(0);
-		total = pair.getLeft();
-		correct = pair.getRight();
-	}
+    @Override
+    public void restoreState(List<ImmutablePair<Long, Long>> list) throws Exception {
+        ImmutablePair<Long, Long> pair = list.get(0);
+        total = pair.getLeft();
+        correct = pair.getRight();
+    }
 }
