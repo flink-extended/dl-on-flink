@@ -18,16 +18,17 @@
 
 package com.alibaba.flink.ml.lib.tensorflow.table;
 
-import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.ResultTypeQueryable;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.streaming.api.functions.source.ParallelSourceFunction;
-import org.apache.flink.table.api.TableSchema;
-import org.apache.flink.types.Row;
+import org.apache.flink.table.data.GenericArrayData;
+import org.apache.flink.table.data.GenericRowData;
+import org.apache.flink.table.data.RowData;
+import org.apache.flink.table.data.StringData;
 
 
-public class DebugRowSource implements ParallelSourceFunction<Row>, ResultTypeQueryable {
+public class DebugRowSource implements ParallelSourceFunction<RowData>, ResultTypeQueryable {
     public RowTypeInfo typeInfo;
     private int rank;
     private boolean hasString;
@@ -39,64 +40,66 @@ public class DebugRowSource implements ParallelSourceFunction<Row>, ResultTypeQu
     }
 
     @Override
-    public void run(SourceContext<Row> ctx) throws Exception {
-        for(int i = 0; i < 20; i++){
-            if(hasString){
-                Row row = new Row(3);
-                switch (rank){
-                    case 2:{
-                        Float[] c1 = { 1.0f * i, 1.0f * i };
-                        Float[][] cc1 = {c1, c1};
+    public void run(SourceContext<RowData> ctx) throws Exception {
+        for (int i = 0; i < 20; i++) {
+            if (hasString) {
+                GenericRowData row = new GenericRowData(3);
+                switch (rank) {
+                    case 2: {
+                        Float[] c1 = {1.0f * i, 1.0f * i};
+                        GenericArrayData[] cc1 = {new GenericArrayData(c1), new GenericArrayData(c1)};
 
-                        Float[] c2 = { 2.0f * i, 2.0f * i };
-                        Float[][] cc2 = {c2, c2};
+                        Float[] c2 = {2.0f * i, 2.0f * i};
+                        GenericArrayData[] cc2 = {new GenericArrayData(c2), new GenericArrayData(c2)};
 
-                        String[] c3 = { String.valueOf(1.0f * i), String.valueOf(1.0f * i) };
-                        String[][] cc3 = {c3, c3};
+                        StringData[] c3 = {StringData.fromString(String.valueOf(1.0f * i)),
+                                StringData.fromString(String.valueOf(1.0f * i))};
+                        GenericArrayData[] cc3 = {new GenericArrayData(c3), new GenericArrayData(c3)};
 
-                        row.setField(0, cc1);
-                        row.setField(1, cc2);
-                        row.setField(2, cc3);
+                        row.setField(0, new GenericArrayData(cc1));
+                        row.setField(1, new GenericArrayData(cc2));
+                        row.setField(2, new GenericArrayData(cc3));
                         break;
                     }
-                    case 1:{
-                        Float[] c1 = { 1.0f * i, 1.0f * i };
-                        Float[] c2 = { 2.0f * i, 2.0f * i };
-                        String[] c3 = { String.valueOf(1.0f * i), String.valueOf(1.0f * i) };
-                        row.setField(0, c1);
-                        row.setField(1, c2);
-                        row.setField(2, c3);
+                    case 1: {
+                        Float[] c1 = {1.0f * i, 1.0f * i};
+                        Float[] c2 = {2.0f * i, 2.0f * i};
+                        StringData[] c3 = {StringData.fromString(String.valueOf(1.0f * i)),
+                                StringData.fromString(String.valueOf(1.0f * i))};
+                        row.setField(0, new GenericArrayData(c1));
+                        row.setField(1, new GenericArrayData(c2));
+                        row.setField(2, new GenericArrayData(c3));
                         break;
                     }
-                    default:{
+                    default: {
                         row.setField(0, 1.0f * i);
                         row.setField(1, 2.0f * i);
-                        row.setField(2, String.valueOf(1.0f * i));
+                        row.setField(2, StringData.fromString(String.valueOf(1.0f * i)));
                     }
                 }
                 ctx.collect(row);
-            }else {
-                Row row = new Row(2);
-                switch (rank){
-                    case 2:{
-                        Float[] c1 = { 1.0f * i, 1.0f * i };
-                        Float[][] cc1 = {c1, c1};
+            } else {
+                GenericRowData row = new GenericRowData(2);
+                switch (rank) {
+                    case 2: {
+                        Float[] c1 = {1.0f * i, 1.0f * i};
+                        GenericArrayData[] cc1 = {new GenericArrayData(c1), new GenericArrayData(c1)};
 
-                        Float[] c2 = { 2.0f * i, 2.0f * i };
-                        Float[][] cc2 = {c2, c2};
+                        Float[] c2 = {2.0f * i, 2.0f * i};
+                        GenericArrayData[] cc2 = {new GenericArrayData(c2), new GenericArrayData(c2)};
 
-                        row.setField(0, cc1);
-                        row.setField(1, cc2);
+                        row.setField(0, new GenericArrayData(cc1));
+                        row.setField(1, new GenericArrayData(cc2));
                         break;
                     }
-                    case 1:{
-                        Float[] c1 = { 1.0f * i, 1.0f * i };
-                        Float[] c2 = { 2.0f * i, 2.0f * i };
-                        row.setField(0, c1);
-                        row.setField(1, c2);
+                    case 1: {
+                        Float[] c1 = {1.0f * i, 1.0f * i};
+                        Float[] c2 = {2.0f * i, 2.0f * i};
+                        row.setField(0, new GenericArrayData(c1));
+                        row.setField(1, new GenericArrayData(c2));
                         break;
                     }
-                    default:{
+                    default: {
                         row.setField(0, 1.0f * i);
                         row.setField(1, 2.0f * i);
                     }

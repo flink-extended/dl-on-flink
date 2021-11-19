@@ -19,59 +19,58 @@
 package com.alibaba.flink.ml.lib.tensorflow.table;
 
 import com.alibaba.flink.ml.operator.util.TypeUtil;
-import org.apache.flink.api.common.typeinfo.TypeInformation;
-import org.apache.flink.api.java.typeutils.RowTypeInfo;
-import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.table.api.TableSchema;
-import org.apache.flink.table.sources.StreamTableSource;
-import org.apache.flink.types.Row;
-
+import org.apache.flink.table.catalog.ResolvedSchema;
+import org.apache.flink.table.connector.ChangelogMode;
+import org.apache.flink.table.connector.source.DynamicTableSource;
+import org.apache.flink.table.connector.source.ScanTableSource;
+import org.apache.flink.table.connector.source.SourceFunctionProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 
 
-public class TableDebugRowSource implements StreamTableSource<Row>, Serializable {
+public class TableDebugRowSource implements ScanTableSource, Serializable {
 
     private static Logger LOG = LoggerFactory.getLogger(TableDebugRowSource.class);
     private DebugRowSource debugRowSource;
-    private TableSchema tableSchema;
+    private ResolvedSchema tableSchema;
 
-    public TableDebugRowSource(TableSchema tableSchema) {
+    public TableDebugRowSource(ResolvedSchema tableSchema) {
         this(0, tableSchema);
     }
 
-    public TableDebugRowSource(int rank, TableSchema tableSchema) {
+    public TableDebugRowSource(int rank, ResolvedSchema tableSchema) {
         this(rank, false, tableSchema);
     }
-    public TableDebugRowSource(int rank, boolean hasString, TableSchema tableSchema) {
+
+    public TableDebugRowSource(int rank, boolean hasString, ResolvedSchema tableSchema) {
         this.debugRowSource = new DebugRowSource(rank, hasString, TypeUtil.schemaToRowTypeInfo(tableSchema));
         this.tableSchema = tableSchema;
     }
 
-
-
-    @Override
-    public TypeInformation<Row> getReturnType() {
-        return TypeUtil.schemaToRowTypeInfo(tableSchema);
+    TableDebugRowSource(DebugRowSource debugRowSource, ResolvedSchema tableSchema) {
+        this.debugRowSource = debugRowSource;
+        this.tableSchema = tableSchema;
     }
 
     @Override
-    public TableSchema getTableSchema() {
-        return tableSchema;
+    public ChangelogMode getChangelogMode() {
+        return ChangelogMode.insertOnly();
     }
 
     @Override
-    public String explainSource() {
+    public ScanRuntimeProvider getScanRuntimeProvider(ScanContext runtimeProviderContext) {
+        return SourceFunctionProvider.of(this.debugRowSource, true);
+    }
+
+    @Override
+    public DynamicTableSource copy() {
+        return new TableDebugRowSource(this.debugRowSource, this.tableSchema);
+    }
+
+    @Override
+    public String asSummaryString() {
         return "debug_source";
     }
-
-    @Override
-    public DataStream<Row> getDataStream(StreamExecutionEnvironment execEnv) {
-        return execEnv.addSource(debugRowSource)
-            .name(explainSource());
-    }
-
 }
