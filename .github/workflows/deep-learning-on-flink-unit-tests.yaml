@@ -37,7 +37,10 @@ jobs:
       - name: Build and test with maven
         env:
           TF_ON_FLINK_IP: 127.0.0.1
-        run: cd deep-learning-on-flink && mvn -DskipITs=true -B clean package
+        run: |
+          cd deep-learning-on-flink
+          mvn -DskipTests -B clean install
+          mvn -DskipITs=true -B test
       - name: Upload jars
         uses: actions/upload-artifact@v2
         with:
