@@ -17,14 +17,14 @@ import os
 
 from pyflink.datastream.stream_execution_environment import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment, CsvTableSink, WriteMode
+from pyflink.table.sources import CsvTableSource
 from pyflink.table.table import TableSchema
+from pyflink.table.types import DataTypes
 
 from flink_ml_tensorflow.tensorflow_TFConfig import TFConfig
-from flink_ml_tensorflow.tensorflow_on_flink_table import train, inference
-from flink_ml_tensorflow.tensorflow_on_flink_tfconf import TFCONSTANS
 from flink_ml_tensorflow.tensorflow_on_flink_mlconf import MLCONSTANTS
-from pyflink.table.sources import CsvTableSource
-from pyflink.table.types import DataTypes
+from flink_ml_tensorflow.tensorflow_on_flink_table import train
+from flink_ml_tensorflow.tensorflow_on_flink_tfconf import TFCONSTANS
 
 
 class TableExample:
