@@ -1,11 +1,10 @@
 name: Deep Learning on Flink Unit Tests
-on: 
+on:
   push:
-    paths:
-      - 'deep-learning-on-flink/**'
+    branches: [ master ]
   pull_request:
-    paths:
-      - 'deep-learning-on-flink/**'
+    branches:
+      - '**'
 jobs:
   build-and-test:
     runs-on: ubuntu-18.04
@@ -38,7 +37,6 @@ jobs:
         env:
           TF_ON_FLINK_IP: 127.0.0.1
         run: |
-          cd deep-learning-on-flink
           mvn -DskipTests -B clean install
           mvn -DskipITs=true -B test
       - name: Upload jars
@@ -69,9 +67,9 @@ jobs:
           pip --version
           pip install -U --user pip six numpy wheel mock grpcio grpcio-tools
       - name: Build wheels
-        run: cd deep-learning-on-flink && mvn clean install -DskipTests -Dfast -B && bash tools/build_wheel.sh
+        run: mvn clean install -DskipTests -Dfast -B && bash tools/build_wheel.sh
       - name: Upload wheels
         uses: actions/upload-artifact@v2
         with:
           name: wheels
-          path: deep-learning-on-flink/tools/dist
+          path: tools/dist
