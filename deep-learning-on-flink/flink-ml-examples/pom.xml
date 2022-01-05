@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>flink_ai_extended</artifactId>
-        <groupId>com.alibaba.flink.ml</groupId>
+        <groupId>org.flinkextended</groupId>
         <version>0.4-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
@@ -14,24 +14,24 @@
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
-            <groupId>com.alibaba.flink.ml</groupId>
+            <groupId>org.flinkextended</groupId>
             <artifactId>flink-ml-tensorflow-2.x</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.alibaba.flink.ml</groupId>
+            <groupId>org.flinkextended</groupId>
             <artifactId>flink-ml-pytorch</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.alibaba.flink.ml</groupId>
+            <groupId>org.flinkextended</groupId>
             <artifactId>flink-ml-framework</artifactId>
             <version>${project.parent.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.alibaba.flink.ml</groupId>
+            <groupId>org.flinkextended</groupId>
             <artifactId>flink-ml-operator</artifactId>
             <version>${project.parent.version}</version>
             <type>test-jar</type>
@@ -144,7 +144,6 @@
                             </relocations>
                             <artifactSet>
                                 <excludes>
-                                    <!--<exclude>com.alibaba.flink.ml:*</exclude>-->
                                     <exclude>org.apache.flink:*</exclude>
                                     <exclude>xerces:xercesImpl</exclude>
                                     <exclude>io.netty:netty</exclude>
@@ -199,7 +198,7 @@
                             </artifactSet>
                             <!--<transformers>-->
                                 <!--<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
-                                    <!--<mainClass>com.alibaba.flink.ml.examples.wordcount.WordCount</mainClass>-->
+                                    <!--<mainClass>get_gateway().jvm.org.flinkextended.flink..examples.wordcount.WordCount</mainClass>-->
                                 <!--</transformer>-->
                             <!--</transformers>-->
                         </configuration>

@@ -29,28 +29,28 @@ class ScalarConverter(Enum):
 
     def java_converter(self):
         if self is ScalarConverter.FIRST:
-            return get_gateway().jvm.com.alibaba.flink.tensorflow.hadoop.io.TFRExtractRowHelper.ScalarConverter.FIRST
+            return get_gateway().jvm.org.flinkextended.flink.tensorflow.hadoop.io.TFRExtractRowHelper.ScalarConverter.FIRST
         if self is ScalarConverter.LAST:
-            return get_gateway().jvm.com.alibaba.flink.tensorflow.hadoop.io.TFRExtractRowHelper.ScalarConverter.LAST
+            return get_gateway().jvm.org.flinkextended.flink.tensorflow.hadoop.io.TFRExtractRowHelper.ScalarConverter.LAST
         if self is ScalarConverter.MAX:
-            return get_gateway().jvm.com.alibaba.flink.tensorflow.hadoop.io.TFRExtractRowHelper.ScalarConverter.MAX
+            return get_gateway().jvm.org.flinkextended.flink.tensorflow.hadoop.io.TFRExtractRowHelper.ScalarConverter.MAX
         if self is ScalarConverter.MIN:
-            return get_gateway().jvm.com.alibaba.flink.tensorflow.hadoop.io.TFRExtractRowHelper.ScalarConverter.MIN
+            return get_gateway().jvm.org.flinkextended.flink.tensorflow.hadoop.io.TFRExtractRowHelper.ScalarConverter.MIN
         if self is ScalarConverter.ONE_HOT:
-            return get_gateway().jvm.com.alibaba.flink.tensorflow.hadoop.io.TFRExtractRowHelper.ScalarConverter.ONE_HOT
+            return get_gateway().jvm.org.flinkextended.flink.tensorflow.hadoop.io.TFRExtractRowHelper.ScalarConverter.ONE_HOT
         raise Exception('Unknown converter ' + self.name)
 
 
 class TFRTableSource(JavaTableSource):
     def __init__(self, paths, epochs, out_row_type, converters):
-        table_src_clz_name = 'com.alibaba.flink.tensorflow.hadoop.io.TFRToRowTableSource'
+        table_src_clz_name = 'org.flinkextended.flink.tensorflow.hadoop.io.TFRToRowTableSource'
         table_src_clz = TypesUtil.class_for_name(table_src_clz_name)
         j_paths = TypesUtil._convert_py_list_to_java_array('java.lang.String', paths)
         j_converters = []
         for converter in converters:
             j_converters.append(converter.java_converter())
         j_converters = TypesUtil._convert_py_list_to_java_array(
-            'com.alibaba.flink.tensorflow.hadoop.io.TFRExtractRowHelper$ScalarConverter', j_converters)
+            'org.flinkextended.flink.tensorflow.hadoop.io.TFRExtractRowHelper$ScalarConverter', j_converters)
         j_row_type = TypesUtil.to_java_sql_type(out_row_type)
         super(TFRTableSource, self).__init__(table_src_clz(j_paths, epochs, j_row_type, j_converters))
 

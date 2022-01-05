@@ -6,7 +6,7 @@
         <version>7</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.alibaba.flink.ml</groupId>
+    <groupId>org.flinkextended</groupId>
     <artifactId>flink_ai_extended</artifactId>
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>

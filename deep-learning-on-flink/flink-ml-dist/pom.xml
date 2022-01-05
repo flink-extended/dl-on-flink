@@ -22,7 +22,7 @@ under the License.
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>flink_ai_extended</artifactId>
-        <groupId>com.alibaba.flink.ml</groupId>
+        <groupId>org.flinkextended</groupId>
         <version>0.4-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -31,6 +31,16 @@ under the License.
     <packaging>jar</packaging>
 
     <dependencies>
+        <dependency>
+            <groupId>org.flinkextended</groupId>
+            <artifactId>flink-ml-tensorflow</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.flinkextended</groupId>
+            <artifactId>flink-ml-tensorflow-2.x</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

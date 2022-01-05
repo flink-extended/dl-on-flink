@@ -13,5 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-com.alibaba.flink.ml.operator.ops.table.TableDummySinkFactory
-com.alibaba.flink.ml.operator.ops.table.LogTableSinkFactory
+org.flinkextended.flink.ml.operator.ops.table.TableDummySinkFactory
+org.flinkextended.flink.ml.operator.ops.table.LogTableSinkFactory

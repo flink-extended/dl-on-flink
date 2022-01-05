@@ -20,7 +20,7 @@ import os
 
 
 def get_root_path():
-    return get_gateway().jvm.com.alibaba.flink.tensorflow.util.TestUtil.getProjectRootPath()
+    return get_gateway().jvm.org.flinkextended.flink.tensorflow.util.TestUtil.getProjectRootPath()
 
 
 export_path = get_root_path() + '/examples/target/export/0'
@@ -37,7 +37,7 @@ def build_props(version=None):
 
 
 def prep_data():
-    get_gateway().jvm.com.alibaba.flink.tensorflow.mnist.MnistDataUtil.prepareData()
+    get_gateway().jvm.org.flinkextended.flink.tensorflow.mnist.MnistDataUtil.prepareData()
 
 
 def start_zk_server(port=2181):
@@ -149,7 +149,7 @@ def table_inference():
 
 
 def java_inference_extract_func():
-    func_clz_name = 'com.alibaba.flink.tensorflow.client.MnistTFRExtractRowForJavaFunction'
+    func_clz_name = 'org.flinkextended.flink.tensorflow.client.MnistTFRExtractRowForJavaFunction'
     func_clz = TypesUtil.class_for_name(func_clz_name)
     return JavaTableFunction(func_clz())
 

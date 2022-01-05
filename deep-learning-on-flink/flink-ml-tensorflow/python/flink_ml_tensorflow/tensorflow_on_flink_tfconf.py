@@ -17,7 +17,7 @@ from pyflink.java_gateway import get_gateway
 
 
 class TFCONSTANS(object):
-    J_CONSTANTS = get_gateway().jvm.com.alibaba.flink.ml.tensorflow.util.TFConstants
+    J_CONSTANTS = get_gateway().jvm.org.flinkextended.flink.ml.tensorflow.util.TFConstants
 
     TF_PORT = str(J_CONSTANTS.TF_PORT)
     TF_INFERENCE_EXPORT_PATH = str(J_CONSTANTS.TF_INFERENCE_EXPORT_PATH)

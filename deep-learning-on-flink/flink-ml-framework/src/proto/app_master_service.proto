@@ -2,7 +2,7 @@ syntax = "proto3";
 
 option java_outer_classname = "AppMasterServiceProtos";
 option java_multiple_files = true;
-option java_package = "com.alibaba.flink.ml.proto";
+option java_package = "org.flinkextended.flink.ml.proto";
 import "app_master.proto";
 
 service AppMasterService {

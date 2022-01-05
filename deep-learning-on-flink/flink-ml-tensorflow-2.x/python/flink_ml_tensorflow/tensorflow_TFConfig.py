@@ -36,7 +36,7 @@ class TFConfig(object):
         self._env_path = env_path
 
     def java_config(self):
-        return get_gateway().jvm.com.alibaba.flink.ml.tensorflow.client.TFConfig(self._num_worker,
+        return get_gateway().jvm.org.flinkextended.flink.ml.tensorflow.client.TFConfig(self._num_worker,
                                                                                  self._num_ps,
                                                                                  self._properties,
                                                                                  self._python_file,

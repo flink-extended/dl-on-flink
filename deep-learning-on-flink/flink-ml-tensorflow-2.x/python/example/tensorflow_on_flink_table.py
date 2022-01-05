@@ -92,8 +92,8 @@ class TableExample:
         prop = {}
         func = "map_func"
         env_path = None
-        prop[MLCONSTANTS.ENCODING_CLASS] = "com.alibaba.flink.ml.operator.coding.RowCSVCoding"
-        prop[MLCONSTANTS.DECODING_CLASS] = "com.alibaba.flink.ml.operator.coding.RowCSVCoding"
+        prop[MLCONSTANTS.ENCODING_CLASS] = "org.flinkextended.flink.ml.operator.coding.RowCSVCoding"
+        prop[MLCONSTANTS.DECODING_CLASS] = "org.flinkextended.flink.ml.operator.coding.RowCSVCoding"
         inputSb = "INT_32" + "," + "INT_64" + "," + "FLOAT_32" + "," + "FLOAT_64" + "," + "STRING"
         prop["sys:csv_encode_types"] = inputSb
         prop["sys:csv_decode_types"] = inputSb

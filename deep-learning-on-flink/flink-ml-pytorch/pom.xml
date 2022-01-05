@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>flink_ai_extended</artifactId>
-        <groupId>com.alibaba.flink.ml</groupId>
+        <groupId>org.flinkextended</groupId>
         <version>0.4-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
@@ -14,19 +14,19 @@
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
-            <groupId>com.alibaba.flink.ml</groupId>
+            <groupId>org.flinkextended</groupId>
             <artifactId>flink-ml-framework</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.alibaba.flink.ml</groupId>
+            <groupId>org.flinkextended</groupId>
             <artifactId>flink-ml-framework</artifactId>
             <version>${project.parent.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.alibaba.flink.ml</groupId>
+            <groupId>org.flinkextended</groupId>
             <artifactId>flink-ml-operator</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
@@ -40,7 +40,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.alibaba.flink.ml</groupId>
+            <groupId>org.flinkextended</groupId>
             <artifactId>flink-ml-operator</artifactId>
             <version>${project.parent.version}</version>
             <type>test-jar</type>

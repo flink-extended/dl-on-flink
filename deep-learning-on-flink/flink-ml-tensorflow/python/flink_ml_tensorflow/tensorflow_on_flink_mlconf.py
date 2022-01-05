@@ -17,7 +17,7 @@ from pyflink.java_gateway import get_gateway
 
 
 class MLCONSTANTS(object):
-    ml_constants = get_gateway().jvm.com.alibaba.flink.ml.util.MLConstants
+    ml_constants = get_gateway().jvm.org.flinkextended.flink.ml.util.MLConstants
 
     SYS_PREFIX = str(ml_constants.SYS_PREFIX)
     ENCODING_CLASS = str(ml_constants.ENCODING_CLASS)
