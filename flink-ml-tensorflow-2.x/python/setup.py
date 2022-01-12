@@ -14,20 +14,33 @@
 # =============================================================================
 
 import os
-import re
-import sys
-import sysconfig
 import platform
+import re
 import subprocess
-from shutil import copyfile, copymode
+import sys
 from distutils.version import LooseVersion
+
 from setuptools import setup, find_packages, Extension
 from setuptools.command.build_ext import build_ext
+
+this_directory = os.path.abspath(os.path.dirname(__file__))
+version_file = os.path.join(this_directory, 'flink_ml_tensorflow/version.py')
+
+try:
+    exec(open(version_file).read())
+except IOError:
+    print("Failed to load flink_ml_tensorflow version file for packaging. " +
+          "'%s' not found!" % version_file,
+          file=sys.stderr)
+    sys.exit(-1)
+VERSION = __version__  # noqa
+
 
 class CMakeExtension(Extension):
     def __init__(self, name, sourcedir=''):
         Extension.__init__(self, name, sources=[])
         self.sourcedir = os.path.abspath(sourcedir)
+
 
 class CMakeBuild(build_ext):
     def run(self):
@@ -60,7 +73,7 @@ class CMakeBuild(build_ext):
             cmake_args += ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}'.format(
                 cfg.upper(),
                 extdir)]
-            if sys.maxsize > 2**32:
+            if sys.maxsize > 2 ** 32:
                 cmake_args += ['-A', 'x64']
             build_args += ['--', '/m']
         else:
@@ -70,9 +83,10 @@ class CMakeBuild(build_ext):
                 build_args += ['-lpthread']
 
         env = os.environ.copy()
-        env['CXXFLAGS'] = '{} -D_GLIBCXX_USE_CXX11_ABI=0 -DVERSION_INFO=\\"{}\\"'.format(
-            env.get('CXXFLAGS', ''),
-            self.distribution.get_version())
+        env['CXXFLAGS'] = \
+            '{} -D_GLIBCXX_USE_CXX11_ABI=0 -DVERSION_INFO=\\"{}\\"'.format(
+                env.get('CXXFLAGS', ''),
+                self.distribution.get_version())
         if not os.path.exists(self.build_temp):
             os.makedirs(self.build_temp)
         subprocess.check_call(['cmake', ext.sourcedir] + cmake_args,
@@ -80,16 +94,19 @@ class CMakeBuild(build_ext):
         subprocess.check_call(['cmake', '--build', '.'] + build_args,
                               cwd=self.build_temp)
 
+
 setup(
     name='flink_ml_tensorflow_2.x',
-    version='0.4.0',
+    version=VERSION,
     include_package_data=True,
     packages=find_packages(),
     ext_modules=[CMakeExtension('flink_ml_tensorflow/flink_ml_tensorflow')],
     cmdclass=dict(build_ext=CMakeBuild),
     zip_safe=False,
-    install_requires=['tensorflow==2.3.1', 'tensorboard==2.3.0', 'flink_ml_framework==0.4.0'],
-    setup_requires=['tensorflow==2.3.1'],
-    url='https://github.com/alibaba/flink-ai-extended/',
+    install_requires=['tensorflow>=2.3.1, <3.0.0',
+                      'tensorboard>=2.3.0, <3.0.0',
+                      f'flink_ml_framework=={VERSION}'],
+    setup_requires=['tensorflow>=2.3.1, <3.0.0'],
+    url='https://github.com/flink-extended/dl-on-flink',
     license='https://www.apache.org/licenses/LICENSE-2.0'
 )
