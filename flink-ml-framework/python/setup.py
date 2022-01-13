@@ -86,6 +86,7 @@ setup(
     include_package_data=True,
     packages=find_packages(),
     ext_modules=[CMakeExtension('flink_ml_framework/flink_ml_framework')],
+    install_requires=['grpcio>=1.24.3,<1.25.0'],
     cmdclass=dict(build_ext=CMakeBuild),
     zip_safe=False,
 )

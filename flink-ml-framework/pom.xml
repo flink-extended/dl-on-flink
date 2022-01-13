@@ -333,20 +333,6 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>install-pip</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>bash</executable>
-                            <workingDirectory>sbin</workingDirectory>
-                            <arguments>
-                                <argument>pip_install_packages.sh</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
                         <id>sed-python-import</id>
                         <phase>generate-sources</phase>
                         <goals>

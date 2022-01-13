@@ -33,6 +33,7 @@ deep-learning-on-flink/**/bin
 #**/*.so
 **/*.dylib
 **/*.egg-info
+**/.eggs
 **/temp
 
 # Android
