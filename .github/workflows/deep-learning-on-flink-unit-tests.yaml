@@ -32,7 +32,6 @@ jobs:
         run: |
           python --version
           pip --version
-          pip install -U --user pip six numpy wheel mock grpcio grpcio-tools
       - name: Build and test with maven
         env:
           TF_ON_FLINK_IP: 127.0.0.1
@@ -65,7 +64,6 @@ jobs:
         run: |
           python --version
           pip --version
-          pip install -U --user pip six numpy wheel mock grpcio grpcio-tools
       - name: Build wheels
         run: mvn clean install -DskipTests -Dfast -B && bash tools/build_wheel.sh
       - name: Upload wheels
