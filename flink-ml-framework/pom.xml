@@ -274,43 +274,6 @@
                 </executions>
             </plugin>
 
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.8</version>
-                <executions>
-                    <execution>
-                        <id>gen-pb-python</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <target>
-                                <exec executable="${python.interpreter}" dir="${basedir}" failonerror="true">
-                                    <arg line="-m grpc_tools.protoc -I=src/proto --python_out=python/flink_ml_framework/ src/proto/node.proto"/>
-                                </exec>
-                            </target>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>gen-grpc-python</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <target>
-                                <exec executable="${python.interpreter}" dir="${basedir}" failonerror="true">
-                                    <arg line="-m grpc_tools.protoc -I=src/proto --python_out=python/flink_ml_framework/ --grpc_python_out=python/flink_ml_framework/ src/proto/node_service.proto"/>
-                                </exec>
-                            </target>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -329,20 +292,6 @@
                                 <argument>install</argument>
                                 <argument>${virtualenv.option}</argument>
                                 <argument>.</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>install-pip</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>bash</executable>
-                            <workingDirectory>sbin</workingDirectory>
-                            <arguments>
-                                <argument>pip_install_packages.sh</argument>
                             </arguments>
                         </configuration>
                     </execution>

@@ -32,7 +32,6 @@ tfOnFlink/python/var
 deep-learning-on-flink/**/bin
 #**/*.so
 **/*.dylib
-**/*.egg-info
 **/temp
 
 # Android
@@ -48,5 +47,9 @@ core/python/cmake-build-debug
 
 # generated python pb
 
+# python
+**/*.egg-info
+**/.eggs
+**/*.whl
 
 alibaba/porsche-docker/build-venv/python/
