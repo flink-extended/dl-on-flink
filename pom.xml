@@ -21,12 +21,12 @@
         </license>
     </licenses>
     <organization>
-        <name>Alibaba Group</name>
-        <url>https://github.com/alibaba</url>
+        <name>Flink Extended</name>
+        <url>https://github.com/flink-extended</url>
     </organization>
     <scm>
-        <url>https://github.com/alibaba/flink-ai-extended</url>
-        <connection>scm:git:https://git@github.com:alibaba/flink-ai-extended.git</connection>
+        <url>https://github.com/flink-extended/dl-on-flink</url>
+        <connection>scm:git:https://git@github.com:flink-extended/dl-on-flink.git</connection>
     </scm>
     <developers>
         <developer>
@@ -34,18 +34,27 @@
             <name>wuchaochen</name>
             <email>267411555@qq.com</email>
         </developer>
+        <developer>
+            <id>Xuannan</id>
+            <name>Xuannan Su</name>
+            <email>suxuannan95@gmail.com</email>
+        </developer>
     </developers>
     <issueManagement>
         <system>github</system>
-        <url>https://github.com/alibaba/flink-ai-extended/issues</url>
+        <url>https://github.com/flink-extended/dl-on-flink/issues</url>
     </issueManagement>
-    <repositories>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>oss_id</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
         <repository>
-            <id>local-file</id>
-            <url>file://${basedir}/lib/</url>
-            <layout>default</layout>
+            <id>oss_id</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
-    </repositories>
+    </distributionManagement>
 
     <modules>
         <module>flink-ml-framework</module>
@@ -82,8 +91,8 @@
         <scala.test.version>3.0.5</scala.test.version>
         <pip.install.option>--user</pip.install.option>
         <gpg.skip>true</gpg.skip>
-        <javadoc.skip>true</javadoc.skip>
     </properties>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -297,75 +306,77 @@
         </dependencies>
     </dependencyManagement>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler.version}</version>
+                <configuration>
+                    <source>${compiler.source.version}</source>
+                    <target>${compiler.target.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.0</version>
+                <configuration>
+                    <reuseForks>true</reuseForks>
+                    <forkCount>1</forkCount>
+                    <forkedProcessTimeoutInSeconds>2400</forkedProcessTimeoutInSeconds>
+                    <skipTests>${skipUTs}</skipTests>
+                    <useSystemClassLoader>false</useSystemClassLoader>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.22.0</version>
+                <configuration>
+                    <reuseForks>true</reuseForks>
+                    <forkCount>1</forkCount>
+                    <forkedProcessTimeoutInSeconds>2400</forkedProcessTimeoutInSeconds>
+                    <skipTests>${skipTests}</skipTests>
+                    <skipITs>${skipITs}</skipITs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>validate</id>
+                        <phase>validate</phase>
+                        <configuration>
+                            <configLocation>/tools/maven/checkstyle.xml</configLocation>
+                            <encoding>UTF-8</encoding>
+                            <consoleOutput>true</consoleOutput>
+                            <failsOnError>true</failsOnError>
+                        </configuration>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
     <profiles>
         <profile>
-            <id>default</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
+            <id>release</id>
             <build>
                 <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-compiler-plugin</artifactId>
-                        <version>${compiler.version}</version>
-                        <configuration>
-                            <source>${compiler.source.version}</source>
-                            <target>${compiler.target.version}</target>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>2.22.0</version>
-                        <configuration>
-                            <reuseForks>true</reuseForks>
-                            <forkCount>1</forkCount>
-                            <forkedProcessTimeoutInSeconds>2400</forkedProcessTimeoutInSeconds>
-                            <skipTests>${skipUTs}</skipTests>
-                            <useSystemClassLoader>false</useSystemClassLoader>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <version>2.22.0</version>
-                        <configuration>
-                            <reuseForks>true</reuseForks>
-                            <forkCount>1</forkCount>
-                            <forkedProcessTimeoutInSeconds>2400</forkedProcessTimeoutInSeconds>
-                            <skipTests>${skipTests}</skipTests>
-                            <skipITs>${skipITs}</skipITs>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>integration-test</goal>
-                                    <goal>verify</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-checkstyle-plugin</artifactId>
-                        <version>3.0.0</version>
-                        <executions>
-                            <execution>
-                                <id>validate</id>
-                                <phase>validate</phase>
-                                <configuration>
-                                    <configLocation>/tools/maven/checkstyle.xml</configLocation>
-                                    <encoding>UTF-8</encoding>
-                                    <consoleOutput>true</consoleOutput>
-                                    <failsOnError>true</failsOnError>
-                                </configuration>
-                                <goals>
-                                    <goal>check</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
@@ -392,15 +403,10 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <skip>${javadoc.skip}</skip>
                             <show>public</show>
                             <charset>UTF-8</charset>
                             <encoding>UTF-8</encoding>
                             <docencoding>UTF-8</docencoding>
-                            <additionalparam>-Xdoclint:none</additionalparam>
-                            <links>
-                                <link>http://docs.oracle.com/javase/6/docs/api</link>
-                            </links>
                         </configuration>
                     </plugin>
                     <plugin>
@@ -422,16 +428,6 @@
                     </plugin>
                 </plugins>
             </build>
-            <distributionManagement>
-                <snapshotRepository>
-                    <id>oss_id</id>
-                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-                </snapshotRepository>
-                <repository>
-                    <id>oss_id</id>
-                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-                </repository>
-            </distributionManagement>
         </profile>
     </profiles>
 </project>
