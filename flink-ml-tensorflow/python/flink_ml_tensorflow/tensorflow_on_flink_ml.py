@@ -31,7 +31,7 @@ from pyflink.table.udf import udtf
 from typing import List, Dict, Any
 
 
-class Tensorflow(Estimator):
+class TensorflowEstimator(Estimator):
 
     def __init__(self,
                  tf_config: TFConfig,
@@ -71,10 +71,10 @@ class Tensorflow(Estimator):
         })
 
     @classmethod
-    def load(cls, env: StreamExecutionEnvironment, path: str) -> 'Tensorflow':
+    def load(cls, env: StreamExecutionEnvironment, path: str) -> 'TensorflowEstimator':
         meta = read_write_utils.load_metadata(path)
-        return Tensorflow(meta["tf_config"], meta["predict_col_names"],
-                          meta["predict_data_types"])
+        return TensorflowEstimator(meta["tf_config"], meta["predict_col_names"],
+                                   meta["predict_data_types"])
 
     def get_param_map(self) -> Dict['Param[Any]', Any]:
         return {}

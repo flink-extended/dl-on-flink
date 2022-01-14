@@ -26,7 +26,7 @@ from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment, DataTypes, Table, TableDescriptor, Schema
 
 from flink_ml_tensorflow.tensorflow_TFConfig import TFConfig
-from flink_ml_tensorflow.tensorflow_on_flink_ml import Tensorflow, TensorflowModel
+from flink_ml_tensorflow.tensorflow_on_flink_ml import TensorflowEstimator, TensorflowModel
 from flink_ml_tensorflow.tensorflow_on_flink_mlconf import MLCONSTANTS
 
 logger = logging.getLogger(__name__)
@@ -72,18 +72,18 @@ class TestFlinkMlApi(unittest.TestCase):
 
     def test_tensorflow_estimator_save_load(self):
         tf_config = self.get_tf_config()
-        tensorflow = Tensorflow(tf_config, ["y"], [DataTypes.FLOAT()])
+        tensorflow = TensorflowEstimator(tf_config, ["y"], [DataTypes.FLOAT()])
         estimator_save_path = os.path.join(os.path.dirname(__file__), "../estimator", str(time.time()))
         tensorflow.save(estimator_save_path)
 
-        loaded_tensorflow = Tensorflow.load(self.env, estimator_save_path)
+        loaded_tensorflow = TensorflowEstimator.load(self.env, estimator_save_path)
         self.assertEqual(tensorflow, loaded_tensorflow)
 
         shutil.rmtree(estimator_save_path, ignore_errors=True)
 
     def test_fit_save_load_transform(self):
         tf_config = self.get_tf_config()
-        tensorflow = Tensorflow(tf_config, ["y"], [DataTypes.FLOAT()])
+        tensorflow = TensorflowEstimator(tf_config, ["y"], [DataTypes.FLOAT()])
         model = tensorflow.fit(self.source_table)
 
         model_path = os.path.join(os.path.dirname(__file__), "model", str(time.time()))
@@ -99,7 +99,7 @@ class TestFlinkMlApi(unittest.TestCase):
 
     def test_fit_transform(self):
         tf_config = self.get_tf_config()
-        tensorflow = Tensorflow(tf_config, ["y"], [DataTypes.FLOAT()])
+        tensorflow = TensorflowEstimator(tf_config, ["y"], [DataTypes.FLOAT()])
         model = tensorflow.fit(self.source_table)
         model_path = os.path.join(os.path.dirname(__file__), "model", str(time.time()))
         model.save(model_path)
