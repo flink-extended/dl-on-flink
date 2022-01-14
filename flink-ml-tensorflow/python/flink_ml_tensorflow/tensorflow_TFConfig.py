@@ -34,11 +34,23 @@ class TFConfig(object):
         self._python_file = python_file
         self._func = func
         self._env_path = env_path
+        self._j_tf_config = None
 
     def java_config(self):
-        return get_gateway().jvm.org.flinkextended.flink.ml.tensorflow.client.TFConfig(self._num_worker,
-                                                                                 self._num_ps,
-                                                                                 self._properties,
-                                                                                 self._python_file,
-                                                                                 self._func,
-                                                                                 self._env_path)
+        if not self._j_tf_config:
+            self._j_tf_config = get_gateway().jvm.org.flinkextended.flink.ml.tensorflow.client.TFConfig(self._num_worker,
+                                                                                                        self._num_ps,
+                                                                                                        self._properties,
+                                                                                                        self._python_file,
+                                                                                                        self._func,
+                                                                                                        self._env_path)
+        return self._j_tf_config
+
+    def __eq__(self, other):
+        return type(self) is type(other) \
+               and self._num_worker == other._num_worker \
+               and self._num_ps == other._num_ps \
+               and self._properties == other._properties \
+               and self._python_file == other._python_file \
+               and self._func == other._func \
+               and self._env_path == other._env_path

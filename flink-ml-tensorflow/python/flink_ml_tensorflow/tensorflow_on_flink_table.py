@@ -13,14 +13,15 @@
 # limitations under the License.
 # =============================================================================
 
-
+from pyflink.datastream.stream_execution_environment import \
+    StreamExecutionEnvironment
 from pyflink.java_gateway import get_gateway
-from pyflink.datastream.stream_execution_environment import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment
 from pyflink.table.table import Table
 
 
-def inference(stream_env=None, table_env=None, statement_set=None, input_table=None, tf_config=None, output_schema=None):
+def inference(stream_env=None, table_env=None, statement_set=None,
+              input_table=None, tf_config=None, output_schema=None):
     """
     Run TF inference for flink table api.
 
@@ -54,7 +55,8 @@ def inference(stream_env=None, table_env=None, statement_set=None, input_table=N
     return Table(output_table, table_env)
 
 
-def train(stream_env=None, table_env=None, statement_set=None, input_table=None, tf_config=None, output_schema=None):
+def train(stream_env=None, table_env=None, statement_set=None, input_table=None,
+          tf_config=None, output_schema=None):
     """
     Run TF train for flink table api.
 
@@ -85,4 +87,4 @@ def train(stream_env=None, table_env=None, statement_set=None, input_table=None,
         input_table,
         tf_config.java_config(),
         output_schema)
-    return Table(output_table,table_env)
+    return Table(output_table, table_env)
