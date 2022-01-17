@@ -1,52 +1,36 @@
 [![Build Status](https://travis-ci.org/alibaba/flink-ai-extended.svg?branch=master)](https://travis-ci.org/alibaba/flink-ai-extended)
 
-# deep-learning-on-flink
+# Deep Learning on Flink
 
-Deep Learning on Flink aims to integrate Flink and deep learning frameworks (e.g. TensorFlow, PyTorch, etc). 
-It runs the deep learning tasks inside a Flink operator, so that Flink can help establish a distributed environment, 
-manage the resource, read/write the records and handle the failures.
+Deep Learning on Flink aims to integrate Flink and deep learning frameworks
+(e.g. TensorFlow, PyTorch, etc) to enable distributed deep learning training and
+inference on a Flink cluster.
 
-Currently, Deep Learning on Flink supports TensorFlow and PyTorch.
+It runs the deep learning tasks inside a Flink operator so that Flink can help
+establish a distributed environment, manage the resource, read/write the data
+with the rich connectors in Flink and handle the failures.
 
-**contents**
-
-- [TensorFlow support](#tensorflow-support)
-  * [Support Version](#support-version)
-  * [Quick Start](#quick-start)
-    + [Setup](#setup)
-    + [Build From Source](#build-from-source)
-    + [Build Source in virtual environment](#build-source-in-virtual-environment)
-    + [Example](#example)
-  * [Distributed Running](#distributed-running)
-    + [Deployment](#deployment)
-    + [Running Distributed Programs](#running-distributed-programs)
-  * [Distributed Running Example](#distributed-running-example)
-    + [Setup & Build](#setup---build)
-    + [Start Service](#start-service)
-    + [Prepare data & code](#prepare-data---code)
-    + [Submit train job](#submit-train-job)
-    + [Visit Flink Cluster](#visit-flink-cluster)
-    + [Stop all docker containers](#stop-all-docker-containers)
-    + [Summary](#summary)
-  * [Optional Tools](#optional-tools)
-    + [Build framework and tensorflow python package Independently](#build-framework-and-tensorflow-python-package-independently)
-    + [Build custom virtual environment package](#build-custom-virtual-environment-package)
-- [Structure](#structure)
-- [For More Information](#for-more-information)
-- [License](#license)
+Currently, Deep Learning on Flink supports TensorFlow.
 
 # TensorFlow support
-TensorFlow is a deep learning system developed by Google and open source, which is widely used in the field of deep learning. There are many inconveniences in distributed use and resource management of native TensorFlow, but it can not integrate with the existing widely used large data processing framework.
+TensorFlow is a deep learning system developed by Google and open source, 
+which is widely used in the field of deep learning. There are many 
+inconveniences in distributed use and resource management of native TensorFlow, 
+but it can not integrate with the existing widely 
+used large data processing framework.
 
-Flink is a data processing framework. It is widely used in data extraction, feature preprocessing and data cleaning.
+Flink is a data processing framework. It is widely used in data extraction, 
+feature preprocessing and data cleaning.
 
-This project combines TensorFlow with Flink and provides users with more convenient and useful tools.
-**Currently, Flink job code can be written in both java with Flink Java API and in python with PyFlink. The algorithm code is written in python.**
+This project combines TensorFlow with Flink and provides users with more 
+convenient and useful tools.
+**Currently, Flink job code can be written in both java with Flink Java API and 
+in python with PyFlink. The algorithm code is written in python.**
 
 ## Support Version
-TensorFlow: 1.15.0 & 2.3.1
+TensorFlow: 1.15.x & 2.3.x
 
-Flink: 1.11.x
+Flink: 1.14.x
  
 ## Quick Start
 
