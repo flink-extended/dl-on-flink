@@ -50,6 +50,8 @@ public class MLConstants {
 	public static final String CLASSPATH = "CLASSPATH";
 	public static final String CONFIG_CLUSTER_PATH = "cluster";
 	public static final String CONFIG_STORAGE_TYPE = "storage_type";
+	public static final String STORAGE_LOCAL_FILE = "local_file";
+	public static final String CONFIG_STORAGE_LOCAL_FILE_ROOT = "storage_local_file_root";
 	public static final String STORAGE_MEMORY = "storage_memory";
 	public static final String STORAGE_ZOOKEEPER = "storage_zookeeper";
 	public static final String STORAGE_CUSTOM = "storage_custom";

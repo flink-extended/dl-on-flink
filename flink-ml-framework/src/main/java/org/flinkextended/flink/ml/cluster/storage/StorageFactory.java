@@ -56,6 +56,10 @@ public class StorageFactory {
 			}
 			zk.start();
 			return zk;
+		} else if (storageType.equals(MLConstants.STORAGE_LOCAL_FILE)) {
+			LOG.info("Storage use local file");
+			final String root = propMap.getOrDefault(MLConstants.CONFIG_STORAGE_LOCAL_FILE_ROOT, "/tmp");
+			return new LocalFileStorageImpl(root);
 		} else if (storageType.equals(MLConstants.STORAGE_CUSTOM)) {
 			String className = propMap.get(MLConstants.STORAGE_IMPL_CLASS);
 			Preconditions.checkNotNull(className, "Implementation class name is needed for custom storage type");
