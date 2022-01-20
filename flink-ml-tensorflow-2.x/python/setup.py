@@ -19,6 +19,7 @@ import re
 import subprocess
 import sys
 from distutils.version import LooseVersion
+from glob import glob
 
 from setuptools import setup, find_packages, Extension
 from setuptools.command.build_ext import build_ext
@@ -61,10 +62,14 @@ class CMakeBuild(build_ext):
             self.build_extension(ext)
 
     def build_extension(self, ext):
+        import tensorflow as tf
         extdir = os.path.abspath(
             os.path.dirname(self.get_ext_fullpath(ext.name)))
+        tf_lib = tf.sysconfig.get_lib()
         cmake_args = ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' + extdir,
-                      '-DPYTHON_EXECUTABLE=' + sys.executable]
+                      '-DPYTHON_EXECUTABLE=' + sys.executable,
+                      f'-DTensorFlow_INCLUDE_DIR={tf.sysconfig.get_include()}',
+                      f'-DTensorFlow_C_LIBRARY={self.get_tf_lib(tf_lib)}']
 
         cfg = 'Debug' if self.debug else 'Release'
         build_args = ['--config', cfg]
@@ -94,6 +99,11 @@ class CMakeBuild(build_ext):
         subprocess.check_call(['cmake', '--build', '.'] + build_args,
                               cwd=self.build_temp)
 
+    @staticmethod
+    def get_tf_lib(tf_lib):
+        print(os.path.join(tf_lib, "tensorflow_framework"))
+        return glob(os.path.join(tf_lib, "*tensorflow_framework*"))[0]
+
 
 setup(
     name='flink_ml_tensorflow_2.x',
@@ -101,10 +111,11 @@ setup(
     include_package_data=True,
     packages=find_packages(),
     ext_modules=[CMakeExtension('flink_ml_tensorflow/flink_ml_tensorflow')],
-    cmdclass=dict(build_ext=CMakeBuild),
+    cmdclass={'build_ext': CMakeBuild},
     zip_safe=False,
     install_requires=['tensorflow>=2.3.1, <2.4.0',
                       'tensorboard>=2.3.0, <2.4.0',
+                      'apache-flink>=1.14.0, <1.15.0',
                       f'flink_ml_framework=={VERSION}'],
     setup_requires=['tensorflow>=2.3.1, <2.4.0'],
     url='https://github.com/flink-extended/dl-on-flink',

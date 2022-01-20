@@ -21,7 +21,7 @@ PY="${PY:=python}"
 echo use python $(which $PY)
 
 basePath=$(cd `dirname $0`; pwd)
-echo pathPath: ${basePath}
+echo basePath: ${basePath}
 
 set -e
 distPath=${basePath}/dist
@@ -39,7 +39,6 @@ rm -rf ${frameworkPath}/build/ ${frameworkPath}/dist/ ${frameworkPath}/flink_ml_
 echo '############## building flink_ml_tensorflow ##############'
 tensorflowPath=${basePath}/../flink-ml-tensorflow/python/
 cd ${tensorflowPath} && [ -d ./build ] && echo "removing previous build dir" && rm -rf ./build
-${PY} -m pip install -r build-requirements.txt
 ${PY} setup.py bdist_wheel
 cp ${tensorflowPath}/dist/* ${distPath}/
 rm -rf ${tensorflowPath}/build/ ${tensorflowPath}/dist/ ${tensorflowPath}/flink_ml_tensorflow.egg-info
@@ -47,7 +46,6 @@ rm -rf ${tensorflowPath}/build/ ${tensorflowPath}/dist/ ${tensorflowPath}/flink_
 echo '############## building flink_ml_tensorflow-2.x ##############'
 tensorflowPath2=${basePath}/../flink-ml-tensorflow-2.x/python/
 cd ${tensorflowPath2} && [ -d ./build ] && echo "removing previous build dir" && rm -rf ./build
-${PY} -m pip install -r build-requirements.txt
 ${PY} setup.py bdist_wheel
 cp ${tensorflowPath2}/dist/* ${distPath}/
 rm -rf ${tensorflowPath2}/build/ ${tensorflowPath2}/dist/ ${tensorflowPath2}/flink_ml_tensorflow.egg-info
