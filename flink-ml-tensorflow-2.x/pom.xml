@@ -15,8 +15,6 @@
         <tensorflow.version>2.3.1</tensorflow.version>
         <tensorflow.java.version>0.2.0</tensorflow.java.version>
         <javacpp.platform.extension></javacpp.platform.extension>
-        <skip.install.tensorflow>false</skip.install.tensorflow>
-        <skip.install.python.dependency>false</skip.install.python.dependency>
     </properties>
 
     <dependencies>
@@ -119,30 +117,13 @@
                 <version>1.1</version>
                 <executions>
                     <execution>
-                        <id>install-tensorflow</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <skip>${skip.install.tensorflow}</skip>
-                            <executable>${pip.version}</executable>
-                            <workingDirectory>${project.basedir}/python</workingDirectory>
-                            <arguments>
-                                <argument>install</argument>
-                                <argument>${virtualenv.option}</argument>
-                                <argument>${tensorflow.package.name}==${tensorflow.version}</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
                         <id>generate-package</id>
                         <phase>compile</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <skip>${skip.install.python.dependency}</skip>
+                            <skip>${skipTests}</skip>
                             <executable>${pip.version}</executable>
                             <workingDirectory>${project.basedir}/python</workingDirectory>
                             <arguments>
