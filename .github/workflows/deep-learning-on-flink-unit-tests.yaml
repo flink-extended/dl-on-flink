@@ -32,6 +32,7 @@ jobs:
         run: |
           python --version
           pip --version
+          pip install -U --user wheel
       - name: Build and test with maven
         env:
           TF_ON_FLINK_IP: 127.0.0.1
@@ -42,7 +43,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: flink-ml-dist
-          path: deep-learning-on-flink/flink-ml-dist/target/flink-ml-dist-*-dist
+          path: deep-learning-on-flink/flink-ml-dist/target/flink-ml-dist-*-bin
   build-wheels:
     runs-on: ubuntu-18.04
     steps:
@@ -54,18 +55,13 @@ jobs:
           python-version: '3.7'
           # Optional - x64 or x86 architecture, defaults to x64
           architecture: 'x64'
-      - name: Cache Maven packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
       - name: Install Python dependencies
         run: |
           python --version
           pip --version
+          pip install -U --user wheel
       - name: Build wheels
-        run: mvn clean install -DskipTests -Dfast -B && bash tools/build_wheel.sh
+        run: bash tools/build_wheel.sh
       - name: Upload wheels
         uses: actions/upload-artifact@v2
         with:
