@@ -24,6 +24,12 @@
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table-planner_${scala.major.version}</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.flinkextended</groupId>
             <artifactId>flink-ml-framework</artifactId>
             <version>${project.parent.version}</version>
@@ -46,16 +52,10 @@
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-test</artifactId>
             <scope>test</scope>
-            <!--<exclusions>-->
-                <!--<exclusion>-->
-                    <!--<groupId>com.google.guava</groupId>-->
-                    <!--<artifactId>guava</artifactId>-->
-                <!--</exclusion>-->
-            <!--</exclusions>-->
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
-            <artifactId>flink-table-planner_${scala.major.version}</artifactId>
+            <artifactId>flink-clients_${scala.major.version}</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
