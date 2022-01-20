@@ -42,6 +42,7 @@ public class TFRecordInputFormat extends RichInputFormat<byte[], TFRecordInputSp
 	private String[] paths;
 	private transient TFRecordReader tfRecordReader;
 	private transient FSDataInputStream fsdis;
+	private transient org.apache.hadoop.conf.Configuration hadoopConfiguration;
 	private boolean end = false;
 	private static Logger LOG = LoggerFactory.getLogger(TFRecordInputFormat.class);
 
@@ -57,6 +58,10 @@ public class TFRecordInputFormat extends RichInputFormat<byte[], TFRecordInputSp
 	@Override
 	public void configure(Configuration configuration) {
 
+	}
+
+	public void setHadoopConfiguration(org.apache.hadoop.conf.Configuration configuration) {
+		this.hadoopConfiguration = configuration;
 	}
 
 	@Override
@@ -108,8 +113,13 @@ public class TFRecordInputFormat extends RichInputFormat<byte[], TFRecordInputSp
 	public void open(TFRecordInputSplit split) throws IOException {
 		final Path file = split.getPath();
 		LOG.info("open split path: " + file.toString());
-		org.apache.hadoop.conf.Configuration configuration = new org.apache.hadoop.conf.Configuration();
-		FileSystem fs = file.getFileSystem(configuration);
+		FileSystem fs = null;
+		if (null != hadoopConfiguration) {
+			fs = file.getFileSystem(hadoopConfiguration);
+		} else {
+			org.apache.hadoop.conf.Configuration configuration = new org.apache.hadoop.conf.Configuration();
+			fs = file.getFileSystem(configuration);
+		}
 		fsdis = fs.open(file, 4 * 1024 * 1024);
 		tfRecordReader = new TFRecordReader(fsdis, true);
 	}
