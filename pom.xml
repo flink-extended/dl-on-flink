@@ -90,7 +90,6 @@
         <compiler.target.version>1.8</compiler.target.version>
         <scala.test.version>3.0.5</scala.test.version>
         <pip.install.option>--user</pip.install.option>
-        <gpg.skip>true</gpg.skip>
     </properties>
 
     <dependencyManagement>
@@ -413,9 +412,6 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
                         <version>1.6</version>
-                        <configuration>
-                            <skip>${gpg.skip}</skip>
-                        </configuration>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
