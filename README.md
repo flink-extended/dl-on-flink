@@ -10,10 +10,10 @@ with the rich connectors in Flink and handle the failures.
 
 Currently, Deep Learning on Flink supports TensorFlow and PyTorch.
 
-## Support Version
-TensorFlow: 1.15.x & 2.3.x
-Pytorch: 1.x
-Flink: 1.14.x
+## Support Framework Version
+- TensorFlow: 1.15.x & 2.3.x
+- Pytorch: 1.x
+- Flink: 1.14.x
  
 ## Getting Started
 
@@ -22,120 +22,54 @@ to submit an example job to a local standalone Flink cluster.
 
 ## Build From Source
 
-### Setup
-
 **Requirements**
-1. python: 3.7
-1. cmake >= 3.6
-1. java 1.8
-1. maven >=3.3.0
+- python: 3.7
+- cmake >= 3.6
+- java 1.8
+- maven >=3.3.0
 
-**Install python3**
+Deep Learning on Flink requires Java and Python works together. Thus, we need 
+to build for both Java and Python.
 
-macOS
-```shell
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
-brew install python@3.7
-```
-Ubuntu
-```shell
-sudo apt install python-dev
-```
-
-**Install pip**
+### Build Java
 
 ```shell 
-curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-python get-pip.py
+mvn -DskipTests clean install
 ```
 
-Ubuntu you can install with command:
-```shell
-sudo apt install python-pip
+After finish, you can find the target distribution in the `flink-ml-dist/target`
+folder.
+
+### Build Python
+
+#### Install from Source
+You can run the following commands to install the Python packages from source
+
+```sh
+# Install flink-ml-framework first
+pip install flink-ml-framework/python
+
+# Note that you should only install one of the following as they require
+# different versions of Tensorflow 
+# For tensorflow 1.15.x
+pip install flink-ml-tensorflow/python
+# For tensorflow 2.3.x
+pip install flink-ml-tensorflow-2.x/python
 ```
 
-**Install pip dependencies**
-Install the pip package dependencies (if using a virtual environment, omit the --user argument):
-```shell
-pip install -U --user pip six numpy wheel mock grpcio grpcio-tools
-```
-**Install cmake**
+#### Build wheels
+We provide a script to build wheels for Python packages, you can run the
+following command.
 
-cmake version must >= 3.6
-
-[cmake download page](https://cmake.org/download/) 
-
-**Install java 8**
-
-[java download page](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
-
-**Install maven**
-
-maven version >=3.3.0
-
-[download maven page](http://maven.apache.org/download.cgi)
-
-```shell
-tar -xvf apache-maven-3.6.1-bin.tar.gz
-mv -rf apache-maven-3.6.1 /usr/local/
-```
-configuration environment variables
-```shell
-MAVEN_HOME=/usr/local/apache-maven-3.6.1
-export MAVEN_HOME
-export PATH=${PATH}:${MAVEN_HOME}/bin
+```sh
+bash tools/build_wheel.sh
 ```
 
-### Build
-**Compiling source code depends on tensorflow. Compiling flink-ml-tensorflow module will automatically install tensorflow 1.15.0**
+After finish, you can find the wheels at `tools/dist`. Then you can install the
+python package with the wheels.
 
-```shell 
-mvn -DskipTests=true clean install
-```
-**If you run all tests, this step may take a long time, about 20 minutes, and wait patiently.**
-**You can also skip the test run command: mvn -DskipTests=true clean install**
-
-**Optional Commands**
-```shell
-# run all tests
-mvn clean install
-
-# skip unit tests
-mvn -DskipUTs=true clean install
-
-# skip integration tests
-mvn -DskipITs=true clean install
-```
-If the above command is executed successfully, congratulations on your successful 
-deployment of flink-ai-extended. Now you can write algorithm programs.
-
-### Build in virtual environment
-
-* change project [pom.xml](pom.xml) item pip.install.option from --user to -U
-* create virtual environment:
-
-```shell 
-virtualenv tfenv
-```
-* enter the virtual environment
-
-```shell 
-source tfenv/bin/activate
-```
-* install pip dependencies
-
-```shell 
-pip install -U pip six numpy wheel mock grpcio grpcio-tools
-```
-* build source
-
-```shell 
-mvn clean install
-```
-* exit from virtual environment
-```shell 
-deactivate
+```sh
+pip install tools/dist/<wheel>
 ```
 
 ## Distributed Running
@@ -298,14 +232,6 @@ sh stop_cluster.sh
      
 ## Optional Tools
 
-### Build framework and tensorflow python package Independently
-[build script](tools/build_wheel.sh)
-
-run build_wheel.sh script, you will find python package in dist dir.
-you can install the package with commend:
-```shell 
-pip install --user $package_path
-```
 ### Build custom virtual environment package
 running distributed programs you need a virtual environment package to upload to hdfs.
 
