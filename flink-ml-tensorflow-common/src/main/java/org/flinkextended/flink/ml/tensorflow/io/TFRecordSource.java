@@ -33,7 +33,6 @@ public class TFRecordSource extends InputFormatSourceFunction<byte[]> implements
 	public TFRecordSource(InputFormat<byte[], ?> format, TypeInformation<byte[]> typeInfo) {
 		super(format, typeInfo);
 	}
-	public static TFRecordInputFormat inputFormat = null;
 
 	@Override
 	public TypeInformation getProducedType() {
@@ -41,13 +40,12 @@ public class TFRecordSource extends InputFormatSourceFunction<byte[]> implements
 	}
 
 	public static TFRecordSource createSource(String[] paths, int epochs) {
-		inputFormat = new TFRecordInputFormat(paths, epochs);
+		TFRecordInputFormat inputFormat = new TFRecordInputFormat(paths, epochs);
 		return new TFRecordSource(inputFormat, TypeInformation.of(byte[].class));
 	}
 
-	public static void setHadoopConfiguration(Configuration configuration) {
-		if (null != inputFormat && null != configuration) {
-			inputFormat.setHadoopConfiguration(configuration);
-		}
+	public static TFRecordSource createSource(String[] paths, int epochs, Configuration configuration) {
+		TFRecordInputFormat inputFormat = new TFRecordInputFormat(paths, epochs, configuration);
+		return new TFRecordSource(inputFormat, TypeInformation.of(byte[].class));
 	}
 }

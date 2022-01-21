@@ -42,7 +42,7 @@ public class TFRecordInputFormat extends RichInputFormat<byte[], TFRecordInputSp
 	private String[] paths;
 	private transient TFRecordReader tfRecordReader;
 	private transient FSDataInputStream fsdis;
-	private transient org.apache.hadoop.conf.Configuration hadoopConfiguration;
+	private static org.apache.hadoop.conf.Configuration hadoopConfiguration;
 	private boolean end = false;
 	private static Logger LOG = LoggerFactory.getLogger(TFRecordInputFormat.class);
 
@@ -55,13 +55,19 @@ public class TFRecordInputFormat extends RichInputFormat<byte[], TFRecordInputSp
 		LOG.info("input epochs:" + this.epochs);
 	}
 
+	public TFRecordInputFormat(String[] paths, int epochs, org.apache.hadoop.conf.Configuration hadoopConfiguration) {
+		this.paths = paths;
+		this.epochs = epochs;
+		if (epochs <= 0) {
+			this.epochs = Integer.MAX_VALUE;
+		}
+		LOG.info("input epochs:" + this.epochs);
+		this.hadoopConfiguration = hadoopConfiguration;
+	}
+
 	@Override
 	public void configure(Configuration configuration) {
 
-	}
-
-	public void setHadoopConfiguration(org.apache.hadoop.conf.Configuration configuration) {
-		this.hadoopConfiguration = configuration;
 	}
 
 	@Override
@@ -123,7 +129,6 @@ public class TFRecordInputFormat extends RichInputFormat<byte[], TFRecordInputSp
 		fsdis = fs.open(file, 4 * 1024 * 1024);
 		tfRecordReader = new TFRecordReader(fsdis, true);
 	}
-
 
 	@Override
 	public boolean reachedEnd() throws IOException {
