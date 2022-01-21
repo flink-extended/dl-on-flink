@@ -37,8 +37,7 @@ jobs:
         env:
           TF_ON_FLINK_IP: 127.0.0.1
         run: |
-          mvn -DskipTests -B clean install
-          mvn -DskipITs=true -B test
+          mvn -B clean install
       - name: Upload jars
         uses: actions/upload-artifact@v2
         with:
