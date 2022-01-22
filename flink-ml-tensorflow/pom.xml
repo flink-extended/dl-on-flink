@@ -142,7 +142,7 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <skip>${skipTests}</skip>
+                            <skip>${skip.install.py.dep}</skip>
                             <executable>${pip.version}</executable>
                             <workingDirectory>${project.basedir}/python</workingDirectory>
                             <arguments>
