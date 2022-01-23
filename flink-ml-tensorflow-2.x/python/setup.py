@@ -18,6 +18,7 @@ import platform
 import re
 import subprocess
 import sys
+from datetime import datetime
 from distutils.version import LooseVersion
 from glob import glob
 
@@ -35,6 +36,14 @@ except IOError:
           file=sys.stderr)
     sys.exit(-1)
 VERSION = __version__  # noqa
+PACKAGE_NAME = "flink-ml-tensorflow-2.x"
+FLINK_ML_FRAMEWORK_PACKAGE_NAME = "flink-ml-framework"
+
+if os.getenv("NIGHTLY_WHEEL") == "true":
+    if 'dev' not in VERSION:
+        raise RuntimeError("Nightly wheel is not supported for non dev version")
+    VERSION = VERSION[:str.find(VERSION, 'dev') + 3] + \
+        datetime.now().strftime('%Y%m%d')
 
 
 class CMakeExtension(Extension):
@@ -106,8 +115,9 @@ class CMakeBuild(build_ext):
 
 
 setup(
-    name='flink_ml_tensorflow_2.x',
+    name=PACKAGE_NAME,
     version=VERSION,
+    python_requires=">=3.7,<3.9",
     include_package_data=True,
     packages=find_packages(),
     ext_modules=[CMakeExtension('flink_ml_tensorflow/flink_ml_tensorflow')],
@@ -116,7 +126,7 @@ setup(
     install_requires=['tensorflow>=2.3.1, <2.4.0',
                       'tensorboard>=2.3.0, <2.4.0',
                       'apache-flink>=1.14.0, <1.15.0',
-                      f'flink_ml_framework=={VERSION}'],
+                      f'{FLINK_ML_FRAMEWORK_PACKAGE_NAME}=={VERSION}'],
     setup_requires=['tensorflow>=2.3.1, <2.4.0'],
     url='https://github.com/flink-extended/dl-on-flink',
     license='https://www.apache.org/licenses/LICENSE-2.0'
