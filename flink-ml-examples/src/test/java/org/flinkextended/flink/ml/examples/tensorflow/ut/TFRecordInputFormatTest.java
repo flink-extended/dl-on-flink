@@ -18,10 +18,7 @@
 
 package org.flinkextended.flink.ml.examples.tensorflow.ut;
 
-
-import org.apache.flink.core.fs.FileSystem;
 import org.apache.flink.core.fs.Path;
-import org.apache.flink.runtime.fs.hdfs.HadoopFileSystem;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hdfs.MiniDFSCluster;
 import org.flinkextended.flink.ml.examples.tensorflow.mnist.MnistDataUtil;
@@ -30,19 +27,15 @@ import org.flinkextended.flink.ml.tensorflow.io.TFRecordInputSplit;
 import org.flinkextended.flink.ml.tensorflow.io.TFRecordSource;
 import org.flinkextended.flink.ml.tensorflow.io.TraceTFRecordOutputFormat;
 import org.flinkextended.flink.ml.util.SysUtil;
-
 import org.apache.flink.api.common.io.InputFormat;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-
 import java.io.File;
-
 
 public class TFRecordInputFormatTest {
 

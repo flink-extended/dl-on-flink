@@ -58,12 +58,14 @@
             <artifactId>flink-table-planner_${scala.major.version}</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- for the HDFS mini cluster test suite -->
+
+
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-hdfs</artifactId>
             <version>${hadoop.version}</version>
             <scope>test</scope>
+            <type>test-jar</type>
             <exclusions>
                 <exclusion>
                     <groupId>log4j</groupId>
@@ -74,8 +76,9 @@
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-common</artifactId>
-            <scope>test</scope>
             <version>${hadoop.version}</version><!--$NO-MVN-MAN-VER$-->
+            <scope>test</scope>
+            <type>test-jar</type>
             <exclusions>
                 <exclusion>
                     <groupId>log4j</groupId>
