@@ -136,4 +136,8 @@ public class TFRecordInputFormat extends RichInputFormat<byte[], TFRecordInputSp
 			fsdis.close();
 		}
 	}
+
+	TFRecordReader getTfRecordReader() {
+		return tfRecordReader;
+	}
 }

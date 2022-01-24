@@ -18,6 +18,7 @@
 
 package org.flinkextended.flink.ml.tensorflow.cluster.node.runner;
 
+import org.apache.flink.annotation.VisibleForTesting;
 import org.flinkextended.flink.ml.cluster.node.MLContext;
 import org.flinkextended.flink.ml.cluster.node.runner.python.ProcessPythonRunner;
 import org.flinkextended.flink.ml.tensorflow.util.TFConstants;
@@ -69,5 +70,10 @@ public class TensorBoardPythonRunner extends ProcessPythonRunner {
 		buildProcessBuilder(builder);
 		LOG.info("{} Python cmd: {}", mlContext.getIdentity(), Joiner.on(" ").join(args));
 		runProcess(builder);
+	}
+
+	@VisibleForTesting
+	public void runProcess(ProcessBuilder builder) throws IOException {
+		super.runProcess(builder);
 	}
 }

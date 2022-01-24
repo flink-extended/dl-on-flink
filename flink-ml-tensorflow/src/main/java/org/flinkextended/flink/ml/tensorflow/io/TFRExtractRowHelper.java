@@ -172,7 +172,7 @@ public class TFRExtractRowHelper implements Serializable {
         return res;
     }
 
-    private Object toObject(Feature feature, TypeInformation dataType, AggFunc aggFunc) {
+    private Object toObject(Feature feature, TypeInformation<?> dataType, AggFunc aggFunc) {
         final String typeMismatchError = String.format("Cannot convert %s to %s",
                 feature.toString(), dataType.toString());
         final boolean isArray = dataType instanceof PrimitiveArrayTypeInfo;
@@ -227,7 +227,8 @@ public class TFRExtractRowHelper implements Serializable {
                 return floats;
             }
             return aggFunc.aggregate(feature.getFloatList().getValueList());
-        } else if (dataType.equals(InternalTypeInfo.of(DataTypes.ARRAY(DataTypes.BYTES()).getLogicalType()))) {
+        } else if (dataType.equals(InternalTypeInfo.of(DataTypes.BYTES().getLogicalType()))
+                || dataType.equals(BasicTypeInfo.BYTE_TYPE_INFO)) {
             Preconditions.checkArgument(feature.hasBytesList(), typeMismatchError);
             byte[][] bytes = new byte[feature.getBytesList().getValueCount()][];
             for (int i = 0; i < bytes.length; i++) {

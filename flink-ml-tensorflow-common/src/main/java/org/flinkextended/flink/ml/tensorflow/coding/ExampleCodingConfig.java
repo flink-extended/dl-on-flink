@@ -185,6 +185,7 @@ public class ExampleCodingConfig implements Serializable {
 					for (int i = 0; i < count(); i++) {
 						objectClass.getField(names.get(i)).set(object, fields.get(i));
 					}
+					return object;
 				} catch (InstantiationException | IllegalAccessException | NoSuchFieldException e) {
 					e.printStackTrace();
 					throw new CodingException(e.getMessage());

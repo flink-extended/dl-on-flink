@@ -18,9 +18,11 @@
 
 package org.flinkextended.flink.ml.tensorflow.cluster.node.runner;
 
+import org.apache.flink.annotation.VisibleForTesting;
 import org.flinkextended.flink.ml.cluster.node.MLContext;
 import org.flinkextended.flink.ml.cluster.node.runner.CommonMLRunner;
 import org.flinkextended.flink.ml.cluster.role.WorkerRole;
+import org.flinkextended.flink.ml.cluster.rpc.AMClient;
 import org.flinkextended.flink.ml.cluster.rpc.NodeServer;
 import org.flinkextended.flink.ml.proto.ContextProto;
 import org.flinkextended.flink.ml.proto.NodeSpec;
@@ -34,6 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.ServerSocket;
+import java.util.concurrent.Future;
 
 /**
  * tensorflow machine learning runner.
@@ -137,4 +140,20 @@ public class TFMLRunner extends CommonMLRunner {
 		}
 		super.stopExecution(success);
 	}
+
+	@VisibleForTesting
+	AMClient getAMClient() {
+		return amClient;
+	}
+
+	@VisibleForTesting
+	long getVersion() {
+		return version;
+	}
+
+	@VisibleForTesting
+	MLContext getMLContext() {
+		return mlContext;
+	}
+
 }

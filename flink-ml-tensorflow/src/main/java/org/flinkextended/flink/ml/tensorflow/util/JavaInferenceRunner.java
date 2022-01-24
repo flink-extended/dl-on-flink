@@ -45,6 +45,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import static org.flinkextended.flink.ml.tensorflow.util.TFConstants.INPUT_TF_EXAMPLE_CONFIG;
+import static org.flinkextended.flink.ml.tensorflow.util.TFConstants.OUTPUT_TF_EXAMPLE_CONFIG;
+
 /**
  * start java process for tensorflow inference.
  */
@@ -69,22 +72,24 @@ public class JavaInferenceRunner implements Closeable {
 	 * @param outRowTypePath Path to the serialized output RowType
 	 */
 	JavaInferenceRunner(String tfIP, int tfPort, String inRowTypePath, String outRowTypePath) throws Exception {
+		this(tfIP, tfPort, readRowType(new Path(inRowTypePath)), readRowType(new Path(outRowTypePath)));
+	}
+
+	JavaInferenceRunner(String tfIP, int tfPort, RowTypeInfo inRowType, RowTypeInfo outRowTpe) throws Exception {
 		nodeClient = new NodeClient(tfIP, tfPort);
 		ContextResponse response = nodeClient.getMLContext();
 		Preconditions.checkState(response.getCode() == RpcCode.OK.ordinal(), "Failed to get TFContext");
 		mlContext = MLContext.fromPB(response.getContext());
-		RowTypeInfo inRowType = readRowType(new Path(inRowTypePath));
-		RowTypeInfo outRowTpe = readRowType(new Path(outRowTypePath));
 		javaInference = new JavaInference(mlContext.getProperties(), inRowType.getFieldNames(),
 				outRowTpe.getFieldNames());
 		batchSize = Integer.valueOf(mlContext.getProperties().getOrDefault(TFConstants.TF_INFERENCE_BATCH_SIZE, "1"));
 		LOG.info("{} java inference with batch size {}", mlContext.getIdentity(), batchSize);
 		batchCache = new ArrayBlockingQueue<>(batchSize);
 		// reverse coding config
-		String input = mlContext.getProperties().get(TFConstants.INPUT_TF_EXAMPLE_CONFIG);
-		String output = mlContext.getProperties().get(TFConstants.OUTPUT_TF_EXAMPLE_CONFIG);
-		mlContext.getProperties().put(TFConstants.INPUT_TF_EXAMPLE_CONFIG, output);
-		mlContext.getProperties().put(TFConstants.OUTPUT_TF_EXAMPLE_CONFIG, input);
+		String input = mlContext.getProperties().get(INPUT_TF_EXAMPLE_CONFIG);
+		String output = mlContext.getProperties().get(OUTPUT_TF_EXAMPLE_CONFIG);
+		mlContext.getProperties().put(INPUT_TF_EXAMPLE_CONFIG, output);
+		mlContext.getProperties().put(OUTPUT_TF_EXAMPLE_CONFIG, input);
 		dataExchange = new DataExchange<>(mlContext);
 	}
 
@@ -92,7 +97,7 @@ public class JavaInferenceRunner implements Closeable {
 	 * start read input date and write output data thread.
 	 * @throws Exception
 	 */
-	private void run() throws Exception {
+	public void run() throws Exception {
 //		FutureTask<Void> inputConsumer = new FutureTask<>(new InputRowConsumer(), null);
 //		Thread thread = new Thread(inputConsumer);
 //		thread.setName(mlContext.getIdentity() + "-" + InputRowConsumer.class.getSimpleName());
@@ -149,7 +154,7 @@ public class JavaInferenceRunner implements Closeable {
 
 	}
 
-	private RowTypeInfo readRowType(Path path) throws IOException, ClassNotFoundException {
+	private static RowTypeInfo readRowType(Path path) throws IOException, ClassNotFoundException {
 		FileSystem fs = path.getFileSystem(HADOOP_CONF);
 		try (ObjectInputStream objectInputStream = new ObjectInputStream(fs.open(path))) {
 			return (RowTypeInfo) objectInputStream.readObject();

@@ -83,7 +83,10 @@ public class NodeServer implements Runnable {
 	/**
 	 * @return machine learning node server port getter.
 	 */
-	public int getPort() {
+	public Integer getPort() {
+		if (server == null) {
+			return null;
+		}
 		return server.getPort();
 	}
 
