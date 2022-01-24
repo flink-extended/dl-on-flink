@@ -11,8 +11,6 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 project(flink_ml_tensorflow)
 
 #add cmake modules
-list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules)
-find_package(TensorFlow REQUIRED)
 find_package(Threads REQUIRED)
 
 set(MEM_QUEUE_DIR "${PROJECT_SOURCE_DIR}/flink_ml_tensorflow/include/")
@@ -30,5 +28,5 @@ message (${NATIVE_FILES})
 add_library(flink_ops SHARED ${NATIVE_FILES})
 set_target_properties(flink_ops PROPERTIES  SUFFIX "${PYTHON_LIB_SUFFIX}")
 target_include_directories(flink_ops PUBLIC ${SRCDIR} ${TensorFlow_INCLUDE_DIR})
-target_link_libraries(flink_ops ${TensorFlow_LIBRARY} Threads::Threads)
+target_link_libraries(flink_ops ${TensorFlow_C_LIBRARY} Threads::Threads)
 

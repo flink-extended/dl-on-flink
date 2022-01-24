@@ -18,6 +18,7 @@ import platform
 import re
 import subprocess
 import sys
+from datetime import datetime
 from distutils.version import LooseVersion
 
 from setuptools import setup, find_packages, Extension
@@ -34,6 +35,13 @@ except IOError:
           file=sys.stderr)
     sys.exit(-1)
 VERSION = __version__  # noqa
+PACKAGE_NAME = "flink-ml-framework"
+
+if os.getenv("NIGHTLY_WHEEL") == "true":
+    if 'dev' not in VERSION:
+        raise RuntimeError("Nightly wheel is not supported for non dev version")
+    VERSION = VERSION[:str.find(VERSION, 'dev') + 3] + \
+        datetime.now().strftime('%Y%m%d')
 
 
 class CMakeExtension(Extension):
@@ -83,10 +91,10 @@ class CMakeBuild(build_ext):
                 build_args += ['-lpthread']
 
         env = os.environ.copy()
-        env[
-            'CXXFLAGS'] = '{} -D_GLIBCXX_USE_CXX11_ABI=0 -DVERSION_INFO=\\"{}\\"'.format(
-            env.get('CXXFLAGS', ''),
-            self.distribution.get_version())
+        env['CXXFLAGS'] = \
+            '{} -D_GLIBCXX_USE_CXX11_ABI=0 -DVERSION_INFO=\\"{}\\"'\
+            .format(env.get('CXXFLAGS', ''),
+                    self.distribution.get_version())
         if not os.path.exists(self.build_temp):
             os.makedirs(self.build_temp)
         subprocess.check_call(['cmake', ext.sourcedir] + cmake_args,
@@ -96,8 +104,9 @@ class CMakeBuild(build_ext):
 
 
 setup(
-    name='flink_ml_framework',
+    name=PACKAGE_NAME,
     version=VERSION,
+    python_requires=">=3.6,<3.9",
     include_package_data=True,
     packages=find_packages(),
     ext_modules=[CMakeExtension('flink_ml_framework/flink_ml_framework')],
