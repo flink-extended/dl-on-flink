@@ -132,9 +132,7 @@ public class PythonUtil {
 		LOG.info("local path:" + local.getName());
 		LOG.info("remote path:" + remote.getName());
 		fs.copyToLocalFile(remote, local);
-		Preconditions.checkState(ShellExec.run(
-				String.format("unzip -q -d %s %s", tmp.getPath(), local.toString()), LOG::info),
-				"Failed to unzip virtual env");
+		FileUtil.unzip(local.toString(), tmp.getPath());
 		String name = remote.getName();
 		int index = name.indexOf(".");
 		if (index != -1) {
