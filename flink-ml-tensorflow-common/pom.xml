@@ -52,7 +52,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.alibaba.flink.ml</groupId>
+            <groupId>org.flinkextended</groupId>
             <artifactId>flink-ml-operator</artifactId>
             <version>${project.parent.version}</version>
             <type>test-jar</type>
