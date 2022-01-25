@@ -182,6 +182,17 @@
                                     <exclude>org.apache.flink:*</exclude>
                                 </excludes>
                             </artifactSet>
+
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.google.common</pattern>
+                                    <shadedPattern>org.flinkextended.flink.ml.tensorflow.shaded.com.google.common</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.commons</pattern>
+                                    <shadedPattern>org.flinkextended.flink.ml.tensorflow.shaded.org.apache.commons</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
