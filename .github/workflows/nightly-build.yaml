@@ -41,6 +41,10 @@ jobs:
           MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+      - uses: actions/upload-artifact@v2
+        with:
+          name: flink-ml-dist
+          path: flink-ml-dist/target/flink-ml-dist-*-bin
   build-nightly-wheel:
     name: Build ${{ matrix.package }} wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
