@@ -49,4 +49,4 @@ def predict(image):
 
 
 model.save(save_path, save_format='tf', signatures={
-    tf.saved_model.signature_constants.DEFAULT_SERVING_SIGNATURE_DEF_KEY: predict})
+    tf.saved_model.DEFAULT_SERVING_SIGNATURE_DEF_KEY: predict})

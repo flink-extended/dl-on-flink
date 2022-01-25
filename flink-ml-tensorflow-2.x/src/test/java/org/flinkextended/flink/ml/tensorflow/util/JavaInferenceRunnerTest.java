@@ -49,7 +49,7 @@ public class JavaInferenceRunnerTest {
 		mlContext = DummyContext.createDummyMLContext();
 		Preconditions.checkState(ShellExec.run(String.format("python %s %s",
 				rootPath +  "/src/test/python/mnist_model.py",
-				modelPath.toUri().getPath())));
+				modelPath.toUri().getPath()), new ShellExec.StdOutConsumer()));
 
 		mlContext.getProperties().put(TFConstants.TF_INFERENCE_EXPORT_PATH,
 				modelPath.toUri().getPath());
