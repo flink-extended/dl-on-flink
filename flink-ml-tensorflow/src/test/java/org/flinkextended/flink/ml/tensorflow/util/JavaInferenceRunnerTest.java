@@ -1,19 +1,21 @@
 package org.flinkextended.flink.ml.tensorflow.util;
 
-import org.flinkextended.flink.ml.cluster.node.MLContext;
-import org.flinkextended.flink.ml.cluster.rpc.NodeServer;
-import org.flinkextended.flink.ml.data.DataExchange;
-import org.flinkextended.flink.ml.operator.coding.RowCSVCoding;
-import org.flinkextended.flink.ml.util.DummyContext;
-import org.flinkextended.flink.ml.util.FileUtil;
-import org.flinkextended.flink.ml.util.MLConstants;
-import org.flinkextended.flink.ml.util.MLException;
 import com.google.common.base.Joiner;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.types.Row;
 import org.apache.flink.types.RowKind;
+import org.apache.flink.util.Preconditions;
+import org.flinkextended.flink.ml.cluster.node.MLContext;
+import org.flinkextended.flink.ml.cluster.rpc.NodeServer;
+import org.flinkextended.flink.ml.data.DataExchange;
+import org.flinkextended.flink.ml.operator.coding.RowCSVCoding;
+import org.flinkextended.flink.ml.util.DummyContext;
+import org.flinkextended.flink.ml.util.MLConstants;
+import org.flinkextended.flink.ml.util.MLException;
+import org.flinkextended.flink.ml.util.ShellExec;
+import org.flinkextended.flink.ml.util.TestUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,14 +25,17 @@ import org.mockito.internal.util.reflection.Whitebox;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.concurrent.FutureTask;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 public class JavaInferenceRunnerTest {
+	private static final String rootPath = TestUtil.getProjectRootPath() + "/flink-ml-tensorflow";
+
 	private FutureTask<Void> nodeFuture;
 
 	private MLContext mlContext;
@@ -39,10 +44,15 @@ public class JavaInferenceRunnerTest {
 
 	@Before
 	public void setUp() throws Exception {
+		final Path tempDirectory = Files.createTempDirectory("");
+		final Path modelPath = Paths.get(tempDirectory.toUri().getPath(), "model");
 		mlContext = DummyContext.createDummyMLContext();
-		final URL resource = FileUtil.class.getClassLoader().getResource("model/0");
-		assertNotNull(resource);
-		mlContext.getProperties().put(TFConstants.TF_INFERENCE_EXPORT_PATH, resource.toURI().getPath());
+		Preconditions.checkState(ShellExec.run(String.format("python %s %s",
+				rootPath +  "/src/test/python/mnist_model.py",
+				modelPath.toUri().getPath())));
+
+		mlContext.getProperties().put(TFConstants.TF_INFERENCE_EXPORT_PATH,
+				modelPath.toUri().getPath());
 		mlContext.getProperties().put(TFConstants.TF_INFERENCE_INPUT_TENSOR_NAMES, "image");
 		mlContext.getProperties().put(TFConstants.TF_INFERENCE_OUTPUT_TENSOR_NAMES, "prediction");
 		mlContext.getProperties().put(TFConstants.TF_INFERENCE_OUTPUT_ROW_FIELDS,
