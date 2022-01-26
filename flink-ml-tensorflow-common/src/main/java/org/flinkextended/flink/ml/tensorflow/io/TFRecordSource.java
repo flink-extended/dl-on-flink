@@ -48,9 +48,6 @@ public class TFRecordSource extends InputFormatSourceFunction<byte[]> implements
 	}
 
 	public static TFRecordSource createSource(String[] paths, int epochs, Configuration configuration) {
-
-
-
 		TFRecordInputFormat inputFormat = new TFRecordInputFormat(paths, epochs, configuration);
 		return new TFRecordSource(inputFormat, TypeInformation.of(byte[].class));
 	}
