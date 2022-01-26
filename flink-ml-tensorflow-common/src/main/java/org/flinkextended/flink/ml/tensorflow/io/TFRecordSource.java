@@ -22,12 +22,16 @@ import org.apache.flink.api.common.io.InputFormat;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.ResultTypeQueryable;
 import org.apache.flink.streaming.api.functions.source.InputFormatSourceFunction;
+import org.apache.hadoop.conf.Configuration;
+
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * flink source: read tensorflow TFRecord format file, output TFRecord byte array.
  */
 public class TFRecordSource extends InputFormatSourceFunction<byte[]> implements ResultTypeQueryable {
-
 
 	public TFRecordSource(InputFormat<byte[], ?> format, TypeInformation<byte[]> typeInfo) {
 		super(format, typeInfo);
@@ -40,6 +44,11 @@ public class TFRecordSource extends InputFormatSourceFunction<byte[]> implements
 
 	public static TFRecordSource createSource(String[] paths, int epochs) {
 		TFRecordInputFormat inputFormat = new TFRecordInputFormat(paths, epochs);
+		return new TFRecordSource(inputFormat, TypeInformation.of(byte[].class));
+	}
+
+	public static TFRecordSource createSource(String[] paths, int epochs, Configuration configuration) {
+		TFRecordInputFormat inputFormat = new TFRecordInputFormat(paths, epochs, configuration);
 		return new TFRecordSource(inputFormat, TypeInformation.of(byte[].class));
 	}
 }
