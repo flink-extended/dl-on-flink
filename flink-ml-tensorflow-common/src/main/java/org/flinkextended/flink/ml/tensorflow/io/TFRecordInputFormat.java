@@ -31,7 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
 
 /**
  * flink read tensorflow TFRecord file input format.
@@ -42,7 +42,7 @@ public class TFRecordInputFormat extends RichInputFormat<byte[], TFRecordInputSp
 	private String[] paths;
 	private transient TFRecordReader tfRecordReader;
 	private transient FSDataInputStream fsdis;
-	private static org.apache.hadoop.conf.Configuration hadoopConfiguration;
+	private Map<String, String> hadoopConfigurationMap;
 	private boolean end = false;
 	private static Logger LOG = LoggerFactory.getLogger(TFRecordInputFormat.class);
 
@@ -62,7 +62,14 @@ public class TFRecordInputFormat extends RichInputFormat<byte[], TFRecordInputSp
 			this.epochs = Integer.MAX_VALUE;
 		}
 		LOG.info("input epochs:" + this.epochs);
-		this.hadoopConfiguration = hadoopConfiguration;
+
+		hadoopConfigurationMap = new HashMap<>();
+
+		Iterator<Map.Entry<String, String>> iter = hadoopConfiguration.iterator();
+		while (iter.hasNext()) {
+			Map.Entry<String, String> entry =  iter.next();
+			hadoopConfigurationMap.put(entry.getKey(), entry.getValue());
+		}
 	}
 
 	@Override
@@ -120,12 +127,14 @@ public class TFRecordInputFormat extends RichInputFormat<byte[], TFRecordInputSp
 		final Path file = split.getPath();
 		LOG.info("open split path: " + file.toString());
 		FileSystem fs = null;
-		if (null != hadoopConfiguration) {
-			fs = file.getFileSystem(hadoopConfiguration);
-		} else {
-			org.apache.hadoop.conf.Configuration configuration = new org.apache.hadoop.conf.Configuration();
-			fs = file.getFileSystem(configuration);
+		org.apache.hadoop.conf.Configuration configuration = new org.apache.hadoop.conf.Configuration();
+		if (null != hadoopConfigurationMap && hadoopConfigurationMap.size() > 0) {
+			Set<Map.Entry<String, String>> hadoopConfigurationEntrySet = hadoopConfigurationMap.entrySet();
+			for (Map.Entry<String, String> hadoopConfigurationEntry : hadoopConfigurationEntrySet) {
+				configuration.set(hadoopConfigurationEntry.getKey(), hadoopConfigurationEntry.getValue());
+			}
 		}
+		fs = file.getFileSystem(configuration);
 		fsdis = fs.open(file, 4 * 1024 * 1024);
 		tfRecordReader = new TFRecordReader(fsdis, true);
 	}
