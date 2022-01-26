@@ -107,34 +107,8 @@ public class ExampleCodingConfigUtil {
             return DataTypes.FLOAT_64;
         } else if (typeInformation == BasicTypeInfo.CHAR_TYPE_INFO) {
             return DataTypes.UINT_16;
-        } else if (typeInformation == BasicTypeInfo.DATE_TYPE_INFO) {
-            throw new RuntimeException("Unsupported data type of " + typeInformation.toString());
-        } else if (typeInformation == BasicTypeInfo.VOID_TYPE_INFO) {
-            throw new RuntimeException("Unsupported data type of " + typeInformation.toString());
-        } else if (typeInformation == BasicTypeInfo.BIG_INT_TYPE_INFO) {
-            throw new RuntimeException("Unsupported data type of " + typeInformation.toString());
-        } else if (typeInformation == BasicTypeInfo.BIG_DEC_TYPE_INFO) {
-            throw new RuntimeException("Unsupported data type of " + typeInformation.toString());
-        } else if (typeInformation == BasicTypeInfo.INSTANT_TYPE_INFO) {
-            throw new RuntimeException("Unsupported data type of " + typeInformation.toString());
-        } else if (typeInformation == BasicArrayTypeInfo.STRING_ARRAY_TYPE_INFO) {
-            throw new RuntimeException("Unsupported data type of " + typeInformation.toString());
-        } else if (typeInformation == BasicArrayTypeInfo.BOOLEAN_ARRAY_TYPE_INFO) {
-            throw new RuntimeException("Unsupported data type of " + typeInformation.toString());
-        } else if (typeInformation == BasicArrayTypeInfo.BYTE_ARRAY_TYPE_INFO) {
-            throw new RuntimeException("Unsupported data type of " + typeInformation.toString());
-        } else if (typeInformation == BasicArrayTypeInfo.SHORT_ARRAY_TYPE_INFO) {
-            throw new RuntimeException("Unsupported data type of " + typeInformation.toString());
-        } else if (typeInformation == BasicArrayTypeInfo.INT_ARRAY_TYPE_INFO) {
-            throw new RuntimeException("Unsupported data type of " + typeInformation.toString());
-        } else if (typeInformation == BasicArrayTypeInfo.LONG_ARRAY_TYPE_INFO) {
-            throw new RuntimeException("Unsupported data type of " + typeInformation.toString());
         } else if (typeInformation == BasicArrayTypeInfo.FLOAT_ARRAY_TYPE_INFO) {
             return DataTypes.FLOAT_32_ARRAY;
-        } else if (typeInformation == BasicArrayTypeInfo.DOUBLE_ARRAY_TYPE_INFO) {
-            throw new RuntimeException("Unsupported data type of " + typeInformation.toString());
-        } else if (typeInformation == BasicArrayTypeInfo.CHAR_ARRAY_TYPE_INFO) {
-            throw new RuntimeException("Unsupported data type of " + typeInformation.toString());
         } else {
             throw new RuntimeException("Unsupported data type of " + typeInformation.toString());
         }

@@ -72,12 +72,14 @@ public class JavaInferenceRunner implements Closeable {
 	 * @param outRowTypePath Path to the serialized output RowType
 	 */
 	JavaInferenceRunner(String tfIP, int tfPort, String inRowTypePath, String outRowTypePath) throws Exception {
+		this(tfIP, tfPort, readRowType(new Path(inRowTypePath)), readRowType(new Path(outRowTypePath)));
+	}
+
+	JavaInferenceRunner(String tfIP, int tfPort, RowTypeInfo inRowType, RowTypeInfo outRowTpe) throws Exception {
 		nodeClient = new NodeClient(tfIP, tfPort);
 		ContextResponse response = nodeClient.getMLContext();
 		Preconditions.checkState(response.getCode() == RpcCode.OK.ordinal(), "Failed to get TFContext");
 		mlContext = MLContext.fromPB(response.getContext());
-		RowTypeInfo inRowType = readRowType(new Path(inRowTypePath));
-		RowTypeInfo outRowTpe = readRowType(new Path(outRowTypePath));
 		javaInference = new JavaInference(mlContext.getProperties(), inRowType.getFieldNames(),
 				outRowTpe.getFieldNames());
 		batchSize = Integer.valueOf(mlContext.getProperties().getOrDefault(TFConstants.TF_INFERENCE_BATCH_SIZE, "1"));
@@ -95,7 +97,7 @@ public class JavaInferenceRunner implements Closeable {
 	 * start read input date and write output data thread.
 	 * @throws Exception
 	 */
-	private void run() throws Exception {
+	public void run() throws Exception {
 //		FutureTask<Void> inputConsumer = new FutureTask<>(new InputRowConsumer(), null);
 //		Thread thread = new Thread(inputConsumer);
 //		thread.setName(mlContext.getIdentity() + "-" + InputRowConsumer.class.getSimpleName());
@@ -152,7 +154,7 @@ public class JavaInferenceRunner implements Closeable {
 
 	}
 
-	private RowTypeInfo readRowType(Path path) throws IOException, ClassNotFoundException {
+	private static RowTypeInfo readRowType(Path path) throws IOException, ClassNotFoundException {
 		FileSystem fs = path.getFileSystem(HADOOP_CONF);
 		try (ObjectInputStream objectInputStream = new ObjectInputStream(fs.open(path))) {
 			return (RowTypeInfo) objectInputStream.readObject();
@@ -242,8 +244,8 @@ public class JavaInferenceRunner implements Closeable {
 				LOG.info("{} Written totally {} rows to flink", mlContext.getIdentity(), written);
 			} catch (InterruptedException e) {
 				LOG.info("{} interrupted", Thread.currentThread().getName());
-			} catch (IOException e) {
-				throw new RuntimeException(e);
+			} catch (Exception e) {
+				LOG.error("OutputRowProducer error", e);
 			} finally {
 				LOG.info("Closing output queue");
 				mlContext.getOutputQueue().markFinished();

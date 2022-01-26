@@ -124,8 +124,10 @@ public class TFTransitions {
 					}
 				}
 				Map<String, Integer> remainJobNumMap = updateRemainJobNum(amEvent);
-				int remainWorkerNum = remainJobNumMap.get(new WorkerRole().name());
-				int remainPsNum = remainJobNumMap.get(new PsRole().name());
+				int remainWorkerNum = remainJobNumMap.get(new WorkerRole().name()) != null ?
+						remainJobNumMap.get(new WorkerRole().name()) : 0;
+				int remainPsNum = remainJobNumMap.get(new PsRole().name()) != null ?
+						remainJobNumMap.get(new PsRole().name()) : 0;
 				boolean flag = false;
 				if (workerNum == remainWorkerNum && psNum == remainPsNum) {
 					flag = true;

@@ -18,6 +18,7 @@
 
 package org.flinkextended.flink.ml.operator.ops.inputformat;
 
+import org.apache.flink.annotation.VisibleForTesting;
 import org.flinkextended.flink.ml.cluster.ExecutionMode;
 import org.flinkextended.flink.ml.cluster.MLConfig;
 import org.flinkextended.flink.ml.cluster.node.MLContext;
@@ -200,5 +201,15 @@ public class MLInputFormat<OUT> extends RichInputFormat<OUT, MLInputSplit> {
 				throw new IOException(e);
 			}
 		}
+	}
+
+	@VisibleForTesting
+	public MLConfig getMlConfig() {
+		return mlConfig;
+	}
+
+	@VisibleForTesting
+	public BaseRole getRole() {
+		return role;
 	}
 }

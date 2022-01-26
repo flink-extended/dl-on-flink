@@ -227,7 +227,8 @@ public class TFRExtractRowHelper implements Serializable {
                 return floats;
             }
             return aggFunc.aggregate(feature.getFloatList().getValueList());
-        } else if (dataType.equals(InternalTypeInfo.of(DataTypes.ARRAY(DataTypes.BYTES()).getLogicalType()))) {
+        } else if (dataType.equals(InternalTypeInfo.of(DataTypes.BYTES().getLogicalType()))
+                || dataType.equals(BasicTypeInfo.BYTE_TYPE_INFO)) {
             Preconditions.checkArgument(feature.hasBytesList(), typeMismatchError);
             byte[][] bytes = new byte[feature.getBytesList().getValueCount()][];
             for (int i = 0; i < bytes.length; i++) {

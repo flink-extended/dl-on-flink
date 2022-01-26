@@ -18,15 +18,6 @@
 
 package org.flinkextended.flink.ml.operator.client;
 
-import org.flinkextended.flink.ml.cluster.ExecutionMode;
-import org.flinkextended.flink.ml.cluster.MLConfig;
-import org.flinkextended.flink.ml.cluster.role.AMRole;
-import org.flinkextended.flink.ml.cluster.role.BaseRole;
-import org.flinkextended.flink.ml.operator.ops.MLFlatMapOp;
-import org.flinkextended.flink.ml.operator.ops.sink.DummySink;
-import org.flinkextended.flink.ml.operator.ops.source.NodeSource;
-import org.flinkextended.flink.ml.operator.util.TypeUtil;
-import org.flinkextended.flink.ml.util.MLConstants;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -42,6 +33,15 @@ import org.apache.flink.table.api.bridge.java.internal.StreamTableEnvironmentImp
 import org.apache.flink.table.api.internal.TableEnvironmentInternal;
 import org.apache.flink.table.catalog.ResolvedSchema;
 import org.apache.flink.types.Row;
+import org.flinkextended.flink.ml.cluster.ExecutionMode;
+import org.flinkextended.flink.ml.cluster.MLConfig;
+import org.flinkextended.flink.ml.cluster.role.AMRole;
+import org.flinkextended.flink.ml.cluster.role.BaseRole;
+import org.flinkextended.flink.ml.operator.ops.MLFlatMapOp;
+import org.flinkextended.flink.ml.operator.ops.sink.DummySink;
+import org.flinkextended.flink.ml.operator.ops.source.NodeSource;
+import org.flinkextended.flink.ml.operator.util.TypeUtil;
+import org.flinkextended.flink.ml.util.MLConstants;
 
 
 /**
@@ -135,7 +135,8 @@ public class RoleUtils {
             final DataStream<Row> source = ((StreamTableEnvironmentImpl) tableEnv).execEnv()
                     .addSource(NodeSource.createSource(mode, role, mlConfig,
                             TypeUtil.schemaToRowTypeInfo(resolvedSchema)))
-                    .setParallelism(workerParallelism);
+                    .setParallelism(workerParallelism)
+                    .name(role.name());
 
             worker = dsToTable(source, tableEnv);
         } else {
@@ -173,6 +174,7 @@ public class RoleUtils {
         final DataStream<Row> source = ((StreamTableEnvironmentImpl) tableEnv).execEnv()
                 .addSource(NodeSource.createSource(ExecutionMode.OTHER, new AMRole(), mlConfig,
                         TypeUtil.schemaToRowTypeInfo(resolvedSchema)))
+                .name(new AMRole().name())
                 .setParallelism(1);
 
         Table am = dsToTable(source, tableEnv);
