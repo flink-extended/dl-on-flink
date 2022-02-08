@@ -45,12 +45,19 @@ Please refer to [guide](https://nightlies.apache.org/flink/flink-docs-release-1.
 for more detailed step of downloading or installing Flink.
 
 ### Download Deep Learning on Flink
-You can download the binary release of Deep Learning on Flink from
-[release](https://github.com/flink-extended/dl-on-flink/releases), then extract
-the archive:
+You can download the stable released binary release of Deep Learning on Flink 
+from [release](https://github.com/flink-extended/dl-on-flink/releases).
+
+If you want to try out the latest snapshot version, you can download the binary
+from [snapshot](https://s01.oss.sonatype.org/content/repositories/snapshots/org/flinkextended/flink-ml-dist/).
+You need to choose the latest snapshot version. The name of the binary zip 
+should be like `flink-ml-dist-*-bin.tgz`.
+
+
+Then extract the archive:
 
 ```sh
-tar -xzf flink-ml-*.tgz
+tar -xzf flink-ml-dist-*-bin.tgz
 ```
 
 Navigate to the extracted directory, you should see the following directory 
@@ -71,17 +78,29 @@ tools for an isolated Python environment.
 
 Use the following command to install `flink-ml-framwork`
 ```bash
+# Install latest stable version
 pip install flink-ml-framework
+
+# Install latest snapshot version
+pip install --pre flink-ml-framework
 ```
 
 Install `flink-ml-tensorflow` if you use Tensorflow 1.15.x
 ```bash
+# Install latest stable version
 pip install flink-ml-tensorflow
+
+# Install latest snapshot version
+pip install --pre flink-ml-tensorflow
 ```
 
 Install `flink-ml-tensorflow-2.x` if you use Tensorflow 2.3.x
 ```bash
+# Install latest stable version
 pip install flink-ml-tensorflow-2.x
+
+# Install latest snapshot version
+pip install --pre flink-ml-tensorflow-2.x
 ```
 
 ## Starting Local Standalone Cluster
@@ -94,7 +113,11 @@ You can use the following command to do that.
 ```sh
 # We assume to be in the root directory of the Flink extracted distribution
 
+# macos
 sed -i '' 's/taskmanager.numberOfTaskSlots: 1/taskmanager.numberOfTaskSlots: 2/' ./conf/flink-conf.yaml
+
+# linux
+sed -i 's/taskmanager.numberOfTaskSlots: 1/taskmanager.numberOfTaskSlots: 2/' ./conf/flink-conf.yaml
 ```
 
 Usually, starting a local Flink cluster by running the following command is 
