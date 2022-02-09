@@ -70,3 +70,98 @@ jobs:
         with:
           name: ${{ matrix.package }}-wheels
           path: ./wheelhouse/*.whl
+  test-flink-ml-framework-wheel:
+    name: Test flink-ml-framework-wheel
+    needs: build-nightly-wheel
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-18.04, ubuntu-20.04 ]
+        python-version: [ 3.6, 3.7, 3.8 ]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 8
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: actions/download-artifact@v2
+        with:
+          name: flink-ml-framework-wheels
+          path: ./wheelhouse
+      - name: build
+        run: |
+          mvn -B install -pl flink-ml-framework -am -DskipTests
+      - name: test
+        env:
+          TF_ON_FLINK_IP: 127.0.0.1
+        run: |
+          pip install flink-ml-framework -f file://${PWD}/wheelhouse
+          mvn -B test -pl flink-ml-framework
+  test-flink-ml-tensorflow-wheel:
+    name: Test flink-ml-tensorflow-wheel
+    needs: build-nightly-wheel
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-18.04, ubuntu-20.04 ]
+        python-version: [ 3.6, 3.7 ]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 8
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: actions/download-artifact@v2
+        with:
+          name: flink-ml-tensorflow-wheels
+          path: ./wheelhouse
+      - name: build
+        run: |
+          mvn -B install -pl flink-ml-tensorflow -am -DskipTests
+      - name: test
+        env:
+          TF_ON_FLINK_IP: 127.0.0.1
+        run: |
+          pip install flink-ml-tensorflow -f file://${PWD}/wheelhouse
+          mvn -B test -pl flink-ml-tensorflow
+  test-flink-ml-tensorflow-2x-wheel:
+    name: Test flink-ml-tensorflow-2.x-wheel
+    needs: build-nightly-wheel
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-18.04, ubuntu-20.04 ]
+        python-version: [ 3.7, 3.8 ]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 8
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: actions/download-artifact@v2
+        with:
+          name: flink-ml-tensorflow-2.x-wheels
+          path: ./wheelhouse
+      - name: build
+        run: |
+          mvn -B install -pl flink-ml-tensorflow-2.x -am -DskipTests
+      - name: test
+        env:
+          TF_ON_FLINK_IP: 127.0.0.1
+        run: |
+          pip install flink-ml-tensorflow-2.x -f file://${PWD}/wheelhouse
+          mvn -B test -pl flink-ml-tensorflow-2.x
+
+
