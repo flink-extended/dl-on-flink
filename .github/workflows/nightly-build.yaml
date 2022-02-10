@@ -45,28 +45,106 @@ jobs:
         with:
           name: flink-ml-dist
           path: flink-ml-dist/target/flink-ml-dist-*-bin
-  build-nightly-wheel:
-    name: Build ${{ matrix.package }} wheels on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
+  build-linux-nightly-wheel:
+    name: Build python${{ matrix.python-version }} ${{ matrix.package }} wheels on ubuntu-20.04
+    runs-on: ubuntu-20.04
     strategy:
+      fail-fast: false
       matrix:
-        os: [ macOS-10.15, ubuntu-20.04 ]
+        python-version: [ 3.7, 3.8 ]
         package:
           - flink-ml-framework
           - flink-ml-tensorflow
           - flink-ml-tensorflow-2.x
+        exclude:
+          - package: flink-ml-tensorflow
+            python-version: 3.8
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build python${{ matrix.python-version }} ${{ matrix.package }} wheels
+        env:
+          NIGHTLY_WHEEL: true
+        run: |
+          docker run -i --rm -v $PWD:/v -w /v -e 'NIGHTLY_WHEEL=true' --net=host quay.io/pypa/manylinux2010_x86_64 \
+            bash -c 'cd /v/${{ matrix.package }}/python \
+              && python${{ matrix.python-version }} setup.py bdist_wheel \
+              && for f in dist/*.whl; do echo repairing $f && bash -x -e /v/tools/auditwheel repair --plat manylinux2010_x86_64 -w /v/wheelhouse/ $f; done'
+      - uses: actions/upload-artifact@v2
+        with:
+          name: dl-on-flink-wheels
+          path: ./wheelhouse/*.whl
+  build-macos-nightly-wheel:
+    name: Build python${{ matrix.python-version }} ${{ matrix.package }} wheels on macOS-10.15
+    runs-on: macos-10.15
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ 3.7, 3.8 ]
+        package:
+          - flink-ml-framework
+          - flink-ml-tensorflow
+          - flink-ml-tensorflow-2.x
+        exclude:
+          - package: flink-ml-tensorflow
+            python-version: 3.8
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
-      - name: Build ${{ matrix.package }} wheels
-        uses: pypa/cibuildwheel@v2.3.1
-        env:
-          CIBW_ARCHS: "auto64"
-          CIBW_SKIP: "pp* *musllinux*"
-          CIBW_ENVIRONMENT: NIGHTLY_WHEEL=true
         with:
-          package-dir: ${{ matrix.package }}/python
+          python-version: ${{ matrix.python-version }}
+      - name: Build python${{ matrix.python-version }} ${{ matrix.package }} wheels on macOS-10.15
+        env:
+          NIGHTLY_WHEEL: true
+        run: |
+          pip install wheel auditwheel
+          export ROOT_DIR=$PWD
+          mkdir $ROOT_DIR/wheelhouse
+          cd ${{ matrix.package }}/python
+          python setup.py bdist_wheel
+          cp dist/* $ROOT_DIR/wheelhouse
       - uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.package }}-wheels
+          name: dl-on-flink-wheels
           path: ./wheelhouse/*.whl
+  test-wheel:
+    name: Test python${{ matrix.python-version }} ${{ matrix.package }} wheels on ${{ matrix.os }}
+    needs: [ build-linux-nightly-wheel, build-macos-nightly-wheel ]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ macOS-10.15, ubuntu-20.04 ]
+        python-version: [ 3.7, 3.8 ]
+        package:
+          - flink-ml-framework
+          - flink-ml-tensorflow
+          - flink-ml-tensorflow-2.x
+        exclude:
+          - package: flink-ml-tensorflow
+            python-version: 3.8
+          - package: flink-ml-tensorflow-2.x
+            python-version: 3.6
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 8
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: actions/download-artifact@v2
+        with:
+          name: dl-on-flink-wheels
+          path: ./wheelhouse
+      - name: build
+        run: |
+          mvn -B install -pl ${{ matrix.package }} -am -DskipTests
+      - name: test
+        env:
+          TF_ON_FLINK_IP: 127.0.0.1
+        run: |
+          ls $PWD/wheelhouse
+          pip install ${{ matrix.package }} -f file://${PWD}/wheelhouse
+          mvn -B test -pl ${{ matrix.package }}
