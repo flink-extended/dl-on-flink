@@ -10,6 +10,12 @@ with the rich connectors in Flink and handle the failures.
 
 Currently, Deep Learning on Flink supports TensorFlow and PyTorch.
 
+## Supported Operating System
+Deep Learning on Flink is tested and supported on the following 64-bit systems:
+
+- Ubuntu 18.04 or later
+- macOS 10.15 or later
+
 ## Support Framework Version
 - TensorFlow: 1.15.x & 2.3.x
 - Pytorch: 1.x
