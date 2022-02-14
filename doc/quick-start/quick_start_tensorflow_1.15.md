@@ -68,12 +68,12 @@ dependency with pip.
 
 Install the latest stable release of `flink-ml-framwork`
 ```bash
-pip install flink-ml-framework
+python3 -m pip install flink-ml-framework
 ```
 
 Install the latest stable release of `flink-ml-tensorflow`
 ```bash
-pip install flink-ml-tensorflow
+python3 -m pip install flink-ml-tensorflow
 ```
 
 ## Starting Local Standalone Cluster
