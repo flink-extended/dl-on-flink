@@ -22,7 +22,7 @@ Deep Learning on Flink is tested and supported on the following 64-bit systems:
  
 ## Getting Started
 
-You can follow [quick start tensorflow 1.15](doc/quick-start/quick_start_1.15.md)
+You can follow [quick start tensorflow 1.15](doc/quick-start/quick_start_tensorflow_1.15.md)
 or [quick start tensorflow 2.3](doc/quick-start/quick_start_tensorflow_2.3.md) 
 to submit an example job to a local standalone Flink cluster.
 
