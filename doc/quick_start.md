@@ -113,11 +113,7 @@ You can use the following command to do that.
 ```sh
 # We assume to be in the root directory of the Flink extracted distribution
 
-# macos
-sed -i '' 's/taskmanager.numberOfTaskSlots: 1/taskmanager.numberOfTaskSlots: 2/' ./conf/flink-conf.yaml
-
-# linux
-sed -i 's/taskmanager.numberOfTaskSlots: 1/taskmanager.numberOfTaskSlots: 2/' ./conf/flink-conf.yaml
+sed -i.bak 's/taskmanager.numberOfTaskSlots: 1/taskmanager.numberOfTaskSlots: 2/' ./conf/flink-conf.yaml
 ```
 
 Usually, starting a local Flink cluster by running the following command is 
