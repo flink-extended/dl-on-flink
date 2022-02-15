@@ -36,7 +36,7 @@ public class SysUtil {
 	public static final Unsafe UNSAFE;
 	private static String rootPath = null;
 	private static String projectVersion = null;
-	private static String PARENT_NAME = "flink_ai_extended";
+	private static String PARENT_NAME = "dl-on-flink";
 	private static Logger LOG = LoggerFactory.getLogger(SysUtil.class);
 
 	static {
