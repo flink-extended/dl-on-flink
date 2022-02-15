@@ -79,8 +79,11 @@ def train(dataset_provider: Callable[[], tf.data.Dataset],
 
     model.fit(dataset_provider(), verbose=2, callbacks=[StepLogCallback(100)])
 
-    sess = tf.keras.backend.get_session()
-    weight = {w.name: sess.run(w) for w in model.weights}
+    if is_tf2:
+        weight = model.weights
+    else:
+        sess = tf.keras.backend.get_session()
+        weight = {w.name: sess.run(w) for w in model.weights}
     print(weight)
 
     model.save(model_save_path, save_format="tf")
@@ -140,7 +143,8 @@ if __name__ == '__main__':
     # Set the TF_CONFIG for distributed training
     tf_config = {
         'cluster': {
-            'worker': ['localhost:2000', 'localhost:2001']
+            # 'worker': ['localhost:2000', 'localhost:2001']
+            'worker': ['localhost:2000']
         },
         'task': {'type': 'worker', 'index': int(argv[1])}
     }
@@ -159,7 +163,7 @@ if __name__ == '__main__':
             .reshape((1000, 1))
 
         dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train)).repeat(
-            512).batch(32)
+            1).batch(32)
         if is_tf2:
             option = tf.data.Options()
             option.experimental_distribute.auto_shard_policy = \
