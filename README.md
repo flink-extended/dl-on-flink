@@ -8,16 +8,22 @@ It runs the deep learning tasks inside a Flink operator so that Flink can help
 establish a distributed environment, manage the resource, read/write the data
 with the rich connectors in Flink and handle the failures.
 
-Currently, Deep Learning on Flink supports TensorFlow and PyTorch.
+Currently, Deep Learning on Flink supports TensorFlow.
+
+## Supported Operating System
+Deep Learning on Flink is tested and supported on the following 64-bit systems:
+
+- Ubuntu 18.04
+- macOS 10.15
 
 ## Support Framework Version
 - TensorFlow: 1.15.x & 2.3.x
-- Pytorch: 1.x
 - Flink: 1.14.x
  
 ## Getting Started
 
-To get your hand dirty, you can follow [quick start](doc/quick_start.md) 
+You can follow [quick start tensorflow 1.15](doc/quick-start/quick_start_tensorflow_1.15.md)
+or [quick start tensorflow 2.3](doc/quick-start/quick_start_tensorflow_2.3.md) 
 to submit an example job to a local standalone Flink cluster.
 
 ## Build From Source
