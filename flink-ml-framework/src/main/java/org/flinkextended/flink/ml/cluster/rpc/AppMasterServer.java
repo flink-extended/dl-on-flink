@@ -104,7 +104,7 @@ public class AppMasterServer implements Runnable {
 		}
 
 		if (eventReporter != null) {
-			String jobName = properties.getOrDefault(MLConstants.CONFIG_JOB_NAME, "flink-ml");
+			String jobName = properties.getOrDefault(MLConstants.CONFIG_JOB_NAME, "dl-on-flink");
 			jobName += properties.get(MLConstants.JOB_VERSION);
 			eventReporter.configure(jobName, properties);
 		}

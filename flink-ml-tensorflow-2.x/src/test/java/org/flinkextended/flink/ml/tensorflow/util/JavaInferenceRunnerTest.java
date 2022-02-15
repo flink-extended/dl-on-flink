@@ -52,7 +52,7 @@ import java.util.concurrent.FutureTask;
 import static org.junit.Assert.assertEquals;
 
 public class JavaInferenceRunnerTest {
-	private static final String rootPath = TestUtil.getProjectRootPath() + "/flink-ml-tensorflow-2.x";
+	private static final String rootPath = TestUtil.getProjectRootPath() + "/dl-on-flink-tensorflow-2.x";
 
 	private FutureTask<Void> nodeFuture;
 

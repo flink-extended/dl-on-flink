@@ -36,7 +36,7 @@ except IOError:
           file=sys.stderr)
     sys.exit(-1)
 VERSION = __version__  # noqa
-PACKAGE_NAME = "flink-ml-framework"
+PACKAGE_NAME = "dl-on-flink-framework"
 
 if os.getenv("NIGHTLY_WHEEL") == "true":
     if 'dev' not in VERSION:

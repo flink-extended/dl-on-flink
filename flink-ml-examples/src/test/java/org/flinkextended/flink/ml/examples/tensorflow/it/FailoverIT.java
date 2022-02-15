@@ -44,7 +44,7 @@ public class FailoverIT {
 	@Before
 	public void setUp() throws Exception {
 		miniCluster = MiniCluster.start(numTMs);
-		miniCluster.setExecJar("/flink-ml-examples/target/flink-ml-examples-" + SysUtil.getProjectVersion() + ".jar");
+		miniCluster.setExecJar("/dl-on-flink-examples/target/dl-on-flink-examples-" + SysUtil.getProjectVersion() + ".jar");
 		Preconditions.checkState(miniCluster.copyToJM(MnistDataUtil.downloadData(), MnistIT.MNIST_CONTAINER_PATH));
 	}
 

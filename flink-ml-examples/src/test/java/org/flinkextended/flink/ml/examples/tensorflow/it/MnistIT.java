@@ -40,7 +40,7 @@ public class MnistIT {
 	@BeforeClass
 	public static void setUp() throws Exception {
 		miniCluster = MiniCluster.start(3);
-		miniCluster.setExecJar("/flink-ml-examples/target/flink-ml-examples-" + SysUtil.getProjectVersion() + ".jar");
+		miniCluster.setExecJar("/dl-on-flink-examples/target/dl-on-flink-examples-" + SysUtil.getProjectVersion() + ".jar");
 		Preconditions.checkState(miniCluster.copyToJM(MnistDataUtil.downloadData(), MNIST_CONTAINER_PATH));
 	}
 
@@ -105,7 +105,7 @@ public class MnistIT {
 				"--mode",
 				mode.toString(),
 				"--setup",
-				miniCluster.getLocalBuildDir() + "/flink-ml-examples/src/test/python/mnist_data_setup.py",
+				miniCluster.getLocalBuildDir() + "/dl-on-flink-examples/src/test/python/mnist_data_setup.py",
 				"--train",
 				"mnist_dist.py",
 				"--envpath",

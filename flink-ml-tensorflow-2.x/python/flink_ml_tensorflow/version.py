@@ -15,7 +15,7 @@
 #  limitations under the License.
 
 """
-The flink-ml-tensorflow-2.x version follows the PEP440.
+The dl-on-flink-tensorflow-2.x version follows the PEP440.
 .. seealso:: https://www.python.org/dev/peps/pep-0440
 """
 __version__ = "0.5.0.dev0"

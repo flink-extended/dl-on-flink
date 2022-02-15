@@ -43,7 +43,7 @@ to build for both Java and Python.
 mvn -DskipTests clean install
 ```
 
-After finish, you can find the target distribution in the `flink-ml-dist/target`
+After finish, you can find the target distribution in the `dl-on-flink-dist/target`
 folder.
 
 ### Build Python
@@ -52,15 +52,15 @@ folder.
 You can run the following commands to install the Python packages from source
 
 ```sh
-# Install flink-ml-framework first
-pip install flink-ml-framework/python
+# Install dl-on-flink-framework first
+pip install dl-on-flink-framework/python
 
 # Note that you should only install one of the following as they require
 # different versions of Tensorflow 
 # For tensorflow 1.15.x
-pip install flink-ml-tensorflow/python
+pip install dl-on-flink-tensorflow/python
 # For tensorflow 2.3.x
-pip install flink-ml-tensorflow-2.x/python
+pip install dl-on-flink-tensorflow-2.x/python
 ```
 
 #### Build wheels

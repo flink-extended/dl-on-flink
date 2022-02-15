@@ -31,7 +31,7 @@ public class CodeUtil {
 
 	private static final Logger LOG = LoggerFactory.getLogger(CodeUtil.class);
 
-	private static String rootPath = TestUtil.getProjectRootPath() + "/flink-ml-examples/";
+	private static String rootPath = TestUtil.getProjectRootPath() + "/dl-on-flink-examples/";
 	private static String sourcePath = rootPath + "src/test/python/*";
 	private static String targetPath = rootPath + "target/code";
 

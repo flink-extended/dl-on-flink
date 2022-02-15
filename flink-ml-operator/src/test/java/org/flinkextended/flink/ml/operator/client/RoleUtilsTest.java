@@ -54,7 +54,7 @@ import static org.flinkextended.flink.ml.operator.client.TableTestUtil.execTable
 
 public class RoleUtilsTest {
     private static TestingServer testingServer;
-    private static String rootPath = TestUtil.getProjectRootPath() + "/flink-ml-operator/src/test/python/";
+    private static String rootPath = TestUtil.getProjectRootPath() + "/dl-on-flink-operator/src/test/python/";
     private Logger LOG = LoggerFactory.getLogger(RoleUtilsTest.class);
 
 

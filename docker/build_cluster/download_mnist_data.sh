@@ -22,7 +22,7 @@ projectPath=${basePath}/../../
 
 set -e
 
-dataDir=${projectPath}/flink-ml-examples/target/data
+dataDir=${projectPath}/dl-on-flink-examples/target/data
 mkdir -p  ${dataDir}
 wget https://raw.githubusercontent.com/wuchaochen/testdata/master/mnist/t10k-images-idx3-ubyte.gz -O ${dataDir}/t10k-images-idx3-ubyte.gz
 wget https://raw.githubusercontent.com/wuchaochen/testdata/master/mnist/t10k-labels-idx1-ubyte.gz -O ${dataDir}/t10k-labels-idx1-ubyte.gz

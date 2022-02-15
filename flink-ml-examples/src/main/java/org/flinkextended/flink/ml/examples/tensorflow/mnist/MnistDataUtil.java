@@ -49,7 +49,7 @@ public class MnistDataUtil {
 	public static final String train_labels = "train-labels-idx1-ubyte.gz";
 	public static final String t10k_images = "t10k-images-idx3-ubyte.gz";
 	public static final String t10k_labels = "t10k-labels-idx1-ubyte.gz";
-	public static final String dataDir = "/flink-ml-examples/target/data/";
+	public static final String dataDir = "/dl-on-flink-examples/target/data/";
 	private static final Logger LOG = LoggerFactory.getLogger(MnistDataUtil.class);
 
 	private static String getDataPath() {
@@ -107,7 +107,7 @@ public class MnistDataUtil {
 			flag = true;
 		}
 		String rootPath = SysUtil.getProjectRootPath();
-		File f = new File(rootPath + "/flink-ml-examples/src/test/python/mnist_data_setup.py");
+		File f = new File(rootPath + "/dl-on-flink-examples/src/test/python/mnist_data_setup.py");
 		System.out.println(f.getAbsolutePath());
 		if (flag) {
 			TFConfigBase config = new TFConfig(0, 0, null, (String) null,

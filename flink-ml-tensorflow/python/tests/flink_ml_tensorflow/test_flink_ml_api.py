@@ -22,12 +22,12 @@ from pyflink.util.java_utils import add_jars_to_context_class_loader
 
 def find_jar_path():
     target_dir = os.path.join(os.path.dirname(__file__), "..", "..", "..", "target")
-    paths = glob.glob(os.path.join(target_dir, "flink-ml-tensorflow-*-jar-with-dependencies.jar"))
+    paths = glob.glob(os.path.join(target_dir, "dl-on-flink-tensorflow-*-jar-with-dependencies.jar"))
     if len(paths) < 1:
-        raise RuntimeError("Cannot find flink-ml-tensorflow jar, please make sure you have run `mvn package`")
+        raise RuntimeError("Cannot find dl-on-flink-tensorflow jar, please make sure you have run `mvn package`")
     elif len(paths) >= 2:
-        raise RuntimeError("Found more than one flink-ml-tensorflow jar {}".format(paths))
-    # logger.info("Found flink-ml-tensorflow jar at {}".format(paths[0]))
+        raise RuntimeError("Found more than one dl-on-flink-tensorflow jar {}".format(paths))
+    # logger.info("Found dl-on-flink-tensorflow jar at {}".format(paths[0]))
     return paths[0]
 
 

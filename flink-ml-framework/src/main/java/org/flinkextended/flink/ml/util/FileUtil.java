@@ -67,7 +67,7 @@ public class FileUtil {
 	 */
 	public static void downLoadZipToLocal(String workDir, String remotePath, String unzipDirName) throws IOException {
 		// virtual env is shared across jobs, so we can't use mlContext's temp dir here
-		final java.nio.file.Path tempDirectory = Files.createTempDirectory("flink-ml-zip");
+		final java.nio.file.Path tempDirectory = Files.createTempDirectory("dl-on-flink-zip");
 
 		try {
 			Path remote = new Path(remotePath);

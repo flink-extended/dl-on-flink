@@ -35,7 +35,7 @@ import static org.flinkextended.flink.ml.operator.client.TableTestUtil.execTable
 public class PyTorchUtilTest {
 
 	private static TestingServer testingServer;
-	private static String rootPath = TestUtil.getProjectRootPath() + "/flink-ml-pytorch/src/test/python/";
+	private static String rootPath = TestUtil.getProjectRootPath() + "/dl-on-flink-pytorch/src/test/python/";
 
 
 	@Before

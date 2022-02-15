@@ -38,7 +38,7 @@ public class ProcessPythonRunnerTest extends TestWithNodeService {
 
 
 	public MLContext createMLContext(String scriptName) throws Exception {
-		String rootPath = TestUtil.getProjectRootPath() + "/flink-ml-framework/src/test/python";
+		String rootPath = TestUtil.getProjectRootPath() + "/dl-on-flink-framework/src/test/python";
 
 		MLContext context = DummyContext.createDummyMLContext();
 		context.setPythonDir(Paths.get(rootPath));

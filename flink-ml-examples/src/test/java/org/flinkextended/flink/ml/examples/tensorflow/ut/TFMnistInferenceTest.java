@@ -70,7 +70,7 @@ public class TFMnistInferenceTest {
     private static final String mnist_dist_with_input = "mnist_dist_with_input.py";
     private static final String mnist_inference_with_input = "mnist_table_inference.py";
     private static String version = "0";
-    private static String rootPath = TestUtil.getProjectRootPath() + "/flink-ml-examples";
+    private static String rootPath = TestUtil.getProjectRootPath() + "/dl-on-flink-examples";
     private static final String checkpointPath = rootPath + "/target/ckpt/" + version;
     public static final String exportPath = rootPath + "/target/export/" + version;
     public static final String testDataPath = rootPath + "/target/data/test";

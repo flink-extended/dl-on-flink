@@ -42,7 +42,7 @@ public class MiniCluster {
 	private static Logger LOG = LoggerFactory.getLogger(MiniCluster.class);
 	private static final String HDFS_IMAGE = "sequenceiq/hadoop-docker";
 	private static final String ZK_IMAGE = "zookeeper";
-	private static final String FLINK_IMAGE = "flink-ml/flink";
+	private static final String FLINK_IMAGE = "dl-on-flink/flink";
 	private static final String HDFS_NAME = "minidfs";
 	private static final String FLINK_TM_NAME = "flink-tm";
 	private static final String ZK_SERVER_NAME = "minizk";

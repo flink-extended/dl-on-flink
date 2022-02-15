@@ -49,7 +49,7 @@ public class JavaInferenceFailoverIT {
 	@Before
 	public void setUp() throws Exception {
 		miniCluster = MiniCluster.start(NUM_TM);
-		miniCluster.setExecJar("/flink-ml-examples/target/flink-ml-examples-" + SysUtil.getProjectVersion() + ".jar");
+		miniCluster.setExecJar("/dl-on-flink-examples/target/dl-on-flink-examples-" + SysUtil.getProjectVersion() + ".jar");
 		miniCluster.copyFromHostToHDFS(TFMnistInferenceTest.exportPath, HDFS_EXPORT_DIR);
 		miniCluster.copyFromHostToHDFS(TFMnistInferenceTest.testDataPath, HDFS_TEST_DATA_DIR);
 	}

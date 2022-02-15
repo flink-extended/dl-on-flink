@@ -42,13 +42,13 @@ import org.junit.Test;
 
 public class TFUtilsTest {
     private static TestingServer server;
-    private static final String pythonPath = TestUtil.getProjectRootPath() + "/flink-ml-tensorflow-2.x/src/test/python/";
+    private static final String pythonPath = TestUtil.getProjectRootPath() + "/dl-on-flink-tensorflow-2.x/src/test/python/";
     private static final String add = pythonPath + "add.py";
     private static final String workerZeroFinishScript = pythonPath + "worker_0_finish.py";
     private static final String addTBScript = pythonPath + "add_withtb.py";
     private static final String inputOutputScript = pythonPath + "input_output.py";
     private static final String tensorboardScript = pythonPath + "tensorboard.py";
-    private static final String ckptDir = TestUtil.getProjectRootPath() + "/flink-ml-tensorflow/target/tmp/add_withtb/";
+    private static final String ckptDir = TestUtil.getProjectRootPath() + "/dl-on-flink-tensorflow/target/tmp/add_withtb/";
 
     @Before
     public void setUp() throws Exception {

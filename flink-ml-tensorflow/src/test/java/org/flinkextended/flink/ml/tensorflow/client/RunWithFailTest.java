@@ -118,6 +118,6 @@ public class RunWithFailTest {
 	}
 
 	private static String scriptAbsolutePath(String script) {
-		return TestUtil.getProjectRootPath() + "/flink-ml-tensorflow/src/test/python/" + script;
+		return TestUtil.getProjectRootPath() + "/dl-on-flink-tensorflow/src/test/python/" + script;
 	}
 }

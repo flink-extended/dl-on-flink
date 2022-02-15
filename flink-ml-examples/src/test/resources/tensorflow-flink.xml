@@ -27,7 +27,7 @@
     </property>
     <property>
         <name>zookeeper_base_path</name>
-        <value>/flink-ml</value>
+        <value>/dl-on-flink</value>
     </property>
     <property>
         <name>cross_queue_size</name>

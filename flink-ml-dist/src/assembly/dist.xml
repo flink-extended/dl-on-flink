@@ -26,19 +26,19 @@ under the License.
     </formats>
 
     <includeBaseDirectory>true</includeBaseDirectory>
-    <baseDirectory>flink-ml-dist-${project.version}</baseDirectory>
+    <baseDirectory>dl-on-flink-dist-${project.version}</baseDirectory>
 
     <files>
-        <!-- copy flink-ml-tensorflow-2.x fat jar -->
+        <!-- copy dl-on-flink-tensorflow-2.x fat jar -->
         <file>
-            <source>../flink-ml-tensorflow-2.x/target/flink-ml-tensorflow-2.x-${project.version}-jar-with-dependencies.jar</source>
+            <source>../dl-on-flink-tensorflow-2.x/target/dl-on-flink-tensorflow-2.x-${project.version}-jar-with-dependencies.jar</source>
             <outputDirectory>lib/</outputDirectory>
             <fileMode>0644</fileMode>
         </file>
 
-        <!-- copy flink-ml-tensorflow fat jar -->
+        <!-- copy dl-on-flink-tensorflow fat jar -->
         <file>
-            <source>../flink-ml-tensorflow/target/flink-ml-tensorflow-${project.version}-jar-with-dependencies.jar</source>
+            <source>../dl-on-flink-tensorflow/target/dl-on-flink-tensorflow-${project.version}-jar-with-dependencies.jar</source>
             <outputDirectory>lib/</outputDirectory>
             <fileMode>0644</fileMode>
         </file>
