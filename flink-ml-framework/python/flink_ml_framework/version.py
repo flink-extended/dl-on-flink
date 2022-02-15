@@ -18,4 +18,4 @@
 The flink-ml-framework version follows the PEP440.
 .. seealso:: https://www.python.org/dev/peps/pep-0440
 """
-__version__ = "0.4.dev0"
+__version__ = "0.5.0.dev0"
