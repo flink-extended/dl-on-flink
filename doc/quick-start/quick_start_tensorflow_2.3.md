@@ -31,6 +31,15 @@ a linear model.
 - Flink: 1.14
 - TensorFlow: 2.3
 
+We strongly recommend using [virtualenv](https://virtualenv.pypa.io/en/latest/index.html)
+or other similar tools for an isolated Python environment.
+
+```bash
+pip install virtualenv
+virtualenv venv --python=python3.7
+source venv/bin/activate
+```
+
 ## Download & Install
 
 ### Download Flink
@@ -68,12 +77,12 @@ dependency with pip.
 
 Install the latest stable release of `flink-ml-framwork`
 ```bash
-python3 -m pip install flink-ml-framework
+python3 -m pip install --upgrade flink-ml-framework
 ```
 
 Install the latest stable release of `flink-ml-tensorflow-2.x`
 ```bash
-python3 -m pip install flink-ml-tensorflow-2.x
+python3 -m pip install --upgrade flink-ml-tensorflow-2.x
 ```
 
 ## Starting Local Standalone Cluster
