@@ -21,7 +21,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>flink_ai_extended</artifactId>
+        <artifactId>dl-on-flink</artifactId>
         <groupId>org.flinkextended</groupId>
         <version>0.5.0-SNAPSHOT</version>
     </parent>
@@ -32,11 +32,11 @@
         <javacpp.platform.extension></javacpp.platform.extension>
     </properties>
 
-    <artifactId>flink-ml-lib</artifactId>
+    <artifactId>dl-on-flink-lib</artifactId>
     <dependencies>
         <dependency>
             <groupId>org.flinkextended</groupId>
-            <artifactId>flink-ml-operator</artifactId>
+            <artifactId>dl-on-flink-operator</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>

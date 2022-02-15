@@ -7,7 +7,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.flinkextended</groupId>
-    <artifactId>flink_ai_extended</artifactId>
+    <artifactId>dl-on-flink</artifactId>
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
     <version>0.5.0-SNAPSHOT</version>
@@ -57,15 +57,15 @@
     </distributionManagement>
 
     <modules>
-        <module>flink-ml-framework</module>
-        <module>flink-ml-operator</module>
-        <module>flink-ml-tensorflow</module>
-        <module>flink-ml-tensorflow-2.x</module>
-        <module>flink-ml-tensorflow-common</module>
-        <module>flink-ml-pytorch</module>
-        <module>flink-ml-examples</module>
-        <module>flink-ml-lib</module>
-        <module>flink-ml-dist</module>
+        <module>dl-on-flink-framework</module>
+        <module>dl-on-flink-operator</module>
+        <module>dl-on-flink-tensorflow</module>
+        <module>dl-on-flink-tensorflow-2.x</module>
+        <module>dl-on-flink-tensorflow-common</module>
+        <module>dl-on-flink-pytorch</module>
+        <module>dl-on-flink-examples</module>
+        <module>dl-on-flink-lib</module>
+        <module>dl-on-flink-dist</module>
     </modules>
 
     <properties>
