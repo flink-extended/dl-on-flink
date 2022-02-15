@@ -71,7 +71,7 @@ public class AppMasterServerTest {
 
 	private static class DummyNodeServer {
 
-		private static final long timeout = Duration.ofSeconds(30).toMillis();
+		private static final long timeout = Duration.ofSeconds(60).toMillis();
 
 		private final MLContext mlContext;
 		private final Server server;
@@ -157,11 +157,17 @@ public class AppMasterServerTest {
 
 		public void waitForAMStatus(AMStatus target) {
 			long deadline = System.currentTimeMillis() + timeout;
-			while (amClient.getAMStatus() != target) {
+			AMStatus currentStatus = amClient.getAMStatus();
+			while (currentStatus != target) {
 				if (System.currentTimeMillis() > deadline) {
-					throw new RuntimeException("Timed out waiting for status:" + target);
+					throw new RuntimeException(
+							String.format(
+									"Timed out waiting for status: " +
+											"%s current status: %s",
+									target, currentStatus));
 				}
 				Thread.yield();
+				currentStatus = amClient.getAMStatus();
 			}
 		}
 
