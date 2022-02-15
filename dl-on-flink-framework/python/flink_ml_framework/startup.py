@@ -21,10 +21,10 @@ import threading
 import ctypes
 import logging
 import traceback
-from flink_ml_framework import context
+from dl_on_flink_framework import context
 import grpc
-from flink_ml_framework import node_pb2
-from flink_ml_framework import node_service_pb2_grpc
+from dl_on_flink_framework import node_pb2
+from dl_on_flink_framework import node_service_pb2_grpc
 
 
 def parse_dir_script(script_path):

@@ -26,7 +26,7 @@ import math
 import numpy
 import json
 import sys
-from flink_ml_tensorflow.tensorflow_context import TFContext
+from dl_on_flink_tensorflow.tensorflow_context import TFContext
 
 
 def test_log(message):

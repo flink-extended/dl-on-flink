@@ -18,9 +18,9 @@ import os
 from datetime import datetime
 from sys import argv
 
-from flink_ml_tensorflow.tensorflow_TFConfig import TFConfig
-from flink_ml_tensorflow.tensorflow_on_flink_mlconf import MLCONSTANTS
-from flink_ml_tensorflow.tensorflow_on_flink_table import train
+from dl_on_flink_tensorflow.tensorflow_TFConfig import TFConfig
+from dl_on_flink_tensorflow.tensorflow_on_flink_mlconf import MLCONSTANTS
+from dl_on_flink_tensorflow.tensorflow_on_flink_table import train
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment
 

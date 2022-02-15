@@ -17,8 +17,8 @@
 import json
 import os
 import tensorflow as tf
-from flink_ml_tensorflow import tensorflow_on_flink_ops as flink_ops
-from flink_ml_framework.context import Context
+from dl_on_flink_tensorflow import tensorflow_on_flink_ops as flink_ops
+from dl_on_flink_framework.context import Context
 
 
 class TFContext(Context):

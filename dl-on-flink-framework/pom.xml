@@ -203,7 +203,7 @@
     <build>
         <resources>
             <resource>
-                <directory>${project.basedir}/python/flink_ml_framework/</directory>
+                <directory>${project.basedir}/python/dl_on_flink_framework/</directory>
                 <includes>
                     <include>startup.py</include>
                 </includes>

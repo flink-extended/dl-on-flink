@@ -17,7 +17,7 @@
 from __future__ import print_function
 import sys
 import time
-from flink_ml_tensorflow.tensorflow_context import TFContext
+from dl_on_flink_tensorflow.tensorflow_context import TFContext
 
 def map_func(context):
     tf_context = TFContext(context)

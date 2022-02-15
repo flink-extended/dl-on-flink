@@ -16,7 +16,7 @@
 
 import tensorflow as tf
 
-from flink_ml_tensorflow.tensorflow_context import TFContext
+from dl_on_flink_tensorflow.tensorflow_context import TFContext
 
 model_dir = "/tmp/model"
 

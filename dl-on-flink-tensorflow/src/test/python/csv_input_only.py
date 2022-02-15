@@ -22,7 +22,7 @@ import json
 from tensorflow.python.summary.writer.writer_cache import FileWriterCache as SummaryWriterCache
 import tensorflow_on_flink.tensorflow_on_flink_ops as tff_ops
 import traceback
-from flink_ml_tensorflow.tensorflow_context import TFContext
+from dl_on_flink_tensorflow.tensorflow_context import TFContext
 
 
 def map_fun(context):

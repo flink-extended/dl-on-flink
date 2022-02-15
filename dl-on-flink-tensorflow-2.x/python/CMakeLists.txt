@@ -8,14 +8,14 @@ set(PYTHON_LIB_SUFFIX ".so")
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
-project(flink_ml_tensorflow)
+project(dl_on_flink_tensorflow)
 
 #add cmake modules
 find_package(Threads REQUIRED)
 
-set(MEM_QUEUE_DIR "${PROJECT_SOURCE_DIR}/flink_ml_tensorflow/include/")
+set(MEM_QUEUE_DIR "${PROJECT_SOURCE_DIR}/dl_on_flink_tensorflow/include/")
 include_directories("${MEM_QUEUE_DIR}")
-set(SRCDIR "${PROJECT_SOURCE_DIR}/flink_ml_tensorflow/ops/")
+set(SRCDIR "${PROJECT_SOURCE_DIR}/dl_on_flink_tensorflow/ops/")
 
 set(NATIVE_FILES "${MEM_QUEUE_DIR}/spscqueue.h"
 		"${SRCDIR}/queue_file_system.h"

@@ -20,8 +20,8 @@ from pyflink.ml.core.api import Estimator, Model
 from pyflink.ml.core.param import Param
 from pyflink.ml.util import read_write_utils
 
-from flink_ml_tensorflow.tensorflow_TFConfig import TFConfig
-from flink_ml_tensorflow.tensorflow_on_flink_table import train
+from dl_on_flink_tensorflow.tensorflow_TFConfig import TFConfig
+from dl_on_flink_tensorflow.tensorflow_on_flink_table import train
 from pyflink.common import Row
 from pyflink.datastream.stream_execution_environment import \
     StreamExecutionEnvironment

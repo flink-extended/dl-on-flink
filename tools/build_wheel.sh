@@ -29,23 +29,23 @@ if [[ ! -d ${distPath} ]]; then
   mkdir ${distPath}
 fi
 
-echo '############## building flink_ml_framework ##############'
+echo '############## building dl_on_flink_framework ##############'
 frameworkPath=${basePath}/../dl-on-flink-framework/python/
 cd ${frameworkPath} && [ -d ./build ] && echo "removing previous build dir" && rm -rf ./build
 ${PY} setup.py bdist_wheel
 cp ${frameworkPath}/dist/* ${distPath}/
-rm -rf ${frameworkPath}/build/ ${frameworkPath}/dist/ ${frameworkPath}/flink_ml_framework.egg-info
+rm -rf ${frameworkPath}/build/ ${frameworkPath}/dist/ ${frameworkPath}/dl_on_flink_framework.egg-info
 
-echo '############## building flink_ml_tensorflow ##############'
+echo '############## building dl_on_flink_tensorflow ##############'
 tensorflowPath=${basePath}/../dl-on-flink-tensorflow/python/
 cd ${tensorflowPath} && [ -d ./build ] && echo "removing previous build dir" && rm -rf ./build
 ${PY} setup.py bdist_wheel
 cp ${tensorflowPath}/dist/* ${distPath}/
-rm -rf ${tensorflowPath}/build/ ${tensorflowPath}/dist/ ${tensorflowPath}/flink_ml_tensorflow.egg-info
+rm -rf ${tensorflowPath}/build/ ${tensorflowPath}/dist/ ${tensorflowPath}/dl_on_flink_tensorflow.egg-info
 
-echo '############## building flink_ml_tensorflow-2.x ##############'
+echo '############## building dl_on_flink_tensorflow-2.x ##############'
 tensorflowPath2=${basePath}/../dl-on-flink-tensorflow-2.x/python/
 cd ${tensorflowPath2} && [ -d ./build ] && echo "removing previous build dir" && rm -rf ./build
 ${PY} setup.py bdist_wheel
 cp ${tensorflowPath2}/dist/* ${distPath}/
-rm -rf ${tensorflowPath2}/build/ ${tensorflowPath2}/dist/ ${tensorflowPath2}/flink_ml_tensorflow.egg-info
+rm -rf ${tensorflowPath2}/build/ ${tensorflowPath2}/dist/ ${tensorflowPath2}/dl_on_flink_tensorflow.egg-info

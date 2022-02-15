@@ -20,10 +20,10 @@ from pyflink.datastream.stream_execution_environment import StreamExecutionEnvir
 from pyflink.table import StreamTableEnvironment, CsvTableSink, WriteMode
 from pyflink.table.table import TableSchema
 
-from flink_ml_tensorflow.tensorflow_TFConfig import TFConfig
-from flink_ml_tensorflow.tensorflow_on_flink_table import train, inference
-from flink_ml_tensorflow.tensorflow_on_flink_tfconf import TFCONSTANS
-from flink_ml_tensorflow.tensorflow_on_flink_mlconf import MLCONSTANTS
+from dl_on_flink_tensorflow.tensorflow_TFConfig import TFConfig
+from dl_on_flink_tensorflow.tensorflow_on_flink_table import train, inference
+from dl_on_flink_tensorflow.tensorflow_on_flink_tfconf import TFCONSTANS
+from dl_on_flink_tensorflow.tensorflow_on_flink_mlconf import MLCONSTANTS
 from pyflink.table.sources import CsvTableSource
 from pyflink.table.types import DataTypes
 

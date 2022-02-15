@@ -41,9 +41,9 @@ import unittest
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment, DataTypes, Table, TableDescriptor, Schema
 
-from flink_ml_tensorflow.tensorflow_TFConfig import TFConfig
-from flink_ml_tensorflow.tensorflow_on_flink_ml import TensorflowEstimator, TensorflowModel
-from flink_ml_tensorflow.tensorflow_on_flink_mlconf import MLCONSTANTS
+from dl_on_flink_tensorflow.tensorflow_TFConfig import TFConfig
+from dl_on_flink_tensorflow.tensorflow_on_flink_ml import TensorflowEstimator, TensorflowModel
+from dl_on_flink_tensorflow.tensorflow_on_flink_mlconf import MLCONSTANTS
 
 logger = logging.getLogger(__name__)
 

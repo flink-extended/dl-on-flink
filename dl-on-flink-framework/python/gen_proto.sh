@@ -25,7 +25,7 @@ DIR=$(cd "$DIR"; pwd)
 
 PYTHON_ROOT_DIR="${DIR}"
 PROTO_DIR=$(cd "$DIR/../src/proto"; pwd)
-PROTO_OUT_DIR="${PYTHON_ROOT_DIR}"/flink_ml_framework
+PROTO_OUT_DIR="${PYTHON_ROOT_DIR}"/dl_on_flink_framework
 
 echo "Generating protobuf from proto file in ${PROTO_DIR} to ${PROTO_OUT_DIR}"
 

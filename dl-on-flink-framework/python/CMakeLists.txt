@@ -8,10 +8,10 @@ set(PYBIND11_CPP_STANDARD -std=c++11)
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
-project(flink_ml_framework)
+project(dl_on_flink_framework)
 
-set(SRCDIR "${PROJECT_SOURCE_DIR}/flink_ml_framework")
-include_directories(${PROJECT_SOURCE_DIR}/flink_ml_framework/include)
+set(SRCDIR "${PROJECT_SOURCE_DIR}/dl_on_flink_framework")
+include_directories(${PROJECT_SOURCE_DIR}/dl_on_flink_framework/include)
 set(NATIVE_FILES "${SRCDIR}/include/spscqueue.h"  "${SRCDIR}/include/java_file.h")
 set(PYBIND_FILES "${SRCDIR}/ops/java_file_python_binding.cc")
 
@@ -20,7 +20,7 @@ add_subdirectory(lib/pybind11-2.2.4)
 
 find_package(Threads REQUIRED)
 
-add_library(nativeimpl OBJECT ${NATIVE_FILES} flink_ml_framework/include/rw_test.h)
+add_library(nativeimpl OBJECT ${NATIVE_FILES} dl_on_flink_framework/include/rw_test.h)
 
 message(STATUS "####### ${PYBIND_FILES}")
 add_library(java_file_c SHARED ${PYBIND_FILES} $<TARGET_OBJECTS:nativeimpl>)

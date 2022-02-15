@@ -26,12 +26,12 @@ from setuptools import setup, find_packages, Extension
 from setuptools.command.build_ext import build_ext
 
 this_directory = os.path.abspath(os.path.dirname(__file__))
-version_file = os.path.join(this_directory, 'flink_ml_framework/version.py')
+version_file = os.path.join(this_directory, 'dl_on_flink_framework/version.py')
 
 try:
     exec(open(version_file).read())
 except IOError:
-    print("Failed to load flink_ml_framework version file for packaging. " +
+    print("Failed to load dl_on_flink_framework version file for packaging. " +
           "'%s' not found!" % version_file,
           file=sys.stderr)
     sys.exit(-1)
@@ -110,7 +110,7 @@ setup(
     python_requires=">=3.6,<3.9",
     include_package_data=True,
     packages=find_packages(),
-    ext_modules=[CMakeExtension('flink_ml_framework/flink_ml_framework')],
+    ext_modules=[CMakeExtension('dl_on_flink_framework/dl_on_flink_framework')],
     install_requires=['grpcio>=1.24.3', 'protobuf<3.18'],
     cmdclass=dict(build_ext=CMakeBuild),
     zip_safe=False,

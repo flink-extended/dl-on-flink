@@ -25,7 +25,7 @@ import math
 import numpy
 import json
 import sys
-from flink_ml_tensorflow.tensorflow_context import TFContext
+from dl_on_flink_tensorflow.tensorflow_context import TFContext
 
 
 def export_saved_model(sess, export_dir, tag_set, signatures):

@@ -18,7 +18,7 @@ import tensorflow as tf
 import sys
 import time
 from tensorflow.python.summary.writer.writer_cache import FileWriterCache as SummaryWriterCache
-from flink_ml_tensorflow.tensorflow_context import TFContext
+from dl_on_flink_tensorflow.tensorflow_context import TFContext
 
 
 def build_graph():

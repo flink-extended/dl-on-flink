@@ -17,7 +17,7 @@
 from __future__ import print_function
 import sys
 import traceback
-from flink_ml_framework.java_file import JavaFile
+from dl_on_flink_framework.java_file import JavaFile
 import json
 import struct
 
