@@ -96,15 +96,13 @@ enough for this quick start guide.
 ```
 
 You should be able to navigate to the web UI at 
-`http://<job manager ip address>:8081` to view the Flink dashboard and see that 
+`http://localhost:8081` to view the Flink dashboard and see that 
 the cluster is up and running.
 
 ## Submit a Flink Job
 
-The examples are included in the binary release.  You can download the binary 
-release from [release](https://github.com/flink-extended/dl-on-flink/releases).
-
-You can run the following command to submit the job.
+The examples are included in the binary release. You can run the following
+command to submit the job.
 
 ```sh
 ./bin/flink run \
