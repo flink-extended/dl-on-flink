@@ -114,12 +114,26 @@ The examples are included in the binary release. You can run the following
 command to submit the job.
 
 ```sh
+export MODEL_PATH="${PWD}"/./$(date +%Y%m%d%H%M)
+
 ./bin/flink run \
-  -py ${DL_ON_FLINK_DIR}/examples/tensorflow-on-flink/linear/flink_job.py \
-  --jarfile ${DL_ON_FLINK_DIR}/lib/dl-on-flink-tensorflow-0.4.0-jar-with-dependencies.jar
+  -py "${DL_ON_FLINK_DIR}"/examples/tensorflow-on-flink/linear/flink_job.py \
+  --jarfile "${DL_ON_FLINK_DIR}"/lib/dl-on-flink-tensorflow-0.4.0-jar-with-dependencies.jar \
+  --model-path "${MODEL_PATH}"
 ```
 
 After the job is submitted successfully, you should see the job at running state
 in the Flink web ui.
 
-If the job is finished, you will see the model saved at `/tmp/linear`.
+If the job is finished, you will see the model saved at `$MODEL_PATH`.
+
+Now you can submit another Flink job to use the trained linear model to do
+inference.
+
+```sh
+
+./bin/flink run \
+  -py "${DL_ON_FLINK_DIR}"/examples/tensorflow-on-flink/linear/inference.py \ 
+  --model-path "${MODEL_PATH}"
+
+```
