@@ -45,14 +45,14 @@ pip install ${TENSORFLOW}
 #pip install -i https://pypi.doubanio.com/simple torch torchvision
 # pip install torch==1.1.0
 # download torch slow so use aliyun address
-# pip install http://etaose.oss-cn-hangzhou-zmf.aliyuncs.com/test/flink-ml/package/torch-1.0.1.post2-cp27-cp27mu-manylinux1_x86_64.whl
-#pip install http://etaose.oss-cn-hangzhou-zmf.aliyuncs.com/test/flink-ml/package/torch-1.1.0-cp27-cp27mu-manylinux1_x86_64.whl
+# pip install http://etaose.oss-cn-hangzhou-zmf.aliyuncs.com/test/dl-on-flink/package/torch-1.0.1.post2-cp27-cp27mu-manylinux1_x86_64.whl
+#pip install http://etaose.oss-cn-hangzhou-zmf.aliyuncs.com/test/dl-on-flink/package/torch-1.1.0-cp27-cp27mu-manylinux1_x86_64.whl
 pip install torch==1.1.0
 pip install ${TORCH}
 #pip install torchvision==0.3.0
-cd /opt/work_home/flink-ml-framework/python
+cd /opt/work_home/dl-on-flink-framework/python
 pip install .
-cd /opt/work_home/flink-ml-tensorflow/python
+cd /opt/work_home/dl-on-flink-tensorflow/python
 pip install .
 cd /opt/work_home/temp/test
 deactivate

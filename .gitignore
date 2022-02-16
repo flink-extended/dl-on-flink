@@ -40,8 +40,6 @@ deep-learning-on-flink/**/bin
 *.iml
 local.properties
 gradleBuild
-deep-learning-on-flink/flink-ml-framework/python/flink_ml_framework/*pb2.py
-deep-learning-on-flink/flink-ml-framework/python/flink_ml_framework/*pb2_grpc.py
 
 core/python/cmake-build-debug
 

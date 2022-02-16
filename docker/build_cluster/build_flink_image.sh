@@ -19,4 +19,4 @@
 ##
 basePath=$(cd `dirname $0`; pwd)
 
-cd ${basePath}/../flink/ && docker build -t flink-ml/flink:latest .
+cd ${basePath}/../flink/ && docker build -t dl-on-flink/flink:latest .

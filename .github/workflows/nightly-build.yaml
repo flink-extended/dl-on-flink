@@ -43,8 +43,8 @@ jobs:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
       - uses: actions/upload-artifact@v2
         with:
-          name: flink-ml-dist
-          path: flink-ml-dist/target/flink-ml-dist-*-bin
+          name: dl-on-flink-dist
+          path: dl-on-flink-dist/target/dl-on-flink-dist-*-bin
   build-linux-nightly-wheel:
     name: Build python${{ matrix.python-version }} ${{ matrix.package }} wheels on ubuntu-20.04
     runs-on: ubuntu-20.04
@@ -53,11 +53,11 @@ jobs:
       matrix:
         python-version: [ 3.7, 3.8 ]
         package:
-          - flink-ml-framework
-          - flink-ml-tensorflow
-          - flink-ml-tensorflow-2.x
+          - dl-on-flink-framework
+          - dl-on-flink-tensorflow
+          - dl-on-flink-tensorflow-2.x
         exclude:
-          - package: flink-ml-tensorflow
+          - package: dl-on-flink-tensorflow
             python-version: 3.8
     steps:
       - uses: actions/checkout@v2
@@ -81,11 +81,11 @@ jobs:
       matrix:
         python-version: [ 3.7, 3.8 ]
         package:
-          - flink-ml-framework
-          - flink-ml-tensorflow
-          - flink-ml-tensorflow-2.x
+          - dl-on-flink-framework
+          - dl-on-flink-tensorflow
+          - dl-on-flink-tensorflow-2.x
         exclude:
-          - package: flink-ml-tensorflow
+          - package: dl-on-flink-tensorflow
             python-version: 3.8
     steps:
       - uses: actions/checkout@v2
@@ -116,13 +116,13 @@ jobs:
         os: [ macOS-10.15, ubuntu-20.04 ]
         python-version: [ 3.7, 3.8 ]
         package:
-          - flink-ml-framework
-          - flink-ml-tensorflow
-          - flink-ml-tensorflow-2.x
+          - dl-on-flink-framework
+          - dl-on-flink-tensorflow
+          - dl-on-flink-tensorflow-2.x
         exclude:
-          - package: flink-ml-tensorflow
+          - package: dl-on-flink-tensorflow
             python-version: 3.8
-          - package: flink-ml-tensorflow-2.x
+          - package: dl-on-flink-tensorflow-2.x
             python-version: 3.6
     steps:
       - uses: actions/checkout@v2

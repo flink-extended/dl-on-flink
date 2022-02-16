@@ -11,14 +11,14 @@ jobs:
       fail-fast: false
       matrix:
         modules:
-          - flink-ml-framework
-          - flink-ml-operator
-          - flink-ml-tensorflow-common
-          - flink-ml-tensorflow
-          - flink-ml-tensorflow-2.x
-          - flink-ml-pytorch
-          - flink-ml-lib
-          - flink-ml-examples
+          - dl-on-flink-framework
+          - dl-on-flink-operator
+          - dl-on-flink-tensorflow-common
+          - dl-on-flink-tensorflow
+          - dl-on-flink-tensorflow-2.x
+          - dl-on-flink-pytorch
+          - dl-on-flink-lib
+          - dl-on-flink-examples
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 8
