@@ -60,7 +60,7 @@ then extract the archive:
 ```sh
 curl -LO https://github.com/flink-extended/dl-on-flink/releases/download/0.4.0/flink-ml-dist-0.4.0-bin.tgz
 tar -xzf flink-ml-dist-0.4.0-bin.tgz
-export DL_ON_FLINK_DIR="${PWD}"/flink-ml-dist-0.4.0
+export DL_ON_FLINK_DIR="${PWD}"/./flink-ml-dist-0.4.0
 ```
 
 Navigate to the extracted directory, you should see the following directory 
