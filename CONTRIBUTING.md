@@ -14,11 +14,11 @@ Before sending your pull requests, make sure you followed this list.
 - Implement/fix your feature, comment your code.
 - Follow the code style of the project, including indentation.
 
-   [java example](flink-ml-framework/src/main/java/com/alibaba/flink/ml/cluster/MLConfig.java)
+   [java example](dl-on-flink-framework/src/main/java/com/alibaba/flink/ml/cluster/MLConfig.java)
    
-   [python example](flink-ml-framework/python/flink_ml_framework/context.py)
+   [python example](dl-on-flink-framework/python/dl_on_flink_framework/context.py)
    
-   [c++ example](flink-ml-framework/python/flink_ml_framework/ops/java_file_python_binding.cc)
+   [c++ example](dl-on-flink-framework/python/dl_on_flink_framework/ops/java_file_python_binding.cc)
 - Run tests.
 - Write or adapt tests as needed.
 - Add or change the documentation as needed.

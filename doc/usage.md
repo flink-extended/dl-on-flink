@@ -24,15 +24,15 @@ virtual environment workflow is shown in the following figure:
 
 * **Developing Algorithmic Program** 
 
-    [TensorFlow](../flink-ml-examples/src/test/python/mnist_dist.py)
+    [TensorFlow](../dl-on-flink-examples/src/test/python/mnist_dist.py)
 
-    [PyTorch](../flink-ml-examples/src/test/python/all_reduce_test.py)
+    [PyTorch](../dl-on-flink-examples/src/test/python/all_reduce_test.py)
 
 * **Developing Flink Job Program**
 
-    [TensorFlow Train](../flink-ml-examples/src/main/java/com/alibaba/flink/ml/examples/tensorflow/mnist/MnistDist.java) 
+    [TensorFlow Train](../dl-on-flink-examples/src/main/java/com/alibaba/flink/ml/examples/tensorflow/mnist/MnistDist.java) 
     
-    [PyTorch Run](../flink-ml-examples/src/main/java/com/alibaba/flink/ml/examples/pytorch/PyTorchRunDist.java)
+    [PyTorch Run](../dl-on-flink-examples/src/main/java/com/alibaba/flink/ml/examples/pytorch/PyTorchRunDist.java)
     
 * **Submit Flink job**
 

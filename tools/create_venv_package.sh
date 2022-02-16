@@ -31,9 +31,9 @@ cd ${basePath}
 . tfenv/bin/activate
 pip install grpcio six numpy wheel mock keras_applications keras_preprocessing
 pip install tensorflow==1.11.0
-cd ${sourcePath}/flink-ml-framework/python
+cd ${sourcePath}/dl-on-flink-framework/python
 pip install .
-cd ${sourcePath}/flink-ml-tensorflow/python
+cd ${sourcePath}/dl-on-flink-tensorflow/python
 pip install .
 cd ${basePath}
 deactivate

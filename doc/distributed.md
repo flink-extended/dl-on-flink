@@ -26,15 +26,15 @@
 
 * **Developing Algorithmic Program**
 
-  [TensorFlow](flink-ml-examples/src/test/python/mnist_dist.py)
+  [TensorFlow](dl-on-flink-examples/src/test/python/mnist_dist.py)
 
-  [PyTorch](flink-ml-examples/src/test/python/all_reduce_test.py)
+  [PyTorch](dl-on-flink-examples/src/test/python/all_reduce_test.py)
 
 * **Developing Flink Job Program**
 
-  [TensorFlow Train](flink-ml-examples/src/main/java/com/alibaba/flink/ml/examples/tensorflow/mnist/MnistDist.java)
+  [TensorFlow Train](dl-on-flink-examples/src/main/java/com/alibaba/flink/ml/examples/tensorflow/mnist/MnistDist.java)
 
-  [PyTorch Run](flink-ml-examples/src/main/java/com/alibaba/flink/ml/examples/pytorch/PyTorchRunDist.java)
+  [PyTorch Run](dl-on-flink-examples/src/main/java/com/alibaba/flink/ml/examples/pytorch/PyTorchRunDist.java)
 
 * **Submit Flink job**
 
@@ -124,24 +124,24 @@ sh download_mnist_data.sh
 
 * **Put train data to docker container**
 ```shell
-docker cp ${projectRoot}/flink-ml-examples/target/data/ flink-jm:/tmp/mnist_input 
+docker cp ${projectRoot}/dl-on-flink-examples/target/data/ flink-jm:/tmp/mnist_input 
 ```
 
 * **Package user python code**
 ```shell 
-cd ${projectRoot}/flink-ml-examples/target/
-mkdir code && cp ${projectRoot}/flink-ml-examples/src/test/python/* code/
-zip -r ${projectRoot}/flink-ml-examples/target/code.zip code
+cd ${projectRoot}/dl-on-flink-examples/target/
+mkdir code && cp ${projectRoot}/dl-on-flink-examples/src/test/python/* code/
+zip -r ${projectRoot}/dl-on-flink-examples/target/code.zip code
 ```
 
 * **Put code package to hdfs**
 ```shell 
-docker exec flink-jm /opt/hadoop-2.8.0/bin/hadoop fs -put -f /opt/work_home/flink-ml-examples/target/code.zip hdfs://minidfs:9000/user/root/
+docker exec flink-jm /opt/hadoop-2.8.0/bin/hadoop fs -put -f /opt/work_home/dl-on-flink-examples/target/code.zip hdfs://minidfs:9000/user/root/
 ```
 
 ### Submit train job
 ```shell 
-docker exec flink-jm flink run  -c org.flinkextended.flink.ml.examples.tensorflow.mnist.MnistDist /opt/work_home/flink-ml-examples/target/flink-ml-examples-0.3.0.jar --zk-conn-str minizk --mode StreamEnv --setup /opt/work_home/flink-ml-examples/src/test/python/mnist_data_setup.py --train mnist_dist.py --envpath hdfs://minidfs:9000/user/root/tfenv.zip --mnist-files /tmp/mnist_input --with-restart false --code-path hdfs://minidfs:9000/user/root/code.zip 
+docker exec flink-jm flink run  -c org.flinkextended.flink.ml.examples.tensorflow.mnist.MnistDist /opt/work_home/dl-on-flink-examples/target/dl-on-flink-examples-0.3.0.jar --zk-conn-str minizk --mode StreamEnv --setup /opt/work_home/dl-on-flink-examples/src/test/python/mnist_data_setup.py --train mnist_dist.py --envpath hdfs://minidfs:9000/user/root/tfenv.zip --mnist-files /tmp/mnist_input --with-restart false --code-path hdfs://minidfs:9000/user/root/code.zip 
 ```
 ### Visit Flink Cluster
 [Flink Cluster Address](http://localhost:8081)

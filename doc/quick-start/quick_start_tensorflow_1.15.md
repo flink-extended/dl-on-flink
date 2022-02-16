@@ -58,9 +58,9 @@ You can download the stable released binary release of Deep Learning on Flink,
 then extract the archive:
 
 ```sh
-curl -LO https://github.com/flink-extended/dl-on-flink/releases/download/0.4.0/flink-ml-dist-0.4.0-bin.tgz
-tar -xzf flink-ml-dist-0.4.0-bin.tgz
-export DL_ON_FLINK_DIR="${PWD}"/./flink-ml-dist-0.4.0
+curl -LO https://github.com/flink-extended/dl-on-flink/releases/download/0.4.0/dl-on-flink-dist-0.4.0-bin.tgz
+tar -xzf dl-on-flink-dist-0.4.0-bin.tgz
+export DL_ON_FLINK_DIR="${PWD}"/./dl-on-flink-dist-0.4.0
 ```
 
 Navigate to the extracted directory, you should see the following directory 
@@ -75,14 +75,14 @@ layout:
 In order to run Deep Learning on Flink job, we need install the python
 dependency with pip.
 
-Install the latest stable release of `flink-ml-framwork`
+Install the latest stable release of `dl-on-flink-framwork`
 ```bash
-python3 -m pip install --upgrade flink-ml-framework
+python3 -m pip install --upgrade dl-on-flink-framework
 ```
 
-Install the latest stable release of `flink-ml-tensorflow`
+Install the latest stable release of `dl-on-flink-tensorflow`
 ```bash
-python3 -m pip install --upgrade flink-ml-tensorflow
+python3 -m pip install --upgrade dl-on-flink-tensorflow
 ```
 
 ## Starting Local Standalone Cluster
@@ -116,7 +116,7 @@ command to submit the job.
 ```sh
 ./bin/flink run \
   -py ${DL_ON_FLINK_DIR}/examples/tensorflow-on-flink/linear/flink_job.py \
-  --jarfile ${DL_ON_FLINK_DIR}/lib/flink-ml-tensorflow-0.4.0-jar-with-dependencies.jar
+  --jarfile ${DL_ON_FLINK_DIR}/lib/dl-on-flink-tensorflow-0.4.0-jar-with-dependencies.jar
 ```
 
 After the job is submitted successfully, you should see the job at running state

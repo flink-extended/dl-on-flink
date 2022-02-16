@@ -95,7 +95,7 @@ def stream_train(context):
     :param context: The context passe by the framework, which could be used to
     construct the TFContext
     """
-    from flink_ml_tensorflow.tensorflow_context import TFContext
+    from dl_on_flink_tensorflow.tensorflow_context import TFContext
 
     # Set the TF_CONFIG for distributed training
     tf_context = TFContext(context)
