@@ -63,10 +63,18 @@ if __name__ == '__main__':
         dest='model_path',
         required=True,
         help='Where the trained model should be saved')
+    parser.add_argument(
+        '--sample-count',
+        dest='sample_count',
+        required=False,
+        default=10,
+        help='Number of sample to inference. Default to 10'
+    )
     argv = sys.argv[1:]
     known_args, _ = parser.parse_known_args(argv)
 
     model_path = known_args.model_path
+    sample_count = known_args.sample_count
     logger.info("Inference with model at: {}".format(model_path))
 
     # Prepare Flink environment
@@ -84,16 +92,18 @@ if __name__ == '__main__':
                                         result_type=DataTypes.DOUBLE()))
 
     # Create the table of input for prediction
-    t_env.execute_sql("""
+    ddl = f"""
             CREATE TABLE src (
                 x FLOAT
             ) WITH (
                 'connector' = 'datagen',
                 'fields.x.min' = '0',
                 'fields.x.max' = '1',
+                'number-of-rows' = '{sample_count}',
                 'rows-per-second' = '1'
             )
-        """)
+        """
+    t_env.execute_sql(ddl)
 
     table = t_env.sql_query("SELECT x, 2 * x + 1, predict(x) FROM src") \
         .alias("x", "y", "predict")
