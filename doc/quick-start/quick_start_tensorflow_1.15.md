@@ -117,7 +117,7 @@ command to submit the Deep Learning on Flink job to train the linear model.
 export MODEL_PATH="${PWD}"/./linear
 
 ./bin/flink run \
-  -py "${DL_ON_FLINK_DIR}"/examples/tensorflow-on-flink/linear/flink_job.py \
+  -py "${DL_ON_FLINK_DIR}"/examples/tensorflow-on-flink/linear/flink_train.py \
   --jarfile "${DL_ON_FLINK_DIR}"/lib/dl-on-flink-tensorflow-0.4.0-jar-with-dependencies.jar \
   --model-path "${MODEL_PATH}"
 ```
@@ -135,7 +135,7 @@ inference.
 ```sh
 
 ./bin/flink run \
-  -py "${DL_ON_FLINK_DIR}"/examples/tensorflow-on-flink/linear/inference.py \ 
+  -py "${DL_ON_FLINK_DIR}"/examples/tensorflow-on-flink/linear/flink_inference.py \ 
   --model-path "${MODEL_PATH}"
 
 ```
