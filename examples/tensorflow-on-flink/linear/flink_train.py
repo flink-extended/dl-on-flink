@@ -13,10 +13,11 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-
+import argparse
+import logging
 import os
+import sys
 from datetime import datetime
-from sys import argv
 
 from dl_on_flink_tensorflow.tensorflow_TFConfig import TFConfig
 from dl_on_flink_tensorflow.tensorflow_on_flink_mlconf import MLCONSTANTS
@@ -24,11 +25,24 @@ from dl_on_flink_tensorflow.tensorflow_on_flink_table import train
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment
 
+logger = logging.getLogger(__file__)
+
 if __name__ == '__main__':
-    datetime_str = datetime.now().strftime("%Y%m%d%H%M")
-    model_save_path = f"/tmp/linear/{datetime_str}"
-    if len(argv) >= 2:
-        model_save_path = argv[1]
+    logging.basicConfig(stream=sys.stdout, level=logging.INFO,
+                        format="%(message)s")
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '--model-path',
+        dest='model_path',
+        required=False,
+        default=f"/tmp/linear/{datetime.now().strftime('%Y%m%d%H%M')}",
+        help='Where the trained model should be saved')
+    argv = sys.argv[1:]
+    known_args, _ = parser.parse_known_args(argv)
+
+    model_save_path = known_args.model_path
+    logger.info("Model will be saved at: {}".format(model_save_path))
 
     # Prepare Flink environment
     env = StreamExecutionEnvironment.get_execution_environment()

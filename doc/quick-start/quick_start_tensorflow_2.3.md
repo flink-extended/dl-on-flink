@@ -108,18 +108,34 @@ You should be able to navigate to the web UI at
 `http://localhost:8081` to view the Flink dashboard and see that 
 the cluster is up and running.
 
-## Submit a Flink Job
+## Model Train
 
 The examples are included in the binary release. You can run the following
-command to submit the job.
+command to submit the Deep Learning on Flink job to train the linear model.
 
 ```sh
+export MODEL_PATH="${PWD}"/./linear
+
 ./bin/flink run \
-  -py ${DL_ON_FLINK_DIR}/examples/tensorflow-on-flink/linear/flink_job.py \
-  --jarfile ${DL_ON_FLINK_DIR}/lib/dl-on-flink-tensorflow-2.x-0.4.0-jar-with-dependencies.jar
+  -py "${DL_ON_FLINK_DIR}"/examples/tensorflow-on-flink/linear/flink_train.py \
+  --jarfile "${DL_ON_FLINK_DIR}"/lib/dl-on-flink-tensorflow-2.x-0.4.0-jar-with-dependencies.jar \
+  --model-path "${MODEL_PATH}"
 ```
 
 After the job is submitted successfully, you should see the job at running state
 in the Flink web ui.
 
-If the job is finished, you will see the model saved at `/tmp/linear`.
+If the job is finished, you will see the model saved at `$MODEL_PATH`.
+
+## Inference
+
+Now you can submit another Flink job to use the trained linear model to do
+inference.
+
+```sh
+
+./bin/flink run \
+  -py "${DL_ON_FLINK_DIR}"/examples/tensorflow-on-flink/linear/flink_inference.py \ 
+  --model-path "${MODEL_PATH}"
+
+```
