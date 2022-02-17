@@ -33,7 +33,8 @@ DL_ON_FLINK_BIN=$(realpath "${DL_ON_FLINK_BIN}")
 DL_ON_FLINK_WHEEL_DIR=$(realpath "${DL_ON_FLINK_WHEEL_DIR}")
 
 # Download Flink
-curl -LO https://dlcdn.apache.org/flink/flink-1.14.3/flink-1.14.3-bin-scala_2.11.tgz
+FLINK_BIN=flink-1.14.3-bin-scala_2.11.tgz
+[ -f ${FLINK_BIN} ] || curl -LO https://dlcdn.apache.org/flink/flink-1.14.3/flink-1.14.3-bin-scala_2.11.tgz
 tar -xzf flink-1.14.3-bin-scala_2.11.tgz
 
 # Un-tar DL on Flink
