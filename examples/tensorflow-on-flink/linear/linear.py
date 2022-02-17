@@ -87,6 +87,7 @@ def train(dataset_provider: Callable[[], tf.data.Dataset],
     print(weight)
 
     model.save(model_save_path, save_format="tf")
+    print("model saved at: {}".format(model_save_path))
 
 
 def stream_train(context):
