@@ -1,0 +1,256 @@
+name: Prepare Release
+on:
+  workflow_dispatch:
+jobs:
+  build-and-test:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        modules:
+          - dl-on-flink-framework
+          - dl-on-flink-operator
+          - dl-on-flink-tensorflow-common
+          - dl-on-flink-tensorflow
+          - dl-on-flink-tensorflow-2.x
+          - dl-on-flink-pytorch
+          - dl-on-flink-lib
+          - dl-on-flink-examples
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Set up JDK 8
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+      - name: Set up python 3.7
+        uses: actions/setup-python@v2
+        with:
+          # Semantic version range syntax or exact version of a Python version
+          python-version: '3.7'
+          # Optional - x64 or x86 architecture, defaults to x64
+          architecture: 'x64'
+      - name: Install Python dependencies
+        run: |
+          pip install -U --user wheel
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: build
+        run: |
+          mvn -B install -pl ${{ matrix.modules }} -am -DskipTests -Dfast -Pinstall-py-dep
+      - name: test
+        env:
+          TF_ON_FLINK_IP: 127.0.0.1
+        run: |
+          mvn -B test -pl ${{ matrix.modules }}
+  build-and-upload-bin:
+    needs: build-and-test
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Set up JDK 8
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+      - name: Build bin
+        run: mvn -B clean package -DskipTests
+      - uses: actions/upload-artifact@v2
+        with:
+          name: dl-on-flink-dist
+          path: dl-on-flink-dist/target/dl-on-flink-dist-*-bin.tgz
+  build-linux-wheel:
+    name: Build python${{ matrix.python-version }} ${{ matrix.package }} wheels on ubuntu-20.04
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ 3.7, 3.8 ]
+        package:
+          - dl-on-flink-framework
+          - dl-on-flink-tensorflow
+          - dl-on-flink-tensorflow-2.x
+        exclude:
+          - package: dl-on-flink-tensorflow
+            python-version: 3.8
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Build python${{ matrix.python-version }} ${{ matrix.package }} wheels
+        run: |
+          docker run -i --rm -v $PWD:/v -w /v -e 'NIGHTLY_WHEEL=true' --net=host quay.io/pypa/manylinux2010_x86_64 \
+            bash -c 'cd /v/${{ matrix.package }}/python \
+              && python${{ matrix.python-version }} setup.py bdist_wheel \
+              && for f in dist/*.whl; do echo repairing $f && bash -x -e /v/tools/auditwheel repair --plat manylinux2010_x86_64 -w /v/wheelhouse/ $f; done'
+      - uses: actions/upload-artifact@v2
+        with:
+          name: dl-on-flink-wheels
+          path: ./wheelhouse/*.whl
+  build-macos-wheel:
+    name: Build python${{ matrix.python-version }} ${{ matrix.package }} wheels on macOS-10.15
+    runs-on: macos-10.15
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ 3.7, 3.8 ]
+        package:
+          - dl-on-flink-framework
+          - dl-on-flink-tensorflow
+          - dl-on-flink-tensorflow-2.x
+        exclude:
+          - package: dl-on-flink-tensorflow
+            python-version: 3.8
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Build python${{ matrix.python-version }} ${{ matrix.package }} wheels on macOS-10.15
+        run: |
+          pip install wheel auditwheel
+          export ROOT_DIR=$PWD
+          mkdir $ROOT_DIR/wheelhouse
+          cd ${{ matrix.package }}/python
+          python setup.py bdist_wheel
+          cp dist/* $ROOT_DIR/wheelhouse
+      - uses: actions/upload-artifact@v2
+        with:
+          name: dl-on-flink-wheels
+          path: ./wheelhouse/*.whl
+  test-wheel:
+    name: Test python${{ matrix.python-version }} ${{ matrix.package }} wheels on ${{ matrix.os }}
+    needs: [ build-linux-wheel, build-macos-wheel ]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ macOS-10.15, ubuntu-20.04 ]
+        python-version: [ 3.7, 3.8 ]
+        package:
+          - dl-on-flink-framework
+          - dl-on-flink-tensorflow
+          - dl-on-flink-tensorflow-2.x
+        exclude:
+          - package: dl-on-flink-tensorflow
+            python-version: 3.8
+          - package: dl-on-flink-tensorflow-2.x
+            python-version: 3.6
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Set up JDK 8
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: actions/download-artifact@v2
+        with:
+          name: dl-on-flink-wheels
+          path: ./wheelhouse
+      - name: build
+        run: |
+          mvn -B install -pl ${{ matrix.package }} -am -DskipTests
+      - name: test
+        env:
+          TF_ON_FLINK_IP: 127.0.0.1
+        run: |
+          ls $PWD/wheelhouse
+          pip install ${{ matrix.package }} -f file://${PWD}/wheelhouse
+          mvn -B test -pl ${{ matrix.package }}
+  run-example:
+    needs: [ build-and-upload-bin, build-linux-wheel, build-macos-wheel ]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ macos-10.15, ubuntu-18.04, ubuntu-20.04 ]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Set up JDK 8
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - uses: actions/download-artifact@v2
+        with:
+          name: dl-on-flink-wheels
+          path: ./wheelhouse
+      - uses: actions/download-artifact@v2
+        with:
+          name: dl-on-flink-dist
+      - name: Install coreutil on Mac
+        if: ${{ matrix.os == 'macos-10.15' }}
+        run: brew install coreutils
+      - name: Run example on ${{ matrix.os }}
+        run: |
+          bash tools/run_example.sh dl-on-flink-*-bin.tgz wheelhouse
+  deploy-snapshot:
+    if: github.repository == 'flink-extended/dl-on-flink'
+    needs: [ run-example, test-wheel ]
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Set up python 3.7
+        uses: actions/setup-python@v2
+        with:
+          # Semantic version range syntax or exact version of a Python version
+          python-version: '3.7'
+          # Optional - x64 or x86 architecture, defaults to x64
+          architecture: 'x64'
+      - name: Install Python dependencies
+        run: |
+          pip install -U --user wheel
+      - name: Set up JDK 8
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+          server-id: oss_id
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+      - name: Publish release to stage
+        run: mvn -B clean deploy -DskipTests -Prelease
+        env:
+          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+      - uses: actions/upload-artifact@v2
+        with:
+          name: dl-on-flink-dist
+          path: dl-on-flink-dist/target/dl-on-flink-dist-*-bin.tgz
