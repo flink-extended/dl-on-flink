@@ -144,8 +144,7 @@ if __name__ == '__main__':
     # Set the TF_CONFIG for distributed training
     tf_config = {
         'cluster': {
-            # 'worker': ['localhost:2000', 'localhost:2001']
-            'worker': ['localhost:2000']
+            'worker': ['localhost:2000', 'localhost:2001']
         },
         'task': {'type': 'worker', 'index': int(argv[1])}
     }
