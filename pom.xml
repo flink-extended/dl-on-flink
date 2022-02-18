@@ -10,7 +10,7 @@
     <artifactId>dl-on-flink</artifactId>
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
-    <version>0.4.0-SNAPSHOT</version>
+    <version>0.4.0</version>
     <description>This project extends support for AI computing framework on Flink</description>
     <url>https://github.com/alibaba/flink-ai-extended</url>
     <licenses>

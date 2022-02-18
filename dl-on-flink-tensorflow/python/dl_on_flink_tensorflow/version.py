@@ -18,4 +18,4 @@
 The dl-on-flink-tensorflow version follows the PEP440.
 .. seealso:: https://www.python.org/dev/peps/pep-0440
 """
-__version__ = "0.4.0.dev0"
+__version__ = "0.4.0"
