@@ -37,6 +37,15 @@ to submit an example job to a local standalone Flink cluster.
 Deep Learning on Flink requires Java and Python works together. Thus, we need 
 to build for both Java and Python.
 
+### Initializing Submodules before Building Deep Learning on Flink from Source
+
+Please use the following command to initialize submodules before building 
+from source.
+
+```bash
+git submodule update --init --recursive
+```
+
 ### Build Java
 
 ```shell 
