@@ -15,15 +15,19 @@
 #  limitations under the License.
 
 import json
+import logging
 import os
+import shutil
 from datetime import datetime
 from sys import argv
-from typing import Callable
+from typing import Callable, List
 
 import numpy as np
 import tensorflow as tf
 
-print("TensorFlow version:", tf.__version__)
+logger = logging.getLogger(__file__)
+
+logger.info("TensorFlow version:", tf.__version__)
 is_tf2 = int(tf.__version__.split('.')[0]) == 2
 
 
@@ -37,6 +41,7 @@ class StepLogCallback(tf.keras.callbacks.Callback):
         Initialize StepLogCallBack
         :param steps: log every N steps
         """
+        super().__init__()
         self.steps = steps
         self._chief_worker_only = True
 
@@ -44,9 +49,54 @@ class StepLogCallback(tf.keras.callbacks.Callback):
         if batch % self.steps == 0:
             loss = logs['loss']
             if abs(loss) > 1e-3:
-                print("Step: {} Loss: {:.4f}".format(batch, loss))
+                logger.info("Step: {} Loss: {:.4f}".format(batch, loss))
             else:
-                print("Step: {} Loss: {:.4e}".format(batch, loss))
+                logger.info("Step: {} Loss: {:.4e}".format(batch, loss))
+
+
+class ModelSaveCallback(tf.keras.callbacks.Callback):
+    """
+    A Keras call back that save the model per given number of steps
+    """
+
+    def __init__(self, steps, model, model_save_path, is_chief):
+        """
+        Initialize ModelSaveCallback
+        :param steps: save the model every N steps
+        """
+        super().__init__()
+        self.steps = steps
+        self.model = model
+        if is_chief:
+            self.model_save_path = model_save_path
+        else:
+            # non chief worker save model to a temp path
+            self.model_save_path = os.path.join(model_save_path, "non-chief")
+        self.is_chief = is_chief
+        self._chief_worker_only = True
+
+    def on_train_batch_end(self, batch, logs=None):
+        if batch % self.steps == 0:
+            logger.info("saving model at step {}".format(batch))
+            self._save_model()
+
+    def on_train_end(self, logs=None):
+        if not self.is_chief:
+            return
+        if is_tf2:
+            weight = self.model.weights
+        else:
+            sess = tf.keras.backend.get_session()
+            weight = {w.name: sess.run(w) for w in self.model.weights}
+        logger.info(weight)
+
+    def _save_model(self):
+        self.model.save(self.model_save_path, save_format="tf")
+        if not self.is_chief:
+            # Removing the temp directory
+            shutil.rmtree(self.model_save_path, ignore_errors=True)
+            return
+        logger.info("model saved at: {}".format(self.model_save_path))
 
 
 def build_and_compile_model():
@@ -73,21 +123,19 @@ def train(dataset_provider: Callable[[], tf.data.Dataset],
         model_save_path = f"/tmp/linear/{datetime_str}"
 
     strategy = tf.distribute.experimental.MultiWorkerMirroredStrategy()
-    print('Number of devices: {}'.format(strategy.num_replicas_in_sync))
+    logger.info('Number of devices: {}'.format(strategy.num_replicas_in_sync))
     with strategy.scope():
         model = build_and_compile_model()
 
-    model.fit(dataset_provider(), verbose=2, callbacks=[StepLogCallback(100)])
+    config = json.loads(os.environ['TF_CONFIG'])
+    is_chief = config['task']['type'] == 'worker' and \
+        config['task']['index'] == 0
+    callbacks: List[tf.keras.callbacks.Callback] = \
+        [ModelSaveCallback(1000, model, model_save_path, is_chief)]
+    if is_chief:
+        callbacks = callbacks + [StepLogCallback(100)]
 
-    if is_tf2:
-        weight = model.weights
-    else:
-        sess = tf.keras.backend.get_session()
-        weight = {w.name: sess.run(w) for w in model.weights}
-    print(weight)
-
-    model.save(model_save_path, save_format="tf")
-    print("model saved at: {}".format(model_save_path))
+    model.fit(dataset_provider(), verbose=2, callbacks=callbacks)
 
 
 def stream_train(context):
@@ -106,7 +154,7 @@ def stream_train(context):
         'task': {'type': tf_context.get_role_name(),
                  'index': tf_context.get_index()}
     })
-    print(os.environ['TF_CONFIG'])
+    logger.info(os.environ['TF_CONFIG'])
 
     model_save_path = tf_context.get_property("model_save_path")
 
