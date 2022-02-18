@@ -1,0 +1,4 @@
+[submodule "dl-on-flink-framework/python/lib/pybind11"]
+	path = dl-on-flink-framework/python/lib/pybind11
+	url = git@github.com:pybind/pybind11.git
+	branch = stable
