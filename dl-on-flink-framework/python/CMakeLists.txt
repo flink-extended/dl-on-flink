@@ -16,7 +16,7 @@ set(NATIVE_FILES "${SRCDIR}/include/spscqueue.h"  "${SRCDIR}/include/java_file.h
 set(PYBIND_FILES "${SRCDIR}/ops/java_file_python_binding.cc")
 
 message (${NATIVE_FILES})
-add_subdirectory(lib/pybind11-2.2.4)
+add_subdirectory(lib/pybind11)
 
 find_package(Threads REQUIRED)
 
