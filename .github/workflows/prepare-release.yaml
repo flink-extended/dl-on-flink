@@ -93,7 +93,7 @@ jobs:
           submodules: true
       - name: Build python${{ matrix.python-version }} ${{ matrix.package }} wheels
         run: |
-          docker run -i --rm -v $PWD:/v -w /v -e 'NIGHTLY_WHEEL=true' --net=host quay.io/pypa/manylinux2010_x86_64 \
+          docker run -i --rm -v $PWD:/v -w /v --net=host quay.io/pypa/manylinux2010_x86_64 \
             bash -c 'cd /v/${{ matrix.package }}/python \
               && python${{ matrix.python-version }} setup.py bdist_wheel \
               && for f in dist/*.whl; do echo repairing $f && bash -x -e /v/tools/auditwheel repair --plat manylinux2010_x86_64 -w /v/wheelhouse/ $f; done'
