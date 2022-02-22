@@ -135,7 +135,7 @@ inference.
 ```sh
 
 ./bin/flink run \
-  -py "${DL_ON_FLINK_DIR}"/examples/tensorflow-on-flink/linear/flink_inference.py \ 
+  -py "${DL_ON_FLINK_DIR}"/examples/tensorflow-on-flink/linear/flink_inference.py \
   --model-path "${MODEL_PATH}"
 
 ```
