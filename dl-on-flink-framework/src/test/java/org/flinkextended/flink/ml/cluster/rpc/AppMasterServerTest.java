@@ -26,7 +26,6 @@ import org.flinkextended.flink.ml.proto.*;
 import org.flinkextended.flink.ml.cluster.role.AMRole;
 import org.flinkextended.flink.ml.cluster.role.PsRole;
 import org.flinkextended.flink.ml.cluster.role.WorkerRole;
-import org.flinkextended.flink.ml.util.*;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
@@ -350,6 +349,7 @@ public class AppMasterServerTest {
 
 		List<FutureTask<Void>> serverFutures = new ArrayList<>(numWorker);
 		// start workers
+		final AtomicBoolean clusterRunning = new AtomicBoolean(false);
 		for (int i = 0; i < numWorker; i++) {
 			MLContext tfContext = new MLContext(ExecutionMode.TRAIN, tfConfig, new WorkerRole().name(), i, null, null);
 			NodeServiceGrpc.NodeServiceImplBase service = mockNodeService();
@@ -359,10 +359,18 @@ public class AppMasterServerTest {
 				Assert.assertEquals(server.mlContext.getIdentity() + " register node failed",
 						RpcCode.OK.ordinal(), server.registerNode().getCode());
 				if(0 == index) {
+					server.waitForAMStatus(AMStatus.AM_RUNNING);
+					clusterRunning.set(true);
 					Assert.assertEquals(server.mlContext.getIdentity() + " re-register node failed",
 							RpcCode.OK.ordinal(), server.twiceRegisterNode().getCode());
 				}else {
-					server.waitForAMStatus(AMStatus.AM_RUNNING);
+					while (!clusterRunning.get()) {
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
 				}
 				Assert.assertEquals(server.mlContext.getIdentity() + " register node failed",
 						RpcCode.OK.ordinal(), server.registerNode().getCode());
