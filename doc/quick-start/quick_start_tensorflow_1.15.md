@@ -46,8 +46,8 @@ source venv/bin/activate
 Download a stable release of Flink 1.14, then extract the archive:
 
 ```sh
-curl -LO https://dlcdn.apache.org/flink/flink-1.14.3/flink-1.14.3-bin-scala_2.11.tgz
-tar -xzf flink-1.14.3-bin-scala_2.11.tgz
+curl -LO https://archive.apache.org/dist/flink/flink-1.14.4/flink-1.14.4-bin-scala_2.11.tgz
+tar -xzf flink-1.14.4-bin-scala_2.11.tgz
 ```
 
 Please refer to [guide](https://nightlies.apache.org/flink/flink-docs-release-1.14//docs/try-flink/local_installation/) 
@@ -93,7 +93,7 @@ config the `taskmanager.numberOfTaskSlots` at `config/flink-config.yaml` to 2
 with the following command.
 
 ```sh
-cd flink-1.14.3
+cd flink-1.14.4
 sed -i.bak 's/taskmanager.numberOfTaskSlots: 1/taskmanager.numberOfTaskSlots: 2/' ./conf/flink-conf.yaml
 ```
 
