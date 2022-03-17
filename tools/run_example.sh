@@ -33,9 +33,9 @@ DL_ON_FLINK_BIN=$(realpath "${DL_ON_FLINK_BIN}")
 DL_ON_FLINK_WHEEL_DIR=$(realpath "${DL_ON_FLINK_WHEEL_DIR}")
 
 # Download Flink
-FLINK_BIN=flink-1.14.3-bin-scala_2.11.tgz
-[ -f ${FLINK_BIN} ] || curl -LO https://dlcdn.apache.org/flink/flink-1.14.3/flink-1.14.3-bin-scala_2.11.tgz
-tar -xzf flink-1.14.3-bin-scala_2.11.tgz
+FLINK_BIN=flink-1.14.4-bin-scala_2.11.tgz
+[ -f ${FLINK_BIN} ] || curl -LO https://archive.apache.org/dist/flink/flink-1.14.4/flink-1.14.4-bin-scala_2.11.tgz
+tar -xzf flink-1.14.4-bin-scala_2.11.tgz
 
 # Un-tar DL on Flink
 tar -xzf "${DL_ON_FLINK_BIN}" --directory "${PWD}"
@@ -45,7 +45,7 @@ DL_ON_FLINK_DIR="${DL_ON_FLINK_DIR_ARRAY[0]}"
 pip install -f "${DL_ON_FLINK_WHEEL_DIR}" dl-on-flink-framework
 
 # Start flink cluster
-cd flink-1.14.3
+cd flink-1.14.4
 sed -i.bak 's/taskmanager.numberOfTaskSlots: 1/taskmanager.numberOfTaskSlots: 2/' ./conf/flink-conf.yaml
 rm ./conf/flink-conf.yaml.bak
 ./bin/start-cluster.sh
