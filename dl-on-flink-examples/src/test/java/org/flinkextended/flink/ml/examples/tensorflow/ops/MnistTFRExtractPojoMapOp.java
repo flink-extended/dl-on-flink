@@ -27,18 +27,18 @@ import org.apache.flink.api.java.typeutils.TypeExtractor;
 import org.apache.flink.util.Collector;
 
 public class MnistTFRExtractPojoMapOp extends RichFlatMapFunction<byte[], MnistTFRPojo>
-		implements ResultTypeQueryable<MnistTFRPojo> {
-	@Override
-	public void flatMap(byte[] value, Collector<MnistTFRPojo> out) throws Exception {
-		if (value == null) {
-			// TODO: how to avoid this
-			return;
-		}
-		out.collect(MnistTFRPojo.from(value));
-	}
+        implements ResultTypeQueryable<MnistTFRPojo> {
+    @Override
+    public void flatMap(byte[] value, Collector<MnistTFRPojo> out) throws Exception {
+        if (value == null) {
+            // TODO: how to avoid this
+            return;
+        }
+        out.collect(MnistTFRPojo.from(value));
+    }
 
-	@Override
-	public TypeInformation<MnistTFRPojo> getProducedType() {
-		return TypeExtractor.getForClass(MnistTFRPojo.class);
-	}
+    @Override
+    public TypeInformation<MnistTFRPojo> getProducedType() {
+        return TypeExtractor.getForClass(MnistTFRPojo.class);
+    }
 }

@@ -19,24 +19,19 @@
 package org.flinkextended.flink.ml.cluster.master;
 
 /**
- * 	INTI_AM_STATE init application master event.
- * 	REGISTER_NODE register node event.
- * 	COMPLETE_CLUSTER collect all cluster node event.
- * 	FINISH_NODE cluster node finish event.
- * 	FINISH_CLUSTER all cluster node finish event.
- * 	FAIL_NODE cluster node report fail event.
- * 	FAILED_CLUSTER cluster failed event.
- * 	RESTART_CLUSTER restart cluster all node event.
- * 	STOP_JOB stop all cluster node event.
+ * INTI_AM_STATE init application master event. REGISTER_NODE register node event. COMPLETE_CLUSTER
+ * collect all cluster node event. FINISH_NODE cluster node finish event. FINISH_CLUSTER all cluster
+ * node finish event. FAIL_NODE cluster node report fail event. FAILED_CLUSTER cluster failed event.
+ * RESTART_CLUSTER restart cluster all node event. STOP_JOB stop all cluster node event.
  */
 public enum AMEventType {
-	INTI_AM_STATE,
-	REGISTER_NODE,
-	COMPLETE_CLUSTER,
-	FINISH_NODE,
-	FINISH_CLUSTER,
-	FAIL_NODE,
-	FAILED_CLUSTER,
-	RESTART_CLUSTER,
-	STOP_JOB
+    INTI_AM_STATE,
+    REGISTER_NODE,
+    COMPLETE_CLUSTER,
+    FINISH_NODE,
+    FINISH_CLUSTER,
+    FAIL_NODE,
+    FAILED_CLUSTER,
+    RESTART_CLUSTER,
+    STOP_JOB
 }

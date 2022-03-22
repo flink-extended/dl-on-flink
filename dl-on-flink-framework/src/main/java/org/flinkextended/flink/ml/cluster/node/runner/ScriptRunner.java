@@ -21,18 +21,15 @@ package org.flinkextended.flink.ml.cluster.node.runner;
 import java.io.Closeable;
 import java.io.IOException;
 
-/**
- * Algorithm process scriptRunner interface.
- */
+/** Algorithm process scriptRunner interface. */
 public interface ScriptRunner extends Closeable {
-	/**
-	 * start script process.
-	 * @throws IOException
-	 */
-	void runScript() throws IOException;
+    /**
+     * start script process.
+     *
+     * @throws IOException
+     */
+    void runScript() throws IOException;
 
-	/**
-	 * notify script process killed.
-	 */
-	void notifyKillSignal();
+    /** notify script process killed. */
+    void notifyKillSignal();
 }

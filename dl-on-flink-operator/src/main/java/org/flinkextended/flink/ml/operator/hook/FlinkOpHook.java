@@ -18,21 +18,19 @@
 
 package org.flinkextended.flink.ml.operator.hook;
 
-/**
- * flink operator open close function hook,execute user logic on flink open and close function.
- */
+/** flink operator open close function hook,execute user logic on flink open and close function. */
 public interface FlinkOpHook {
-	/**
-	 * execute user logic on flink open function.
-	 * @throws Exception
-	 */
-	default void open() throws Exception {
-	}
+    /**
+     * execute user logic on flink open function.
+     *
+     * @throws Exception
+     */
+    default void open() throws Exception {}
 
-	/**
-	 * execute user logic on flink close function.
-	 * @throws Exception
-	 */
-	default void close() throws Exception {
-	}
+    /**
+     * execute user logic on flink close function.
+     *
+     * @throws Exception
+     */
+    default void close() throws Exception {}
 }

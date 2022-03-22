@@ -22,23 +22,21 @@ import org.flinkextended.flink.ml.cluster.node.MLContext;
 import org.flinkextended.flink.ml.coding.Coding;
 import org.flinkextended.flink.ml.coding.CodingException;
 
-/**
- * coding object with byte[] format.
- */
+/** coding object with byte[] format. */
 public class ByteArrayCodingImpl implements Coding<byte[]> {
-	private MLContext context;
+    private MLContext context;
 
-	public ByteArrayCodingImpl(MLContext context) {
-		this.context = context;
-	}
+    public ByteArrayCodingImpl(MLContext context) {
+        this.context = context;
+    }
 
-	@Override
-	public byte[] decode(byte[] bytes) throws CodingException {
-		return bytes;
-	}
+    @Override
+    public byte[] decode(byte[] bytes) throws CodingException {
+        return bytes;
+    }
 
-	@Override
-	public byte[] encode(byte[] object) throws CodingException {
-		return object;
-	}
+    @Override
+    public byte[] encode(byte[] object) throws CodingException {
+        return object;
+    }
 }

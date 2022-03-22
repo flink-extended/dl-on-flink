@@ -23,17 +23,19 @@ import org.flinkextended.flink.ml.data.impl.DataBridgeImpl;
 import org.flinkextended.flink.ml.util.MLConstants;
 import org.flinkextended.flink.ml.util.ReflectUtil;
 
-/**
- * a factory for DataBridge.
- */
+/** a factory for DataBridge. */
 public class DataBridgeFactory {
-	public static DataBridge getDataBridge(MLContext mlContext) throws Exception {
-		String className = mlContext.getProperties().getOrDefault(MLConstants.DATA_BRIDGE_CLASS,
-				DataBridgeImpl.class.getCanonicalName());
-		Class[] classes = new Class[1];
-		classes[0] = MLContext.class;
-		Object[] objects = new Object[1];
-		objects[0] = mlContext;
-		return ReflectUtil.createInstance(className, classes, objects);
-	}
+    public static DataBridge getDataBridge(MLContext mlContext) throws Exception {
+        String className =
+                mlContext
+                        .getProperties()
+                        .getOrDefault(
+                                MLConstants.DATA_BRIDGE_CLASS,
+                                DataBridgeImpl.class.getCanonicalName());
+        Class[] classes = new Class[1];
+        classes[0] = MLContext.class;
+        Object[] objects = new Object[1];
+        objects[0] = mlContext;
+        return ReflectUtil.createInstance(className, classes, objects);
+    }
 }

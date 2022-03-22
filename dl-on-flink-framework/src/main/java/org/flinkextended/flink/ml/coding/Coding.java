@@ -20,7 +20,7 @@ package org.flinkextended.flink.ml.coding;
 
 /**
  * Decoding and Encoding interface
+ *
  * @param <T>
  */
-public interface Coding<T> extends Decoding<T>, Encoding<T> {
-}
+public interface Coding<T> extends Decoding<T>, Encoding<T> {}

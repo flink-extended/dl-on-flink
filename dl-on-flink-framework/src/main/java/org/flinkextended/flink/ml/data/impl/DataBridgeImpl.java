@@ -27,52 +27,50 @@ import org.flinkextended.flink.ml.data.RecordWriter;
 
 import java.io.IOException;
 
-/**
- * a common data bridge implement.
- */
+/** a common data bridge implement. */
 public class DataBridgeImpl implements DataBridge {
-	private MLContext mlContext;
-	private long readRecords = 0;
-	private long writeRecords = 0;
+    private MLContext mlContext;
+    private long readRecords = 0;
+    private long writeRecords = 0;
 
-	public DataBridgeImpl(MLContext mlContext) {
-		this.mlContext = mlContext;
-	}
+    public DataBridgeImpl(MLContext mlContext) {
+        this.mlContext = mlContext;
+    }
 
-	@Override
-	public <T> boolean write(T obj, RecordWriter recordWriter, Encoding<T> encoding) throws IOException {
-		writeRecords++;
-		return recordWriter.write(encoding.encode(obj));
-	}
+    @Override
+    public <T> boolean write(T obj, RecordWriter recordWriter, Encoding<T> encoding)
+            throws IOException {
+        writeRecords++;
+        return recordWriter.write(encoding.encode(obj));
+    }
 
-	@Override
-	public <T> T read(RecordReader recordReader, boolean readWait, Decoding<T> decoding) throws IOException {
-		byte[] res;
-		if (readWait) {
-			res = recordReader.read();
-		} else {
-			res = recordReader.tryRead();
-		}
-		if (null == res) {
-			return null;
-		} else {
-			readRecords++;
-			return decoding.decode(res);
-		}
-	}
+    @Override
+    public <T> T read(RecordReader recordReader, boolean readWait, Decoding<T> decoding)
+            throws IOException {
+        byte[] res;
+        if (readWait) {
+            res = recordReader.read();
+        } else {
+            res = recordReader.tryRead();
+        }
+        if (null == res) {
+            return null;
+        } else {
+            readRecords++;
+            return decoding.decode(res);
+        }
+    }
 
-	@Override
-	public long getReadRecords() {
-		return readRecords;
-	}
+    @Override
+    public long getReadRecords() {
+        return readRecords;
+    }
 
-	@Override
-	public long getWriteRecords() {
-		return writeRecords;
-	}
+    @Override
+    public long getWriteRecords() {
+        return writeRecords;
+    }
 
-	@Override
-	public void close() throws IOException {
-
-	}
+    @Override
+    public void close() throws IOException {}
 }

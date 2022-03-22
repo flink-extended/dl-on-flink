@@ -18,9 +18,9 @@
 
 package org.flinkextended.flink.ml.examples.tensorflow.mnist.ops;
 
-
 import org.flinkextended.flink.ml.operator.util.TypeUtil;
 import org.flinkextended.flink.ml.tensorflow.io.TFRExtractRowHelper;
+
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -40,16 +40,23 @@ public class DelayedTFRTableSourceStream implements StreamTableSource<Row> {
     private final RowTypeInfo outRowType;
     private final TFRExtractRowHelper.ScalarConverter[] converters;
 
-    private DelayedTFRTableSourceStream(String[] paths, int epochs, Long delayBound,
-                                        RowTypeInfo outRowType, TFRExtractRowHelper.ScalarConverter[] converters) {
+    private DelayedTFRTableSourceStream(
+            String[] paths,
+            int epochs,
+            Long delayBound,
+            RowTypeInfo outRowType,
+            TFRExtractRowHelper.ScalarConverter[] converters) {
         this.paths = paths;
         this.delayBound = delayBound;
         this.outRowType = outRowType;
         this.converters = converters;
     }
 
-    public DelayedTFRTableSourceStream(String[] paths, int epochs, RowTypeInfo outRowType,
-                                       TFRExtractRowHelper.ScalarConverter[] converters) {
+    public DelayedTFRTableSourceStream(
+            String[] paths,
+            int epochs,
+            RowTypeInfo outRowType,
+            TFRExtractRowHelper.ScalarConverter[] converters) {
         this(paths, epochs, DEFAULT_DELAY_BOUND, outRowType, converters);
     }
 
@@ -70,7 +77,9 @@ public class DelayedTFRTableSourceStream implements StreamTableSource<Row> {
 
     @Override
     public DataStream<Row> getDataStream(StreamExecutionEnvironment execEnv) {
-        return execEnv.addSource(new DelayedTFRSourceFunction(paths, delayBound, outRowType, converters))
-                .setParallelism(1).name(explainSource());
+        return execEnv.addSource(
+                        new DelayedTFRSourceFunction(paths, delayBound, outRowType, converters))
+                .setParallelism(1)
+                .name(explainSource());
     }
 }

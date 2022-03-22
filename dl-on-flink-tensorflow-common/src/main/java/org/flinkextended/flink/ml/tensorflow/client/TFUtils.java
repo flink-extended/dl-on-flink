@@ -32,8 +32,7 @@ import org.flinkextended.flink.ml.tensorflow.cluster.node.runner.TensorBoardPyth
 import org.flinkextended.flink.ml.tensorflow.data.TFRecordReaderImpl;
 import org.flinkextended.flink.ml.tensorflow.data.TFRecordWriterImpl;
 import org.flinkextended.flink.ml.util.MLConstants;
-import com.google.common.base.Preconditions;
-import org.apache.commons.lang3.tuple.Pair;
+
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -48,6 +47,9 @@ import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.table.api.internal.TableEnvironmentInternal;
 import org.apache.flink.table.catalog.ResolvedSchema;
 import org.apache.flink.types.Row;
+
+import com.google.common.base.Preconditions;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,12 +69,12 @@ public class TFUtils {
      * Run TF train for DataStream.
      *
      * @param streamEnv The Flink StreamExecutionEnvironment.
-     * @param tfConfig  Configurations for the TF program.
+     * @param tfConfig Configurations for the TF program.
      * @return the returned DataStream. Otherwise, caller is responsible to add sink to the output
-     * DataStream before executing the graph.
+     *     DataStream before executing the graph.
      */
-    public static <OUT> DataStream<OUT> train(StreamExecutionEnvironment streamEnv,
-                                              TFConfigBase tfConfig) throws IOException {
+    public static <OUT> DataStream<OUT> train(
+            StreamExecutionEnvironment streamEnv, TFConfigBase tfConfig) throws IOException {
         return train(streamEnv, tfConfig, (TypeInformation<OUT>) null);
     }
 
@@ -80,13 +82,14 @@ public class TFUtils {
      * Run TF train for DataStream.
      *
      * @param streamEnv The Flink StreamExecutionEnvironment.
-     * @param tfConfig  Configurations for the TF program.
-     * @param outClazz  output stream data class.
+     * @param tfConfig Configurations for the TF program.
+     * @param outClazz output stream data class.
      * @return the returned DataStream. Otherwise, caller is responsible to add sink to the output
-     * DataStream before executing the graph.
+     *     DataStream before executing the graph.
      */
-    public static <OUT> DataStream<OUT> train(StreamExecutionEnvironment streamEnv,
-                                              TFConfigBase tfConfig, Class<OUT> outClazz) throws IOException {
+    public static <OUT> DataStream<OUT> train(
+            StreamExecutionEnvironment streamEnv, TFConfigBase tfConfig, Class<OUT> outClazz)
+            throws IOException {
         return train(streamEnv, tfConfig, getTypeInfo(outClazz));
     }
 
@@ -94,13 +97,14 @@ public class TFUtils {
      * Run TF train for DataStream.
      *
      * @param streamEnv The Flink StreamExecutionEnvironment.
-     * @param tfConfig  Configurations for the TF program.
-     * @param outTI     output stream data TypeInformation.
+     * @param tfConfig Configurations for the TF program.
+     * @param outTI output stream data TypeInformation.
      * @return the returned DataStream. Otherwise, caller is responsible to add sink to the output
-     * DataStream before executing the graph.
+     *     DataStream before executing the graph.
      */
-    public static <OUT> DataStream<OUT> train(StreamExecutionEnvironment streamEnv,
-                                              TFConfigBase tfConfig, TypeInformation<OUT> outTI) throws IOException {
+    public static <OUT> DataStream<OUT> train(
+            StreamExecutionEnvironment streamEnv, TFConfigBase tfConfig, TypeInformation<OUT> outTI)
+            throws IOException {
         return run(streamEnv, ExecutionMode.TRAIN, null, tfConfig, outTI);
     }
 
@@ -108,13 +112,14 @@ public class TFUtils {
      * Run TF train for DataStream.
      *
      * @param streamEnv The Flink StreamExecutionEnvironment.
-     * @param tfConfig  Configurations for the TF program.
-     * @param input     tensorflow job input stream.
+     * @param tfConfig Configurations for the TF program.
+     * @param input tensorflow job input stream.
      * @return the returned DataStream. Otherwise, caller is responsible to add sink to the output
-     * DataStream before executing the graph.
+     *     DataStream before executing the graph.
      */
-    public static <IN, OUT> DataStream<OUT> train(StreamExecutionEnvironment streamEnv, DataStream<IN> input,
-                                                  TFConfigBase tfConfig) throws IOException {
+    public static <IN, OUT> DataStream<OUT> train(
+            StreamExecutionEnvironment streamEnv, DataStream<IN> input, TFConfigBase tfConfig)
+            throws IOException {
         return train(streamEnv, input, tfConfig, (TypeInformation<OUT>) null);
     }
 
@@ -122,14 +127,18 @@ public class TFUtils {
      * Run TF train for DataStream.
      *
      * @param streamEnv The Flink StreamExecutionEnvironment.
-     * @param tfConfig  Configurations for the TF program.
-     * @param input     tensorflow job input stream.
-     * @param outClazz  output stream data class.
+     * @param tfConfig Configurations for the TF program.
+     * @param input tensorflow job input stream.
+     * @param outClazz output stream data class.
      * @return the returned DataStream. Otherwise, caller is responsible to add sink to the output
-     * DataStream before executing the graph.
+     *     DataStream before executing the graph.
      */
-    public static <IN, OUT> DataStream<OUT> train(StreamExecutionEnvironment streamEnv, DataStream<IN> input,
-                                                  TFConfigBase tfConfig, Class<OUT> outClazz) throws IOException {
+    public static <IN, OUT> DataStream<OUT> train(
+            StreamExecutionEnvironment streamEnv,
+            DataStream<IN> input,
+            TFConfigBase tfConfig,
+            Class<OUT> outClazz)
+            throws IOException {
         return train(streamEnv, input, tfConfig, getTypeInfo(outClazz));
     }
 
@@ -137,14 +146,18 @@ public class TFUtils {
      * Run TF train for DataStream.
      *
      * @param streamEnv The Flink StreamExecutionEnvironment.
-     * @param tfConfig  Configurations for the TF program.
-     * @param input     tensorflow job input stream.
-     * @param outTI     output stream data TypeInformation.
+     * @param tfConfig Configurations for the TF program.
+     * @param input tensorflow job input stream.
+     * @param outTI output stream data TypeInformation.
      * @return the returned DataStream. Otherwise, caller is responsible to add sink to the output
-     * DataStream before executing the graph.
+     *     DataStream before executing the graph.
      */
-    public static <IN, OUT> DataStream<OUT> train(StreamExecutionEnvironment streamEnv, DataStream<IN> input,
-                                                  TFConfigBase tfConfig, TypeInformation<OUT> outTI) throws IOException {
+    public static <IN, OUT> DataStream<OUT> train(
+            StreamExecutionEnvironment streamEnv,
+            DataStream<IN> input,
+            TFConfigBase tfConfig,
+            TypeInformation<OUT> outTI)
+            throws IOException {
         return run(streamEnv, ExecutionMode.TRAIN, input, tfConfig, outTI);
     }
 
@@ -152,14 +165,18 @@ public class TFUtils {
      * Run TF inference for DataStream.
      *
      * @param streamEnv The Flink StreamExecutionEnvironment.
-     * @param tfConfig  Configurations for the TF program.
-     * @param input     tensorflow job input stream.
-     * @param outClazz  output stream data class.
+     * @param tfConfig Configurations for the TF program.
+     * @param input tensorflow job input stream.
+     * @param outClazz output stream data class.
      * @return the returned DataStream. Otherwise, caller is responsible to add sink to the output
-     * DataStream before executing the graph.
+     *     DataStream before executing the graph.
      */
-    public static <IN, OUT> DataStream<OUT> inference(StreamExecutionEnvironment streamEnv, DataStream<IN> input,
-                                                      TFConfigBase tfConfig, Class<OUT> outClazz) throws IOException {
+    public static <IN, OUT> DataStream<OUT> inference(
+            StreamExecutionEnvironment streamEnv,
+            DataStream<IN> input,
+            TFConfigBase tfConfig,
+            Class<OUT> outClazz)
+            throws IOException {
         return inference(streamEnv, input, tfConfig, getTypeInfo(outClazz));
     }
 
@@ -167,14 +184,18 @@ public class TFUtils {
      * Run TF inference for DataStream.
      *
      * @param streamEnv The Flink StreamExecutionEnvironment.
-     * @param tfConfig  Configurations for the TF program.
-     * @param input     tensorflow job input stream.
-     * @param outTI     output stream data TypeInformation.
+     * @param tfConfig Configurations for the TF program.
+     * @param input tensorflow job input stream.
+     * @param outTI output stream data TypeInformation.
      * @return the returned DataStream. Otherwise, caller is responsible to add sink to the output
-     * DataStream before executing the graph.
+     *     DataStream before executing the graph.
      */
-    public static <IN, OUT> DataStream<OUT> inference(StreamExecutionEnvironment streamEnv, DataStream<IN> input,
-                                                      TFConfigBase tfConfig, TypeInformation<OUT> outTI) throws IOException {
+    public static <IN, OUT> DataStream<OUT> inference(
+            StreamExecutionEnvironment streamEnv,
+            DataStream<IN> input,
+            TFConfigBase tfConfig,
+            TypeInformation<OUT> outTI)
+            throws IOException {
         return run(streamEnv, ExecutionMode.INFERENCE, input, tfConfig, outTI);
     }
 
@@ -182,16 +203,21 @@ public class TFUtils {
      * Run TF for DataStream.
      *
      * @param streamEnv The Flink StreamExecutionEnvironment.
-     * @param mode      The mode of the TF program - can be either TRAIN or INFERENCE.
-     * @param input     The input DataStream.
-     * @param tfConfig  Configurations for the TF program.
-     * @param outClazz  The class for the output DataStream. If it's null, a dummy sink will be connected.
+     * @param mode The mode of the TF program - can be either TRAIN or INFERENCE.
+     * @param input The input DataStream.
+     * @param tfConfig Configurations for the TF program.
+     * @param outClazz The class for the output DataStream. If it's null, a dummy sink will be
+     *     connected.
      * @return the returned DataStream. Otherwise, caller is responsible to add sink to the output
-     * DataStream before executing the graph.
+     *     DataStream before executing the graph.
      */
-    public static <IN, OUT> DataStream<OUT> run(StreamExecutionEnvironment streamEnv, ExecutionMode mode,
-                                                DataStream<IN> input,
-                                                TFConfigBase tfConfig, Class<OUT> outClazz) throws IOException {
+    public static <IN, OUT> DataStream<OUT> run(
+            StreamExecutionEnvironment streamEnv,
+            ExecutionMode mode,
+            DataStream<IN> input,
+            TFConfigBase tfConfig,
+            Class<OUT> outClazz)
+            throws IOException {
         return run(streamEnv, mode, input, tfConfig, getTypeInfo(outClazz));
     }
 
@@ -199,42 +225,60 @@ public class TFUtils {
      * Run TF for DataStream.
      *
      * @param streamEnv The Flink StreamExecutionEnvironment.
-     * @param mode      The mode of the TF program - can be either TRAIN or INFERENCE.
-     * @param input     The input DataStream.
-     * @param tfConfig  Configurations for the TF program.
+     * @param mode The mode of the TF program - can be either TRAIN or INFERENCE.
+     * @param input The input DataStream.
+     * @param tfConfig Configurations for the TF program.
      * @return the returned DataStream. Otherwise, caller is responsible to add sink to the output
-     * DataStream before executing the graph.
+     *     DataStream before executing the graph.
      */
-    public static <IN, OUT> DataStream<OUT> run(StreamExecutionEnvironment streamEnv, ExecutionMode mode,
-                                                DataStream<IN> input,
-                                                TFConfigBase tfConfig) throws IOException {
+    public static <IN, OUT> DataStream<OUT> run(
+            StreamExecutionEnvironment streamEnv,
+            ExecutionMode mode,
+            DataStream<IN> input,
+            TFConfigBase tfConfig)
+            throws IOException {
         return run(streamEnv, mode, input, tfConfig, (TypeInformation<OUT>) null);
     }
 
     private static void setTFDefaultConfig(TFConfigBase tfConfig) {
-        tfConfig.getProperties().put(MLConstants.ML_RUNNER_CLASS, TFMLRunner.class.getCanonicalName());
-        tfConfig.getProperties().put(MLConstants.AM_STATE_MACHINE_CLASS, TFAMStateMachineImpl.class.getCanonicalName());
-        tfConfig.getProperties().put(MLConstants.RECORD_READER_CLASS, TFRecordReaderImpl.class.getCanonicalName());
-        tfConfig.getProperties().put(MLConstants.RECORD_WRITER_CLASS, TFRecordWriterImpl.class.getCanonicalName());
+        tfConfig.getProperties()
+                .put(MLConstants.ML_RUNNER_CLASS, TFMLRunner.class.getCanonicalName());
+        tfConfig.getProperties()
+                .put(
+                        MLConstants.AM_STATE_MACHINE_CLASS,
+                        TFAMStateMachineImpl.class.getCanonicalName());
+        tfConfig.getProperties()
+                .put(MLConstants.RECORD_READER_CLASS, TFRecordReaderImpl.class.getCanonicalName());
+        tfConfig.getProperties()
+                .put(MLConstants.RECORD_WRITER_CLASS, TFRecordWriterImpl.class.getCanonicalName());
     }
 
     /**
      * start a tensorboard service.
      *
      * @param streamEnv The Flink StreamExecutionEnvironment.
-     * @param tfConfig  Configurations for the TF program.
+     * @param tfConfig Configurations for the TF program.
      * @throws IOException
      */
-    public static void startTensorBoard(StreamExecutionEnvironment streamEnv, TFConfigBase tfConfig) throws IOException {
+    public static void startTensorBoard(StreamExecutionEnvironment streamEnv, TFConfigBase tfConfig)
+            throws IOException {
         TFConfigBase tbConfig = buildTensorBoardConfig(streamEnv, tfConfig);
-        RoleUtils.addRole(streamEnv, ExecutionMode.OTHER, null, tbConfig.getMlConfig(), null,
+        RoleUtils.addRole(
+                streamEnv,
+                ExecutionMode.OTHER,
+                null,
+                tbConfig.getMlConfig(),
+                null,
                 new TensorBoardRole());
     }
 
-    private static TFConfigBase buildTensorBoardConfig(StreamExecutionEnvironment streamEnv, TFConfigBase tfConfig)
-            throws IOException {
+    private static TFConfigBase buildTensorBoardConfig(
+            StreamExecutionEnvironment streamEnv, TFConfigBase tfConfig) throws IOException {
         TFConfigBase tbConfig = tfConfig.deepCopy();
-        tbConfig.getProperties().put(MLConstants.SCRIPT_RUNNER_CLASS, TensorBoardPythonRunner.class.getCanonicalName());
+        tbConfig.getProperties()
+                .put(
+                        MLConstants.SCRIPT_RUNNER_CLASS,
+                        TensorBoardPythonRunner.class.getCanonicalName());
         tbConfig.getMlConfig().getRoleParallelismMap().put(new TensorBoardRole().name(), 1);
         PythonFileUtil.registerPythonFiles(streamEnv, tbConfig.getMlConfig());
         return tbConfig;
@@ -243,16 +287,26 @@ public class TFUtils {
     /**
      * start a tensorboard service.
      *
-     * @param streamEnv    The Flink StreamExecutionEnvironment.
-     * @param tableEnv     The Flink TableEnvironment.
+     * @param streamEnv The Flink StreamExecutionEnvironment.
+     * @param tableEnv The Flink TableEnvironment.
      * @param statementSet The StatementSet created by the given TableEnvironment
-     * @param tfConfig     Configurations for the TF program.
+     * @param tfConfig Configurations for the TF program.
      * @throws IOException
      */
-    public static void startTensorBoard(StreamExecutionEnvironment streamEnv, TableEnvironment tableEnv,
-                                        StatementSet statementSet, TFConfigBase tfConfig) throws IOException {
+    public static void startTensorBoard(
+            StreamExecutionEnvironment streamEnv,
+            TableEnvironment tableEnv,
+            StatementSet statementSet,
+            TFConfigBase tfConfig)
+            throws IOException {
         TFConfigBase tbConfig = buildTensorBoardConfig(streamEnv, tfConfig);
-        RoleUtils.addRole(tableEnv, statementSet, ExecutionMode.OTHER, null, tbConfig.getMlConfig(), null,
+        RoleUtils.addRole(
+                tableEnv,
+                statementSet,
+                ExecutionMode.OTHER,
+                null,
+                tbConfig.getMlConfig(),
+                null,
                 new TensorBoardRole());
     }
 
@@ -260,15 +314,20 @@ public class TFUtils {
      * Run TF for DataStream.
      *
      * @param streamEnv The Flink StreamExecutionEnvironment
-     * @param mode      The mode of the TF program - can be either TRAIN or INFERENCE
-     * @param input     The input DataStream
-     * @param tfConfig  Configurations for the TF program
-     * @param outTI     The TypeInformation for the output DataStream. If it's null, a dummy sink will be connected
-     *                  to the returned DataStream. Otherwise, caller is responsible to add sink to the output
-     *                  DataStream before executing the graph.
+     * @param mode The mode of the TF program - can be either TRAIN or INFERENCE
+     * @param input The input DataStream
+     * @param tfConfig Configurations for the TF program
+     * @param outTI The TypeInformation for the output DataStream. If it's null, a dummy sink will
+     *     be connected to the returned DataStream. Otherwise, caller is responsible to add sink to
+     *     the output DataStream before executing the graph.
      */
-    public static <IN, OUT> DataStream<OUT> run(StreamExecutionEnvironment streamEnv, ExecutionMode mode,
-                                                DataStream<IN> input, TFConfigBase tfConfig, TypeInformation<OUT> outTI) throws IOException {
+    public static <IN, OUT> DataStream<OUT> run(
+            StreamExecutionEnvironment streamEnv,
+            ExecutionMode mode,
+            DataStream<IN> input,
+            TFConfigBase tfConfig,
+            TypeInformation<OUT> outTI)
+            throws IOException {
         if (null != input) {
             tfConfig.addProperty(MLConstants.CONFIG_JOB_HAS_INPUT, "true");
         }
@@ -283,30 +342,65 @@ public class TFUtils {
     }
 
     private static <IN, OUT> Pair<DataStream<OUT>, DataStream<OUT>> getWorkerDataStream(
-            StreamExecutionEnvironment streamEnv, ExecutionMode mode, DataStream<IN> input, TFConfigBase tfConfig,
-            final TypeInformation<OUT> outTI) throws IOException {
+            StreamExecutionEnvironment streamEnv,
+            ExecutionMode mode,
+            DataStream<IN> input,
+            TFConfigBase tfConfig,
+            final TypeInformation<OUT> outTI)
+            throws IOException {
         DataStream worker = null;
         DataStream chief = null;
         boolean isWorkerZeroAlone = tfConfig.isWorkerZeroAlone();
         if (input == null) {
             if (isWorkerZeroAlone) {
-                chief = RoleUtils.addRole(streamEnv, mode, null, tfConfig.getMlConfig(), outTI, new ChiefRole());
+                chief =
+                        RoleUtils.addRole(
+                                streamEnv,
+                                mode,
+                                null,
+                                tfConfig.getMlConfig(),
+                                outTI,
+                                new ChiefRole());
                 if (tfConfig.getWorkerNum() > 0) {
-                    worker = RoleUtils.addRole(streamEnv, mode, null, tfConfig.getMlConfig(), outTI, new WorkerRole());
+                    worker =
+                            RoleUtils.addRole(
+                                    streamEnv,
+                                    mode,
+                                    null,
+                                    tfConfig.getMlConfig(),
+                                    outTI,
+                                    new WorkerRole());
                 }
             } else {
-                worker = RoleUtils.addRole(streamEnv, mode, null, tfConfig.getMlConfig(), outTI, new WorkerRole());
+                worker =
+                        RoleUtils.addRole(
+                                streamEnv,
+                                mode,
+                                null,
+                                tfConfig.getMlConfig(),
+                                outTI,
+                                new WorkerRole());
             }
         } else {
             final boolean hasScript = hasScript(tfConfig);
             if (hasScript) {
-                worker = RoleUtils.addRole(streamEnv, mode, input, tfConfig.getMlConfig(), outTI, new WorkerRole());
+                worker =
+                        RoleUtils.addRole(
+                                streamEnv,
+                                mode,
+                                input,
+                                tfConfig.getMlConfig(),
+                                outTI,
+                                new WorkerRole());
 
             } else {
-                FlatMapFunction flatMapper = tfConfig.getInferenceFlatMapFunction(new WorkerRole(), tfConfig.getMlConfig(),
-                        input.getType(), outTI);
-                worker = input.flatMap(flatMapper)
-                        .setParallelism(tfConfig.getWorkerNum()).name(new WorkerRole().name());
+                FlatMapFunction flatMapper =
+                        tfConfig.getInferenceFlatMapFunction(
+                                new WorkerRole(), tfConfig.getMlConfig(), input.getType(), outTI);
+                worker =
+                        input.flatMap(flatMapper)
+                                .setParallelism(tfConfig.getWorkerNum())
+                                .name(new WorkerRole().name());
             }
         }
         return Pair.of(worker, chief);
@@ -320,55 +414,87 @@ public class TFUtils {
      * Run TF train for flink table api.
      *
      * @param streamEnv
-     * @param tableEnv     The Flink TableEnvironment.
+     * @param tableEnv The Flink TableEnvironment.
      * @param statementSet The StatementSet created by the given TableEnvironment
-     * @param input        The input Table.
-     * @param tfConfig     Configurations for the TF program.
-     * @param outSchema    The TableSchema for the output Table. If it's null, a dummy sink will be connected.
-     * @return output Table. Otherwise, caller is responsible to add sink to the output
-     * Table before executing the graph.
+     * @param input The input Table.
+     * @param tfConfig Configurations for the TF program.
+     * @param outSchema The TableSchema for the output Table. If it's null, a dummy sink will be
+     *     connected.
+     * @return output Table. Otherwise, caller is responsible to add sink to the output Table before
+     *     executing the graph.
      */
-    public static Table train(StreamExecutionEnvironment streamEnv, TableEnvironment tableEnv, StatementSet statementSet, Table input,
-                              TFConfigBase tfConfig, Schema outSchema) throws IOException {
-        return run(streamEnv, tableEnv, statementSet, ExecutionMode.TRAIN, input, tfConfig, outSchema);
+    public static Table train(
+            StreamExecutionEnvironment streamEnv,
+            TableEnvironment tableEnv,
+            StatementSet statementSet,
+            Table input,
+            TFConfigBase tfConfig,
+            Schema outSchema)
+            throws IOException {
+        return run(
+                streamEnv, tableEnv, statementSet, ExecutionMode.TRAIN, input, tfConfig, outSchema);
     }
 
     /**
      * Run TF inference for flink table api.
      *
      * @param streamEnv
-     * @param tableEnv     The Flink TableEnvironment.
+     * @param tableEnv The Flink TableEnvironment.
      * @param statementSet The StatementSet created by the given TableEnvironment
-     * @param input        The input Table.
-     * @param tfConfig     Configurations for the TF program.
-     * @param outSchema    The TableSchema for the output Table. If it's null, a dummy sink will be connected.
-     * @return output Table. Otherwise, caller is responsible to add sink to the output
-     * Table before executing the graph.
+     * @param input The input Table.
+     * @param tfConfig Configurations for the TF program.
+     * @param outSchema The TableSchema for the output Table. If it's null, a dummy sink will be
+     *     connected.
+     * @return output Table. Otherwise, caller is responsible to add sink to the output Table before
+     *     executing the graph.
      */
-    public static Table inference(StreamExecutionEnvironment streamEnv, TableEnvironment tableEnv, StatementSet statementSet, Table input,
-                                  TFConfigBase tfConfig, Schema outSchema) throws IOException {
-        return run(streamEnv, tableEnv, statementSet, ExecutionMode.INFERENCE, input, tfConfig, outSchema);
+    public static Table inference(
+            StreamExecutionEnvironment streamEnv,
+            TableEnvironment tableEnv,
+            StatementSet statementSet,
+            Table input,
+            TFConfigBase tfConfig,
+            Schema outSchema)
+            throws IOException {
+        return run(
+                streamEnv,
+                tableEnv,
+                statementSet,
+                ExecutionMode.INFERENCE,
+                input,
+                tfConfig,
+                outSchema);
     }
 
     /**
      * Run TF for Table.
      *
      * @param streamEnv
-     * @param tableEnv     The Flink TableEnvironment.
+     * @param tableEnv The Flink TableEnvironment.
      * @param statementSet The StatementSet created by the given TableEnvironment
-     * @param mode         The mode of the TF program - can be either TRAIN or INFERENCE.
-     * @param input        The input Table.
-     * @param tfConfig     Configurations for the TF program.
-     * @param outSchema    The TableSchema for the output Table. If it's null, a dummy sink will be connected.
-     * @return output Table. Otherwise, caller is responsible to add sink to the output
-     * Table before executing the graph.
+     * @param mode The mode of the TF program - can be either TRAIN or INFERENCE.
+     * @param input The input Table.
+     * @param tfConfig Configurations for the TF program.
+     * @param outSchema The TableSchema for the output Table. If it's null, a dummy sink will be
+     *     connected.
+     * @return output Table. Otherwise, caller is responsible to add sink to the output Table before
+     *     executing the graph.
      */
-    public static Table run(StreamExecutionEnvironment streamEnv, TableEnvironment tableEnv, StatementSet statementSet, ExecutionMode mode,
-                            Table input, TFConfigBase tfConfig, Schema outSchema) throws IOException {
+    public static Table run(
+            StreamExecutionEnvironment streamEnv,
+            TableEnvironment tableEnv,
+            StatementSet statementSet,
+            ExecutionMode mode,
+            Table input,
+            TFConfigBase tfConfig,
+            Schema outSchema)
+            throws IOException {
         final boolean hasScript = hasScript(tfConfig);
-        Preconditions.checkArgument(hasScript || mode == ExecutionMode.INFERENCE,
+        Preconditions.checkArgument(
+                hasScript || mode == ExecutionMode.INFERENCE,
                 "Python script can be omitted only for inference");
-        Preconditions.checkArgument(hasScript || input != null, "Input table and python script can't both be null");
+        Preconditions.checkArgument(
+                hasScript || input != null, "Input table and python script can't both be null");
         if (null != input) {
             tfConfig.addProperty(MLConstants.CONFIG_JOB_HAS_INPUT, "true");
         }
@@ -382,14 +508,29 @@ public class TFUtils {
             PythonFileUtil.registerPythonFiles(streamEnv, nodeConfig.getMlConfig());
             RoleUtils.addAMRole(tableEnv, statementSet, tfConfig.getMlConfig());
             if (nodeConfig.getPsNum() > 0) {
-                RoleUtils.addRole(tableEnv, statementSet, mode, null, nodeConfig.getMlConfig(), null, new PsRole());
+                RoleUtils.addRole(
+                        tableEnv,
+                        statementSet,
+                        mode,
+                        null,
+                        nodeConfig.getMlConfig(),
+                        null,
+                        new PsRole());
             }
         }
         Schema workerSchema = outSchema != null ? outSchema : DUMMY_SCHEMA;
         final ResolvedSchema resolvedSchema =
-                workerSchema.resolve(((TableEnvironmentInternal) tableEnv).getCatalogManager().getSchemaResolver());
-        Pair<DataStream<Row>, DataStream<Row>> workerAndChief = getWorkerDataStream(streamEnv, mode, toDataStream,
-                nodeConfig, TypeUtil.schemaToRowTypeInfo(resolvedSchema));
+                workerSchema.resolve(
+                        ((TableEnvironmentInternal) tableEnv)
+                                .getCatalogManager()
+                                .getSchemaResolver());
+        Pair<DataStream<Row>, DataStream<Row>> workerAndChief =
+                getWorkerDataStream(
+                        streamEnv,
+                        mode,
+                        toDataStream,
+                        nodeConfig,
+                        TypeUtil.schemaToRowTypeInfo(resolvedSchema));
         if (workerAndChief.getLeft() != null) {
             worker = dsToTable(workerAndChief.getLeft(), tableEnv);
         }
@@ -414,7 +555,10 @@ public class TFUtils {
             TFConfigBase chiefConfig = tfConfig.deepCopy();
             chiefConfig.getMlConfig().getRoleParallelismMap().put(new ChiefRole().name(), 1);
             if (tfConfig.getWorkerNum() > 1) {
-                chiefConfig.getMlConfig().getRoleParallelismMap().put(new WorkerRole().name(), tfConfig.getWorkerNum() - 1);
+                chiefConfig
+                        .getMlConfig()
+                        .getRoleParallelismMap()
+                        .put(new WorkerRole().name(), tfConfig.getWorkerNum() - 1);
             } else {
                 chiefConfig.getMlConfig().getRoleParallelismMap().remove(new WorkerRole().name());
             }
@@ -433,25 +577,22 @@ public class TFUtils {
         if (table == null) {
             return null;
         }
-        return ((StreamTableEnvironment) tableEnv).toAppendStream(table,
-                TypeUtil.schemaToRowTypeInfo(table.getSchema()));
-
+        return ((StreamTableEnvironment) tableEnv)
+                .toAppendStream(table, TypeUtil.schemaToRowTypeInfo(table.getSchema()));
     }
 
     private static <OUT> TypeInformation<OUT> getTypeInfo(Class<OUT> clazz) {
         return clazz == null ? null : TypeInformation.of(clazz);
     }
 
-
-    private static void writeToDummySink(Table tbl, TableEnvironment tableEnvironment, StatementSet statementSet) {
+    private static void writeToDummySink(
+            Table tbl, TableEnvironment tableEnvironment, StatementSet statementSet) {
         String sinkName = String.format("dummy_sink_%s", count.getAndIncrement());
-        tableEnvironment.createTemporaryTable(sinkName, TableDescriptor
-                .forConnector("DummyTable")
-                .schema(DUMMY_SCHEMA)
-                .build());
-//		tableEnvironment.connect(new DummyTable())
-//				.withSchema(new Schema().schema(DUMMY_SCHEMA))
-//				.createTemporaryTable(sinkName);
+        tableEnvironment.createTemporaryTable(
+                sinkName, TableDescriptor.forConnector("DummyTable").schema(DUMMY_SCHEMA).build());
+        //		tableEnvironment.connect(new DummyTable())
+        //				.withSchema(new Schema().schema(DUMMY_SCHEMA))
+        //				.createTemporaryTable(sinkName);
         statementSet.addInsert(sinkName, tbl);
     }
 

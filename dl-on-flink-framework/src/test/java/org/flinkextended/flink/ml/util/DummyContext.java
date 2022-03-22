@@ -27,25 +27,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DummyContext {
-	public static MLContext createDummyMLContext() {
-		return createDummyMLContext(createDummyMLConfig());
-	}
+    public static MLContext createDummyMLContext() {
+        return createDummyMLContext(createDummyMLConfig());
+    }
 
-	public static MLConfig createDummyMLConfig() {
-		Map<String, Integer> jobNumberMap = new HashMap<>();
-		jobNumberMap.put(new WorkerRole().name(), 1);
-		return new MLConfig(jobNumberMap, null, (String) null, "", "");
-	}
+    public static MLConfig createDummyMLConfig() {
+        Map<String, Integer> jobNumberMap = new HashMap<>();
+        jobNumberMap.put(new WorkerRole().name(), 1);
+        return new MLConfig(jobNumberMap, null, (String) null, "", "");
+    }
 
-	public static MLContext createDummyMLContext(MLConfig mlConfig) {
-		try {
-			Map<String, Integer> jobNumberMap = new HashMap<>();
-			jobNumberMap.put(new WorkerRole().name(), 1);
-			return new MLContext(ExecutionMode.TRAIN, mlConfig, new WorkerRole().name(), 0,
-					null, null);
-		} catch (MLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+    public static MLContext createDummyMLContext(MLConfig mlConfig) {
+        try {
+            Map<String, Integer> jobNumberMap = new HashMap<>();
+            jobNumberMap.put(new WorkerRole().name(), 1);
+            return new MLContext(
+                    ExecutionMode.TRAIN, mlConfig, new WorkerRole().name(), 0, null, null);
+        } catch (MLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

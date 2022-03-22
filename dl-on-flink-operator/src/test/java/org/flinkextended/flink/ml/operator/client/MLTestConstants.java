@@ -23,5 +23,4 @@ public class MLTestConstants {
     public static final String SINK_CONVERSION = "SinkConversion";
     public static final String SOURCE = "Source";
     public static final String SINK = "SINK";
-
 }

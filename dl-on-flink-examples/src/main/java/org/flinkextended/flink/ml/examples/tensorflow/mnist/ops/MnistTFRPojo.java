@@ -26,38 +26,44 @@ import java.util.List;
 
 public class MnistTFRPojo {
 
-	public String image_raw;
-	public int label;
+    public String image_raw;
+    public int label;
 
-	public String getImage_raw() {
-		return image_raw;
-	}
+    public String getImage_raw() {
+        return image_raw;
+    }
 
-	public void setImage_raw(String image_raw) {
-		this.image_raw = image_raw;
-	}
+    public void setImage_raw(String image_raw) {
+        this.image_raw = image_raw;
+    }
 
-	public int getLabel() {
-		return label;
-	}
+    public int getLabel() {
+        return label;
+    }
 
-	public void setLabel(int label) {
-		this.label = label;
-	}
+    public void setLabel(int label) {
+        this.label = label;
+    }
 
-	public static MnistTFRPojo from(byte[] bytes) throws InvalidProtocolBufferException {
-		Example example = Example.parseFrom(bytes);
-		String image = example.getFeatures().getFeatureMap().get("image_raw").getBytesList().getValue(0)
-				.toString(StandardCharsets.ISO_8859_1);
-		List<Long> label = example.getFeatures().getFeatureMap().get("label").getInt64List().getValueList();
-		for (int i = 0; i < label.size(); i++) {
-			if (label.get(i) == 1) {
-				MnistTFRPojo res = new MnistTFRPojo();
-				res.setImage_raw(image);
-				res.setLabel(i);
-				return res;
-			}
-		}
-		throw new RuntimeException("Invalid label: " + label);
-	}
+    public static MnistTFRPojo from(byte[] bytes) throws InvalidProtocolBufferException {
+        Example example = Example.parseFrom(bytes);
+        String image =
+                example.getFeatures()
+                        .getFeatureMap()
+                        .get("image_raw")
+                        .getBytesList()
+                        .getValue(0)
+                        .toString(StandardCharsets.ISO_8859_1);
+        List<Long> label =
+                example.getFeatures().getFeatureMap().get("label").getInt64List().getValueList();
+        for (int i = 0; i < label.size(); i++) {
+            if (label.get(i) == 1) {
+                MnistTFRPojo res = new MnistTFRPojo();
+                res.setImage_raw(image);
+                res.setLabel(i);
+                return res;
+            }
+        }
+        throw new RuntimeException("Invalid label: " + label);
+    }
 }

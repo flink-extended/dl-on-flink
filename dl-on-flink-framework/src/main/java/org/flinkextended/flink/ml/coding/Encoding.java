@@ -20,8 +20,9 @@ package org.flinkextended.flink.ml.coding;
 
 /**
  * convert object to byte array
+ *
  * @param <T> java object
  */
 public interface Encoding<T> {
-	byte[] encode(T object) throws CodingException;
+    byte[] encode(T object) throws CodingException;
 }

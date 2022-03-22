@@ -18,12 +18,10 @@
 
 package org.flinkextended.flink.ml.cluster.node.runner;
 
-/**
- * machine learning node script runner status.
- */
+/** machine learning node script runner status. */
 public enum ExecutionStatus {
-	RUNNING,
-	SUCCEED,
-	FAILED,
-	KILLED_BY_FLINK
+    RUNNING,
+    SUCCEED,
+    FAILED,
+    KILLED_BY_FLINK
 }

@@ -21,11 +21,11 @@ package org.flinkextended.flink.ml.examples.tensorflow.ut;
 import com.google.common.base.Joiner;
 
 public class InferenceOutPojo {
-	public int predict_label;
-	public int label_org;
+    public int predict_label;
+    public int label_org;
 
-	@Override
-	public String toString() {
-		return Joiner.on(",").join(predict_label, label_org);
-	}
+    @Override
+    public String toString() {
+        return Joiner.on(",").join(predict_label, label_org);
+    }
 }

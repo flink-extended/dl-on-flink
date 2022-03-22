@@ -18,8 +18,9 @@
 
 package org.flinkextended.flink.ml.operator.sink;
 
-import com.alibaba.fastjson.JSONObject;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
+
+import com.alibaba.fastjson.JSONObject;
 
 public class DebugJsonSink implements SinkFunction<JSONObject> {
 

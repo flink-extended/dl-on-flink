@@ -20,17 +20,16 @@ package org.flinkextended.flink.ml.cluster.role;
 
 import java.io.Serializable;
 
-/**
- * machine learning cluster base role.
- */
+/** machine learning cluster base role. */
 public abstract class BaseRole implements Serializable {
-	/**
-	 * cluster role name, subclass need to implement this method
-	 * @return role name
-	 */
-	public abstract String name();
+    /**
+     * cluster role name, subclass need to implement this method
+     *
+     * @return role name
+     */
+    public abstract String name();
 
-	public String toString() {
-		return name();
-	}
+    public String toString() {
+        return name();
+    }
 }

@@ -24,27 +24,33 @@ import org.flinkextended.flink.ml.data.impl.RecordWriterImpl;
 import org.flinkextended.flink.ml.util.MLConstants;
 import org.flinkextended.flink.ml.util.ReflectUtil;
 
-/**
- * a factory for RecordWriter and RecordReader.
- */
+/** a factory for RecordWriter and RecordReader. */
 public class RecordFactory {
-	public static RecordWriter getRecordWriter(MLContext mlContext) throws Exception {
-		String className = mlContext.getProperties().getOrDefault(MLConstants.RECORD_WRITER_CLASS,
-				RecordWriterImpl.class.getCanonicalName());
-		Class[] classes = new Class[1];
-		classes[0] = MLContext.class;
-		Object[] objects = new Object[1];
-		objects[0] = mlContext;
-		return ReflectUtil.createInstance(className, classes, objects);
-	}
+    public static RecordWriter getRecordWriter(MLContext mlContext) throws Exception {
+        String className =
+                mlContext
+                        .getProperties()
+                        .getOrDefault(
+                                MLConstants.RECORD_WRITER_CLASS,
+                                RecordWriterImpl.class.getCanonicalName());
+        Class[] classes = new Class[1];
+        classes[0] = MLContext.class;
+        Object[] objects = new Object[1];
+        objects[0] = mlContext;
+        return ReflectUtil.createInstance(className, classes, objects);
+    }
 
-	public static RecordReader getRecordRecord(MLContext mlContext) throws Exception {
-		String className = mlContext.getProperties().getOrDefault(MLConstants.RECORD_READER_CLASS,
-				RecordReaderImpl.class.getCanonicalName());
-		Class[] classes = new Class[1];
-		classes[0] = MLContext.class;
-		Object[] objects = new Object[1];
-		objects[0] = mlContext;
-		return ReflectUtil.createInstance(className, classes, objects);
-	}
+    public static RecordReader getRecordRecord(MLContext mlContext) throws Exception {
+        String className =
+                mlContext
+                        .getProperties()
+                        .getOrDefault(
+                                MLConstants.RECORD_READER_CLASS,
+                                RecordReaderImpl.class.getCanonicalName());
+        Class[] classes = new Class[1];
+        classes[0] = MLContext.class;
+        Object[] objects = new Object[1];
+        objects[0] = mlContext;
+        return ReflectUtil.createInstance(className, classes, objects);
+    }
 }

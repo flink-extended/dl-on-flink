@@ -21,6 +21,7 @@ package org.flinkextended.flink.ml.cluster.rpc;
 import org.flinkextended.flink.ml.cluster.master.meta.AMMeta;
 import org.flinkextended.flink.ml.cluster.storage.StorageFactory;
 import org.flinkextended.flink.ml.util.MLException;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -30,17 +31,17 @@ import java.util.concurrent.TimeoutException;
 
 public class AMRegistryTest {
 
-	@Test
-	public void testInvalidAMAddress() throws Exception {
-		StorageFactory.memoryStorage.setValue(AMMeta.AM_ADDRESS, "foo:1234".getBytes());
-		try {
-			AMRegistry.getAMClient(new HashMap<>(), Duration.ofSeconds(10).toMillis());
-		} catch (MLException e) {
-			if (e.getCause() instanceof TimeoutException) {
-				// expected
-				return;
-			}
-		}
-		Assert.fail("Get AM client with invalid address should timeout");
-	}
+    @Test
+    public void testInvalidAMAddress() throws Exception {
+        StorageFactory.memoryStorage.setValue(AMMeta.AM_ADDRESS, "foo:1234".getBytes());
+        try {
+            AMRegistry.getAMClient(new HashMap<>(), Duration.ofSeconds(10).toMillis());
+        } catch (MLException e) {
+            if (e.getCause() instanceof TimeoutException) {
+                // expected
+                return;
+            }
+        }
+        Assert.fail("Get AM client with invalid address should timeout");
+    }
 }

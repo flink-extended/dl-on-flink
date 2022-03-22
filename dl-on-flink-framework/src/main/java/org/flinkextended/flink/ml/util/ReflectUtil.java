@@ -21,19 +21,17 @@ package org.flinkextended.flink.ml.util;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-/**
- * java reflect util function
- */
+/** java reflect util function */
 public class ReflectUtil {
 
-	public static <T> T createInstance(String className, Class[] classes, Object[] objects)
-			throws IllegalAccessException, InvocationTargetException, InstantiationException,
-			NoSuchMethodException, ClassNotFoundException {
-		Class clazz;
-		clazz = Class.forName(className);
-		Constructor<T> constructor;
-		constructor = clazz.getConstructor(classes);
-		T t = constructor.newInstance(objects);
-		return t;
-	}
+    public static <T> T createInstance(String className, Class[] classes, Object[] objects)
+            throws IllegalAccessException, InvocationTargetException, InstantiationException,
+                    NoSuchMethodException, ClassNotFoundException {
+        Class clazz;
+        clazz = Class.forName(className);
+        Constructor<T> constructor;
+        constructor = clazz.getConstructor(classes);
+        T t = constructor.newInstance(objects);
+        return t;
+    }
 }

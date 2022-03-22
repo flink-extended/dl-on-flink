@@ -24,34 +24,32 @@ import org.flinkextended.flink.ml.data.RecordWriter;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-/**
- * TFRecord format implementation of RecordWriter.
- */
+/** TFRecord format implementation of RecordWriter. */
 public class TFRecordWriterImpl implements RecordWriter {
-	private TFRecordWriter recordWriter;
-	private MLContext mlContext;
-	private final DataOutputStream outputStream;
+    private TFRecordWriter recordWriter;
+    private MLContext mlContext;
+    private final DataOutputStream outputStream;
 
-	public TFRecordWriterImpl(MLContext mlContext) {
-		this.mlContext = mlContext;
-		this.outputStream = new DataOutputStream(mlContext.getOutWriter());
-		recordWriter = new TFRecordWriter(outputStream);
-	}
+    public TFRecordWriterImpl(MLContext mlContext) {
+        this.mlContext = mlContext;
+        this.outputStream = new DataOutputStream(mlContext.getOutWriter());
+        recordWriter = new TFRecordWriter(outputStream);
+    }
 
-	@Override
-	public boolean write(byte[] record, int offset, int length) throws IOException {
-		recordWriter.write(record, offset, length);
-		return true;
-	}
+    @Override
+    public boolean write(byte[] record, int offset, int length) throws IOException {
+        recordWriter.write(record, offset, length);
+        return true;
+    }
 
-	@Override
-	public boolean write(byte[] record) throws IOException {
-		recordWriter.write(record);
-		return true;
-	}
+    @Override
+    public boolean write(byte[] record) throws IOException {
+        recordWriter.write(record);
+        return true;
+    }
 
-	@Override
-	public void close() throws IOException {
-		//mlContext.getOutWriter().close();
-	}
+    @Override
+    public void close() throws IOException {
+        // mlContext.getOutWriter().close();
+    }
 }

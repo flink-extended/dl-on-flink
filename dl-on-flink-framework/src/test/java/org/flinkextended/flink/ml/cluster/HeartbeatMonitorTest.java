@@ -20,6 +20,7 @@ package org.flinkextended.flink.ml.cluster;
 
 import org.flinkextended.flink.ml.cluster.master.HeartbeatListener;
 import org.flinkextended.flink.ml.cluster.master.HeartbeatMonitor;
+
 import org.junit.Test;
 
 import java.time.Duration;
@@ -33,37 +34,39 @@ import static org.mockito.Mockito.*;
 
 public class HeartbeatMonitorTest {
 
-	private static final Duration TIMEOUT = Duration.ofSeconds(3);
+    private static final Duration TIMEOUT = Duration.ofSeconds(3);
 
-	@Test
-	public void testSimpleTimeout() throws Exception {
-		ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-		HeartbeatListener listener = mock(HeartbeatListener.class);
-		HeartbeatMonitor monitor = new HeartbeatMonitor(listener);
-		monitor.updateTimeout(TIMEOUT, executor);
-		Thread.sleep(TIMEOUT.toMillis() * 2);
-		verify(listener).notifyHeartbeatTimeout();
-		executor.shutdown();
-	}
+    @Test
+    public void testSimpleTimeout() throws Exception {
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        HeartbeatListener listener = mock(HeartbeatListener.class);
+        HeartbeatMonitor monitor = new HeartbeatMonitor(listener);
+        monitor.updateTimeout(TIMEOUT, executor);
+        Thread.sleep(TIMEOUT.toMillis() * 2);
+        verify(listener).notifyHeartbeatTimeout();
+        executor.shutdown();
+    }
 
-	@Test
-	public void testConcurrentUpdate() throws Exception {
-		final int numThreads = 10;
-		final ScheduledExecutorService executor = Executors.newScheduledThreadPool(numThreads * 2);
-		final HeartbeatMonitor monitor = spy(new HeartbeatMonitor(mock(HeartbeatListener.class)));
-		List<Future<?>> futures = new ArrayList<>(numThreads);
-		for (int i = 0; i < numThreads; i++) {
-			futures.add(executor.submit(() -> {
-				monitor.updateTimeout(TIMEOUT, executor);
-			}));
-		}
-		for (Future<?> future : futures) {
-			future.get();
-		}
-		monitor.cancel();
-		Thread.sleep(TIMEOUT.toMillis() * 2);
-		// the monitor shouldn't have been fired
-		verify(monitor, times(0)).run();
-		executor.shutdown();
-	}
+    @Test
+    public void testConcurrentUpdate() throws Exception {
+        final int numThreads = 10;
+        final ScheduledExecutorService executor = Executors.newScheduledThreadPool(numThreads * 2);
+        final HeartbeatMonitor monitor = spy(new HeartbeatMonitor(mock(HeartbeatListener.class)));
+        List<Future<?>> futures = new ArrayList<>(numThreads);
+        for (int i = 0; i < numThreads; i++) {
+            futures.add(
+                    executor.submit(
+                            () -> {
+                                monitor.updateTimeout(TIMEOUT, executor);
+                            }));
+        }
+        for (Future<?> future : futures) {
+            future.get();
+        }
+        monitor.cancel();
+        Thread.sleep(TIMEOUT.toMillis() * 2);
+        // the monitor shouldn't have been fired
+        verify(monitor, times(0)).run();
+        executor.shutdown();
+    }
 }

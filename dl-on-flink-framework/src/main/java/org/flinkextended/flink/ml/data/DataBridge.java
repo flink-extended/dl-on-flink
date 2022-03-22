@@ -24,39 +24,36 @@ import org.flinkextended.flink.ml.coding.Encoding;
 import java.io.Closeable;
 import java.io.IOException;
 
-/**
- * data bridge between java and python process.
- */
+/** data bridge between java and python process. */
 public interface DataBridge extends Closeable {
-	/**
-	 * write object to python.
-	 * @param obj java object.
-	 * @param recordWriter writer.
-	 * @param encoding encoding object.
-	 * @param <T> java object class
-	 * @return true: write success false: write failed.
-	 * @throws IOException
-	 */
-	<T> boolean write(T obj, RecordWriter recordWriter, Encoding<T> encoding) throws IOException;
+    /**
+     * write object to python.
+     *
+     * @param obj java object.
+     * @param recordWriter writer.
+     * @param encoding encoding object.
+     * @param <T> java object class
+     * @return true: write success false: write failed.
+     * @throws IOException
+     */
+    <T> boolean write(T obj, RecordWriter recordWriter, Encoding<T> encoding) throws IOException;
 
-	/**
-	 * read from python process.
-	 * @param recordReader reader object.
-	 * @param readWait true: blocking read, false: no blocking read.
-	 * @param decoding decoding object.
-	 * @param <T> java object class.
-	 * @return read object.
-	 * @throws IOException
-	 */
-	<T> T read(RecordReader recordReader, boolean readWait, Decoding<T> decoding) throws IOException;
+    /**
+     * read from python process.
+     *
+     * @param recordReader reader object.
+     * @param readWait true: blocking read, false: no blocking read.
+     * @param decoding decoding object.
+     * @param <T> java object class.
+     * @return read object.
+     * @throws IOException
+     */
+    <T> T read(RecordReader recordReader, boolean readWait, Decoding<T> decoding)
+            throws IOException;
 
-	/**
-	 * @return read records number.
-	 */
-	long getReadRecords();
+    /** @return read records number. */
+    long getReadRecords();
 
-	/**
-	 * @return write records number.
-	 */
-	long getWriteRecords();
+    /** @return write records number. */
+    long getWriteRecords();
 }

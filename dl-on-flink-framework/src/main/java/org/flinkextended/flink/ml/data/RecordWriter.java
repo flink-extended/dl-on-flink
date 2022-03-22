@@ -21,25 +21,25 @@ package org.flinkextended.flink.ml.data;
 import java.io.Closeable;
 import java.io.IOException;
 
-/**
- * date exchange write record interface.
- */
+/** date exchange write record interface. */
 public interface RecordWriter extends Closeable {
-	/**
-	 * write a record to python process.
-	 * @param record write record.
-	 * @param offset record offset.
-	 * @param length write record length.
-	 * @return true: write success, false: write failed.
-	 * @throws IOException
-	 */
-	boolean write(byte[] record, int offset, int length) throws IOException;
+    /**
+     * write a record to python process.
+     *
+     * @param record write record.
+     * @param offset record offset.
+     * @param length write record length.
+     * @return true: write success, false: write failed.
+     * @throws IOException
+     */
+    boolean write(byte[] record, int offset, int length) throws IOException;
 
-	/**
-	 * read a record from python process.
-	 * @param record write record.
-	 * @return true: write success, false: write failed.
-	 * @throws IOException
-	 */
-	boolean write(byte[] record) throws IOException;
+    /**
+     * read a record from python process.
+     *
+     * @param record write record.
+     * @return true: write success, false: write failed.
+     * @throws IOException
+     */
+    boolean write(byte[] record) throws IOException;
 }

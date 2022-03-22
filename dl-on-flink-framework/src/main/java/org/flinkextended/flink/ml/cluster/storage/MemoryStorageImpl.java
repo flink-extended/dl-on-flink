@@ -23,42 +23,40 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class MemoryStorageImpl implements Storage {
 
-	private Map<String, byte[]> mTable = new HashMap<>();
+    private Map<String, byte[]> mTable = new HashMap<>();
 
-	public MemoryStorageImpl() {
-	}
+    public MemoryStorageImpl() {}
 
-	@Override
-	public byte[] getValue(String path) {
-		return mTable.get(path);
-	}
+    @Override
+    public byte[] getValue(String path) {
+        return mTable.get(path);
+    }
 
-	@Override
-	public void setValue(String path, byte[] value) throws IOException {
-		mTable.put(path, value);
-	}
+    @Override
+    public void setValue(String path, byte[] value) throws IOException {
+        mTable.put(path, value);
+    }
 
-	@Override
-	public void removeValue(String path) throws IOException {
-		mTable.remove(path);
-	}
+    @Override
+    public void removeValue(String path) throws IOException {
+        mTable.remove(path);
+    }
 
-	@Override
-	public List<String> listChildren(String path) throws IOException {
-		// path of memory storage do not have child
-		return null;
-	}
+    @Override
+    public List<String> listChildren(String path) throws IOException {
+        // path of memory storage do not have child
+        return null;
+    }
 
-	@Override
-	public boolean exists(String path) throws IOException {
-		return mTable.containsKey(path);
-	}
+    @Override
+    public boolean exists(String path) throws IOException {
+        return mTable.containsKey(path);
+    }
 
-	@Override
-	public void clear() {
-		mTable.clear();
-	}
+    @Override
+    public void clear() {
+        mTable.clear();
+    }
 }

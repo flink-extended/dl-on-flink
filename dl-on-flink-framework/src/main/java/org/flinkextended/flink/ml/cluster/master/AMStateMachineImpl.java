@@ -19,8 +19,8 @@
 package org.flinkextended.flink.ml.cluster.master;
 
 import org.flinkextended.flink.ml.cluster.BaseEventReporter;
-import org.flinkextended.flink.ml.cluster.node.MLContext;
 import org.flinkextended.flink.ml.cluster.master.meta.AMMeta;
+import org.flinkextended.flink.ml.cluster.node.MLContext;
 import org.flinkextended.flink.ml.cluster.rpc.AppMasterServiceImpl;
 import org.flinkextended.flink.ml.cluster.statemachine.StateMachine;
 import org.flinkextended.flink.ml.cluster.statemachine.StateMachineBuilder;
@@ -29,70 +29,134 @@ import org.flinkextended.flink.ml.proto.AMStatus;
 import java.util.EnumSet;
 
 /**
- * A common application master state machine implementation.
- * state machine diagram shown as image/design/state_machine.jpg.
+ * A common application master state machine implementation. state machine diagram shown as
+ * image/design/state_machine.jpg.
  */
 public class AMStateMachineImpl extends AbstractAMStateMachine {
-	public AMStateMachineImpl(AppMasterServiceImpl server, AMMeta amState,
-                              MLContext MLContext, BaseEventReporter eventReporter) {
-		super(server, amState, MLContext, eventReporter);
-	}
+    public AMStateMachineImpl(
+            AppMasterServiceImpl server,
+            AMMeta amState,
+            MLContext MLContext,
+            BaseEventReporter eventReporter) {
+        super(server, amState, MLContext, eventReporter);
+    }
 
-	@Override
-	protected StateMachine<AMStatus, AMEventType, AMEvent> buildStateMachine(MLContext mlContext,
-                                                                             AMMeta amMeta) {
-		StateMachineBuilder<AbstractAMStateMachine, AMStatus, AMEventType, AMEvent>
-				stateMachineBuilder = new StateMachineBuilder<AbstractAMStateMachine, AMStatus, AMEventType, AMEvent>(
-				AMStatus.AM_UNKNOW)
-				.addTransition(AMStatus.AM_UNKNOW,
-						EnumSet.of(AMStatus.AM_INIT, AMStatus.AM_RUNNING, AMStatus.AM_FAILOVER, AMStatus.AM_FINISH),
-						AMEventType.INTI_AM_STATE,
-						new AMTransitions.InitAmState(this))
-				.addTransition(AMStatus.AM_INIT, AMStatus.AM_INIT,
-						AMEventType.REGISTER_NODE,
-						new AMTransitions.RegisterNode(this))
-				.addTransition(AMStatus.AM_INIT, AMStatus.AM_RUNNING, AMEventType.COMPLETE_CLUSTER,
-						new AMTransitions.CompleteCluster(this))
-				.addTransition(AMStatus.AM_INIT, AMStatus.AM_FAILOVER, AMEventType.FAIL_NODE,
-						new AMTransitions.FailNode(this))
-				.addTransition(AMStatus.AM_INIT, AMStatus.AM_FINISH, AMEventType.STOP_JOB,
-						new AMTransitions.StopJob(this))
-				.addTransition(AMStatus.AM_RUNNING, AMStatus.AM_RUNNING,
-						AMEventType.FINISH_NODE,
-						new AMTransitions.FinishNode(this))
-				.addTransition(AMStatus.AM_RUNNING, AMStatus.AM_FINISH,
-						AMEventType.FINISH_CLUSTER,
-						new AMTransitions.FinishCluster(this))
-				.addTransition(AMStatus.AM_RUNNING, AMStatus.AM_FAILOVER, AMEventType.FAIL_NODE,
-						new AMTransitions.FailNode(this))
-				.addTransition(AMStatus.AM_RUNNING, AMStatus.AM_FAILOVER, AMEventType.REGISTER_NODE,
-						new AMTransitions.FailNode(this))
-				.addTransition(AMStatus.AM_RUNNING, AMStatus.AM_FINISH, AMEventType.STOP_JOB,
-						new AMTransitions.StopJob(this))
-				.addTransition(AMStatus.AM_FAILOVER, AMStatus.AM_INIT, AMEventType.RESTART_CLUSTER,
-						new AMTransitions.RestartCluster(this))
-				.addTransition(AMStatus.AM_FAILOVER, AMStatus.AM_FINISH, AMEventType.STOP_JOB,
-						new AMTransitions.StopJob(this))
-				// some ignore message
-				.addTransition(AMStatus.AM_FAILOVER, AMStatus.AM_FAILOVER, AMEventType.FINISH_NODE,
-						new AMTransitions.IgnoreMessage(this))
-				.addTransition(AMStatus.AM_FAILOVER, AMStatus.AM_FAILOVER, AMEventType.FAIL_NODE,
-						new AMTransitions.IgnoreMessage(this))
-				.addTransition(AMStatus.AM_FAILOVER, AMStatus.AM_FAILOVER, AMEventType.REGISTER_NODE,
-						new AMTransitions.IgnoreMessage(this))
-				.addTransition(AMStatus.AM_INIT, AMStatus.AM_INIT, AMEventType.FINISH_NODE,
-						new AMTransitions.IgnoreMessage(this))
-				.addTransition(AMStatus.AM_INIT, AMStatus.AM_INIT, AMEventType.RESTART_CLUSTER,
-						new AMTransitions.IgnoreMessage(this))
-				.addTransition(AMStatus.AM_FINISH, AMStatus.AM_FINISH, AMEventType.FINISH_NODE,
-						new AMTransitions.IgnoreMessage(this))
-				.addTransition(AMStatus.AM_FINISH, AMStatus.AM_FINISH, AMEventType.STOP_JOB,
-						new AMTransitions.IgnoreMessage(this))
-				.addTransition(AMStatus.AM_FINISH, AMStatus.AM_FINISH, AMEventType.FINISH_NODE,
-						new AMTransitions.IgnoreMessage(this))
-				// end
-				.installTopology();
-		stateMachine = stateMachineBuilder.make(this);
-		return stateMachine;
-	}
+    @Override
+    protected StateMachine<AMStatus, AMEventType, AMEvent> buildStateMachine(
+            MLContext mlContext, AMMeta amMeta) {
+        StateMachineBuilder<AbstractAMStateMachine, AMStatus, AMEventType, AMEvent>
+                stateMachineBuilder =
+                        new StateMachineBuilder<
+                                        AbstractAMStateMachine, AMStatus, AMEventType, AMEvent>(
+                                        AMStatus.AM_UNKNOW)
+                                .addTransition(
+                                        AMStatus.AM_UNKNOW,
+                                        EnumSet.of(
+                                                AMStatus.AM_INIT,
+                                                AMStatus.AM_RUNNING,
+                                                AMStatus.AM_FAILOVER,
+                                                AMStatus.AM_FINISH),
+                                        AMEventType.INTI_AM_STATE,
+                                        new AMTransitions.InitAmState(this))
+                                .addTransition(
+                                        AMStatus.AM_INIT,
+                                        AMStatus.AM_INIT,
+                                        AMEventType.REGISTER_NODE,
+                                        new AMTransitions.RegisterNode(this))
+                                .addTransition(
+                                        AMStatus.AM_INIT,
+                                        AMStatus.AM_RUNNING,
+                                        AMEventType.COMPLETE_CLUSTER,
+                                        new AMTransitions.CompleteCluster(this))
+                                .addTransition(
+                                        AMStatus.AM_INIT,
+                                        AMStatus.AM_FAILOVER,
+                                        AMEventType.FAIL_NODE,
+                                        new AMTransitions.FailNode(this))
+                                .addTransition(
+                                        AMStatus.AM_INIT,
+                                        AMStatus.AM_FINISH,
+                                        AMEventType.STOP_JOB,
+                                        new AMTransitions.StopJob(this))
+                                .addTransition(
+                                        AMStatus.AM_RUNNING,
+                                        AMStatus.AM_RUNNING,
+                                        AMEventType.FINISH_NODE,
+                                        new AMTransitions.FinishNode(this))
+                                .addTransition(
+                                        AMStatus.AM_RUNNING,
+                                        AMStatus.AM_FINISH,
+                                        AMEventType.FINISH_CLUSTER,
+                                        new AMTransitions.FinishCluster(this))
+                                .addTransition(
+                                        AMStatus.AM_RUNNING,
+                                        AMStatus.AM_FAILOVER,
+                                        AMEventType.FAIL_NODE,
+                                        new AMTransitions.FailNode(this))
+                                .addTransition(
+                                        AMStatus.AM_RUNNING,
+                                        AMStatus.AM_FAILOVER,
+                                        AMEventType.REGISTER_NODE,
+                                        new AMTransitions.FailNode(this))
+                                .addTransition(
+                                        AMStatus.AM_RUNNING,
+                                        AMStatus.AM_FINISH,
+                                        AMEventType.STOP_JOB,
+                                        new AMTransitions.StopJob(this))
+                                .addTransition(
+                                        AMStatus.AM_FAILOVER,
+                                        AMStatus.AM_INIT,
+                                        AMEventType.RESTART_CLUSTER,
+                                        new AMTransitions.RestartCluster(this))
+                                .addTransition(
+                                        AMStatus.AM_FAILOVER,
+                                        AMStatus.AM_FINISH,
+                                        AMEventType.STOP_JOB,
+                                        new AMTransitions.StopJob(this))
+                                // some ignore message
+                                .addTransition(
+                                        AMStatus.AM_FAILOVER,
+                                        AMStatus.AM_FAILOVER,
+                                        AMEventType.FINISH_NODE,
+                                        new AMTransitions.IgnoreMessage(this))
+                                .addTransition(
+                                        AMStatus.AM_FAILOVER,
+                                        AMStatus.AM_FAILOVER,
+                                        AMEventType.FAIL_NODE,
+                                        new AMTransitions.IgnoreMessage(this))
+                                .addTransition(
+                                        AMStatus.AM_FAILOVER,
+                                        AMStatus.AM_FAILOVER,
+                                        AMEventType.REGISTER_NODE,
+                                        new AMTransitions.IgnoreMessage(this))
+                                .addTransition(
+                                        AMStatus.AM_INIT,
+                                        AMStatus.AM_INIT,
+                                        AMEventType.FINISH_NODE,
+                                        new AMTransitions.IgnoreMessage(this))
+                                .addTransition(
+                                        AMStatus.AM_INIT,
+                                        AMStatus.AM_INIT,
+                                        AMEventType.RESTART_CLUSTER,
+                                        new AMTransitions.IgnoreMessage(this))
+                                .addTransition(
+                                        AMStatus.AM_FINISH,
+                                        AMStatus.AM_FINISH,
+                                        AMEventType.FINISH_NODE,
+                                        new AMTransitions.IgnoreMessage(this))
+                                .addTransition(
+                                        AMStatus.AM_FINISH,
+                                        AMStatus.AM_FINISH,
+                                        AMEventType.STOP_JOB,
+                                        new AMTransitions.IgnoreMessage(this))
+                                .addTransition(
+                                        AMStatus.AM_FINISH,
+                                        AMStatus.AM_FINISH,
+                                        AMEventType.FINISH_NODE,
+                                        new AMTransitions.IgnoreMessage(this))
+                                // end
+                                .installTopology();
+        stateMachine = stateMachineBuilder.make(this);
+        return stateMachine;
+    }
 }

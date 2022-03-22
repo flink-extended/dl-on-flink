@@ -19,6 +19,7 @@
 package org.flinkextended.flink.ml.tensorflow.io;
 
 import org.flinkextended.flink.ml.operator.util.TypeUtil;
+
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -26,55 +27,57 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.TableSchema;
 import org.apache.flink.table.sources.StreamTableSource;
 import org.apache.flink.types.Row;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Arrays;
 
-/**
- * flink table source: read tensorflow TFRecord format file, output Row.
- */
+/** flink table source: read tensorflow TFRecord format file, output Row. */
 public class TFRecordTableSourceStream implements StreamTableSource<Row> {
 
-	private static final Logger LOG = LoggerFactory.getLogger(TFRecordTableSourceStream.class);
-	private static final TableSchema SCHEMA = TableSchema.builder()
-			.field("tfr", TypeInformation.of(byte[].class)).build();
+    private static final Logger LOG = LoggerFactory.getLogger(TFRecordTableSourceStream.class);
+    private static final TableSchema SCHEMA =
+            TableSchema.builder().field("tfr", TypeInformation.of(byte[].class)).build();
 
-	protected final String[] paths;
-	protected final int epochs;
+    protected final String[] paths;
+    protected final int epochs;
 
-	public TFRecordTableSourceStream(String[] paths, int epochs) {
-		this.paths = paths;
-		this.epochs = epochs;
-	}
+    public TFRecordTableSourceStream(String[] paths, int epochs) {
+        this.paths = paths;
+        this.epochs = epochs;
+    }
 
-	public TFRecordTableSourceStream(File[] files, int epochs) {
-		paths = new String[files.length];
-		for (int i = 0; i < paths.length; i++) {
-			paths[i] = files[i].getAbsolutePath();
-		}
-		this.epochs = epochs;
-	}
+    public TFRecordTableSourceStream(File[] files, int epochs) {
+        paths = new String[files.length];
+        for (int i = 0; i < paths.length; i++) {
+            paths[i] = files[i].getAbsolutePath();
+        }
+        this.epochs = epochs;
+    }
 
-	@Override
-	public TypeInformation<Row> getReturnType() {
-		return new RowTypeInfo(SCHEMA.getFieldTypes(), SCHEMA.getFieldNames());
-	}
+    @Override
+    public TypeInformation<Row> getReturnType() {
+        return new RowTypeInfo(SCHEMA.getFieldTypes(), SCHEMA.getFieldNames());
+    }
 
-	@Override
-	public TableSchema getTableSchema() {
-		return SCHEMA;
-	}
+    @Override
+    public TableSchema getTableSchema() {
+        return SCHEMA;
+    }
 
-	@Override
-	public String explainSource() {
-		return "TFRecord source " + Arrays.toString(paths);
-	}
+    @Override
+    public String explainSource() {
+        return "TFRecord source " + Arrays.toString(paths);
+    }
 
-	@Override
-	public DataStream<Row> getDataStream(StreamExecutionEnvironment execEnv) {
-		return execEnv.createInput(new TFRecordToRowInputFormat(paths, epochs,
-				TypeUtil.schemaToRowTypeInfo(SCHEMA))).setParallelism(paths.length).name(explainSource());
-	}
+    @Override
+    public DataStream<Row> getDataStream(StreamExecutionEnvironment execEnv) {
+        return execEnv.createInput(
+                        new TFRecordToRowInputFormat(
+                                paths, epochs, TypeUtil.schemaToRowTypeInfo(SCHEMA)))
+                .setParallelism(paths.length)
+                .name(explainSource());
+    }
 }

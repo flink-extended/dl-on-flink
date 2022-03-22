@@ -20,12 +20,13 @@ package org.flinkextended.flink.ml.cluster.statemachine.event;
 
 /**
  * state machine event interface.
+ *
  * @param <TYPE> event type.
  */
 public interface Event<TYPE extends Enum<TYPE>> {
-	TYPE getType();
+    TYPE getType();
 
-	long getTimestamp();
+    long getTimestamp();
 
-	String toString();
+    String toString();
 }

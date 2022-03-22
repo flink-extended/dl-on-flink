@@ -24,44 +24,41 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 public class TFRecordWriter {
-	private final DataOutput output;
+    private final DataOutput output;
 
-	public TFRecordWriter(DataOutput output) {
-		this.output = output;
-	}
+    public TFRecordWriter(DataOutput output) {
+        this.output = output;
+    }
 
-	public void write(byte[] record, int offset, int length) throws IOException {
-		/**
-		 * TFRecord format:
-		 * uint64 length
-		 * uint32 masked_crc32_of_length
-		 * byte   data[length]
-		 * uint32 masked_crc32_of_data
-		 */
-		byte[] len = toInt64LE(length);
-		output.write(len);
-		output.write(toInt32LE(Crc32C.maskedCrc32c(len)));
-		output.write(record, offset, length);
-		output.write(toInt32LE(Crc32C.maskedCrc32c(record, offset, length)));
-	}
+    public void write(byte[] record, int offset, int length) throws IOException {
+        /**
+         * TFRecord format: uint64 length uint32 masked_crc32_of_length byte data[length] uint32
+         * masked_crc32_of_data
+         */
+        byte[] len = toInt64LE(length);
+        output.write(len);
+        output.write(toInt32LE(Crc32C.maskedCrc32c(len)));
+        output.write(record, offset, length);
+        output.write(toInt32LE(Crc32C.maskedCrc32c(record, offset, length)));
+    }
 
-	public void write(byte[] record) throws IOException {
-		write(record, 0, record.length);
-	}
+    public void write(byte[] record) throws IOException {
+        write(record, 0, record.length);
+    }
 
-	private byte[] toInt64LE(long data) {
-		byte[] buff = new byte[8];
-		ByteBuffer bb = ByteBuffer.wrap(buff);
-		bb.order(ByteOrder.LITTLE_ENDIAN);
-		bb.putLong(data);
-		return buff;
-	}
+    private byte[] toInt64LE(long data) {
+        byte[] buff = new byte[8];
+        ByteBuffer bb = ByteBuffer.wrap(buff);
+        bb.order(ByteOrder.LITTLE_ENDIAN);
+        bb.putLong(data);
+        return buff;
+    }
 
-	private byte[] toInt32LE(int data) {
-		byte[] buff = new byte[4];
-		ByteBuffer bb = ByteBuffer.wrap(buff);
-		bb.order(ByteOrder.LITTLE_ENDIAN);
-		bb.putInt(data);
-		return buff;
-	}
+    private byte[] toInt32LE(int data) {
+        byte[] buff = new byte[4];
+        ByteBuffer bb = ByteBuffer.wrap(buff);
+        bb.order(ByteOrder.LITTLE_ENDIAN);
+        bb.putInt(data);
+        return buff;
+    }
 }

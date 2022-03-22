@@ -21,56 +21,53 @@ package org.flinkextended.flink.ml.cluster.storage;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * kv store abstraction
- */
+/** kv store abstraction */
 public interface Storage {
-	/**
-	 * get value by key.
-	 * @param path key.
-	 * @return value set with the path, and null if the value does not exist.
-	 * @throws IOException
-	 */
-	byte[] getValue(String path) throws IOException;
+    /**
+     * get value by key.
+     *
+     * @param path key.
+     * @return value set with the path, and null if the value does not exist.
+     * @throws IOException
+     */
+    byte[] getValue(String path) throws IOException;
 
-	/**
-	 * set a value to a key.
-	 * @param path key.
-	 * @param value value associate with the apth.
-	 * @throws IOException
-	 */
-	void setValue(String path, byte[] value) throws IOException;
+    /**
+     * set a value to a key.
+     *
+     * @param path key.
+     * @param value value associate with the apth.
+     * @throws IOException
+     */
+    void setValue(String path, byte[] value) throws IOException;
 
-	/**
-	 * remove a key.
-	 * @param path path key.
-	 * @throws IOException
-	 */
-	void removeValue(String path) throws IOException;
+    /**
+     * remove a key.
+     *
+     * @param path path key.
+     * @throws IOException
+     */
+    void removeValue(String path) throws IOException;
 
-	/**
-	 * list a key's children.
-	 * @param path key.
-	 * @return a key path children.
-	 * @throws IOException
-	 */
-	List<String> listChildren(String path) throws IOException;
+    /**
+     * list a key's children.
+     *
+     * @param path key.
+     * @return a key path children.
+     * @throws IOException
+     */
+    List<String> listChildren(String path) throws IOException;
 
-	/**
-	 * @param path key
-	 * @return true: exist key, false: non-exist key.
-	 * @throws IOException
-	 */
-	boolean exists(String path) throws IOException;
+    /**
+     * @param path key
+     * @return true: exist key, false: non-exist key.
+     * @throws IOException
+     */
+    boolean exists(String path) throws IOException;
 
-	/**
-	 * close all resources.
-	 */
-	default void close() {
-	}
+    /** close all resources. */
+    default void close() {}
 
-	/**
-	 * clear all key.
-	 */
-	void clear();
+    /** clear all key. */
+    void clear();
 }

@@ -19,13 +19,13 @@
 package org.flinkextended.flink.ml.pytorch;
 
 import org.flinkextended.flink.ml.util.TestUtil;
-import org.apache.curator.test.TestingServer;
 
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.StatementSet;
 import org.apache.flink.table.api.TableEnvironment;
-
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+
+import org.apache.curator.test.TestingServer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,38 +34,37 @@ import static org.flinkextended.flink.ml.operator.client.TableTestUtil.execTable
 
 public class PyTorchUtilTest {
 
-	private static TestingServer testingServer;
-	private static String rootPath = TestUtil.getProjectRootPath() + "/dl-on-flink-pytorch/src/test/python/";
+    private static TestingServer testingServer;
+    private static String rootPath =
+            TestUtil.getProjectRootPath() + "/dl-on-flink-pytorch/src/test/python/";
 
+    @Before
+    public void setUp() throws Exception {
+        testingServer = new TestingServer(2181, true);
+    }
 
-	@Before
-	public void setUp() throws Exception {
-		testingServer = new TestingServer(2181, true);
-	}
+    @After
+    public void tearDown() throws Exception {
+        testingServer.stop();
+    }
 
-	@After
-	public void tearDown() throws Exception {
-		testingServer.stop();
-	}
+    @Test
+    public void trainStream() throws Exception {
+        PyTorchConfig pytorchConfig =
+                new PyTorchConfig(3, null, rootPath + "greeter.py", "map_func", null);
+        StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
+        PyTorchUtil.train(streamEnv, null, pytorchConfig, null);
+        streamEnv.execute();
+    }
 
-	@Test
-	public void trainStream() throws Exception {
-		PyTorchConfig pytorchConfig = new PyTorchConfig(3, null,
-				rootPath + "greeter.py", "map_func", null);
-		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
-		PyTorchUtil.train(streamEnv, null, pytorchConfig, null);
-		streamEnv.execute();
-	}
-
-	@Test
-	public void trainTable() throws Exception {
-		PyTorchConfig pytorchConfig = new PyTorchConfig(3, null,
-				rootPath + "greeter.py", "map_func", null);
-		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
-		TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
-		StatementSet statementSet = tableEnv.createStatementSet();
-		PyTorchUtil.train(streamEnv, tableEnv, statementSet, null, pytorchConfig, null);
-		execTableJobCustom(pytorchConfig.getMlConfig(), streamEnv, tableEnv, statementSet);
-
-	}
+    @Test
+    public void trainTable() throws Exception {
+        PyTorchConfig pytorchConfig =
+                new PyTorchConfig(3, null, rootPath + "greeter.py", "map_func", null);
+        StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
+        TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
+        StatementSet statementSet = tableEnv.createStatementSet();
+        PyTorchUtil.train(streamEnv, tableEnv, statementSet, null, pytorchConfig, null);
+        execTableJobCustom(pytorchConfig.getMlConfig(), streamEnv, tableEnv, statementSet);
+    }
 }

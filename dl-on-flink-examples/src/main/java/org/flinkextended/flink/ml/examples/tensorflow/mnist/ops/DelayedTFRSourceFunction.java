@@ -20,6 +20,7 @@ package org.flinkextended.flink.ml.examples.tensorflow.mnist.ops;
 
 import org.flinkextended.flink.ml.tensorflow.data.TFRecordReader;
 import org.flinkextended.flink.ml.tensorflow.io.TFRExtractRowHelper;
+
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.ResultTypeQueryable;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
@@ -27,6 +28,7 @@ import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.checkpoint.ListCheckpointed;
 import org.apache.flink.streaming.api.functions.source.RichParallelSourceFunction;
 import org.apache.flink.types.Row;
+
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -50,8 +52,11 @@ public class DelayedTFRSourceFunction extends RichParallelSourceFunction<Row>
     private long numRead = 0;
     private volatile boolean cancelled;
 
-    DelayedTFRSourceFunction(String[] paths, long delayBound, RowTypeInfo outRowType,
-                             TFRExtractRowHelper.ScalarConverter[] converters) {
+    DelayedTFRSourceFunction(
+            String[] paths,
+            long delayBound,
+            RowTypeInfo outRowType,
+            TFRExtractRowHelper.ScalarConverter[] converters) {
         this.paths = paths;
         this.delayBound = delayBound;
         this.outRowType = outRowType;
@@ -81,7 +86,8 @@ public class DelayedTFRSourceFunction extends RichParallelSourceFunction<Row>
     @Override
     public void run(SourceContext<Row> sourceContext) throws Exception {
         final Object lock = sourceContext.getCheckpointLock();
-        org.apache.hadoop.conf.Configuration hadoopConf = new org.apache.hadoop.conf.Configuration();
+        org.apache.hadoop.conf.Configuration hadoopConf =
+                new org.apache.hadoop.conf.Configuration();
         for (String p : paths) {
             Path path = new Path(p);
             FileSystem fs = path.getFileSystem(hadoopConf);

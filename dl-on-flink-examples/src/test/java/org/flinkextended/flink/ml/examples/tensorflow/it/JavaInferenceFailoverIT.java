@@ -23,6 +23,7 @@ import org.flinkextended.flink.ml.examples.tensorflow.mnist.MnistJavaInference;
 import org.flinkextended.flink.ml.examples.tensorflow.ut.TFMnistInferenceTest;
 import org.flinkextended.flink.ml.util.MiniCluster;
 import org.flinkextended.flink.ml.util.SysUtil;
+
 import com.google.common.io.Files;
 import org.apache.hadoop.fs.Path;
 import org.junit.*;
@@ -30,72 +31,76 @@ import org.junit.*;
 import java.io.File;
 import java.util.concurrent.FutureTask;
 
-
 public class JavaInferenceFailoverIT {
 
-	private static final int NUM_TM = 3;
-	private static final String HDFS_EXPORT_DIR = "/mnist/models/" + new Path(TFMnistInferenceTest.exportPath)
-			.getName();
-	private static final String HDFS_TEST_DATA_DIR = "/mnist/test";
+    private static final int NUM_TM = 3;
+    private static final String HDFS_EXPORT_DIR =
+            "/mnist/models/" + new Path(TFMnistInferenceTest.exportPath).getName();
+    private static final String HDFS_TEST_DATA_DIR = "/mnist/test";
 
-	private MiniCluster miniCluster;
+    private MiniCluster miniCluster;
 
-	@BeforeClass
-	public static void prepData() throws Exception {
-		MnistDataUtil.prepareData();
-		TFMnistInferenceTest.generateModelIfNeeded();
-	}
+    @BeforeClass
+    public static void prepData() throws Exception {
+        MnistDataUtil.prepareData();
+        TFMnistInferenceTest.generateModelIfNeeded();
+    }
 
-	@Before
-	public void setUp() throws Exception {
-		miniCluster = MiniCluster.start(NUM_TM);
-		miniCluster.setExecJar("/dl-on-flink-examples/target/dl-on-flink-examples-" + SysUtil.getProjectVersion() + ".jar");
-		miniCluster.copyFromHostToHDFS(TFMnistInferenceTest.exportPath, HDFS_EXPORT_DIR);
-		miniCluster.copyFromHostToHDFS(TFMnistInferenceTest.testDataPath, HDFS_TEST_DATA_DIR);
-	}
+    @Before
+    public void setUp() throws Exception {
+        miniCluster = MiniCluster.start(NUM_TM);
+        miniCluster.setExecJar(
+                "/dl-on-flink-examples/target/dl-on-flink-examples-"
+                        + SysUtil.getProjectVersion()
+                        + ".jar");
+        miniCluster.copyFromHostToHDFS(TFMnistInferenceTest.exportPath, HDFS_EXPORT_DIR);
+        miniCluster.copyFromHostToHDFS(TFMnistInferenceTest.testDataPath, HDFS_TEST_DATA_DIR);
+    }
 
-	@After
-	public void tearDown() throws Exception {
-		if (miniCluster != null) {
-			miniCluster.stop();
-		}
-	}
+    @After
+    public void tearDown() throws Exception {
+        if (miniCluster != null) {
+            miniCluster.stop();
+        }
+    }
 
-	@Test
-	public void testKillOneTM() throws Exception {
-		FutureTask<Void> jobFuture = new FutureTask<>(this::runAndVerify, null);
-		Thread thread = new Thread(jobFuture);
-		thread.setDaemon(true);
-		thread.setName(getClass().getSimpleName() + "-JobRunner");
-		thread.start();
+    @Test
+    public void testKillOneTM() throws Exception {
+        FutureTask<Void> jobFuture = new FutureTask<>(this::runAndVerify, null);
+        Thread thread = new Thread(jobFuture);
+        thread.setDaemon(true);
+        thread.setName(getClass().getSimpleName() + "-JobRunner");
+        thread.start();
 
-		long sleepTime = 30000;
-		Thread.sleep(sleepTime);
-		miniCluster.killOneTMWithWorkload();
-		jobFuture.get();
-	}
+        long sleepTime = 30000;
+        Thread.sleep(sleepTime);
+        miniCluster.killOneTMWithWorkload();
+        jobFuture.get();
+    }
 
-	private void runAndVerify() {
-		String output = miniCluster.flinkRun(MnistJavaInference.class.getCanonicalName(),
-				"--model-path",
-				makeHDFSURI(HDFS_EXPORT_DIR),
-				"--test-data",
-				makeHDFSURI(HDFS_TEST_DATA_DIR),
-				"--hadoop-fs",
-				miniCluster.getHDFS(),
-				"--num-records",
-				"10000",
-				"--batch-size",
-				"200");
-		System.out.println(output);
-		if (!output.contains("Program execution finished")) {
-			File tmp = Files.createTempDir();
-			miniCluster.dumpFlinkLogs(tmp);
-			Assert.fail("Job failed, check logs in " + tmp.getAbsolutePath());
-		}
-	}
+    private void runAndVerify() {
+        String output =
+                miniCluster.flinkRun(
+                        MnistJavaInference.class.getCanonicalName(),
+                        "--model-path",
+                        makeHDFSURI(HDFS_EXPORT_DIR),
+                        "--test-data",
+                        makeHDFSURI(HDFS_TEST_DATA_DIR),
+                        "--hadoop-fs",
+                        miniCluster.getHDFS(),
+                        "--num-records",
+                        "10000",
+                        "--batch-size",
+                        "200");
+        System.out.println(output);
+        if (!output.contains("Program execution finished")) {
+            File tmp = Files.createTempDir();
+            miniCluster.dumpFlinkLogs(tmp);
+            Assert.fail("Job failed, check logs in " + tmp.getAbsolutePath());
+        }
+    }
 
-	private String makeHDFSURI(String path) {
-		return miniCluster.getHDFS() + path;
-	}
+    private String makeHDFSURI(String path) {
+        return miniCluster.getHDFS() + path;
+    }
 }

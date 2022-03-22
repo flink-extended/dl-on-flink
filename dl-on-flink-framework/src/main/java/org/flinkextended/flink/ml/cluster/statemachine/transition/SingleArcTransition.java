@@ -18,17 +18,14 @@
 
 package org.flinkextended.flink.ml.cluster.statemachine.transition;
 
-
 import org.flinkextended.flink.ml.cluster.statemachine.InvalidStateTransitionException;
 
 public interface SingleArcTransition<OPERAND, EVENT> {
-	/**
-	 * Transition hook.
-	 *
-	 * @param operand the entity attached to the FSM, whose internal
-	 * state may change.
-	 * @param event causal event
-	 */
-	void transition(OPERAND operand, EVENT event) throws InvalidStateTransitionException;
-
+    /**
+     * Transition hook.
+     *
+     * @param operand the entity attached to the FSM, whose internal state may change.
+     * @param event causal event
+     */
+    void transition(OPERAND operand, EVENT event) throws InvalidStateTransitionException;
 }

@@ -24,19 +24,19 @@ import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
 public class IpHostUtilTest {
-	@Test
-	public void getLocalIp() throws Exception {
-		assertTrue(IpHostUtil.getIpAddress().getClass() == String.class);
-	}
+    @Test
+    public void getLocalIp() throws Exception {
+        assertTrue(IpHostUtil.getIpAddress().getClass() == String.class);
+    }
 
-	@Test
-	public void getFreePort() throws Exception {
-		assertTrue(IpHostUtil.getFreePort() > 0);
-	}
+    @Test
+    public void getFreePort() throws Exception {
+        assertTrue(IpHostUtil.getFreePort() > 0);
+    }
 
-	@Test
-	public void testGetLanIp() throws Exception {
-		final String ip = IpHostUtil.getLocalHostLANAddress().getHostAddress();
-		assertTrue(InetAddressUtils.isIPv4Address(ip) || InetAddressUtils.isIPv6Address(ip));
-	}
+    @Test
+    public void testGetLanIp() throws Exception {
+        final String ip = IpHostUtil.getLocalHostLANAddress().getHostAddress();
+        assertTrue(InetAddressUtils.isIPv4Address(ip) || InetAddressUtils.isIPv6Address(ip));
+    }
 }

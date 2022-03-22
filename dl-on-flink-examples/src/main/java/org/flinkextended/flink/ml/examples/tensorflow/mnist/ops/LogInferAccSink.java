@@ -18,11 +18,12 @@
 
 package org.flinkextended.flink.ml.examples.tensorflow.mnist.ops;
 
-import com.google.common.base.Preconditions;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.flink.streaming.api.checkpoint.ListCheckpointed;
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
 import org.apache.flink.table.data.RowData;
+
+import com.google.common.base.Preconditions;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
@@ -34,7 +35,8 @@ import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.List;
 
-public class LogInferAccSink extends RichSinkFunction<RowData> implements ListCheckpointed<ImmutablePair<Long, Long>> {
+public class LogInferAccSink extends RichSinkFunction<RowData>
+        implements ListCheckpointed<ImmutablePair<Long, Long>> {
 
     private static final Logger LOG = LoggerFactory.getLogger(LogInferAccSink.class);
 
@@ -73,16 +75,20 @@ public class LogInferAccSink extends RichSinkFunction<RowData> implements ListCh
     @Override
     public void close() throws Exception {
         DecimalFormat df = new DecimalFormat("#.##");
-        LOG.info(String.format("Records processed: %d, Accuracy: %s%%",
-                total, total > 0 ? df.format(100.0 * correct / total) : "0"));
+        LOG.info(
+                String.format(
+                        "Records processed: %d, Accuracy: %s%%",
+                        total, total > 0 ? df.format(100.0 * correct / total) : "0"));
         if (pathStr != null) {
             Path outDir = new Path(pathStr);
             FileSystem fs = FileSystem.get(outDir.toUri(), new Configuration());
             fs.mkdirs(outDir);
-            Path outFile = new Path(outDir, String.valueOf(getRuntimeContext().getIndexOfThisSubtask()));
+            Path outFile =
+                    new Path(outDir, String.valueOf(getRuntimeContext().getIndexOfThisSubtask()));
             if (fs.exists(outFile)) {
                 LOG.info("{} already exists. Tying to delete it", outFile.toString());
-                Preconditions.checkState(fs.delete(outFile, false), "Cannot delete previous output file " + outFile);
+                Preconditions.checkState(
+                        fs.delete(outFile, false), "Cannot delete previous output file " + outFile);
             }
             LOG.info("Writing result to " + outFile.toString());
             try (FSDataOutputStream out = fs.create(outFile)) {

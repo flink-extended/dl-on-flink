@@ -22,6 +22,7 @@ import org.flinkextended.flink.ml.examples.tensorflow.mnist.MnistDataUtil;
 import org.flinkextended.flink.ml.examples.tensorflow.mnist.MnistDist;
 import org.flinkextended.flink.ml.util.MiniCluster;
 import org.flinkextended.flink.ml.util.SysUtil;
+
 import com.google.common.base.Preconditions;
 import org.junit.After;
 import org.junit.Assert;
@@ -34,46 +35,53 @@ import java.io.IOException;
 import java.util.Random;
 
 public class FailoverIT {
-	private static Logger LOG = LoggerFactory.getLogger(FailoverIT.class);
+    private static Logger LOG = LoggerFactory.getLogger(FailoverIT.class);
 
-	private MiniCluster miniCluster;
-	private static final int numTMs = 3;
-	private Random r = new Random();
-	private volatile boolean success;
+    private MiniCluster miniCluster;
+    private static final int numTMs = 3;
+    private Random r = new Random();
+    private volatile boolean success;
 
-	@Before
-	public void setUp() throws Exception {
-		miniCluster = MiniCluster.start(numTMs);
-		miniCluster.setExecJar("/dl-on-flink-examples/target/dl-on-flink-examples-" + SysUtil.getProjectVersion() + ".jar");
-		Preconditions.checkState(miniCluster.copyToJM(MnistDataUtil.downloadData(), MnistIT.MNIST_CONTAINER_PATH));
-	}
+    @Before
+    public void setUp() throws Exception {
+        miniCluster = MiniCluster.start(numTMs);
+        miniCluster.setExecJar(
+                "/dl-on-flink-examples/target/dl-on-flink-examples-"
+                        + SysUtil.getProjectVersion()
+                        + ".jar");
+        Preconditions.checkState(
+                miniCluster.copyToJM(MnistDataUtil.downloadData(), MnistIT.MNIST_CONTAINER_PATH));
+    }
 
-	@After
-	public void tearDown() throws Exception {
-		if (miniCluster != null) {
-			miniCluster.stop();
-		}
-	}
+    @After
+    public void tearDown() throws Exception {
+        if (miniCluster != null) {
+            miniCluster.stop();
+        }
+    }
 
-	public FailoverIT() {
-	}
+    public FailoverIT() {}
 
-	@Test
-	public void testKillOneTM() throws InterruptedException {
-		Thread t = new Thread(() -> {
-			try {
-				success = MnistIT.runAndVerify(miniCluster, MnistDist.EnvMode.StreamEnv, true);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		});
-		t.start();
+    @Test
+    public void testKillOneTM() throws InterruptedException {
+        Thread t =
+                new Thread(
+                        () -> {
+                            try {
+                                success =
+                                        MnistIT.runAndVerify(
+                                                miniCluster, MnistDist.EnvMode.StreamEnv, true);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+        t.start();
 
-		int sleepTime = r.nextInt(20000) + 20000;
-		Thread.sleep(sleepTime);
-		miniCluster.killOneTMWithWorkload();
+        int sleepTime = r.nextInt(20000) + 20000;
+        Thread.sleep(sleepTime);
+        miniCluster.killOneTMWithWorkload();
 
-		t.join();
-		Assert.assertTrue(success);
-	}
+        t.join();
+        Assert.assertTrue(success);
+    }
 }

@@ -31,7 +31,8 @@ import org.apache.flink.types.Row;
 
 import java.io.IOException;
 
-public class TFRToRowDataInputFormat extends RichInputFormat<RowData, TFRecordInputSplit> implements ResultTypeQueryable<Row> {
+public class TFRToRowDataInputFormat extends RichInputFormat<RowData, TFRecordInputSplit>
+        implements ResultTypeQueryable<Row> {
 
     private final TFRToRowInputFormat tfrToRowInputFormat;
 
@@ -40,8 +41,7 @@ public class TFRToRowDataInputFormat extends RichInputFormat<RowData, TFRecordIn
     }
 
     @Override
-    public void configure(Configuration parameters) {
-    }
+    public void configure(Configuration parameters) {}
 
     @Override
     public BaseStatistics getStatistics(BaseStatistics cachedStatistics) throws IOException {

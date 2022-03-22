@@ -19,16 +19,17 @@
 package org.flinkextended.flink.ml.operator.table;
 
 import org.flinkextended.flink.ml.operator.source.DebugRowSource;
+
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.table.connector.ChangelogMode;
 import org.apache.flink.table.connector.source.DynamicTableSource;
 import org.apache.flink.table.connector.source.ScanTableSource;
 import org.apache.flink.table.connector.source.SourceFunctionProvider;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
-
 
 public class TableDebugRowSource implements ScanTableSource, Serializable {
 

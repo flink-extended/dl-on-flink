@@ -29,63 +29,62 @@ import org.apache.flink.types.Row;
 import java.io.IOException;
 
 /**
- * flink read tensorflow TFRecord file input format.
- * output TFRecord record corresponds to flink row.
+ * flink read tensorflow TFRecord file input format. output TFRecord record corresponds to flink
+ * row.
  */
-public class TFRecordToRowInputFormat extends RichInputFormat<Row, TFRecordInputSplit> implements
-		ResultTypeQueryable<Row> {
+public class TFRecordToRowInputFormat extends RichInputFormat<Row, TFRecordInputSplit>
+        implements ResultTypeQueryable<Row> {
 
-	private final TFRecordInputFormat inputFormat;
-	private final TypeInformation<Row> outputTI;
+    private final TFRecordInputFormat inputFormat;
+    private final TypeInformation<Row> outputTI;
 
-	public TFRecordToRowInputFormat(String[] paths, int epochs, TypeInformation<Row> outputTI) {
-		inputFormat = new TFRecordInputFormat(paths, epochs);
-		this.outputTI = outputTI;
-	}
+    public TFRecordToRowInputFormat(String[] paths, int epochs, TypeInformation<Row> outputTI) {
+        inputFormat = new TFRecordInputFormat(paths, epochs);
+        this.outputTI = outputTI;
+    }
 
-	@Override
-	public void configure(Configuration parameters) {
-	}
+    @Override
+    public void configure(Configuration parameters) {}
 
-	@Override
-	public BaseStatistics getStatistics(BaseStatistics cachedStatistics) throws IOException {
-		return inputFormat.getStatistics(cachedStatistics);
-	}
+    @Override
+    public BaseStatistics getStatistics(BaseStatistics cachedStatistics) throws IOException {
+        return inputFormat.getStatistics(cachedStatistics);
+    }
 
-	@Override
-	public TFRecordInputSplit[] createInputSplits(int minNumSplits) throws IOException {
-		return inputFormat.createInputSplits(minNumSplits);
-	}
+    @Override
+    public TFRecordInputSplit[] createInputSplits(int minNumSplits) throws IOException {
+        return inputFormat.createInputSplits(minNumSplits);
+    }
 
-	@Override
-	public InputSplitAssigner getInputSplitAssigner(TFRecordInputSplit[] inputSplits) {
-		return inputFormat.getInputSplitAssigner(inputSplits);
-	}
+    @Override
+    public InputSplitAssigner getInputSplitAssigner(TFRecordInputSplit[] inputSplits) {
+        return inputFormat.getInputSplitAssigner(inputSplits);
+    }
 
-	@Override
-	public void open(TFRecordInputSplit split) throws IOException {
-		inputFormat.open(split);
-	}
+    @Override
+    public void open(TFRecordInputSplit split) throws IOException {
+        inputFormat.open(split);
+    }
 
-	@Override
-	public boolean reachedEnd() throws IOException {
-		return inputFormat.reachedEnd();
-	}
+    @Override
+    public boolean reachedEnd() throws IOException {
+        return inputFormat.reachedEnd();
+    }
 
-	@Override
-	public Row nextRecord(Row reuse) throws IOException {
-		byte[] bytes = (byte[]) reuse.getField(0);
-		byte[] record = inputFormat.nextRecord(bytes);
-		return Row.of(record);
-	}
+    @Override
+    public Row nextRecord(Row reuse) throws IOException {
+        byte[] bytes = (byte[]) reuse.getField(0);
+        byte[] record = inputFormat.nextRecord(bytes);
+        return Row.of(record);
+    }
 
-	@Override
-	public void close() throws IOException {
-		inputFormat.close();
-	}
+    @Override
+    public void close() throws IOException {
+        inputFormat.close();
+    }
 
-	@Override
-	public TypeInformation<Row> getProducedType() {
-		return outputTI;
-	}
+    @Override
+    public TypeInformation<Row> getProducedType() {
+        return outputTI;
+    }
 }

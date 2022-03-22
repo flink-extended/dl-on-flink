@@ -20,12 +20,10 @@ package org.flinkextended.flink.ml.tensorflow.cluster;
 
 import org.flinkextended.flink.ml.cluster.role.BaseRole;
 
-/**
- * tensorflow cluster worker 0.
- */
+/** tensorflow cluster worker 0. */
 public class ChiefRole extends BaseRole {
-	@Override
-	public String name() {
-		return "chief";
-	}
+    @Override
+    public String name() {
+        return "chief";
+    }
 }

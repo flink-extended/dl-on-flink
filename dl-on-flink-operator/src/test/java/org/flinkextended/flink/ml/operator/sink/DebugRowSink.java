@@ -21,7 +21,6 @@ package org.flinkextended.flink.ml.operator.sink;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 import org.apache.flink.table.data.RowData;
 
-
 public class DebugRowSink implements SinkFunction<RowData> {
     @Override
     public void invoke(RowData value, Context context) throws Exception {

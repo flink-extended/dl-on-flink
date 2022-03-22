@@ -26,49 +26,40 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-/**
- * a simple RecordWriter implementation.
- */
+/** a simple RecordWriter implementation. */
 public class RecordWriterImpl implements RecordWriter {
-	private final SpscOffHeapQueue.QueueOutputStream output;
-	byte[] buff = new byte[4];
-	ByteBuffer bb = ByteBuffer.wrap(buff);
+    private final SpscOffHeapQueue.QueueOutputStream output;
+    byte[] buff = new byte[4];
+    ByteBuffer bb = ByteBuffer.wrap(buff);
 
-	public RecordWriterImpl(MLContext mlContext) {
-		bb.order(ByteOrder.LITTLE_ENDIAN);
-		this.output = mlContext.getOutWriter();
-	}
+    public RecordWriterImpl(MLContext mlContext) {
+        bb.order(ByteOrder.LITTLE_ENDIAN);
+        this.output = mlContext.getOutWriter();
+    }
 
-	public boolean write(byte[] record, int offset, int length) throws IOException {
-		int totalSize = 4 + (length - offset);
-		if (!output.tryReserve((totalSize))) {
-			return false;
-		}
+    public boolean write(byte[] record, int offset, int length) throws IOException {
+        int totalSize = 4 + (length - offset);
+        if (!output.tryReserve((totalSize))) {
+            return false;
+        }
 
-		/**
-		 * TFRecord format:
-		 * uint32 length
-		 * byte   data[length]
-		 */
-		byte[] len = toInt32LE(length);
-		output.write(len, 0, 4);
-		output.write(record, offset, length);
-		return true;
-	}
+        /** TFRecord format: uint32 length byte data[length] */
+        byte[] len = toInt32LE(length);
+        output.write(len, 0, 4);
+        output.write(record, offset, length);
+        return true;
+    }
 
-	public boolean write(byte[] record) throws IOException {
-		return write(record, 0, record.length);
-	}
+    public boolean write(byte[] record) throws IOException {
+        return write(record, 0, record.length);
+    }
 
+    private byte[] toInt32LE(int data) {
+        bb.clear();
+        bb.putInt(data);
+        return buff;
+    }
 
-	private byte[] toInt32LE(int data) {
-		bb.clear();
-		bb.putInt(data);
-		return buff;
-	}
-
-	@Override
-	public void close() throws IOException {
-
-	}
+    @Override
+    public void close() throws IOException {}
 }

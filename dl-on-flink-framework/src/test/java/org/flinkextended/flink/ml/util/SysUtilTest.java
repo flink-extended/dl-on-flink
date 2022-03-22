@@ -23,8 +23,8 @@ import org.junit.Test;
 
 public class SysUtilTest {
 
-	@Test
-	public void getProjectVersion() {
-		Assert.assertEquals("0.5.0-SNAPSHOT", SysUtil.getProjectVersion());
-	}
+    @Test
+    public void getProjectVersion() {
+        Assert.assertEquals("0.5.0-SNAPSHOT", SysUtil.getProjectVersion());
+    }
 }

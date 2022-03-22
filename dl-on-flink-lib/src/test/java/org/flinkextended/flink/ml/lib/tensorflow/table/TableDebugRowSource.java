@@ -19,16 +19,17 @@
 package org.flinkextended.flink.ml.lib.tensorflow.table;
 
 import org.flinkextended.flink.ml.operator.util.TypeUtil;
+
 import org.apache.flink.table.catalog.ResolvedSchema;
 import org.apache.flink.table.connector.ChangelogMode;
 import org.apache.flink.table.connector.source.DynamicTableSource;
 import org.apache.flink.table.connector.source.ScanTableSource;
 import org.apache.flink.table.connector.source.SourceFunctionProvider;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
-
 
 public class TableDebugRowSource implements ScanTableSource, Serializable {
 
@@ -45,7 +46,8 @@ public class TableDebugRowSource implements ScanTableSource, Serializable {
     }
 
     public TableDebugRowSource(int rank, boolean hasString, ResolvedSchema tableSchema) {
-        this.debugRowSource = new DebugRowSource(rank, hasString, TypeUtil.schemaToRowTypeInfo(tableSchema));
+        this.debugRowSource =
+                new DebugRowSource(rank, hasString, TypeUtil.schemaToRowTypeInfo(tableSchema));
         this.tableSchema = tableSchema;
     }
 

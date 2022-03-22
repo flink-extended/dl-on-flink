@@ -21,6 +21,7 @@ package org.flinkextended.flink.ml.examples.wordcount.it;
 import org.flinkextended.flink.ml.examples.wordcount.WordCount;
 import org.flinkextended.flink.ml.util.MiniCluster;
 import org.flinkextended.flink.ml.util.SysUtil;
+
 import com.google.common.io.Files;
 import org.junit.After;
 import org.junit.Assert;
@@ -30,47 +31,48 @@ import org.junit.Test;
 import java.io.File;
 
 public class WordCountIT {
-	private static MiniCluster miniCluster;
-	private static final int numTMs = 3;
+    private static MiniCluster miniCluster;
+    private static final int numTMs = 3;
 
+    @Before
+    public void setUp() throws Exception {
+        miniCluster = MiniCluster.start(numTMs, false);
+        miniCluster.setExecJar(
+                "/dl-on-flink-examples/target/dl-on-flink-examples-"
+                        + SysUtil.getProjectVersion()
+                        + ".jar");
+    }
 
-	@Before
-	public void setUp() throws Exception {
-		miniCluster = MiniCluster.start(numTMs, false);
-		miniCluster.setExecJar("/dl-on-flink-examples/target/dl-on-flink-examples-" + SysUtil.getProjectVersion() + ".jar");
-	}
+    @After
+    public void tearDown() throws Exception {
+        if (miniCluster != null) {
+            miniCluster.stop();
+        }
+    }
 
-	@After
-	public void tearDown() throws Exception {
-		if (miniCluster != null) {
-			miniCluster.stop();
-		}
-	}
+    @Test
+    public void trainStream() throws Exception {
+        runAndVerify(miniCluster);
+    }
 
-	@Test
-	public void trainStream() throws Exception {
-		runAndVerify(miniCluster);
-	}
+    private static String run(MiniCluster miniCluster) {
+        String output = miniCluster.flinkRun(WordCount.class.getCanonicalName());
+        return output;
+    }
 
-
-	private static String run(MiniCluster miniCluster) {
-		String output = miniCluster.flinkRun(WordCount.class.getCanonicalName());
-		return output;
-	}
-
-	static boolean runAndVerify(MiniCluster miniCluster) {
-		String output = run(miniCluster);
-		System.out.println(output);
-		if (!output.contains("Program execution finished")) {
-			File tmp = Files.createTempDir();
-			miniCluster.dumpFlinkLogs(tmp);
-			Assert.fail("run failed in mode, check logs in " + tmp.getAbsolutePath());
-			return false;
-		} else {
-			File tmp = Files.createTempDir();
-			miniCluster.dumpFlinkLogs(tmp);
-			System.out.println("logs in " + tmp.getAbsolutePath());
-		}
-		return true;
-	}
+    static boolean runAndVerify(MiniCluster miniCluster) {
+        String output = run(miniCluster);
+        System.out.println(output);
+        if (!output.contains("Program execution finished")) {
+            File tmp = Files.createTempDir();
+            miniCluster.dumpFlinkLogs(tmp);
+            Assert.fail("run failed in mode, check logs in " + tmp.getAbsolutePath());
+            return false;
+        } else {
+            File tmp = Files.createTempDir();
+            miniCluster.dumpFlinkLogs(tmp);
+            System.out.println("logs in " + tmp.getAbsolutePath());
+        }
+        return true;
+    }
 }

@@ -23,20 +23,22 @@ import org.flinkextended.flink.ml.cluster.rpc.NodeServer;
 import org.flinkextended.flink.ml.util.MLConstants;
 import org.flinkextended.flink.ml.util.ReflectUtil;
 
-/**
- * A factory for machine learning scriptRunner
- */
+/** A factory for machine learning scriptRunner */
 public class MLRunnerFactory {
 
-	public static MLRunner createMLRunner(MLContext mlContext, NodeServer server) throws Exception {
-		String className = mlContext.getProperties().getOrDefault(MLConstants.ML_RUNNER_CLASS,
-				CommonMLRunner.class.getCanonicalName());
-		Class[] classes = new Class[2];
-		classes[0] = MLContext.class;
-		classes[1] = NodeServer.class;
-		Object[] objects = new Object[2];
-		objects[0] = mlContext;
-		objects[1] = server;
-		return ReflectUtil.createInstance(className, classes, objects);
-	}
+    public static MLRunner createMLRunner(MLContext mlContext, NodeServer server) throws Exception {
+        String className =
+                mlContext
+                        .getProperties()
+                        .getOrDefault(
+                                MLConstants.ML_RUNNER_CLASS,
+                                CommonMLRunner.class.getCanonicalName());
+        Class[] classes = new Class[2];
+        classes[0] = MLContext.class;
+        classes[1] = NodeServer.class;
+        Object[] objects = new Object[2];
+        objects[0] = mlContext;
+        objects[1] = server;
+        return ReflectUtil.createInstance(className, classes, objects);
+    }
 }

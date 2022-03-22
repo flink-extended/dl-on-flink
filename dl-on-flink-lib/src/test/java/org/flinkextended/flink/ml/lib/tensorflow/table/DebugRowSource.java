@@ -27,7 +27,6 @@ import org.apache.flink.table.data.GenericRowData;
 import org.apache.flink.table.data.RowData;
 import org.apache.flink.table.data.StringData;
 
-
 public class DebugRowSource implements ParallelSourceFunction<RowData>, ResultTypeQueryable {
     public RowTypeInfo typeInfo;
     private int rank;
@@ -45,64 +44,84 @@ public class DebugRowSource implements ParallelSourceFunction<RowData>, ResultTy
             if (hasString) {
                 GenericRowData row = new GenericRowData(3);
                 switch (rank) {
-                    case 2: {
-                        Float[] c1 = {1.0f * i, 1.0f * i};
-                        GenericArrayData[] cc1 = {new GenericArrayData(c1), new GenericArrayData(c1)};
+                    case 2:
+                        {
+                            Float[] c1 = {1.0f * i, 1.0f * i};
+                            GenericArrayData[] cc1 = {
+                                new GenericArrayData(c1), new GenericArrayData(c1)
+                            };
 
-                        Float[] c2 = {2.0f * i, 2.0f * i};
-                        GenericArrayData[] cc2 = {new GenericArrayData(c2), new GenericArrayData(c2)};
+                            Float[] c2 = {2.0f * i, 2.0f * i};
+                            GenericArrayData[] cc2 = {
+                                new GenericArrayData(c2), new GenericArrayData(c2)
+                            };
 
-                        StringData[] c3 = {StringData.fromString(String.valueOf(1.0f * i)),
-                                StringData.fromString(String.valueOf(1.0f * i))};
-                        GenericArrayData[] cc3 = {new GenericArrayData(c3), new GenericArrayData(c3)};
+                            StringData[] c3 = {
+                                StringData.fromString(String.valueOf(1.0f * i)),
+                                StringData.fromString(String.valueOf(1.0f * i))
+                            };
+                            GenericArrayData[] cc3 = {
+                                new GenericArrayData(c3), new GenericArrayData(c3)
+                            };
 
-                        row.setField(0, new GenericArrayData(cc1));
-                        row.setField(1, new GenericArrayData(cc2));
-                        row.setField(2, new GenericArrayData(cc3));
-                        break;
-                    }
-                    case 1: {
-                        Float[] c1 = {1.0f * i, 1.0f * i};
-                        Float[] c2 = {2.0f * i, 2.0f * i};
-                        StringData[] c3 = {StringData.fromString(String.valueOf(1.0f * i)),
-                                StringData.fromString(String.valueOf(1.0f * i))};
-                        row.setField(0, new GenericArrayData(c1));
-                        row.setField(1, new GenericArrayData(c2));
-                        row.setField(2, new GenericArrayData(c3));
-                        break;
-                    }
-                    default: {
-                        row.setField(0, 1.0f * i);
-                        row.setField(1, 2.0f * i);
-                        row.setField(2, StringData.fromString(String.valueOf(1.0f * i)));
-                    }
+                            row.setField(0, new GenericArrayData(cc1));
+                            row.setField(1, new GenericArrayData(cc2));
+                            row.setField(2, new GenericArrayData(cc3));
+                            break;
+                        }
+                    case 1:
+                        {
+                            Float[] c1 = {1.0f * i, 1.0f * i};
+                            Float[] c2 = {2.0f * i, 2.0f * i};
+                            StringData[] c3 = {
+                                StringData.fromString(String.valueOf(1.0f * i)),
+                                StringData.fromString(String.valueOf(1.0f * i))
+                            };
+                            row.setField(0, new GenericArrayData(c1));
+                            row.setField(1, new GenericArrayData(c2));
+                            row.setField(2, new GenericArrayData(c3));
+                            break;
+                        }
+                    default:
+                        {
+                            row.setField(0, 1.0f * i);
+                            row.setField(1, 2.0f * i);
+                            row.setField(2, StringData.fromString(String.valueOf(1.0f * i)));
+                        }
                 }
                 ctx.collect(row);
             } else {
                 GenericRowData row = new GenericRowData(2);
                 switch (rank) {
-                    case 2: {
-                        Float[] c1 = {1.0f * i, 1.0f * i};
-                        GenericArrayData[] cc1 = {new GenericArrayData(c1), new GenericArrayData(c1)};
+                    case 2:
+                        {
+                            Float[] c1 = {1.0f * i, 1.0f * i};
+                            GenericArrayData[] cc1 = {
+                                new GenericArrayData(c1), new GenericArrayData(c1)
+                            };
 
-                        Float[] c2 = {2.0f * i, 2.0f * i};
-                        GenericArrayData[] cc2 = {new GenericArrayData(c2), new GenericArrayData(c2)};
+                            Float[] c2 = {2.0f * i, 2.0f * i};
+                            GenericArrayData[] cc2 = {
+                                new GenericArrayData(c2), new GenericArrayData(c2)
+                            };
 
-                        row.setField(0, new GenericArrayData(cc1));
-                        row.setField(1, new GenericArrayData(cc2));
-                        break;
-                    }
-                    case 1: {
-                        Float[] c1 = {1.0f * i, 1.0f * i};
-                        Float[] c2 = {2.0f * i, 2.0f * i};
-                        row.setField(0, new GenericArrayData(c1));
-                        row.setField(1, new GenericArrayData(c2));
-                        break;
-                    }
-                    default: {
-                        row.setField(0, 1.0f * i);
-                        row.setField(1, 2.0f * i);
-                    }
+                            row.setField(0, new GenericArrayData(cc1));
+                            row.setField(1, new GenericArrayData(cc2));
+                            break;
+                        }
+                    case 1:
+                        {
+                            Float[] c1 = {1.0f * i, 1.0f * i};
+                            Float[] c2 = {2.0f * i, 2.0f * i};
+                            row.setField(0, new GenericArrayData(c1));
+                            row.setField(1, new GenericArrayData(c2));
+                            break;
+                        }
+                    default:
+                        {
+                            row.setField(0, 1.0f * i);
+                            row.setField(1, 2.0f * i);
+                        }
                 }
                 ctx.collect(row);
             }
@@ -110,9 +129,7 @@ public class DebugRowSource implements ParallelSourceFunction<RowData>, ResultTy
     }
 
     @Override
-    public void cancel() {
-
-    }
+    public void cancel() {}
 
     @Override
     public TypeInformation getProducedType() {

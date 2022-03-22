@@ -19,22 +19,22 @@
 package org.flinkextended.flink.ml.tensorflow.hooks;
 
 import org.flinkextended.flink.ml.operator.hook.FlinkOpHook;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class DebugHook implements FlinkOpHook {
-	private static Logger LOG = LoggerFactory.getLogger(DebugHook.class);
+    private static Logger LOG = LoggerFactory.getLogger(DebugHook.class);
 
-	public DebugHook() {
-	}
+    public DebugHook() {}
 
-	@Override
-	public void open() throws Exception {
-		LOG.info("DebugHook open");
-	}
+    @Override
+    public void open() throws Exception {
+        LOG.info("DebugHook open");
+    }
 
-	@Override
-	public void close() throws Exception {
-		LOG.info("DebugHook close");
-	}
+    @Override
+    public void close() throws Exception {
+        LOG.info("DebugHook close");
+    }
 }

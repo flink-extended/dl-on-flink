@@ -18,29 +18,28 @@
 
 package org.flinkextended.flink.ml.coding.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import org.flinkextended.flink.ml.cluster.node.MLContext;
 import org.flinkextended.flink.ml.coding.Coding;
 import org.flinkextended.flink.ml.coding.CodingException;
 
-/**
- * coding object with json format.
- */
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
+/** coding object with json format. */
 public class JsonCodingImpl implements Coding<JSONObject> {
-	private MLContext context;
+    private MLContext context;
 
-	public JsonCodingImpl(MLContext context) {
-		this.context = context;
-	}
+    public JsonCodingImpl(MLContext context) {
+        this.context = context;
+    }
 
-	@Override
-	public JSONObject decode(byte[] bytes) throws CodingException {
-		return JSON.parseObject(new String(bytes));
-	}
+    @Override
+    public JSONObject decode(byte[] bytes) throws CodingException {
+        return JSON.parseObject(new String(bytes));
+    }
 
-	@Override
-	public byte[] encode(JSONObject object) throws CodingException {
-		return object.toJSONString().getBytes();
-	}
+    @Override
+    public byte[] encode(JSONObject object) throws CodingException {
+        return object.toJSONString().getBytes();
+    }
 }

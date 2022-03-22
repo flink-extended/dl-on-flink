@@ -18,14 +18,11 @@
 
 package org.flinkextended.flink.ml.util;
 
-
 public final class TestUtil {
 
-	private TestUtil() {
-	}
+    private TestUtil() {}
 
-	public static String getProjectRootPath() {
-		return SysUtil.getProjectRootPath();
-	}
-
+    public static String getProjectRootPath() {
+        return SysUtil.getProjectRootPath();
+    }
 }

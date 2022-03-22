@@ -18,13 +18,11 @@
 
 package org.flinkextended.flink.ml.cluster.role;
 
-/**
- * application master role.
- */
+/** application master role. */
 public class AMRole extends BaseRole {
 
-	@Override
-	public String name() {
-		return "am";
-	}
+    @Override
+    public String name() {
+        return "am";
+    }
 }

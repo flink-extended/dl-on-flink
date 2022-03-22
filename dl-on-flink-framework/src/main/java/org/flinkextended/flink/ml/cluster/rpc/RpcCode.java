@@ -18,12 +18,10 @@
 
 package org.flinkextended.flink.ml.cluster.rpc;
 
-/**
- * node request application master return code.
- */
+/** node request application master return code. */
 public enum RpcCode {
-	OK,
-	ERROR,
-	NOT_READY,
-	VERSION_ERROR
+    OK,
+    ERROR,
+    NOT_READY,
+    VERSION_ERROR
 }

@@ -18,8 +18,10 @@
 
 package org.flinkextended.flink.ml.operator.util;
 
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.flinkextended.flink.ml.cluster.MLConfig;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -38,12 +40,11 @@ public class PythonFileUtilTest {
         final ArgumentCaptor<String> nameCaptor = ArgumentCaptor.forClass(String.class);
         final ArgumentCaptor<String> pathCaptor = ArgumentCaptor.forClass(String.class);
         final MLConfig mlConfig = createDummyMLConfig();
-        mlConfig.setPythonFiles(new String[]{"/tmp/test.py"});
+        mlConfig.setPythonFiles(new String[] {"/tmp/test.py"});
         PythonFileUtil.registerPythonFiles(env, mlConfig);
 
         verify(env).registerCachedFile(pathCaptor.capture(), nameCaptor.capture());
         assertEquals("/tmp/test.py", pathCaptor.getValue());
         assertEquals("test.py", nameCaptor.getValue());
     }
-
 }

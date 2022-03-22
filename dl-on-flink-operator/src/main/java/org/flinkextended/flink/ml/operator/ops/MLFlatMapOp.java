@@ -33,36 +33,42 @@ import org.slf4j.LoggerFactory;
 
 /**
  * flink flatmap operator wrapper machine learning node. node has input and output.
+ *
  * @param <IN> node input object class.
  * @param <OUT> node output object class.
  */
-public class MLFlatMapOp<IN, OUT> extends RichFlatMapFunction<IN, OUT> implements ResultTypeQueryable<OUT> {
-	private MLMapFunction<IN, OUT> map;
+public class MLFlatMapOp<IN, OUT> extends RichFlatMapFunction<IN, OUT>
+        implements ResultTypeQueryable<OUT> {
+    private MLMapFunction<IN, OUT> map;
 
-	private Logger LOG = LoggerFactory.getLogger(MLFlatMapOp.class);
+    private Logger LOG = LoggerFactory.getLogger(MLFlatMapOp.class);
 
-	public MLFlatMapOp(ExecutionMode mode, BaseRole job, MLConfig config, TypeInformation<IN> inTI,
-                       TypeInformation<OUT> outTI) {
-		map = new MLMapFunction<>(mode, job, config, inTI, outTI);
-	}
+    public MLFlatMapOp(
+            ExecutionMode mode,
+            BaseRole job,
+            MLConfig config,
+            TypeInformation<IN> inTI,
+            TypeInformation<OUT> outTI) {
+        map = new MLMapFunction<>(mode, job, config, inTI, outTI);
+    }
 
-	@Override
-	public void open(Configuration parameters) throws Exception {
-		map.open(getRuntimeContext());
-	}
+    @Override
+    public void open(Configuration parameters) throws Exception {
+        map.open(getRuntimeContext());
+    }
 
-	@Override
-	public void close() {
-		map.close();
-	}
+    @Override
+    public void close() {
+        map.close();
+    }
 
-	@Override
-	public void flatMap(IN value, Collector<OUT> out) throws Exception {
-		map.flatMap(value, out);
-	}
+    @Override
+    public void flatMap(IN value, Collector<OUT> out) throws Exception {
+        map.flatMap(value, out);
+    }
 
-	@Override
-	public TypeInformation<OUT> getProducedType() {
-		return map.getProducedType();
-	}
+    @Override
+    public TypeInformation<OUT> getProducedType() {
+        return map.getProducedType();
+    }
 }

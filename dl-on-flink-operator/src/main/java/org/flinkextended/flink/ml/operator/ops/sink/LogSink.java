@@ -19,28 +19,30 @@
 package org.flinkextended.flink.ml.operator.ops.sink;
 
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * print up stream object.
+ *
  * @param <IN> up stream object class.
  */
 public class LogSink<IN> extends RichSinkFunction<IN> {
-	private static Logger LOG = LoggerFactory.getLogger(LogSink.class);
+    private static Logger LOG = LoggerFactory.getLogger(LogSink.class);
 
-	private int count = 0;
+    private int count = 0;
 
-	@Override
-	public void invoke(IN value, Context context) {
-		count++;
-		if (0 == count % 10) {
-			LOG.info("LogSink:" + count + " value:" + value.toString());
-		}
-	}
+    @Override
+    public void invoke(IN value, Context context) {
+        count++;
+        if (0 == count % 10) {
+            LOG.info("LogSink:" + count + " value:" + value.toString());
+        }
+    }
 
-	@Override
-	public void close() {
-		LOG.info("LogSink process count:" + count);
-	}
+    @Override
+    public void close() {
+        LOG.info("LogSink process count:" + count);
+    }
 }

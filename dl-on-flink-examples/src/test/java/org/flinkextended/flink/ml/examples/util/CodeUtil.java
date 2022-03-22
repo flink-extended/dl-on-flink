@@ -21,6 +21,7 @@ package org.flinkextended.flink.ml.examples.util;
 import org.flinkextended.flink.ml.util.MiniCluster;
 import org.flinkextended.flink.ml.util.ShellExec;
 import org.flinkextended.flink.ml.util.TestUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,52 +30,56 @@ import java.io.IOException;
 
 public class CodeUtil {
 
-	private static final Logger LOG = LoggerFactory.getLogger(CodeUtil.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CodeUtil.class);
 
-	private static String rootPath = TestUtil.getProjectRootPath() + "/dl-on-flink-examples/";
-	private static String sourcePath = rootPath + "src/test/python/*";
-	private static String targetPath = rootPath + "target/code";
+    private static String rootPath = TestUtil.getProjectRootPath() + "/dl-on-flink-examples/";
+    private static String sourcePath = rootPath + "src/test/python/*";
+    private static String targetPath = rootPath + "target/code";
 
-	public static String zipPythonFile() throws IOException {
-		File codeZip = new File(rootPath + "/target/code.zip");
-		codeZip.delete();
-		if (!codeZip.exists()) {
-			File codePath = new File(targetPath);
-			codePath.delete();
-			if (!codePath.exists()) {
-				if (!codePath.mkdirs()) {
-					String errMsg = "create code dir failed!";
-					throwException(errMsg);
-				} else {
-					if (!ShellExec.run(String.format("cp %s %s", sourcePath, targetPath), LOG::info)) {
-						String errMsg = "copy source code failed!";
-						throwException(errMsg);
-					}
-				}
-			}
-			if (!ShellExec.run(String.format("cd %s && zip -r %s %s", rootPath + "target/",
-					codeZip.getAbsolutePath(), "code"), LOG::info)) {
-				String errMsg = "zip source code failed!";
-				throwException(errMsg);
-			}
-		}
-		return codeZip.getAbsolutePath();
-	}
+    public static String zipPythonFile() throws IOException {
+        File codeZip = new File(rootPath + "/target/code.zip");
+        codeZip.delete();
+        if (!codeZip.exists()) {
+            File codePath = new File(targetPath);
+            codePath.delete();
+            if (!codePath.exists()) {
+                if (!codePath.mkdirs()) {
+                    String errMsg = "create code dir failed!";
+                    throwException(errMsg);
+                } else {
+                    if (!ShellExec.run(
+                            String.format("cp %s %s", sourcePath, targetPath), LOG::info)) {
+                        String errMsg = "copy source code failed!";
+                        throwException(errMsg);
+                    }
+                }
+            }
+            if (!ShellExec.run(
+                    String.format(
+                            "cd %s && zip -r %s %s",
+                            rootPath + "target/", codeZip.getAbsolutePath(), "code"),
+                    LOG::info)) {
+                String errMsg = "zip source code failed!";
+                throwException(errMsg);
+            }
+        }
+        return codeZip.getAbsolutePath();
+    }
 
-	public static String copyCodeToHdfs(MiniCluster miniCluster) throws IOException {
-		String codeZipPath = zipPythonFile();
-		String remoteCodePath = String.format("%s/user/root/", miniCluster.getHDFS());
-		boolean res = miniCluster.copyFromHostToHDFS(codeZipPath, remoteCodePath);
-		if (res) {
-			return remoteCodePath + "code.zip";
-		} else {
-			throwException("copy code zip to hdfs failed!");
-			return null;
-		}
-	}
+    public static String copyCodeToHdfs(MiniCluster miniCluster) throws IOException {
+        String codeZipPath = zipPythonFile();
+        String remoteCodePath = String.format("%s/user/root/", miniCluster.getHDFS());
+        boolean res = miniCluster.copyFromHostToHDFS(codeZipPath, remoteCodePath);
+        if (res) {
+            return remoteCodePath + "code.zip";
+        } else {
+            throwException("copy code zip to hdfs failed!");
+            return null;
+        }
+    }
 
-	protected static void throwException(String errMsg) throws IOException {
-		System.err.println(errMsg);
-		throw new IOException(errMsg);
-	}
+    protected static void throwException(String errMsg) throws IOException {
+        System.err.println(errMsg);
+        throw new IOException(errMsg);
+    }
 }

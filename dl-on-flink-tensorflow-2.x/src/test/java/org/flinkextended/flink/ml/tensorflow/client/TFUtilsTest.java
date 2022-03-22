@@ -21,14 +21,14 @@ package org.flinkextended.flink.ml.tensorflow.client;
 import org.flinkextended.flink.ml.cluster.MLConfig;
 import org.flinkextended.flink.ml.operator.coding.RowCSVCoding;
 import org.flinkextended.flink.ml.operator.source.DebugRowSource;
-import org.flinkextended.flink.ml.operator.util.TypeUtil;
 import org.flinkextended.flink.ml.operator.util.DataTypes;
+import org.flinkextended.flink.ml.operator.util.TypeUtil;
 import org.flinkextended.flink.ml.tensorflow.hooks.DebugHook;
 import org.flinkextended.flink.ml.tensorflow.util.TFConstants;
 import org.flinkextended.flink.ml.util.MLConstants;
 import org.flinkextended.flink.ml.util.SysUtil;
 import org.flinkextended.flink.ml.util.TestUtil;
-import org.apache.curator.test.TestingServer;
+
 import org.apache.flink.api.common.JobExecutionResult;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.StatementSet;
@@ -36,19 +36,23 @@ import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableDescriptor;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+
+import org.apache.curator.test.TestingServer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 public class TFUtilsTest {
     private static TestingServer server;
-    private static final String pythonPath = TestUtil.getProjectRootPath() + "/dl-on-flink-tensorflow-2.x/src/test/python/";
+    private static final String pythonPath =
+            TestUtil.getProjectRootPath() + "/dl-on-flink-tensorflow-2.x/src/test/python/";
     private static final String add = pythonPath + "add.py";
     private static final String workerZeroFinishScript = pythonPath + "worker_0_finish.py";
     private static final String addTBScript = pythonPath + "add_withtb.py";
     private static final String inputOutputScript = pythonPath + "input_output.py";
     private static final String tensorboardScript = pythonPath + "tensorboard.py";
-    private static final String ckptDir = TestUtil.getProjectRootPath() + "/dl-on-flink-tensorflow/target/tmp/add_withtb/";
+    private static final String ckptDir =
+            TestUtil.getProjectRootPath() + "/dl-on-flink-tensorflow/target/tmp/add_withtb/";
 
     @Before
     public void setUp() throws Exception {
@@ -119,8 +123,10 @@ public class TFUtilsTest {
         StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 
         TFConfig config = new TFConfig(2, 1, null, inputOutputScript, "map_func", null);
-        config.getProperties().put(MLConstants.ENCODING_CLASS, RowCSVCoding.class.getCanonicalName());
-        config.getProperties().put(MLConstants.DECODING_CLASS, RowCSVCoding.class.getCanonicalName());
+        config.getProperties()
+                .put(MLConstants.ENCODING_CLASS, RowCSVCoding.class.getCanonicalName());
+        config.getProperties()
+                .put(MLConstants.DECODING_CLASS, RowCSVCoding.class.getCanonicalName());
         StringBuilder inputSb = new StringBuilder();
 
         inputSb.append(DataTypes.INT_32.name()).append(",");
@@ -134,22 +140,28 @@ public class TFUtilsTest {
         TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
         StatementSet statementSet = tableEnv.createStatementSet();
 
-        tableEnv.createTemporaryTable("debug_source",
-                TableDescriptor
-                        .forConnector("TableDebug")
+        tableEnv.createTemporaryTable(
+                "debug_source",
+                TableDescriptor.forConnector("TableDebug")
                         .schema(TypeUtil.rowTypeInfoToSchema(DebugRowSource.typeInfo))
                         .build());
 
         Table input = tableEnv.scan("debug_source");
 
-        tableEnv.createTemporaryTable("table_row_sink",
-                TableDescriptor
-                        .forConnector("TableDebug")
+        tableEnv.createTemporaryTable(
+                "table_row_sink",
+                TableDescriptor.forConnector("TableDebug")
                         .schema(TypeUtil.rowTypeInfoToSchema(DebugRowSource.typeInfo))
                         .build());
 
-        Table table = TFUtils.train(streamEnv, tableEnv, statementSet, input, config,
-                TypeUtil.rowTypeInfoToSchema(DebugRowSource.typeInfo));
+        Table table =
+                TFUtils.train(
+                        streamEnv,
+                        tableEnv,
+                        statementSet,
+                        input,
+                        config,
+                        TypeUtil.rowTypeInfoToSchema(DebugRowSource.typeInfo));
         statementSet.addInsert("table_row_sink", table);
         execTableJobCustom(config.getMlConfig(), streamEnv, tableEnv, statementSet);
     }
@@ -160,8 +172,10 @@ public class TFUtilsTest {
         StreamExecutionEnvironment flinkEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 
         TFConfig config = new TFConfig(2, 1, null, addTBScript, "map_func", null);
-        config.getProperties().put(MLConstants.FLINK_HOOK_CLASSNAMES, DebugHook.class.getCanonicalName());
-        config.addProperty(MLConstants.CHECKPOINT_DIR, ckptDir + String.valueOf(System.currentTimeMillis()));
+        config.getProperties()
+                .put(MLConstants.FLINK_HOOK_CLASSNAMES, DebugHook.class.getCanonicalName());
+        config.addProperty(
+                MLConstants.CHECKPOINT_DIR, ckptDir + String.valueOf(System.currentTimeMillis()));
         TFUtils.train(flinkEnv, null, config);
 
         TFConfig tbConfig = config.deepCopy();
@@ -180,8 +194,10 @@ public class TFUtilsTest {
         StatementSet statementSet = tableEnv.createStatementSet();
 
         TFConfig config = new TFConfig(2, 1, null, addTBScript, "map_func", null);
-        config.getProperties().put(MLConstants.FLINK_HOOK_CLASSNAMES, DebugHook.class.getCanonicalName());
-        config.addProperty(MLConstants.CHECKPOINT_DIR, ckptDir + String.valueOf(System.currentTimeMillis()));
+        config.getProperties()
+                .put(MLConstants.FLINK_HOOK_CLASSNAMES, DebugHook.class.getCanonicalName());
+        config.addProperty(
+                MLConstants.CHECKPOINT_DIR, ckptDir + String.valueOf(System.currentTimeMillis()));
         TFUtils.train(streamEnv, tableEnv, statementSet, null, config, null);
 
         TFConfig tbConfig = config.deepCopy();
@@ -189,8 +205,7 @@ public class TFUtilsTest {
         tbConfig.setPythonFiles(scripts);
         TFUtils.startTensorBoard(streamEnv, tableEnv, statementSet, tbConfig);
 
-        statementSet.execute().getJobClient().get()
-                .getJobExecutionResult().get();
+        statementSet.execute().getJobClient().get().getJobExecutionResult().get();
     }
 
     @Test
@@ -204,9 +219,12 @@ public class TFUtilsTest {
         execTableJobCustom(config.getMlConfig(), streamEnv, tableEnv, statementSet);
     }
 
-    public static void execTableJobCustom(MLConfig mlConfig, StreamExecutionEnvironment streamEnv,
-                                          TableEnvironment tableEnv, StatementSet statementSet) throws Exception {
-        statementSet.execute().getJobClient().get()
-                .getJobExecutionResult().get();
+    public static void execTableJobCustom(
+            MLConfig mlConfig,
+            StreamExecutionEnvironment streamEnv,
+            TableEnvironment tableEnv,
+            StatementSet statementSet)
+            throws Exception {
+        statementSet.execute().getJobClient().get().getJobExecutionResult().get();
     }
 }

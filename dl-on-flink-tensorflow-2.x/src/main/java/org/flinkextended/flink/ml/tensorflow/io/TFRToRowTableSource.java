@@ -18,20 +18,18 @@
 
 package org.flinkextended.flink.ml.tensorflow.io;
 
-
-import com.google.common.base.Preconditions;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.table.connector.ChangelogMode;
 import org.apache.flink.table.connector.source.DynamicTableSource;
 import org.apache.flink.table.connector.source.InputFormatProvider;
 import org.apache.flink.table.connector.source.ScanTableSource;
 
+import com.google.common.base.Preconditions;
+
 import java.io.File;
 import java.util.Arrays;
 
-/**
- * TFRToRowInputFormat corresponds to flink table source function.
- */
+/** TFRToRowInputFormat corresponds to flink table source function. */
 public class TFRToRowTableSource implements ScanTableSource {
 
     private final String[] paths;
@@ -40,8 +38,12 @@ public class TFRToRowTableSource implements ScanTableSource {
     private final String[] outColAliases;
     private final TFRExtractRowHelper.ScalarConverter[] converters;
 
-    public TFRToRowTableSource(String[] paths, int epochs, RowTypeInfo outRowType, String[] outColAliases,
-                               TFRExtractRowHelper.ScalarConverter[] converters) {
+    public TFRToRowTableSource(
+            String[] paths,
+            int epochs,
+            RowTypeInfo outRowType,
+            String[] outColAliases,
+            TFRExtractRowHelper.ScalarConverter[] converters) {
         Preconditions.checkArgument(outRowType.getArity() == outColAliases.length);
         this.paths = paths;
         this.epochs = epochs;
@@ -50,20 +52,34 @@ public class TFRToRowTableSource implements ScanTableSource {
         this.converters = converters;
     }
 
-    public TFRToRowTableSource(String[] paths, int epochs, RowTypeInfo outRowType,
-                               TFRExtractRowHelper.ScalarConverter[] converters) {
+    public TFRToRowTableSource(
+            String[] paths,
+            int epochs,
+            RowTypeInfo outRowType,
+            TFRExtractRowHelper.ScalarConverter[] converters) {
         this(paths, epochs, outRowType, outRowType.getFieldNames(), converters);
     }
 
-    public TFRToRowTableSource(File[] files, int epochs, RowTypeInfo outRowType,
-                               TFRExtractRowHelper.ScalarConverter[] converters) {
+    public TFRToRowTableSource(
+            File[] files,
+            int epochs,
+            RowTypeInfo outRowType,
+            TFRExtractRowHelper.ScalarConverter[] converters) {
         this(files, epochs, outRowType, outRowType.getFieldNames(), converters);
     }
 
-    public TFRToRowTableSource(File[] files, int epochs, RowTypeInfo outRowType, String[] outColAliases,
-                               TFRExtractRowHelper.ScalarConverter[] converters) {
-        this(Arrays.stream(files).map(f -> f.getAbsolutePath()).toArray(String[]::new), epochs, outRowType,
-                outColAliases, converters);
+    public TFRToRowTableSource(
+            File[] files,
+            int epochs,
+            RowTypeInfo outRowType,
+            String[] outColAliases,
+            TFRExtractRowHelper.ScalarConverter[] converters) {
+        this(
+                Arrays.stream(files).map(f -> f.getAbsolutePath()).toArray(String[]::new),
+                epochs,
+                outRowType,
+                outColAliases,
+                converters);
     }
 
     @Override
@@ -73,17 +89,20 @@ public class TFRToRowTableSource implements ScanTableSource {
 
     @Override
     public ScanRuntimeProvider getScanRuntimeProvider(ScanContext runtimeProviderContext) {
-        final TFRToRowInputFormat tfrToRowInputFormat = new TFRToRowInputFormat(paths, epochs, outRowType, outColAliases, converters);
+        final TFRToRowInputFormat tfrToRowInputFormat =
+                new TFRToRowInputFormat(paths, epochs, outRowType, outColAliases, converters);
         return InputFormatProvider.of(new TFRToRowDataInputFormat(tfrToRowInputFormat));
     }
 
     @Override
     public DynamicTableSource copy() {
-        return new TFRToRowTableSource(this.paths, this.epochs, this.outRowType, this.outColAliases, this.converters);
+        return new TFRToRowTableSource(
+                this.paths, this.epochs, this.outRowType, this.outColAliases, this.converters);
     }
 
     @Override
     public String asSummaryString() {
-        return String.format("TFRecord source %s to %s", Arrays.toString(paths), outRowType.toString());
+        return String.format(
+                "TFRecord source %s to %s", Arrays.toString(paths), outRowType.toString());
     }
 }

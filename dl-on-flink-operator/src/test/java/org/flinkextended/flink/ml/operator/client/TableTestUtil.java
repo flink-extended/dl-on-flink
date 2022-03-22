@@ -19,15 +19,19 @@
 package org.flinkextended.flink.ml.operator.client;
 
 import org.flinkextended.flink.ml.cluster.MLConfig;
+
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.StatementSet;
 import org.apache.flink.table.api.TableEnvironment;
 
 public class TableTestUtil {
 
-    public static void execTableJobCustom(MLConfig mlConfig, StreamExecutionEnvironment streamEnv, TableEnvironment tableEnv, StatementSet statementSet) throws Exception {
-        statementSet.execute().getJobClient().get()
-                .getJobExecutionResult().get();
+    public static void execTableJobCustom(
+            MLConfig mlConfig,
+            StreamExecutionEnvironment streamEnv,
+            TableEnvironment tableEnv,
+            StatementSet statementSet)
+            throws Exception {
+        statementSet.execute().getJobClient().get().getJobExecutionResult().get();
     }
-
 }

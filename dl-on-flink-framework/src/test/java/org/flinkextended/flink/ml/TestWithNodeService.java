@@ -22,6 +22,7 @@ import org.flinkextended.flink.ml.cluster.node.MLContext;
 import org.flinkextended.flink.ml.cluster.rpc.NodeServer;
 import org.flinkextended.flink.ml.util.ContextService;
 import org.flinkextended.flink.ml.util.IpHostUtil;
+
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import org.junit.AfterClass;
@@ -31,25 +32,25 @@ import java.io.IOException;
 
 public abstract class TestWithNodeService {
 
-	private static Server server;
-	private static ContextService service;
+    private static Server server;
+    private static ContextService service;
 
-	@BeforeClass
-	public static void startServer() throws IOException {
-		service = new ContextService();
-		server = ServerBuilder.forPort(0).addService(service).build();
-		server.start();
-	}
+    @BeforeClass
+    public static void startServer() throws IOException {
+        service = new ContextService();
+        server = ServerBuilder.forPort(0).addService(service).build();
+        server.start();
+    }
 
-	@AfterClass
-	public static void stopServer() {
-		server.shutdown();
-	}
+    @AfterClass
+    public static void stopServer() {
+        server.shutdown();
+    }
 
-	protected void configureContext(MLContext context) throws Exception {
-		context.setNodeServerIP(IpHostUtil.getIpAddress());
-		context.setNodeServerPort(server.getPort());
-		NodeServer.prepareStartupScript(context);
-		service.setMlContext(context);
-	}
+    protected void configureContext(MLContext context) throws Exception {
+        context.setNodeServerIP(IpHostUtil.getIpAddress());
+        context.setNodeServerPort(server.getPort());
+        NodeServer.prepareStartupScript(context);
+        service.setMlContext(context);
+    }
 }

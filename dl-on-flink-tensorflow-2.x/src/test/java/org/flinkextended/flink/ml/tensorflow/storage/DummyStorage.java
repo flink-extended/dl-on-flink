@@ -24,30 +24,27 @@ import java.io.IOException;
 import java.util.List;
 
 public class DummyStorage implements Storage {
-	@Override
-	public byte[] getValue(String path) throws IOException {
-		return null;
-	}
+    @Override
+    public byte[] getValue(String path) throws IOException {
+        return null;
+    }
 
-	@Override
-	public void setValue(String path, byte[] value) throws IOException {
-	}
+    @Override
+    public void setValue(String path, byte[] value) throws IOException {}
 
-	@Override
-	public void removeValue(String path) throws IOException {
-	}
+    @Override
+    public void removeValue(String path) throws IOException {}
 
-	@Override
-	public List<String> listChildren(String path) throws IOException {
-		return null;
-	}
+    @Override
+    public List<String> listChildren(String path) throws IOException {
+        return null;
+    }
 
-	@Override
-	public boolean exists(String path) throws IOException {
-		return false;
-	}
+    @Override
+    public boolean exists(String path) throws IOException {
+        return false;
+    }
 
-	@Override
-	public void clear() {
-	}
+    @Override
+    public void clear() {}
 }

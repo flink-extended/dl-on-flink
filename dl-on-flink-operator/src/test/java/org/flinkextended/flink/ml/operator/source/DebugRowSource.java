@@ -26,11 +26,10 @@ import org.apache.flink.streaming.api.functions.source.ParallelSourceFunction;
 import org.apache.flink.table.data.GenericRowData;
 import org.apache.flink.table.data.RowData;
 import org.apache.flink.table.data.StringData;
-import org.apache.flink.types.Row;
-
 
 public class DebugRowSource implements ParallelSourceFunction<RowData>, ResultTypeQueryable {
     public static RowTypeInfo typeInfo;
+
     static {
         TypeInformation<?>[] types = new TypeInformation[5];
         types[0] = BasicTypeInfo.INT_TYPE_INFO;
@@ -42,28 +41,26 @@ public class DebugRowSource implements ParallelSourceFunction<RowData>, ResultTy
         typeInfo = new RowTypeInfo(types, names);
     }
 
-    public DebugRowSource() {
+    public DebugRowSource() {}
 
-    }
-
-//    @Override
-//    public void run(SourceContext<Row> ctx) throws Exception {
-//        for(int i = 0; i < 20; i++){
-//            String str = String.valueOf(i);
-//            Row row = new Row(5);
-//            row.setField(0, Integer.valueOf(str));
-//            row.setField(1, Long.valueOf(str));
-//            row.setField(2, Float.valueOf(str));
-//            row.setField(3, Double.valueOf(str));
-//            row.setField(4, str);
-//            ctx.collect(row);
-//            //Thread.sleep(500);
-//        }
-//    }
+    //    @Override
+    //    public void run(SourceContext<Row> ctx) throws Exception {
+    //        for(int i = 0; i < 20; i++){
+    //            String str = String.valueOf(i);
+    //            Row row = new Row(5);
+    //            row.setField(0, Integer.valueOf(str));
+    //            row.setField(1, Long.valueOf(str));
+    //            row.setField(2, Float.valueOf(str));
+    //            row.setField(3, Double.valueOf(str));
+    //            row.setField(4, str);
+    //            ctx.collect(row);
+    //            //Thread.sleep(500);
+    //        }
+    //    }
 
     @Override
     public void run(SourceContext<RowData> ctx) throws Exception {
-        for(int i = 0; i < 20; i++){
+        for (int i = 0; i < 20; i++) {
             String str = String.valueOf(i);
             GenericRowData row = new GenericRowData(5);
             row.setField(0, Integer.valueOf(str));
@@ -76,9 +73,7 @@ public class DebugRowSource implements ParallelSourceFunction<RowData>, ResultTy
     }
 
     @Override
-    public void cancel() {
-
-    }
+    public void cancel() {}
 
     @Override
     public RowTypeInfo getProducedType() {

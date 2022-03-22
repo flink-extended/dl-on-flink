@@ -19,89 +19,95 @@
 package org.flinkextended.flink.ml.examples.pytorch.it;
 
 import org.flinkextended.flink.ml.examples.pytorch.PyTorchRunDist;
+import org.flinkextended.flink.ml.examples.util.CodeUtil;
 import org.flinkextended.flink.ml.util.MiniCluster;
 import org.flinkextended.flink.ml.util.SysUtil;
+
 import com.google.common.io.Files;
 import org.junit.*;
-import org.flinkextended.flink.ml.examples.util.CodeUtil;
 
 import java.io.File;
 import java.io.IOException;
 
 public class PyTorchUtilIT {
-	private static MiniCluster miniCluster;
-	private static final int numTMs = 3;
+    private static MiniCluster miniCluster;
+    private static final int numTMs = 3;
 
-	@Before
-	public void setUp() throws Exception {
-		miniCluster = MiniCluster.start(numTMs);
-		miniCluster.setExecJar("/dl-on-flink-examples/target/dl-on-flink-examples-" + SysUtil.getProjectVersion() + ".jar");
-	}
+    @Before
+    public void setUp() throws Exception {
+        miniCluster = MiniCluster.start(numTMs);
+        miniCluster.setExecJar(
+                "/dl-on-flink-examples/target/dl-on-flink-examples-"
+                        + SysUtil.getProjectVersion()
+                        + ".jar");
+    }
 
-	@After
-	public void tearDown() throws Exception {
-		if (miniCluster != null) {
-			miniCluster.stop();
-		}
-	}
+    @After
+    public void tearDown() throws Exception {
+        if (miniCluster != null) {
+            miniCluster.stop();
+        }
+    }
 
-	@Test
-	public void trainStream() throws Exception {
-		runAndVerify(miniCluster, PyTorchRunDist.EnvMode.Stream, "greeter.py");
-	}
+    @Test
+    public void trainStream() throws Exception {
+        runAndVerify(miniCluster, PyTorchRunDist.EnvMode.Stream, "greeter.py");
+    }
 
-	@Test
-	public void trainTable() throws Exception {
-		runAndVerify(miniCluster, PyTorchRunDist.EnvMode.Table, "greeter.py");
-	}
+    @Test
+    public void trainTable() throws Exception {
+        runAndVerify(miniCluster, PyTorchRunDist.EnvMode.Table, "greeter.py");
+    }
 
-	@Test
-	public void allReduceStream() throws Exception {
-		runAndVerify(miniCluster, PyTorchRunDist.EnvMode.Stream, "all_reduce_test.py");
-	}
+    @Test
+    public void allReduceStream() throws Exception {
+        runAndVerify(miniCluster, PyTorchRunDist.EnvMode.Stream, "all_reduce_test.py");
+    }
 
-	@Test
-	public void allReduceTable() throws Exception {
-		runAndVerify(miniCluster, PyTorchRunDist.EnvMode.Table, "all_reduce_test.py");
-	}
+    @Test
+    public void allReduceTable() throws Exception {
+        runAndVerify(miniCluster, PyTorchRunDist.EnvMode.Table, "all_reduce_test.py");
+    }
 
-	private static String run(MiniCluster miniCluster, PyTorchRunDist.EnvMode mode, String script) throws IOException {
-		String codeRemotePath = null;
-		try {
-			codeRemotePath = CodeUtil.copyCodeToHdfs(miniCluster);
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw e;
-		}
-		String output = miniCluster.flinkRun(PyTorchRunDist.class.getCanonicalName(),
-				"--zk-conn-str",
-				miniCluster.getZKContainer(),
-				"--mode",
-				mode.toString(),
-				"--script",
-				script,
-				"--envpath",
-				miniCluster.getVenvHdfsPath(),
-				"--code-path",
-				codeRemotePath
-		);
-		return output;
-	}
+    private static String run(MiniCluster miniCluster, PyTorchRunDist.EnvMode mode, String script)
+            throws IOException {
+        String codeRemotePath = null;
+        try {
+            codeRemotePath = CodeUtil.copyCodeToHdfs(miniCluster);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw e;
+        }
+        String output =
+                miniCluster.flinkRun(
+                        PyTorchRunDist.class.getCanonicalName(),
+                        "--zk-conn-str",
+                        miniCluster.getZKContainer(),
+                        "--mode",
+                        mode.toString(),
+                        "--script",
+                        script,
+                        "--envpath",
+                        miniCluster.getVenvHdfsPath(),
+                        "--code-path",
+                        codeRemotePath);
+        return output;
+    }
 
-	static boolean runAndVerify(MiniCluster miniCluster, PyTorchRunDist.EnvMode mode, String script)
-			throws IOException {
-		String output = run(miniCluster, mode, script);
-		System.out.println(output);
-		if (!output.contains("Program execution finished")) {
-			File tmp = Files.createTempDir();
-			miniCluster.dumpFlinkLogs(tmp);
-			Assert.fail("run failed in mode " + mode + ", check logs in " + tmp.getAbsolutePath());
-			return false;
-		} else {
-			File tmp = Files.createTempDir();
-			miniCluster.dumpFlinkLogs(tmp);
-			System.out.println("logs in " + tmp.getAbsolutePath());
-		}
-		return true;
-	}
+    static boolean runAndVerify(MiniCluster miniCluster, PyTorchRunDist.EnvMode mode, String script)
+            throws IOException {
+        String output = run(miniCluster, mode, script);
+        System.out.println(output);
+        if (!output.contains("Program execution finished")) {
+            File tmp = Files.createTempDir();
+            miniCluster.dumpFlinkLogs(tmp);
+            Assert.fail("run failed in mode " + mode + ", check logs in " + tmp.getAbsolutePath());
+            return false;
+        } else {
+            File tmp = Files.createTempDir();
+            miniCluster.dumpFlinkLogs(tmp);
+            System.out.println("logs in " + tmp.getAbsolutePath());
+        }
+        return true;
+    }
 }

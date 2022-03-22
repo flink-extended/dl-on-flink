@@ -26,44 +26,42 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-/**
- * down load http file
- */
+/** down load http file */
 public class HttpUtil {
 
-	/**
-	 * download http file.
-	 * @param httpUrl http file address.
-	 * @param saveFile local file address.
-	 * @return true: download success, false: download failed.
-	 */
-	public static boolean httpDownload(String httpUrl, String saveFile) {
-		int bytesum = 0;
-		int byteread = 0;
+    /**
+     * download http file.
+     *
+     * @param httpUrl http file address.
+     * @param saveFile local file address.
+     * @return true: download success, false: download failed.
+     */
+    public static boolean httpDownload(String httpUrl, String saveFile) {
+        int bytesum = 0;
+        int byteread = 0;
 
-		URL url = null;
-		try {
-			url = new URL(httpUrl);
-		} catch (MalformedURLException e1) {
-			throw new RuntimeException(e1);
-		}
+        URL url = null;
+        try {
+            url = new URL(httpUrl);
+        } catch (MalformedURLException e1) {
+            throw new RuntimeException(e1);
+        }
 
-		try {
-			URLConnection conn = url.openConnection();
-			InputStream inStream = conn.getInputStream();
-			FileOutputStream fs = new FileOutputStream(saveFile);
+        try {
+            URLConnection conn = url.openConnection();
+            InputStream inStream = conn.getInputStream();
+            FileOutputStream fs = new FileOutputStream(saveFile);
 
-			byte[] buffer = new byte[1024];
-			while ((byteread = inStream.read(buffer)) != -1) {
-				bytesum += byteread;
-				fs.write(buffer, 0, byteread);
-			}
-			return true;
-		} catch (FileNotFoundException e) {
-			throw new RuntimeException(e);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
+            byte[] buffer = new byte[1024];
+            while ((byteread = inStream.read(buffer)) != -1) {
+                bytesum += byteread;
+                fs.write(buffer, 0, byteread);
+            }
+            return true;
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -20,57 +20,32 @@ package org.flinkextended.flink.ml.cluster;
 
 import java.util.Map;
 
-/**
- * user define reporter to notify events.
- */
+/** user define reporter to notify events. */
 public class BaseEventReporter {
-	/**
-	 *
-	 * @param jobId
-	 * @param properties
-	 */
-	public void configure(String jobId, Map<String, String> properties) {
-	}
+    /**
+     * @param jobId
+     * @param properties
+     */
+    public void configure(String jobId, Map<String, String> properties) {}
 
-	/**
-	 * report job finish event.
-	 */
-	public void jobFinish() {
-	}
+    /** report job finish event. */
+    public void jobFinish() {}
 
-	/**
-	 * report job kill event.
-	 */
-	public void jobKill() {
-	}
+    /** report job kill event. */
+    public void jobKill() {}
 
-	/**
-	 * report job failover event.
-	 */
-	public void jobFailover() {
-	}
+    /** report job failover event. */
+    public void jobFailover() {}
 
-	/**
-	 * report job failed event.
-	 */
-	public void jobFail(String msg) {
-	}
+    /** report job failed event. */
+    public void jobFail(String msg) {}
 
-	/**
-	 * report node failed event.
-	 */
-	public void nodeFail(String... failedNodes) {
-	}
+    /** report node failed event. */
+    public void nodeFail(String... failedNodes) {}
 
-	/**
-	 * report node finish event.
-	 */
-	public void nodeFinish(String... node) {
-	}
+    /** report node finish event. */
+    public void nodeFinish(String... node) {}
 
-	/**
-	 * report node register event.
-	 */
-	public void nodeRegister(String... node) {
-	}
+    /** report node register event. */
+    public void nodeRegister(String... node) {}
 }

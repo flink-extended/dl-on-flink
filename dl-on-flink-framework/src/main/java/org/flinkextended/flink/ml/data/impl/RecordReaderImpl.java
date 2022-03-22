@@ -18,7 +18,6 @@
 
 package org.flinkextended.flink.ml.data.impl;
 
-
 import org.flinkextended.flink.ml.cluster.node.MLContext;
 import org.flinkextended.flink.ml.data.RecordReader;
 import org.flinkextended.flink.ml.util.SpscOffHeapQueue;
@@ -29,71 +28,60 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-/**
- * a simple RecordReader implement.
- */
+/** a simple RecordReader implement. */
 public class RecordReaderImpl implements RecordReader {
 
+    private final DataInputStream input;
+    private boolean eof = false;
 
-	private final DataInputStream input;
-	private boolean eof = false;
+    public RecordReaderImpl(MLContext mlContext) {
+        SpscOffHeapQueue.QueueInputStream in = mlContext.getInReader();
+        this.input = new DataInputStream(in);
+    }
 
-	public RecordReaderImpl(MLContext mlContext) {
-		SpscOffHeapQueue.QueueInputStream in = mlContext.getInReader();
-		this.input = new DataInputStream(in);
-	}
+    public byte[] tryRead() throws IOException {
+        if (input.available() > 0) {
+            return read();
+        }
+        return null;
+    }
 
-	public byte[] tryRead() throws IOException {
-		if (input.available() > 0) {
-			return read();
-		}
-		return null;
-	}
+    public boolean isReachEOF() {
+        return eof;
+    }
 
-	public boolean isReachEOF() {
-		return eof;
-	}
+    public byte[] read() throws IOException {
+        /** Record format: uint32 length byte data[length] */
+        byte[] lenBytes = new byte[4];
+        int lenRead;
+        try {
+            // Only catch EOF here, other case means corrupted file
+            lenRead = input.read(lenBytes);
+            if (lenRead < 0) {
+                eof = true;
+                return null;
+            }
+        } catch (EOFException eofException) {
+            eof = true;
+            return null; // return null means EOF
+        }
+        if (lenRead < lenBytes.length) {
+            input.readFully(lenBytes, lenRead, lenBytes.length - lenRead);
+        }
+        long len = fromInt32LE(lenBytes);
 
-	public byte[] read() throws IOException {
-		/**
-		 * Record format:
-		 * uint32 length
-		 * byte   data[length]
-		 */
-		byte[] lenBytes = new byte[4];
-		int lenRead;
-		try {
-			// Only catch EOF here, other case means corrupted file
-			lenRead = input.read(lenBytes);
-			if (lenRead < 0) {
-				eof = true;
-				return null;
-			}
-		} catch (EOFException eofException) {
-			eof = true;
-			return null; // return null means EOF
-		}
-		if (lenRead < lenBytes.length) {
-			input.readFully(lenBytes, lenRead, lenBytes.length - lenRead);
-		}
-		long len = fromInt32LE(lenBytes);
+        byte[] data = new byte[(int) len];
+        input.readFully(data);
+        return data;
+    }
 
+    private int fromInt32LE(byte[] data) {
+        assert data.length == 4;
+        ByteBuffer bb = ByteBuffer.wrap(data);
+        bb.order(ByteOrder.LITTLE_ENDIAN);
+        return bb.getInt();
+    }
 
-		byte[] data = new byte[(int) len];
-		input.readFully(data);
-		return data;
-	}
-
-
-	private int fromInt32LE(byte[] data) {
-		assert data.length == 4;
-		ByteBuffer bb = ByteBuffer.wrap(data);
-		bb.order(ByteOrder.LITTLE_ENDIAN);
-		return bb.getInt();
-	}
-
-	@Override
-	public void close() throws IOException {
-
-	}
+    @Override
+    public void close() throws IOException {}
 }

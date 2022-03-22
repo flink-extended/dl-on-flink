@@ -32,13 +32,10 @@ import org.apache.flink.table.types.DataType;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * a util function to transformation between RowTypeInfo and TableSchema.
- */
+/** a util function to transformation between RowTypeInfo and TableSchema. */
 public class TypeUtil {
 
-    private TypeUtil() {
-    }
+    private TypeUtil() {}
 
     /**
      * convert RowTypeInfo to TableSchema.
@@ -76,7 +73,8 @@ public class TypeUtil {
             fieldNames.add(column.getName());
         }
 
-        return new RowTypeInfo(types.toArray(new TypeInformation[0]), fieldNames.toArray(new String[0]));
+        return new RowTypeInfo(
+                types.toArray(new TypeInformation[0]), fieldNames.toArray(new String[0]));
     }
 
     public static Schema rowTypeInfoToSchema(RowTypeInfo rowTypeInfo) {
@@ -85,8 +83,6 @@ public class TypeUtil {
         for (int i = 0; i < fieldTypes.length; i++) {
             fieldDataTypes[i] = DataTypes.of(fieldTypes[i]);
         }
-        return Schema.newBuilder()
-                .fromFields(rowTypeInfo.getFieldNames(), fieldDataTypes)
-                .build();
+        return Schema.newBuilder().fromFields(rowTypeInfo.getFieldNames(), fieldDataTypes).build();
     }
 }

@@ -24,8 +24,8 @@ import org.flinkextended.flink.ml.cluster.role.BaseRole;
  * tensorflow cluster tensorboard role, this role only has one node and start tensorboard service.
  */
 public class TensorBoardRole extends BaseRole {
-	@Override
-	public String name() {
-		return "tensorboard";
-	}
+    @Override
+    public String name() {
+        return "tensorboard";
+    }
 }

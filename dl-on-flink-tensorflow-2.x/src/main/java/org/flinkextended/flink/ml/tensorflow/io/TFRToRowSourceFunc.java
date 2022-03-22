@@ -24,22 +24,23 @@ import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.streaming.api.functions.source.InputFormatSourceFunction;
 import org.apache.flink.types.Row;
 
-/**
- * TFRToRowInputFormat corresponds to flink source function.
- */
-public class TFRToRowSourceFunc extends InputFormatSourceFunction<Row> implements ResultTypeQueryable {
+/** TFRToRowInputFormat corresponds to flink source function. */
+public class TFRToRowSourceFunc extends InputFormatSourceFunction<Row>
+        implements ResultTypeQueryable {
 
-	private final RowTypeInfo outRowType;
+    private final RowTypeInfo outRowType;
 
-	public TFRToRowSourceFunc(String[] paths, int epochs, RowTypeInfo outRowType,
-			TFRExtractRowHelper.ScalarConverter[] converters) {
-		super(new TFRToRowInputFormat(paths, epochs, outRowType, converters),
-				outRowType);
-		this.outRowType = outRowType;
-	}
+    public TFRToRowSourceFunc(
+            String[] paths,
+            int epochs,
+            RowTypeInfo outRowType,
+            TFRExtractRowHelper.ScalarConverter[] converters) {
+        super(new TFRToRowInputFormat(paths, epochs, outRowType, converters), outRowType);
+        this.outRowType = outRowType;
+    }
 
-	@Override
-	public TypeInformation getProducedType() {
-		return outRowType;
-	}
+    @Override
+    public TypeInformation getProducedType() {
+        return outRowType;
+    }
 }

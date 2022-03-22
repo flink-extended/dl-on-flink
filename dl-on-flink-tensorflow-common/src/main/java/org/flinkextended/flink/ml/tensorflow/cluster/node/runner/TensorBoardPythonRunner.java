@@ -18,12 +18,14 @@
 
 package org.flinkextended.flink.ml.tensorflow.cluster.node.runner;
 
-import org.apache.flink.annotation.VisibleForTesting;
 import org.flinkextended.flink.ml.cluster.node.MLContext;
 import org.flinkextended.flink.ml.cluster.node.runner.python.ProcessPythonRunner;
 import org.flinkextended.flink.ml.tensorflow.util.TFConstants;
 import org.flinkextended.flink.ml.util.IpHostUtil;
 import org.flinkextended.flink.ml.util.MLConstants;
+
+import org.apache.flink.annotation.VisibleForTesting;
+
 import com.google.common.base.Joiner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,48 +34,56 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * a subclass of ScriptRunner, this runner start a tensorboard service.
- */
+/** a subclass of ScriptRunner, this runner start a tensorboard service. */
 public class TensorBoardPythonRunner extends ProcessPythonRunner {
-	private static final Logger LOG = LoggerFactory.getLogger(TensorBoardPythonRunner.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TensorBoardPythonRunner.class);
 
-	public TensorBoardPythonRunner(MLContext mlContext) {
-		super(mlContext);
-	}
+    public TensorBoardPythonRunner(MLContext mlContext) {
+        super(mlContext);
+    }
 
-	@Override
-	public void runScript() throws IOException {
-		List<String> args = new ArrayList<>();
-		String pythonVersion = mlContext.getProperties().getOrDefault(MLConstants.PYTHON_VERSION,"");
-		String pythonExec = "python" + pythonVersion;
-		//check if has python2 or python3 environment
-		if (checkPythonEnvironment("which " + pythonExec) != 0){
-			throw new RuntimeException("No this python environment");
-		}
-		args.add(pythonExec);
-		args.add(mlContext.getScript().getAbsolutePath());
-		args.add("--logdir=" + mlContext.getProperties().getOrDefault(MLConstants.CHECKPOINT_DIR,
-				mlContext.getWorkDir().getAbsolutePath()));
-		String port = mlContext.getProperties().getOrDefault(TFConstants.TENSORBOART_PORT,
-				String.valueOf(IpHostUtil.getFreePort()));
-		args.add("--port=" + port);
-		args.add("--host=" + mlContext.getNodeServerIP());
-		ProcessBuilder builder = new ProcessBuilder(args);
-		String classPath = getClassPath();
-		if (classPath == null) {
-			// can happen in UT
-			LOG.warn("Cannot find proper classpath for the Python process.");
-		} else {
-			mlContext.putEnvProperty(MLConstants.CLASSPATH, classPath);
-		}
-		buildProcessBuilder(builder);
-		LOG.info("{} Python cmd: {}", mlContext.getIdentity(), Joiner.on(" ").join(args));
-		runProcess(builder);
-	}
+    @Override
+    public void runScript() throws IOException {
+        List<String> args = new ArrayList<>();
+        String pythonVersion =
+                mlContext.getProperties().getOrDefault(MLConstants.PYTHON_VERSION, "");
+        String pythonExec = "python" + pythonVersion;
+        // check if has python2 or python3 environment
+        if (checkPythonEnvironment("which " + pythonExec) != 0) {
+            throw new RuntimeException("No this python environment");
+        }
+        args.add(pythonExec);
+        args.add(mlContext.getScript().getAbsolutePath());
+        args.add(
+                "--logdir="
+                        + mlContext
+                                .getProperties()
+                                .getOrDefault(
+                                        MLConstants.CHECKPOINT_DIR,
+                                        mlContext.getWorkDir().getAbsolutePath()));
+        String port =
+                mlContext
+                        .getProperties()
+                        .getOrDefault(
+                                TFConstants.TENSORBOART_PORT,
+                                String.valueOf(IpHostUtil.getFreePort()));
+        args.add("--port=" + port);
+        args.add("--host=" + mlContext.getNodeServerIP());
+        ProcessBuilder builder = new ProcessBuilder(args);
+        String classPath = getClassPath();
+        if (classPath == null) {
+            // can happen in UT
+            LOG.warn("Cannot find proper classpath for the Python process.");
+        } else {
+            mlContext.putEnvProperty(MLConstants.CLASSPATH, classPath);
+        }
+        buildProcessBuilder(builder);
+        LOG.info("{} Python cmd: {}", mlContext.getIdentity(), Joiner.on(" ").join(args));
+        runProcess(builder);
+    }
 
-	@VisibleForTesting
-	public void runProcess(ProcessBuilder builder) throws IOException {
-		super.runProcess(builder);
-	}
+    @VisibleForTesting
+    public void runProcess(ProcessBuilder builder) throws IOException {
+        super.runProcess(builder);
+    }
 }

@@ -21,52 +21,51 @@ package org.flinkextended.flink.ml.cluster.master;
 import org.flinkextended.flink.ml.cluster.statemachine.event.AbstractEvent;
 
 /**
- * application master handle event.
- * application master state machine can process this event and trigger status change.
+ * application master handle event. application master state machine can process this event and
+ * trigger status change.
  */
 public class AMEvent extends AbstractEvent<AMEventType> {
-	private Object message;
-	private long version;
+    private Object message;
+    private long version;
 
-	/**
-	 * create am event object.
-	 * @param amEventType am event type.
-	 * @param message event message, different event type
-	 * @param version machine learning cluster run version.
-	 */
-	public AMEvent(AMEventType amEventType, Object message, long version) {
-		super(amEventType);
-		this.message = message;
-		this.version = version;
-	}
+    /**
+     * create am event object.
+     *
+     * @param amEventType am event type.
+     * @param message event message, different event type
+     * @param version machine learning cluster run version.
+     */
+    public AMEvent(AMEventType amEventType, Object message, long version) {
+        super(amEventType);
+        this.message = message;
+        this.version = version;
+    }
 
-	/**
-	 * @return AMEvent additional message.
-	 */
-	public Object getMessage() {
-		return message;
-	}
+    /** @return AMEvent additional message. */
+    public Object getMessage() {
+        return message;
+    }
 
-	/**
-	 * AMEvent additional message setter.
-	 * @param message AMEvent additional message.
-	 */
-	public void setMessage(Object message) {
-		this.message = message;
-	}
+    /**
+     * AMEvent additional message setter.
+     *
+     * @param message AMEvent additional message.
+     */
+    public void setMessage(Object message) {
+        this.message = message;
+    }
 
-	/**
-	 * @return AMEvent version getter.
-	 */
-	public long getVersion() {
-		return version;
-	}
+    /** @return AMEvent version getter. */
+    public long getVersion() {
+        return version;
+    }
 
-	/**
-	 * AMEvent version setter.
-	 * @param version AMEvent version setter.
-	 */
-	public void setVersion(long version) {
-		this.version = version;
-	}
+    /**
+     * AMEvent version setter.
+     *
+     * @param version AMEvent version setter.
+     */
+    public void setVersion(long version) {
+        this.version = version;
+    }
 }
