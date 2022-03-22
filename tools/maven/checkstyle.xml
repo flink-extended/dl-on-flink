@@ -77,8 +77,11 @@ This file is based on the checkstyle file of Apache Beam.
         <property name="max" value="3000"/>
     </module>
 
+    <module name="SuppressWarningsFilter" />
+
     <!-- All Java AST specific tests live under TreeWalker module. -->
     <module name="TreeWalker">
+        <module name="SuppressWarningsHolder" />
 
         <!-- Allow use of comment to suppress javadocstyle -->
         <module name="SuppressionCommentFilter">
@@ -125,40 +128,7 @@ This file is based on the checkstyle file of Apache Beam.
             <property name="message"
                       value="Use Guava Checks instead of Commons Validate. Please refer to the coding guidelines."/>
         </module>
-        <!-- forbid the use of google.common.base.Preconditions -->
-        <module name="Regexp">
-            <property name="format" value="import com\.google\.common\.base\.Preconditions"/>
-            <property name="illegalPattern" value="true"/>
-            <property name="message"
-                      value="Use Flink's Preconditions instead of Guava's Preconditions"/>
-        </module>
-        <!-- forbid the use of com.google.common.annotations.VisibleForTesting -->
-        <module name="Regexp">
-            <property name="format"
-                      value="import com\.google\.common\.annotations\.VisibleForTesting"/>
-            <property name="illegalPattern" value="true"/>
-            <property name="message"
-                      value="Use Flink's VisibleForTesting instead of Guava's VisibleForTesting"/>
-        </module>
-        <module name="Regexp">
-            <property name="format" value="import static com\.google\.common\.base\.Preconditions"/>
-            <property name="illegalPattern" value="true"/>
-            <property name="message"
-                      value="Use Flink's Preconditions instead of Guava's Preconditions"/>
-        </module>
-        <!-- forbid the use of org.apache.commons.lang.SerializationUtils -->
-        <module name="Regexp">
-            <property name="format" value="org\.apache\.commons\.lang\.SerializationUtils"/>
-            <property name="illegalPattern" value="true"/>
-            <property name="message"
-                      value="Use Flink's InstantiationUtil instead of common's SerializationUtils"/>
-        </module>
-        <module name="Regexp">
-            <property name="format" value="org\.apache\.commons\.lang3\.SerializationUtils"/>
-            <property name="illegalPattern" value="true"/>
-            <property name="message"
-                      value="Use Flink's InstantiationUtil instead of common's SerializationUtils"/>
-        </module>
+
         <module name="Regexp">
             <property name="format" value="org\.apache\.commons\.lang\."/>
             <property name="illegalPattern" value="true"/>
@@ -217,22 +187,6 @@ This file is based on the checkstyle file of Apache Beam.
             <property name="illegalPkgs"
                       value="autovalue.shaded, avro.shaded, com.google.api.client.repackaged, com.google.appengine.repackaged"/>
         </module>
-        <module name="IllegalImport">
-            <property name="illegalPkgs" value="org.codehaus.jackson"/>
-            <message key="import.illegal" value="{0}; Use flink-shaded-jackson instead."/>
-        </module>
-        <module name="IllegalImport">
-            <property name="illegalPkgs" value="org.objectweb.asm"/>
-            <message key="import.illegal" value="{0}; Use flink-shaded-asm instead."/>
-        </module>
-        <module name="IllegalImport">
-            <property name="illegalPkgs" value="io.netty"/>
-            <message key="import.illegal" value="{0}; Use flink-shaded-netty instead."/>
-        </module>
-        <module name="IllegalImport">
-            <property name="illegalPkgs" value="com.google.common"/>
-            <message key="import.illegal" value="{0}; Use flink-shaded-guava instead."/>
-        </module>
 
         <module name="RedundantModifier">
             <!-- Checks for redundant modifiers on various symbol definitions.
@@ -245,20 +199,8 @@ This file is based on the checkstyle file of Apache Beam.
         </module>
 
         <!--
-            IllegalImport cannot blacklist classes, and c.g.api.client.util is used for some shaded
-            code and some useful code. So we need to fall back to Regexp.
-        -->
-        <!--<module name="RegexpSinglelineJava">-->
-        <!--<property name="format" value="com\.google\.api\.client\.util\.(ByteStreams|Charsets|Collections2|Joiner|Lists|Maps|Objects|Preconditions|Sets|Strings|Throwables)"/>-->
-        <!--</module>-->
-
-        <!--
              Require static importing from Preconditions.
         -->
-        <module name="RegexpSinglelineJava">
-            <property name="format" value="^import com.google.common.base.Preconditions;$"/>
-            <property name="message" value="Static import functions from Guava Preconditions"/>
-        </module>
 
         <module name="UnusedImports">
             <property name="severity" value="error"/>
