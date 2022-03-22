@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+/** Dummy {@link AbstractProcessOutputConsumer} for unit test. */
 public class TestProcessOutputConsumer extends AbstractProcessOutputConsumer {
     private final List<String> stdOutLog = new ArrayList<>();
     private final List<String> stdErrLog = new ArrayList<>();

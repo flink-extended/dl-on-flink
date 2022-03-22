@@ -27,6 +27,7 @@ import java.io.Closeable;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
+/** AbstractGrpcClient. */
 public abstract class AbstractGrpcClient implements Closeable {
     private static final Logger LOG = LoggerFactory.getLogger(AbstractGrpcClient.class);
 

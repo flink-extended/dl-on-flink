@@ -22,6 +22,7 @@ import org.flinkextended.flink.ml.cluster.node.MLContext;
 
 import java.io.IOException;
 
+/** Dummy {@link AbstractScriptRunner} for unit test. */
 public class TestScriptRunner extends AbstractScriptRunner {
     private boolean ran = false;
 

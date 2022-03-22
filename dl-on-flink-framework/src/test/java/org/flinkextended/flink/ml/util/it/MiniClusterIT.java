@@ -25,6 +25,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+/** Integration test for {@link MiniCluster}. */
 @Ignore
 public class MiniClusterIT {
     private static MiniCluster miniCluster;

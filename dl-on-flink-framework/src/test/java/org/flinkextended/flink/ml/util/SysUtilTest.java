@@ -21,6 +21,7 @@ package org.flinkextended.flink.ml.util;
 import org.junit.Assert;
 import org.junit.Test;
 
+/** Unit test for {@link SysUtil}. */
 public class SysUtilTest {
 
     @Test

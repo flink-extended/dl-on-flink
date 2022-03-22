@@ -36,9 +36,9 @@ public class AMStateMachineImpl extends AbstractAMStateMachine {
     public AMStateMachineImpl(
             AppMasterServiceImpl server,
             AMMeta amState,
-            MLContext MLContext,
+            MLContext mlContext,
             BaseEventReporter eventReporter) {
-        super(server, amState, MLContext, eventReporter);
+        super(server, amState, mlContext, eventReporter);
     }
 
     @Override

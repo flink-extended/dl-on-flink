@@ -29,12 +29,15 @@ import org.slf4j.LoggerFactory;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.notNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/** Unit test for {@link AbstractGrpcClient}. */
 public class AbstractGrpcClientTest {
     private static final Logger LOG = LoggerFactory.getLogger(AbstractGrpcClientTest.class);
 

@@ -44,18 +44,19 @@ public class AMRegistry {
      *
      * @return the AMClient.
      */
-    public static AMClient getAMClient(MLContext MLContext) throws IOException {
+    public static AMClient getAMClient(MLContext mlContext) throws IOException {
         long timeout =
                 Long.valueOf(
-                        MLContext.getProperties()
+                        mlContext
+                                .getProperties()
                                 .getOrDefault(
                                         MLConstants.AM_REGISTRY_TIMEOUT,
                                         MLConstants.AM_REGISTRY_TIMEOUT_DEFAULT));
-        return getAMClient(MLContext, timeout);
+        return getAMClient(mlContext, timeout);
     }
 
-    public static AMClient getAMClient(MLContext MLContext, long timeout) throws IOException {
-        return getAMClient(MLContext.getProperties(), timeout);
+    public static AMClient getAMClient(MLContext mlContext, long timeout) throws IOException {
+        return getAMClient(mlContext.getProperties(), timeout);
     }
 
     public static AMClient getAMClient(Map<String, String> properties, long timeout)

@@ -25,7 +25,16 @@ import org.flinkextended.flink.ml.cluster.role.AMRole;
 import org.flinkextended.flink.ml.cluster.role.PsRole;
 import org.flinkextended.flink.ml.cluster.role.WorkerRole;
 import org.flinkextended.flink.ml.cluster.storage.StorageFactory;
-import org.flinkextended.flink.ml.proto.*;
+import org.flinkextended.flink.ml.proto.AMStatus;
+import org.flinkextended.flink.ml.proto.MLClusterDef;
+import org.flinkextended.flink.ml.proto.MLJobDef;
+import org.flinkextended.flink.ml.proto.NodeRestartRequest;
+import org.flinkextended.flink.ml.proto.NodeRestartResponse;
+import org.flinkextended.flink.ml.proto.NodeServiceGrpc;
+import org.flinkextended.flink.ml.proto.NodeSpec;
+import org.flinkextended.flink.ml.proto.NodeStopRequest;
+import org.flinkextended.flink.ml.proto.NodeStopResponse;
+import org.flinkextended.flink.ml.proto.SimpleResponse;
 import org.flinkextended.flink.ml.util.DummyContext;
 import org.flinkextended.flink.ml.util.IpHostUtil;
 import org.flinkextended.flink.ml.util.MLConstants;
@@ -35,7 +44,11 @@ import org.flinkextended.flink.ml.util.SysUtil;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,20 +56,28 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
+/** Unit test for {@link AppMasterServer}. */
 public class AppMasterServerTest {
 
-    private static String IP;
+    private static String ip;
     private static final Logger LOG = LoggerFactory.getLogger(AppMasterServerTest.class);
 
     @BeforeClass
     public static void init() throws Exception {
-        IP = IpHostUtil.getIpAddress();
+        ip = IpHostUtil.getIpAddress();
     }
 
     @Before
@@ -89,7 +110,7 @@ public class AppMasterServerTest {
             version = amClient.getVersion().getVersion();
             NodeSpec nodeSpec =
                     newNodeSpec(
-                            mlContext.getRoleName(), IP, mlContext.getIndex(), server.getPort());
+                            mlContext.getRoleName(), ip, mlContext.getIndex(), server.getPort());
             return amClient.registerNode(version, nodeSpec);
         }
 
@@ -105,7 +126,7 @@ public class AppMasterServerTest {
             version = amClient.getVersion().getVersion();
             NodeSpec nodeSpec =
                     newNodeSpec(
-                            mlContext.getRoleName(), IP, mlContext.getIndex(), server.getPort());
+                            mlContext.getRoleName(), ip, mlContext.getIndex(), server.getPort());
             return amClient.registerNode(version, nodeSpec);
         }
 
@@ -130,7 +151,7 @@ public class AppMasterServerTest {
             waitForAMStatus(AMStatus.AM_RUNNING);
             NodeSpec nodeSpec =
                     newNodeSpec(
-                            mlContext.getRoleName(), IP, mlContext.getIndex(), server.getPort());
+                            mlContext.getRoleName(), ip, mlContext.getIndex(), server.getPort());
             return amClient.nodeFinish(version, nodeSpec);
         }
 
@@ -158,7 +179,7 @@ public class AppMasterServerTest {
             return NodeSpec.newBuilder()
                     .setRoleName(mlContext.getRoleName())
                     .setIndex(mlContext.getIndex())
-                    .setIp(IP)
+                    .setIp(ip)
                     .setClientPort(server.getPort())
                     .build();
         }
@@ -573,6 +594,7 @@ public class AppMasterServerTest {
         return dummyService;
     }
 
+    /** NodeMessage. */
     public static class NodeMessage {
         int nodeStopNum = 0;
         int nodeRestartNum = 0;

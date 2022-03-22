@@ -18,7 +18,15 @@
 
 package org.flinkextended.flink.ml.cluster.rpc;
 
-import org.flinkextended.flink.ml.proto.*;
+import org.flinkextended.flink.ml.proto.ContextRequest;
+import org.flinkextended.flink.ml.proto.ContextResponse;
+import org.flinkextended.flink.ml.proto.FinishWorkerResponse;
+import org.flinkextended.flink.ml.proto.NodeRestartRequest;
+import org.flinkextended.flink.ml.proto.NodeRestartResponse;
+import org.flinkextended.flink.ml.proto.NodeServiceGrpc;
+import org.flinkextended.flink.ml.proto.NodeSimpleRequest;
+import org.flinkextended.flink.ml.proto.NodeStopRequest;
+import org.flinkextended.flink.ml.proto.NodeStopResponse;
 
 import com.google.common.util.concurrent.ListenableFuture;
 import io.grpc.ManagedChannel;
@@ -61,7 +69,7 @@ public class NodeClient extends AbstractGrpcClient {
     }
 
     /**
-     * method to get node runtime context
+     * method to get node runtime context.
      *
      * @return response to machine learning context
      */
@@ -71,7 +79,7 @@ public class NodeClient extends AbstractGrpcClient {
     }
 
     /**
-     * send stop node request, no blocking interface
+     * send stop node request, no blocking interface.
      *
      * @return stop node response
      */
@@ -81,7 +89,7 @@ public class NodeClient extends AbstractGrpcClient {
     }
 
     /**
-     * send stop node request, blocking interface
+     * send stop node request, blocking interface.
      *
      * @return stop node response
      */
@@ -91,7 +99,7 @@ public class NodeClient extends AbstractGrpcClient {
     }
 
     /**
-     * send restart request to node
+     * send restart request to node.
      *
      * @return restart response
      */
@@ -101,7 +109,7 @@ public class NodeClient extends AbstractGrpcClient {
     }
 
     /**
-     * get finished workers information
+     * get finished workers information.
      *
      * @return finished workers
      */
@@ -116,7 +124,7 @@ public class NodeClient extends AbstractGrpcClient {
         }
     }
 
-    /** sent stop job to node */
+    /** sent stop job to node. */
     public void stopJob() {
         NodeSimpleRequest request = NodeSimpleRequest.newBuilder().setCode(0).build();
         blockingStub.finishJob(request);

@@ -28,12 +28,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.Duration;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 /** Helper class to run shell commands. */
 public final class ShellExec {
 
+    /** ProcessLogger is a runnable that consume {@link InputStream} with a {@link Consumer}. */
     public static class ProcessLogger implements Runnable {
 
         private InputStream inputStream;
@@ -54,6 +60,7 @@ public final class ShellExec {
         }
     }
 
+    /** Consume the string and print to stdout. */
     public static class StdOutConsumer implements Consumer<String> {
 
         @Override
@@ -62,6 +69,7 @@ public final class ShellExec {
         }
     }
 
+    /** Consume the string and print to stderr. */
     public static class StdErrorConsumer implements Consumer<String> {
 
         @Override

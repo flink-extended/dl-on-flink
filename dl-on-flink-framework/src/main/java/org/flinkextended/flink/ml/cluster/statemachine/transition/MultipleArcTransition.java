@@ -20,6 +20,10 @@ package org.flinkextended.flink.ml.cluster.statemachine.transition;
 
 import org.flinkextended.flink.ml.cluster.statemachine.InvalidStateTransitionException;
 
+/**
+ * Hook for Transition. Post state is decided by Transition hook. Post state must be one of the
+ * valid post states registered in StateMachine.
+ */
 public interface MultipleArcTransition<OPERAND, EVENT, STATE extends Enum<STATE>> {
 
     /**

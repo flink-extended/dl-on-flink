@@ -32,8 +32,11 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+/** Unit test for {@link PythonUtil}. */
 public class PythonUtilTest {
 
     private MLContext mlContext;

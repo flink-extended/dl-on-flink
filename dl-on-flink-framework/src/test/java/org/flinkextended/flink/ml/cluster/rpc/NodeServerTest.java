@@ -37,8 +37,12 @@ import java.io.File;
 import java.net.URL;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+/** Unit test for {@link NodeServer}. */
 public class NodeServerTest {
     private static final Logger LOG = LoggerFactory.getLogger(NodeServerTest.class);
     private MLContext mlContext;

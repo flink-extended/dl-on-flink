@@ -32,12 +32,13 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 
+/** SysUtil. */
 public class SysUtil {
     public static final Unsafe UNSAFE;
     private static String rootPath = null;
     private static String projectVersion = null;
-    private static String PARENT_NAME = "dl-on-flink";
-    private static Logger LOG = LoggerFactory.getLogger(SysUtil.class);
+    private static final String PARENT_NAME = "dl-on-flink";
+    private static final Logger LOG = LoggerFactory.getLogger(SysUtil.class);
 
     static {
         Unsafe instance;
@@ -62,6 +63,7 @@ public class SysUtil {
     }
 
     /** @return call function name. */
+    @SuppressWarnings({"checkstyle:MethodName"})
     public static String _FUNC_() {
         StackTraceElement traceElement = ((new Exception()).getStackTrace())[1];
         return traceElement.getMethodName();
@@ -72,15 +74,6 @@ public class SysUtil {
             Thread.sleep(millis);
         } catch (InterruptedException e1) {
         }
-    }
-
-    /**
-     * set root path by module name.
-     *
-     * @param name module name.
-     */
-    public static void setParentName(String name) {
-        PARENT_NAME = name;
     }
 
     /** @return maven project root path. */

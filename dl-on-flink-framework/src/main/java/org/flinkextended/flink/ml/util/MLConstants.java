@@ -18,6 +18,9 @@
 
 package org.flinkextended.flink.ml.util;
 
+import org.flinkextended.flink.ml.cluster.MLConfig;
+
+/** MLConstants for {@link MLConfig}. */
 public class MLConstants {
     public static final String SYS_PREFIX = "sys:";
     public static final String ENCODING_CLASS = SYS_PREFIX + "encoding_class";
@@ -43,10 +46,10 @@ public class MLConstants {
     public static final String PYTHONPATH_ENV = "PYTHONPATH";
     public static final String VIRTUAL_ENV_DIR = "virtual_env_dir";
     public static final String LD_LIBRARY_PATH = "LD_LIBRARY_PATH";
-    public static String HADOOP_HDFS_HOME = "HADOOP_HDFS_HOME";
-    public static String LD_PRELOAD = "LD_PRELOAD";
-    public static String JAVA_HOME = "JAVA_HOME";
-    public static String HADOOP_CLASSPATH = "HADOOP_CLASSPATH";
+    public static final String HADOOP_HDFS_HOME = "HADOOP_HDFS_HOME";
+    public static final String LD_PRELOAD = "LD_PRELOAD";
+    public static final String JAVA_HOME = "JAVA_HOME";
+    public static final String HADOOP_CLASSPATH = "HADOOP_CLASSPATH";
     public static final String CLASSPATH = "CLASSPATH";
     public static final String CONFIG_CLUSTER_PATH = "cluster";
     public static final String CONFIG_STORAGE_TYPE = "storage_type";
@@ -65,7 +68,10 @@ public class MLConstants {
     public static final String CONFIG_JOB_NAME = "job_name";
     public static final String CONFIG_JOB_HAS_INPUT = "job_has_input";
     public static final String INTUT_DEFAULT_NAME = "input";
+
+    @SuppressWarnings({"checkstyle:StaticVariableName"})
     public static long TIMEOUT = 5L * 60 * 1000;
+
     public static final int INT_SIZE = 4;
     public static final String WORK_DIR = "current_work_dir";
     public static final String STARTUP_SCRIPT = "startup.py";

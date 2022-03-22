@@ -18,7 +18,24 @@
 
 package org.flinkextended.flink.ml.cluster.rpc;
 
-import org.flinkextended.flink.ml.proto.*;
+import org.flinkextended.flink.ml.proto.AMStatus;
+import org.flinkextended.flink.ml.proto.AppMasterServiceGrpc;
+import org.flinkextended.flink.ml.proto.FinishNodeRequest;
+import org.flinkextended.flink.ml.proto.GetAMStatusRequest;
+import org.flinkextended.flink.ml.proto.GetClusterInfoRequest;
+import org.flinkextended.flink.ml.proto.GetClusterInfoResponse;
+import org.flinkextended.flink.ml.proto.GetFinishNodeResponse;
+import org.flinkextended.flink.ml.proto.GetFinishedNodeRequest;
+import org.flinkextended.flink.ml.proto.GetTaskIndexRequest;
+import org.flinkextended.flink.ml.proto.GetTaskIndexResponse;
+import org.flinkextended.flink.ml.proto.GetVersionRequest;
+import org.flinkextended.flink.ml.proto.GetVersionResponse;
+import org.flinkextended.flink.ml.proto.HeartBeatRequest;
+import org.flinkextended.flink.ml.proto.NodeSpec;
+import org.flinkextended.flink.ml.proto.RegisterFailedNodeRequest;
+import org.flinkextended.flink.ml.proto.RegisterNodeRequest;
+import org.flinkextended.flink.ml.proto.SimpleResponse;
+import org.flinkextended.flink.ml.proto.StopAllWorkerRequest;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -57,7 +74,7 @@ public class AMClient extends AbstractGrpcClient {
     }
 
     /**
-     * register machine learning cluster node
+     * register machine learning cluster node.
      *
      * @param version machine learning job instance id
      * @param nodeSpec machine learning cluster node description
@@ -70,7 +87,7 @@ public class AMClient extends AbstractGrpcClient {
     }
 
     /**
-     * cluster node report heartbeat to application master
+     * cluster node report heartbeat to application master.
      *
      * @param version machine learning job instance id
      * @param nodeSpec machine learning cluster node description
@@ -83,7 +100,7 @@ public class AMClient extends AbstractGrpcClient {
     }
 
     /**
-     * cluster node report finished
+     * cluster node report finished.
      *
      * @param version machine learning job instance id
      * @param nodeSpec machine learning cluster node description
@@ -96,7 +113,7 @@ public class AMClient extends AbstractGrpcClient {
     }
 
     /**
-     * get cluster information
+     * get cluster information.
      *
      * @param version machine learning job instance id
      * @return cluster information
@@ -108,7 +125,7 @@ public class AMClient extends AbstractGrpcClient {
     }
 
     /**
-     * get job version
+     * get job version.
      *
      * @return current job version
      */
@@ -118,7 +135,7 @@ public class AMClient extends AbstractGrpcClient {
     }
 
     /**
-     * get application master status
+     * get application master status.
      *
      * @return application master status
      */
@@ -128,7 +145,7 @@ public class AMClient extends AbstractGrpcClient {
     }
 
     /**
-     * node report failed to application master
+     * node report failed to application master.
      *
      * @param version machine learning job instance id
      * @param nodeSpec machine learning cluster node description
@@ -161,7 +178,7 @@ public class AMClient extends AbstractGrpcClient {
     }
 
     /**
-     * get finished workers
+     * get finished workers.
      *
      * @param version machine learning job instance id
      * @return finished workers information

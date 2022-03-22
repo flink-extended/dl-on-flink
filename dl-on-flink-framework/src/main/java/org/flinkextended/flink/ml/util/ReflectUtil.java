@@ -21,7 +21,7 @@ package org.flinkextended.flink.ml.util;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-/** java reflect util function */
+/** java reflect util function. */
 public class ReflectUtil {
 
     public static <T> T createInstance(String className, Class[] classes, Object[] objects)

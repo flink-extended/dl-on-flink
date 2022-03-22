@@ -25,8 +25,10 @@ import org.flinkextended.flink.ml.util.MLConstants;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
+/** Unit test for {@link ProcessOutputConsumerFactory}. */
 public class ProcessOutputConsumerFactoryTest {
     @Test
     public void testGetDefaultLoggerConsumer() {

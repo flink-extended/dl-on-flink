@@ -21,7 +21,9 @@ package org.flinkextended.flink.ml.util;
 import org.junit.Assert;
 import org.junit.Test;
 
+/** Unit test for {@link ReflectUtil}. */
 public class ReflectUtilTest {
+    /** Dummy class for testing. */
     public static class A {
         int c = 0;
 

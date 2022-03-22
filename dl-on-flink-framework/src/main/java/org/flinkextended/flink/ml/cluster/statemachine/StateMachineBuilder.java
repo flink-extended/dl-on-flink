@@ -21,8 +21,13 @@ package org.flinkextended.flink.ml.cluster.statemachine;
 import org.flinkextended.flink.ml.cluster.statemachine.transition.MultipleArcTransition;
 import org.flinkextended.flink.ml.cluster.statemachine.transition.SingleArcTransition;
 
-import java.util.*;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.Stack;
 
+/** Builder of {@link StateMachine}. */
 public final class StateMachineBuilder<
         OPERAND, STATE extends Enum<STATE>, EVENTTYPE extends Enum<EVENTTYPE>, EVENT> {
 
@@ -124,9 +129,8 @@ public final class StateMachineBuilder<
      * @param postState post-transition state
      * @param eventType stimulus for the transition
      * @return a NEW StateMachineFactory just like {@code this} with the current transition added as
-     *     a new legal transition. This overload has no hook object.
-     *     <p>Note that the returned StateMachineFactory is a distinct object.
-     *     <p>This method is part of the API.
+     *     a new legal transition. This overload has no hook object. Note that the returned
+     *     StateMachineFactory is a distinct object. This method is part of the API.
      */
     public StateMachineBuilder<OPERAND, STATE, EVENTTYPE, EVENT> addTransition(
             STATE preState, STATE postState, EVENTTYPE eventType) {
@@ -138,9 +142,8 @@ public final class StateMachineBuilder<
      * @param postState post-transition state
      * @param eventTypes List of stimuli for the transitions
      * @return a NEW StateMachineFactory just like {@code this} with the current transition added as
-     *     a new legal transition. This overload has no hook object.
-     *     <p>Note that the returned StateMachineFactory is a distinct object.
-     *     <p>This method is part of the API.
+     *     a new legal transition. This overload has no hook object. Note that the returned
+     *     StateMachineFactory is a distinct object. This method is part of the API.
      */
     public StateMachineBuilder<OPERAND, STATE, EVENTTYPE, EVENT> addTransition(
             STATE preState, STATE postState, Set<EVENTTYPE> eventTypes) {
@@ -153,9 +156,8 @@ public final class StateMachineBuilder<
      * @param eventTypes List of stimuli for the transitions
      * @param hook transition hook
      * @return a NEW StateMachineFactory just like {@code this} with the current transition added as
-     *     a new legal transition
-     *     <p>Note that the returned StateMachineFactory is a distinct object.
-     *     <p>This method is part of the API.
+     *     a new legal transition. Note that the returned StateMachineFactory is a distinct object.
+     *     This method is part of the API.
      */
     public StateMachineBuilder<OPERAND, STATE, EVENTTYPE, EVENT> addTransition(
             STATE preState,
@@ -179,9 +181,8 @@ public final class StateMachineBuilder<
      * @param eventType stimulus for the transition
      * @param hook transition hook
      * @return a NEW StateMachineFactory just like {@code this} with the current transition added as
-     *     a new legal transition
-     *     <p>Note that the returned StateMachineFactory is a distinct object.
-     *     <p>This method is part of the API.
+     *     a new legal transition. Note that the returned StateMachineFactory is a distinct object.
+     *     This method is part of the API.
      */
     public StateMachineBuilder<OPERAND, STATE, EVENTTYPE, EVENT> addTransition(
             STATE preState,
@@ -203,9 +204,8 @@ public final class StateMachineBuilder<
      * @param eventType stimulus for the transition
      * @param hook transition hook
      * @return a NEW StateMachineFactory just like {@code this} with the current transition added as
-     *     a new legal transition
-     *     <p>Note that the returned StateMachineFactory is a distinct object.
-     *     <p>This method is part of the API.
+     *     a new legal transition. Note that the returned StateMachineFactory is a distinct object.
+     *     This method is part of the API.
      */
     public StateMachineBuilder<OPERAND, STATE, EVENTTYPE, EVENT> addTransition(
             STATE preState,
@@ -223,14 +223,12 @@ public final class StateMachineBuilder<
 
     /**
      * @return a StateMachineFactory just like {@code this}, except that if you won't need any
-     *     synchronization to build a state machine
-     *     <p>Note that the returned StateMachineFactory is a distinct object.
-     *     <p>This method is part of the API.
-     *     <p>The only way you could distinguish the returned StateMachineFactory from {@code this}
-     *     would be by measuring the performance of the derived {@code StateMachine} you can get
-     *     from it.
-     *     <p>Calling this is optional. It doesn't change the semantics of the factory, if you call
-     *     it then when you use the factory there is no synchronization.
+     *     synchronization to build a state machine. Note that the returned StateMachineFactory is a
+     *     distinct object. This method is part of the API. The only way you could distinguish the
+     *     returned StateMachineFactory from {@code this} would be by measuring the performance of
+     *     the derived {@code StateMachine} you can get from it. Calling this is optional. It
+     *     doesn't change the semantics of the factory, if you call it then when you use the factory
+     *     there is no synchronization.
      */
     public StateMachineBuilder<OPERAND, STATE, EVENTTYPE, EVENT> installTopology() {
         return new StateMachineBuilder<OPERAND, STATE, EVENTTYPE, EVENT>(this, true);

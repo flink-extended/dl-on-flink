@@ -25,6 +25,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.function.Consumer;
 
+/**
+ * {@link Slf4JProcessOutputConsumer} consumes stdout stderr of the deep learning process and print
+ * to logger.
+ */
 public class Slf4JProcessOutputConsumer extends AbstractProcessOutputConsumer {
     private final Logger logger;
 

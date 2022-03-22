@@ -26,6 +26,7 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 
+/** Unit test for {@link ProcessLogger}. */
 public class ProcessLoggerTest {
     @Test
     public void testProcessLoggerStdOut() throws IOException, InterruptedException {

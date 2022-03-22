@@ -26,7 +26,7 @@ import org.flinkextended.flink.ml.proto.NodeServiceGrpc;
 import com.google.common.base.Preconditions;
 import io.grpc.stub.StreamObserver;
 
-/** implement get machine learning node runtime context service */
+/** implement get machine learning node runtime context service. */
 public class ContextService extends NodeServiceGrpc.NodeServiceImplBase {
 
     private MLContext mlContext;

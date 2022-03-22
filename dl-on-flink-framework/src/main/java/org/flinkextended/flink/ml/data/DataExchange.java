@@ -78,7 +78,7 @@ public class DataExchange<IN, OUT> {
     /**
      * read object from python process.
      *
-     * @param readWait: true: blocking, false: no blocking.
+     * @param readWait true: blocking, false: no blocking
      * @return read object.
      * @throws IOException
      */

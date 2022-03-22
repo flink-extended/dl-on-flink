@@ -48,8 +48,9 @@ import org.mockito.Mockito;
 import java.io.IOException;
 import java.time.Duration;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
+/** Unit test for {@link AppMasterServiceImpl}. */
 public class AppMasterServiceImplTest {
     @Rule public final GrpcCleanupRule grpcCleanupRule = new GrpcCleanupRule();
     private AppMasterServiceGrpc.AppMasterServiceBlockingStub stub;

@@ -25,6 +25,7 @@ import org.flinkextended.flink.ml.util.ReflectUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/** Factory for {@link AbstractProcessOutputConsumer}. */
 public class ProcessOutputConsumerFactory {
     private static final Logger LOG = LoggerFactory.getLogger(ProcessOutputConsumerFactory.class);
 

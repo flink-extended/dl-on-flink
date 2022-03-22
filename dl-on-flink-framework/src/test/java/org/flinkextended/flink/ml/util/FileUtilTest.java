@@ -32,8 +32,9 @@ import java.nio.file.Path;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+/** Unit test for {@link FileUtil}. */
 public class FileUtilTest {
-    private static Logger LOG = LoggerFactory.getLogger(FileUtilTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FileUtilTest.class);
 
     private Path workDir;
 

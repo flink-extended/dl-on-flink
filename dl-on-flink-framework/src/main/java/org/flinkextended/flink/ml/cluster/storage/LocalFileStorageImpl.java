@@ -30,6 +30,10 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
 
+/**
+ * A local file storage implementation of Storage that can support pseudo distributed deep learning
+ * cluster.
+ */
 public class LocalFileStorageImpl implements Storage {
 
     private final String rootDir;

@@ -19,7 +19,7 @@
 package org.flinkextended.flink.ml.coding;
 
 /**
- * Decoding and Encoding interface
+ * Decoding and Encoding interface.
  *
  * @param <T>
  */

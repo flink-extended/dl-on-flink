@@ -46,6 +46,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+/** Unit test for {@link NodeClient}. */
 public class NodeClientTest {
     NodeClient nodeClient;
     private final NodeServiceGrpc.NodeServiceImplBase serviceImpl =

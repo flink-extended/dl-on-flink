@@ -23,7 +23,7 @@ import java.io.Serializable;
 /** machine learning cluster base role. */
 public abstract class BaseRole implements Serializable {
     /**
-     * cluster role name, subclass need to implement this method
+     * cluster role name, subclass need to implement this method.
      *
      * @return role name
      */

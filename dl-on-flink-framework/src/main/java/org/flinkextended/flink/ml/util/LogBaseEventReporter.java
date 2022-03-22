@@ -28,7 +28,7 @@ import java.util.Map;
 
 /** a BaseEventReporter implementation with log. */
 public class LogBaseEventReporter extends BaseEventReporter {
-    private static Logger LOG = LoggerFactory.getLogger(LogBaseEventReporter.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LogBaseEventReporter.class);
 
     private String jobId;
     private Map<String, String> properties;

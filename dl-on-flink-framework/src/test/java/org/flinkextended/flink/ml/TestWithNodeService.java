@@ -30,6 +30,7 @@ import org.junit.BeforeClass;
 
 import java.io.IOException;
 
+/** Abstract unit test that start node service before testing. */
 public abstract class TestWithNodeService {
 
     private static Server server;

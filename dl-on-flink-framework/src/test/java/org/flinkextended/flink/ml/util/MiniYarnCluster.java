@@ -26,9 +26,10 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.Collections;
 
+/** MiniYarnCluster for integration test. */
 public class MiniYarnCluster {
 
-    private static Logger LOG = LoggerFactory.getLogger(MiniYarnCluster.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MiniYarnCluster.class);
     public static final String ZK_IMAGE = "zookeeper";
     public static final String ZK_SERVER_NAME = "minizk";
     public static final String HDFS_HOME = "/usr/local/hadoop";

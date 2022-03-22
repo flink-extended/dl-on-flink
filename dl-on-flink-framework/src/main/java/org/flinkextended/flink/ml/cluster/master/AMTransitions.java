@@ -23,7 +23,13 @@ import org.flinkextended.flink.ml.cluster.rpc.NodeClient;
 import org.flinkextended.flink.ml.cluster.statemachine.InvalidStateTransitionException;
 import org.flinkextended.flink.ml.cluster.statemachine.transition.MultipleArcTransition;
 import org.flinkextended.flink.ml.cluster.statemachine.transition.SingleArcTransition;
-import org.flinkextended.flink.ml.proto.*;
+import org.flinkextended.flink.ml.proto.AMStatus;
+import org.flinkextended.flink.ml.proto.FinishNodeRequest;
+import org.flinkextended.flink.ml.proto.MLClusterDef;
+import org.flinkextended.flink.ml.proto.MLJobDef;
+import org.flinkextended.flink.ml.proto.NodeSpec;
+import org.flinkextended.flink.ml.proto.RegisterFailedNodeRequest;
+import org.flinkextended.flink.ml.proto.RegisterNodeRequest;
 import org.flinkextended.flink.ml.util.ProtoUtil;
 
 import org.slf4j.Logger;

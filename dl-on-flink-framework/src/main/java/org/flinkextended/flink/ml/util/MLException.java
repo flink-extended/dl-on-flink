@@ -20,6 +20,7 @@ package org.flinkextended.flink.ml.util;
 
 import java.io.IOException;
 
+/** Exception for DL on Flink. */
 public class MLException extends IOException {
     /**
      * Constructs a new exception with the specified detail message. The cause is not initialized,

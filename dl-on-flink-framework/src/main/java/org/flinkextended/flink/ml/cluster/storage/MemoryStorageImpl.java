@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/** A local file storage implementation of Storage that can support running in Flink MiniCluster. */
 public class MemoryStorageImpl implements Storage {
 
     private Map<String, byte[]> mTable = new HashMap<>();

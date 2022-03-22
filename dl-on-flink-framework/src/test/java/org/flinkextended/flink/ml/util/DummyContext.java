@@ -26,6 +26,7 @@ import org.flinkextended.flink.ml.cluster.role.WorkerRole;
 import java.util.HashMap;
 import java.util.Map;
 
+/** DummyContext for unit test. */
 public class DummyContext {
     public static MLContext createDummyMLContext() {
         return createDummyMLContext(createDummyMLConfig());

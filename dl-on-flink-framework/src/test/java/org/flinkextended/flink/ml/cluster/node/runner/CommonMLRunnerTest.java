@@ -38,8 +38,14 @@ import org.mockito.Mockito;
 import java.util.Map;
 import java.util.concurrent.FutureTask;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
+/** Unit test for {@link CommonMLRunner}. */
 public class CommonMLRunnerTest {
 
     private static FutureTask<Void> amFuture;

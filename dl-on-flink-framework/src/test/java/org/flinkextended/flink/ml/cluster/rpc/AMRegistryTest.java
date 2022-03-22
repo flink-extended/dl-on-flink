@@ -29,6 +29,7 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.concurrent.TimeoutException;
 
+/** Unit test for {@link AMRegistry}. */
 public class AMRegistryTest {
 
     @Test

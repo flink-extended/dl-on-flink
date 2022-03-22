@@ -26,7 +26,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-/** down load http file */
+/** down load http file. */
 public class HttpUtil {
 
     /**

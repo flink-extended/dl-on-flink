@@ -29,7 +29,7 @@ import org.flinkextended.flink.ml.util.ShellExec;
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,8 +58,8 @@ public class ProcessPythonRunner extends AbstractScriptRunner {
 
     protected AtomicBoolean toKill = new AtomicBoolean(false);
 
-    public ProcessPythonRunner(MLContext MLContext) {
-        super(MLContext);
+    public ProcessPythonRunner(MLContext mlContext) {
+        super(mlContext);
     }
 
     public static int checkPythonEnvironment(String cmd) {
@@ -155,14 +155,14 @@ public class ProcessPythonRunner extends AbstractScriptRunner {
 
     protected void buildProcessBuilder(ProcessBuilder builder) {
         String classPath;
-        StringBuilder ldPath = new StringBuilder();
-        String ld_path = System.getenv(MLConstants.LD_LIBRARY_PATH);
-        String java_home = System.getenv(MLConstants.JAVA_HOME);
-        String hdfs_home = System.getenv(MLConstants.HADOOP_HDFS_HOME);
-        ldPath.append(java_home + "/jre/lib/amd64/server/:");
-        ldPath.append(ld_path + ":");
-        if (null != hdfs_home) {
-            ldPath.append(hdfs_home + "/lib/native/:");
+        StringBuilder ldPathStringBuilder = new StringBuilder();
+        String ldPath = System.getenv(MLConstants.LD_LIBRARY_PATH);
+        String javaHome = System.getenv(MLConstants.JAVA_HOME);
+        String hdfsHome = System.getenv(MLConstants.HADOOP_HDFS_HOME);
+        ldPathStringBuilder.append(javaHome).append("/jre/lib/amd64/server/:");
+        ldPathStringBuilder.append(ldPath).append(":");
+        if (null != hdfsHome) {
+            ldPathStringBuilder.append(hdfsHome).append("/lib/native/:");
         }
         StringBuilder pldPath = new StringBuilder();
         String workerDir = mlContext.getProperties().get(MLConstants.WORK_DIR);
@@ -178,12 +178,12 @@ public class ProcessPythonRunner extends AbstractScriptRunner {
                         + codePath;
         mlContext.putEnvProperty(MLConstants.PYTHONPATH_ENV, finalPythonPath);
 
-        ldPath.append(workerDir + "/tfenv/lib/:");
+        ldPathStringBuilder.append(workerDir).append("/tfenv/lib/:");
         for (Map.Entry<String, String> entry : mlContext.getProperties().entrySet()) {
             if (entry.getKey().startsWith(MLConstants.ENV_PROPERTY_PREFIX)) {
                 String key = entry.getKey().substring(MLConstants.ENV_PROPERTY_PREFIX.length());
                 if (key.equals(MLConstants.LD_LIBRARY_PATH)) {
-                    ldPath.append(entry.getValue()).append(":");
+                    ldPathStringBuilder.append(entry.getValue()).append(":");
                     continue;
                 }
                 LOG.info("set ENV:" + key + " " + entry.getValue());
@@ -192,22 +192,26 @@ public class ProcessPythonRunner extends AbstractScriptRunner {
                     .equals(MLConstants.SYS_PROPERTY_PREFIX + MLConstants.LD_LIBRARY_PATH)) {
                 String[] lds = entry.getValue().split(":");
                 for (String ld : lds) {
-                    ldPath.append(workerDir + "/tfenv/lib/" + ld).append(":");
+                    ldPathStringBuilder
+                            .append(workerDir)
+                            .append("/tfenv/lib/")
+                            .append(ld)
+                            .append(":");
                 }
             } else if (entry.getKey()
                     .equals(MLConstants.SYS_PROPERTY_PREFIX + MLConstants.LD_PRELOAD)) {
                 String[] lds = entry.getValue().split(":");
                 for (String ld : lds) {
-                    pldPath.append(workerDir + "/tfenv/lib/" + ld).append(":");
+                    pldPath.append(workerDir).append("/tfenv/lib/").append(ld).append(":");
                 }
             }
         }
-        if (!ldPath.toString().isEmpty()) {
-            LOG.info("set ENV:" + MLConstants.LD_LIBRARY_PATH + " " + ldPath.toString());
-            builder.environment().put(MLConstants.LD_LIBRARY_PATH, ldPath.toString());
+        if (!ldPathStringBuilder.toString().isEmpty()) {
+            LOG.info("set ENV:" + MLConstants.LD_LIBRARY_PATH + " " + ldPathStringBuilder);
+            builder.environment().put(MLConstants.LD_LIBRARY_PATH, ldPathStringBuilder.toString());
         }
         if (!pldPath.toString().isEmpty()) {
-            LOG.info("set ENV:" + MLConstants.LD_PRELOAD + " " + pldPath.toString());
+            LOG.info("set ENV:" + MLConstants.LD_PRELOAD + " " + pldPath);
             builder.environment().put(MLConstants.LD_PRELOAD, pldPath.toString());
         }
 
@@ -251,8 +255,8 @@ public class ProcessPythonRunner extends AbstractScriptRunner {
         Preconditions.checkNotNull(cls);
         ClassLoader loader = cls.getClassLoader();
         if (loader != null) {
-            String class_file = cls.getName().replaceAll("\\.", "/") + ".class";
-            for (Enumeration itr = loader.getResources(class_file); itr.hasMoreElements(); ) {
+            String classFile = cls.getName().replaceAll("\\.", "/") + ".class";
+            for (Enumeration itr = loader.getResources(classFile); itr.hasMoreElements(); ) {
                 URL url = (URL) itr.nextElement();
                 String path = url.getPath();
                 if (path.startsWith("file:")) {

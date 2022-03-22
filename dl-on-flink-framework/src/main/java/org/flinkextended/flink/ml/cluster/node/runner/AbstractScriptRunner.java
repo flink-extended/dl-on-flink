@@ -26,9 +26,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-/** Machine learning cluster node abstract script scriptRunner */
+/** Machine learning cluster node abstract script scriptRunner. */
 public abstract class AbstractScriptRunner implements ScriptRunner {
-    private static Logger LOG = LoggerFactory.getLogger(AbstractScriptRunner.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractScriptRunner.class);
 
     protected final MLContext mlContext;
 

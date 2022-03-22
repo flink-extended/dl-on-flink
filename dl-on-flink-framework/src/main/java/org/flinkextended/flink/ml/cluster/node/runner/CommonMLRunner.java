@@ -46,7 +46,7 @@ import java.util.concurrent.TimeUnit;
 
 /** a common ml script runner implement MLRunner. */
 public class CommonMLRunner implements MLRunner {
-    private static Logger LOG = LoggerFactory.getLogger(CommonMLRunner.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CommonMLRunner.class);
     protected volatile AMClient amClient;
     protected NodeSpec nodeSpec;
     protected long version = 0;
@@ -137,6 +137,7 @@ public class CommonMLRunner implements MLRunner {
                         }
                         break;
                     }
+                    // fall through
                 case AM_UNKNOW:
                 case AM_FAILOVER:
                     {

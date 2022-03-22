@@ -27,8 +27,7 @@ import org.flinkextended.flink.ml.cluster.master.AbstractAMStateMachine;
 import org.flinkextended.flink.ml.cluster.master.meta.AMMeta;
 import org.flinkextended.flink.ml.cluster.master.meta.AMMetaImpl;
 import org.flinkextended.flink.ml.cluster.node.MLContext;
-import org.flinkextended.flink.ml.proto.*;
-import org.flinkextended.flink.ml.util.*;
+import org.flinkextended.flink.ml.proto.NodeSpec;
 import org.flinkextended.flink.ml.util.IpHostUtil;
 import org.flinkextended.flink.ml.util.LogBaseEventReporter;
 import org.flinkextended.flink.ml.util.MLConstants;
@@ -42,8 +41,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
-import java.util.*;
-import java.util.concurrent.*;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**

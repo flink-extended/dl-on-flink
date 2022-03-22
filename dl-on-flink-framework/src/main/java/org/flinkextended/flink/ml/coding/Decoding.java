@@ -19,7 +19,7 @@
 package org.flinkextended.flink.ml.coding;
 
 /**
- * convert byte array to java object
+ * convert byte array to java object.
  *
  * @param <T>
  */

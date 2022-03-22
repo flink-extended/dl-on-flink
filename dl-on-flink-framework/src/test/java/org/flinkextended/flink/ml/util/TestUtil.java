@@ -18,6 +18,7 @@
 
 package org.flinkextended.flink.ml.util;
 
+/** TestUtil. */
 public final class TestUtil {
 
     private TestUtil() {}

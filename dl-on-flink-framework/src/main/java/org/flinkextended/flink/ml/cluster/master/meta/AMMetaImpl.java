@@ -40,8 +40,8 @@ public class AMMetaImpl implements AMMeta {
 
     Storage storage;
 
-    public AMMetaImpl(MLContext MLContext) {
-        storage = StorageFactory.getStorageInstance(MLContext.getProperties());
+    public AMMetaImpl(MLContext mlContext) {
+        storage = StorageFactory.getStorageInstance(mlContext.getProperties());
     }
 
     @Override

@@ -25,13 +25,13 @@ import com.google.protobuf.util.JsonFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/** proto class helper function */
+/** proto class helper function. */
 public class ProtoUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(PythonUtil.class);
 
     /**
-     * convert proto message to string
+     * convert proto message to string.
      *
      * @param builder proto message
      * @return proto message json string
@@ -48,7 +48,7 @@ public class ProtoUtil {
     }
 
     /**
-     * convert json string to proto message object
+     * convert json string to proto message object.
      *
      * @param json a proto message json string
      * @param builder proto message builder

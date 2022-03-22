@@ -53,7 +53,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * class object is created according to this class object.
  */
 public class MLContext implements Serializable, Closeable {
-    public static Logger LOG = LoggerFactory.getLogger(MLContext.class);
+    public static final Logger LOG = LoggerFactory.getLogger(MLContext.class);
 
     private String envPath;
     // the dir to hold all user python scripts

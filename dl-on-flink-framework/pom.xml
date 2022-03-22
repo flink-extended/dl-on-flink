@@ -203,7 +203,8 @@
     <build>
         <resources>
             <resource>
-                <directory>${project.basedir}/python/dl_on_flink_framework/</directory>
+                <directory>${project.basedir}/python/dl_on_flink_framework/
+                </directory>
                 <includes>
                     <include>startup.py</include>
                 </includes>
@@ -229,7 +230,8 @@
                         </goals>
                         <configuration>
                             <files>
-                                <file>${project.basedir}/../user.properties</file>
+                                <file>${project.basedir}/../user.properties
+                                </file>
                             </files>
                         </configuration>
                     </execution>
@@ -242,7 +244,9 @@
                 <executions>
                     <execution> <!-- set the python module version -->
                         <id>write-python-version</id>
-                        <goals><goal>regex-property</goal></goals>
+                        <goals>
+                            <goal>regex-property</goal>
+                        </goals>
                         <phase>generate-resources</phase>
                         <configuration>
                             <name>python_version</name>
@@ -277,7 +281,9 @@
                         </goals>
                         <configuration>
                             <includeMavenTypes>direct</includeMavenTypes>
-                            <protocArtifact>com.google.protobuf:protoc:${protobuf.version}</protocArtifact>
+                            <protocArtifact>
+                                com.google.protobuf:protoc:${protobuf.version}
+                            </protocArtifact>
                             <inputDirectories>
                                 <include>src/proto/</include>
                             </inputDirectories>
@@ -287,7 +293,9 @@
                                 </outputTarget>
                                 <outputTarget>
                                     <type>grpc-java</type>
-                                    <pluginArtifact>io.grpc:protoc-gen-grpc-java:${grpc.version}</pluginArtifact>
+                                    <pluginArtifact>
+                                        io.grpc:protoc-gen-grpc-java:${grpc.version}
+                                    </pluginArtifact>
                                 </outputTarget>
                             </outputTargets>
                         </configuration>
@@ -309,7 +317,8 @@
                         <configuration>
                             <skip>${skip.install.py.dep}</skip>
                             <executable>${pip.version}</executable>
-                            <workingDirectory>${project.basedir}/python</workingDirectory>
+                            <workingDirectory>${project.basedir}/python
+                            </workingDirectory>
                             <arguments>
                                 <argument>install</argument>
                                 <argument>${virtualenv.option}</argument>

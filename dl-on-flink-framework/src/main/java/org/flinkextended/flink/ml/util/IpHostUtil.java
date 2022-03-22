@@ -23,14 +23,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.Inet4Address;
+import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.ServerSocket;
 import java.util.Enumeration;
 import java.util.Random;
 
-/** machine ip address and port helper function */
+/** machine ip address and port helper function. */
 public class IpHostUtil {
     public static final String TF_ON_FLINK_IP = "TF_ON_FLINK_IP";
-    private static Logger LOG = LoggerFactory.getLogger(IpHostUtil.class);
+    private static final Logger LOG = LoggerFactory.getLogger(IpHostUtil.class);
 
     @VisibleForTesting
     static InetAddress getLocalHostLANAddress() throws Exception {
@@ -107,13 +111,13 @@ public class IpHostUtil {
 
     /** @return Gets a free port and create a ServerSocket bound to this port. */
     public static ServerSocket getFreeSocket() {
-        int MINPORT = 20000;
-        int MAXPORT = 65535;
+        final int minPort = 20000;
+        final int maxPort = 65535;
         Random rand = new Random();
         int i = 0;
         while (true) {
             try {
-                i = rand.nextInt(MAXPORT - MINPORT) + MINPORT;
+                i = rand.nextInt(maxPort - minPort) + minPort;
                 return new ServerSocket(i);
             } catch (Exception e) {
                 System.out.println("port:" + i + " in use");

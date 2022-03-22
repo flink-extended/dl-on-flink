@@ -24,6 +24,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+/** Unit test for {@link ProtoUtil}. */
 public class ProtoUtilTest {
     @Test
     public void protoToJson() throws Exception {

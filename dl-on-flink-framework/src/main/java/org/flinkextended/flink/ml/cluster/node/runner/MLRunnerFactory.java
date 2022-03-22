@@ -23,7 +23,7 @@ import org.flinkextended.flink.ml.cluster.rpc.NodeServer;
 import org.flinkextended.flink.ml.util.MLConstants;
 import org.flinkextended.flink.ml.util.ReflectUtil;
 
-/** A factory for machine learning scriptRunner */
+/** A factory for machine learning scriptRunner. */
 public class MLRunnerFactory {
 
     public static MLRunner createMLRunner(MLContext mlContext, NodeServer server) throws Exception {

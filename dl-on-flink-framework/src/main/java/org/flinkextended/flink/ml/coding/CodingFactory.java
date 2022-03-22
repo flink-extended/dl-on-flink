@@ -23,7 +23,7 @@ import org.flinkextended.flink.ml.coding.impl.JsonCodingImpl;
 import org.flinkextended.flink.ml.util.MLConstants;
 import org.flinkextended.flink.ml.util.ReflectUtil;
 
-/** a factory to decoding and encoding */
+/** a factory to decoding and encoding. */
 public class CodingFactory {
 
     public static <T> Decoding<T> getDecoding(MLContext mlContext) throws Exception {

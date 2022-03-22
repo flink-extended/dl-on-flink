@@ -46,13 +46,14 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/** Unit test for {@link NodeServiceImpl}. */
 public class NodeServiceImplTest {
 
     @Rule public final GrpcCleanupRule grpcCleanupRule = new GrpcCleanupRule();

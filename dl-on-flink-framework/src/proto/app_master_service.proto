@@ -25,24 +25,24 @@ import "app_master.proto";
 
 service AppMasterService {
 
-    rpc RegisterNode(RegisterNodeRequest) returns(SimpleResponse);
+  rpc RegisterNode(RegisterNodeRequest) returns(SimpleResponse);
 
-    rpc HeartBeatNode(HeartBeatRequest) returns(SimpleResponse);
+  rpc HeartBeatNode(HeartBeatRequest) returns(SimpleResponse);
 
-    rpc NodeFinish(FinishNodeRequest) returns(SimpleResponse);
+  rpc NodeFinish(FinishNodeRequest) returns(SimpleResponse);
 
-    rpc GetClusterInfo(GetClusterInfoRequest) returns(GetClusterInfoResponse);
+  rpc GetClusterInfo(GetClusterInfoRequest) returns(GetClusterInfoResponse);
 
-    rpc GetVersion(GetVersionRequest) returns (GetVersionResponse);
+  rpc GetVersion(GetVersionRequest) returns (GetVersionResponse);
 
-    rpc StopAllWorker(StopAllWorkerRequest) returns (SimpleResponse);
+  rpc StopAllWorker(StopAllWorkerRequest) returns (SimpleResponse);
 
-    rpc GetAMStatus(GetAMStatusRequest) returns(AMStatusMessage);
+  rpc GetAMStatus(GetAMStatusRequest) returns(AMStatusMessage);
 
-    rpc RegisterFailNode(RegisterFailedNodeRequest) returns(SimpleResponse);
+  rpc RegisterFailNode(RegisterFailedNodeRequest) returns(SimpleResponse);
 
-    rpc GetTaskIndex(GetTaskIndexRequest) returns(GetTaskIndexResponse);
+  rpc GetTaskIndex(GetTaskIndexRequest) returns(GetTaskIndexResponse);
 
-    rpc GetFinishedNode(GetFinishedNodeRequest) returns(GetFinishNodeResponse);
+  rpc GetFinishedNode(GetFinishedNodeRequest) returns(GetFinishNodeResponse);
 
 }

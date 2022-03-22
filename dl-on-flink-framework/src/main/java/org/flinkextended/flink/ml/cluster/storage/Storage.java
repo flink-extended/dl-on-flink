@@ -21,7 +21,7 @@ package org.flinkextended.flink.ml.cluster.storage;
 import java.io.IOException;
 import java.util.List;
 
-/** kv store abstraction */
+/** kv store abstraction. */
 public interface Storage {
     /**
      * get value by key.

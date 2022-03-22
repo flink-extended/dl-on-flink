@@ -24,7 +24,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sun.misc.Unsafe;
 
-import java.io.*;
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InterruptedIOException;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
@@ -35,7 +39,7 @@ import java.nio.ByteOrder;
  * <p>NOTE: this queue assumes: single producer (SP) and single consumer (SC)
  */
 public final class SpscOffHeapQueue implements Closeable {
-    private static Logger LOG = LoggerFactory.getLogger(SpscOffHeapQueue.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SpscOffHeapQueue.class);
 
     private final long raw;
     private final long alignedRaw;
@@ -277,7 +281,7 @@ public final class SpscOffHeapQueue implements Closeable {
         return Pow2.align(address, align);
     }
 
-    /** The input stream based on this queue */
+    /** The input stream based on this queue. */
     public static class QueueInputStream extends InputStream {
         private SpscOffHeapQueue queue;
         private byte[] readBuf = new byte[10 * 1024];
@@ -419,8 +423,9 @@ public final class SpscOffHeapQueue implements Closeable {
         }
     }
 
+    /** The {@link OutputStream} implementations with {@link SpscOffHeapQueue}. */
     public static class QueueOutputStream extends OutputStream {
-        private static Logger LOG = LoggerFactory.getLogger(QueueOutputStream.class);
+        private static final Logger LOG = LoggerFactory.getLogger(QueueOutputStream.class);
 
         private SpscOffHeapQueue queue;
         private byte[] writeBuf = new byte[10 * 1024];

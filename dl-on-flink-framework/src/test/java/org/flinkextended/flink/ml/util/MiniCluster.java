@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
  */
 public class MiniCluster {
 
-    private static Logger LOG = LoggerFactory.getLogger(MiniCluster.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MiniCluster.class);
     private static final String HDFS_IMAGE = "sequenceiq/hadoop-docker";
     private static final String ZK_IMAGE = "zookeeper";
     private static final String FLINK_IMAGE = "dl-on-flink/flink";
@@ -237,8 +237,6 @@ public class MiniCluster {
         return res;
     }
 
-    // FIXME: CI env may tamper with our authorized_keys, making HDFS/YARN fail to start. Work
-    // around it...
     static boolean mayNeedToFixAuthorizedKeys(String hadoopContainer) throws InterruptedException {
         boolean res = true;
         if (!Docker.execSilently(hadoopContainer, "sh -c 'jps | grep DataNode'")) {

@@ -21,7 +21,7 @@ package org.flinkextended.flink.ml.cluster;
 import org.flinkextended.flink.ml.util.MLConstants;
 
 import com.google.common.base.Preconditions;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +36,7 @@ import java.util.Map;
  * learning node runtime context) based on this configuration.
  */
 public class MLConfig implements Serializable {
-    private static Logger LOG = LoggerFactory.getLogger(MLConfig.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MLConfig.class);
     private final String envPath;
     private String[] pythonFiles;
     private String funcName;
@@ -58,7 +58,7 @@ public class MLConfig implements Serializable {
     }
 
     /**
-     * Construct a MLConfig
+     * Construct a MLConfig.
      *
      * @param roleParallelismMap the Parallelism of roles
      * @param properties properties

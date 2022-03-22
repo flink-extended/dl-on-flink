@@ -23,6 +23,10 @@ import org.flinkextended.flink.ml.util.ShellExec;
 
 import java.util.function.Consumer;
 
+/**
+ * {@link StdOutErrorProcessOutputConsumer} consumes stdout and stderr of the deep learning process
+ * and print to the stdout and stderr of the Java process.
+ */
 public class StdOutErrorProcessOutputConsumer extends AbstractProcessOutputConsumer {
     StdOutErrorProcessOutputConsumer(MLContext mlContext) {
         super(mlContext);

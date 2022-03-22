@@ -22,6 +22,7 @@ import org.flinkextended.flink.ml.cluster.node.MLContext;
 import org.flinkextended.flink.ml.cluster.node.runner.ExecutionStatus;
 import org.flinkextended.flink.ml.cluster.node.runner.MLRunner;
 
+/** Unit test for {@link MLRunner}. */
 public class TestMLRunner implements MLRunner {
 
     private final MLContext context;

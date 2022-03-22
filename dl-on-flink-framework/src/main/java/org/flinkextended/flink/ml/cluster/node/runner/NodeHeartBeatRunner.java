@@ -33,7 +33,7 @@ import java.io.IOException;
 
 /** Created by node, handle node send heart beat message to am Server(AppMasterServer). */
 public class NodeHeartBeatRunner implements Runnable {
-    private static Logger LOG = LoggerFactory.getLogger(NodeHeartBeatRunner.class);
+    private static final Logger LOG = LoggerFactory.getLogger(NodeHeartBeatRunner.class);
 
     private static final long interval = 5000;
     private volatile boolean stop = false;

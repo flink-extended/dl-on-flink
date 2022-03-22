@@ -26,7 +26,7 @@ import java.io.RandomAccessFile;
 import java.lang.reflect.Method;
 import java.nio.channels.FileChannel;
 
-/** share memory map */
+/** share memory map. */
 @SuppressWarnings("restriction")
 public class MMapper {
 

@@ -31,6 +31,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+/** Unit test for {@link LocalFileStorageImpl}. */
 public class LocalFileStorageImplTest {
 
     private LocalFileStorageImpl storage;

@@ -23,21 +23,27 @@ import org.flinkextended.flink.ml.cluster.node.MLContext;
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.SystemUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.nio.file.Files;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Deque;
 
+/** Utils method for python environments. */
 public class PythonUtil {
 
     private static final File VENV_PATH_FILE =
@@ -57,13 +63,13 @@ public class PythonUtil {
     private static final Logger LOG = LoggerFactory.getLogger(PythonUtil.class);
     private static final String FIELD_SEP = "\0";
 
-    public static void setupVirtualEnvProcess(MLContext MLContext, ProcessBuilder builder)
+    public static void setupVirtualEnvProcess(MLContext mlContext, ProcessBuilder builder)
             throws IOException {
-        String virtualEnv = MLContext.getEnvPath();
+        String virtualEnv = mlContext.getEnvPath();
         if (StringUtils.isEmpty(virtualEnv)) {
             return;
         }
-        deployVirtualEnv(MLContext);
+        deployVirtualEnv(mlContext);
         String[] paths = readFromFile();
         // TODO: support different virtual env for process scriptRunner?
         Preconditions.checkState(
@@ -120,21 +126,21 @@ public class PythonUtil {
         builder.environment().put(name, value);
     }
 
-    private static void deployVirtualEnv(MLContext MLContext) throws IOException {
+    private static void deployVirtualEnv(MLContext mlContext) throws IOException {
         if (!VENV_PATH_FILE.exists()) {
             synchronized (PythonUtil.class) {
                 if (!VENV_PATH_FILE.exists()) {
-                    File localPath = downLoadEnv(MLContext);
+                    File localPath = downLoadEnv(mlContext);
                     String pythonPath =
                             findChildByName(localPath, "site-packages").getAbsolutePath();
-                    writeToFile(MLContext.getEnvPath(), pythonPath);
+                    writeToFile(mlContext.getEnvPath(), pythonPath);
                 }
             }
         }
     }
 
-    private static File downLoadEnv(MLContext MLContext) throws IOException {
-        Path remote = new Path(MLContext.getEnvPath());
+    private static File downLoadEnv(MLContext mlContext) throws IOException {
+        Path remote = new Path(mlContext.getEnvPath());
         FileSystem fs = remote.getFileSystem(new Configuration());
         // virtual env is shared across jobs, so we can't use mlContext's temp dir here
         File tmp = Files.createTempDirectory(null).toFile();

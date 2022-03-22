@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-/** docker cmd execute helper function */
+/** docker cmd execute helper function. */
 public final class Docker {
 
     /** run a docker container builder. */
@@ -126,7 +126,7 @@ public final class Docker {
         }
     }
 
-    private static Logger LOG = LoggerFactory.getLogger(Docker.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Docker.class);
 
     private Docker() {}
 

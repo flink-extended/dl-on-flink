@@ -195,6 +195,7 @@ public class NodeServiceImpl extends NodeServiceGrpc.NodeServiceImplBase {
         responseObserver.onCompleted();
     }
 
+    /** Factory for {@link AMClient}. */
     public interface AMClientFactory {
         public AMClient getAMClient() throws IOException;
     }

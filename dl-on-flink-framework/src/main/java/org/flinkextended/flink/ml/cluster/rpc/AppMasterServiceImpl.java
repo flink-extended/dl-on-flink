@@ -99,7 +99,7 @@ public class AppMasterServiceImpl extends AppMasterServiceGrpc.AppMasterServiceI
     }
 
     /**
-     * handle node register request,collect node description to create cluster
+     * handle node register request,collect node description to create cluster.
      *
      * @param request node register request
      * @param responseObserver grpc response object
@@ -158,7 +158,7 @@ public class AppMasterServiceImpl extends AppMasterServiceGrpc.AppMasterServiceI
     }
 
     /**
-     * handle node heartbeat request
+     * handle node heartbeat request.
      *
      * @param request node heartbeat request
      * @param responseObserver grpc response object
@@ -184,7 +184,7 @@ public class AppMasterServiceImpl extends AppMasterServiceGrpc.AppMasterServiceI
     }
 
     /**
-     * handle node finish request
+     * handle node finish request.
      *
      * @param request node finish request
      * @param responseObserver grpc response object
@@ -400,7 +400,7 @@ public class AppMasterServiceImpl extends AppMasterServiceGrpc.AppMasterServiceI
     }
 
     /**
-     * handle node get cluster information request
+     * handle node get cluster information request.
      *
      * @param request get cluster information request
      * @param responseObserver grpc response object
@@ -433,7 +433,7 @@ public class AppMasterServiceImpl extends AppMasterServiceGrpc.AppMasterServiceI
     }
 
     /**
-     * handle node get current job version request
+     * handle node get current job version request.
      *
      * @param request get current job version request
      * @param responseObserver grpc response object
@@ -449,7 +449,7 @@ public class AppMasterServiceImpl extends AppMasterServiceGrpc.AppMasterServiceI
     }
 
     /**
-     * handle stop cluster request
+     * handle stop cluster request.
      *
      * @param request stop cluster request
      * @param responseObserver grpc response object
@@ -472,7 +472,7 @@ public class AppMasterServiceImpl extends AppMasterServiceGrpc.AppMasterServiceI
     }
 
     /**
-     * handle node get application master status
+     * handle node get application master status.
      *
      * @param request get application master status request
      * @param responseObserver grpc response object
@@ -488,7 +488,7 @@ public class AppMasterServiceImpl extends AppMasterServiceGrpc.AppMasterServiceI
     }
 
     /**
-     * handle node report failed request
+     * handle node report failed request.
      *
      * @param request node report failed request
      * @param responseObserver grpc response object
@@ -530,7 +530,7 @@ public class AppMasterServiceImpl extends AppMasterServiceGrpc.AppMasterServiceI
     }
 
     /**
-     * handle node generate task index request
+     * handle node generate task index request.
      *
      * @param request node get task index request
      * @param responseObserver grpc response object
@@ -553,7 +553,7 @@ public class AppMasterServiceImpl extends AppMasterServiceGrpc.AppMasterServiceI
     }
 
     /**
-     * handle node get finished nodes request
+     * handle node get finished nodes request.
      *
      * @param request get finished nodes request
      * @param responseObserver grpc response object

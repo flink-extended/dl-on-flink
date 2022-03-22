@@ -34,7 +34,7 @@ import java.nio.file.Files;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-/** down load zip file from remote file system to local */
+/** download zip file from remote file system to local. */
 public class FileUtil {
     private static final Logger LOG = LoggerFactory.getLogger(FileUtil.class);
 

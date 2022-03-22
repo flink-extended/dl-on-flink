@@ -30,8 +30,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
+/** Unit test for {@link HeartbeatMonitor}. */
 public class HeartbeatMonitorTest {
 
     private static final Duration TIMEOUT = Duration.ofSeconds(3);

@@ -22,7 +22,6 @@ import org.flinkextended.flink.ml.cluster.node.MLContext;
 import org.flinkextended.flink.ml.cluster.node.runner.ExecutionStatus;
 import org.flinkextended.flink.ml.cluster.node.runner.MLRunner;
 import org.flinkextended.flink.ml.cluster.node.runner.MLRunnerFactory;
-import org.flinkextended.flink.ml.util.*;
 import org.flinkextended.flink.ml.util.FileUtil;
 import org.flinkextended.flink.ml.util.MLConstants;
 import org.flinkextended.flink.ml.util.MLException;
@@ -60,6 +59,7 @@ public class NodeServer implements Runnable {
     private long idleStart = Long.MAX_VALUE;
     private final long idleTimeout;
 
+    /** AMCommand enum. */
     public enum AMCommand {
         NOPE,
         STOP,
