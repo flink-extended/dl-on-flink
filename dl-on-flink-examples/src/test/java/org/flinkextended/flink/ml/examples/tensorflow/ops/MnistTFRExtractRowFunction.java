@@ -25,6 +25,7 @@ import org.apache.flink.table.api.Types;
 import org.apache.flink.table.functions.TableFunction;
 import org.apache.flink.types.Row;
 
+/** MnistTFRExtractRowFunction. */
 public class MnistTFRExtractRowFunction extends TableFunction<Row> {
 
     public void eval(byte[] record) throws Exception {
@@ -34,7 +35,7 @@ public class MnistTFRExtractRowFunction extends TableFunction<Row> {
         }
         MnistTFRPojo pojo = MnistTFRPojo.from(record);
         Row res = new Row(2);
-        res.setField(0, pojo.getImage_raw());
+        res.setField(0, pojo.getImageRaw());
         res.setField(1, pojo.getLabel());
         collect(res);
     }

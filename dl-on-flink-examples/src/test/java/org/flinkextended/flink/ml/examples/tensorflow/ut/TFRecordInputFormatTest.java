@@ -40,6 +40,7 @@ import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 
+/** Unit test for {@link TFRecordInputFormat}. */
 public class TFRecordInputFormatTest {
 
     @ClassRule public static final TemporaryFolder TEMP_FOLDER = new TemporaryFolder();
@@ -97,7 +98,6 @@ public class TFRecordInputFormatTest {
         hdfs.copyFromLocalFile(
                 new org.apache.hadoop.fs.Path(rootPath + "/target/data/test/0.tfrecords"),
                 new org.apache.hadoop.fs.Path(hdfs.getUri() + "/tests/0.tfrecords"));
-        ;
         hdfs.copyFromLocalFile(
                 new org.apache.hadoop.fs.Path(rootPath + "/target/data/test/1.tfrecords"),
                 new org.apache.hadoop.fs.Path(hdfs.getUri() + "/tests/1.tfrecords"));

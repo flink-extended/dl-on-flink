@@ -23,7 +23,6 @@ import org.flinkextended.flink.ml.cluster.node.MLContext;
 import org.flinkextended.flink.ml.cluster.node.runner.python.ProcessPythonRunner;
 import org.flinkextended.flink.ml.tensorflow.client.TFConfig;
 import org.flinkextended.flink.ml.tensorflow.client.TFConfigBase;
-import org.flinkextended.flink.ml.util.*;
 import org.flinkextended.flink.ml.util.HttpUtil;
 import org.flinkextended.flink.ml.util.MLConstants;
 import org.flinkextended.flink.ml.util.PythonUtil;
@@ -42,18 +41,18 @@ import java.util.List;
 /** prepare mnist data to run tensorflow distribute program. */
 public class MnistDataUtil {
 
-    public static final String dataAddress =
+    public static final String DATA_ADDRESS =
             "https://raw.githubusercontent.com/wuchaochen/testdata/master/mnist/";
-    public static final String train_images = "train-images-idx3-ubyte.gz";
-    public static final String train_labels = "train-labels-idx1-ubyte.gz";
-    public static final String t10k_images = "t10k-images-idx3-ubyte.gz";
-    public static final String t10k_labels = "t10k-labels-idx1-ubyte.gz";
-    public static final String dataDir = "/dl-on-flink-examples/target/data/";
+    public static final String TRAIN_IMAGES = "train-images-idx3-ubyte.gz";
+    public static final String TRAIN_LABELS = "train-labels-idx1-ubyte.gz";
+    public static final String T_10_K_IMAGES = "t10k-images-idx3-ubyte.gz";
+    public static final String T_10_K_LABELS = "t10k-labels-idx1-ubyte.gz";
+    public static final String DATA_DIR = "/dl-on-flink-examples/target/data/";
     private static final Logger LOG = LoggerFactory.getLogger(MnistDataUtil.class);
 
     private static String getDataPath() {
         String rootPath = SysUtil.getProjectRootPath();
-        return rootPath + dataDir;
+        return rootPath + DATA_DIR;
     }
 
     /**
@@ -67,25 +66,25 @@ public class MnistDataUtil {
         Preconditions.checkState(
                 dataFile.exists() || dataFile.mkdirs(),
                 "Failed to create " + dataFile.getAbsolutePath());
-        File train_images_file = new File(dataPath + train_images);
-        if (!train_images_file.exists()) {
-            System.out.println("download:" + train_images);
-            HttpUtil.httpDownload(dataAddress + train_images, dataPath + train_images);
+        File trainImagesFile = new File(dataPath + TRAIN_IMAGES);
+        if (!trainImagesFile.exists()) {
+            System.out.println("download:" + TRAIN_IMAGES);
+            HttpUtil.httpDownload(DATA_ADDRESS + TRAIN_IMAGES, dataPath + TRAIN_IMAGES);
         }
-        File train_lables_file = new File(dataPath + train_labels);
-        if (!train_lables_file.exists()) {
-            System.out.println("download:" + train_labels);
-            HttpUtil.httpDownload(dataAddress + train_labels, dataPath + train_labels);
+        File trainLablesFile = new File(dataPath + TRAIN_LABELS);
+        if (!trainLablesFile.exists()) {
+            System.out.println("download:" + TRAIN_LABELS);
+            HttpUtil.httpDownload(DATA_ADDRESS + TRAIN_LABELS, dataPath + TRAIN_LABELS);
         }
-        File t10k_images_file = new File(dataPath + t10k_images);
-        if (!t10k_images_file.exists()) {
-            System.out.println("download:" + t10k_images);
-            HttpUtil.httpDownload(dataAddress + t10k_images, dataPath + t10k_images);
+        File t10KImagesFile = new File(dataPath + T_10_K_IMAGES);
+        if (!t10KImagesFile.exists()) {
+            System.out.println("download:" + T_10_K_IMAGES);
+            HttpUtil.httpDownload(DATA_ADDRESS + T_10_K_IMAGES, dataPath + T_10_K_IMAGES);
         }
-        File t10k_labels_file = new File(dataPath + t10k_labels);
-        if (!t10k_labels_file.exists()) {
-            System.out.println("download:" + t10k_labels);
-            HttpUtil.httpDownload(dataAddress + t10k_labels, dataPath + t10k_labels);
+        File t10KLabelsFile = new File(dataPath + T_10_K_LABELS);
+        if (!t10KLabelsFile.exists()) {
+            System.out.println("download:" + T_10_K_LABELS);
+            HttpUtil.httpDownload(DATA_ADDRESS + T_10_K_LABELS, dataPath + T_10_K_LABELS);
         }
         return dataPath;
     }

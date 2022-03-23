@@ -65,6 +65,7 @@ import java.util.Map;
 import java.util.StringJoiner;
 import java.util.concurrent.ThreadLocalRandom;
 
+/** Unit test for Mnist inference. */
 public class TFMnistInferenceTest {
 
     private static TestingServer server;
@@ -73,8 +74,8 @@ public class TFMnistInferenceTest {
     private static String version = "0";
     private static String rootPath = TestUtil.getProjectRootPath() + "/dl-on-flink-examples";
     private static final String checkpointPath = rootPath + "/target/ckpt/" + version;
-    public static final String exportPath = rootPath + "/target/export/" + version;
-    public static final String testDataPath = rootPath + "/target/data/test";
+    public static final String EXPORT_PATH = rootPath + "/target/export/" + version;
+    public static final String TEST_DATA_PATH = rootPath + "/target/data/test";
 
     @Before
     public void setUp() throws Exception {
@@ -99,13 +100,13 @@ public class TFMnistInferenceTest {
         properties.put("input", rootPath + "/target/data/train/");
         properties.put("epochs", "1");
         properties.put("checkpoint_dir", checkpointPath);
-        properties.put("export_dir", exportPath);
+        properties.put("export_dir", EXPORT_PATH);
         properties.put(MLConstants.CONFIG_ZOOKEEPER_CONNECT_STR, server.getConnectString());
         return new TFConfig(4, 1, properties, script, "map_fun", null);
     }
 
     public static void generateModelIfNeeded() throws Exception {
-        File tmp = new File(exportPath);
+        File tmp = new File(EXPORT_PATH);
         if (!tmp.exists()) {
             boolean startServer = server == null;
             if (startServer) {
@@ -199,7 +200,7 @@ public class TFMnistInferenceTest {
         System.out.println("Run Test: " + SysUtil._FUNC_());
         StreamExecutionEnvironment flinkEnv = StreamExecutionEnvironment.getExecutionEnvironment();
         String[] paths =
-                new String[] {testDataPath + "/0.tfrecords", testDataPath + "/1.tfrecords"};
+                new String[] {TEST_DATA_PATH + "/0.tfrecords", TEST_DATA_PATH + "/1.tfrecords"};
         DataStream<Row> inputDS =
                 flinkEnv.addSource(
                                 new TFRToRowSourceFunc(
@@ -234,7 +235,7 @@ public class TFMnistInferenceTest {
         config.setWorkerNum(3);
         setExampleCodingTypeWithRowOut(config);
         // create input table
-        String paths = testDataPath + "/0.tfrecords";
+        String paths = TEST_DATA_PATH + "/0.tfrecords";
         String tblName = "tfr_input_table";
         //		tableEnv.registerTableSource(tblName, new MnistTFRToRowTableSource(paths, 1));
 
@@ -336,7 +337,7 @@ public class TFMnistInferenceTest {
         tfConfig.setPsNum(0);
         tfConfig.setWorkerNum(2);
         tfConfig.addProperty(TFConstants.TF_INFERENCE_BATCH_SIZE, String.valueOf(batchSize));
-        File testDataDir = new File(testDataPath);
+        File testDataDir = new File(TEST_DATA_PATH);
         File[] files = testDataDir.listFiles();
         StringJoiner pathJoiner = new StringJoiner(",");
         for (int i = 0; i < files.length; ++i) {

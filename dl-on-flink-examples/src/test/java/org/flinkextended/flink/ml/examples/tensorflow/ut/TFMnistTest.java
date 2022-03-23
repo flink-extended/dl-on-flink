@@ -52,6 +52,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+/** TFMnistTest. */
 public class TFMnistTest {
     private static TestingServer server;
     private static final String mnist_dist = "mnist_dist.py";

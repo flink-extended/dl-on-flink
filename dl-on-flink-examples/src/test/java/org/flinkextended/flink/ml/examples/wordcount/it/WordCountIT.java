@@ -30,6 +30,7 @@ import org.junit.Test;
 
 import java.io.File;
 
+/** WordCount integration test. */
 public class WordCountIT {
     private static MiniCluster miniCluster;
     private static final int numTMs = 3;

@@ -26,16 +26,21 @@ import org.flinkextended.flink.ml.util.SysUtil;
 
 import com.google.common.io.Files;
 import org.apache.hadoop.fs.Path;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.io.File;
 import java.util.concurrent.FutureTask;
 
+/** Test Java Inference with Failover. */
 public class JavaInferenceFailoverIT {
 
     private static final int NUM_TM = 3;
     private static final String HDFS_EXPORT_DIR =
-            "/mnist/models/" + new Path(TFMnistInferenceTest.exportPath).getName();
+            "/mnist/models/" + new Path(TFMnistInferenceTest.EXPORT_PATH).getName();
     private static final String HDFS_TEST_DATA_DIR = "/mnist/test";
 
     private MiniCluster miniCluster;
@@ -53,8 +58,8 @@ public class JavaInferenceFailoverIT {
                 "/dl-on-flink-examples/target/dl-on-flink-examples-"
                         + SysUtil.getProjectVersion()
                         + ".jar");
-        miniCluster.copyFromHostToHDFS(TFMnistInferenceTest.exportPath, HDFS_EXPORT_DIR);
-        miniCluster.copyFromHostToHDFS(TFMnistInferenceTest.testDataPath, HDFS_TEST_DATA_DIR);
+        miniCluster.copyFromHostToHDFS(TFMnistInferenceTest.EXPORT_PATH, HDFS_EXPORT_DIR);
+        miniCluster.copyFromHostToHDFS(TFMnistInferenceTest.TEST_DATA_PATH, HDFS_TEST_DATA_DIR);
     }
 
     @After

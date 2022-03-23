@@ -24,17 +24,18 @@ import org.tensorflow.proto.example.Example;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+/** MnistTFRPojo. */
 public class MnistTFRPojo {
 
-    public String image_raw;
+    public String imageRaw;
     public int label;
 
-    public String getImage_raw() {
-        return image_raw;
+    public String getImageRaw() {
+        return imageRaw;
     }
 
-    public void setImage_raw(String image_raw) {
-        this.image_raw = image_raw;
+    public void setImageRaw(String imageRaw) {
+        this.imageRaw = imageRaw;
     }
 
     public int getLabel() {
@@ -59,7 +60,7 @@ public class MnistTFRPojo {
         for (int i = 0; i < label.size(); i++) {
             if (label.get(i) == 1) {
                 MnistTFRPojo res = new MnistTFRPojo();
-                res.setImage_raw(image);
+                res.setImageRaw(image);
                 res.setLabel(i);
                 return res;
             }

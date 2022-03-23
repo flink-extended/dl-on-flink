@@ -39,10 +39,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+/** DelayedTFRSourceFunction. */
 public class DelayedTFRSourceFunction extends RichParallelSourceFunction<Row>
         implements ListCheckpointed<Long>, ResultTypeQueryable<Row> {
 
-    private static Logger LOG = LoggerFactory.getLogger(DelayedTFRSourceFunction.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DelayedTFRSourceFunction.class);
 
     private final String[] paths;
     private final long delayBound;

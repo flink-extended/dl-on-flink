@@ -32,7 +32,7 @@ import net.sourceforge.argparse4j.ArgumentParsers;
 import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,6 +53,7 @@ public class PyTorchRunDist {
         this.codePath = codePath;
     }
 
+    /** EnvMode. */
     public enum EnvMode {
         Stream,
         Table

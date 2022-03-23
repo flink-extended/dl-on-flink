@@ -26,11 +26,16 @@ import org.flinkextended.flink.ml.util.SysUtil;
 
 import com.google.common.base.Preconditions;
 import com.google.common.io.Files;
-import org.junit.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
 
+/** Integration test with mnist. */
 public class MnistIT {
 
     private static final String MNIST_FOLDER = "mnist_input";

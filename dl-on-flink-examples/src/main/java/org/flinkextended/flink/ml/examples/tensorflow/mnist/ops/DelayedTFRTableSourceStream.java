@@ -31,6 +31,7 @@ import org.apache.flink.types.Row;
 
 import java.util.Arrays;
 
+/** DelayedTFRTableSourceStream. */
 public class DelayedTFRTableSourceStream implements StreamTableSource<Row> {
 
     private static final long DEFAULT_DELAY_BOUND = 20;

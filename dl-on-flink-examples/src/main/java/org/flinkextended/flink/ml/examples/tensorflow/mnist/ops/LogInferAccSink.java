@@ -35,6 +35,7 @@ import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.List;
 
+/** LogInferAccSink. */
 public class LogInferAccSink extends RichSinkFunction<RowData>
         implements ListCheckpointed<ImmutablePair<Long, Long>> {
 

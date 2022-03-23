@@ -26,6 +26,7 @@ import org.apache.flink.api.java.typeutils.ResultTypeQueryable;
 import org.apache.flink.api.java.typeutils.TypeExtractor;
 import org.apache.flink.util.Collector;
 
+/** MnistTFRExtractPojoMapOp. */
 public class MnistTFRExtractPojoMapOp extends RichFlatMapFunction<byte[], MnistTFRPojo>
         implements ResultTypeQueryable<MnistTFRPojo> {
     @Override

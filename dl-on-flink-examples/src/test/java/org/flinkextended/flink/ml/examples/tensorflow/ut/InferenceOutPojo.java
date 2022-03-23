@@ -20,12 +20,13 @@ package org.flinkextended.flink.ml.examples.tensorflow.ut;
 
 import com.google.common.base.Joiner;
 
+/** Pojo for unit test. */
 public class InferenceOutPojo {
-    public int predict_label;
-    public int label_org;
+    public int predictLabel;
+    public int labelOrg;
 
     @Override
     public String toString() {
-        return Joiner.on(",").join(predict_label, label_org);
+        return Joiner.on(",").join(predictLabel, labelOrg);
     }
 }

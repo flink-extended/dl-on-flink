@@ -20,15 +20,20 @@ package org.flinkextended.flink.ml.examples.pytorch.it;
 
 import org.flinkextended.flink.ml.examples.pytorch.PyTorchRunDist;
 import org.flinkextended.flink.ml.examples.util.CodeUtil;
+import org.flinkextended.flink.ml.pytorch.PyTorchUtil;
 import org.flinkextended.flink.ml.util.MiniCluster;
 import org.flinkextended.flink.ml.util.SysUtil;
 
 import com.google.common.io.Files;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
 
+/** Integration test for {@link PyTorchUtil}. */
 public class PyTorchUtilIT {
     private static MiniCluster miniCluster;
     private static final int numTMs = 3;

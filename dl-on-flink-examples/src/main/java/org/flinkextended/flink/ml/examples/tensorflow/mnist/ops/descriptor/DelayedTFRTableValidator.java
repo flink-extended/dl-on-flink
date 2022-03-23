@@ -27,6 +27,7 @@ import java.util.function.Consumer;
 
 import static org.apache.flink.table.descriptors.DescriptorProperties.noValidation;
 
+/** DelayedTFRTableValidator. */
 public class DelayedTFRTableValidator extends ConnectorDescriptorValidator {
     public static final String CONNECTOR_PATH = "connector.path";
     public static final String CONNECTOR_EPOCHS = "connector.epochs";

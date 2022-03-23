@@ -34,8 +34,9 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.Random;
 
+/** Integration test for failover. */
 public class FailoverIT {
-    private static Logger LOG = LoggerFactory.getLogger(FailoverIT.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FailoverIT.class);
 
     private MiniCluster miniCluster;
     private static final int numTMs = 3;

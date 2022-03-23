@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 
+/** CodeUtil. */
 public class CodeUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(CodeUtil.class);
