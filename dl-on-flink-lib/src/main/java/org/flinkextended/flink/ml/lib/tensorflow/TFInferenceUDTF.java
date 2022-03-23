@@ -42,8 +42,9 @@ import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+/** UDFT for inference. */
 public class TFInferenceUDTF extends TableFunction<Row> {
-    private static Logger LOG = LoggerFactory.getLogger(TFInferenceUDTF.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TFInferenceUDTF.class);
     private final String modelDir;
     private final String[] inputNames;
     private final String[] inputTypes;
@@ -58,7 +59,7 @@ public class TFInferenceUDTF extends TableFunction<Row> {
     private ExecutorService predictService;
     private volatile boolean runningFlag = true;
     private transient Future predictFuture;
-    private static String SEP = ",";
+    private static final String SEP = ",";
     private volatile boolean failed = false;
 
     private String[] trim(String[] array) {

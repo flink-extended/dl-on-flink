@@ -39,6 +39,7 @@ import java.util.function.Consumer;
 /** Helper class to run shell commands. */
 public final class ShellExec {
 
+    /** ProcessLogger is a runnable that consume {@link InputStream} with a {@link Consumer}. */
     public static class ProcessLogger implements Runnable {
 
         private InputStream inputStream;
@@ -59,6 +60,7 @@ public final class ShellExec {
         }
     }
 
+    /** Consume the string and print to stdout. */
     public static class StdOutConsumer implements Consumer<String> {
 
         @Override
@@ -67,6 +69,7 @@ public final class ShellExec {
         }
     }
 
+    /** Consume the string and print to stderr. */
     public static class StdErrorConsumer implements Consumer<String> {
 
         @Override

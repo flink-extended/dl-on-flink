@@ -31,6 +31,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+/** Factory for {@link TableDebugRowSource}. */
 public class TableDebugRowSourceFactory implements DynamicTableSourceFactory {
 
     @Override
@@ -38,7 +39,6 @@ public class TableDebugRowSourceFactory implements DynamicTableSourceFactory {
         final FactoryUtil.TableFactoryHelper helper =
                 FactoryUtil.createTableFactoryHelper(this, context);
         final ReadableConfig options = helper.getOptions();
-        ;
         boolean containsRank =
                 options.getOptional(TableDebugRowOptions.CONNECTOR_RANK_OPTION).isPresent();
         boolean containsHasString =

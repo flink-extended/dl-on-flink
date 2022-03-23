@@ -31,9 +31,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 
+/** TableDebugRowSource. */
 public class TableDebugRowSource implements ScanTableSource, Serializable {
 
-    private static Logger LOG = LoggerFactory.getLogger(TableDebugRowSource.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TableDebugRowSource.class);
     private DebugRowSource debugRowSource;
     private ResolvedSchema tableSchema;
 

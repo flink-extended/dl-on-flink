@@ -265,7 +265,7 @@ public class TypeMapping {
     }
 
     /**
-     * get tensorflow DataType by TypeDef object string
+     * get tensorflow DataType by TypeDef object string.
      *
      * @param typeNames TypeDef object String value
      * @return DataType[]

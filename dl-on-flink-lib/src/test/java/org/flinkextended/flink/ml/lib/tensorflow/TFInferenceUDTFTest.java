@@ -39,6 +39,7 @@ import org.junit.Test;
 import java.io.File;
 import java.util.Properties;
 
+/** Unit test for {@link TFInferenceUDTF}. */
 public class TFInferenceUDTFTest {
 
     @Before

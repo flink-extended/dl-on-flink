@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+/** Unit test for {@link TFInference}. */
 public class TFInferenceTest {
 
     @Before

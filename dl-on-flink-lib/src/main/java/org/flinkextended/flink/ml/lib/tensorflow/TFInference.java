@@ -25,8 +25,8 @@ import org.apache.flink.types.Row;
 import com.google.common.base.Preconditions;
 import com.google.common.io.Files;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -54,7 +54,7 @@ import java.util.Set;
 
 /** TFPredict load tensorflow saved model do inference. */
 public class TFInference {
-    private static Logger LOG = LoggerFactory.getLogger(TFInference.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TFInference.class);
     private static final String TAG = "serve";
 
     private final String[] inputNames;
@@ -73,7 +73,7 @@ public class TFInference {
     private File downloadModelPath;
 
     /**
-     * * TFPredict constructor
+     * * TFPredict constructor.
      *
      * @param modelDir saved model dir
      * @param properties some properties
@@ -162,7 +162,7 @@ public class TFInference {
     }
 
     /**
-     * do tensorflow inference
+     * do tensorflow inference.
      *
      * @param batchRecord input rows
      * @return inference rows

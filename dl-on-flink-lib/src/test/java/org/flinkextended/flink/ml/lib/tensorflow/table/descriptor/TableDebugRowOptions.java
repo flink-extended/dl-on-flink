@@ -18,10 +18,13 @@
 
 package org.flinkextended.flink.ml.lib.tensorflow.table.descriptor;
 
+import org.flinkextended.flink.ml.lib.tensorflow.table.TableDebugRowSource;
+
 import org.apache.flink.configuration.ConfigOption;
 
 import static org.apache.flink.configuration.ConfigOptions.key;
 
+/** Options for {@link TableDebugRowSource}. */
 public class TableDebugRowOptions {
     public static final String CONNECTOR_RANK = "connector.rank";
     public static final ConfigOption<Integer> CONNECTOR_RANK_OPTION =

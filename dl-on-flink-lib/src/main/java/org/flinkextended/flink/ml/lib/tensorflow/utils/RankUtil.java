@@ -18,6 +18,7 @@
 
 package org.flinkextended.flink.ml.lib.tensorflow.utils;
 
+/** RankUtil. */
 public class RankUtil {
 
     public static int[] toRanks(String[] ranks) {

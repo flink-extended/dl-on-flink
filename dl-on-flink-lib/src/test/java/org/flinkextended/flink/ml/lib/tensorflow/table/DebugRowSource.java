@@ -27,6 +27,7 @@ import org.apache.flink.table.data.GenericRowData;
 import org.apache.flink.table.data.RowData;
 import org.apache.flink.table.data.StringData;
 
+/** DebugRowSource for unit test. */
 public class DebugRowSource implements ParallelSourceFunction<RowData>, ResultTypeQueryable {
     public RowTypeInfo typeInfo;
     private int rank;
