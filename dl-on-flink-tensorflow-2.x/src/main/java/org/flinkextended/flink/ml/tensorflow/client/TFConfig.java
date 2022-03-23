@@ -29,6 +29,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A config for the Tensorflow cluster. It extends the {@link MLConfig} to provides some higher
+ * level methods to config the Tensorflow clsuter.
+ */
 public class TFConfig extends TFConfigBase {
     public TFConfig(
             int workerNum,

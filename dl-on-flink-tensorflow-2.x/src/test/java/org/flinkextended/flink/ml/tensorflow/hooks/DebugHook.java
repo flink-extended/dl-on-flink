@@ -23,8 +23,9 @@ import org.flinkextended.flink.ml.operator.hook.FlinkOpHook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/** Dummy hook for unit test. */
 public class DebugHook implements FlinkOpHook {
-    private static Logger LOG = LoggerFactory.getLogger(DebugHook.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DebugHook.class);
 
     public DebugHook() {}
 

@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.FutureTask;
 
+/** Utils method for Java Inference. */
 public class JavaInferenceUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(JavaInferenceUtil.class);

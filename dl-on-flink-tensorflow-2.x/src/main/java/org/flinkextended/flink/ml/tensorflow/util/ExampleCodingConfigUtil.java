@@ -48,10 +48,10 @@ import java.util.Arrays;
  * }</pre>
  */
 public class ExampleCodingConfigUtil {
-    private static Logger LOG = LoggerFactory.getLogger(ExampleCodingConfigUtil.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ExampleCodingConfigUtil.class);
 
     /**
-     * Convert DataTypes list to TypeInformation list
+     * Convert DataTypes list to TypeInformation list.
      *
      * @throws RuntimeException when meet unsupported type of DataTypes
      */
@@ -62,7 +62,7 @@ public class ExampleCodingConfigUtil {
     }
 
     /**
-     * Map DataTypes class to TypeInformation
+     * Map DataTypes class to TypeInformation.
      *
      * @throws RuntimeException when meet unsupported type of DataTypes
      */
@@ -95,7 +95,7 @@ public class ExampleCodingConfigUtil {
     }
 
     /**
-     * Convert TypeInformation list to DataTypes list
+     * Convert TypeInformation list to DataTypes list.
      *
      * @throws RuntimeException when meet unsupported type of TypeInformation
      */
@@ -106,7 +106,7 @@ public class ExampleCodingConfigUtil {
     }
 
     /**
-     * Map TypeInformation class to DataTypes
+     * Map TypeInformation class to DataTypes.
      *
      * @throws RuntimeException when meet unsupported type of TypeInformation
      */
@@ -139,7 +139,7 @@ public class ExampleCodingConfigUtil {
     }
 
     /**
-     * Configuration for example encoding via encodeNames and encodeTypes
+     * Configuration for example encoding via encodeNames and encodeTypes.
      *
      * @param config the config instance to configuration
      * @param encodeNames field names
@@ -163,7 +163,7 @@ public class ExampleCodingConfigUtil {
     }
 
     /**
-     * Configuration for example decoding via decodeNames and decodeTypes
+     * Configuration for example decoding via decodeNames and decodeTypes.
      *
      * @param config the config instance to configuration
      * @param decodeNames field names
@@ -187,7 +187,7 @@ public class ExampleCodingConfigUtil {
     }
 
     /**
-     * Configuration for example encoding via encodeNames and encodeTypes
+     * Configuration for example encoding via encodeNames and encodeTypes.
      *
      * @param config the config instance to configuration
      * @param encodeNames field names
@@ -209,7 +209,7 @@ public class ExampleCodingConfigUtil {
     }
 
     /**
-     * Configuration for example decoding via decodeNames and decodeTypes
+     * Configuration for example decoding via decodeNames and decodeTypes.
      *
      * @param config the config instance to configuration
      * @param decodeNames field names
@@ -232,7 +232,7 @@ public class ExampleCodingConfigUtil {
 
     /**
      * Automatic configuration for example coding via encodeSchema and decodeSchema, one of them can
-     * be null
+     * be null.
      *
      * @param config the config instance to configuration
      * @param encodeSchema the schema of input table whose fields need to be encoded to python
@@ -266,7 +266,7 @@ public class ExampleCodingConfigUtil {
 
     /**
      * Automatic configuration for example coding via encodeSchema and decodeSchema, one of them can
-     * be null
+     * be null.
      *
      * @param config the config instance to configuration
      * @param encodeSchema the schema of input table whose fields need to be encoded to python

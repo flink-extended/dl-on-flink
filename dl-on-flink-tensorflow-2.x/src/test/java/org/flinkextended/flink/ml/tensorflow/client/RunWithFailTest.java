@@ -28,16 +28,20 @@ import org.apache.flink.runtime.client.JobExecutionException;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 import org.apache.curator.test.TestingServer;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 
+/** Failover unit test. */
 public class RunWithFailTest {
 
-    private static Logger LOG = LoggerFactory.getLogger(RunWithFailTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RunWithFailTest.class);
 
     private static TestingServer server;
     private static final String simple_print = "simple_print.py";
@@ -73,7 +77,7 @@ public class RunWithFailTest {
     }
 
     @Test
-    public void SimpleStartupTest() throws Exception {
+    public void simpleStartupTest() throws Exception {
         TFConfig config = buildTFConfig(simple_print, "1", 1, 1);
         StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
         TFUtils.train(streamEnv, config);
@@ -82,7 +86,7 @@ public class RunWithFailTest {
     }
 
     @Test
-    public void WorkerFailoverTest() throws Exception {
+    public void workerFailoverTest() throws Exception {
         LOG.info("############ Start failover test.");
         TFConfig config = buildTFConfig(failover, String.valueOf(System.currentTimeMillis()), 2, 1);
         StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();

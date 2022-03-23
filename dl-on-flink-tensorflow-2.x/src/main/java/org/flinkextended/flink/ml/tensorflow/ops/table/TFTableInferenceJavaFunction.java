@@ -50,7 +50,7 @@ import java.util.concurrent.TimeoutException;
 /** This table function is used for inference with Tensorflow Java APIs. */
 public class TFTableInferenceJavaFunction extends TableFunction<Row> {
 
-    private static Logger LOG = LoggerFactory.getLogger(TFTableInferenceJavaFunction.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TFTableInferenceJavaFunction.class);
 
     private final BaseRole role;
     private final MLConfig mlConfig;

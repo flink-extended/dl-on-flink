@@ -31,6 +31,7 @@ import org.apache.flink.types.Row;
 
 import java.io.IOException;
 
+/** TFRToRowDataInputFormat. */
 public class TFRToRowDataInputFormat extends RichInputFormat<RowData, TFRecordInputSplit>
         implements ResultTypeQueryable<Row> {
 

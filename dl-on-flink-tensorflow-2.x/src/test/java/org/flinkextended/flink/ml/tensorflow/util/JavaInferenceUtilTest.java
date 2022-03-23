@@ -32,8 +32,9 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 
+/** Unit test for {@link JavaInferenceUtil}. */
 public class JavaInferenceUtilTest {
 
     private MLContext mlContext;

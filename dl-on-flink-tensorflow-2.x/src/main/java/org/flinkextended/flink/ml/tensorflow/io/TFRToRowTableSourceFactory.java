@@ -37,6 +37,7 @@ import static org.flinkextended.flink.ml.tensorflow.io.descriptor.TFRToRowTableV
 import static org.flinkextended.flink.ml.tensorflow.io.descriptor.TFRToRowTableValidator.CONNECTOR_OUT_COL_ALIASES;
 import static org.flinkextended.flink.ml.tensorflow.io.descriptor.TFRToRowTableValidator.CONNECTOR_PATH;
 
+/** Factory for {@link TFRToRowTableSource}. */
 public class TFRToRowTableSourceFactory implements DynamicTableSourceFactory {
 
     public static final ConfigOption<String> CONNECTOR_CONVERTERS_OPTION =

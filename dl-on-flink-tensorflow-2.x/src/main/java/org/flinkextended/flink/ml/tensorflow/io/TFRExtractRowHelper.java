@@ -47,6 +47,7 @@ import java.util.stream.Collectors;
  */
 public class TFRExtractRowHelper implements Serializable {
 
+    /** ScalarConverter Enum. */
     public enum ScalarConverter {
         FIRST,
         LAST,

@@ -34,8 +34,10 @@ import org.tensorflow.proto.example.Features;
 import org.tensorflow.proto.example.FloatList;
 import org.tensorflow.proto.example.Int64List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
+/** Unit test for {@link TFRExtractRowHelper}. */
 public class TFRExtractRowHelperTest {
 
     @Test

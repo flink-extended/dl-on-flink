@@ -29,8 +29,9 @@ import org.tensorflow.proto.example.Example;
 
 import java.io.IOException;
 
+/** TraceTFRecordOutputFormat. */
 public class TraceTFRecordOutputFormat extends RichOutputFormat<byte[]> {
-    public static Logger LOG = LoggerFactory.getLogger(TraceTFRecordOutputFormat.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TraceTFRecordOutputFormat.class);
 
     @Override
     public void configure(Configuration parameters) {}
