@@ -31,8 +31,9 @@ import org.flinkextended.flink.ml.util.DummyContext;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
+/** Unit test for {@link TFAMStateMachineImpl}. */
 public class TFAMStateMachineImplTest {
 
     @Test

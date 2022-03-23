@@ -20,6 +20,7 @@ package org.flinkextended.flink.ml.tensorflow.util;
 
 import org.flinkextended.flink.ml.util.MLConstants;
 
+/** Constant for Tensorflow on Flink. */
 public class TFConstants {
     public static final String TF_PORT = MLConstants.SYS_PREFIX + "tf_port";
     // path of the saved model used during inference
@@ -38,10 +39,10 @@ public class TFConstants {
     // batch size used for java inference
     public static final String TF_INFERENCE_BATCH_SIZE = "tf.inference.batch.size";
 
-    /** make worker 0 as a flink vertex */
-    public static String TF_IS_CHIEF_ALONE = "tf_is_chief_alone";
+    /** make worker 0 as a flink vertex. */
+    public static final String TF_IS_CHIEF_ALONE = "tf_is_chief_alone";
 
-    public static String TF_IS_CHIEF_ROLE = "tf_is_chief_role";
+    public static final String TF_IS_CHIEF_ROLE = "tf_is_chief_role";
 
     public static final String TENSORBOART_PORT = "tensorboard_port";
     public static final String INPUT_TF_EXAMPLE_CONFIG =

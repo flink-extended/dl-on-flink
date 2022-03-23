@@ -42,8 +42,9 @@ import scala.Product;
 
 /** ExampleCoding's configuration. support array,pojo,scala case class, flink row, tuple. */
 public class ExampleCodingConfig implements Serializable {
-    public static Logger LOG = LoggerFactory.getLogger(ExampleCodingConfig.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ExampleCodingConfig.class);
 
+    /** ObjectType Enum. */
     public enum ObjectType {
         ARRAY,
         POJO,

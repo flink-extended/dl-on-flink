@@ -18,6 +18,7 @@
 
 package org.flinkextended.flink.ml.tensorflow.coding;
 
+/** Dummy class for unit test. */
 public class MyPojo {
     public String f0;
     public Long f1;

@@ -23,6 +23,7 @@ import org.flinkextended.flink.ml.cluster.node.runner.AbstractScriptRunner;
 
 import java.io.IOException;
 
+/** Dummy class for unit test. */
 public class TestScriptRunner extends AbstractScriptRunner {
 
     public TestScriptRunner(MLContext mlContext) {

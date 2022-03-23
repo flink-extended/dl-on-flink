@@ -41,11 +41,11 @@ import java.net.ServerSocket;
 
 /** tensorflow machine learning runner. tensorflow NodeSpec generate tensorflow server port. */
 public class TFMLRunner extends CommonMLRunner {
-    private static Logger LOG = LoggerFactory.getLogger(TFMLRunner.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TFMLRunner.class);
     protected ServerSocket serverSocket;
 
-    public TFMLRunner(MLContext MLContext, NodeServer server) {
-        super(MLContext, server);
+    public TFMLRunner(MLContext mlContext, NodeServer server) {
+        super(mlContext, server);
     }
 
     @Override

@@ -27,8 +27,9 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
+/** Unit test for {@link ExampleCodingConfig}. */
 public class ExampleCodingConfigTest {
 
     private ExampleCodingConfig exampleCodingConfig;

@@ -38,8 +38,11 @@ import org.mockito.Mockito;
 import java.util.Map;
 import java.util.concurrent.FutureTask;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
+/** Unit test for {@link TFMLRunner}. */
 public class TFMLRunnerTest {
     private FutureTask<Void> amFuture;
     private AppMasterServer amServer;

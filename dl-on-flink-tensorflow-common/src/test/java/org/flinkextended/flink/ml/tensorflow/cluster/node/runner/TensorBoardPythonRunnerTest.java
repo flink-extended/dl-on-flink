@@ -29,8 +29,9 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
+/** Unit test for {@link TensorBoardPythonRunner}. */
 public class TensorBoardPythonRunnerTest {
 
     @Test

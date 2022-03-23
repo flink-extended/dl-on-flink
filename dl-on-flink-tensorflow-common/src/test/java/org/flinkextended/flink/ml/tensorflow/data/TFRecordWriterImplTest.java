@@ -28,8 +28,9 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
 
+/** Unit test for {@link TFRecordWriterImpl}. */
 public class TFRecordWriterImplTest {
 
     private MLContext mlContext;

@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+/** Read TFRecord from {@link InputStream}. */
 public class TFRecordReader {
     private final InputStream input;
     private final boolean crcCheck;

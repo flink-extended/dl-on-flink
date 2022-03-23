@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+/** Write TFRecord to {@link DataOutput}. */
 public class TFRecordWriter {
     private final DataOutput output;
 

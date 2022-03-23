@@ -43,6 +43,7 @@ import java.io.IOException;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
+/** Unit test for {@link TFTransitions}. */
 public class TFTransitionsTest {
 
     private TFAMStateMachineImpl stateMachine;

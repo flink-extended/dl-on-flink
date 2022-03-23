@@ -33,7 +33,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /** flink read tensorflow TFRecord file input format. output TFRecord record byte array. */
 public class TFRecordInputFormat extends RichInputFormat<byte[], TFRecordInputSplit> {
@@ -43,7 +47,7 @@ public class TFRecordInputFormat extends RichInputFormat<byte[], TFRecordInputSp
     private transient FSDataInputStream fsdis;
     private Map<String, String> hadoopConfigurationMap;
     private boolean end = false;
-    private static Logger LOG = LoggerFactory.getLogger(TFRecordInputFormat.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TFRecordInputFormat.class);
 
     public TFRecordInputFormat(String[] paths, int epochs) {
         this.paths = paths;

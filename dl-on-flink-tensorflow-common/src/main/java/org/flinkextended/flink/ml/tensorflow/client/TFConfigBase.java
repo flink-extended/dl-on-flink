@@ -29,7 +29,7 @@ import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 
 import com.google.common.base.Preconditions;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,11 +41,11 @@ import java.util.Map;
 
 /** tensorflow cluster configuration, TFConfig is a type of MLConfig. */
 public abstract class TFConfigBase implements Serializable {
-    private static Logger LOG = LoggerFactory.getLogger(TFConfigBase.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TFConfigBase.class);
     protected MLConfig mlConfig;
 
     /**
-     * Construct a TFConfig
+     * Construct a TFConfig.
      *
      * @param workerNum the number of TF workers
      * @param psNum the number of TF PS
@@ -70,7 +70,7 @@ public abstract class TFConfigBase implements Serializable {
     }
 
     /**
-     * Construct a TFConfig
+     * Construct a TFConfig.
      *
      * @param workerNum the number of TF workers
      * @param psNum the number of TF PS
