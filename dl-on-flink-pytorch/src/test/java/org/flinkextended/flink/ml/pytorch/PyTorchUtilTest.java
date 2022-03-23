@@ -32,6 +32,7 @@ import org.junit.Test;
 
 import static org.flinkextended.flink.ml.operator.client.TableTestUtil.execTableJobCustom;
 
+/** Unit test for {@link PyTorchUtil}. */
 public class PyTorchUtilTest {
 
     private static TestingServer testingServer;

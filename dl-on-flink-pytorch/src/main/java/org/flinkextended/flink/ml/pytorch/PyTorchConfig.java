@@ -31,40 +31,40 @@ public class PyTorchConfig {
     /**
      * create PyTorch machine learning cluster configuration.
      *
-     * @param world_size the number of PyTorch cluster worker number.
+     * @param worldSize the number of PyTorch cluster worker number.
      * @param properties cluster configuration properties.
      * @param pythonFiles PyTorch job run python scripts.
      * @param funName PyTorch job script main function.
      * @param envPath python virtual environment address.
      */
     public PyTorchConfig(
-            int world_size,
+            int worldSize,
             Map<String, String> properties,
             String[] pythonFiles,
             String funName,
             String envPath) {
         Map<String, Integer> jobNum = new HashMap<>();
-        jobNum.put(new WorkerRole().name(), world_size);
+        jobNum.put(new WorkerRole().name(), worldSize);
         this.mlConfig = new MLConfig(jobNum, properties, pythonFiles, funName, envPath);
     }
 
     /**
      * create PyTorch machine learning cluster configuration.
      *
-     * @param world_size the number of PyTorch cluster worker number.
+     * @param worldSize the number of PyTorch cluster worker number.
      * @param properties cluster configuration properties.
      * @param pythonFiles PyTorch job run python scripts.
      * @param funName PyTorch job script main function.
      * @param envPath python virtual environment address.
      */
     public PyTorchConfig(
-            int world_size,
+            int worldSize,
             Map<String, String> properties,
             String pythonFiles,
             String funName,
             String envPath) {
         Map<String, Integer> jobNum = new HashMap<>();
-        jobNum.put(new WorkerRole().name(), world_size);
+        jobNum.put(new WorkerRole().name(), worldSize);
         this.mlConfig = new MLConfig(jobNum, properties, pythonFiles, funName, envPath);
     }
 
