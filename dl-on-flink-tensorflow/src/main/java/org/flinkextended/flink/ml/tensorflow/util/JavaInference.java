@@ -26,7 +26,7 @@ import org.apache.flink.types.Row;
 import com.google.common.base.Preconditions;
 import com.google.common.io.Files;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -43,7 +43,13 @@ import org.tensorflow.framework.TensorInfo;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * do tensorflow inference through tensorflow java api. 1. load tensorflow model. 2. load input and
@@ -51,7 +57,7 @@ import java.util.*;
  */
 public class JavaInference implements Closeable {
 
-    private static Logger LOG = LoggerFactory.getLogger(JavaInference.class);
+    private static final Logger LOG = LoggerFactory.getLogger(JavaInference.class);
     private static final String SPLITTER = ",";
     private static final String TAG = "serve";
 

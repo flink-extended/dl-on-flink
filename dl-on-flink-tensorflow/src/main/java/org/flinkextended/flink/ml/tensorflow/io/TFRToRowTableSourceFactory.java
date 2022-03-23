@@ -34,6 +34,7 @@ import java.util.Set;
 
 import static org.apache.flink.configuration.ConfigOptions.key;
 
+/** Factory for {@link TFRToRowTableSource}. */
 public class TFRToRowTableSourceFactory implements DynamicTableSourceFactory {
 
     public static final ConfigOption<String> CONNECTOR_CONVERTERS_OPTION =

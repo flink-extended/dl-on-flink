@@ -34,6 +34,7 @@ import java.util.concurrent.FutureTask;
 
 import static org.junit.Assert.assertFalse;
 
+/** Unit test for {@link JavaInferenceUtil}. */
 public class JavaInferenceUtilTest {
 
     private MLContext mlContext;

@@ -23,6 +23,7 @@ import org.flinkextended.flink.ml.cluster.storage.Storage;
 import java.io.IOException;
 import java.util.List;
 
+/** DummyStorage for unit test. */
 public class DummyStorage implements Storage {
     @Override
     public byte[] getValue(String path) throws IOException {

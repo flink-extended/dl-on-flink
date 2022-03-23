@@ -43,6 +43,7 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+/** Unit test for {@link ExampleCoding}. */
 public class ExampleCodingTest {
 
     @Test

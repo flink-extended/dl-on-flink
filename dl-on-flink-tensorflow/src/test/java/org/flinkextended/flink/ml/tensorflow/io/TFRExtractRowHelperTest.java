@@ -37,6 +37,7 @@ import org.tensorflow.example.Int64List;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
+/** Unit test for {@link TFRExtractRowHelper}. */
 public class TFRExtractRowHelperTest {
 
     @Test
