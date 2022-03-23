@@ -53,7 +53,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * InputFormatSourceFunction class and MLInputFormat.
  */
 public class MLInputFormat<OUT> extends RichInputFormat<OUT, MLInputSplit> {
-    private static Logger LOG = LoggerFactory.getLogger(MLInputFormat.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MLInputFormat.class);
 
     private MLConfig mlConfig;
     private ExecutionMode mode;

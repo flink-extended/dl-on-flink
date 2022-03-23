@@ -25,8 +25,10 @@ import org.apache.flink.util.SerializedValue;
 import java.io.IOException;
 import java.util.Base64;
 
+/** LogTable. */
 public class LogTable {
 
+    /** RichSinkFunctionSerializer. */
     public static class RichSinkFunctionSerializer {
         public static String serialize(RichSinkFunction<RowData> function) throws IOException {
             SerializedValue<RichSinkFunction<RowData>> serializedValue =
@@ -35,6 +37,7 @@ public class LogTable {
         }
     }
 
+    /** RichSinkFunctionDeserializer. */
     public static class RichSinkFunctionDeserializer {
         public static RichSinkFunction<RowData> deserialize(String base64String)
                 throws IOException, ClassNotFoundException {

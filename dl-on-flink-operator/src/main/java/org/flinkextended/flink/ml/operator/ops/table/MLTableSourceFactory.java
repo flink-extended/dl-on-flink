@@ -43,6 +43,7 @@ import static org.flinkextended.flink.ml.operator.ops.table.descriptor.MLTableVa
 import static org.flinkextended.flink.ml.operator.ops.table.descriptor.MLTableValidator.CONNECTOR_PARALLELISM;
 import static org.flinkextended.flink.ml.operator.ops.table.descriptor.MLTableValidator.CONNECTOR_ROLE_CLASS;
 
+/** Factory for {@link MLTableSource}. */
 public class MLTableSourceFactory implements TableSourceFactory<Row> {
     @Override
     public TableSource<Row> createTableSource(Context context) {

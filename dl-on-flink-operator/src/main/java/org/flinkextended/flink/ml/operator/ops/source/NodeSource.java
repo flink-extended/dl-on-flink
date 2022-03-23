@@ -28,7 +28,7 @@ import org.apache.flink.api.java.typeutils.ResultTypeQueryable;
 import org.apache.flink.streaming.api.functions.source.InputFormatSourceFunction;
 
 /**
- * flink source operator wrapper machine learning cluster node
+ * flink source operator wrapper machine learning cluster node.
  *
  * @param <OUT> machine learning cluster node output object class.
  */

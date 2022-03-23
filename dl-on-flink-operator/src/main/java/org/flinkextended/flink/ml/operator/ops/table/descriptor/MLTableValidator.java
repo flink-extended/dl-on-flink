@@ -27,6 +27,7 @@ import java.util.function.Consumer;
 
 import static org.apache.flink.table.descriptors.DescriptorProperties.noValidation;
 
+/** MLTableValidator. */
 public class MLTableValidator extends ConnectorDescriptorValidator {
 
     public static final String CONNECTOR_ROLE_CLASS = "connector.role.class";

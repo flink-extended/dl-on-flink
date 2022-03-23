@@ -25,6 +25,7 @@ import org.apache.flink.table.connector.ChangelogMode;
 import org.apache.flink.table.connector.sink.DynamicTableSink;
 import org.apache.flink.table.connector.sink.SinkFunctionProvider;
 
+/** Table sink for unit test. */
 public class TableDebugRowSink implements DynamicTableSink {
     private RowTypeInfo typeInfo;
 

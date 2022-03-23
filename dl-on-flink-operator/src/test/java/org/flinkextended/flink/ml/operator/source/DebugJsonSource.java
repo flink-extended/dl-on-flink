@@ -24,6 +24,7 @@ import org.apache.flink.streaming.api.functions.source.ParallelSourceFunction;
 
 import com.alibaba.fastjson.JSONObject;
 
+/** Source that produces json records. */
 public class DebugJsonSource implements ParallelSourceFunction<JSONObject>, ResultTypeQueryable {
 
     public DebugJsonSource() {}

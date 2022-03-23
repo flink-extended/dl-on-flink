@@ -47,6 +47,7 @@ import java.util.Map;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
 
+/** Unit test for {@link LogTableSinkFactory}. */
 public class LogTableSinkFactoryTest {
     @Test
     public void testCreateTableSink() {
@@ -101,5 +102,6 @@ public class LogTableSinkFactoryTest {
                 instanceOf(MySinkFunction.class));
     }
 
+    /** Dummy class for unit test. */
     public static class MySinkFunction extends RichSinkFunction<RowData> {}
 }

@@ -32,10 +32,10 @@ import org.apache.flink.types.Row;
  * csv format(if delim is "," column1,column2,column3)
  */
 public class RowCSVCoding implements Coding<Row> {
-    public static String DELIM_CONFIG = MLConstants.SYS_PREFIX + "delim";
-    public static String ENCODE_TYPES = MLConstants.SYS_PREFIX + "csv_encode_types";
-    public static String DECODE_TYPES = MLConstants.SYS_PREFIX + "csv_decode_types";
-    public static String TYPES_SPLIT_CONFIG = ",";
+    public static final String DELIM_CONFIG = MLConstants.SYS_PREFIX + "delim";
+    public static final String ENCODE_TYPES = MLConstants.SYS_PREFIX + "csv_encode_types";
+    public static final String DECODE_TYPES = MLConstants.SYS_PREFIX + "csv_decode_types";
+    public static final String TYPES_SPLIT_CONFIG = ",";
 
     private DataTypes[] encodeTypes;
     private DataTypes[] decodeTypes;

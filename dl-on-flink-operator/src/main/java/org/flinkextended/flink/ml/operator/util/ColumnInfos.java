@@ -39,13 +39,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import scala.Product;
 
+/** ColumnInfos. */
 public class ColumnInfos implements Serializable {
-    public static Logger LOG = LoggerFactory.getLogger(ColumnInfos.class);
+    public static final Logger LOG = LoggerFactory.getLogger(ColumnInfos.class);
 
     private List<String> colNames = new ArrayList<>();
     private List<TypeInformation> tiInfos = new ArrayList<>();

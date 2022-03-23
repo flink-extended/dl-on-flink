@@ -30,6 +30,7 @@ import org.apache.flink.table.factories.DynamicTableSourceFactory;
 import java.util.Collections;
 import java.util.Set;
 
+/** Factory for {@link TableDebugRowSink} and {@link TableDebugRowSource}. */
 public class DebugRowFactory implements DynamicTableSinkFactory, DynamicTableSourceFactory {
     @Override
     public DynamicTableSink createDynamicTableSink(Context context) {

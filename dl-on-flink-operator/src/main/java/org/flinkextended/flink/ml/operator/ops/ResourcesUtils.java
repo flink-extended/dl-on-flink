@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+/** ResourceUtils get resource profile of the node. */
 public class ResourcesUtils {
 
     public static void parseGpuInfo(RuntimeContext runtimeContext, MLConfig mlConfig) {

@@ -35,8 +35,11 @@ import java.util.Collections;
 import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
+/** Unit test for {@link ColumnInfos}. */
 public class ColumnInfosTest {
 
     @Before
@@ -129,6 +132,7 @@ public class ColumnInfosTest {
         assertEquals(99, ((TestPojo) res).num);
     }
 
+    /** Dummy class for unit test. */
     public static class TestPojo {
         public int num;
 

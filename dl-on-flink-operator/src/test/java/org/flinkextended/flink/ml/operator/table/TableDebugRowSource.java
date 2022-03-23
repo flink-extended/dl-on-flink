@@ -31,11 +31,12 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 
+/** Table source for unit test. */
 public class TableDebugRowSource implements ScanTableSource, Serializable {
 
     private RowTypeInfo typeInfo;
 
-    private static Logger LOG = LoggerFactory.getLogger(TableDebugRowSource.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TableDebugRowSource.class);
 
     public TableDebugRowSource() {
         this.typeInfo = DebugRowSource.typeInfo;

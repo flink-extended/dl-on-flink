@@ -26,6 +26,7 @@ import org.apache.flink.table.factories.DynamicTableSinkFactory;
 import java.util.Collections;
 import java.util.Set;
 
+/** Factory for {@link TableStreamDummySink}. */
 public class TableDummySinkFactory implements DynamicTableSinkFactory {
 
     @Override

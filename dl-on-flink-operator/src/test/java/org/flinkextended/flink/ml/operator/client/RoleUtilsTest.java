@@ -54,11 +54,12 @@ import org.slf4j.LoggerFactory;
 
 import static org.flinkextended.flink.ml.operator.client.TableTestUtil.execTableJobCustom;
 
+/** Unit test for {@link RoleUtils}. */
 public class RoleUtilsTest {
     private static TestingServer testingServer;
     private static String rootPath =
             TestUtil.getProjectRootPath() + "/dl-on-flink-operator/src/test/python/";
-    private Logger LOG = LoggerFactory.getLogger(RoleUtilsTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RoleUtilsTest.class);
 
     @Before
     public void setUp() throws Exception {

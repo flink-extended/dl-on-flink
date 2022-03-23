@@ -21,7 +21,7 @@ package org.flinkextended.flink.ml.operator.ops.sink;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 
 /**
- * do nothing, used for application master and node
+ * do nothing, used for application master and node.
  *
  * @param <IN>
  */

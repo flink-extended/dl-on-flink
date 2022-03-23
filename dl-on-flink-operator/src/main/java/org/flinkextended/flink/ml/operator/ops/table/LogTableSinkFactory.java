@@ -35,6 +35,7 @@ import java.util.Set;
 
 import static org.flinkextended.flink.ml.operator.ops.table.descriptor.LogTableValidator.CONNECTOR_RICH_SINK_FUNCTION;
 
+/** Factory for {@link LogTableStreamSink}. */
 public class LogTableSinkFactory implements DynamicTableSinkFactory {
 
     private static final Logger LOG = LoggerFactory.getLogger(LogTableSinkFactory.class);

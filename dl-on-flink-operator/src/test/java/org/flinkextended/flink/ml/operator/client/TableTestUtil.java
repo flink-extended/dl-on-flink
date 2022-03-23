@@ -24,6 +24,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.StatementSet;
 import org.apache.flink.table.api.TableEnvironment;
 
+/** Utils for Table unit test. */
 public class TableTestUtil {
 
     public static void execTableJobCustom(

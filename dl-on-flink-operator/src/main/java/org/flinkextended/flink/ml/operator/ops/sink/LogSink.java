@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
  * @param <IN> up stream object class.
  */
 public class LogSink<IN> extends RichSinkFunction<IN> {
-    private static Logger LOG = LoggerFactory.getLogger(LogSink.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LogSink.class);
 
     private int count = 0;
 

@@ -22,6 +22,7 @@ import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 
 import com.alibaba.fastjson.JSONObject;
 
+/** Sink that print json object to stdout. */
 public class DebugJsonSink implements SinkFunction<JSONObject> {
 
     @Override

@@ -47,7 +47,7 @@ public class MLTableSource implements StreamTableSource<Row>, Serializable {
     private final RowTypeInfo rowType;
     private final int parallelism;
 
-    private static Logger LOG = LoggerFactory.getLogger(MLTableSource.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MLTableSource.class);
 
     public MLTableSource(
             ExecutionMode mode,

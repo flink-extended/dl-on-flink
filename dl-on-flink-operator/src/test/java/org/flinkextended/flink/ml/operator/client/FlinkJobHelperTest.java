@@ -27,8 +27,10 @@ import org.apache.flink.streaming.api.graph.StreamNode;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+/** Unit test for {@link FlinkJobHelper}. */
 public class FlinkJobHelperTest {
 
     private StreamGraph streamGraph;

@@ -41,7 +41,7 @@ public class MLFlatMapOp<IN, OUT> extends RichFlatMapFunction<IN, OUT>
         implements ResultTypeQueryable<OUT> {
     private MLMapFunction<IN, OUT> map;
 
-    private Logger LOG = LoggerFactory.getLogger(MLFlatMapOp.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MLFlatMapOp.class);
 
     public MLFlatMapOp(
             ExecutionMode mode,

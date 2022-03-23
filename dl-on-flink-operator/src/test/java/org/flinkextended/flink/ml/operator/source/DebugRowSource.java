@@ -27,6 +27,7 @@ import org.apache.flink.table.data.GenericRowData;
 import org.apache.flink.table.data.RowData;
 import org.apache.flink.table.data.StringData;
 
+/** Source that produce row object to stdout. */
 public class DebugRowSource implements ParallelSourceFunction<RowData>, ResultTypeQueryable {
     public static RowTypeInfo typeInfo;
 
