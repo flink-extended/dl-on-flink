@@ -21,12 +21,13 @@ package org.flinkextended.flink.ml.operator.ops.sink;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 
 /**
- * do nothing, used for application master and node
+ * do nothing, used for application master and node.
+ *
  * @param <IN>
  */
 public class DummySink<IN> implements SinkFunction<IN> {
-	@Override
-	public void invoke(IN value, Context context) {
-		//dummy
-	}
+    @Override
+    public void invoke(IN value, Context context) {
+        // dummy
+    }
 }

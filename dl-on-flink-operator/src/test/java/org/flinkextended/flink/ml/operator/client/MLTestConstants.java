@@ -18,10 +18,10 @@
 
 package org.flinkextended.flink.ml.operator.client;
 
+/** Constants for unit test. */
 public class MLTestConstants {
     public static final String SOURCE_CONVERSION = "SourceConversion";
     public static final String SINK_CONVERSION = "SinkConversion";
     public static final String SOURCE = "Source";
     public static final String SINK = "SINK";
-
 }

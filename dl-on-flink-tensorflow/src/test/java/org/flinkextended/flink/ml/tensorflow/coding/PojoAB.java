@@ -18,23 +18,24 @@
 
 package org.flinkextended.flink.ml.tensorflow.coding;
 
+/** Dummy pojo for unit test. */
 public class PojoAB {
-	public int a;
-	public float[] b;
+    public int a;
+    public float[] b;
 
-	public int getA() {
-		return a;
-	}
+    public int getA() {
+        return a;
+    }
 
-	public void setA(int a) {
-		this.a = a;
-	}
+    public void setA(int a) {
+        this.a = a;
+    }
 
-	public float[] getB() {
-		return b;
-	}
+    public float[] getB() {
+        return b;
+    }
 
-	public void setB(float[] b) {
-		this.b = b;
-	}
+    public void setB(float[] b) {
+        this.b = b;
+    }
 }

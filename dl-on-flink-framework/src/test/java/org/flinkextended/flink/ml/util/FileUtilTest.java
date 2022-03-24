@@ -32,73 +32,78 @@ import java.nio.file.Path;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+/** Unit test for {@link FileUtil}. */
 public class FileUtilTest {
-	private static Logger LOG = LoggerFactory.getLogger(FileUtilTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FileUtilTest.class);
 
-	private Path workDir;
+    private Path workDir;
 
-	@Before
-	public void setUp() throws Exception {
-		workDir = Files.createTempDirectory(FileUtilTest.class.getName());
-	}
+    @Before
+    public void setUp() throws Exception {
+        workDir = Files.createTempDirectory(FileUtilTest.class.getName());
+    }
 
-	@Test
-	public void parseFileName() throws Exception {
-		String fileName = FileUtil.parseFileName("hdfs://hadoop-master:9000/root/tfenv.zip");
-		Assert.assertEquals("tfenv.zip", fileName);
-		String dirName = FileUtil.getFileNameWithoutExtension(fileName);
-		Assert.assertEquals("tfenv", dirName);
-	}
+    @Test
+    public void parseFileName() throws Exception {
+        String fileName = FileUtil.parseFileName("hdfs://hadoop-master:9000/root/tfenv.zip");
+        Assert.assertEquals("tfenv.zip", fileName);
+        String dirName = FileUtil.getFileNameWithoutExtension(fileName);
+        Assert.assertEquals("tfenv", dirName);
+    }
 
-	@Test
-	public void testDownloadZipToLocal() throws IOException {
-		final URL resource = FileUtil.class.getClassLoader().getResource("test-code.zip");
-		assertNotNull(resource);
-		FileUtil.downLoadZipToLocal(workDir.toAbsolutePath().toString(), resource.toString(), null);
-		assertTrue(Files.exists(workDir.resolve("test-code")));
-		assertTrue(Files.exists(workDir.resolve("test-code").resolve("code.py")));
-	}
+    @Test
+    public void testDownloadZipToLocal() throws IOException {
+        final URL resource = FileUtil.class.getClassLoader().getResource("test-code.zip");
+        assertNotNull(resource);
+        FileUtil.downLoadZipToLocal(workDir.toAbsolutePath().toString(), resource.toString(), null);
+        assertTrue(Files.exists(workDir.resolve("test-code")));
+        assertTrue(Files.exists(workDir.resolve("test-code").resolve("code.py")));
+    }
 
-	@Test
-	public void testDownloadZipWithDifferentUnzipDirName() throws IOException {
-		final URL resource = FileUtil.class.getClassLoader().getResource("not-base-dir-name.zip");
-		assertNotNull(resource);
-		boolean exception = false;
-		try {
-			FileUtil.downLoadZipToLocal(workDir.toAbsolutePath().toString(), resource.toString(), null);
-		} catch (MLException e) {
-			// expected
-			LOG.error("expected exception", e);
-			exception = true;
-		}
-		assertTrue(exception);
+    @Test
+    public void testDownloadZipWithDifferentUnzipDirName() throws IOException {
+        final URL resource = FileUtil.class.getClassLoader().getResource("not-base-dir-name.zip");
+        assertNotNull(resource);
+        boolean exception = false;
+        try {
+            FileUtil.downLoadZipToLocal(
+                    workDir.toAbsolutePath().toString(), resource.toString(), null);
+        } catch (MLException e) {
+            // expected
+            LOG.error("expected exception", e);
+            exception = true;
+        }
+        assertTrue(exception);
 
-		FileUtil.downLoadZipToLocal(workDir.toAbsolutePath().toString(), resource.toString(), "test-code");
-		assertTrue(Files.exists(workDir.resolve("test-code")));
-		assertTrue(Files.exists(workDir.resolve("test-code").resolve("code.py")));
-	}
+        FileUtil.downLoadZipToLocal(
+                workDir.toAbsolutePath().toString(), resource.toString(), "test-code");
+        assertTrue(Files.exists(workDir.resolve("test-code")));
+        assertTrue(Files.exists(workDir.resolve("test-code").resolve("code.py")));
+    }
 
-	@Test
-	public void testDownloadZipToLocalWithoutBaseDir() throws IOException {
-		final URL resource = FileUtil.class.getClassLoader().getResource("no-base-dir.zip");
-		assertNotNull(resource);
-		boolean exception = false;
-		try {
-			FileUtil.downLoadZipToLocal(workDir.toAbsolutePath().toString(), resource.toString(), null);
-		} catch (MLException e) {
-			// expected
-			LOG.error("expected exception", e);
-			exception = true;
-		}
-		assertTrue(exception);
-		exception = false;
-		try {
-			FileUtil.downLoadZipToLocal(workDir.toAbsolutePath().toString(), resource.toString(), "test-code");
-		} catch (MLException e) {
-			// expected
-			LOG.error("expected exception", e);
-			exception = true;
-		}
-		assertTrue(exception);
-	}
+    @Test
+    public void testDownloadZipToLocalWithoutBaseDir() throws IOException {
+        final URL resource = FileUtil.class.getClassLoader().getResource("no-base-dir.zip");
+        assertNotNull(resource);
+        boolean exception = false;
+        try {
+            FileUtil.downLoadZipToLocal(
+                    workDir.toAbsolutePath().toString(), resource.toString(), null);
+        } catch (MLException e) {
+            // expected
+            LOG.error("expected exception", e);
+            exception = true;
+        }
+        assertTrue(exception);
+        exception = false;
+        try {
+            FileUtil.downLoadZipToLocal(
+                    workDir.toAbsolutePath().toString(), resource.toString(), "test-code");
+        } catch (MLException e) {
+            // expected
+            LOG.error("expected exception", e);
+            exception = true;
+        }
+        assertTrue(exception);
+    }
 }

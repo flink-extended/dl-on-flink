@@ -22,16 +22,20 @@ import org.flinkextended.flink.ml.operator.ops.table.descriptor.LogTable.RichSin
 
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
 import org.apache.flink.table.data.RowData;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
+/** Unit test for {@link LogTable}. */
 public class LogTableTest {
     RichSinkFunction<RowData> function;
     String serializedString;
+
     @Before
     public void setUp() throws Exception {
         function = new TestRichSinkFunction<>("testpath");
@@ -46,14 +50,16 @@ public class LogTableTest {
 
     @Test
     public void testDeserializeRichSinkFunction() throws IOException, ClassNotFoundException {
-        RichSinkFunction<RowData> func = LogTable.RichSinkFunctionDeserializer.deserialize(serializedString);
+        RichSinkFunction<RowData> func =
+                LogTable.RichSinkFunctionDeserializer.deserialize(serializedString);
         assertNotNull(func);
     }
 
     @Test
     public void testSerializeAndDeserialize() throws IOException, ClassNotFoundException {
         String base64String = RichSinkFunctionSerializer.serialize(function);
-        RichSinkFunction<RowData> deserialize = LogTable.RichSinkFunctionDeserializer.deserialize(base64String);
+        RichSinkFunction<RowData> deserialize =
+                LogTable.RichSinkFunctionDeserializer.deserialize(base64String);
         assertEquals(deserialize, function);
     }
 

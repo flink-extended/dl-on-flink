@@ -27,7 +27,7 @@ import "node.proto";
 
 
 message MLConfigProto {
-    MLClusterDef cluster = 1;
-    string   roleName = 2;  //valid values are ["master", "worker", "ps"]
-    int32    taskIndex = 3;
+  MLClusterDef cluster = 1;
+  string   roleName = 2;  //valid values are ["master", "worker", "ps"]
+  int32    taskIndex = 3;
 }

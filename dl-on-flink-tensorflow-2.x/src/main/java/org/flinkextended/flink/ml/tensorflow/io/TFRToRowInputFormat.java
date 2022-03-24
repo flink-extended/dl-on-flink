@@ -30,75 +30,81 @@ import org.apache.flink.types.Row;
 import java.io.IOException;
 
 /**
- * flink input format: input tensorflow TFRecord format file, output flink table row.
- * a TFRecord type record contain  serialized Example.
- * a feature of Example corresponds to a column of row.
+ * flink input format: input tensorflow TFRecord format file, output flink table row. a TFRecord
+ * type record contain serialized Example. a feature of Example corresponds to a column of row.
  */
-public class TFRToRowInputFormat extends RichInputFormat<Row, TFRecordInputSplit> implements ResultTypeQueryable<Row> {
+public class TFRToRowInputFormat extends RichInputFormat<Row, TFRecordInputSplit>
+        implements ResultTypeQueryable<Row> {
 
-	private final TFRecordInputFormat inputFormat;
-	private final RowTypeInfo outRowType;
-	private final String[] outColAliases;
-	private final TFRExtractRowHelper extractRowHelper;
+    private final TFRecordInputFormat inputFormat;
+    private final RowTypeInfo outRowType;
+    private final String[] outColAliases;
+    private final TFRExtractRowHelper extractRowHelper;
 
-	public TFRToRowInputFormat(String[] paths, int epochs, RowTypeInfo outRowType,
-			TFRExtractRowHelper.ScalarConverter[] converters) {
-		this(paths, epochs, outRowType, outRowType.getFieldNames(), converters);
-	}
+    public TFRToRowInputFormat(
+            String[] paths,
+            int epochs,
+            RowTypeInfo outRowType,
+            TFRExtractRowHelper.ScalarConverter[] converters) {
+        this(paths, epochs, outRowType, outRowType.getFieldNames(), converters);
+    }
 
-	public TFRToRowInputFormat(String[] paths, int epochs, RowTypeInfo outRowType, String[] outColAliases,
-			TFRExtractRowHelper.ScalarConverter[] converters) {
-		inputFormat = new TFRecordInputFormat(paths, epochs);
-		this.outRowType = outRowType;
-		this.outColAliases = outColAliases;
-		extractRowHelper = new TFRExtractRowHelper(outRowType, converters);
-	}
+    public TFRToRowInputFormat(
+            String[] paths,
+            int epochs,
+            RowTypeInfo outRowType,
+            String[] outColAliases,
+            TFRExtractRowHelper.ScalarConverter[] converters) {
+        inputFormat = new TFRecordInputFormat(paths, epochs);
+        this.outRowType = outRowType;
+        this.outColAliases = outColAliases;
+        extractRowHelper = new TFRExtractRowHelper(outRowType, converters);
+    }
 
-	@Override
-	public void configure(Configuration parameters) {
-	}
+    @Override
+    public void configure(Configuration parameters) {}
 
-	@Override
-	public BaseStatistics getStatistics(BaseStatistics cachedStatistics) throws IOException {
-		return inputFormat.getStatistics(cachedStatistics);
-	}
+    @Override
+    public BaseStatistics getStatistics(BaseStatistics cachedStatistics) throws IOException {
+        return inputFormat.getStatistics(cachedStatistics);
+    }
 
-	@Override
-	public TFRecordInputSplit[] createInputSplits(int minNumSplits) throws IOException {
-		return inputFormat.createInputSplits(minNumSplits);
-	}
+    @Override
+    public TFRecordInputSplit[] createInputSplits(int minNumSplits) throws IOException {
+        return inputFormat.createInputSplits(minNumSplits);
+    }
 
-	@Override
-	public InputSplitAssigner getInputSplitAssigner(TFRecordInputSplit[] inputSplits) {
-		return inputFormat.getInputSplitAssigner(inputSplits);
-	}
+    @Override
+    public InputSplitAssigner getInputSplitAssigner(TFRecordInputSplit[] inputSplits) {
+        return inputFormat.getInputSplitAssigner(inputSplits);
+    }
 
-	@Override
-	public void open(TFRecordInputSplit split) throws IOException {
-		inputFormat.open(split);
-	}
+    @Override
+    public void open(TFRecordInputSplit split) throws IOException {
+        inputFormat.open(split);
+    }
 
-	@Override
-	public boolean reachedEnd() throws IOException {
-		return inputFormat.reachedEnd();
-	}
+    @Override
+    public boolean reachedEnd() throws IOException {
+        return inputFormat.reachedEnd();
+    }
 
-	@Override
-	public void close() throws IOException {
-		inputFormat.close();
-	}
+    @Override
+    public void close() throws IOException {
+        inputFormat.close();
+    }
 
-	@Override
-	public TypeInformation<Row> getProducedType() {
-		return outRowType;
-	}
+    @Override
+    public TypeInformation<Row> getProducedType() {
+        return outRowType;
+    }
 
-	@Override
-	public Row nextRecord(Row reuse) throws IOException {
-		byte[] bytes = inputFormat.nextRecord(null);
-		if (bytes != null) {
-			return extractRowHelper.extract(bytes);
-		}
-		return null;
-	}
+    @Override
+    public Row nextRecord(Row reuse) throws IOException {
+        byte[] bytes = inputFormat.nextRecord(null);
+        if (bytes != null) {
+            return extractRowHelper.extract(bytes);
+        }
+        return null;
+    }
 }

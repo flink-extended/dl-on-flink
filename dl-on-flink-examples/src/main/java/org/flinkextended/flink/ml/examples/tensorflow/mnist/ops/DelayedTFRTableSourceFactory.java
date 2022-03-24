@@ -28,6 +28,7 @@ import java.util.Map;
 
 import static org.apache.flink.table.descriptors.ConnectorDescriptorValidator.CONNECTOR_TYPE;
 
+/** Factory for {@link DelayedTFRSourceFunction}. */
 public class DelayedTFRTableSourceFactory implements TableSourceFactory<Row> {
     @Override
     public TableSource<Row> createTableSource(Context context) {

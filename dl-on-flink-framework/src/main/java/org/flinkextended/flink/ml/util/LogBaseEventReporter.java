@@ -19,59 +19,62 @@
 package org.flinkextended.flink.ml.util;
 
 import org.flinkextended.flink.ml.cluster.BaseEventReporter;
+
 import com.google.common.base.Joiner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-/**
- * a BaseEventReporter implementation with log.
- */
+/** a BaseEventReporter implementation with log. */
 public class LogBaseEventReporter extends BaseEventReporter {
-	private static Logger LOG = LoggerFactory.getLogger(LogBaseEventReporter.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LogBaseEventReporter.class);
 
-	private String jobId;
-	private Map<String, String> properties;
+    private String jobId;
+    private Map<String, String> properties;
 
-	@Override
-	public void configure(String jobId, Map<String, String> properties) {
-		this.jobId = jobId;
-		this.properties = properties;
-	}
+    @Override
+    public void configure(String jobId, Map<String, String> properties) {
+        this.jobId = jobId;
+        this.properties = properties;
+    }
 
-	@Override
-	public void jobFinish() {
-		LOG.info("### Job " + jobId + " has finished");
-	}
+    @Override
+    public void jobFinish() {
+        LOG.info("### Job " + jobId + " has finished");
+    }
 
-	@Override
-	public void jobKill() {
-		LOG.info("### Job " + jobId + " has been killed.");
-	}
+    @Override
+    public void jobKill() {
+        LOG.info("### Job " + jobId + " has been killed.");
+    }
 
-	@Override
-	public void jobFailover() {
-		LOG.info("### Job " + jobId + " has failed over.");
-	}
+    @Override
+    public void jobFailover() {
+        LOG.info("### Job " + jobId + " has failed over.");
+    }
 
-	@Override
-	public void jobFail(String msg) {
-		LOG.info("### Job " + jobId + " has failed over.");
-	}
+    @Override
+    public void jobFail(String msg) {
+        LOG.info("### Job " + jobId + " has failed over.");
+    }
 
-	@Override
-	public void nodeFail(String... failedNodes) {
-		LOG.info("### Job " + jobId + " has failed nodes: " + Joiner.on(", ").join(failedNodes));
-	}
+    @Override
+    public void nodeFail(String... failedNodes) {
+        LOG.info("### Job " + jobId + " has failed nodes: " + Joiner.on(", ").join(failedNodes));
+    }
 
-	@Override
-	public void nodeFinish(String... nodes) {
-		LOG.info("### Job " + jobId + " has finished nodes: " + Joiner.on(", ").join(nodes));
-	}
+    @Override
+    public void nodeFinish(String... nodes) {
+        LOG.info("### Job " + jobId + " has finished nodes: " + Joiner.on(", ").join(nodes));
+    }
 
-	@Override
-	public void nodeRegister(String... nodes) {
-		LOG.info("### Job " + jobId + " has following nodes be registered: " + Joiner.on(", ").join(nodes));
-	}
+    @Override
+    public void nodeRegister(String... nodes) {
+        LOG.info(
+                "### Job "
+                        + jobId
+                        + " has following nodes be registered: "
+                        + Joiner.on(", ").join(nodes));
+    }
 }

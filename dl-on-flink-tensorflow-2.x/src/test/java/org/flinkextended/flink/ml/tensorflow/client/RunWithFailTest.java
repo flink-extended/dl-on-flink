@@ -22,102 +22,120 @@ import org.flinkextended.flink.ml.tensorflow.storage.DummyStorage;
 import org.flinkextended.flink.ml.util.MLConstants;
 import org.flinkextended.flink.ml.util.SysUtil;
 import org.flinkextended.flink.ml.util.TestUtil;
-import org.apache.curator.test.TestingServer;
 
 import org.apache.flink.api.common.JobExecutionResult;
 import org.apache.flink.runtime.client.JobExecutionException;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-import org.junit.*;
+import org.apache.curator.test.TestingServer;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 
+/** Failover unit test. */
 public class RunWithFailTest {
 
-	private static Logger LOG = LoggerFactory.getLogger(RunWithFailTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RunWithFailTest.class);
 
-	private static TestingServer server;
-	private static final String simple_print = "simple_print.py";
-	private static final String failover = "failover.py";
-	private static final String failover2 = "failover2.py";
+    private static TestingServer server;
+    private static final String simple_print = "simple_print.py";
+    private static final String failover = "failover.py";
+    private static final String failover2 = "failover2.py";
 
+    @Before
+    public void setUp() throws Exception {
+        server = new TestingServer(2181, true);
+    }
 
-	@Before
-	public void setUp() throws Exception {
-		server = new TestingServer(2181, true);
-	}
+    @After
+    public void tearDown() throws Exception {
+        server.stop();
+    }
 
-	@After
-	public void tearDown() throws Exception {
-		server.stop();
-	}
+    private TFConfig buildTFConfig(String pyFile) {
+        return buildTFConfig(pyFile, String.valueOf(System.currentTimeMillis()), 2, 1);
+    }
 
-	private TFConfig buildTFConfig(String pyFile) {
-		return buildTFConfig(pyFile, String.valueOf(System.currentTimeMillis()), 2, 1);
-	}
+    private TFConfig buildTFConfig(String pyFile, String version, int worker, int ps) {
+        System.out.println("buildTFConfig: " + SysUtil._FUNC_());
+        System.out.println("Current version:" + version);
+        TFConfig config =
+                new TFConfig(
+                        worker,
+                        ps,
+                        null,
+                        new String[] {scriptAbsolutePath(pyFile)},
+                        "map_func",
+                        null);
+        return config;
+    }
 
-	private TFConfig buildTFConfig(String pyFile, String version, int worker, int ps) {
-		System.out.println("buildTFConfig: " + SysUtil._FUNC_());
-		System.out.println("Current version:" + version);
-		TFConfig config = new TFConfig(worker, ps, null, new String[] { scriptAbsolutePath(pyFile) },
-				"map_func", null);
-		return config;
-	}
+    @Test
+    public void simpleStartupTest() throws Exception {
+        TFConfig config = buildTFConfig(simple_print, "1", 1, 1);
+        StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
+        TFUtils.train(streamEnv, config);
+        JobExecutionResult result = streamEnv.execute();
+        System.out.println(result.getNetRuntime());
+    }
 
-	@Test
-	public void SimpleStartupTest() throws Exception {
-		TFConfig config = buildTFConfig(simple_print, "1", 1, 1);
-		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
-		TFUtils.train(streamEnv, config);
-		JobExecutionResult result = streamEnv.execute();
-		System.out.println(result.getNetRuntime());
-	}
+    @Test
+    public void workerFailoverTest() throws Exception {
+        LOG.info("############ Start failover test.");
+        TFConfig config = buildTFConfig(failover, String.valueOf(System.currentTimeMillis()), 2, 1);
+        StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
+        TFUtils.train(streamEnv, null, config);
+        JobExecutionResult result = streamEnv.execute();
+        System.out.println(result.getNetRuntime());
+        LOG.info("############# Finish failover test.");
+    }
 
-	@Test
-	public void WorkerFailoverTest() throws Exception {
-		LOG.info("############ Start failover test.");
-		TFConfig config = buildTFConfig(failover, String.valueOf(System.currentTimeMillis()), 2, 1);
-		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
-		TFUtils.train(streamEnv, null, config);
-		JobExecutionResult result = streamEnv.execute();
-		System.out.println(result.getNetRuntime());
-		LOG.info("############# Finish failover test.");
-	}
+    @Test
+    public void testFailoverWithFinishedNode() throws Exception {
+        TFConfig config =
+                buildTFConfig(failover2, String.valueOf(System.currentTimeMillis()), 2, 1);
+        StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
+        TFUtils.train(streamEnv, null, config);
+        JobExecutionResult result = streamEnv.execute();
+        System.out.println(result.getNetRuntime());
+    }
 
-	@Test
-	public void testFailoverWithFinishedNode() throws Exception {
-		TFConfig config = buildTFConfig(failover2, String.valueOf(System.currentTimeMillis()), 2, 1);
-		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
-		TFUtils.train(streamEnv, null, config);
-		JobExecutionResult result = streamEnv.execute();
-		System.out.println(result.getNetRuntime());
-	}
+    @Rule public ExpectedException expectedException = ExpectedException.none();
 
-	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
+    @Test
+    public void testJobTimeout() throws Exception {
+        TFConfig tfConfig = buildTFConfig(simple_print);
+        tfConfig.setPsNum(0);
+        tfConfig.setWorkerNum(1);
+        // using the dummy storage will make TFNodeServer timeout
+        tfConfig.getProperties().put(MLConstants.CONFIG_STORAGE_TYPE, MLConstants.STORAGE_CUSTOM);
+        tfConfig.getProperties()
+                .put(MLConstants.STORAGE_IMPL_CLASS, DummyStorage.class.getCanonicalName());
+        tfConfig.getProperties()
+                .put(
+                        MLConstants.AM_REGISTRY_TIMEOUT,
+                        String.valueOf(Duration.ofSeconds(10).toMillis()));
+        tfConfig.getProperties()
+                .put(
+                        MLConstants.NODE_IDLE_TIMEOUT,
+                        String.valueOf(Duration.ofSeconds(10).toMillis()));
+        StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
+        TFUtils.train(streamEnv, null, tfConfig);
 
-	@Test
-	public void testJobTimeout() throws Exception {
-		TFConfig tfConfig = buildTFConfig(simple_print);
-		tfConfig.setPsNum(0);
-		tfConfig.setWorkerNum(1);
-		// using the dummy storage will make TFNodeServer timeout
-		tfConfig.getProperties().put(MLConstants.CONFIG_STORAGE_TYPE, MLConstants.STORAGE_CUSTOM);
-		tfConfig.getProperties().put(MLConstants.STORAGE_IMPL_CLASS, DummyStorage.class.getCanonicalName());
-		tfConfig.getProperties().put(MLConstants.AM_REGISTRY_TIMEOUT, String.valueOf(Duration.ofSeconds(10).toMillis()));
-		tfConfig.getProperties().put(MLConstants.NODE_IDLE_TIMEOUT, String.valueOf(Duration.ofSeconds(10).toMillis()));
-		StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
-		TFUtils.train(streamEnv, null, tfConfig);
+        expectedException.expect(JobExecutionException.class);
+        expectedException.expectMessage("Job execution failed");
+        streamEnv.execute();
+    }
 
-		expectedException.expect(JobExecutionException.class);
-		expectedException.expectMessage("Job execution failed");
-		streamEnv.execute();
-	}
-
-	private static String scriptAbsolutePath(String script) {
-		return TestUtil.getProjectRootPath() + "/dl-on-flink-tensorflow-2.x/src/test/python/" + script;
-	}
+    private static String scriptAbsolutePath(String script) {
+        return TestUtil.getProjectRootPath()
+                + "/dl-on-flink-tensorflow-2.x/src/test/python/"
+                + script;
+    }
 }

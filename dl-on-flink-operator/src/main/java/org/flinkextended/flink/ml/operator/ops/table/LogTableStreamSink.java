@@ -19,6 +19,7 @@
 package org.flinkextended.flink.ml.operator.ops.table;
 
 import org.flinkextended.flink.ml.operator.ops.sink.LogSink;
+
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
 import org.apache.flink.table.catalog.ResolvedSchema;
 import org.apache.flink.table.connector.ChangelogMode;
@@ -26,13 +27,10 @@ import org.apache.flink.table.connector.sink.DynamicTableSink;
 import org.apache.flink.table.connector.sink.SinkFunctionProvider;
 import org.apache.flink.table.data.RowData;
 
-/**
- * LogSink class flink table sink wrapped function.
- */
+/** LogSink class flink table sink wrapped function. */
 public class LogTableStreamSink extends TableDummySinkBase {
 
     private final RichSinkFunction<RowData> sinkFunction;
-
 
     public LogTableStreamSink() {
         sinkFunction = new LogSink<>();

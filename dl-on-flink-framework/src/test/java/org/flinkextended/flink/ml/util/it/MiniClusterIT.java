@@ -19,30 +19,32 @@
 package org.flinkextended.flink.ml.util.it;
 
 import org.flinkextended.flink.ml.util.MiniCluster;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+/** Integration test for {@link MiniCluster}. */
 @Ignore
 public class MiniClusterIT {
-	private static MiniCluster miniCluster;
-	private static final int numTMs = 3;
+    private static MiniCluster miniCluster;
+    private static final int numTMs = 3;
 
-	@Before
-	public void setUp() throws Exception {
-		miniCluster = MiniCluster.start(numTMs);
-	}
+    @Before
+    public void setUp() throws Exception {
+        miniCluster = MiniCluster.start(numTMs);
+    }
 
-	@After
-	public void tearDown() throws Exception {
-		if (miniCluster != null) {
-			miniCluster.stop();
-		}
-	}
+    @After
+    public void tearDown() throws Exception {
+        if (miniCluster != null) {
+            miniCluster.stop();
+        }
+    }
 
-	@Test
-	public void runSimpleCmd() {
-		System.out.println("haha");
-	}
+    @Test
+    public void runSimpleCmd() {
+        System.out.println("haha");
+    }
 }

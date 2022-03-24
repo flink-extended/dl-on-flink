@@ -19,9 +19,10 @@
 package org.flinkextended.flink.ml.cluster;
 
 import org.flinkextended.flink.ml.cluster.node.MLContext;
-import org.flinkextended.flink.ml.cluster.rpc.NodeServer;
-import org.flinkextended.flink.ml.cluster.node.runner.MLRunner;
 import org.flinkextended.flink.ml.cluster.node.runner.CommonMLRunner;
+import org.flinkextended.flink.ml.cluster.node.runner.MLRunner;
+import org.flinkextended.flink.ml.cluster.rpc.NodeServer;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -34,27 +35,31 @@ import java.util.concurrent.TimeUnit;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/** Unit test for {@link MLRunner}. */
 public class MLRunnerTest {
 
-	@Test
-	public void stopMLRunnerWhenAMUnavailable() throws Exception {
-		MLContext mlContext = mock(MLContext.class);
-		when(mlContext.getProperties()).thenReturn(Collections.emptyMap());
-		MLRunner tfRunner = new CommonMLRunner(mlContext, mock(NodeServer.class));
-		final ExecutorService runnerService = Executors.newFixedThreadPool(1, r -> {
-			Thread runnerThread = new Thread(r);
-			runnerThread.setDaemon(true);
-			runnerThread.setName("runner_" + mlContext.getIdentity());
-			// r.setUncaughtExceptionHandler(new TFRunnerExceptionHandler());
-			return runnerThread;
-		});
+    @Test
+    public void stopMLRunnerWhenAMUnavailable() throws Exception {
+        MLContext mlContext = mock(MLContext.class);
+        when(mlContext.getProperties()).thenReturn(Collections.emptyMap());
+        MLRunner tfRunner = new CommonMLRunner(mlContext, mock(NodeServer.class));
+        final ExecutorService runnerService =
+                Executors.newFixedThreadPool(
+                        1,
+                        r -> {
+                            Thread runnerThread = new Thread(r);
+                            runnerThread.setDaemon(true);
+                            runnerThread.setName("runner_" + mlContext.getIdentity());
+                            // r.setUncaughtExceptionHandler(new TFRunnerExceptionHandler());
+                            return runnerThread;
+                        });
 
-		Future runnerFuture = runnerService.submit(tfRunner);
-		Thread.sleep(2000);
-		tfRunner.notifyStop();
-		runnerFuture.cancel(true);
-		Assert.assertTrue("MLRunner not stopped as expected", runnerFuture.isDone());
-		runnerService.shutdownNow();
-		runnerService.awaitTermination(5, TimeUnit.SECONDS);
-	}
+        Future runnerFuture = runnerService.submit(tfRunner);
+        Thread.sleep(2000);
+        tfRunner.notifyStop();
+        runnerFuture.cancel(true);
+        Assert.assertTrue("MLRunner not stopped as expected", runnerFuture.isDone());
+        runnerService.shutdownNow();
+        runnerService.awaitTermination(5, TimeUnit.SECONDS);
+    }
 }

@@ -23,18 +23,18 @@ import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.table.functions.TableFunction;
 import org.apache.flink.types.Row;
 
-/**
- * create flink job helper function.
- */
+/** create flink job helper function. */
 public class FlinkUtil {
 
-	/**
-	 * register a table function.
-	 * @param tableEnv flink TableEnvironment.
-	 * @param funcName register table function name.
-	 * @param func table function.
-	 */
-	public static void registerTableFunction(TableEnvironment tableEnv, String funcName, TableFunction<Row> func) {
-		((StreamTableEnvironment)tableEnv).registerFunction(funcName, func);
-	}
+    /**
+     * register a table function.
+     *
+     * @param tableEnv flink TableEnvironment.
+     * @param funcName register table function name.
+     * @param func table function.
+     */
+    public static void registerTableFunction(
+            TableEnvironment tableEnv, String funcName, TableFunction<Row> func) {
+        ((StreamTableEnvironment) tableEnv).registerFunction(funcName, func);
+    }
 }

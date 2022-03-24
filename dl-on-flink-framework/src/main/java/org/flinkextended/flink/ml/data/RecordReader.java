@@ -21,26 +21,24 @@ package org.flinkextended.flink.ml.data;
 import java.io.Closeable;
 import java.io.IOException;
 
-/**
- * date exchange read record interface.
- */
+/** date exchange read record interface. */
 public interface RecordReader extends Closeable {
-	/**
-	 * no blocking read function.
-	 * @return
-	 * @throws IOException
-	 */
-	byte[] tryRead() throws IOException;
+    /**
+     * no blocking read function.
+     *
+     * @return
+     * @throws IOException
+     */
+    byte[] tryRead() throws IOException;
 
-	/**
-	 * @return true: read reach end; false: read not reach end.
-	 */
-	boolean isReachEOF();
+    /** @return true: read reach end; false: read not reach end. */
+    boolean isReachEOF();
 
-	/**
-	 * blocking read function.
-	 * @return read byte[].
-	 * @throws IOException
-	 */
-	byte[] read() throws IOException;
+    /**
+     * blocking read function.
+     *
+     * @return read byte[].
+     * @throws IOException
+     */
+    byte[] read() throws IOException;
 }

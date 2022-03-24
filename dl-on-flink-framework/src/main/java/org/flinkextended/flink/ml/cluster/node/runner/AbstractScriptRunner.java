@@ -20,29 +20,28 @@ package org.flinkextended.flink.ml.cluster.node.runner;
 
 import org.flinkextended.flink.ml.cluster.node.MLContext;
 import org.flinkextended.flink.ml.util.SpscOffHeapQueue;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-/**
- * Machine learning cluster node abstract script scriptRunner
- */
+/** Machine learning cluster node abstract script scriptRunner. */
 public abstract class AbstractScriptRunner implements ScriptRunner {
-	private static Logger LOG = LoggerFactory.getLogger(AbstractScriptRunner.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractScriptRunner.class);
 
-	protected final MLContext mlContext;
+    protected final MLContext mlContext;
 
-	protected AbstractScriptRunner(MLContext mlContext) {
-		this.mlContext = mlContext;
-	}
+    protected AbstractScriptRunner(MLContext mlContext) {
+        this.mlContext = mlContext;
+    }
 
-	@Override
-	public void close() throws IOException {
-		SpscOffHeapQueue inputQueue = mlContext == null ? null : mlContext.getInputQueue();
-		if (inputQueue != null) {
-			LOG.info("{} mark input queue finished.", mlContext.getIdentity());
-			inputQueue.markFinished();
-		}
-	}
+    @Override
+    public void close() throws IOException {
+        SpscOffHeapQueue inputQueue = mlContext == null ? null : mlContext.getInputQueue();
+        if (inputQueue != null) {
+            LOG.info("{} mark input queue finished.", mlContext.getIdentity());
+            inputQueue.markFinished();
+        }
+    }
 }

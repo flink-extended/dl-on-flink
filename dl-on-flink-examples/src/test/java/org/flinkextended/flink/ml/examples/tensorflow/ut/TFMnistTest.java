@@ -33,7 +33,7 @@ import org.flinkextended.flink.ml.tensorflow.io.TFRecordSource;
 import org.flinkextended.flink.ml.tensorflow.util.TFConstants;
 import org.flinkextended.flink.ml.util.MLConstants;
 import org.flinkextended.flink.ml.util.SysUtil;
-import org.apache.curator.test.TestingServer;
+
 import org.apache.flink.api.common.JobExecutionResult;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -42,6 +42,8 @@ import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableDescriptor;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+
+import org.apache.curator.test.TestingServer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,13 +52,13 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+/** TFMnistTest. */
 public class TFMnistTest {
     private static TestingServer server;
     private static final String mnist_dist = "mnist_dist.py";
     private static final String mnist_dist_with_input = "mnist_dist_with_input.py";
 
-    public TFMnistTest() {
-    }
+    public TFMnistTest() {}
 
     @Before
     public void setUp() throws Exception {
@@ -89,7 +91,6 @@ public class TFMnistTest {
         return new TFConfig(2, 1, properties, script, "map_fun", null);
     }
 
-
     @Test
     public void testDataStreamApi() throws Exception {
         System.out.println("Run Test: " + SysUtil._FUNC_());
@@ -110,8 +111,7 @@ public class TFMnistTest {
         TFConfig config = buildTFConfig(mnist_dist);
         TFUtils.train(flinkEnv, tableEnv, statementSet, null, config, null);
 
-        statementSet.execute().getJobClient().get()
-                .getJobExecutionResult().get();
+        statementSet.execute().getJobClient().get().getJobExecutionResult().get();
     }
 
     @Test
@@ -127,35 +127,41 @@ public class TFMnistTest {
         config.setWorkerNum(paths.length);
         TFRecordSource source = TFRecordSource.createSource(paths, 1);
         DataStream<byte[]> input = flinkEnv.addSource(source).setParallelism(paths.length);
-        DataStream<MnistTFRPojo> pojoDataStream = input.flatMap(new MnistTFRExtractPojoMapOp())
-                .setParallelism(input.getParallelism());
+        DataStream<MnistTFRPojo> pojoDataStream =
+                input.flatMap(new MnistTFRExtractPojoMapOp())
+                        .setParallelism(input.getParallelism());
         setExampleCodingType(config);
         TFUtils.train(flinkEnv, pojoDataStream, config);
         JobExecutionResult result = flinkEnv.execute();
         System.out.println("Run Finish:" + result.getNetRuntime());
-
     }
 
     public static void setExampleCodingType(TFConfig config) {
         String[] names = {"image_raw", "label"};
         DataTypes[] types = {DataTypes.STRING, DataTypes.INT_32};
-        String str = ExampleCodingConfig.createExampleConfigStr(names, types,
-                ExampleCodingConfig.ObjectType.POJO, MnistTFRPojo.class);
+        String str =
+                ExampleCodingConfig.createExampleConfigStr(
+                        names, types, ExampleCodingConfig.ObjectType.POJO, MnistTFRPojo.class);
         config.getProperties().put(TFConstants.INPUT_TF_EXAMPLE_CONFIG, str);
         config.getProperties().put(TFConstants.OUTPUT_TF_EXAMPLE_CONFIG, str);
-        config.getProperties().put(MLConstants.ENCODING_CLASS, ExampleCoding.class.getCanonicalName());
-        config.getProperties().put(MLConstants.DECODING_CLASS, ExampleCoding.class.getCanonicalName());
+        config.getProperties()
+                .put(MLConstants.ENCODING_CLASS, ExampleCoding.class.getCanonicalName());
+        config.getProperties()
+                .put(MLConstants.DECODING_CLASS, ExampleCoding.class.getCanonicalName());
     }
 
     public static void setExampleCodingRowType(TFConfig config) {
         String[] names = {"image_raw", "label"};
         DataTypes[] types = {DataTypes.STRING, DataTypes.INT_32};
-        String str = ExampleCodingConfig.createExampleConfigStr(names, types,
-                ExampleCodingConfig.ObjectType.ROW, MnistTFRPojo.class);
+        String str =
+                ExampleCodingConfig.createExampleConfigStr(
+                        names, types, ExampleCodingConfig.ObjectType.ROW, MnistTFRPojo.class);
         config.getProperties().put(TFConstants.INPUT_TF_EXAMPLE_CONFIG, str);
         config.getProperties().put(TFConstants.OUTPUT_TF_EXAMPLE_CONFIG, str);
-        config.getProperties().put(MLConstants.ENCODING_CLASS, ExampleCoding.class.getCanonicalName());
-        config.getProperties().put(MLConstants.DECODING_CLASS, ExampleCoding.class.getCanonicalName());
+        config.getProperties()
+                .put(MLConstants.ENCODING_CLASS, ExampleCoding.class.getCanonicalName());
+        config.getProperties()
+                .put(MLConstants.DECODING_CLASS, ExampleCoding.class.getCanonicalName());
     }
 
     @Test
@@ -169,22 +175,28 @@ public class TFMnistTest {
         TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
         StatementSet statementSet = tableEnv.createStatementSet();
         String rootPath = new File("").getAbsolutePath();
-        String paths = rootPath + "/target/data/train/0.tfrecords" + "," + rootPath + "/target/data/train/1.tfrecords";
+        String paths =
+                rootPath
+                        + "/target/data/train/0.tfrecords"
+                        + ","
+                        + rootPath
+                        + "/target/data/train/1.tfrecords";
 
-        tableEnv.createTemporaryTable("input", TableDescriptor
-                .forConnector("TFRToRow")
-                .schema(TypeUtil.rowTypeInfoToSchema(MnistJavaInference.OUT_ROW_TYPE))
-                .option(TFRToRowTableSourceFactory.CONNECTOR_PATH_OPTION, paths)
-                .option(TFRToRowTableSourceFactory.CONNECTOR_EPOCHS_OPTION, "1")
-                .option(TFRToRowTableSourceFactory.CONNECTOR_CONVERTERS_OPTION, MnistJavaInference.CONVERTERS_STRING)
-                .build());
-//		tableEnv.connect(new MnistTFRToRowTable().paths(paths).epochs(1))
-//				.withSchema(new Schema().schema(TypeUtil.rowTypeInfoToSchema(OUT_ROW_TYPE)))
-//				.createTemporaryTable("input");
+        tableEnv.createTemporaryTable(
+                "input",
+                TableDescriptor.forConnector("TFRToRow")
+                        .schema(TypeUtil.rowTypeInfoToSchema(MnistJavaInference.OUT_ROW_TYPE))
+                        .option(TFRToRowTableSourceFactory.CONNECTOR_PATH_OPTION, paths)
+                        .option(TFRToRowTableSourceFactory.CONNECTOR_EPOCHS_OPTION, "1")
+                        .option(
+                                TFRToRowTableSourceFactory.CONNECTOR_CONVERTERS_OPTION,
+                                MnistJavaInference.CONVERTERS_STRING)
+                        .build());
+        //		tableEnv.connect(new MnistTFRToRowTable().paths(paths).epochs(1))
+        //				.withSchema(new Schema().schema(TypeUtil.rowTypeInfoToSchema(OUT_ROW_TYPE)))
+        //				.createTemporaryTable("input");
         Table inputTable = tableEnv.from("input");
         TFUtils.train(streamEnv, tableEnv, statementSet, inputTable, config, null);
-        statementSet.execute().getJobClient().get()
-                .getJobExecutionResult().get();
+        statementSet.execute().getJobClient().get().getJobExecutionResult().get();
     }
-
 }

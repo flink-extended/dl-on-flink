@@ -25,39 +25,39 @@ import com.google.protobuf.util.JsonFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * proto class helper function
- */
+/** proto class helper function. */
 public class ProtoUtil {
 
-	private static final Logger LOG = LoggerFactory.getLogger(PythonUtil.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PythonUtil.class);
 
-	/**
-	 * convert proto message to string
-	 * @param builder proto message
-	 * @return proto message json string
-	 */
-	public static String protoToJson(MessageOrBuilder builder) {
-		String json;
-		try {
-			json = JsonFormat.printer().print(builder);
-		} catch (InvalidProtocolBufferException e) {
-			LOG.error("Cannot convert proto to json", e);
-			return "";
-		}
-		return json;
-	}
+    /**
+     * convert proto message to string.
+     *
+     * @param builder proto message
+     * @return proto message json string
+     */
+    public static String protoToJson(MessageOrBuilder builder) {
+        String json;
+        try {
+            json = JsonFormat.printer().print(builder);
+        } catch (InvalidProtocolBufferException e) {
+            LOG.error("Cannot convert proto to json", e);
+            return "";
+        }
+        return json;
+    }
 
-	/**
-	 * convert json string to proto message object
-	 * @param json a proto message json string
-	 * @param builder proto message builder
-	 */
-	public static void jsonToProto(String json, Message.Builder builder) {
-		try {
-			JsonFormat.parser().merge(json, builder);
-		} catch (InvalidProtocolBufferException e) {
-			LOG.error("Cannot convert json to proto", e);
-		}
-	}
+    /**
+     * convert json string to proto message object.
+     *
+     * @param json a proto message json string
+     * @param builder proto message builder
+     */
+    public static void jsonToProto(String json, Message.Builder builder) {
+        try {
+            JsonFormat.parser().merge(json, builder);
+        } catch (InvalidProtocolBufferException e) {
+            LOG.error("Cannot convert json to proto", e);
+        }
+    }
 }

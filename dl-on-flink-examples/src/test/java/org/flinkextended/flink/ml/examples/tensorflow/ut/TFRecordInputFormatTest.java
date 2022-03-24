@@ -18,97 +18,110 @@
 
 package org.flinkextended.flink.ml.examples.tensorflow.ut;
 
-import org.apache.flink.core.fs.Path;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hdfs.MiniDFSCluster;
 import org.flinkextended.flink.ml.examples.tensorflow.mnist.MnistDataUtil;
 import org.flinkextended.flink.ml.tensorflow.io.TFRecordInputFormat;
 import org.flinkextended.flink.ml.tensorflow.io.TFRecordInputSplit;
 import org.flinkextended.flink.ml.tensorflow.io.TFRecordSource;
 import org.flinkextended.flink.ml.tensorflow.io.TraceTFRecordOutputFormat;
 import org.flinkextended.flink.ml.util.SysUtil;
+
 import org.apache.flink.api.common.io.InputFormat;
 import org.apache.flink.api.java.ExecutionEnvironment;
+import org.apache.flink.core.fs.Path;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hdfs.MiniDFSCluster;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+
 import java.io.File;
 
+/** Unit test for {@link TFRecordInputFormat}. */
 public class TFRecordInputFormatTest {
 
-	@ClassRule public static final TemporaryFolder TEMP_FOLDER = new TemporaryFolder();
+    @ClassRule public static final TemporaryFolder TEMP_FOLDER = new TemporaryFolder();
 
+    @BeforeClass
+    public static void setUp() throws Exception {
+        MnistDataUtil.prepareData();
+    }
 
-	@BeforeClass
-	public static void setUp() throws Exception {
-		MnistDataUtil.prepareData();
-	}
+    @Test
+    public void testReadTFRecord() throws Exception {
+        System.out.println("Run Test: " + SysUtil._FUNC_());
+        ExecutionEnvironment flinkEnv = ExecutionEnvironment.getExecutionEnvironment();
+        String rootPath = new File("").getAbsolutePath();
+        String[] paths = new String[2];
+        paths[0] = rootPath + "/target/data/test/0.tfrecords";
+        paths[1] = rootPath + "/target/data/test/1.tfrecords";
+        InputFormat<byte[], TFRecordInputSplit> inputFormat = new TFRecordInputFormat(paths, 1);
+        flinkEnv.createInput(inputFormat).setParallelism(2).output(new TraceTFRecordOutputFormat());
+        flinkEnv.execute();
+    }
 
-	@Test
-	public void testReadTFRecord() throws Exception {
-		System.out.println("Run Test: " + SysUtil._FUNC_());
-		ExecutionEnvironment flinkEnv = ExecutionEnvironment.getExecutionEnvironment();
-		String rootPath = new File("").getAbsolutePath();
-		String[] paths = new String[2];
-		paths[0] = rootPath + "/target/data/test/0.tfrecords";
-		paths[1] = rootPath + "/target/data/test/1.tfrecords";
-		InputFormat<byte[], TFRecordInputSplit> inputFormat = new TFRecordInputFormat(paths, 1);
-		flinkEnv.createInput(inputFormat).setParallelism(2).output(new TraceTFRecordOutputFormat());
-		flinkEnv.execute();
-	}
+    @Test
+    public void testReadTFRecordStream() throws Exception {
+        System.out.println("Run Test: " + SysUtil._FUNC_());
+        StreamExecutionEnvironment flinkEnv = StreamExecutionEnvironment.getExecutionEnvironment();
+        String rootPath = new File("").getAbsolutePath();
+        String[] paths = new String[2];
+        paths[0] = rootPath + "/target/data/test/0.tfrecords";
+        paths[1] = rootPath + "/target/data/test/1.tfrecords";
+        TFRecordSource source = TFRecordSource.createSource(paths, 3);
+        DataStream<byte[]> input = flinkEnv.addSource(source).setParallelism(2);
+        input.writeUsingOutputFormat(new TraceTFRecordOutputFormat());
+        flinkEnv.execute();
+    }
 
-	@Test
-	public void testReadTFRecordStream() throws Exception {
-		System.out.println("Run Test: " + SysUtil._FUNC_());
-		StreamExecutionEnvironment flinkEnv = StreamExecutionEnvironment.getExecutionEnvironment();
-		String rootPath = new File("").getAbsolutePath();
-		String[] paths = new String[2];
-		paths[0] = rootPath + "/target/data/test/0.tfrecords";
-		paths[1] = rootPath + "/target/data/test/1.tfrecords";
-		TFRecordSource source = TFRecordSource.createSource(paths, 3);
-		DataStream<byte[]> input = flinkEnv.addSource(source).setParallelism(2);
-		input.writeUsingOutputFormat(new TraceTFRecordOutputFormat());
-		flinkEnv.execute();
-	}
+    @Test
+    public void testReadTFRecordStreamHadoopConfiguration() throws Exception {
+        System.out.println("Run Test: " + SysUtil._FUNC_());
 
+        // create temp hdfs
+        final File baseDir = TEMP_FOLDER.newFolder();
+        final Configuration hdConf = new Configuration();
+        hdConf.set(MiniDFSCluster.HDFS_MINIDFS_BASEDIR, baseDir.getAbsolutePath());
+        final MiniDFSCluster.Builder builder = new MiniDFSCluster.Builder(hdConf);
+        MiniDFSCluster hdfsCluster = builder.build();
+        final org.apache.hadoop.fs.FileSystem hdfs = hdfsCluster.getFileSystem();
 
-	@Test
-	public void testReadTFRecordStreamHadoopConfiguration() throws Exception {
-		System.out.println("Run Test: " + SysUtil._FUNC_());
+        // copy the tfrecord file to hdfs
+        Path basePath = new Path(hdfs.getUri() + "/tests");
+        String rootPath = new File("").getAbsolutePath();
+        String[] paths = new String[2];
+        paths[0] = rootPath + "/target/data/test/0.tfrecords";
+        paths[1] = rootPath + "/target/data/test/1.tfrecords";
+        hdfs.copyFromLocalFile(
+                new org.apache.hadoop.fs.Path(rootPath + "/target/data/test/0.tfrecords"),
+                new org.apache.hadoop.fs.Path(hdfs.getUri() + "/tests/0.tfrecords"));
+        hdfs.copyFromLocalFile(
+                new org.apache.hadoop.fs.Path(rootPath + "/target/data/test/1.tfrecords"),
+                new org.apache.hadoop.fs.Path(hdfs.getUri() + "/tests/1.tfrecords"));
 
-		//create temp hdfs
-		final File baseDir = TEMP_FOLDER.newFolder();
-		final Configuration hdConf = new Configuration();
-		hdConf.set(MiniDFSCluster.HDFS_MINIDFS_BASEDIR, baseDir.getAbsolutePath());
-		final MiniDFSCluster.Builder builder = new MiniDFSCluster.Builder(hdConf);
-		MiniDFSCluster hdfsCluster = builder.build();
-		final org.apache.hadoop.fs.FileSystem hdfs = hdfsCluster.getFileSystem();
+        // submit flink job local
+        StreamExecutionEnvironment flinkEnv = StreamExecutionEnvironment.getExecutionEnvironment();
+        TFRecordSource source =
+                TFRecordSource.createSource(
+                        new String[] {
+                            hdfs.getUri() + "/tests/0.tfrecords",
+                            hdfs.getUri() + "/tests/1.tfrecords"
+                        },
+                        3,
+                        hdfsCluster.getConfiguration(0));
+        DataStream<byte[]> input = flinkEnv.addSource(source).setParallelism(2);
+        input.writeUsingOutputFormat(new TraceTFRecordOutputFormat());
+        flinkEnv.execute();
 
-		//copy the tfrecord file to hdfs
-		Path basePath = new Path(hdfs.getUri() + "/tests");
-		String rootPath = new File("").getAbsolutePath();
-		String[] paths = new String[2];
-		paths[0] = rootPath + "/target/data/test/0.tfrecords";
-		paths[1] = rootPath + "/target/data/test/1.tfrecords";
-		hdfs.copyFromLocalFile(new org.apache.hadoop.fs.Path(rootPath + "/target/data/test/0.tfrecords"), new org.apache.hadoop.fs.Path(hdfs.getUri() + "/tests/0.tfrecords"));;
-		hdfs.copyFromLocalFile(new org.apache.hadoop.fs.Path(rootPath + "/target/data/test/1.tfrecords"), new org.apache.hadoop.fs.Path(hdfs.getUri() + "/tests/1.tfrecords"));
-
-		//submit flink job local
-		StreamExecutionEnvironment flinkEnv = StreamExecutionEnvironment.getExecutionEnvironment();
-		TFRecordSource source = TFRecordSource.createSource(new String[]{hdfs.getUri() + "/tests/0.tfrecords", hdfs.getUri() + "/tests/1.tfrecords"}, 3, hdfsCluster.getConfiguration(0));
-		DataStream<byte[]> input = flinkEnv.addSource(source).setParallelism(2);
-		input.writeUsingOutputFormat(new TraceTFRecordOutputFormat());
-		flinkEnv.execute();
-
-		//destroy mini dfs cluster
-		if (hdfsCluster != null) {
-			hdfsCluster
-					.getFileSystem()
-					.delete(new org.apache.hadoop.fs.Path(basePath.toUri()), true);
-			hdfsCluster.shutdown();
-		}
-	}
+        // destroy mini dfs cluster
+        if (hdfsCluster != null) {
+            hdfsCluster
+                    .getFileSystem()
+                    .delete(new org.apache.hadoop.fs.Path(basePath.toUri()), true);
+            hdfsCluster.shutdown();
+        }
+    }
 }

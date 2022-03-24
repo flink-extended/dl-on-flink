@@ -26,16 +26,16 @@ import "node.proto";
 
 service NodeService {
 
-    rpc GetNodeSpec(NodeSpecRequest) returns(NodeSpecResponse);
+  rpc GetNodeSpec(NodeSpecRequest) returns(NodeSpecResponse);
 
-    rpc NodeRestart(NodeRestartRequest) returns(NodeRestartResponse);
+  rpc NodeRestart(NodeRestartRequest) returns(NodeRestartResponse);
 
-    rpc NodeStop(NodeStopRequest) returns(NodeStopResponse);
+  rpc NodeStop(NodeStopRequest) returns(NodeStopResponse);
 
-    rpc GetContext (ContextRequest) returns (ContextResponse);
+  rpc GetContext (ContextRequest) returns (ContextResponse);
 
-    rpc GetFinishWorker(NodeSimpleRequest) returns (FinishWorkerResponse);
+  rpc GetFinishWorker(NodeSimpleRequest) returns (FinishWorkerResponse);
 
-    rpc FinishJob(NodeSimpleRequest) returns (NodeSimpleResponse);
+  rpc FinishJob(NodeSimpleRequest) returns (NodeSimpleResponse);
 
 }

@@ -19,67 +19,74 @@
 package org.flinkextended.flink.ml.cluster.node.runner;
 
 /**
- * abstract ml scriptRunner.
- * ml scriptRunner created by cluster node, define run machine learning task process.
+ * abstract ml scriptRunner. ml scriptRunner created by cluster node, define run machine learning
+ * task process.
  */
 public interface MLRunner extends Runnable {
 
-	/**
-	 * get am client.
-	 * @throws Exception
-	 */
-	void initAMClient() throws Exception;
+    /**
+     * get am client.
+     *
+     * @throws Exception
+     */
+    void initAMClient() throws Exception;
 
-	/**
-	 * get current cluster run job version.
-	 * @throws Exception
-	 */
-	void getCurrentJobVersion() throws Exception;
+    /**
+     * get current cluster run job version.
+     *
+     * @throws Exception
+     */
+    void getCurrentJobVersion() throws Exception;
 
-	/**
-	 * register node information to am server.
-	 * @throws Exception
-	 */
-	void registerNode() throws Exception;
+    /**
+     * register node information to am server.
+     *
+     * @throws Exception
+     */
+    void registerNode() throws Exception;
 
-	/**
-	 * start heartbeat thread with application master.
-	 * @throws Exception
-	 */
-	void startHeartBeat() throws Exception;
+    /**
+     * start heartbeat thread with application master.
+     *
+     * @throws Exception
+     */
+    void startHeartBeat() throws Exception;
 
-	/**
-	 * wait am until running status.
-	 * @throws Exception
-	 */
-	void waitClusterRunning() throws Exception;
+    /**
+     * wait am until running status.
+     *
+     * @throws Exception
+     */
+    void waitClusterRunning() throws Exception;
 
-	/**
-	 * get machine learning cluster information.
-	 * @throws Exception
-	 */
-	void getClusterInfo() throws Exception;
+    /**
+     * get machine learning cluster information.
+     *
+     * @throws Exception
+     */
+    void getClusterInfo() throws Exception;
 
-	/**
-	 * change or add some information to node runtime context.
-	 * @throws Exception
-	 */
-	void resetMLContext() throws Exception;
+    /**
+     * change or add some information to node runtime context.
+     *
+     * @throws Exception
+     */
+    void resetMLContext() throws Exception;
 
-	/**
-	 * start machine learning script process.
-	 * @throws Exception
-	 */
-	void runScript() throws Exception;
+    /**
+     * start machine learning script process.
+     *
+     * @throws Exception
+     */
+    void runScript() throws Exception;
 
-	/**
- 	 * stop scriptRunner thread.
-	 * @throws Exception
-	 */
-	void notifyStop() throws Exception;
+    /**
+     * stop scriptRunner thread.
+     *
+     * @throws Exception
+     */
+    void notifyStop() throws Exception;
 
-	/**
-	 * @return ml scriptRunner execute result.
-	 */
-	ExecutionStatus getResultStatus();
+    /** @return ml scriptRunner execute result. */
+    ExecutionStatus getResultStatus();
 }

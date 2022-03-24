@@ -23,39 +23,38 @@ import org.flinkextended.flink.ml.cluster.node.runner.python.ProcessPythonRunner
 import org.flinkextended.flink.ml.util.MLConstants;
 import org.flinkextended.flink.ml.util.MLException;
 import org.flinkextended.flink.ml.util.ReflectUtil;
+
 import java.lang.reflect.InvocationTargetException;
 
-/**
- * A factory for ScriptRunner.
- */
+/** A factory for ScriptRunner. */
 public class ScriptRunnerFactory {
 
-	private ScriptRunnerFactory() {
-	}
+    private ScriptRunnerFactory() {}
 
-	/**
-	 *
-	 * @param mlContext
-	 *      machine learning cluster node context
-	 * @return ScriptRunner
-	 * @throws MLException
-	 */
-	public static ScriptRunner getScriptRunner(MLContext mlContext) throws MLException {
-		String impl = mlContext.getProperties().get(MLConstants.SCRIPT_RUNNER_CLASS);
-		// default to process scriptRunner
-		if (impl == null) {
-			impl = ProcessPythonRunner.class.getCanonicalName();
-		}
-		Class[] classes = new Class[1];
-		classes[0] = MLContext.class;
-		Object[] objects = new Object[1];
-		objects[0] = mlContext;
-		try {
-			return ReflectUtil.createInstance(impl, classes, objects);
-		} catch (IllegalAccessException | InvocationTargetException | InstantiationException
-				| NoSuchMethodException | ClassNotFoundException e) {
-			e.printStackTrace();
-			throw new MLException("Failed to create script scriptRunner", e);
-		}
-	}
+    /**
+     * @param mlContext machine learning cluster node context
+     * @return ScriptRunner
+     * @throws MLException
+     */
+    public static ScriptRunner getScriptRunner(MLContext mlContext) throws MLException {
+        String impl = mlContext.getProperties().get(MLConstants.SCRIPT_RUNNER_CLASS);
+        // default to process scriptRunner
+        if (impl == null) {
+            impl = ProcessPythonRunner.class.getCanonicalName();
+        }
+        Class[] classes = new Class[1];
+        classes[0] = MLContext.class;
+        Object[] objects = new Object[1];
+        objects[0] = mlContext;
+        try {
+            return ReflectUtil.createInstance(impl, classes, objects);
+        } catch (IllegalAccessException
+                | InvocationTargetException
+                | InstantiationException
+                | NoSuchMethodException
+                | ClassNotFoundException e) {
+            e.printStackTrace();
+            throw new MLException("Failed to create script scriptRunner", e);
+        }
+    }
 }

@@ -21,6 +21,7 @@ package org.flinkextended.flink.ml.operator.ops.table;
 import org.flinkextended.flink.ml.cluster.ExecutionMode;
 import org.flinkextended.flink.ml.cluster.MLConfig;
 import org.flinkextended.flink.ml.cluster.role.BaseRole;
+
 import org.apache.flink.table.api.TableSchema;
 import org.apache.flink.table.descriptors.DescriptorProperties;
 import org.apache.flink.table.factories.TableSourceFactory;
@@ -32,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.apache.flink.table.descriptors.ConnectorDescriptorValidator.CONNECTOR_TYPE;
 import static org.flinkextended.flink.ml.operator.ops.table.descriptor.MLTableValidator.CONNECTOR_EXECUTION_MODE;
 import static org.flinkextended.flink.ml.operator.ops.table.descriptor.MLTableValidator.CONNECTOR_ML_CONFIG_ENV_PATH;
 import static org.flinkextended.flink.ml.operator.ops.table.descriptor.MLTableValidator.CONNECTOR_ML_CONFIG_FUNC_NAME;
@@ -40,8 +42,8 @@ import static org.flinkextended.flink.ml.operator.ops.table.descriptor.MLTableVa
 import static org.flinkextended.flink.ml.operator.ops.table.descriptor.MLTableValidator.CONNECTOR_ML_CONFIG_ROLE_PARALLELISM_MAP;
 import static org.flinkextended.flink.ml.operator.ops.table.descriptor.MLTableValidator.CONNECTOR_PARALLELISM;
 import static org.flinkextended.flink.ml.operator.ops.table.descriptor.MLTableValidator.CONNECTOR_ROLE_CLASS;
-import static org.apache.flink.table.descriptors.ConnectorDescriptorValidator.CONNECTOR_TYPE;
 
+/** Factory for {@link MLTableSource}. */
 public class MLTableSourceFactory implements TableSourceFactory<Row> {
     @Override
     public TableSource<Row> createTableSource(Context context) {
@@ -61,23 +63,32 @@ public class MLTableSourceFactory implements TableSourceFactory<Row> {
     }
 
     private MLConfig getMLConfig(DescriptorProperties properties) {
-        Map<String, String> mlConfigProperties = properties.getPropertiesWithPrefix(CONNECTOR_ML_CONFIG_PROPERTIES);
-        Map<String, String> mlRoleParallelismProperties = properties.getPropertiesWithPrefix(CONNECTOR_ML_CONFIG_ROLE_PARALLELISM_MAP);
-        Map<String, Integer> mlRoleParallelismMap = toMlRoleParallelismMap(mlRoleParallelismProperties);
+        Map<String, String> mlConfigProperties =
+                properties.getPropertiesWithPrefix(CONNECTOR_ML_CONFIG_PROPERTIES);
+        Map<String, String> mlRoleParallelismProperties =
+                properties.getPropertiesWithPrefix(CONNECTOR_ML_CONFIG_ROLE_PARALLELISM_MAP);
+        Map<String, Integer> mlRoleParallelismMap =
+                toMlRoleParallelismMap(mlRoleParallelismProperties);
         String funcName = properties.getString(CONNECTOR_ML_CONFIG_FUNC_NAME);
         String envPath = null;
         if (properties.containsKey(CONNECTOR_ML_CONFIG_ENV_PATH)) {
             envPath = properties.getString(CONNECTOR_ML_CONFIG_ENV_PATH);
         }
 
-        String[] pythonFiles = properties
-                .getFixedIndexedProperties(CONNECTOR_ML_CONFIG_PYTHON_FILES, Collections.singletonList("name"))
-                .stream().map(m -> m.get("name")).map(properties::getString).toArray(String[]::new);
-        return new MLConfig(mlRoleParallelismMap, mlConfigProperties, pythonFiles, funcName, envPath);
-
+        String[] pythonFiles =
+                properties
+                        .getFixedIndexedProperties(
+                                CONNECTOR_ML_CONFIG_PYTHON_FILES, Collections.singletonList("name"))
+                        .stream()
+                        .map(m -> m.get("name"))
+                        .map(properties::getString)
+                        .toArray(String[]::new);
+        return new MLConfig(
+                mlRoleParallelismMap, mlConfigProperties, pythonFiles, funcName, envPath);
     }
 
-    private Map<String, Integer> toMlRoleParallelismMap(Map<String, String> mlRoleParallelismProperties) {
+    private Map<String, Integer> toMlRoleParallelismMap(
+            Map<String, String> mlRoleParallelismProperties) {
         Map<String, Integer> res = new HashMap<>();
         mlRoleParallelismProperties.forEach((k, v) -> res.put(k, Integer.valueOf(v)));
         return res;

@@ -19,12 +19,13 @@
 package org.flinkextended.flink.ml.tensorflow.io;
 
 import org.flinkextended.flink.ml.operator.util.TypeUtil;
+import org.flinkextended.flink.ml.tensorflow.io.descriptor.TFRToRowTableValidator;
+
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.configuration.ConfigOption;
 import org.apache.flink.table.connector.source.DynamicTableSource;
 import org.apache.flink.table.factories.DynamicTableFactory;
 import org.apache.flink.table.factories.DynamicTableSourceFactory;
-import org.flinkextended.flink.ml.tensorflow.io.descriptor.TFRToRowTableValidator;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -33,26 +34,18 @@ import java.util.Set;
 
 import static org.apache.flink.configuration.ConfigOptions.key;
 
+/** Factory for {@link TFRToRowTableSource}. */
 public class TFRToRowTableSourceFactory implements DynamicTableSourceFactory {
 
     public static final ConfigOption<String> CONNECTOR_CONVERTERS_OPTION =
-            key(TFRToRowTableValidator.CONNECTOR_CONVERTERS)
-                    .stringType()
-                    .noDefaultValue();
+            key(TFRToRowTableValidator.CONNECTOR_CONVERTERS).stringType().noDefaultValue();
 
     public static final ConfigOption<String> CONNECTOR_OUT_COL_ALIASES_OPTION =
-            key(TFRToRowTableValidator.CONNECTOR_OUT_COL_ALIASES)
-                    .stringType()
-                    .noDefaultValue();
+            key(TFRToRowTableValidator.CONNECTOR_OUT_COL_ALIASES).stringType().noDefaultValue();
     public static final ConfigOption<String> CONNECTOR_EPOCHS_OPTION =
-            key(TFRToRowTableValidator.CONNECTOR_EPOCHS)
-                    .stringType()
-                    .noDefaultValue();
+            key(TFRToRowTableValidator.CONNECTOR_EPOCHS).stringType().noDefaultValue();
     public static final ConfigOption<String> CONNECTOR_PATH_OPTION =
-            key(TFRToRowTableValidator.CONNECTOR_PATH)
-                    .stringType()
-                    .noDefaultValue();
-
+            key(TFRToRowTableValidator.CONNECTOR_PATH).stringType().noDefaultValue();
 
     private TFRExtractRowHelper.ScalarConverter[] getConverters(Map<String, String> properties) {
         return Arrays.stream(properties.get(TFRToRowTableValidator.CONNECTOR_CONVERTERS).split(","))
@@ -83,11 +76,11 @@ public class TFRToRowTableSourceFactory implements DynamicTableSourceFactory {
         int epochs = getEpochs(options);
         String[] outColAliases = getOutColAliases(options);
         TFRExtractRowHelper.ScalarConverter[] converters = getConverters(options);
-        RowTypeInfo outRowType = TypeUtil.schemaToRowTypeInfo(context.getCatalogTable().getResolvedSchema());
+        RowTypeInfo outRowType =
+                TypeUtil.schemaToRowTypeInfo(context.getCatalogTable().getResolvedSchema());
         if (outColAliases != null) {
 
-            return new TFRToRowTableSource(paths, epochs, outRowType,
-                    outColAliases, converters);
+            return new TFRToRowTableSource(paths, epochs, outRowType, outColAliases, converters);
         } else {
             return new TFRToRowTableSource(paths, epochs, outRowType, converters);
         }

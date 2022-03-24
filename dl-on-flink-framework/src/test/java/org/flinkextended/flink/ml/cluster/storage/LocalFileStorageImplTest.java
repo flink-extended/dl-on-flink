@@ -24,7 +24,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.junit.Assert.assertEquals;
@@ -32,6 +31,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+/** Unit test for {@link LocalFileStorageImpl}. */
 public class LocalFileStorageImplTest {
 
     private LocalFileStorageImpl storage;
@@ -39,7 +39,7 @@ public class LocalFileStorageImplTest {
 
     @Before
     public void setUp() throws Exception {
-//        tempDirectory = Files.createTempDirectory("");
+        //        tempDirectory = Files.createTempDirectory("");
         storage = new LocalFileStorageImpl("/tmp");
     }
 
@@ -50,8 +50,7 @@ public class LocalFileStorageImplTest {
 
     @Test
     public void testCreateMultipleStorage() {
-        final LocalFileStorageImpl myStorage =
-                new LocalFileStorageImpl("/tmp");
+        final LocalFileStorageImpl myStorage = new LocalFileStorageImpl("/tmp");
         storage.clear();
         myStorage.clear();
     }
@@ -59,7 +58,8 @@ public class LocalFileStorageImplTest {
     @Test
     public void testGetSetValue() throws IOException {
         assertNull(storage.getValue("am_address"));
-        storage.setValue("am_address", "v1".getBytes(StandardCharsets.UTF_8));assertEquals("v1", new String(storage.getValue("am_address")));
+        storage.setValue("am_address", "v1".getBytes(StandardCharsets.UTF_8));
+        assertEquals("v1", new String(storage.getValue("am_address")));
         storage.setValue("am_address", "v2".getBytes(StandardCharsets.UTF_8));
         assertEquals("v2", new String(storage.getValue("am_address")));
     }

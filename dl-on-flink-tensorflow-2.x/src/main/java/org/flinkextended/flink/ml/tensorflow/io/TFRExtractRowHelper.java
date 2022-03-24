@@ -18,9 +18,6 @@
 
 package org.flinkextended.flink.ml.tensorflow.io;
 
-import com.google.common.base.Preconditions;
-import com.google.protobuf.ByteString;
-import com.google.protobuf.InvalidProtocolBufferException;
 import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
 import org.apache.flink.api.common.typeinfo.PrimitiveArrayTypeInfo;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
@@ -28,6 +25,10 @@ import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.table.api.DataTypes;
 import org.apache.flink.table.runtime.typeutils.InternalTypeInfo;
 import org.apache.flink.types.Row;
+
+import com.google.common.base.Preconditions;
+import com.google.protobuf.ByteString;
+import com.google.protobuf.InvalidProtocolBufferException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tensorflow.proto.example.Example;
@@ -41,11 +42,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * a helper function to convert TFRecord format record to row.
- * Example every feature corresponds to a column of row.
+ * a helper function to convert TFRecord format record to row. Example every feature corresponds to
+ * a column of row.
  */
 public class TFRExtractRowHelper implements Serializable {
 
+    /** ScalarConverter Enum. */
     public enum ScalarConverter {
         FIRST,
         LAST,
@@ -115,10 +117,12 @@ public class TFRExtractRowHelper implements Serializable {
             for (int i = 0; i < values.size(); i++) {
                 Number number = values.get(i);
                 if (number.longValue() == 1) {
-                    Preconditions.checkArgument(index == -1, "Invalid one-hot list: " + values.toString());
+                    Preconditions.checkArgument(
+                            index == -1, "Invalid one-hot list: " + values.toString());
                     index = i;
                 } else {
-                    Preconditions.checkArgument(number.longValue() == 0, "Invalid one-hot list: " + values.toString());
+                    Preconditions.checkArgument(
+                            number.longValue() == 0, "Invalid one-hot list: " + values.toString());
                 }
             }
             Preconditions.checkArgument(index != -1, "Invalid one-hot list: " + values.toString());
@@ -159,32 +163,37 @@ public class TFRExtractRowHelper implements Serializable {
 
     public Row extract(byte[] bytes) throws InvalidProtocolBufferException {
         Features features = Example.parseFrom(bytes).getFeatures();
-        Preconditions.checkArgument(outputRowType.getArity() == features.getFeatureCount(),
-                String.format("RowType arity (%d) and example feature count (%d) mismatch",
+        Preconditions.checkArgument(
+                outputRowType.getArity() == features.getFeatureCount(),
+                String.format(
+                        "RowType arity (%d) and example feature count (%d) mismatch",
                         outputRowType.getArity(), features.getFeatureCount()));
         Row res = new Row(outputRowType.getArity());
         for (int i = 0; i < outputRowType.getArity(); i++) {
             String name = outputRowType.getFieldNames()[i];
-            Feature feature = Preconditions.checkNotNull(features.getFeatureOrDefault(name, null),
-                    String.format("Field name %s doesn't exist in example", name));
+            Feature feature =
+                    Preconditions.checkNotNull(
+                            features.getFeatureOrDefault(name, null),
+                            String.format("Field name %s doesn't exist in example", name));
             res.setField(i, toObject(feature, outputRowType.getFieldTypes()[i], aggs[i]));
         }
         return res;
     }
 
     private Object toObject(Feature feature, TypeInformation dataType, AggFunc aggFunc) {
-        final String typeMismatchError = String.format("Cannot convert %s to %s",
-                feature.toString(), dataType.toString());
+        final String typeMismatchError =
+                String.format("Cannot convert %s to %s", feature.toString(), dataType.toString());
         final boolean isArray = dataType instanceof PrimitiveArrayTypeInfo;
         if (isArray) {
             dataType = ((PrimitiveArrayTypeInfo) dataType).getComponentType();
         }
-        if (dataType.equals(InternalTypeInfo.of(DataTypes.STRING().getLogicalType())) ||
-                dataType.equals(BasicTypeInfo.STRING_TYPE_INFO)) {
+        if (dataType.equals(InternalTypeInfo.of(DataTypes.STRING().getLogicalType()))
+                || dataType.equals(BasicTypeInfo.STRING_TYPE_INFO)) {
             Preconditions.checkArgument(feature.hasBytesList(), typeMismatchError);
             String[] strings = new String[feature.getBytesList().getValueCount()];
             for (int i = 0; i < strings.length; i++) {
-                strings[i] = feature.getBytesList().getValue(i).toString(StandardCharsets.ISO_8859_1);
+                strings[i] =
+                        feature.getBytesList().getValue(i).toString(StandardCharsets.ISO_8859_1);
             }
             if (isArray) {
                 return strings;
@@ -193,8 +202,10 @@ public class TFRExtractRowHelper implements Serializable {
         } else if (dataType.equals(InternalTypeInfo.of(DataTypes.TINYINT().getLogicalType()))
                 || dataType.equals(BasicTypeInfo.SHORT_TYPE_INFO)) {
             Preconditions.checkArgument(feature.hasInt64List(), typeMismatchError);
-            List<Short> shorts = feature.getInt64List().getValueList()
-                    .stream().map(Long::shortValue).collect(Collectors.toList());
+            List<Short> shorts =
+                    feature.getInt64List().getValueList().stream()
+                            .map(Long::shortValue)
+                            .collect(Collectors.toList());
             if (isArray) {
                 return shorts.toArray(new Short[0]);
             }
@@ -202,8 +213,10 @@ public class TFRExtractRowHelper implements Serializable {
         } else if (dataType.equals(InternalTypeInfo.of(DataTypes.INT().getLogicalType()))
                 || dataType.equals(BasicTypeInfo.INT_TYPE_INFO)) {
             Preconditions.checkArgument(feature.hasInt64List(), typeMismatchError);
-            List<Integer> integers = feature.getInt64List().getValueList()
-                    .stream().map(Long::intValue).collect(Collectors.toList());
+            List<Integer> integers =
+                    feature.getInt64List().getValueList().stream()
+                            .map(Long::intValue)
+                            .collect(Collectors.toList());
             if (isArray) {
                 return integers.toArray(new Integer[0]);
             }
@@ -237,7 +250,8 @@ public class TFRExtractRowHelper implements Serializable {
             if (isArray) {
                 return bytes;
             }
-            ByteString byteString = (ByteString) aggFunc.aggregate(feature.getBytesList().getValueList());
+            ByteString byteString =
+                    (ByteString) aggFunc.aggregate(feature.getBytesList().getValueList());
             return byteString.toByteArray();
         }
         throw new IllegalArgumentException("Unsupported type " + dataType.toString());

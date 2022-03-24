@@ -18,7 +18,6 @@
 
 package org.flinkextended.flink.ml.examples.tensorflow.ut;
 
-
 import org.flinkextended.flink.ml.examples.tensorflow.mnist.MnistDataUtil;
 import org.flinkextended.flink.ml.examples.tensorflow.mnist.MnistJavaInference;
 import org.flinkextended.flink.ml.examples.tensorflow.mnist.ops.MnistTFRExtractRowForJavaFunction;
@@ -39,8 +38,7 @@ import org.flinkextended.flink.ml.util.IpHostUtil;
 import org.flinkextended.flink.ml.util.MLConstants;
 import org.flinkextended.flink.ml.util.SysUtil;
 import org.flinkextended.flink.ml.util.TestUtil;
-import com.google.common.base.Joiner;
-import org.apache.curator.test.TestingServer;
+
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.DataTypes;
@@ -54,6 +52,9 @@ import org.apache.flink.table.api.Types;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.table.functions.TableFunction;
 import org.apache.flink.types.Row;
+
+import com.google.common.base.Joiner;
+import org.apache.curator.test.TestingServer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,6 +65,7 @@ import java.util.Map;
 import java.util.StringJoiner;
 import java.util.concurrent.ThreadLocalRandom;
 
+/** Unit test for Mnist inference. */
 public class TFMnistInferenceTest {
 
     private static TestingServer server;
@@ -72,8 +74,8 @@ public class TFMnistInferenceTest {
     private static String version = "0";
     private static String rootPath = TestUtil.getProjectRootPath() + "/dl-on-flink-examples";
     private static final String checkpointPath = rootPath + "/target/ckpt/" + version;
-    public static final String exportPath = rootPath + "/target/export/" + version;
-    public static final String testDataPath = rootPath + "/target/data/test";
+    public static final String EXPORT_PATH = rootPath + "/target/export/" + version;
+    public static final String TEST_DATA_PATH = rootPath + "/target/data/test";
 
     @Before
     public void setUp() throws Exception {
@@ -98,13 +100,13 @@ public class TFMnistInferenceTest {
         properties.put("input", rootPath + "/target/data/train/");
         properties.put("epochs", "1");
         properties.put("checkpoint_dir", checkpointPath);
-        properties.put("export_dir", exportPath);
+        properties.put("export_dir", EXPORT_PATH);
         properties.put(MLConstants.CONFIG_ZOOKEEPER_CONNECT_STR, server.getConnectString());
         return new TFConfig(4, 1, properties, script, "map_fun", null);
     }
 
     public static void generateModelIfNeeded() throws Exception {
-        File tmp = new File(exportPath);
+        File tmp = new File(EXPORT_PATH);
         if (!tmp.exists()) {
             boolean startServer = server == null;
             if (startServer) {
@@ -128,61 +130,91 @@ public class TFMnistInferenceTest {
         paths[1] = rootPath + "/target/data/train/1.tfrecords";
         TFRecordSource source = TFRecordSource.createSource(paths, 1);
         DataStream<byte[]> input = streamEnv.addSource(source).setParallelism(paths.length);
-        DataStream<MnistTFRPojo> pojoDataStream = input.flatMap(new MnistTFRExtractPojoMapOp())
-                .setParallelism(input.getParallelism());
+        DataStream<MnistTFRPojo> pojoDataStream =
+                input.flatMap(new MnistTFRExtractPojoMapOp())
+                        .setParallelism(input.getParallelism());
         TFUtils.train(streamEnv, pojoDataStream, config);
         streamEnv.execute();
     }
 
     protected static void setExampleCodingTypeWithPojoOut(TFConfig config) {
         String[] names = {"image_raw", "label"};
-        org.flinkextended.flink.ml.operator.util.DataTypes[] types = {org.flinkextended.flink.ml.operator.util.DataTypes.STRING,
-                org.flinkextended.flink.ml.operator.util.DataTypes.INT_32};
-        String str = ExampleCodingConfig.createExampleConfigStr(names, types,
-                ExampleCodingConfig.ObjectType.ROW, MnistTFRPojo.class);
+        org.flinkextended.flink.ml.operator.util.DataTypes[] types = {
+            org.flinkextended.flink.ml.operator.util.DataTypes.STRING,
+            org.flinkextended.flink.ml.operator.util.DataTypes.INT_32
+        };
+        String str =
+                ExampleCodingConfig.createExampleConfigStr(
+                        names, types, ExampleCodingConfig.ObjectType.ROW, MnistTFRPojo.class);
         config.getProperties().put(TFConstants.INPUT_TF_EXAMPLE_CONFIG, str);
 
         String[] namesOutput = {"predict_label", "label_org"};
-        org.flinkextended.flink.ml.operator.util.DataTypes[] typesOutput = {org.flinkextended.flink.ml.operator.util.DataTypes.INT_32,
-                org.flinkextended.flink.ml.operator.util.DataTypes.INT_32};
-        String strOutput = ExampleCodingConfig.createExampleConfigStr(namesOutput, typesOutput,
-                ExampleCodingConfig.ObjectType.POJO, InferenceOutPojo.class);
+        org.flinkextended.flink.ml.operator.util.DataTypes[] typesOutput = {
+            org.flinkextended.flink.ml.operator.util.DataTypes.INT_32,
+            org.flinkextended.flink.ml.operator.util.DataTypes.INT_32
+        };
+        String strOutput =
+                ExampleCodingConfig.createExampleConfigStr(
+                        namesOutput,
+                        typesOutput,
+                        ExampleCodingConfig.ObjectType.POJO,
+                        InferenceOutPojo.class);
         config.getProperties().put(TFConstants.OUTPUT_TF_EXAMPLE_CONFIG, strOutput);
-        config.getProperties().put(MLConstants.ENCODING_CLASS, ExampleCoding.class.getCanonicalName());
-        config.getProperties().put(MLConstants.DECODING_CLASS, ExampleCoding.class.getCanonicalName());
+        config.getProperties()
+                .put(MLConstants.ENCODING_CLASS, ExampleCoding.class.getCanonicalName());
+        config.getProperties()
+                .put(MLConstants.DECODING_CLASS, ExampleCoding.class.getCanonicalName());
     }
 
     protected static void setExampleCodingTypeWithRowOut(TFConfig config) {
-        String[] names = { "image_raw", "label" };
-        org.flinkextended.flink.ml.operator.util.DataTypes[] types = { org.flinkextended.flink.ml.operator.util.DataTypes.STRING,
-                org.flinkextended.flink.ml.operator.util.DataTypes.INT_32 };
-        String str = ExampleCodingConfig.createExampleConfigStr(names, types,
-                ExampleCodingConfig.ObjectType.ROW, MnistTFRPojo.class);
+        String[] names = {"image_raw", "label"};
+        org.flinkextended.flink.ml.operator.util.DataTypes[] types = {
+            org.flinkextended.flink.ml.operator.util.DataTypes.STRING,
+            org.flinkextended.flink.ml.operator.util.DataTypes.INT_32
+        };
+        String str =
+                ExampleCodingConfig.createExampleConfigStr(
+                        names, types, ExampleCodingConfig.ObjectType.ROW, MnistTFRPojo.class);
         config.getProperties().put(TFConstants.INPUT_TF_EXAMPLE_CONFIG, str);
 
-        String[] namesOutput = { "predict_label", "label_org" };
-        org.flinkextended.flink.ml.operator.util.DataTypes[] typesOutput = { org.flinkextended.flink.ml.operator.util.DataTypes.INT_32,
-                org.flinkextended.flink.ml.operator.util.DataTypes.INT_32 };
-        String strOutput = ExampleCodingConfig.createExampleConfigStr(namesOutput, typesOutput,
-                ExampleCodingConfig.ObjectType.ROW, InferenceOutPojo.class);
+        String[] namesOutput = {"predict_label", "label_org"};
+        org.flinkextended.flink.ml.operator.util.DataTypes[] typesOutput = {
+            org.flinkextended.flink.ml.operator.util.DataTypes.INT_32,
+            org.flinkextended.flink.ml.operator.util.DataTypes.INT_32
+        };
+        String strOutput =
+                ExampleCodingConfig.createExampleConfigStr(
+                        namesOutput,
+                        typesOutput,
+                        ExampleCodingConfig.ObjectType.ROW,
+                        InferenceOutPojo.class);
         config.getProperties().put(TFConstants.OUTPUT_TF_EXAMPLE_CONFIG, strOutput);
-        config.getProperties().put(MLConstants.ENCODING_CLASS, ExampleCoding.class.getCanonicalName());
-        config.getProperties().put(MLConstants.DECODING_CLASS, ExampleCoding.class.getCanonicalName());
+        config.getProperties()
+                .put(MLConstants.ENCODING_CLASS, ExampleCoding.class.getCanonicalName());
+        config.getProperties()
+                .put(MLConstants.DECODING_CLASS, ExampleCoding.class.getCanonicalName());
     }
-
 
     @Test
     public void inferenceDataStreamWithInput() throws Exception {
         System.out.println("Run Test: " + SysUtil._FUNC_());
         StreamExecutionEnvironment flinkEnv = StreamExecutionEnvironment.getExecutionEnvironment();
-        String[] paths = new String[]{testDataPath + "/0.tfrecords", testDataPath + "/1.tfrecords"};
-        DataStream<Row> inputDS = flinkEnv.addSource(new TFRToRowSourceFunc(paths, 1, MnistJavaInference.OUT_ROW_TYPE,
-                MnistJavaInference.CONVERTERS)).setParallelism(paths.length);
+        String[] paths =
+                new String[] {TEST_DATA_PATH + "/0.tfrecords", TEST_DATA_PATH + "/1.tfrecords"};
+        DataStream<Row> inputDS =
+                flinkEnv.addSource(
+                                new TFRToRowSourceFunc(
+                                        paths,
+                                        1,
+                                        MnistJavaInference.OUT_ROW_TYPE,
+                                        MnistJavaInference.CONVERTERS))
+                        .setParallelism(paths.length);
         TFConfig tfConfig = buildTFConfig(mnist_inference_with_input);
         tfConfig.setWorkerNum(paths.length);
         tfConfig.setPsNum(0);
         setExampleCodingTypeWithPojoOut(tfConfig);
-        DataStream<InferenceOutPojo> outDS = TFUtils.inference(flinkEnv, inputDS, tfConfig, InferenceOutPojo.class);
+        DataStream<InferenceOutPojo> outDS =
+                TFUtils.inference(flinkEnv, inputDS, tfConfig, InferenceOutPojo.class);
         outDS.addSink(new LogSink<>()).setParallelism(tfConfig.getWorkerNum());
         flinkEnv.execute();
     }
@@ -193,7 +225,6 @@ public class TFMnistInferenceTest {
         inferenceWithTable();
     }
 
-
     private void inferenceWithTable() throws Exception {
         StreamExecutionEnvironment flinkEnv = StreamExecutionEnvironment.getExecutionEnvironment();
         flinkEnv.setParallelism(2);
@@ -203,45 +234,47 @@ public class TFMnistInferenceTest {
         config.setPsNum(0);
         config.setWorkerNum(3);
         setExampleCodingTypeWithRowOut(config);
-        //create input table
-        String paths = testDataPath + "/0.tfrecords";
+        // create input table
+        String paths = TEST_DATA_PATH + "/0.tfrecords";
         String tblName = "tfr_input_table";
-//		tableEnv.registerTableSource(tblName, new MnistTFRToRowTableSource(paths, 1));
+        //		tableEnv.registerTableSource(tblName, new MnistTFRToRowTableSource(paths, 1));
 
-        tableEnv.createTemporaryTable(tblName, TableDescriptor
-                .forConnector("TFRToRow")
-                .schema(TypeUtil.rowTypeInfoToSchema(MnistJavaInference.OUT_ROW_TYPE))
-                .option(TFRToRowTableSourceFactory.CONNECTOR_PATH_OPTION, paths)
-                .option(TFRToRowTableSourceFactory.CONNECTOR_CONVERTERS_OPTION, MnistJavaInference.CONVERTERS_STRING)
-                .option(TFRToRowTableSourceFactory.CONNECTOR_EPOCHS_OPTION, "1")
-                .build());
-//		tableEnv.connect(new MnistTFRToRowTable().paths(paths).epochs(1))
-//				.withSchema(new Schema().schema(TypeUtil.rowTypeInfoToSchema(OUT_ROW_TYPE)))
-//				.createTemporaryTable(tblName);
+        tableEnv.createTemporaryTable(
+                tblName,
+                TableDescriptor.forConnector("TFRToRow")
+                        .schema(TypeUtil.rowTypeInfoToSchema(MnistJavaInference.OUT_ROW_TYPE))
+                        .option(TFRToRowTableSourceFactory.CONNECTOR_PATH_OPTION, paths)
+                        .option(
+                                TFRToRowTableSourceFactory.CONNECTOR_CONVERTERS_OPTION,
+                                MnistJavaInference.CONVERTERS_STRING)
+                        .option(TFRToRowTableSourceFactory.CONNECTOR_EPOCHS_OPTION, "1")
+                        .build());
+        //		tableEnv.connect(new MnistTFRToRowTable().paths(paths).epochs(1))
+        //				.withSchema(new Schema().schema(TypeUtil.rowTypeInfoToSchema(OUT_ROW_TYPE)))
+        //				.createTemporaryTable(tblName);
         Table inputTable = tableEnv.from(tblName);
 
-        //construct out schema
-        Schema outSchema = Schema.newBuilder()
-                .column("label_org", DataTypes.INT())
-                .column("predict_label", DataTypes.INT())
-                .build();
-//		TableSchema outSchema = TableSchema.builder()
-//				.field("label_org", Types.INT())
-//				.field("predict_label", Types.INT())
-//				.build();
-        Table predictTbl = TFUtils.inference(flinkEnv, tableEnv, statementSet, inputTable, config, outSchema);
+        // construct out schema
+        Schema outSchema =
+                Schema.newBuilder()
+                        .column("label_org", DataTypes.INT())
+                        .column("predict_label", DataTypes.INT())
+                        .build();
+        //		TableSchema outSchema = TableSchema.builder()
+        //				.field("label_org", Types.INT())
+        //				.field("predict_label", Types.INT())
+        //				.build();
+        Table predictTbl =
+                TFUtils.inference(flinkEnv, tableEnv, statementSet, inputTable, config, outSchema);
         tableEnv.createTemporaryView("predict_tbl", predictTbl);
 
-        tableEnv.createTemporaryTable("predict_sink", TableDescriptor
-                .forConnector("LogTable")
-                .schema(outSchema)
-                .build());
-//		tableEnv.connect(new LogTable())
-//				.withSchema(new Schema().schema(outSchema))
-//				.createTemporaryTable("predict_sink");
+        tableEnv.createTemporaryTable(
+                "predict_sink", TableDescriptor.forConnector("LogTable").schema(outSchema).build());
+        //		tableEnv.connect(new LogTable())
+        //				.withSchema(new Schema().schema(outSchema))
+        //				.createTemporaryTable("predict_sink");
         statementSet.addInsert("predict_sink", predictTbl);
-        statementSet.execute().getJobClient().get()
-                .getJobExecutionResult().get();
+        statementSet.execute().getJobClient().get().getJobExecutionResult().get();
     }
 
     @Test
@@ -268,20 +301,31 @@ public class TFMnistInferenceTest {
 
     protected static void setExampleCodingTypeRow(TFConfig config) {
         String[] names = {"image_raw", "org_label"};
-        org.flinkextended.flink.ml.operator.util.DataTypes[] types = {org.flinkextended.flink.ml.operator.util.DataTypes.FLOAT_32_ARRAY,
-                org.flinkextended.flink.ml.operator.util.DataTypes.INT_32};
-        String str = ExampleCodingConfig.createExampleConfigStr(names, types,
-                ExampleCodingConfig.ObjectType.ROW, MnistTFRPojo.class);
+        org.flinkextended.flink.ml.operator.util.DataTypes[] types = {
+            org.flinkextended.flink.ml.operator.util.DataTypes.FLOAT_32_ARRAY,
+            org.flinkextended.flink.ml.operator.util.DataTypes.INT_32
+        };
+        String str =
+                ExampleCodingConfig.createExampleConfigStr(
+                        names, types, ExampleCodingConfig.ObjectType.ROW, MnistTFRPojo.class);
         config.getProperties().put(TFConstants.INPUT_TF_EXAMPLE_CONFIG, str);
 
         String[] namesOutput = {"real_label", "predicted_label"};
-        org.flinkextended.flink.ml.operator.util.DataTypes[] typesOutput = {org.flinkextended.flink.ml.operator.util.DataTypes.INT_32,
-                org.flinkextended.flink.ml.operator.util.DataTypes.INT_32};
-        String strOutput = ExampleCodingConfig.createExampleConfigStr(namesOutput, typesOutput,
-                ExampleCodingConfig.ObjectType.ROW, InferenceOutPojo.class);
+        org.flinkextended.flink.ml.operator.util.DataTypes[] typesOutput = {
+            org.flinkextended.flink.ml.operator.util.DataTypes.INT_32,
+            org.flinkextended.flink.ml.operator.util.DataTypes.INT_32
+        };
+        String strOutput =
+                ExampleCodingConfig.createExampleConfigStr(
+                        namesOutput,
+                        typesOutput,
+                        ExampleCodingConfig.ObjectType.ROW,
+                        InferenceOutPojo.class);
         config.getProperties().put(TFConstants.OUTPUT_TF_EXAMPLE_CONFIG, strOutput);
-        config.getProperties().put(MLConstants.ENCODING_CLASS, ExampleCoding.class.getCanonicalName());
-        config.getProperties().put(MLConstants.DECODING_CLASS, ExampleCoding.class.getCanonicalName());
+        config.getProperties()
+                .put(MLConstants.ENCODING_CLASS, ExampleCoding.class.getCanonicalName());
+        config.getProperties()
+                .put(MLConstants.DECODING_CLASS, ExampleCoding.class.getCanonicalName());
     }
 
     private void inferenceWithJava(int batchSize, boolean toStream) throws Exception {
@@ -293,7 +337,7 @@ public class TFMnistInferenceTest {
         tfConfig.setPsNum(0);
         tfConfig.setWorkerNum(2);
         tfConfig.addProperty(TFConstants.TF_INFERENCE_BATCH_SIZE, String.valueOf(batchSize));
-        File testDataDir = new File(testDataPath);
+        File testDataDir = new File(TEST_DATA_PATH);
         File[] files = testDataDir.listFiles();
         StringJoiner pathJoiner = new StringJoiner(",");
         for (int i = 0; i < files.length; ++i) {
@@ -302,56 +346,65 @@ public class TFMnistInferenceTest {
         String paths = pathJoiner.toString();
         String tfrTblName = "tfr_input_table";
 
-        tableEnv.createTemporaryTable(tfrTblName, TableDescriptor
-                .forConnector("TFRToRow")
-                .schema(TypeUtil.rowTypeInfoToSchema(MnistJavaInference.OUT_ROW_TYPE))
-                .option(TFRToRowTableSourceFactory.CONNECTOR_PATH_OPTION, paths)
-                .option(TFRToRowTableSourceFactory.CONNECTOR_EPOCHS_OPTION, "1")
-                .option(TFRToRowTableSourceFactory.CONNECTOR_CONVERTERS_OPTION, MnistJavaInference.CONVERTERS_STRING)
-                .build());
-//		tableEnv.connect(new MnistTFRToRowTable().paths(paths).epochs(1))
-//				.withSchema(new Schema().schema(TypeUtil.rowTypeInfoToSchema(OUT_ROW_TYPE)))
-//				.createTemporaryTable(tfrTblName);
+        tableEnv.createTemporaryTable(
+                tfrTblName,
+                TableDescriptor.forConnector("TFRToRow")
+                        .schema(TypeUtil.rowTypeInfoToSchema(MnistJavaInference.OUT_ROW_TYPE))
+                        .option(TFRToRowTableSourceFactory.CONNECTOR_PATH_OPTION, paths)
+                        .option(TFRToRowTableSourceFactory.CONNECTOR_EPOCHS_OPTION, "1")
+                        .option(
+                                TFRToRowTableSourceFactory.CONNECTOR_CONVERTERS_OPTION,
+                                MnistJavaInference.CONVERTERS_STRING)
+                        .build());
+        //		tableEnv.connect(new MnistTFRToRowTable().paths(paths).epochs(1))
+        //				.withSchema(new Schema().schema(TypeUtil.rowTypeInfoToSchema(OUT_ROW_TYPE)))
+        //				.createTemporaryTable(tfrTblName);
         Table tableSource = tableEnv.from(tfrTblName);
         TableFunction extractFunc = new MnistTFRExtractRowForJavaFunction();
         String extFuncName = "tfr_extract";
         FlinkUtil.registerTableFunction(tableEnv, extFuncName, extractFunc);
 
-        TableSchema extractTableSchema = TableSchema.builder()
-                .field("image", Types.PRIMITIVE_ARRAY(Types.FLOAT()))
-                .field("org_label", Types.LONG()).build();
+        TableSchema extractTableSchema =
+                TableSchema.builder()
+                        .field("image", Types.PRIMITIVE_ARRAY(Types.FLOAT()))
+                        .field("org_label", Types.LONG())
+                        .build();
         String outCols = Joiner.on(",").join(extractTableSchema.getFieldNames());
         String inCols = Joiner.on(",").join(tableSource.getSchema().getFieldNames());
-        Table extracted = tableEnv.sqlQuery(String.format("select %s from %s, LATERAL TABLE(%s(%s)) as T(%s)",
-                outCols, tfrTblName, extFuncName, inCols, outCols));
+        Table extracted =
+                tableEnv.sqlQuery(
+                        String.format(
+                                "select %s from %s, LATERAL TABLE(%s(%s)) as T(%s)",
+                                outCols, tfrTblName, extFuncName, inCols, outCols));
 
-        Schema outSchema = Schema.newBuilder()
-                .column("label_org", DataTypes.INT())
-                .column("predict_label", DataTypes.INT())
-                .build();
+        Schema outSchema =
+                Schema.newBuilder()
+                        .column("label_org", DataTypes.INT())
+                        .column("predict_label", DataTypes.INT())
+                        .build();
 
-//		TableSchema outSchema = TableSchema.builder().field("real_label", Types.LONG()).
-//				field("predicted_label", Types.LONG()).build();
+        //		TableSchema outSchema = TableSchema.builder().field("real_label", Types.LONG()).
+        //				field("predicted_label", Types.LONG()).build();
 
         // set required configs
         tfConfig.addProperty(TFConstants.TF_INFERENCE_EXPORT_PATH, rootPath + "/target/export/0");
         tfConfig.addProperty(TFConstants.TF_INFERENCE_INPUT_TENSOR_NAMES, "image");
         tfConfig.addProperty(TFConstants.TF_INFERENCE_OUTPUT_TENSOR_NAMES, "prediction");
-        tfConfig.addProperty(TFConstants.TF_INFERENCE_OUTPUT_ROW_FIELDS,
-                Joiner.on(",").join(new String[]{"org_label", "prediction"}));
+        tfConfig.addProperty(
+                TFConstants.TF_INFERENCE_OUTPUT_ROW_FIELDS,
+                Joiner.on(",").join(new String[] {"org_label", "prediction"}));
         setExampleCodingTypeRow(tfConfig);
 
-        Table predicted = TFUtils.inference(flinkEnv, tableEnv, statementSet, extracted, tfConfig, outSchema);
+        Table predicted =
+                TFUtils.inference(flinkEnv, tableEnv, statementSet, extracted, tfConfig, outSchema);
 
-        tableEnv.createTemporaryTable("inference_sink", TableDescriptor
-                .forConnector("LogTable")
-                .schema(outSchema)
-                .build());
-//		tableEnv.connect(new LogTable().richSinkFunction(new LogInferAccSink()))
-//				.withSchema(new Schema().schema(outSchema))
-//				.createTemporaryTable("inference_sink");
+        tableEnv.createTemporaryTable(
+                "inference_sink",
+                TableDescriptor.forConnector("LogTable").schema(outSchema).build());
+        //		tableEnv.connect(new LogTable().richSinkFunction(new LogInferAccSink()))
+        //				.withSchema(new Schema().schema(outSchema))
+        //				.createTemporaryTable("inference_sink");
         statementSet.addInsert("inference_sink", predicted);
-        statementSet.execute().getJobClient().get()
-                .getJobExecutionResult().get();
+        statementSet.execute().getJobClient().get().getJobExecutionResult().get();
     }
 }

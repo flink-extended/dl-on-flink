@@ -18,17 +18,15 @@
 
 package org.flinkextended.flink.ml.cluster;
 
-/**
- * machine learning execution.
- */
+/** machine learning execution. */
 public enum ExecutionMode {
-	TRAIN("train"),
-	INFERENCE("inference"),
-	OTHER("other");
+    TRAIN("train"),
+    INFERENCE("inference"),
+    OTHER("other");
 
-	private String val;
+    private String val;
 
-	ExecutionMode(String val) {
-		this.val = val;
-	}
+    ExecutionMode(String val) {
+        this.val = val;
+    }
 }

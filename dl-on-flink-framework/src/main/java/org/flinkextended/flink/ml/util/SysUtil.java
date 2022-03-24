@@ -32,113 +32,102 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 
+/** SysUtil. */
 public class SysUtil {
-	public static final Unsafe UNSAFE;
-	private static String rootPath = null;
-	private static String projectVersion = null;
-	private static String PARENT_NAME = "dl-on-flink";
-	private static Logger LOG = LoggerFactory.getLogger(SysUtil.class);
+    public static final Unsafe UNSAFE;
+    private static String rootPath = null;
+    private static String projectVersion = null;
+    private static final String PARENT_NAME = "dl-on-flink";
+    private static final Logger LOG = LoggerFactory.getLogger(SysUtil.class);
 
-	static {
-		Unsafe instance;
-		try {
-			final Field field = Unsafe.class.getDeclaredField("theUnsafe");
-			field.setAccessible(true);
-			instance = (Unsafe) field.get(null);
-		} catch (Exception ignored) {
-			// Some platforms, notably Android, might not have a sun.misc.Unsafe
-			// implementation with a private `theUnsafe` static instance. In this
-			// case we can try and call the default constructor, which proves
-			// sufficient for Android usage.
-			try {
-				Constructor<Unsafe> c = Unsafe.class.getDeclaredConstructor();
-				c.setAccessible(true);
-				instance = c.newInstance();
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-		}
-		UNSAFE = instance;
-	}
+    static {
+        Unsafe instance;
+        try {
+            final Field field = Unsafe.class.getDeclaredField("theUnsafe");
+            field.setAccessible(true);
+            instance = (Unsafe) field.get(null);
+        } catch (Exception ignored) {
+            // Some platforms, notably Android, might not have a sun.misc.Unsafe
+            // implementation with a private `theUnsafe` static instance. In this
+            // case we can try and call the default constructor, which proves
+            // sufficient for Android usage.
+            try {
+                Constructor<Unsafe> c = Unsafe.class.getDeclaredConstructor();
+                c.setAccessible(true);
+                instance = c.newInstance();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        UNSAFE = instance;
+    }
 
-	/**
-	 * @return call function name.
-	 */
-	public static String _FUNC_() {
-		StackTraceElement traceElement = ((new Exception()).getStackTrace())[1];
-		return traceElement.getMethodName();
-	}
+    /** @return call function name. */
+    @SuppressWarnings({"checkstyle:MethodName"})
+    public static String _FUNC_() {
+        StackTraceElement traceElement = ((new Exception()).getStackTrace())[1];
+        return traceElement.getMethodName();
+    }
 
-	public static void sleepQuietly(int millis) {
-		try {
-			Thread.sleep(millis);
-		} catch (InterruptedException e1) {
-		}
-	}
+    public static void sleepQuietly(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e1) {
+        }
+    }
 
-	/**
-	 * set root path by module name.
-	 * @param name module name.
-	 */
-	public static void setParentName(String name){
-		PARENT_NAME = name;
-	}
+    /** @return maven project root path. */
+    public static String getProjectRootPath() {
+        if (rootPath == null) {
+            // assume the working dir is under root
+            File file = new File(System.getProperty("user.dir"));
+            while (file != null) {
+                File pom = new File(file, "pom.xml");
+                if (pom.exists()) {
+                    try (FileReader fileReader = new FileReader(pom)) {
+                        MavenXpp3Reader reader = new MavenXpp3Reader();
+                        Model model = reader.read(fileReader);
+                        if (model.getArtifactId().equals(PARENT_NAME)) {
+                            rootPath = file.getAbsolutePath();
+                            break;
+                        }
+                    } catch (XmlPullParserException | IOException e) {
+                        LOG.error("Error reading pom files", e);
+                        break;
+                    }
+                }
+                file = file.getParentFile();
+            }
+        }
+        Preconditions.checkState(rootPath != null, "Cannot determine the project's root path");
+        return rootPath;
+    }
 
-	/**
-	 * @return maven project root path.
-	 */
-	public static String getProjectRootPath() {
-		if (rootPath == null) {
-			// assume the working dir is under root
-			File file = new File(System.getProperty("user.dir"));
-			while (file != null) {
-				File pom = new File(file, "pom.xml");
-				if (pom.exists()) {
-					try (FileReader fileReader = new FileReader(pom)) {
-						MavenXpp3Reader reader = new MavenXpp3Reader();
-						Model model = reader.read(fileReader);
-						if (model.getArtifactId().equals(PARENT_NAME)) {
-							rootPath = file.getAbsolutePath();
-							break;
-						}
-					} catch (XmlPullParserException | IOException e) {
-						LOG.error("Error reading pom files", e);
-						break;
-					}
-				}
-				file = file.getParentFile();
-			}
-		}
-		Preconditions.checkState(rootPath != null, "Cannot determine the project's root path");
-		return rootPath;
-	}
-
-	 /**
-	  *  @return maven project current version.
-	  */
-	public static String getProjectVersion() {
-		if (projectVersion == null) {
-			// assume the working dir is under root
-			File file = new File(System.getProperty("user.dir"));
-			while (file != null) {
-				File pom = new File(file, "pom.xml");
-				if (pom.exists()) {
-					try (FileReader fileReader = new FileReader(pom)) {
-						MavenXpp3Reader reader = new MavenXpp3Reader();
-						Model model = reader.read(fileReader);
-						if (model.getArtifactId().equals(PARENT_NAME)) {
-							projectVersion = model.getVersion();
-							break;
-						}
-					} catch (XmlPullParserException | IOException e) {
-						LOG.error("Error reading pom files", e);
-						break;
-					}
-				}
-				file = file.getParentFile();
-			}
-		}
-		Preconditions.checkState(projectVersion != null, "Cannot determine the project's root path");
-		return projectVersion;
-	}
+    /** @return maven project current version. */
+    public static String getProjectVersion() {
+        if (projectVersion == null) {
+            // assume the working dir is under root
+            File file = new File(System.getProperty("user.dir"));
+            while (file != null) {
+                File pom = new File(file, "pom.xml");
+                if (pom.exists()) {
+                    try (FileReader fileReader = new FileReader(pom)) {
+                        MavenXpp3Reader reader = new MavenXpp3Reader();
+                        Model model = reader.read(fileReader);
+                        if (model.getArtifactId().equals(PARENT_NAME)) {
+                            projectVersion = model.getVersion();
+                            break;
+                        }
+                    } catch (XmlPullParserException | IOException e) {
+                        LOG.error("Error reading pom files", e);
+                        break;
+                    }
+                }
+                file = file.getParentFile();
+            }
+        }
+        Preconditions.checkState(
+                projectVersion != null, "Cannot determine the project's root path");
+        return projectVersion;
+    }
 }

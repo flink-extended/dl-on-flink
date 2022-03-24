@@ -19,62 +19,57 @@
 package org.flinkextended.flink.ml.tensorflow.io;
 
 import org.apache.flink.core.io.InputSplit;
+
 import org.apache.hadoop.fs.Path;
 
-/**
- * tensorflow TFRecord format file InputSplit.
- */
+/** tensorflow TFRecord format file InputSplit. */
 public class TFRecordInputSplit implements InputSplit {
-	private final int index;
-	private int epochs = 0;
-	private final String file;
+    private final int index;
+    private int epochs = 0;
+    private final String file;
 
-	public TFRecordInputSplit(int num, String file) {
-		this.index = num;
-		this.file = file;
-	}
+    public TFRecordInputSplit(int num, String file) {
+        this.index = num;
+        this.file = file;
+    }
 
+    @Override
+    public int getSplitNumber() {
+        return index;
+    }
 
-	@Override
-	public int getSplitNumber() {
-		return index;
-	}
+    public Path getPath() {
+        return new Path(file);
+    }
 
-	public Path getPath() {
-		return new Path(file);
-	}
+    public int getEpochs() {
+        return epochs;
+    }
 
-	public int getEpochs() {
-		return epochs;
-	}
+    public void setEpochs(int epochs) {
+        this.epochs = epochs;
+    }
 
-	public void setEpochs(int epochs) {
-		this.epochs = epochs;
-	}
+    public int getIndex() {
+        return index;
+    }
 
-	public int getIndex() {
-		return index;
-	}
+    @Override
+    public String toString() {
+        return "TFRecordInputSplit{" + "index=" + index + ", epochs=" + epochs + '}';
+    }
 
-	@Override
-	public String toString() {
-		return "TFRecordInputSplit{" +
-				"index=" + index +
-				", epochs=" + epochs +
-				'}';
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (getClass().getCanonicalName().equals(obj.getClass().getCanonicalName())) {
+            TFRecordInputSplit other = (TFRecordInputSplit) obj;
+            return index == other.index && file.equals(other.file);
+        }
+        return false;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (getClass().getCanonicalName().equals(obj.getClass().getCanonicalName())) {
-			TFRecordInputSplit other = (TFRecordInputSplit) obj;
-			return index == other.index && file.equals(other.file);
-		}
-		return false;
-	}
-
-	@Override
-	public int hashCode() {
-		return file.hashCode() * 31 + index;
-	}
+    @Override
+    public int hashCode() {
+        return file.hashCode() * 31 + index;
+    }
 }

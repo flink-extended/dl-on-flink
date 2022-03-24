@@ -23,24 +23,19 @@ import org.flinkextended.flink.ml.cluster.node.runner.AbstractScriptRunner;
 
 import java.io.IOException;
 
+/** Dummy class for unit test. */
 public class TestScriptRunner extends AbstractScriptRunner {
 
-	public TestScriptRunner(MLContext mlContext) {
-		super(mlContext);
-	}
+    public TestScriptRunner(MLContext mlContext) {
+        super(mlContext);
+    }
 
-	@Override
-	public void runScript() throws IOException {
+    @Override
+    public void runScript() throws IOException {}
 
-	}
+    @Override
+    public void notifyKillSignal() {}
 
-	@Override
-	public void notifyKillSignal() {
-
-	}
-
-	@Override
-	public void close() throws IOException {
-
-	}
+    @Override
+    public void close() throws IOException {}
 }

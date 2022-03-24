@@ -18,19 +18,21 @@
 
 package org.flinkextended.flink.ml.util;
 
-
 import org.flinkextended.flink.ml.proto.NodeSpec;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+/** Unit test for {@link ProtoUtil}. */
 public class ProtoUtilTest {
-	@Test
-	public void protoToJson() throws Exception {
-		NodeSpec nodeSpec = NodeSpec.newBuilder().setClientPort(1).setIndex(2).setIp("127.0.0.1").build();
-		String json = ProtoUtil.protoToJson(nodeSpec);
-		NodeSpec.Builder builder = NodeSpec.newBuilder();
-		ProtoUtil.jsonToProto(json, builder);
-		assertEquals(nodeSpec, builder.build());
-	}
+    @Test
+    public void protoToJson() throws Exception {
+        NodeSpec nodeSpec =
+                NodeSpec.newBuilder().setClientPort(1).setIndex(2).setIp("127.0.0.1").build();
+        String json = ProtoUtil.protoToJson(nodeSpec);
+        NodeSpec.Builder builder = NodeSpec.newBuilder();
+        ProtoUtil.jsonToProto(json, builder);
+        assertEquals(nodeSpec, builder.build());
+    }
 }

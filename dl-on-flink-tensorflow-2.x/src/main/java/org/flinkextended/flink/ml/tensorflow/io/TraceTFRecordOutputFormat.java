@@ -19,35 +19,32 @@
 package org.flinkextended.flink.ml.tensorflow.io;
 
 import org.flinkextended.flink.ml.util.ProtoUtil;
+
 import org.apache.flink.api.common.io.RichOutputFormat;
 import org.apache.flink.configuration.Configuration;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tensorflow.proto.example.Example;
 
 import java.io.IOException;
 
+/** TraceTFRecordOutputFormat. */
 public class TraceTFRecordOutputFormat extends RichOutputFormat<byte[]> {
-	public static Logger LOG = LoggerFactory.getLogger(TraceTFRecordOutputFormat.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TraceTFRecordOutputFormat.class);
 
-	@Override
-	public void configure(Configuration parameters) {
+    @Override
+    public void configure(Configuration parameters) {}
 
-	}
+    @Override
+    public void open(int taskNumber, int numTasks) throws IOException {}
 
-	@Override
-	public void open(int taskNumber, int numTasks) throws IOException {
-
-	}
-
-	@Override
-	public void writeRecord(byte[] record) throws IOException {
-		Example example = Example.parseFrom(record);
+    @Override
+    public void writeRecord(byte[] record) throws IOException {
+        Example example = Example.parseFrom(record);
         LOG.info(ProtoUtil.protoToJson(example).substring(0, 30));
-	}
+    }
 
-	@Override
-	public void close() throws IOException {
-
-	}
+    @Override
+    public void close() throws IOException {}
 }

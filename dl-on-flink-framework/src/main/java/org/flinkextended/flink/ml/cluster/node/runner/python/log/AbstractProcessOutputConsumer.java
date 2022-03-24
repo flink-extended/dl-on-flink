@@ -22,20 +22,19 @@ import org.flinkextended.flink.ml.cluster.node.MLContext;
 
 import java.util.function.Consumer;
 
+/**
+ * AbstractProcessOutputConsumer is used to consume stdout and stderr from deep learning process.
+ */
 public abstract class AbstractProcessOutputConsumer {
-	protected final MLContext mlContext;
+    protected final MLContext mlContext;
 
-	AbstractProcessOutputConsumer(MLContext mlContext) {
-		this.mlContext = mlContext;
-	}
+    AbstractProcessOutputConsumer(MLContext mlContext) {
+        this.mlContext = mlContext;
+    }
 
-	/**
-	 * @return the consumer that consumes the stdout from the python process.
-	 */
-	abstract Consumer<String> getStdOutConsumer();
+    /** @return the consumer that consumes the stdout from the python process. */
+    abstract Consumer<String> getStdOutConsumer();
 
-	/**
-	 * @return the consumer that consumes the stderr from the python process.
-	 */
-	abstract Consumer<String> getStdErrConsumer();
+    /** @return the consumer that consumes the stderr from the python process. */
+    abstract Consumer<String> getStdErrConsumer();
 }

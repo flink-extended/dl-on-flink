@@ -18,13 +18,11 @@
 
 package org.flinkextended.flink.ml.cluster.role;
 
-/**
- * parameter server role.
- */
+/** parameter server role. */
 public class PsRole extends BaseRole {
 
-	@Override
-	public String name() {
-		return "ps";
-	}
+    @Override
+    public String name() {
+        return "ps";
+    }
 }

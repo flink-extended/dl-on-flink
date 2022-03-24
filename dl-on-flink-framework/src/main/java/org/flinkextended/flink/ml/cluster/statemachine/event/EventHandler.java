@@ -20,8 +20,9 @@ package org.flinkextended.flink.ml.cluster.statemachine.event;
 
 /**
  * abstract event handler.
+ *
  * @param <T> event subclass.
  */
 public interface EventHandler<T extends Event> {
-	void handle(T event) throws Exception;
+    void handle(T event) throws Exception;
 }

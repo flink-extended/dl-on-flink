@@ -25,43 +25,40 @@ import org.flinkextended.flink.ml.util.SpscOffHeapQueue;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-/**
- * TFRecord format implementation of RecordReader.
- */
+/** TFRecord format implementation of RecordReader. */
 public class TFRecordReaderImpl implements RecordReader {
-	private TFRecordReader recordReader;
-	private final DataInputStream input;
-	private boolean eof = false;
+    private TFRecordReader recordReader;
+    private final DataInputStream input;
+    private boolean eof = false;
 
-	public TFRecordReaderImpl(MLContext mlContext) {
-		SpscOffHeapQueue.QueueInputStream in = mlContext.getInReader();
-		input = new DataInputStream(in);
-		recordReader = new TFRecordReader(input, true);
-	}
+    public TFRecordReaderImpl(MLContext mlContext) {
+        SpscOffHeapQueue.QueueInputStream in = mlContext.getInReader();
+        input = new DataInputStream(in);
+        recordReader = new TFRecordReader(input, true);
+    }
 
-	@Override
-	public byte[] tryRead() throws IOException {
-		if (input.available() > 0) {
-			return read();
-		}
-		return null;
-	}
+    @Override
+    public byte[] tryRead() throws IOException {
+        if (input.available() > 0) {
+            return read();
+        }
+        return null;
+    }
 
-	@Override
-	public boolean isReachEOF() {
-		return eof;
-	}
+    @Override
+    public boolean isReachEOF() {
+        return eof;
+    }
 
-	@Override
-	public byte[] read() throws IOException {
-		byte[] bytes = recordReader.read();
-		if(null == bytes){
-			eof = true;
-		}
-		return bytes;
-	}
+    @Override
+    public byte[] read() throws IOException {
+        byte[] bytes = recordReader.read();
+        if (null == bytes) {
+            eof = true;
+        }
+        return bytes;
+    }
 
-	@Override
-	public void close() throws IOException {
-	}
+    @Override
+    public void close() throws IOException {}
 }

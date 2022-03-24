@@ -18,9 +18,7 @@
 
 package org.flinkextended.flink.ml.cluster.master;
 
-/**
- * handle cluster am and node heartbeat timeout event.
- */
+/** handle cluster am and node heartbeat timeout event. */
 public interface HeartbeatListener {
-	void notifyHeartbeatTimeout();
+    void notifyHeartbeatTimeout();
 }

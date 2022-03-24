@@ -24,60 +24,57 @@ import org.apache.flink.streaming.api.graph.StreamNode;
 import java.util.HashMap;
 import java.util.Map;
 
-
-/**
- * flink job helper, this util function help user change flink operator parallelism.
- */
+/** flink job helper, this util function help user change flink operator parallelism. */
 public class FlinkJobHelper {
-	private Map<String, Integer> parallelismMap = new HashMap<>();
-	private int defaultParallelism = -1;
+    private Map<String, Integer> parallelismMap = new HashMap<>();
+    private int defaultParallelism = -1;
 
-	/**
-	 * @param streamGraph flink job StreamGraph.
-	 * @return flink stream graph json string.
-	 */
-	public static String streamPlan(StreamGraph streamGraph) {
-		return streamGraph.getStreamingPlanAsJSON();
-	}
+    /**
+     * @param streamGraph flink job StreamGraph.
+     * @return flink stream graph json string.
+     */
+    public static String streamPlan(StreamGraph streamGraph) {
+        return streamGraph.getStreamingPlanAsJSON();
+    }
 
-	/**
-	 * set flink operator parallelism by name.
-	 * @param name if flink operator name contains name param, then match the pattern.
-	 * @param parallelism set flink operator parallelism.
-	 */
-	public void like(String name, int parallelism) {
-		parallelismMap.put(name, parallelism);
-	}
+    /**
+     * set flink operator parallelism by name.
+     *
+     * @param name if flink operator name contains name param, then match the pattern.
+     * @param parallelism set flink operator parallelism.
+     */
+    public void like(String name, int parallelism) {
+        parallelismMap.put(name, parallelism);
+    }
 
-	/**
-	 * set flink operator default parallelism.
-	 * @param parallelism flink operator default parallelism.
-	 */
-	public void setDefaultParallelism(int parallelism) {
-		defaultParallelism = parallelism;
-	}
+    /**
+     * set flink operator default parallelism.
+     *
+     * @param parallelism flink operator default parallelism.
+     */
+    public void setDefaultParallelism(int parallelism) {
+        defaultParallelism = parallelism;
+    }
 
-	/**
-	 * @param streamGraph flink job StreamGraph.
-	 * @return after user set flink job parallelism, the flink job StreamGraph.
-	 */
-	public StreamGraph matchStreamGraph(StreamGraph streamGraph) {
+    /**
+     * @param streamGraph flink job StreamGraph.
+     * @return after user set flink job parallelism, the flink job StreamGraph.
+     */
+    public StreamGraph matchStreamGraph(StreamGraph streamGraph) {
 
-		for (StreamNode node : streamGraph.getStreamNodes()) {
-			System.out.println(node.getOperatorName());
-			boolean flag = true;
-			for (String key : parallelismMap.keySet()) {
-				if (node.getOperatorName().contains(key)) {
-					node.setParallelism(parallelismMap.get(key));
-					flag = false;
-				}
-			}
-			if (defaultParallelism > 0 && flag) {
-				node.setParallelism(defaultParallelism);
-			}
-		}
-		return streamGraph;
-	}
-
-
+        for (StreamNode node : streamGraph.getStreamNodes()) {
+            System.out.println(node.getOperatorName());
+            boolean flag = true;
+            for (String key : parallelismMap.keySet()) {
+                if (node.getOperatorName().contains(key)) {
+                    node.setParallelism(parallelismMap.get(key));
+                    flag = false;
+                }
+            }
+            if (defaultParallelism > 0 && flag) {
+                node.setParallelism(defaultParallelism);
+            }
+        }
+        return streamGraph;
+    }
 }

@@ -20,83 +20,84 @@ package org.flinkextended.flink.ml.cluster.master;
 
 import org.flinkextended.flink.ml.cluster.rpc.NodeClient;
 import org.flinkextended.flink.ml.proto.NodeSpec;
+
 import com.google.protobuf.MessageOrBuilder;
 
 /**
- * machine learning application master service interface.
- * AM state machine and transition can call am service methods then trigger state machine status change and transition.
+ * machine learning application master service interface. AM state machine and transition can call
+ * am service methods then trigger state machine status change and transition.
  */
 public interface AMService {
-	/**
-	 * @return current machine learning cluster version.
-	 */
-	long version();
+    /** @return current machine learning cluster version. */
+    long version();
 
-	/**
-	 * set current machine learning cluster version.
-	 * @param version
-	 */
-	void setVersion(long version);
+    /**
+     * set current machine learning cluster version.
+     *
+     * @param version
+     */
+    void setVersion(long version);
 
-	/**
-	 * handle transition exception interface.
-	 * @param request am event request.
-	 * @param t transition throw exception.
-	 */
-	void handleStateTransitionError(MessageOrBuilder request, Throwable t);
+    /**
+     * handle transition exception interface.
+     *
+     * @param request am event request.
+     * @param t transition throw exception.
+     */
+    void handleStateTransitionError(MessageOrBuilder request, Throwable t);
 
-	/**
-	 * update am server node client.
-	 * @param key machine learning node identity.
-	 * @param client node client.
-	 */
-	void updateNodeClient(String key, NodeClient client);
+    /**
+     * update am server node client.
+     *
+     * @param key machine learning node identity.
+     * @param client node client.
+     */
+    void updateNodeClient(String key, NodeClient client);
 
-	/**
-	 * send stop request to node server.
-	 * @param nodeSpec machine learning node information.
-	 * @throws Exception
-	 */
-	void stopNode(NodeSpec nodeSpec) throws Exception;
+    /**
+     * send stop request to node server.
+     *
+     * @param nodeSpec machine learning node information.
+     * @throws Exception
+     */
+    void stopNode(NodeSpec nodeSpec) throws Exception;
 
-	/**
-	 * send stop node request to all machine learning cluster nodes.
-	 */
-	void stopAllNodes();
+    /** send stop node request to all machine learning cluster nodes. */
+    void stopAllNodes();
 
-	/**
-	 * send restart request to machine learning node.
-	 * @param nodeSpec machine learning node information.
-	 * @throws Exception
-	 */
-	void restartNode(NodeSpec nodeSpec) throws Exception;
+    /**
+     * send restart request to machine learning node.
+     *
+     * @param nodeSpec machine learning node information.
+     * @throws Exception
+     */
+    void restartNode(NodeSpec nodeSpec) throws Exception;
 
-	/**
-	 * send restart request to all machine learning cluster nodes.
-	 * @throws Exception
-	 */
-	void restartAllNodes() throws Exception;
+    /**
+     * send restart request to all machine learning cluster nodes.
+     *
+     * @throws Exception
+     */
+    void restartAllNodes() throws Exception;
 
-	/**
-	 * start a heartbeat monitor to machine learning cluster node.
-	 * @param nodeSpec node information.
-	 * @param version current machine learning cluster version.
-	 */
-	void startHeartBeatMonitor(NodeSpec nodeSpec, long version);
+    /**
+     * start a heartbeat monitor to machine learning cluster node.
+     *
+     * @param nodeSpec node information.
+     * @param version current machine learning cluster version.
+     */
+    void startHeartBeatMonitor(NodeSpec nodeSpec, long version);
 
-	/**
-	 * stop heart beat monitor of a machine learning node.
-	 * @param clientKey machine learning node identity.
-	 */
-	void stopHeartBeatMonitorNode(String clientKey);
+    /**
+     * stop heart beat monitor of a machine learning node.
+     *
+     * @param clientKey machine learning node identity.
+     */
+    void stopHeartBeatMonitorNode(String clientKey);
 
-	/**
-	 * stop heart beat monitor of all machine learning cluster nodes.
-	 */
-	void stopHeartBeatMonitorAllNode();
+    /** stop heart beat monitor of all machine learning cluster nodes. */
+    void stopHeartBeatMonitorAllNode();
 
-	/**
-	 * stop application master service.
-	 */
-	void stopService();
+    /** stop application master service. */
+    void stopService();
 }

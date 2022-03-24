@@ -20,15 +20,13 @@ package org.flinkextended.flink.ml.coding;
 
 import java.io.IOException;
 
-/**
- * throw exception by coding class.
- */
+/** throw exception by coding class. */
 public class CodingException extends IOException {
-	public CodingException(String message) {
-		super(message);
-	}
+    public CodingException(String message) {
+        super(message);
+    }
 
-	public CodingException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    public CodingException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

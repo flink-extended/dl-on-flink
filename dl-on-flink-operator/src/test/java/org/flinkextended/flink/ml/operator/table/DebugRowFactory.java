@@ -19,6 +19,7 @@
 package org.flinkextended.flink.ml.operator.table;
 
 import org.flinkextended.flink.ml.operator.util.TypeUtil;
+
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.configuration.ConfigOption;
 import org.apache.flink.table.connector.sink.DynamicTableSink;
@@ -29,11 +30,12 @@ import org.apache.flink.table.factories.DynamicTableSourceFactory;
 import java.util.Collections;
 import java.util.Set;
 
-
+/** Factory for {@link TableDebugRowSink} and {@link TableDebugRowSource}. */
 public class DebugRowFactory implements DynamicTableSinkFactory, DynamicTableSourceFactory {
     @Override
     public DynamicTableSink createDynamicTableSink(Context context) {
-        final RowTypeInfo rowTypeInfo = TypeUtil.schemaToRowTypeInfo(context.getCatalogTable().getResolvedSchema());
+        final RowTypeInfo rowTypeInfo =
+                TypeUtil.schemaToRowTypeInfo(context.getCatalogTable().getResolvedSchema());
         return new TableDebugRowSink(rowTypeInfo);
     }
 

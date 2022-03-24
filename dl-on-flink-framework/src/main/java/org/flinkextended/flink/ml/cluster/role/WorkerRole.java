@@ -18,13 +18,11 @@
 
 package org.flinkextended.flink.ml.cluster.role;
 
-/**
- * common worker node role.
- */
+/** common worker node role. */
 public class WorkerRole extends BaseRole {
 
-	@Override
-	public String name() {
-		return "worker";
-	}
+    @Override
+    public String name() {
+        return "worker";
+    }
 }

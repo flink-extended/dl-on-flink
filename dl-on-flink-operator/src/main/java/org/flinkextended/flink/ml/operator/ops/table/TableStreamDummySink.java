@@ -19,15 +19,14 @@
 package org.flinkextended.flink.ml.operator.ops.table;
 
 import org.flinkextended.flink.ml.operator.ops.sink.DummySink;
+
 import org.apache.flink.table.catalog.ResolvedSchema;
 import org.apache.flink.table.connector.ChangelogMode;
 import org.apache.flink.table.connector.sink.DynamicTableSink;
 import org.apache.flink.table.connector.sink.SinkFunctionProvider;
 import org.apache.flink.table.data.RowData;
 
-/**
- * flink table sink wrap DummySink.
- */
+/** flink table sink wrap DummySink. */
 public class TableStreamDummySink extends TableDummySinkBase {
     private final ResolvedSchema schema;
 

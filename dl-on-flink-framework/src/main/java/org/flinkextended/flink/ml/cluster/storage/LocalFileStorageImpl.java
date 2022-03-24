@@ -30,6 +30,10 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
 
+/**
+ * A local file storage implementation of Storage that can support pseudo distributed deep learning
+ * cluster.
+ */
 public class LocalFileStorageImpl implements Storage {
 
     private final String rootDir;
@@ -48,8 +52,11 @@ public class LocalFileStorageImpl implements Storage {
                 // ignore
             }
             this.rootDir = rootPath.toString();
-            this.lockFileChannel = FileChannel.open(Paths.get(this.rootDir, ".lock"),
-                    StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+            this.lockFileChannel =
+                    FileChannel.open(
+                            Paths.get(this.rootDir, ".lock"),
+                            StandardOpenOption.WRITE,
+                            StandardOpenOption.CREATE);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -73,7 +80,9 @@ public class LocalFileStorageImpl implements Storage {
         synchronized (LocalFileStorageImpl.class) {
             try (FileLock lock = lockFileChannel.lock()) {
                 final Path valuePath = Paths.get(rootDir, path);
-                Files.write(valuePath, value,
+                Files.write(
+                        valuePath,
+                        value,
                         StandardOpenOption.WRITE,
                         StandardOpenOption.CREATE,
                         StandardOpenOption.TRUNCATE_EXISTING);

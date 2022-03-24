@@ -19,42 +19,41 @@
 package org.flinkextended.flink.ml.pytorch;
 
 import org.flinkextended.flink.ml.cluster.node.MLContext;
+import org.flinkextended.flink.ml.cluster.node.runner.CommonMLRunner;
 import org.flinkextended.flink.ml.cluster.rpc.NodeServer;
 import org.flinkextended.flink.ml.proto.NodeSpec;
-import org.flinkextended.flink.ml.cluster.node.runner.CommonMLRunner;
 import org.flinkextended.flink.ml.util.IpHostUtil;
 
-/**
- * PyTorch node machine learning scriptRunner.
- */
+/** PyTorch node machine learning scriptRunner. */
 public class PyTorchRunner extends CommonMLRunner {
 
-	public PyTorchRunner(MLContext mlContext, NodeServer server) {
-		super(mlContext, server);
-	}
+    public PyTorchRunner(MLContext mlContext, NodeServer server) {
+        super(mlContext, server);
+    }
 
-	/**
-	 * create PyTorch cluster node information.
-	 * @param reset true: create new node information.
-	 * @return PyTorch cluster node information.
-	 * @throws Exception
-	 */
-	@Override
-	protected NodeSpec createNodeSpec(boolean reset) throws Exception {
-		if (reset || (null == nodeSpec)) {
-			NodeSpec.Builder builder = NodeSpec.newBuilder()
-					.setIp(localIp)
-					.setIndex(mlContext.getIndex())
-					.setClientPort(server.getPort())
-					.setRoleName(mlContext.getRoleName());
-			if (0 == mlContext.getIndex()) {
-				int port = IpHostUtil.getFreePort();
-				builder.putProps(PyTorchConstants.PYTORCH_MASTER_IP, localIp);
-				builder.putProps(PyTorchConstants.PYTORCH_MASTER_PORT, String.valueOf(port));
-			}
-			nodeSpec = builder.build();
-		}
-		return nodeSpec;
-	}
-
+    /**
+     * create PyTorch cluster node information.
+     *
+     * @param reset true: create new node information.
+     * @return PyTorch cluster node information.
+     * @throws Exception
+     */
+    @Override
+    protected NodeSpec createNodeSpec(boolean reset) throws Exception {
+        if (reset || (null == nodeSpec)) {
+            NodeSpec.Builder builder =
+                    NodeSpec.newBuilder()
+                            .setIp(localIp)
+                            .setIndex(mlContext.getIndex())
+                            .setClientPort(server.getPort())
+                            .setRoleName(mlContext.getRoleName());
+            if (0 == mlContext.getIndex()) {
+                int port = IpHostUtil.getFreePort();
+                builder.putProps(PyTorchConstants.PYTORCH_MASTER_IP, localIp);
+                builder.putProps(PyTorchConstants.PYTORCH_MASTER_PORT, String.valueOf(port));
+            }
+            nodeSpec = builder.build();
+        }
+        return nodeSpec;
+    }
 }

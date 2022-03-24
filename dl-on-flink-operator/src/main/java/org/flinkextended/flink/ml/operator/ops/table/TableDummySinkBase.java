@@ -19,6 +19,7 @@
 package org.flinkextended.flink.ml.operator.ops.table;
 
 import org.flinkextended.flink.ml.operator.util.TypeUtil;
+
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.table.api.DataTypes;
 import org.apache.flink.table.catalog.Column;
@@ -27,9 +28,7 @@ import org.apache.flink.table.connector.sink.DynamicTableSink;
 import org.apache.flink.table.runtime.typeutils.InternalTypeInfo;
 import org.apache.flink.types.Row;
 
-/**
- * a common flink table sink function.
- */
+/** a common flink table sink function. */
 public abstract class TableDummySinkBase implements DynamicTableSink {
     private final TypeInformation<Row> outType;
     private String[] columnNames;
@@ -37,14 +36,15 @@ public abstract class TableDummySinkBase implements DynamicTableSink {
 
     protected TableDummySinkBase() {
         this(ResolvedSchema.of(Column.physical("dummy", DataTypes.STRING())));
-//		this(TableSchema.builder().field("dummy", Types.STRING()).build());
+        //		this(TableSchema.builder().field("dummy", Types.STRING()).build());
     }
 
     public TableDummySinkBase(ResolvedSchema schema) {
         outType = TypeUtil.schemaToRowTypeInfo(schema);
         columnNames = schema.getColumnNames().toArray(new String[0]);
-        colTypes = schema.getColumnDataTypes().stream()
-                .map(dataType -> InternalTypeInfo.of(dataType.getLogicalType()))
-                .toArray(TypeInformation[]::new);
+        colTypes =
+                schema.getColumnDataTypes().stream()
+                        .map(dataType -> InternalTypeInfo.of(dataType.getLogicalType()))
+                        .toArray(TypeInformation[]::new);
     }
 }

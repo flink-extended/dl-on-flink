@@ -21,33 +21,33 @@ package org.flinkextended.flink.ml.util;
 import org.junit.Assert;
 import org.junit.Test;
 
+/** Unit test for {@link ReflectUtil}. */
 public class ReflectUtilTest {
-	public static class A {
-		int c = 0;
+    /** Dummy class for testing. */
+    public static class A {
+        int c = 0;
 
-		public A() {
-		}
+        public A() {}
 
-		public A(int c) {
-			this.c = c;
-		}
+        public A(int c) {
+            this.c = c;
+        }
 
-		public int code() {
-			return c;
-		}
-	}
+        public int code() {
+            return c;
+        }
+    }
 
-	@Test
-	public void testCreateInstance() throws Exception {
-		System.out.println(SysUtil._FUNC_());
-		A a = ReflectUtil.createInstance(A.class.getName(), new Class[0], new Object[0]);
-		Assert.assertEquals(0, a.code());
-		Class[] classes = new Class[1];
-		classes[0] = int.class;
-		Object[] objects = new Object[1];
-		objects[0] = 1;
-		a = ReflectUtil.createInstance(A.class.getName(), classes, objects);
-		Assert.assertEquals(1, a.code());
-	}
-
+    @Test
+    public void testCreateInstance() throws Exception {
+        System.out.println(SysUtil._FUNC_());
+        A a = ReflectUtil.createInstance(A.class.getName(), new Class[0], new Object[0]);
+        Assert.assertEquals(0, a.code());
+        Class[] classes = new Class[1];
+        classes[0] = int.class;
+        Object[] objects = new Object[1];
+        objects[0] = 1;
+        a = ReflectUtil.createInstance(A.class.getName(), classes, objects);
+        Assert.assertEquals(1, a.code());
+    }
 }

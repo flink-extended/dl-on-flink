@@ -19,12 +19,13 @@
 package org.flinkextended.flink.ml.operator.table;
 
 import org.flinkextended.flink.ml.operator.sink.DebugRowSink;
+
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.table.connector.ChangelogMode;
 import org.apache.flink.table.connector.sink.DynamicTableSink;
 import org.apache.flink.table.connector.sink.SinkFunctionProvider;
 
-
+/** Table sink for unit test. */
 public class TableDebugRowSink implements DynamicTableSink {
     private RowTypeInfo typeInfo;
 

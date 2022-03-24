@@ -20,7 +20,8 @@ package org.flinkextended.flink.ml.pytorch;
 
 import org.flinkextended.flink.ml.util.MLConstants;
 
+/** Constant for PyTorch on Flink. */
 public class PyTorchConstants {
-	public static final String PYTORCH_MASTER_IP = MLConstants.SYS_PREFIX + "pytorch_master_ip";
-	public static final String PYTORCH_MASTER_PORT = MLConstants.SYS_PREFIX + "pytorch_master_port";
+    public static final String PYTORCH_MASTER_IP = MLConstants.SYS_PREFIX + "pytorch_master_ip";
+    public static final String PYTORCH_MASTER_PORT = MLConstants.SYS_PREFIX + "pytorch_master_port";
 }

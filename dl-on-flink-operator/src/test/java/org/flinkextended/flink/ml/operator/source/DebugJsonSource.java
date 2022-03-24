@@ -18,20 +18,20 @@
 
 package org.flinkextended.flink.ml.operator.source;
 
-import com.alibaba.fastjson.JSONObject;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.ResultTypeQueryable;
 import org.apache.flink.streaming.api.functions.source.ParallelSourceFunction;
 
+import com.alibaba.fastjson.JSONObject;
+
+/** Source that produces json records. */
 public class DebugJsonSource implements ParallelSourceFunction<JSONObject>, ResultTypeQueryable {
 
-    public DebugJsonSource() {
-
-    }
+    public DebugJsonSource() {}
 
     @Override
     public void run(SourceContext<JSONObject> ctx) throws Exception {
-        for(int i = 0; i < 20; i++){
+        for (int i = 0; i < 20; i++) {
             JSONObject object = new JSONObject();
             object.put("key_" + i, "value_" + i);
             ctx.collect(object);
@@ -40,9 +40,7 @@ public class DebugJsonSource implements ParallelSourceFunction<JSONObject>, Resu
     }
 
     @Override
-    public void cancel() {
-
-    }
+    public void cancel() {}
 
     @Override
     public TypeInformation getProducedType() {

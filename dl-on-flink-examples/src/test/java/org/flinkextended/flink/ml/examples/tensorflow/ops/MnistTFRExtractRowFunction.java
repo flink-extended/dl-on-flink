@@ -25,22 +25,23 @@ import org.apache.flink.table.api.Types;
 import org.apache.flink.table.functions.TableFunction;
 import org.apache.flink.types.Row;
 
+/** MnistTFRExtractRowFunction. */
 public class MnistTFRExtractRowFunction extends TableFunction<Row> {
 
-	public void eval(byte[] record) throws Exception {
-		if (record == null) {
-			// TODO: how to avoid this
-			return;
-		}
-		MnistTFRPojo pojo = MnistTFRPojo.from(record);
-		Row res = new Row(2);
-		res.setField(0, pojo.getImage_raw());
-		res.setField(1, pojo.getLabel());
-		collect(res);
-	}
+    public void eval(byte[] record) throws Exception {
+        if (record == null) {
+            // TODO: how to avoid this
+            return;
+        }
+        MnistTFRPojo pojo = MnistTFRPojo.from(record);
+        Row res = new Row(2);
+        res.setField(0, pojo.getImageRaw());
+        res.setField(1, pojo.getLabel());
+        collect(res);
+    }
 
-	@Override
-	public TypeInformation<Row> getResultType() {
-		return Types.ROW(Types.STRING(), Types.INT());
-	}
+    @Override
+    public TypeInformation<Row> getResultType() {
+        return Types.ROW(Types.STRING(), Types.INT());
+    }
 }

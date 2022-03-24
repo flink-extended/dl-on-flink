@@ -20,15 +20,13 @@ package org.flinkextended.flink.ml.cluster.statemachine;
 
 /**
  * state machine abstract.
+ *
  * @param <STATE> state machine state instance.
  * @param <EVENTTYPE> event type.
  * @param <EVENT> event instance.
  */
-public interface StateMachine
-		<STATE extends Enum<STATE>,
-				EVENTTYPE extends Enum<EVENTTYPE>, EVENT> {
-	STATE getCurrentState();
+public interface StateMachine<STATE extends Enum<STATE>, EVENTTYPE extends Enum<EVENTTYPE>, EVENT> {
+    STATE getCurrentState();
 
-	STATE doTransition(EVENTTYPE eventType, EVENT event)
-			throws InvalidStateTransitionException;
+    STATE doTransition(EVENTTYPE eventType, EVENT event) throws InvalidStateTransitionException;
 }

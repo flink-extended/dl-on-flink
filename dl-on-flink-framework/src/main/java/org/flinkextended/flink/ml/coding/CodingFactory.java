@@ -23,29 +23,34 @@ import org.flinkextended.flink.ml.coding.impl.JsonCodingImpl;
 import org.flinkextended.flink.ml.util.MLConstants;
 import org.flinkextended.flink.ml.util.ReflectUtil;
 
-/**
- * a factory to decoding and encoding
- */
+/** a factory to decoding and encoding. */
 public class CodingFactory {
 
+    public static <T> Decoding<T> getDecoding(MLContext mlContext) throws Exception {
+        String className =
+                mlContext
+                        .getProperties()
+                        .getOrDefault(
+                                MLConstants.DECODING_CLASS,
+                                JsonCodingImpl.class.getCanonicalName());
+        Class[] classes = new Class[1];
+        classes[0] = MLContext.class;
+        Object[] objects = new Object[1];
+        objects[0] = mlContext;
+        return ReflectUtil.createInstance(className, classes, objects);
+    }
 
-	public static <T> Decoding<T> getDecoding(MLContext mlContext) throws Exception {
-		String className = mlContext.getProperties().getOrDefault(MLConstants.DECODING_CLASS,
-				JsonCodingImpl.class.getCanonicalName());
-		Class[] classes = new Class[1];
-		classes[0] = MLContext.class;
-		Object[] objects = new Object[1];
-		objects[0] = mlContext;
-		return ReflectUtil.createInstance(className, classes, objects);
-	}
-
-	public static <T> Encoding<T> getEncoding(MLContext mlContext) throws Exception {
-		String className = mlContext.getProperties().getOrDefault(MLConstants.ENCODING_CLASS,
-				JsonCodingImpl.class.getCanonicalName());
-		Class[] classes = new Class[1];
-		classes[0] = MLContext.class;
-		Object[] objects = new Object[1];
-		objects[0] = mlContext;
-		return ReflectUtil.createInstance(className, classes, objects);
-	}
+    public static <T> Encoding<T> getEncoding(MLContext mlContext) throws Exception {
+        String className =
+                mlContext
+                        .getProperties()
+                        .getOrDefault(
+                                MLConstants.ENCODING_CLASS,
+                                JsonCodingImpl.class.getCanonicalName());
+        Class[] classes = new Class[1];
+        classes[0] = MLContext.class;
+        Object[] objects = new Object[1];
+        objects[0] = mlContext;
+        return ReflectUtil.createInstance(className, classes, objects);
+    }
 }

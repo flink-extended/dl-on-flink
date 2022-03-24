@@ -30,6 +30,7 @@ import org.flinkextended.flink.ml.proto.NodeSpecRequest;
 import org.flinkextended.flink.ml.proto.NodeSpecResponse;
 import org.flinkextended.flink.ml.proto.NodeStopRequest;
 import org.flinkextended.flink.ml.proto.NodeStopResponse;
+
 import io.grpc.ManagedChannel;
 import io.grpc.inprocess.InProcessChannelBuilder;
 import io.grpc.inprocess.InProcessServerBuilder;
@@ -45,98 +46,113 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+/** Unit test for {@link NodeClient}. */
 public class NodeClientTest {
-	NodeClient nodeClient;
-	private final NodeServiceGrpc.NodeServiceImplBase serviceImpl =
-			mock(NodeServiceGrpc.NodeServiceImplBase.class, delegatesTo(new TestNodeServiceImplBase()));
+    NodeClient nodeClient;
+    private final NodeServiceGrpc.NodeServiceImplBase serviceImpl =
+            mock(
+                    NodeServiceGrpc.NodeServiceImplBase.class,
+                    delegatesTo(new TestNodeServiceImplBase()));
 
-	@Rule
-	public final GrpcCleanupRule cleanupRule = new GrpcCleanupRule();
+    @Rule public final GrpcCleanupRule cleanupRule = new GrpcCleanupRule();
 
-	@Before
-	public void setUp() throws Exception {
-		String serverName = InProcessServerBuilder.generateName();
-		cleanupRule.register(InProcessServerBuilder.forName(serverName).directExecutor().addService(serviceImpl).build().start());
-		final ManagedChannel channel = cleanupRule.register(InProcessChannelBuilder.forName(serverName).directExecutor().build());
-		nodeClient = new NodeClient("localhost", 8080, channel);
-	}
+    @Before
+    public void setUp() throws Exception {
+        String serverName = InProcessServerBuilder.generateName();
+        cleanupRule.register(
+                InProcessServerBuilder.forName(serverName)
+                        .directExecutor()
+                        .addService(serviceImpl)
+                        .build()
+                        .start());
+        final ManagedChannel channel =
+                cleanupRule.register(
+                        InProcessChannelBuilder.forName(serverName).directExecutor().build());
+        nodeClient = new NodeClient("localhost", 8080, channel);
+    }
 
-	@Test
-	public void testServerName() {
-		assertEquals("Node(localhost:8080)", nodeClient.serverName());
-	}
+    @Test
+    public void testServerName() {
+        assertEquals("Node(localhost:8080)", nodeClient.serverName());
+    }
 
-	@Test
-	public void testGetMLContext() {
-		nodeClient.getMLContext();
-		verify(serviceImpl).getContext(any(ContextRequest.class), any());
-	}
+    @Test
+    public void testGetMLContext() {
+        nodeClient.getMLContext();
+        verify(serviceImpl).getContext(any(ContextRequest.class), any());
+    }
 
-	@Test
-	public void testStopNode() {
-		nodeClient.stopNode();
-		verify(serviceImpl).nodeStop(any(NodeStopRequest.class), any());
-	}
+    @Test
+    public void testStopNode() {
+        nodeClient.stopNode();
+        verify(serviceImpl).nodeStop(any(NodeStopRequest.class), any());
+    }
 
-	@Test
-	public void testStopNodeBlocking() {
-		nodeClient.stopNodeBlocking();
-		verify(serviceImpl).nodeStop(any(NodeStopRequest.class), any());
-	}
+    @Test
+    public void testStopNodeBlocking() {
+        nodeClient.stopNodeBlocking();
+        verify(serviceImpl).nodeStop(any(NodeStopRequest.class), any());
+    }
 
-	@Test
-	public void testRestartNode() {
-		nodeClient.restartNode();
-		verify(serviceImpl).nodeRestart(any(NodeRestartRequest.class), any());
-	}
+    @Test
+    public void testRestartNode() {
+        nodeClient.restartNode();
+        verify(serviceImpl).nodeRestart(any(NodeRestartRequest.class), any());
+    }
 
-	@Test
-	public void testGetFinishWorker() {
-		nodeClient.getFinishWorker();
-		verify(serviceImpl).getFinishWorker(any(NodeSimpleRequest.class), any());
-	}
+    @Test
+    public void testGetFinishWorker() {
+        nodeClient.getFinishWorker();
+        verify(serviceImpl).getFinishWorker(any(NodeSimpleRequest.class), any());
+    }
 
-	@Test
-	public void testStopJob() {
-		nodeClient.stopJob();
-		verify(serviceImpl).finishJob(any(NodeSimpleRequest.class), any());
-	}
+    @Test
+    public void testStopJob() {
+        nodeClient.stopJob();
+        verify(serviceImpl).finishJob(any(NodeSimpleRequest.class), any());
+    }
 
-	private static class TestNodeServiceImplBase extends NodeServiceGrpc.NodeServiceImplBase {
-		@Override
-		public void getNodeSpec(NodeSpecRequest request, StreamObserver<NodeSpecResponse> responseObserver) {
-			responseObserver.onNext(NodeSpecResponse.newBuilder().build());
-			responseObserver.onCompleted();
-		}
+    private static class TestNodeServiceImplBase extends NodeServiceGrpc.NodeServiceImplBase {
+        @Override
+        public void getNodeSpec(
+                NodeSpecRequest request, StreamObserver<NodeSpecResponse> responseObserver) {
+            responseObserver.onNext(NodeSpecResponse.newBuilder().build());
+            responseObserver.onCompleted();
+        }
 
-		@Override
-		public void nodeRestart(NodeRestartRequest request, StreamObserver<NodeRestartResponse> responseObserver) {
-			responseObserver.onNext(NodeRestartResponse.newBuilder().build());
-			responseObserver.onCompleted();
-		}
+        @Override
+        public void nodeRestart(
+                NodeRestartRequest request, StreamObserver<NodeRestartResponse> responseObserver) {
+            responseObserver.onNext(NodeRestartResponse.newBuilder().build());
+            responseObserver.onCompleted();
+        }
 
-		@Override
-		public void nodeStop(NodeStopRequest request, StreamObserver<NodeStopResponse> responseObserver) {
-			responseObserver.onNext(NodeStopResponse.newBuilder().build());
-			responseObserver.onCompleted();
-		}
+        @Override
+        public void nodeStop(
+                NodeStopRequest request, StreamObserver<NodeStopResponse> responseObserver) {
+            responseObserver.onNext(NodeStopResponse.newBuilder().build());
+            responseObserver.onCompleted();
+        }
 
-		@Override
-		public void getContext(ContextRequest request, StreamObserver<ContextResponse> responseObserver) {
-			responseObserver.onNext(ContextResponse.newBuilder().build());
-			responseObserver.onCompleted();
-		}
+        @Override
+        public void getContext(
+                ContextRequest request, StreamObserver<ContextResponse> responseObserver) {
+            responseObserver.onNext(ContextResponse.newBuilder().build());
+            responseObserver.onCompleted();
+        }
 
-		@Override
-		public void getFinishWorker(NodeSimpleRequest request, StreamObserver<FinishWorkerResponse> responseObserver) {
-			responseObserver.onNext(FinishWorkerResponse.newBuilder().build());
-			responseObserver.onCompleted();
-		}
+        @Override
+        public void getFinishWorker(
+                NodeSimpleRequest request, StreamObserver<FinishWorkerResponse> responseObserver) {
+            responseObserver.onNext(FinishWorkerResponse.newBuilder().build());
+            responseObserver.onCompleted();
+        }
 
-		@Override
-		public void finishJob(NodeSimpleRequest request, StreamObserver<NodeSimpleResponse> responseObserver) {
-			responseObserver.onNext(NodeSimpleResponse.newBuilder().build());
-			responseObserver.onCompleted();
-		}
-	}
+        @Override
+        public void finishJob(
+                NodeSimpleRequest request, StreamObserver<NodeSimpleResponse> responseObserver) {
+            responseObserver.onNext(NodeSimpleResponse.newBuilder().build());
+            responseObserver.onCompleted();
+        }
+    }
 }
