@@ -24,6 +24,7 @@ import com.google.common.base.Joiner;
 public class InferenceOutPojo {
     @SuppressWarnings("checkstyle:MemberName")
     public int predict_label;
+
     @SuppressWarnings("checkstyle:MemberName")
     public int label_org;
 

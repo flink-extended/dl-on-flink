@@ -29,6 +29,7 @@ public class MnistTFRPojo {
 
     @SuppressWarnings("checkstyle:MemberName")
     public String image_raw;
+
     public int label;
 
     public String getImageRaw() {
