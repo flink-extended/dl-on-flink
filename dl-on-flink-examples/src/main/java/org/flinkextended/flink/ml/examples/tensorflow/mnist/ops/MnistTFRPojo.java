@@ -27,15 +27,16 @@ import java.util.List;
 /** MnistTFRPojo. */
 public class MnistTFRPojo {
 
-    public String imageRaw;
+    @SuppressWarnings("checkstyle:MemberName")
+    public String image_raw;
     public int label;
 
     public String getImageRaw() {
-        return imageRaw;
+        return image_raw;
     }
 
     public void setImageRaw(String imageRaw) {
-        this.imageRaw = imageRaw;
+        this.image_raw = imageRaw;
     }
 
     public int getLabel() {

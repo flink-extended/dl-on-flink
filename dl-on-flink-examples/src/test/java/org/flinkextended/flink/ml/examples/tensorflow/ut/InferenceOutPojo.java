@@ -22,11 +22,13 @@ import com.google.common.base.Joiner;
 
 /** Pojo for unit test. */
 public class InferenceOutPojo {
-    public int predictLabel;
-    public int labelOrg;
+    @SuppressWarnings("checkstyle:MemberName")
+    public int predict_label;
+    @SuppressWarnings("checkstyle:MemberName")
+    public int label_org;
 
     @Override
     public String toString() {
-        return Joiner.on(",").join(predictLabel, labelOrg);
+        return Joiner.on(",").join(predict_label, label_org);
     }
 }
