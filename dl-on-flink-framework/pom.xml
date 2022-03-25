@@ -189,6 +189,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-testing</artifactId>
             <scope>test</scope>
@@ -316,11 +321,13 @@
                         </goals>
                         <configuration>
                             <skip>${skip.install.py.dep}</skip>
+                            <!--suppress UnresolvedMavenProperty -->
                             <executable>${pip.version}</executable>
                             <workingDirectory>${project.basedir}/python
                             </workingDirectory>
                             <arguments>
                                 <argument>install</argument>
+                                <!--suppress UnresolvedMavenProperty -->
                                 <argument>${virtualenv.option}</argument>
                                 <argument>.</argument>
                             </arguments>
