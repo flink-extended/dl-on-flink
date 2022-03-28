@@ -52,7 +52,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * machine learning cluster corresponds to input format. NodeSource class created with
  * InputFormatSourceFunction class and MLInputFormat.
  */
-public class MLInputFormat<OUT> extends RichInputFormat<OUT, MLInputSplit> {
+public class MLInputFormat<OUT> extends RichInputFormat<OUT, NodeInputSplit> {
     private static final Logger LOG = LoggerFactory.getLogger(MLInputFormat.class);
 
     private MLConfig mlConfig;
@@ -88,17 +88,17 @@ public class MLInputFormat<OUT> extends RichInputFormat<OUT, MLInputSplit> {
      * @return machine learning cluster flink input split.
      */
     @Override
-    public MLInputSplit[] createInputSplits(int minNumSplits) {
+    public NodeInputSplit[] createInputSplits(int minNumSplits) {
         minNumSplits = mlConfig.getRoleParallelismMap().getOrDefault(role.name(), 1);
-        MLInputSplit[] inputSplit = new MLInputSplit[minNumSplits];
+        NodeInputSplit[] inputSplit = new NodeInputSplit[minNumSplits];
         for (int i = 0; i < minNumSplits; i++) {
-            inputSplit[i] = new MLInputSplit(minNumSplits, i);
+            inputSplit[i] = new NodeInputSplit(minNumSplits, i);
         }
         return inputSplit;
     }
 
     @Override
-    public InputSplitAssigner getInputSplitAssigner(MLInputSplit[] inputSplits) {
+    public InputSplitAssigner getInputSplitAssigner(NodeInputSplit[] inputSplits) {
         return new DefaultInputSplitAssigner(inputSplits);
         //		boolean[] assigned = new boolean[inputSplits.length];
         //		return new InputSplitAssigner() {
@@ -126,7 +126,7 @@ public class MLInputFormat<OUT> extends RichInputFormat<OUT, MLInputSplit> {
      * @throws IOException
      */
     @Override
-    public void open(MLInputSplit split) throws IOException {
+    public void open(NodeInputSplit split) throws IOException {
         ResourcesUtils.parseGpuInfo(getRuntimeContext(), mlConfig);
         mlContext =
                 new MLContext(

@@ -20,12 +20,14 @@ package org.flinkextended.flink.ml.operator.ops.inputformat;
 
 import org.apache.flink.core.io.InputSplit;
 
-/** machine learning cluster corresponds to input split. */
-public class MLInputSplit implements InputSplit {
-    private int num = 1;
-    private int index = 0;
+import java.util.Objects;
 
-    public MLInputSplit(int num, int index) {
+/** machine learning cluster corresponds to input split. */
+public class NodeInputSplit implements InputSplit {
+    private final int num;
+    private final int index;
+
+    public NodeInputSplit(int num, int index) {
         this.num = num;
         this.index = index;
     }
@@ -39,5 +41,22 @@ public class MLInputSplit implements InputSplit {
     @Override
     public int getSplitNumber() {
         return index;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        NodeInputSplit that = (NodeInputSplit) o;
+        return num == that.num && index == that.index;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(num, index);
     }
 }

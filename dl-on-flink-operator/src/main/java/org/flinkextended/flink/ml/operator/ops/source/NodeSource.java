@@ -18,11 +18,16 @@
 
 package org.flinkextended.flink.ml.operator.ops.source;
 
+import org.flinkextended.flink.ml.cluster.ClusterConfig;
 import org.flinkextended.flink.ml.cluster.ExecutionMode;
 import org.flinkextended.flink.ml.cluster.MLConfig;
 import org.flinkextended.flink.ml.cluster.role.BaseRole;
+import org.flinkextended.flink.ml.operator.ops.inputformat.AMInputFormat;
 import org.flinkextended.flink.ml.operator.ops.inputformat.MLInputFormat;
+import org.flinkextended.flink.ml.operator.ops.inputformat.NodeInputFormat;
+import org.flinkextended.flink.ml.operator.ops.inputformat.NodeInputSplit;
 
+import org.apache.flink.api.common.io.InputFormat;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.ResultTypeQueryable;
 import org.apache.flink.streaming.api.functions.source.InputFormatSourceFunction;
@@ -32,11 +37,12 @@ import org.apache.flink.streaming.api.functions.source.InputFormatSourceFunction
  *
  * @param <OUT> machine learning cluster node output object class.
  */
-public class NodeSource<OUT> extends InputFormatSourceFunction<OUT> implements ResultTypeQueryable {
+public class NodeSource<OUT> extends InputFormatSourceFunction<OUT>
+        implements ResultTypeQueryable<OUT> {
 
-    private TypeInformation<OUT> outTypeInformation;
+    private final TypeInformation<OUT> outTypeInformation;
 
-    public NodeSource(MLInputFormat format, TypeInformation<OUT> typeInfo) {
+    public NodeSource(InputFormat<OUT, NodeInputSplit> format, TypeInformation<OUT> typeInfo) {
         super(format, typeInfo);
         outTypeInformation = typeInfo;
     }
@@ -57,8 +63,35 @@ public class NodeSource<OUT> extends InputFormatSourceFunction<OUT> implements R
         return new NodeSource<>(tfInputFormat, outTI);
     }
 
+    /**
+     * Create a deep learning cluster node with the given node type and the given {@link
+     * ClusterConfig} as Flink source.
+     *
+     * @param nodeType The node type of the node.
+     * @param config The ClusterConfig of the node.
+     * @param outTI The output type of the node.
+     * @return Flink source that runs the node.
+     */
+    public static <OUT> NodeSource<OUT> createNodeSource(
+            String nodeType, ClusterConfig config, TypeInformation<OUT> outTI) {
+        final NodeInputFormat<OUT> inputFormat = new NodeInputFormat<>(nodeType, config);
+        return new NodeSource<>(inputFormat, outTI);
+    }
+
+    /**
+     * Create a deep learning cluster Application Master node as Flink source with the {@link
+     * ClusterConfig}.
+     *
+     * @param config The ClusterConfig of the node.
+     * @return Flink Source that runs the Application Master.
+     */
+    public static NodeSource<Void> createAMNodeSource(ClusterConfig config) {
+        final AMInputFormat amInputFormat = new AMInputFormat(config);
+        return new NodeSource<>(amInputFormat, TypeInformation.of(Void.class));
+    }
+
     @Override
-    public TypeInformation getProducedType() {
+    public TypeInformation<OUT> getProducedType() {
         return outTypeInformation;
     }
 }

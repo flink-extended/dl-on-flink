@@ -20,32 +20,52 @@ package org.flinkextended.flink.ml.operator.util;
 
 import org.flinkextended.flink.ml.cluster.MLConfig;
 
+import org.apache.flink.api.common.cache.DistributedCache;
+import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 
 import java.io.IOException;
+import java.util.List;
 
 import static org.flinkextended.flink.ml.util.DummyContext.createDummyMLConfig;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.verify;
 
 /** Unit test for {@link PythonFileUtil}. */
 public class PythonFileUtilTest {
 
     @Test
     public void testRegisterPythonLibFilesWithoutScheme() throws IOException {
-        final StreamExecutionEnvironment env = Mockito.mock(StreamExecutionEnvironment.class);
-        final ArgumentCaptor<String> nameCaptor = ArgumentCaptor.forClass(String.class);
-        final ArgumentCaptor<String> pathCaptor = ArgumentCaptor.forClass(String.class);
+        final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         final MLConfig mlConfig = createDummyMLConfig();
         mlConfig.setPythonFiles(new String[] {"/tmp/test.py"});
         PythonFileUtil.registerPythonFiles(env, mlConfig);
 
-        verify(env).registerCachedFile(pathCaptor.capture(), nameCaptor.capture());
-        assertEquals("/tmp/test.py", pathCaptor.getValue());
-        assertEquals("test.py", nameCaptor.getValue());
+        final List<Tuple2<String, DistributedCache.DistributedCacheEntry>> cachedFiles =
+                env.getCachedFiles();
+        assertEquals(1, cachedFiles.size());
+        assertEquals("/tmp/test.py", cachedFiles.get(0).f1.filePath);
+        assertEquals("test.py", cachedFiles.get(0).f0);
+    }
+
+    @Test
+    public void testRegisterPythonLibFilesSameFileTwice() throws IOException {
+        final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        PythonFileUtil.registerPythonLibFilesIfNotExist(env, "/tmp/test.py");
+        PythonFileUtil.registerPythonLibFilesIfNotExist(env, "/tmp/test.py");
+
+        final List<Tuple2<String, DistributedCache.DistributedCacheEntry>> cachedFiles =
+                env.getCachedFiles();
+        assertEquals(1, cachedFiles.size());
+        assertEquals("/tmp/test.py", cachedFiles.get(0).f1.filePath);
+        assertEquals("test.py", cachedFiles.get(0).f0);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testRegisterPythonLibFilesSameFileTwiceWithDifferentPath() throws IOException {
+        final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        PythonFileUtil.registerPythonLibFilesIfNotExist(env, "/tmp/test.py");
+        PythonFileUtil.registerPythonLibFilesIfNotExist(env, "/tmp1/test.py");
     }
 }
