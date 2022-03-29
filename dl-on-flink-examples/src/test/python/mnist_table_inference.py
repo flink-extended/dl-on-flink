@@ -61,7 +61,7 @@ def input_iter(context, batch_size):
 
 def map_fun(context):
     tf_context = TFContext(context)
-    job_name = tf_context.get_role_name()
+    job_name = tf_context.get_node_type()
     task_index = tf_context.get_index()
     cluster_json = tf_context.get_tf_cluster()
     print (cluster_json)

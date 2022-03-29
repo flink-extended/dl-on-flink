@@ -41,7 +41,7 @@ def build_graph():
 
 def map_func(context):
     tf_context = TFContext(context)
-    job_name = tf_context.get_role_name()
+    job_name = tf_context.get_node_type()
     index = tf_context.get_index()
     cluster_json = tf_context.get_tf_cluster()
     print (cluster_json)

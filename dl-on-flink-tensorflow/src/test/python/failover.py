@@ -24,7 +24,7 @@ import logging.config
 def map_func(context):
     key = context.identity
     index = context.index
-    fail_num = context.get_failed_num()
+    fail_num = context.get_current_attempt_index()
     logging.info(key + " fail num: " + str(fail_num))
     sys.stdout.flush()
     if 1 == index and fail_num < 2:
