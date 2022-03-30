@@ -70,15 +70,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
-/** Unit test for {@link TFUtils}. */
-public class TFUtilsTest {
+/** Unit test for {@link TFUtilsLegacy}. */
+public class TFUtilsLegacyTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TFUtilsTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TFUtilsLegacyTest.class);
 
     private StreamExecutionEnvironment env;
     private TestTFConfig tfConfig;
     private StreamTableEnvironment tEnv;
-    private TFUtilsTest.TestExecutor executor;
+    private TFUtilsLegacyTest.TestExecutor executor;
 
     @Before
     public void setUp() throws Exception {
@@ -95,7 +95,7 @@ public class TFUtilsTest {
 
     @Test
     public void testDataStreamTrainNoInputNoOutput() throws IOException {
-        TFUtils.train(env, tfConfig);
+        TFUtilsLegacy.train(env, tfConfig);
         assertNull(tfConfig.getProperty(MLConstants.CONFIG_JOB_HAS_INPUT));
         assertEquals(1, env.getCachedFiles().size());
         assertEquals("test.py", tfConfig.getProperty(MLConstants.PYTHON_FILES));
@@ -112,7 +112,7 @@ public class TFUtilsTest {
     @Test
     public void testDataStreamTrainNoInputNoOutputWithChief() throws IOException {
         tfConfig.getProperties().put(TFConstants.TF_IS_CHIEF_ALONE, "true");
-        TFUtils.train(env, tfConfig);
+        TFUtilsLegacy.train(env, tfConfig);
         assertNull(tfConfig.getProperty(MLConstants.CONFIG_JOB_HAS_INPUT));
         assertEquals(1, env.getCachedFiles().size());
         assertEquals("test.py", tfConfig.getProperty(MLConstants.PYTHON_FILES));
@@ -129,7 +129,7 @@ public class TFUtilsTest {
 
     @Test
     public void testDataStreamTrainNoInputWithOutput() throws IOException {
-        final DataStream<Integer> workerOutput = TFUtils.train(env, tfConfig, Integer.class);
+        final DataStream<Integer> workerOutput = TFUtilsLegacy.train(env, tfConfig, Integer.class);
         workerOutput.addSink(new PrintSinkFunction<>());
         assertNull(tfConfig.getProperty(MLConstants.CONFIG_JOB_HAS_INPUT));
         assertEquals(1, env.getCachedFiles().size());
@@ -147,7 +147,7 @@ public class TFUtilsTest {
     @Test
     public void testDataStreamTrainWithInputNoOutput() throws IOException {
         final DataStreamSource<Integer> source = env.fromElements(1, 2, 3);
-        TFUtils.train(env, source, tfConfig);
+        TFUtilsLegacy.train(env, source, tfConfig);
         assertEquals("true", tfConfig.getProperty(MLConstants.CONFIG_JOB_HAS_INPUT));
         assertEquals(1, env.getCachedFiles().size());
         assertEquals("test.py", tfConfig.getProperty(MLConstants.PYTHON_FILES));
@@ -165,7 +165,7 @@ public class TFUtilsTest {
     public void testDataStreamTrainWithInputAndOutput() throws IOException {
         final DataStreamSource<Integer> source = env.fromElements(1, 2, 3);
         final DataStream<Integer> workerOutput =
-                TFUtils.train(env, source, tfConfig, Integer.class);
+                TFUtilsLegacy.train(env, source, tfConfig, Integer.class);
         workerOutput.addSink(new PrintSinkFunction<>());
         assertEquals("true", tfConfig.getProperty(MLConstants.CONFIG_JOB_HAS_INPUT));
         assertEquals(1, env.getCachedFiles().size());
@@ -184,7 +184,7 @@ public class TFUtilsTest {
     public void testDataStreamInference() throws IOException {
         final DataStreamSource<Integer> source = env.fromElements(1, 2, 3);
         final DataStream<Integer> workerOutput =
-                TFUtils.inference(env, source, tfConfig, Integer.class);
+                TFUtilsLegacy.inference(env, source, tfConfig, Integer.class);
         workerOutput.addSink(new PrintSinkFunction<>());
         assertEquals("true", tfConfig.getProperty(MLConstants.CONFIG_JOB_HAS_INPUT));
         assertEquals(1, env.getCachedFiles().size());
@@ -201,7 +201,7 @@ public class TFUtilsTest {
 
     @Test
     public void testStartTensorboard() throws IOException {
-        TFUtils.startTensorBoard(env, tfConfig);
+        TFUtilsLegacy.startTensorBoard(env, tfConfig);
         final StreamGraph streamGraph = env.getStreamGraph();
         LOG.info(streamGraph.getStreamingPlanAsJSON());
         checkTensorboardRole(streamGraph, 1);
@@ -221,7 +221,7 @@ public class TFUtilsTest {
     @Test
     public void testTableTrainNoInputNoOutput() throws IOException {
         final StatementSet statementSet = tEnv.createStatementSet();
-        TFUtils.train(env, tEnv, statementSet, null, tfConfig, null);
+        TFUtilsLegacy.train(env, tEnv, statementSet, null, tfConfig, null);
         assertNull(tfConfig.getProperty(MLConstants.CONFIG_JOB_HAS_INPUT));
         assertEquals(1, env.getCachedFiles().size());
         assertEquals("test.py", tfConfig.getProperty(MLConstants.PYTHON_FILES));
@@ -242,7 +242,7 @@ public class TFUtilsTest {
     public void testTableTrainNoInputNoOutputWithChief() throws IOException {
         tfConfig.getProperties().put(TFConstants.TF_IS_CHIEF_ALONE, "true");
         final StatementSet statementSet = tEnv.createStatementSet();
-        TFUtils.train(env, tEnv, statementSet, null, tfConfig, null);
+        TFUtilsLegacy.train(env, tEnv, statementSet, null, tfConfig, null);
         assertNull(tfConfig.getProperty(MLConstants.CONFIG_JOB_HAS_INPUT));
         assertEquals(1, env.getCachedFiles().size());
         final Map<String, Integer> roleMap = tfConfig.getMlConfig().getRoleParallelismMap();
@@ -263,7 +263,8 @@ public class TFUtilsTest {
     public void testTableTrainNoInputWithOutput() throws IOException {
         final StatementSet statementSet = tEnv.createStatementSet();
         final Schema outSchema = Schema.newBuilder().column("field", DataTypes.INT()).build();
-        final Table outTable = TFUtils.train(env, tEnv, statementSet, null, tfConfig, outSchema);
+        final Table outTable =
+                TFUtilsLegacy.train(env, tEnv, statementSet, null, tfConfig, outSchema);
 
         tEnv.executeSql("CREATE TABLE table_sink(field INTEGER) WITH ('connector'='print')");
         statementSet.addInsert("table_sink", outTable);
@@ -290,7 +291,7 @@ public class TFUtilsTest {
         final Table source = tEnv.from("table_source");
 
         final StatementSet statementSet = tEnv.createStatementSet();
-        TFUtils.train(env, tEnv, statementSet, source, tfConfig, null);
+        TFUtilsLegacy.train(env, tEnv, statementSet, source, tfConfig, null);
 
         assertEquals("true", tfConfig.getProperty(MLConstants.CONFIG_JOB_HAS_INPUT));
         assertEquals(1, env.getCachedFiles().size());
@@ -316,7 +317,8 @@ public class TFUtilsTest {
         final StatementSet statementSet = tEnv.createStatementSet();
 
         final Schema outSchema = Schema.newBuilder().column("field", DataTypes.INT()).build();
-        final Table outTable = TFUtils.train(env, tEnv, statementSet, source, tfConfig, outSchema);
+        final Table outTable =
+                TFUtilsLegacy.train(env, tEnv, statementSet, source, tfConfig, outSchema);
 
         tEnv.executeSql("CREATE TABLE table_sink(field INTEGER) WITH ('connector'='print')");
         statementSet.addInsert("table_sink", outTable);
@@ -346,7 +348,7 @@ public class TFUtilsTest {
 
         final Schema outSchema = Schema.newBuilder().column("field", DataTypes.INT()).build();
         final Table outTable =
-                TFUtils.inference(env, tEnv, statementSet, source, tfConfig, outSchema);
+                TFUtilsLegacy.inference(env, tEnv, statementSet, source, tfConfig, outSchema);
 
         tEnv.executeSql("CREATE TABLE table_sink(field INTEGER) WITH ('connector'='print')");
         statementSet.addInsert("table_sink", outTable);
@@ -370,7 +372,7 @@ public class TFUtilsTest {
     @Test
     public void testTableStartTensorboard() throws IOException {
         final StatementSet statementSet = tEnv.createStatementSet();
-        TFUtils.startTensorBoard(env, tEnv, statementSet, tfConfig);
+        TFUtilsLegacy.startTensorBoard(env, tEnv, statementSet, tfConfig);
 
         statementSet.execute();
         assertThat(executor.getPipeline(), instanceOf(StreamGraph.class));

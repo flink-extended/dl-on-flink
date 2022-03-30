@@ -57,8 +57,9 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /** Tensorflow on Flink API to run Tensorflow training and inference in Flink. */
-public class TFUtils {
-    private static final Logger LOG = LoggerFactory.getLogger(TFUtils.class);
+@Deprecated
+public class TFUtilsLegacy {
+    private static final Logger LOG = LoggerFactory.getLogger(TFUtilsLegacy.class);
     static final Schema DUMMY_SCHEMA = Schema.newBuilder().column("a", DataTypes.STRING()).build();
     private static AtomicInteger count = new AtomicInteger(0);
 

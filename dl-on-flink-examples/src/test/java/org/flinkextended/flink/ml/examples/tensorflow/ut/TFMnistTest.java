@@ -25,7 +25,7 @@ import org.flinkextended.flink.ml.examples.tensorflow.ops.MnistTFRExtractPojoMap
 import org.flinkextended.flink.ml.operator.util.DataTypes;
 import org.flinkextended.flink.ml.operator.util.TypeUtil;
 import org.flinkextended.flink.ml.tensorflow.client.TFConfig;
-import org.flinkextended.flink.ml.tensorflow.client.TFUtils;
+import org.flinkextended.flink.ml.tensorflow.client.TFUtilsLegacy;
 import org.flinkextended.flink.ml.tensorflow.coding.ExampleCoding;
 import org.flinkextended.flink.ml.tensorflow.coding.ExampleCodingConfig;
 import org.flinkextended.flink.ml.tensorflow.io.TFRToRowTableSourceFactory;
@@ -96,7 +96,7 @@ public class TFMnistTest {
         System.out.println("Run Test: " + SysUtil._FUNC_());
         TFConfig config = buildTFConfig(mnist_dist);
         StreamExecutionEnvironment flinkEnv = StreamExecutionEnvironment.getExecutionEnvironment();
-        TFUtils.train(flinkEnv, config);
+        TFUtilsLegacy.train(flinkEnv, config);
         JobExecutionResult result = flinkEnv.execute();
         System.out.println(result.getNetRuntime());
     }
@@ -109,7 +109,7 @@ public class TFMnistTest {
         TableEnvironment tableEnv = StreamTableEnvironment.create(flinkEnv);
         StatementSet statementSet = tableEnv.createStatementSet();
         TFConfig config = buildTFConfig(mnist_dist);
-        TFUtils.train(flinkEnv, tableEnv, statementSet, null, config, null);
+        TFUtilsLegacy.train(flinkEnv, tableEnv, statementSet, null, config, null);
 
         statementSet.execute().getJobClient().get().getJobExecutionResult().get();
     }
@@ -131,7 +131,7 @@ public class TFMnistTest {
                 input.flatMap(new MnistTFRExtractPojoMapOp())
                         .setParallelism(input.getParallelism());
         setExampleCodingType(config);
-        TFUtils.train(flinkEnv, pojoDataStream, config);
+        TFUtilsLegacy.train(flinkEnv, pojoDataStream, config);
         JobExecutionResult result = flinkEnv.execute();
         System.out.println("Run Finish:" + result.getNetRuntime());
     }
@@ -196,7 +196,7 @@ public class TFMnistTest {
         //				.withSchema(new Schema().schema(TypeUtil.rowTypeInfoToSchema(OUT_ROW_TYPE)))
         //				.createTemporaryTable("input");
         Table inputTable = tableEnv.from("input");
-        TFUtils.train(streamEnv, tableEnv, statementSet, inputTable, config, null);
+        TFUtilsLegacy.train(streamEnv, tableEnv, statementSet, inputTable, config, null);
         statementSet.execute().getJobClient().get().getJobExecutionResult().get();
     }
 }

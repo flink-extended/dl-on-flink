@@ -42,8 +42,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-/** Unit test for {@link TFUtils}. */
-public class TFUtilsTest {
+/** Unit test for {@link TFUtilsLegacy}. */
+public class TFUtilsLegacyTest {
     private static TestingServer server;
     private static final String pythonPath =
             TestUtil.getProjectRootPath() + "/dl-on-flink-tensorflow-2.x/src/test/python/";
@@ -71,7 +71,7 @@ public class TFUtilsTest {
         StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
 
         TFConfig config = new TFConfig(2, 1, null, add, "map_func", null);
-        TFUtils.train(streamEnv, null, config);
+        TFUtilsLegacy.train(streamEnv, null, config);
 
         JobExecutionResult result = streamEnv.execute();
         System.out.println(result.getNetRuntime());
@@ -85,7 +85,7 @@ public class TFUtilsTest {
         StatementSet statementSet = tableEnv.createStatementSet();
 
         TFConfig config = new TFConfig(2, 1, null, add, "map_func", null);
-        TFUtils.train(streamEnv, tableEnv, statementSet, null, config, null);
+        TFUtilsLegacy.train(streamEnv, tableEnv, statementSet, null, config, null);
 
         execTableJobCustom(config.getMlConfig(), streamEnv, tableEnv, statementSet);
     }
@@ -98,7 +98,7 @@ public class TFUtilsTest {
         TFConfig config = new TFConfig(2, 1, null, add, "map_func", null);
         config.addProperty(TFConstants.TF_IS_CHIEF_ALONE, "true");
 
-        TFUtils.train(streamEnv, null, config);
+        TFUtilsLegacy.train(streamEnv, null, config);
 
         JobExecutionResult result = streamEnv.execute();
         System.out.println(result.getNetRuntime());
@@ -113,7 +113,7 @@ public class TFUtilsTest {
 
         TFConfig config = new TFConfig(2, 1, null, add, "map_func", null);
         config.addProperty(TFConstants.TF_IS_CHIEF_ALONE, "true");
-        TFUtils.train(streamEnv, tableEnv, statementSet, null, config, null);
+        TFUtilsLegacy.train(streamEnv, tableEnv, statementSet, null, config, null);
 
         execTableJobCustom(config.getMlConfig(), streamEnv, tableEnv, statementSet);
     }
@@ -156,7 +156,7 @@ public class TFUtilsTest {
                         .build());
 
         Table table =
-                TFUtils.train(
+                TFUtilsLegacy.train(
                         streamEnv,
                         tableEnv,
                         statementSet,
@@ -177,12 +177,12 @@ public class TFUtilsTest {
                 .put(MLConstants.FLINK_HOOK_CLASSNAMES, DebugHook.class.getCanonicalName());
         config.addProperty(
                 MLConstants.CHECKPOINT_DIR, ckptDir + String.valueOf(System.currentTimeMillis()));
-        TFUtils.train(flinkEnv, null, config);
+        TFUtilsLegacy.train(flinkEnv, null, config);
 
         TFConfig tbConfig = config.deepCopy();
         String[] scripts = {tensorboardScript};
         tbConfig.setPythonFiles(scripts);
-        TFUtils.startTensorBoard(flinkEnv, tbConfig);
+        TFUtilsLegacy.startTensorBoard(flinkEnv, tbConfig);
 
         JobExecutionResult result = flinkEnv.execute();
     }
@@ -199,12 +199,12 @@ public class TFUtilsTest {
                 .put(MLConstants.FLINK_HOOK_CLASSNAMES, DebugHook.class.getCanonicalName());
         config.addProperty(
                 MLConstants.CHECKPOINT_DIR, ckptDir + String.valueOf(System.currentTimeMillis()));
-        TFUtils.train(streamEnv, tableEnv, statementSet, null, config, null);
+        TFUtilsLegacy.train(streamEnv, tableEnv, statementSet, null, config, null);
 
         TFConfig tbConfig = config.deepCopy();
         String[] scripts = {tensorboardScript};
         tbConfig.setPythonFiles(scripts);
-        TFUtils.startTensorBoard(streamEnv, tableEnv, statementSet, tbConfig);
+        TFUtilsLegacy.startTensorBoard(streamEnv, tableEnv, statementSet, tbConfig);
 
         statementSet.execute().getJobClient().get().getJobExecutionResult().get();
     }
@@ -216,7 +216,7 @@ public class TFUtilsTest {
         TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
         StatementSet statementSet = tableEnv.createStatementSet();
         TFConfig config = new TFConfig(3, 2, null, workerZeroFinishScript, "map_func", null);
-        TFUtils.train(streamEnv, tableEnv, statementSet, null, config, null);
+        TFUtilsLegacy.train(streamEnv, tableEnv, statementSet, null, config, null);
         execTableJobCustom(config.getMlConfig(), streamEnv, tableEnv, statementSet);
     }
 

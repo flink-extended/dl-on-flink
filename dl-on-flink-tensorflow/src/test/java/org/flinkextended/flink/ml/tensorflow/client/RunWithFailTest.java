@@ -80,7 +80,7 @@ public class RunWithFailTest {
     public void simpleStartupTest() throws Exception {
         TFConfig config = buildTFConfig(simple_print, "1", 1, 1);
         StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
-        TFUtils.train(streamEnv, config);
+        TFUtilsLegacy.train(streamEnv, config);
         JobExecutionResult result = streamEnv.execute();
         System.out.println(result.getNetRuntime());
     }
@@ -90,7 +90,7 @@ public class RunWithFailTest {
         LOG.info("############ Start failover test.");
         TFConfig config = buildTFConfig(failover, String.valueOf(System.currentTimeMillis()), 2, 1);
         StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
-        TFUtils.train(streamEnv, null, config);
+        TFUtilsLegacy.train(streamEnv, null, config);
         JobExecutionResult result = streamEnv.execute();
         System.out.println(result.getNetRuntime());
         LOG.info("############# Finish failover test.");
@@ -101,7 +101,7 @@ public class RunWithFailTest {
         TFConfig config =
                 buildTFConfig(failover2, String.valueOf(System.currentTimeMillis()), 2, 1);
         StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
-        TFUtils.train(streamEnv, null, config);
+        TFUtilsLegacy.train(streamEnv, null, config);
         JobExecutionResult result = streamEnv.execute();
         System.out.println(result.getNetRuntime());
     }
@@ -126,7 +126,7 @@ public class RunWithFailTest {
                         MLConstants.NODE_IDLE_TIMEOUT,
                         String.valueOf(Duration.ofSeconds(10).toMillis()));
         StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
-        TFUtils.train(streamEnv, null, tfConfig);
+        TFUtilsLegacy.train(streamEnv, null, tfConfig);
 
         expectedException.expect(JobExecutionException.class);
         expectedException.expectMessage("Job execution failed");
