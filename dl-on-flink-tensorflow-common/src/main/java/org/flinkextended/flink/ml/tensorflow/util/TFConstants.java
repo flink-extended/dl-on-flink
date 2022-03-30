@@ -44,7 +44,7 @@ public class TFConstants {
 
     public static final String TF_IS_CHIEF_ROLE = "tf_is_chief_role";
 
-    public static final String TENSORBOART_PORT = "tensorboard_port";
+    public static final String TENSORBOARD_PORT = "tensorboard_port";
     public static final String INPUT_TF_EXAMPLE_CONFIG =
             MLConstants.SYS_PREFIX + "input_tf_example_config";
     public static final String OUTPUT_TF_EXAMPLE_CONFIG =

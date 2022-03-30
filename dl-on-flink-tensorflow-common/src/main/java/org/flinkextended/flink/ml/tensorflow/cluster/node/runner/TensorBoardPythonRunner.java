@@ -65,7 +65,7 @@ public class TensorBoardPythonRunner extends ProcessPythonRunner {
                 mlContext
                         .getProperties()
                         .getOrDefault(
-                                TFConstants.TENSORBOART_PORT,
+                                TFConstants.TENSORBOARD_PORT,
                                 String.valueOf(IpHostUtil.getFreePort()));
         args.add("--port=" + port);
         args.add("--host=" + mlContext.getNodeServerIP());
