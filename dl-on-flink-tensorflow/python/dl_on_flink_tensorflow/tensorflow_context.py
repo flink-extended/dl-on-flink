@@ -16,15 +16,53 @@
 
 import json
 import os
+
 import tensorflow as tf
-from dl_on_flink_tensorflow import tensorflow_on_flink_ops as flink_ops
 from dl_on_flink_framework.context import Context
+from dl_on_flink_tensorflow import tensorflow_on_flink_ops as flink_ops
 
 
 class TFContext(Context):
+    """
+    TFContext extends Context and provides some convenient methods to get the
+    config of the Tensorflow cluster. And it provides the Tensorflow DataSet to
+    read data from Flink and Tensorflow Op to write data to Flink.
+    """
+
     def __init__(self, other):
         if isinstance(other, Context):
             self.__dict__ = other.__dict__.copy()
+
+    def get_tf_cluster_config(self):
+        """
+        Get the Tensorflow cluster config as json string.
+        """
+        cluster_str = self.get_property("cluster")
+        return TFContext.to_tf_cluster(cluster_str)
+
+    def set_tf_config_env(self):
+        """
+        Export the Tensorflow cluster config to the environment variable
+        TF_CONFIG, which is required to distributed train with Tensorflow
+        Estimator API.
+        """
+        cluster_str = self.properties["cluster"]
+        return TFContext.export_cluster_env(cluster_str, self.roleName,
+                                            self.index)
+
+    def get_tfrecord_writer_to_flink(self):
+        """
+        Get the FlinkTFRecordWriter to write TFRecord to Flink.
+        """
+        return flink_ops.FlinkTFRecordWriter(address=self.to_java())
+
+    def get_tfdataset_from_flink(self, compression_type=None, buffer_size=0,
+                                 num_parallel_reads=None):
+        """
+        Get the Tensorflow Dataset that reads data from Flink.
+        """
+        return flink_ops.FlinkStreamDataSet(self.from_java(), compression_type,
+                                            buffer_size, num_parallel_reads)
 
     @staticmethod
     def to_tf_cluster(cluster_str):
@@ -53,10 +91,6 @@ class TFContext(Context):
             del tf_cluster['ps']
         return tf_cluster
 
-    def get_tf_cluster(self):
-        cluster_str = self.get_property("cluster")
-        return TFContext.to_tf_cluster(cluster_str)
-
     @staticmethod
     def cluster_to_estimator(cluster_str):
         cluster = TFContext.to_tf_cluster(cluster_str)
@@ -84,16 +118,13 @@ class TFContext(Context):
         os.environ['TF_CONFIG'] = json.dumps(
             {'cluster': cluster,
              'task': {'type': task_type, 'index': task_index}})
-        print (os.environ['TF_CONFIG'])
+        print(os.environ['TF_CONFIG'])
         return cluster, task_type, task_index
-
-    def export_estimator_cluster(self):
-        cluster_str = self.properties["cluster"]
-        return TFContext.export_cluster_env(cluster_str, self.roleName, self.index)
 
     def example_input_dataset(self):
         dataset = tf.data.TFRecordDataset(self.from_java())
-        dataset = dataset.map(lambda record: tf.parse_single_example(record, features=self.features))
+        dataset = dataset.map(lambda record: tf.io.parse_single_example(record,
+                                                                        features=self.features))
         return dataset
 
     def output_writer_op(self, input_list):
@@ -102,6 +133,3 @@ class TFContext(Context):
         write_op = writer.write(input_list)
         close_op = writer.close()
         return write_op, close_op
-
-    def flink_stream_dataset(self, compression_type=None, buffer_size=0, num_parallel_reads=None):
-        return flink_ops.FlinkStreamDataSet(self.from_java(), compression_type, buffer_size, num_parallel_reads)

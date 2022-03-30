@@ -30,7 +30,7 @@ def map_func(context):
     tf_context = TFContext(context)
     job_name = tf_context.get_node_type()
     index = tf_context.get_index()
-    cluster_json = tf_context.get_tf_cluster()
+    cluster_json = tf_context.get_tf_cluster_config()
     print (cluster_json)
     sys.stdout.flush()
     cluster = tf.train.ClusterSpec(cluster=cluster_json)
@@ -45,7 +45,7 @@ def map_func(context):
         with tf.device(tf.train.replica_device_setter(worker_device='/job:worker/task:' + str(index), cluster=cluster)):
             record_defaults = [[9], [tf.constant(value=9, dtype=tf.int64)], [9.0],
                                [tf.constant(value=9.0, dtype=tf.float64)], ["9.0"]]
-            dataset = tf_context.flink_stream_dataset(buffer_size=0)
+            dataset = tf_context.get_tfdataset_from_flink(buffer_size=0)
             dataset = dataset.map(lambda record: tf.decode_csv(record, record_defaults=record_defaults))
             dataset = dataset.batch(3)
             iterator = dataset.make_one_shot_iterator()

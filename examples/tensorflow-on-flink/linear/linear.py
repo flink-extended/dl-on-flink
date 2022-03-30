@@ -166,7 +166,7 @@ def stream_train(context):
             x, y = tf.io.decode_csv(value, record_defaults=[[0.], [0.]])
             return x, y
 
-        dataset = tf_context.flink_stream_dataset() \
+        dataset = tf_context.get_tfdataset_from_flink() \
             .map(parse_csv).repeat(1) \
             .batch(32)
         if is_tf2:

@@ -45,7 +45,7 @@ def map_func(context):
     tf_context = TFContext(context)
     job_name = tf_context.get_node_type()
     index = tf_context.get_index()
-    cluster_json = tf_context.get_tf_cluster()
+    cluster_json = tf_context.get_tf_cluster_config()
     gpu_info = tf_context.get_property("gpu_info")
     print ("cluster:" + str(cluster_json))
     print ("job name:" + job_name)

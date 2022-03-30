@@ -26,7 +26,7 @@ def map_fun(context):
     tf_context = TFContext(context)
     job_name = tf_context.get_node_type()
     index = tf_context.get_index()
-    cluster_json = tf_context.get_tf_cluster()
+    cluster_json = tf_context.get_tf_cluster_config()
     print (cluster_json)
     sys.stdout.flush()
     cluster = tf.train.ClusterSpec(cluster=cluster_json)
