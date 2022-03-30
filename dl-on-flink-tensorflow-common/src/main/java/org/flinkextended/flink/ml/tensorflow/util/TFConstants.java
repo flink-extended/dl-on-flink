@@ -43,6 +43,7 @@ public class TFConstants {
     public static final String TF_IS_CHIEF_ALONE = "tf_is_chief_alone";
 
     public static final String TF_IS_CHIEF_ROLE = "tf_is_chief_role";
+    public static final String TF_IS_WORKER_ZERO_CHIEF = "tf_is_worker_zero_chief";
 
     public static final String TENSORBOARD_PORT = "tensorboard_port";
     public static final String INPUT_TF_EXAMPLE_CONFIG =
