@@ -18,7 +18,12 @@
 
 package org.flinkextended.flink.ml.tensorflow.client;
 
+import org.flinkextended.flink.ml.tensorflow.cluster.TFAMStateMachineImpl;
+import org.flinkextended.flink.ml.tensorflow.cluster.node.runner.TFMLRunner;
+import org.flinkextended.flink.ml.tensorflow.data.TFRecordReaderImpl;
+import org.flinkextended.flink.ml.tensorflow.data.TFRecordWriterImpl;
 import org.flinkextended.flink.ml.tensorflow.util.TFConstants;
+import org.flinkextended.flink.ml.util.MLConstants;
 
 import org.junit.Test;
 
@@ -37,6 +42,18 @@ public class TFClusterConfigTest {
                         .build();
         assertEquals(Integer.valueOf(3), config.getNodeCount("worker"));
         assertEquals(Integer.valueOf(2), config.getNodeCount("ps"));
+
+        // check default properties
+        assertEquals(TFMLRunner.class.getName(), config.getProperty(MLConstants.ML_RUNNER_CLASS));
+        assertEquals(
+                TFAMStateMachineImpl.class.getName(),
+                config.getProperty(MLConstants.AM_STATE_MACHINE_CLASS));
+        assertEquals(
+                TFRecordReaderImpl.class.getName(),
+                config.getProperty(MLConstants.RECORD_READER_CLASS));
+        assertEquals(
+                TFRecordWriterImpl.class.getName(),
+                config.getProperty(MLConstants.RECORD_WRITER_CLASS));
     }
 
     @Test
@@ -44,6 +61,7 @@ public class TFClusterConfigTest {
         final TFClusterConfig config =
                 TFClusterConfig.newBuilder()
                         .setNodeEntry("entry.py", "main")
+                        .setWorkerCount(2)
                         .setIsWorkerZeroChief(true)
                         .build();
         assertEquals("true", config.getProperty(TFConstants.TF_IS_WORKER_ZERO_CHIEF));
@@ -68,5 +86,10 @@ public class TFClusterConfigTest {
         assertEquals(Integer.valueOf(4), config2.getNodeCount("worker"));
         assertEquals(Integer.valueOf(3), config2.getNodeCount("ps"));
         assertEquals("true", config2.getProperty(TFConstants.TF_IS_WORKER_ZERO_CHIEF));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testTFClusterConfigBuildWithoutWorkerNodeTypeThrowException() {
+        TFClusterConfig.newBuilder().setNodeEntry("entry.py", "main").build();
     }
 }

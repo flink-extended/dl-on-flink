@@ -22,18 +22,14 @@ import org.flinkextended.flink.ml.cluster.role.AMRole;
 import org.flinkextended.flink.ml.cluster.role.PsRole;
 import org.flinkextended.flink.ml.cluster.role.WorkerRole;
 import org.flinkextended.flink.ml.operator.ops.inputformat.MLInputFormat;
+import org.flinkextended.flink.ml.tensorflow.client.StreamNodeMatchers.StreamNodeMatcher;
 import org.flinkextended.flink.ml.tensorflow.cluster.ChiefRole;
 import org.flinkextended.flink.ml.tensorflow.cluster.TensorBoardRole;
 import org.flinkextended.flink.ml.tensorflow.cluster.node.runner.TensorBoardPythonRunner;
 import org.flinkextended.flink.ml.tensorflow.util.TFConstants;
 import org.flinkextended.flink.ml.util.MLConstants;
 
-import org.apache.flink.api.common.JobExecutionResult;
 import org.apache.flink.api.common.io.InputFormat;
-import org.apache.flink.api.dag.Pipeline;
-import org.apache.flink.api.dag.Transformation;
-import org.apache.flink.configuration.ReadableConfig;
-import org.apache.flink.core.execution.JobClient;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -48,15 +44,11 @@ import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.table.delegation.Executor;
 
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.internal.util.reflection.Whitebox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nullable;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -78,7 +70,7 @@ public class TFUtilsLegacyTest {
     private StreamExecutionEnvironment env;
     private TestTFConfig tfConfig;
     private StreamTableEnvironment tEnv;
-    private TFUtilsLegacyTest.TestExecutor executor;
+    private TestExecutor executor;
 
     @Before
     public void setUp() throws Exception {
@@ -435,72 +427,5 @@ public class TFUtilsLegacyTest {
         assertThat(
                 streamGraph.getStreamNodes(),
                 hasItem(new StreamNodeMatcher(new PsRole().name(), parallelism)));
-    }
-
-    private static class StreamNodeMatcher extends BaseMatcher<StreamNode> {
-
-        private final String operatorName;
-        private final int parallelism;
-
-        public StreamNodeMatcher(String operatorName, int parallelism) {
-
-            this.operatorName = operatorName;
-            this.parallelism = parallelism;
-        }
-
-        @Override
-        public boolean matches(Object o) {
-            if (!(o instanceof StreamNode)) {
-                return false;
-            }
-            final StreamNode streamNode = (StreamNode) o;
-            return streamNode.getOperatorName().contains(operatorName)
-                    && streamNode.getParallelism() == parallelism;
-        }
-
-        @Override
-        public void describeTo(Description description) {
-            description.appendText(
-                    String.format(
-                            "StreamNode{name contains %s, parallelism = %d}",
-                            operatorName, parallelism));
-        }
-    }
-
-    private static class TestExecutor implements Executor {
-
-        private final Executor executor;
-        private Pipeline pipeline;
-
-        public TestExecutor(Executor executor) {
-            this.executor = executor;
-        }
-
-        @Override
-        public ReadableConfig getConfiguration() {
-            return executor.getConfiguration();
-        }
-
-        @Override
-        public Pipeline createPipeline(
-                List<Transformation<?>> list, ReadableConfig readableConfig, @Nullable String s) {
-            return executor.createPipeline(list, readableConfig, s);
-        }
-
-        @Override
-        public JobExecutionResult execute(Pipeline pipeline) throws Exception {
-            this.pipeline = pipeline;
-            return null;
-        }
-
-        @Override
-        public JobClient executeAsync(Pipeline pipeline) throws Exception {
-            this.pipeline = pipeline;
-            return null;
-        }
-
-        public Pipeline getPipeline() {
-            return pipeline;
-        }
     }
 }

@@ -19,7 +19,14 @@
 package org.flinkextended.flink.ml.tensorflow.client;
 
 import org.flinkextended.flink.ml.cluster.ClusterConfig;
+import org.flinkextended.flink.ml.tensorflow.cluster.TFAMStateMachineImpl;
+import org.flinkextended.flink.ml.tensorflow.cluster.node.runner.TFMLRunner;
+import org.flinkextended.flink.ml.tensorflow.data.TFRecordReaderImpl;
+import org.flinkextended.flink.ml.tensorflow.data.TFRecordWriterImpl;
 import org.flinkextended.flink.ml.tensorflow.util.TFConstants;
+import org.flinkextended.flink.ml.util.MLConstants;
+
+import org.apache.flink.util.Preconditions;
 
 import javax.annotation.Nullable;
 
@@ -31,6 +38,10 @@ import java.util.Set;
  * level methods to config the Tensorflow cluster.
  */
 public class TFClusterConfig extends ClusterConfig {
+
+    public static final String WORKER_NODE_TYPE = "worker";
+    public static final String PS_NODE_TYPE = "ps";
+    public static final String TENSORBOARD_NODE_TYPE = "tensorboard";
 
     public TFClusterConfig(
             Map<String, Integer> nodeTypeCntMap,
@@ -63,7 +74,13 @@ public class TFClusterConfig extends ClusterConfig {
     /** Builder for {@link TFClusterConfig}. */
     public static class Builder extends ClusterConfig.Builder<Builder> {
 
-        private Builder() {}
+        private Builder() {
+            // Default properties for Tensorflow cluster config.
+            setProperty(MLConstants.ML_RUNNER_CLASS, TFMLRunner.class.getName());
+            setProperty(MLConstants.AM_STATE_MACHINE_CLASS, TFAMStateMachineImpl.class.getName());
+            setProperty(MLConstants.RECORD_READER_CLASS, TFRecordReaderImpl.class.getName());
+            setProperty(MLConstants.RECORD_WRITER_CLASS, TFRecordWriterImpl.class.getName());
+        }
 
         private Builder(TFClusterConfig tfClusterConfig) {
             super(tfClusterConfig);
@@ -75,7 +92,7 @@ public class TFClusterConfig extends ClusterConfig {
          * @param count Number of workers.
          */
         public Builder setWorkerCount(Integer count) {
-            addNodeType("worker", count);
+            addNodeType(WORKER_NODE_TYPE, count);
             return this;
         }
 
@@ -85,7 +102,7 @@ public class TFClusterConfig extends ClusterConfig {
          * @param count Number of parameter servers.
          */
         public Builder setPsCount(Integer count) {
-            addNodeType("ps", count);
+            addNodeType(PS_NODE_TYPE, count);
             return this;
         }
 
@@ -101,6 +118,9 @@ public class TFClusterConfig extends ClusterConfig {
 
         /** Return an immutable instance of {@link TFClusterConfig}. */
         public TFClusterConfig build() {
+            Preconditions.checkState(
+                    nodeTypeCntMap.containsKey(WORKER_NODE_TYPE),
+                    "Tensorflow cluster config doesn't have worker nodes.");
             return new TFClusterConfig(
                     nodeTypeCntMap,
                     properties,
