@@ -21,7 +21,7 @@ package org.flinkextended.flink.ml.examples.tensorflow.mnist;
 import org.flinkextended.flink.ml.cluster.ExecutionMode;
 import org.flinkextended.flink.ml.cluster.node.MLContext;
 import org.flinkextended.flink.ml.tensorflow.client.TFConfig;
-import org.flinkextended.flink.ml.tensorflow.client.TFUtils;
+import org.flinkextended.flink.ml.tensorflow.client.TFUtilsLegacy;
 import org.flinkextended.flink.ml.util.MLConstants;
 
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
@@ -219,7 +219,7 @@ public class MnistDist {
             flinkEnv.setRestartStrategy(restartStrategy());
         }
         TFConfig tfConfig = prepareTrain(trainPy);
-        TFUtils.train(flinkEnv, null, tfConfig);
+        TFUtilsLegacy.train(flinkEnv, null, tfConfig);
         flinkEnv.execute();
     }
 
@@ -235,7 +235,7 @@ public class MnistDist {
             flinkEnv.setRestartStrategy(restartStrategy());
         }
         TFConfig tfConfig = prepareTrain(trainPy);
-        TFUtils.train(flinkEnv, tableEnv, statementSet, null, tfConfig, null);
+        TFUtilsLegacy.train(flinkEnv, tableEnv, statementSet, null, tfConfig, null);
         statementSet.execute().getJobClient().get().getJobExecutionResult().get();
     }
 

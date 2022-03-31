@@ -27,7 +27,7 @@ import org.flinkextended.flink.ml.operator.ops.sink.LogSink;
 import org.flinkextended.flink.ml.operator.util.FlinkUtil;
 import org.flinkextended.flink.ml.operator.util.TypeUtil;
 import org.flinkextended.flink.ml.tensorflow.client.TFConfig;
-import org.flinkextended.flink.ml.tensorflow.client.TFUtils;
+import org.flinkextended.flink.ml.tensorflow.client.TFUtilsLegacy;
 import org.flinkextended.flink.ml.tensorflow.coding.ExampleCoding;
 import org.flinkextended.flink.ml.tensorflow.coding.ExampleCodingConfig;
 import org.flinkextended.flink.ml.tensorflow.io.TFRToRowSourceFunc;
@@ -133,7 +133,7 @@ public class TFMnistInferenceTest {
         DataStream<MnistTFRPojo> pojoDataStream =
                 input.flatMap(new MnistTFRExtractPojoMapOp())
                         .setParallelism(input.getParallelism());
-        TFUtils.train(streamEnv, pojoDataStream, config);
+        TFUtilsLegacy.train(streamEnv, pojoDataStream, config);
         streamEnv.execute();
     }
 
@@ -214,7 +214,7 @@ public class TFMnistInferenceTest {
         tfConfig.setPsNum(0);
         setExampleCodingTypeWithPojoOut(tfConfig);
         DataStream<InferenceOutPojo> outDS =
-                TFUtils.inference(flinkEnv, inputDS, tfConfig, InferenceOutPojo.class);
+                TFUtilsLegacy.inference(flinkEnv, inputDS, tfConfig, InferenceOutPojo.class);
         outDS.addSink(new LogSink<>()).setParallelism(tfConfig.getWorkerNum());
         flinkEnv.execute();
     }
@@ -265,7 +265,8 @@ public class TFMnistInferenceTest {
         //				.field("predict_label", Types.INT())
         //				.build();
         Table predictTbl =
-                TFUtils.inference(flinkEnv, tableEnv, statementSet, inputTable, config, outSchema);
+                TFUtilsLegacy.inference(
+                        flinkEnv, tableEnv, statementSet, inputTable, config, outSchema);
         tableEnv.createTemporaryView("predict_tbl", predictTbl);
 
         tableEnv.createTemporaryTable(
@@ -396,7 +397,8 @@ public class TFMnistInferenceTest {
         setExampleCodingTypeRow(tfConfig);
 
         Table predicted =
-                TFUtils.inference(flinkEnv, tableEnv, statementSet, extracted, tfConfig, outSchema);
+                TFUtilsLegacy.inference(
+                        flinkEnv, tableEnv, statementSet, extracted, tfConfig, outSchema);
 
         tableEnv.createTemporaryTable(
                 "inference_sink",

@@ -99,9 +99,9 @@ def input_iter(filename, batch_size, num_epochs):
 
 def map_fun(context):
     tf_context = TFContext(context)
-    job_name = tf_context.get_role_name()
+    job_name = tf_context.get_node_type()
     index = tf_context.get_index()
-    cluster_json = tf_context.get_tf_cluster()
+    cluster_json = tf_context.get_tf_cluster_config()
     print (cluster_json)
     sys.stdout.flush()
 

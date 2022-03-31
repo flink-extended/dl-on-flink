@@ -26,6 +26,7 @@ import org.apache.flink.api.common.cache.DistributedCache;
 import org.apache.flink.api.common.functions.RuntimeContext;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.util.Preconditions;
 
 import com.google.common.base.Joiner;
 import org.apache.commons.lang3.StringUtils;
@@ -50,14 +51,14 @@ public class PythonFileUtil {
      *
      * @param flinkEnv flink StreamExecutionEnvironment.
      * @param mlConfig machine learning cluster configuration.
-     * @throws IOException
      */
     public static void registerPythonFiles(StreamExecutionEnvironment flinkEnv, MLConfig mlConfig)
             throws IOException {
         if (mlConfig.getProperties().containsKey(MLConstants.REMOTE_CODE_ZIP_FILE)) {
             mlConfig.addProperty(MLConstants.USER_ENTRY_PYTHON_FILE, mlConfig.getPythonFiles()[0]);
         } else {
-            List<String> files = registerPythonLibFiles(flinkEnv, mlConfig.getPythonFiles());
+            List<String> files =
+                    registerPythonLibFilesIfNotExist(flinkEnv, mlConfig.getPythonFiles());
             String fileStr = Joiner.on(SPLITTER).join(files);
             mlConfig.addProperty(MLConstants.PYTHON_FILES, fileStr);
         }
@@ -68,7 +69,6 @@ public class PythonFileUtil {
      *
      * @param runtimeContext flink operator RuntimeContext.
      * @param mlContext machine learning node runtime context.
-     * @throws IOException
      */
     public static void preparePythonFilesForExec(RuntimeContext runtimeContext, MLContext mlContext)
             throws IOException {
@@ -92,16 +92,17 @@ public class PythonFileUtil {
         }
     }
 
-    private static List<String> registerPythonLibFiles(
+    public static List<String> registerPythonLibFilesIfNotExist(
             StreamExecutionEnvironment env, String... userPyLibs) throws IOException {
         Tuple2<Map<String, URI>, List<String>> tuple2 = convertFiles(userPyLibs);
         Map<String, URI> files = tuple2.f0;
-        files.forEach((name, uri) -> env.registerCachedFile(uri.getPath(), name));
+        files.forEach(
+                (name, uri) ->
+                        registerCachedFileIfNotExist(env.getCachedFiles(), uri.getPath(), name));
         return tuple2.f1;
     }
 
-    private static Tuple2<Map<String, URI>, List<String>> convertFiles(String... userPyLibs)
-            throws IOException {
+    private static Tuple2<Map<String, URI>, List<String>> convertFiles(String... userPyLibs) {
         // flink requires we register the file with a URI
         Map<String, URI> keyToURI = new HashMap<>();
         List<String> fileKeys = new ArrayList<>();
@@ -120,5 +121,26 @@ public class PythonFileUtil {
             fileKeys.add(fileKey);
         }
         return new Tuple2<>(keyToURI, fileKeys);
+    }
+
+    private static void registerCachedFileIfNotExist(
+            List<Tuple2<String, DistributedCache.DistributedCacheEntry>> cachedFiles,
+            String filePath,
+            String fileKey) {
+        if (cachedFiles.stream().noneMatch(t -> t.f0.equals(fileKey))) {
+            cachedFiles.add(
+                    new Tuple2<>(
+                            fileKey, new DistributedCache.DistributedCacheEntry(filePath, false)));
+        } else {
+            final Tuple2<String, DistributedCache.DistributedCacheEntry> existEntry =
+                    cachedFiles.stream().filter(t -> t.f0.equals(fileKey)).findFirst().orElse(null);
+            assert existEntry != null;
+            Preconditions.checkState(
+                    existEntry.f1.filePath.equals(filePath),
+                    "Fail to register cache file with key %s file path %s, the same key has been registered with path %s",
+                    fileKey,
+                    filePath,
+                    existEntry.f1.filePath);
+        }
     }
 }

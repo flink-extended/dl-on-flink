@@ -22,6 +22,18 @@ from dl_on_flink_framework import node_service_pb2_grpc
 
 
 class Context(object):
+    """
+    The context is passed to the deep learning process via the function argument
+    of the entry function.
+
+    User can use the given context to get the information in ClusterConfig, e.g. The
+    configuration of the cluster, i.e., the number of node for each node type in the
+    cluster, the node type and index of the current process or any property that is
+    added to the ClusterConfig.
+
+    It can be used to interact with the Java process, e.g. notify that the
+    python process is finished.
+    """
 
     def __str__(self):
         return self.context_pb.__str__()
@@ -53,27 +65,49 @@ class Context(object):
     def to_java(self):
         return "queue://" + str(self.outQueueName) + ":" + str(self.outQueueMMapLen)
 
-    def get_failed_num(self):
+    def get_current_attempt_index(self):
+        """
+        Get the current attempt index. Attempt index starts from 0.
+        """
         return self.failNum
 
-    def get_finish_workers(self):
+    def get_finished_worker_nodes(self):
+        """
+        Get a list of finished nodes with the node type of worker.
+        """
         response = self.stub.GetFinishWorker(node_pb2.NodeSimpleRequest(code=0))
         return response.workers
 
-    def stop_job(self):
-        response = self.stub.FinishJob(node_pb2.NodeSimpleRequest(code=0))
-
     def get_property(self, key):
+        """
+        Get the property set in ClusterConfig
+        :param key: The key of the property.
+        """
         return self.properties[key]
 
-    def get_role_parallelism_map(self):
+    def get_node_type_count_map(self):
+        """
+        Get a map from node type to the node count.
+        """
         return self.roleParallelism
 
     def get_index(self):
+        """
+        Get the index of the current node.
+        """
         return self.index
 
-    def get_role_name(self):
+    def get_node_type(self):
+        """
+        Get the node type of the current node.
+        """
         return self.roleName
+
+    def stop_node(self):
+        """
+        Stop the current node.
+        """
+        response = self.stub.FinishJob(node_pb2.NodeSimpleRequest(code=0))
 
     def get_context_proto(self):
         return self.context_pb

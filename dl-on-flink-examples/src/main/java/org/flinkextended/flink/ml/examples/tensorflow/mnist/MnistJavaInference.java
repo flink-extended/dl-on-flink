@@ -26,7 +26,7 @@ import org.flinkextended.flink.ml.operator.ops.table.descriptor.LogTable;
 import org.flinkextended.flink.ml.operator.ops.table.descriptor.LogTableValidator;
 import org.flinkextended.flink.ml.operator.util.FlinkUtil;
 import org.flinkextended.flink.ml.tensorflow.client.TFConfig;
-import org.flinkextended.flink.ml.tensorflow.client.TFUtils;
+import org.flinkextended.flink.ml.tensorflow.client.TFUtilsLegacy;
 import org.flinkextended.flink.ml.tensorflow.coding.ExampleCoding;
 import org.flinkextended.flink.ml.tensorflow.coding.ExampleCodingConfig;
 import org.flinkextended.flink.ml.tensorflow.io.TFRExtractRowHelper;
@@ -224,7 +224,8 @@ public class MnistJavaInference {
         setExampleCodingTypeRow(tfConfig);
 
         Table predicted =
-                TFUtils.inference(flinkEnv, tableEnv, statementSet, extracted, tfConfig, outSchema);
+                TFUtilsLegacy.inference(
+                        flinkEnv, tableEnv, statementSet, extracted, tfConfig, outSchema);
         fs = new Path(checkPointURI).getFileSystem(hadoopConf);
         URI fsURI = fs.getUri();
         Path outDir = new Path(fsURI.getScheme(), fsURI.getAuthority(), SINK_OUTPUT_PATH);

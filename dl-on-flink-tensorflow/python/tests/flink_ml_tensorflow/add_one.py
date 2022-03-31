@@ -73,8 +73,8 @@ def train(cluster_dict, job_name, task_index, export_model_path, dataset):
 
 def flink_stream_train(context):
     tf_context = TFContext(context)
-    job_name = tf_context.get_role_name()
+    job_name = tf_context.get_node_type()
     index = tf_context.get_index()
-    cluster_json = tf_context.get_tf_cluster()
+    cluster_json = tf_context.get_tf_cluster_config()
     export_model_path = tf_context.get_property("model_save_path")
-    train(cluster_json, job_name, index, export_model_path, tf_context.flink_stream_dataset())
+    train(cluster_json, job_name, index, export_model_path, tf_context.get_tfdataset_from_flink())

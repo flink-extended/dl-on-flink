@@ -46,7 +46,7 @@ def inference(stream_env=None, table_env=None, statement_set=None,
         input_table = input_table._j_table
     if output_schema is not None:
         output_schema = output_schema._j_table_schema
-    output_table = get_gateway().jvm.org.flinkextended.flink.ml.tensorflow.client.TFUtils.inference(
+    output_table = get_gateway().jvm.org.flinkextended.flink.ml.tensorflow.client.TFUtilsLegacy.inference(
         stream_env._j_stream_execution_environment,
         table_env._j_tenv,
         statement_set._j_statement_set,
@@ -81,7 +81,7 @@ def train(stream_env=None, table_env=None, statement_set=None, input_table=None,
         input_table = input_table._j_table
     if output_schema is not None:
         output_schema = output_schema._j_table_schema
-    output_table = get_gateway().jvm.org.flinkextended.flink.ml.tensorflow.client.TFUtils.train(
+    output_table = get_gateway().jvm.org.flinkextended.flink.ml.tensorflow.client.TFUtilsLegacy.train(
         stream_env._j_stream_execution_environment,
         table_env._j_tenv,
         statement_set._j_statement_set,

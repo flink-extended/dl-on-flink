@@ -80,7 +80,7 @@ def decode(features):
 
 def input_iter(context, batch_size):
     features = {'label': tf.FixedLenFeature([], tf.int64), 'image_raw': tf.FixedLenFeature([], tf.string)}
-    dataset = context.flink_stream_dataset()
+    dataset = context.get_tfdataset_from_flink()
     dataset = dataset.map(lambda record: tf.parse_single_example(record, features=features))
     dataset = dataset.map(decode)
     dataset = dataset.batch(batch_size)
@@ -90,9 +90,9 @@ def input_iter(context, batch_size):
 
 def map_fun(context):
     tf_context = TFContext(context)
-    job_name = tf_context.get_role_name()
+    job_name = tf_context.get_node_type()
     task_index = tf_context.get_index()
-    cluster_json = tf_context.get_tf_cluster()
+    cluster_json = tf_context.get_tf_cluster_config()
     print (cluster_json)
     sys.stdout.flush()
 

@@ -33,6 +33,10 @@ import java.util.Set;
 public class ResourcesUtils {
 
     public static void parseGpuInfo(RuntimeContext runtimeContext, MLConfig mlConfig) {
+        mlConfig.getProperties().put(MLConstants.GPU_INFO, parseGpuInfo(runtimeContext));
+    }
+
+    public static String parseGpuInfo(RuntimeContext runtimeContext) {
         Set<ExternalResourceInfo> gpuInfo = runtimeContext.getExternalResourceInfos("gpu");
         if (gpuInfo != null && gpuInfo.size() > 0) {
             List<String> indexList = new ArrayList<>();
@@ -42,10 +46,9 @@ public class ResourcesUtils {
                 }
             }
             Collections.sort(indexList);
-            String gpuStr = String.join(",", indexList);
-            mlConfig.getProperties().put(MLConstants.GPU_INFO, gpuStr);
+            return String.join(",", indexList);
         } else {
-            mlConfig.getProperties().put(MLConstants.GPU_INFO, "");
+            return "";
         }
     }
 }
