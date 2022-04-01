@@ -42,7 +42,7 @@ tar -xzf "${DL_ON_FLINK_BIN}" --directory "${PWD}"
 DL_ON_FLINK_DIR_ARRAY=("${PWD}"/dl-on-flink-dist-*)
 DL_ON_FLINK_DIR="${DL_ON_FLINK_DIR_ARRAY[0]}"
 
-pip install -f "${DL_ON_FLINK_WHEEL_DIR}" dl-on-flink-framework
+pip install --pre -f "${DL_ON_FLINK_WHEEL_DIR}" dl-on-flink-framework
 
 # Start flink cluster
 cd flink-1.14.4
@@ -51,7 +51,7 @@ rm ./conf/flink-conf.yaml.bak
 ./bin/start-cluster.sh
 
 # Tensorflow 1.15 linear example
-pip install -f "${DL_ON_FLINK_WHEEL_DIR}" dl-on-flink-tensorflow
+pip install --pre -f "${DL_ON_FLINK_WHEEL_DIR}" dl-on-flink-tensorflow
 
 MODEL_PATH="${PWD}"/./tf1/linear
 ./bin/flink run \
@@ -66,7 +66,7 @@ MODEL_PATH="${PWD}"/./tf1/linear
 pip uninstall -y dl-on-flink-tensorflow
 
 # Tensorflow 2.3 linear example
-pip install -f "${DL_ON_FLINK_WHEEL_DIR}" dl-on-flink-tensorflow-2.x
+pip install --pre -f "${DL_ON_FLINK_WHEEL_DIR}" dl-on-flink-tensorflow-2.x
 
 MODEL_PATH="${PWD}"/./tf2/linear
 ./bin/flink run \
