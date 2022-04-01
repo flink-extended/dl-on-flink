@@ -20,6 +20,8 @@ package org.flinkextended.flink.ml.cluster;
 
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.hasItems;
@@ -115,5 +117,18 @@ public class ClusterConfigTest {
         assertEquals("entry2.py", config2.getEntryPythonFilePath());
         assertEquals("main2", config2.getEntryFuncName());
         assertNull(config2.getPythonVirtualEnvZipPath());
+    }
+
+    @Test
+    public void testGetPythonFilePathsList() {
+        final ClusterConfig config =
+                ClusterConfig.newBuilder()
+                        .setProperty("k", "v")
+                        .addPythonFile("file1", "file2")
+                        .setNodeEntry("file3.py", "main")
+                        .build();
+        final List<String> pythonFilePathsList = config.getPythonFilePathsList();
+        assertEquals(3, pythonFilePathsList.size());
+        assertEquals("file3.py", pythonFilePathsList.get(0));
     }
 }

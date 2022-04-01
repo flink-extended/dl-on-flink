@@ -23,10 +23,12 @@ import com.google.common.base.Preconditions;
 import javax.annotation.Nullable;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -103,6 +105,22 @@ public class ClusterConfig implements Serializable {
 
     public Set<String> getPythonFilePaths() {
         return pythonFilePaths;
+    }
+
+    /**
+     * Get a list of the python file paths where the first file paths is the entry files of the
+     * node.
+     */
+    public List<String> getPythonFilePathsList() {
+        List<String> res = new ArrayList<>();
+        res.add(entryPythonFilePath);
+        for (String pythonFilePath : pythonFilePaths) {
+            if (pythonFilePath.equals(entryPythonFilePath)) {
+                continue;
+            }
+            res.add(pythonFilePath);
+        }
+        return res;
     }
 
     public Integer getNodeCount(String nodeType) {
