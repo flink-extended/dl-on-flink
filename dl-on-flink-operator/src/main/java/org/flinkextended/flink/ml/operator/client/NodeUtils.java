@@ -46,7 +46,6 @@ import com.google.common.base.Joiner;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 /**
  * NodeUtils provides methods to schedule node with various node type (e.g., worker, ps, chief) of a
@@ -73,7 +72,7 @@ public class NodeUtils {
         final StreamExecutionEnvironment env = tEnv.execEnv();
 
         final Builder<?> builder = clusterConfig.toBuilder();
-        registerFileToFlinkCache(env, clusterConfig.getPythonFilePaths(), builder);
+        registerFileToFlinkCache(env, clusterConfig.getPythonFilePathsList(), builder);
         ClusterConfig finalClusterConfig = builder.build();
 
         final SingleOutputStreamOperator<Void> nodeStream =
@@ -105,7 +104,7 @@ public class NodeUtils {
         final StreamExecutionEnvironment env = ((StreamTableEnvironmentImpl) tEnv).execEnv();
 
         final Builder<?> builder = clusterConfig.toBuilder();
-        registerFileToFlinkCache(env, clusterConfig.getPythonFilePaths(), builder);
+        registerFileToFlinkCache(env, clusterConfig.getPythonFilePathsList(), builder);
         ClusterConfig finalClusterConfig = builder.build();
 
         final SchemaResolver schemaResolver =
@@ -141,7 +140,7 @@ public class NodeUtils {
         final StreamExecutionEnvironment env = tEnv.execEnv();
 
         final Builder<?> builder = clusterConfig.toBuilder();
-        registerFileToFlinkCache(env, clusterConfig.getPythonFilePaths(), builder);
+        registerFileToFlinkCache(env, clusterConfig.getPythonFilePathsList(), builder);
         ClusterConfig finalClusterConfig = builder.build();
 
         final SingleOutputStreamOperator<Void> nodeStream =
@@ -174,7 +173,7 @@ public class NodeUtils {
         final StreamExecutionEnvironment env = tEnv.execEnv();
 
         final Builder<?> builder = clusterConfig.toBuilder();
-        registerFileToFlinkCache(env, clusterConfig.getPythonFilePaths(), builder);
+        registerFileToFlinkCache(env, clusterConfig.getPythonFilePathsList(), builder);
         ClusterConfig finalClusterConfig = builder.build();
 
         final SchemaResolver schemaResolver = tEnv.getCatalogManager().getSchemaResolver();
@@ -213,7 +212,7 @@ public class NodeUtils {
      * Register the file to Flink cache and set the properties to the given cluster config builder.
      */
     private static void registerFileToFlinkCache(
-            StreamExecutionEnvironment env, Set<String> filePaths, Builder<?> configBuilder) {
+            StreamExecutionEnvironment env, List<String> filePaths, Builder<?> configBuilder) {
         try {
             final List<String> pythonFiles =
                     PythonFileUtil.registerPythonLibFilesIfNotExist(
