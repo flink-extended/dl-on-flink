@@ -27,7 +27,9 @@ import org.flinkextended.flink.ml.operator.util.ReflectionUtils;
 import org.flinkextended.flink.ml.operator.util.TypeUtil;
 import org.flinkextended.flink.ml.util.MLConstants;
 
+import org.apache.flink.annotation.Internal;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
+import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -53,7 +55,7 @@ import java.util.List;
  * runs.
  */
 public class NodeUtils {
-    private static final TypeInformation<Void> DUMMY_TI = TypeInformation.of(Void.class);
+    public static final TypeInformation<Void> DUMMY_TI = TypeInformation.of(Void.class);
 
     /**
      * Schedule the node of the given node type to the deep learning cluster. This will add a table
@@ -71,14 +73,7 @@ public class NodeUtils {
                         statementSet, StatementSetImpl.class, "tableEnvironment");
         final StreamExecutionEnvironment env = tEnv.execEnv();
 
-        final Builder<?> builder = clusterConfig.toBuilder();
-        registerFileToFlinkCache(env, clusterConfig.getPythonFilePathsList(), builder);
-        ClusterConfig finalClusterConfig = builder.build();
-
-        final SingleOutputStreamOperator<Void> nodeStream =
-                env.addSource(NodeSource.createNodeSource(nodeType, finalClusterConfig, DUMMY_TI))
-                        .setParallelism(finalClusterConfig.getNodeCount(nodeType))
-                        .name(nodeType);
+        final DataStream<?> nodeStream = scheduleNodes(env, clusterConfig, DUMMY_TI, nodeType);
         final Table nodeTable = tEnv.fromDataStream(nodeStream);
         statementSet.addInsert(TableDescriptor.forConnector("blackhole").build(), nodeTable);
     }
@@ -103,21 +98,12 @@ public class NodeUtils {
 
         final StreamExecutionEnvironment env = ((StreamTableEnvironmentImpl) tEnv).execEnv();
 
-        final Builder<?> builder = clusterConfig.toBuilder();
-        registerFileToFlinkCache(env, clusterConfig.getPythonFilePathsList(), builder);
-        ClusterConfig finalClusterConfig = builder.build();
-
         final SchemaResolver schemaResolver =
                 ((StreamTableEnvironmentImpl) tEnv).getCatalogManager().getSchemaResolver();
-        final SingleOutputStreamOperator<Row> nodeStream =
-                env.addSource(
-                                NodeSource.createNodeSource(
-                                        nodeType,
-                                        finalClusterConfig,
-                                        TypeUtil.schemaToRowTypeInfo(
-                                                outSchema.resolve(schemaResolver))))
-                        .setParallelism(finalClusterConfig.getNodeCount(nodeType))
-                        .name(nodeType);
+        final RowTypeInfo outTypeInfo =
+                TypeUtil.schemaToRowTypeInfo(outSchema.resolve(schemaResolver));
+
+        final DataStream<?> nodeStream = scheduleNodes(env, clusterConfig, outTypeInfo, nodeType);
         return tEnv.fromDataStream(nodeStream);
     }
 
@@ -139,20 +125,10 @@ public class NodeUtils {
                         statementSet, StatementSetImpl.class, "tableEnvironment");
         final StreamExecutionEnvironment env = tEnv.execEnv();
 
-        final Builder<?> builder = clusterConfig.toBuilder();
-        registerFileToFlinkCache(env, clusterConfig.getPythonFilePathsList(), builder);
-        ClusterConfig finalClusterConfig = builder.build();
-
-        final SingleOutputStreamOperator<Void> nodeStream =
-                tEnv.toDataStream(input)
-                        .transform(
-                                nodeType,
-                                DUMMY_TI,
-                                new NodeOperator<>(nodeType, finalClusterConfig))
-                        .setParallelism(finalClusterConfig.getNodeCount(nodeType));
-
-        statementSet.addInsert(
-                TableDescriptor.forConnector("blackhole").build(), tEnv.fromDataStream(nodeStream));
+        final DataStream<?> nodeStream =
+                scheduleNodes(env, tEnv.toDataStream(input), clusterConfig, DUMMY_TI, nodeType);
+        final Table nodeTable = tEnv.fromDataStream(nodeStream);
+        statementSet.addInsert(TableDescriptor.forConnector("blackhole").build(), nodeTable);
     }
 
     /**
@@ -172,20 +148,13 @@ public class NodeUtils {
                 (StreamTableEnvironmentImpl) ((TableImpl) input).getTableEnvironment();
         final StreamExecutionEnvironment env = tEnv.execEnv();
 
-        final Builder<?> builder = clusterConfig.toBuilder();
-        registerFileToFlinkCache(env, clusterConfig.getPythonFilePathsList(), builder);
-        ClusterConfig finalClusterConfig = builder.build();
-
         final SchemaResolver schemaResolver = tEnv.getCatalogManager().getSchemaResolver();
-        final DataStream<Row> outputDataStream =
-                tEnv.toDataStream(input)
-                        .transform(
-                                nodeType,
-                                TypeUtil.schemaToRowTypeInfo(outSchema.resolve(schemaResolver)),
-                                new NodeOperator<>(nodeType, finalClusterConfig))
-                        .setParallelism(finalClusterConfig.getNodeCount(nodeType));
+        final RowTypeInfo outTypeInfo =
+                TypeUtil.schemaToRowTypeInfo(outSchema.resolve(schemaResolver));
 
-        return tEnv.fromDataStream(outputDataStream);
+        final DataStream<?> nodeStream =
+                scheduleNodes(env, tEnv.toDataStream(input), clusterConfig, outTypeInfo, nodeType);
+        return tEnv.fromDataStream(nodeStream);
     }
 
     /**
@@ -206,6 +175,59 @@ public class NodeUtils {
                         .name(ClusterConfig.AM_NODE_TYPE);
         final Table nodeTable = tEnv.fromDataStream(nodeStream);
         statementSet.addInsert(TableDescriptor.forConnector("blackhole").build(), nodeTable);
+    }
+
+    /**
+     * Internal method to schedule a deep learning cluster node with the given node type. The deep
+     * learning node is expected to produce record with that type info.
+     *
+     * @param env The Flink stream execution environment.
+     * @param clusterConfig The ClusterConfig of the added node.
+     * @param outTypeInfo The output type of the node. If null, the output type is Void.
+     * @param nodeType The type of node to be added to the cluster.
+     * @return The datastream of the node.
+     */
+    @Internal
+    public static <T> SingleOutputStreamOperator<T> scheduleNodes(
+            StreamExecutionEnvironment env,
+            ClusterConfig clusterConfig,
+            TypeInformation<T> outTypeInfo,
+            String nodeType) {
+        final Builder<?> builder = clusterConfig.toBuilder();
+        registerFileToFlinkCache(env, clusterConfig.getPythonFilePathsList(), builder);
+        ClusterConfig finalClusterConfig = builder.build();
+
+        return env.addSource(NodeSource.createNodeSource(nodeType, finalClusterConfig, outTypeInfo))
+                .setParallelism(finalClusterConfig.getNodeCount(nodeType))
+                .name(nodeType);
+    }
+
+    /**
+     * Internal method to schedule a deep learning cluster node with the given node type. The node
+     * consume the input Row typed DataStream and produce an output DataStream. The deep learning
+     * node is expected to produce record with that type info.
+     *
+     * @param env The Flink stream execution environment.
+     * @param input The input to the node.
+     * @param clusterConfig The ClusterConfig of the added node.
+     * @param outTypeInfo The output type of the node.
+     * @param nodeType The type of node to be added to the cluster.
+     * @return The datastream of the node.
+     */
+    @Internal
+    public static <T> SingleOutputStreamOperator<T> scheduleNodes(
+            StreamExecutionEnvironment env,
+            DataStream<Row> input,
+            ClusterConfig clusterConfig,
+            TypeInformation<T> outTypeInfo,
+            String nodeType) {
+        final Builder<?> builder = clusterConfig.toBuilder();
+        registerFileToFlinkCache(env, clusterConfig.getPythonFilePathsList(), builder);
+        ClusterConfig finalClusterConfig = builder.build();
+
+        return input.transform(
+                        nodeType, outTypeInfo, new NodeOperator<>(nodeType, finalClusterConfig))
+                .setParallelism(finalClusterConfig.getNodeCount(nodeType));
     }
 
     /**

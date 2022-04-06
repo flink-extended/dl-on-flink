@@ -19,6 +19,7 @@
 package org.flinkextended.flink.ml.tensorflow.client;
 
 import org.flinkextended.flink.ml.tensorflow.client.StreamNodeMatchers.AMNodeMatcher;
+import org.flinkextended.flink.ml.tensorflow.client.StreamNodeMatchers.IterativeNodeOperatorMatcher;
 import org.flinkextended.flink.ml.tensorflow.client.StreamNodeMatchers.NodeOperatorMatcher;
 import org.flinkextended.flink.ml.tensorflow.client.StreamNodeMatchers.SourceNodeMatcher;
 
@@ -177,6 +178,29 @@ public class TFUtilsTest {
         assertThat(
                 streamGraph.getStreamNodes(),
                 hasItem(new SourceNodeMatcher(TFClusterConfig.TENSORBOARD_NODE_TYPE, 1)));
+    }
+
+    @Test
+    public void testIterativeTrain() throws ExecutionException, InterruptedException {
+        final TFClusterConfig config =
+                TFClusterConfig.newBuilder()
+                        .setPsCount(2)
+                        .setWorkerCount(3)
+                        .setNodeEntry("entry.py", "main")
+                        .build();
+        final Table sourceTable = tEnv.fromDataStream(env.fromElements(1, 2, 3));
+
+        TFUtils.train(statementSet, sourceTable, config, 3);
+        statementSet.execute().await();
+
+        final StreamGraph streamGraph = (StreamGraph) executor.getPipeline();
+        checkAMNodeExist(streamGraph);
+        assertThat(
+                streamGraph.getStreamNodes(),
+                hasItem(new IterativeNodeOperatorMatcher(TFClusterConfig.WORKER_NODE_TYPE, 3)));
+        assertThat(
+                streamGraph.getStreamNodes(),
+                hasItem(new SourceNodeMatcher(TFClusterConfig.PS_NODE_TYPE, 2)));
     }
 
     private void checkAMNodeExist(StreamGraph streamGraph) {

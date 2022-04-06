@@ -27,11 +27,14 @@ import org.flinkextended.flink.ml.operator.util.ColumnInfos;
 import org.flinkextended.flink.ml.operator.util.PythonFileUtil;
 import org.flinkextended.flink.ml.util.MLConstants;
 
+import org.apache.flink.iteration.IterationListener;
 import org.apache.flink.streaming.api.operators.AbstractStreamOperator;
 import org.apache.flink.streaming.api.operators.OneInputStreamOperator;
 import org.apache.flink.streaming.api.operators.Output;
 import org.apache.flink.streaming.runtime.streamrecord.StreamRecord;
 import org.apache.flink.types.Row;
+import org.apache.flink.util.Collector;
+import org.apache.flink.util.OutputTag;
 
 import com.google.common.annotations.VisibleForTesting;
 
@@ -50,7 +53,7 @@ import java.util.concurrent.TimeoutException;
  * @param <OUT> The output type of the operator.
  */
 public class NodeOperator<OUT> extends AbstractStreamOperator<OUT>
-        implements OneInputStreamOperator<Row, OUT> {
+        implements OneInputStreamOperator<Row, OUT>, IterationListener<OUT> {
 
     protected long closeTimeoutMs = 180_000;
 
@@ -149,6 +152,19 @@ public class NodeOperator<OUT> extends AbstractStreamOperator<OUT>
             }
         }
     }
+
+    @Override
+    public void onEpochWatermarkIncremented(
+            int epochWatermark, Context context, Collector<OUT> collector) throws Exception {
+        if (serverFuture.isDone()) {
+            LOG.info("{} finished at epoch {}", mlContext.getIdentity(), epochWatermark);
+            return;
+        }
+        context.output(new OutputTag<Integer>("termination") {}, 0);
+    }
+
+    @Override
+    public void onIterationTerminated(Context context, Collector<OUT> collector) throws Exception {}
 
     private void runRunnable(Runnable runnable, String threadName) throws IOException {
         try {
