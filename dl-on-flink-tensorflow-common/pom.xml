@@ -65,7 +65,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
-            <artifactId>flink-ml-iteration</artifactId>
+            <artifactId>flink-ml-iteration_${scala.major.version}</artifactId>
         </dependency>
 
         <dependency>
