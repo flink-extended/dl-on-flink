@@ -34,6 +34,9 @@ import org.apache.flink.types.Row;
 import org.apache.flink.util.Collector;
 import org.apache.flink.util.OutputTag;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * TFNodeIterationBody is to build the subgraph that runs deep learning node in Flink iteration and
  * to consume the input data repeatedly.
@@ -80,6 +83,8 @@ public class TFNodeIterationBody implements IterationBody {
     public static class TerminateOnEpoch
             implements IterationListener<Integer>, FlatMapFunction<Integer, Integer> {
 
+        private static final Logger LOG = LoggerFactory.getLogger(TerminateOnEpoch.class);
+
         private final Integer maxEpoch;
         private boolean earlyTerminated = true;
 
@@ -95,10 +100,17 @@ public class TFNodeIterationBody implements IterationBody {
         @Override
         public void onEpochWatermarkIncremented(
                 int epochWatermark, Context context, Collector<Integer> collector) {
-            if (!earlyTerminated && epochWatermark < maxEpoch) {
-                collector.collect(epochWatermark);
-                earlyTerminated = true;
+            if (earlyTerminated) {
+                LOG.info("Early Terminated at epoch {}", epochWatermark);
+                return;
             }
+            if (epochWatermark >= maxEpoch - 1) {
+                LOG.info("Terminate at epoch {}", epochWatermark);
+                return;
+            }
+
+            collector.collect(epochWatermark);
+            earlyTerminated = true;
         }
 
         @Override

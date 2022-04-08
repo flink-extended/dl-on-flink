@@ -103,12 +103,19 @@ public class NodeOperator<OUT> extends AbstractStreamOperator<OUT>
     public void processElement(StreamRecord<Row> element) throws Exception {
         // put the read & write in a loop to avoid deadlock between write queue and read queue.
         boolean writeSuccess;
-        do {
-            writeSuccess = dataExchange.write(element.getValue());
-            if (!writeSuccess) {
-                Thread.yield();
+        try {
+            do {
+                writeSuccess = dataExchange.write(element.getValue());
+                if (!writeSuccess) {
+                    Thread.yield();
+                }
+            } while (!writeSuccess);
+        } catch (IOException e) {
+            if (!serverFuture.isDone()) {
+                throw e;
             }
-        } while (!writeSuccess);
+            // ignore
+        }
     }
 
     @Override
@@ -156,6 +163,10 @@ public class NodeOperator<OUT> extends AbstractStreamOperator<OUT>
     @Override
     public void onEpochWatermarkIncremented(
             int epochWatermark, Context context, Collector<OUT> collector) throws Exception {
+        mlContext.getOutputQueue().markBarrier();
+        while (!serverFuture.isDone() && mlContext.getOutputQueue().canRead()) {
+            Thread.yield();
+        }
         if (serverFuture.isDone()) {
             LOG.info("{} finished at epoch {}", mlContext.getIdentity(), epochWatermark);
             return;

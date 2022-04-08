@@ -73,17 +73,17 @@ public class TFUtilsTest {
 
         final Table sourceTable =
                 tEnv.fromDataStream(
-                        env.fromElements(1, 2, 3, 4).broadcast().map(i -> i).setParallelism(2));
+                        env.fromElements(1, 2, 3, 4).broadcast().map(i -> i).setParallelism(1));
 
         final TFClusterConfig config =
                 TFClusterConfig.newBuilder()
                         .setNodeEntry(getScriptPathFromResources("print_input_iter.py"), "map_func")
-                        .setWorkerCount(2)
+                        .setWorkerCount(1)
                         .setProperty(MLConstants.ENCODING_CLASS, RowCSVCoding.class.getName())
                         .setProperty(RowCSVCoding.ENCODE_TYPES, "INT_32")
                         .build();
 
-        TFUtils.train(statementSet, sourceTable, config, Integer.MAX_VALUE);
+        TFUtils.train(statementSet, sourceTable, config, 4);
         statementSet.execute().await();
     }
 

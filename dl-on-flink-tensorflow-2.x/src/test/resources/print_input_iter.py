@@ -14,6 +14,10 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 import logging
+import sys
+from typing import Callable
+
+import tensorflow as tf
 
 from dl_on_flink_tensorflow.tensorflow_context import TFContext
 from dl_on_flink_tensorflow.tensorflow_on_flink_ops import FlinkStreamDataSet
@@ -21,12 +25,26 @@ from dl_on_flink_tensorflow.tensorflow_on_flink_ops import FlinkStreamDataSet
 logger = logging.getLogger(__file__)
 
 
+class PrintLayer(tf.keras.layers.Layer):
+
+    def __init__(self, log_id, *xargs, **kwargs):
+        super().__init__(*xargs, **kwargs)
+        self.log_id = log_id
+
+    def call(self, inputs, **kwargs):
+        tf.print(self.log_id, inputs)
+        return inputs
+
+
+def train(node_id, dataset_provider: Callable[[], tf.data.Dataset],
+          epochs=sys.maxsize):
+    model = tf.keras.Sequential([PrintLayer(node_id)])
+    model.compile()
+    model.fit(dataset_provider(), epochs=epochs)
+
+
 def map_func(context):
     context: TFContext = TFContext(context)
     dataset: FlinkStreamDataSet = context.get_tfdataset_from_flink()
-    cnt = 0
-    for record in dataset:
-        cnt += 1
-        if cnt > 16:
-            break
-        logger.info(record)
+    train(f"{context.get_node_type()}:{context.get_index()}", lambda: dataset,
+          epochs=20)

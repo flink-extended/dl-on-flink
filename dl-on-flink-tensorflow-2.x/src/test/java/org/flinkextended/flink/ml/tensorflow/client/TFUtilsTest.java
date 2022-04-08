@@ -83,7 +83,7 @@ public class TFUtilsTest {
                         .setProperty(RowCSVCoding.ENCODE_TYPES, "INT_32")
                         .build();
 
-        TFUtils.train(statementSet, sourceTable, config, Integer.MAX_VALUE);
+        TFUtils.train(statementSet, sourceTable, config, 4);
         statementSet.execute().await();
     }
 

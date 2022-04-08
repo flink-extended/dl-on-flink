@@ -54,6 +54,8 @@ public final class SpscOffHeapQueue implements Closeable {
     private final long readCacheAddress;
 
     private final long finishAddress;
+    private final long barrierAddress;
+    private final long lastClearBarrierAddress;
 
     private final int capacity;
     private final int mask;
@@ -157,6 +159,8 @@ public final class SpscOffHeapQueue implements Closeable {
         writeAddress = readAddress + 2 * PortableJvmInfo.CACHE_LINE_SIZE;
         readCacheAddress = writeAddress + 8;
         finishAddress = writeAddress + PortableJvmInfo.CACHE_LINE_SIZE;
+        barrierAddress = finishAddress + 8;
+        lastClearBarrierAddress = barrierAddress + 8;
         arrayBase = alignedRaw + 4 * PortableJvmInfo.CACHE_LINE_SIZE;
 
         if (reset) {
@@ -192,6 +196,10 @@ public final class SpscOffHeapQueue implements Closeable {
             return 0;
         }
         return mmapper.getSize();
+    }
+
+    public boolean canRead() {
+        return !isFinished() && getReadPlain() < getWrite();
     }
 
     private long getReadPlain() {
@@ -232,6 +240,26 @@ public final class SpscOffHeapQueue implements Closeable {
 
     private void setWriteCache(final long value) {
         SysUtil.UNSAFE.putLong(writeCacheAddress, value);
+    }
+
+    private void setBarrier(final long value) {
+        SysUtil.UNSAFE.putOrderedLong(null, barrierAddress, value);
+    }
+
+    private long getBarrier() {
+        return SysUtil.UNSAFE.getLong(barrierAddress);
+    }
+
+    private long getLastClearBarrier() {
+        return SysUtil.UNSAFE.getLong(lastClearBarrierAddress);
+    }
+
+    private void setLastClearBarrier(final long value) {
+        SysUtil.UNSAFE.putOrderedLong(null, lastClearBarrierAddress, value);
+    }
+
+    public void markBarrier() {
+        this.setBarrier(getWritePlain());
     }
 
     private boolean isFinished() {
@@ -444,14 +472,19 @@ public final class SpscOffHeapQueue implements Closeable {
         }
 
         @Override
-        public void write(byte[] b, int off, int len) {
+        public void write(byte[] b, int off, int len) throws IOException {
             long currentWrite = queue.getWritePlain();
             final long readWatermark = currentWrite - (queue.getCapacity() - len);
             // if the ring queue is full as read leaves behind too much
             // wait until there is enough space to write
-            while (queue.getReadCache() <= readWatermark) {
+            while (queue.getReadCache() <= readWatermark
+                    || queue.getBarrier() > queue.getLastClearBarrier()) {
                 queue.setReadCache(queue.getRead());
-                if (queue.getReadCache() <= readWatermark) {
+                if (queue.getReadCache() <= readWatermark
+                        || queue.getBarrier() > queue.getLastClearBarrier()) {
+                    if (queue.isFinished()) {
+                        throw new IOException("Queue is marked finished");
+                    }
                     Thread.yield();
                 }
             }
