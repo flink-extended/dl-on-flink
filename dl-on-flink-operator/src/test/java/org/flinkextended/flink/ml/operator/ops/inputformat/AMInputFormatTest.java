@@ -90,7 +90,24 @@ public class AMInputFormatTest {
     }
 
     @Test
-    public void testReachedEnd() throws IOException {
-        assertTrue(amInputFormat.reachedEnd());
+    public void testReachedEnd() throws IOException, InterruptedException {
+        amInputFormat.open(new NodeInputSplit(1, 0));
+
+        final Thread thread =
+                new Thread(
+                        () -> {
+                            try {
+                                assertTrue(amInputFormat.reachedEnd());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+        thread.start();
+
+        Thread.sleep(1000);
+        assertEquals(Thread.State.WAITING, thread.getState());
+        amInputFormat.getServerFuture().cancel(true);
+        thread.join();
     }
 }
