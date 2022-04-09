@@ -109,6 +109,10 @@ setup(
     version=VERSION,
     python_requires=">=3.6,<3.9",
     include_package_data=True,
+    package_data={
+        "": [
+            os.path.join(this_directory, "dl_on_flink_framework/include/*")]
+    },
     packages=find_packages(),
     ext_modules=[CMakeExtension('dl_on_flink_framework/dl_on_flink_framework')],
     install_requires=['grpcio>=1.24.3', 'protobuf<3.18'],

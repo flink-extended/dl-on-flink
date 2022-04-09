@@ -29,6 +29,9 @@ from setuptools.command.build_ext import build_ext
 this_directory = os.path.abspath(os.path.dirname(__file__))
 version_file = os.path.join(this_directory, 'dl_on_flink_tensorflow/version.py')
 
+in_dl_on_flink_source = os.path.isfile(
+    "../../dl-on-flink-framework/python/dl_on_flink_framework/include/spscqueue.h")
+
 try:
     exec(open(version_file).read())
 except IOError:
@@ -38,7 +41,7 @@ except IOError:
     sys.exit(-1)
 VERSION = __version__  # noqa
 PACKAGE_NAME = "dl-on-flink-tensorflow-2.x"
-FLINK_ML_FRAMEWORK_PACKAGE_NAME = "dl-on-flink-framework"
+DL_ON_FLINK_FRAMEWORK_PACKAGE_NAME = "dl-on-flink-framework"
 
 if os.getenv("NIGHTLY_WHEEL") == "true":
     if 'dev' not in VERSION:
@@ -79,7 +82,8 @@ class CMakeBuild(build_ext):
         cmake_args = ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' + extdir,
                       '-DPYTHON_EXECUTABLE=' + sys.executable,
                       f'-DTensorFlow_INCLUDE_DIR={tf.sysconfig.get_include()}',
-                      f'-DTensorFlow_C_LIBRARY={self.get_tf_lib(tf_lib)}']
+                      f'-DTensorFlow_C_LIBRARY={self.get_tf_lib(tf_lib)}',
+                      f'-DDL_ON_FLINK_FRAMEWORK_INCLUDE_DIR={self._get_dl_on_flink_include()}']
 
         cfg = 'Debug' if self.debug else 'Release'
         build_args = ['--config', cfg]
@@ -109,11 +113,24 @@ class CMakeBuild(build_ext):
         subprocess.check_call(['cmake', '--build', '.'] + build_args,
                               cwd=self.build_temp)
 
+    def _get_dl_on_flink_include(self):
+        if not in_dl_on_flink_source:
+            import dl_on_flink_framework.sysconfig
+            return dl_on_flink_framework.sysconfig.get_include()
+        include_path = os.path.join(os.path.dirname(os.path.dirname(this_directory)),
+                                    "dl-on-flink-framework", "python",
+                                    "dl_on_flink_framework", "include")
+        return include_path
+
     @staticmethod
     def get_tf_lib(tf_lib):
         print(os.path.join(tf_lib, "tensorflow_framework"))
         return glob(os.path.join(tf_lib, "*tensorflow_framework*"))[0]
 
+
+setup_requires = ['tensorflow>=2.3.1, <2.4.0']
+if not in_dl_on_flink_source:
+    setup_requires.append(f'{DL_ON_FLINK_FRAMEWORK_PACKAGE_NAME}=={VERSION}')
 
 setup(
     name=PACKAGE_NAME,
@@ -127,8 +144,8 @@ setup(
     install_requires=['tensorflow>=2.3.1, <2.4.0',
                       'tensorboard>=2.3.0, <2.4.0',
                       'apache-flink>=1.14.0, <1.15.0',
-                      f'{FLINK_ML_FRAMEWORK_PACKAGE_NAME}=={VERSION}'],
-    setup_requires=['tensorflow>=2.3.1, <2.4.0'],
+                      f'{DL_ON_FLINK_FRAMEWORK_PACKAGE_NAME}=={VERSION}'],
+    setup_requires=setup_requires,
     url='https://github.com/flink-extended/dl-on-flink',
     license='https://www.apache.org/licenses/LICENSE-2.0'
 )
