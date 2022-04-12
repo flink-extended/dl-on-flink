@@ -168,18 +168,22 @@ public abstract class AbstractNodeInputFormat<OUT> extends RichInputFormat<OUT, 
 
     protected abstract Runnable getNodeServerRunnable(MLContext mlContext);
 
+    protected void waitServerFutureFinish() throws ExecutionException, InterruptedException {
+        serverFuture.get();
+    }
+
     @VisibleForTesting
     void preparePythonFiles() throws IOException {
         PythonFileUtil.preparePythonFilesForExec(getRuntimeContext(), mlContext);
     }
 
     @VisibleForTesting
-    void waitServerFutureFinish() throws ExecutionException, InterruptedException {
-        serverFuture.get();
+    boolean isClosed() {
+        return isClose.get();
     }
 
     @VisibleForTesting
-    boolean isClosed() {
-        return isClose.get();
+    FutureTask<Void> getServerFuture() {
+        return serverFuture;
     }
 }

@@ -29,6 +29,7 @@ import org.apache.flink.configuration.Configuration;
 import org.apache.flink.util.Preconditions;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 /** The InputFormat that runs Application Master Node. */
 public class AMInputFormat extends AbstractNodeInputFormat<Void> {
@@ -70,6 +71,12 @@ public class AMInputFormat extends AbstractNodeInputFormat<Void> {
 
     @Override
     public boolean reachedEnd() throws IOException {
+        // block until node server finish and return true.
+        try {
+            waitServerFutureFinish();
+        } catch (ExecutionException | InterruptedException e) {
+            throw new IOException(e);
+        }
         return true;
     }
 }
