@@ -36,6 +36,7 @@ import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.junit.Test;
 
 import java.net.URL;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -60,6 +61,53 @@ public class TFUtilsTest {
                         .build();
         TFUtils.train(statementSet, config);
 
+        statementSet.execute().await();
+    }
+
+    @Test
+    public void testIterationTrain() throws ExecutionException, InterruptedException {
+        System.out.println(SysUtil._FUNC_());
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);
+        final StreamStatementSet statementSet = tEnv.createStatementSet();
+
+        final Table sourceTable =
+                tEnv.fromDataStream(
+                        env.fromElements(1, 2, 3, 4).broadcast().map(i -> i).setParallelism(2));
+
+        final TFClusterConfig config =
+                TFClusterConfig.newBuilder()
+                        .setNodeEntry(getScriptPathFromResources("print_input_iter.py"), "map_func")
+                        .setWorkerCount(2)
+                        .setProperty(MLConstants.ENCODING_CLASS, RowCSVCoding.class.getName())
+                        .setProperty(RowCSVCoding.ENCODE_TYPES, "INT_32")
+                        .build();
+
+        TFUtils.train(statementSet, sourceTable, config, 4);
+        statementSet.execute().await();
+    }
+
+    @Test
+    public void testIterationTrainWithEarlyTermination()
+            throws ExecutionException, InterruptedException {
+        System.out.println(SysUtil._FUNC_());
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);
+        final StreamStatementSet statementSet = tEnv.createStatementSet();
+
+        final Table sourceTable =
+                tEnv.fromDataStream(
+                        env.fromElements(1, 2, 3, 4).broadcast().map(i -> i).setParallelism(2));
+
+        final TFClusterConfig config =
+                TFClusterConfig.newBuilder()
+                        .setNodeEntry(getScriptPathFromResources("print_input_iter.py"), "map_func")
+                        .setWorkerCount(2)
+                        .setProperty(MLConstants.ENCODING_CLASS, RowCSVCoding.class.getName())
+                        .setProperty(RowCSVCoding.ENCODE_TYPES, "INT_32")
+                        .build();
+
+        TFUtils.train(statementSet, sourceTable, config, Integer.MAX_VALUE);
         statementSet.execute().await();
     }
 

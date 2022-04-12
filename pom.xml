@@ -71,7 +71,7 @@
     <properties>
         <protobuf.version>3.16.1</protobuf.version>
         <flink.version>1.14.0</flink.version>
-        <scala.major.version>2.11</scala.major.version>
+        <scala.major.version>2.12</scala.major.version>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
         <grpc.version>1.13.2</grpc.version>
@@ -86,6 +86,7 @@
         <compiler.target.version>1.8</compiler.target.version>
         <scala.test.version>3.0.5</scala.test.version>
         <spotless.version>2.4.2</spotless.version>
+        <flinkml.version>2.0.0</flinkml.version>
 
         <pip.install.option>--user</pip.install.option>
         <skip.install.py.dep>true</skip.install.py.dep>
@@ -300,6 +301,11 @@
                 <groupId>org.apache.flink</groupId>
                 <artifactId>flink-core</artifactId>
                 <version>${flink.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-ml-iteration_${scala.major.version}</artifactId>
+                <version>${flinkml.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.scalatest</groupId>

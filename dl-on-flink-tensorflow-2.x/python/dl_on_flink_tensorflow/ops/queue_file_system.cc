@@ -61,13 +61,14 @@ namespace tensorflow {
         QueueRandomAccessFile(const std::string& fileName, int64 len);
 
         ~QueueRandomAccessFile(){
+            VLOG(0) << "destruct queue random access file";
             reader->close();
             delete(reader);
         }
 
         Status Read(uint64 offset, size_t n, StringPiece* result,
                     char* scratch) const override {
-            int readSize = reader->readBytes(scratch, n);
+            int readSize = offset == 0 ? reader->readBytes(scratch, n, false) : reader->readBytes(scratch, n, true);
             *result = StringPiece(scratch, readSize);
             if(n == readSize){
                 return Status::OK();
@@ -86,6 +87,7 @@ namespace tensorflow {
         reader = new SPSCQueueInputStream(buf);
     }
     QueueRandomAccessFile::QueueRandomAccessFile(const std::string& fileName, int64 len) {
+        VLOG(0) << "construct queue random access file";
         reader = new SPSCQueueInputStream(fileName.c_str(), len);
     }
 

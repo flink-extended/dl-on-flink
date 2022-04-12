@@ -49,6 +49,16 @@ class SPSCQueueBase
 
     std::atomic<int64_t> *const finishAtomicPtr_;
 
+    //The barrierPtr point to the flag that indicate the barrier of data. This should only set by the writer.
+    // The writter has to wait for the reader read to the barrier before writing the next buffer.
+    // The reader cannot read pass the barrier in one read.
+    int64_t *const barrierPtr_;
+
+    // The lastClearBarrierPtr point to the flag that indicate the last barrier that the reader has cleared. This should
+    // only be set by the reader. The writer should see the lastClearBarrier flag equals to the barrier flag before writing any
+    // further data to the queue.
+    int64_t *const lastClearBarrierPtr_;
+
     const int capacity_;
     const int mask_;
 
@@ -56,7 +66,7 @@ class SPSCQueueBase
     const int mmapLen_;
 
     void dump() {
-        printf("alignedRaw=%lld, arrayBase=%lld, readPtr=%lld, writeCachePtr=%lld, writePtr=%lld, readCachePtr=%lld, finishPtr=%lld, capacity=%d, mmapLen=%d\n",
+        printf("alignedRaw=0x%llx, arrayBase=0x%llx, readPtr=0x%llx, writeCachePtr=0x%llx, writePtr=0x%llx, readCachePtr=0x%llx, finishPtr=0x%llx, capacity=%d, mmapLen=%d\n",
         reinterpret_cast<int64_t>(alignedRaw_),
         reinterpret_cast<int64_t>(arrayBase_),
         reinterpret_cast<int64_t>(readPtr_),
@@ -89,6 +99,8 @@ class SPSCQueueBase
                                                    readCachePtr_(reinterpret_cast<int64_t *>(alignedPtr + 2 * CACHE_LINE_SIZE + 8)),
 
                                                    finishAtomicPtr_(reinterpret_cast<std::atomic<int64_t> *>(alignedPtr + 3 * CACHE_LINE_SIZE)),
+                                                   barrierPtr_(reinterpret_cast<int64_t *>(alignedPtr + 3 * CACHE_LINE_SIZE + 8)),
+                                                   lastClearBarrierPtr_(reinterpret_cast<int64_t *>(alignedPtr + 3 * CACHE_LINE_SIZE + 16)),
                                                    capacity_(*reinterpret_cast<int64_t *>(alignedPtr + CACHE_LINE_SIZE)),
                                                    mask_(capacity_ - 1),
                                                    ipc_(ipc),
@@ -114,7 +126,8 @@ class SPSCQueueBase
         void* mmappedData = ::mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
         assert(mmappedData != MAP_FAILED);
         ::close(fd);
-        printf("MMap %s file to address %lld with length %lld.\n", fileName, reinterpret_cast<int64_t>(mmappedData), len);
+        printf("MMap %s file to address 0x%llx with length %lld.\n", fileName, reinterpret_cast<int64_t>(mmappedData), len);
+        printf("MMap capacity %lld.\n", *reinterpret_cast<int64_t *>(reinterpret_cast<int64_t>(mmappedData) + CACHE_LINE_SIZE));
         return reinterpret_cast<int64_t>(mmappedData);
     }
 
@@ -199,6 +212,22 @@ class SPSCQueueBase
         putLong(writeCachePtr_, value);
     }
 
+    void setBarrier(int64_t barrier) {
+        putLong(barrierPtr_, barrier);
+    }
+
+    int64_t getBarrier() {
+        return getLong(barrierPtr_);
+    }
+
+    void setLastClearBarrier(int64_t clearBarrier) {
+        putLong(lastClearBarrierPtr_, clearBarrier);
+    }
+
+    int64_t getLastClearBarrier() {
+        return getLong(lastClearBarrierPtr_);
+    }
+
     void markFinished()
     {
         putOrderedLong(finishAtomicPtr_, -1);
@@ -249,6 +278,15 @@ class SPSCQueueInputStream : public SPSCQueueBase
     SPSCQueueInputStream(int64_t alignedPtr) : SPSCQueueBase(alignedPtr), toMove_(0) {}
     SPSCQueueInputStream(const char* fileName, int64_t len): SPSCQueueBase(fileName, len), toMove_(0) {}
 
+    void close() {
+        updateReadPtr();
+        SPSCQueueBase::close();
+    }
+
+    virtual bool Next(const void **data, int *size) {
+        return Next(data, size, false);
+    }
+
     // Obtains a chunk of data from the stream.
     //
     // Preconditions:
@@ -265,7 +303,7 @@ class SPSCQueueInputStream : public SPSCQueueBase
     // * It is legal for the returned buffer to have zero size, as long
     //   as repeatedly calling Next() eventually yields a buffer with non-zero
     //   size.
-    virtual bool Next(const void **data, int *size)
+    virtual bool Next(const void **data, int *size, bool returnOnBarrier)
     {
         //as read address will only be written by this consumer,
         // thus, no need to enforce atomic for this variable
@@ -279,6 +317,13 @@ class SPSCQueueInputStream : public SPSCQueueBase
             writeCache = getWriteCache();
             if (currentRead >= writeCache)
             {
+                int64_t barrier = getBarrier();
+                if (barrier != getLastClearBarrier() && currentRead >= barrier) {
+                    setLastClearBarrier(barrier);
+                    if (returnOnBarrier) {
+                        return false;
+                    }
+                }
                 if (isFinished())
                 {
                     //double check write ptr as there maybe an writer update between getWrite() and isFinished.
@@ -358,20 +403,24 @@ class SPSCQueueInputStream : public SPSCQueueBase
         return true;
     }
 
+    int readBytes(void *buf, size_t sizeToRead) {
+        return readBytes(buf, sizeToRead, false);
+    }
+
     /**
     Read a byte array to buf.
     @param buf  the buf to store result
     @param sizeToRead  number of bytes to read
     @return the actual bytes read
     */
-    int readBytes(void *buf, size_t sizeToRead)
+    int readBytes(void *buf, size_t sizeToRead, bool returnOnBarrier)
     {
         const void *data;
         int size;
         int remain = sizeToRead;
         char *p = reinterpret_cast<char *>(buf);
 
-        while (Next(&data, &size))
+        while (Next(&data, &size, returnOnBarrier))
         {
             const char *q = reinterpret_cast<const char *>(data);
             int s = remain > size ? size : remain;

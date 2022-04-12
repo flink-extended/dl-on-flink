@@ -25,7 +25,9 @@ import org.flinkextended.flink.ml.operator.ops.inputformat.NodeInputFormat;
 import org.flinkextended.flink.ml.operator.ops.source.NodeSource;
 
 import org.apache.flink.api.common.io.InputFormat;
+import org.apache.flink.iteration.operator.WrapperOperatorFactory;
 import org.apache.flink.streaming.api.graph.StreamNode;
+import org.apache.flink.streaming.api.operators.SimpleOperatorFactory;
 import org.apache.flink.streaming.api.operators.StreamSource;
 
 import org.hamcrest.BaseMatcher;
@@ -131,6 +133,33 @@ class StreamNodeMatchers {
             try {
                 final StreamNode streamNode = getStreamNode(o);
                 final NodeOperator<?> operator = (NodeOperator<?>) streamNode.getOperator();
+                return operator.getNodeType().equals(operatorName);
+            } catch (ClassCastException e) {
+                return false;
+            }
+        }
+    }
+
+    public static class IterativeNodeOperatorMatcher extends StreamNodeMatcher {
+
+        public IterativeNodeOperatorMatcher(String nodeType, int parallelism) {
+            super(nodeType, parallelism);
+        }
+
+        @Override
+        public boolean matches(Object o) {
+            if (!super.matches(o)) {
+                return false;
+            }
+            try {
+                final StreamNode streamNode = getStreamNode(o);
+                final NodeOperator<?> operator =
+                        (NodeOperator<?>)
+                                ((SimpleOperatorFactory<?>)
+                                                ((WrapperOperatorFactory<?>)
+                                                                streamNode.getOperatorFactory())
+                                                        .getOperatorFactory())
+                                        .getOperator();
                 return operator.getNodeType().equals(operatorName);
             } catch (ClassCastException e) {
                 return false;

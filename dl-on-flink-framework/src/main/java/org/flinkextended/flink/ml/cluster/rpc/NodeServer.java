@@ -349,6 +349,11 @@ public class NodeServer implements Runnable {
             mlContext.getInputQueue().markFinished();
         }
 
+        if (mlContext != null && mlContext.getInputQueue() != null) {
+            LOG.info("{} mark output queue finished.", mlContext.getIdentity());
+            mlContext.getOutputQueue().markFinished();
+        }
+
         runner = null;
     }
 
