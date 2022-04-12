@@ -197,7 +197,11 @@
                                     <!-- flink shaded jars -->
                                     <exclude>org.apache.flink:flink-shaded-*</exclude>
                                     <!-- flink dependencies are provided -->
-                                    <exclude>org.apache.flink:*</exclude>
+                                    <exclude>org.apache.flink:flink-core</exclude>
+                                    <exclude>org.apache.flink:flink-annotations</exclude>
+                                    <exclude>org.apache.flink:flink-metrics-*</exclude>
+                                    <exclude>org.apache.flink:flink-hadoop-fs</exclude>
+                                    <exclude>org.apache.flink:force-shading</exclude>
                                 </excludes>
                             </artifactSet>
 
