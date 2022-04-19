@@ -89,6 +89,9 @@ public class TFClusterConfig extends ClusterConfig {
         /**
          * Set the number of workers in the Tensorflow cluster.
          *
+         * <p>The node type of the worker nodes is "worker", i.e., the return value of
+         * dl_on_flink_framework.context.Context.get_node_type is "worker".
+         *
          * @param count Number of workers.
          */
         public Builder setWorkerCount(Integer count) {
@@ -98,6 +101,9 @@ public class TFClusterConfig extends ClusterConfig {
 
         /**
          * Set the number of parameter servers in the Tensorflow cluster.
+         *
+         * <p>The node type of the worker nodes is "ps", i.e., the return value of
+         * dl_on_flink_framework.context.Context.get_node_type is "ps".
          *
          * @param count Number of parameter servers.
          */
