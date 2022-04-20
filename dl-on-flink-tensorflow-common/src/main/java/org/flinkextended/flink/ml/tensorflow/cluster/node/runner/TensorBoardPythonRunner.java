@@ -45,15 +45,11 @@ public class TensorBoardPythonRunner extends ProcessPythonRunner {
     @Override
     public void runScript() throws IOException {
         List<String> args = new ArrayList<>();
-        String pythonVersion =
-                mlContext.getProperties().getOrDefault(MLConstants.PYTHON_VERSION, "");
-        String pythonExec = "python" + pythonVersion;
-        // check if has python2 or python3 environment
-        if (checkPythonEnvironment("which " + pythonExec) != 0) {
-            throw new RuntimeException("No this python environment");
+        // check if tensorboard is in the environment
+        if (checkPythonEnvironment("which tensorboard") != 0) {
+            throw new RuntimeException("tensorboard doesn't exist");
         }
-        args.add(pythonExec);
-        args.add(mlContext.getScript().getAbsolutePath());
+        args.add("tensorboard");
         args.add(
                 "--logdir="
                         + mlContext

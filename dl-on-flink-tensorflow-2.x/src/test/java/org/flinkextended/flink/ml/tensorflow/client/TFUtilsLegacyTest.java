@@ -201,10 +201,7 @@ public class TFUtilsLegacyTest {
                 MLConstants.CHECKPOINT_DIR, ckptDir + String.valueOf(System.currentTimeMillis()));
         TFUtilsLegacy.train(streamEnv, tableEnv, statementSet, null, config, null);
 
-        TFConfig tbConfig = config.deepCopy();
-        String[] scripts = {tensorboardScript};
-        tbConfig.setPythonFiles(scripts);
-        TFUtilsLegacy.startTensorBoard(streamEnv, tableEnv, statementSet, tbConfig);
+        TFUtilsLegacy.startTensorBoard(streamEnv, tableEnv, statementSet, config);
 
         statementSet.execute().getJobClient().get().getJobExecutionResult().get();
     }
