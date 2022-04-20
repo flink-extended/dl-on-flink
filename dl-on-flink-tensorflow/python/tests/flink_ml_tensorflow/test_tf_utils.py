@@ -13,7 +13,9 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+import importlib.util
 import os
+import sys
 import tempfile
 import time
 import unittest
@@ -32,6 +34,14 @@ add_dl_on_flink_jar()
 from dl_on_flink_tensorflow.tensorflow_on_flink_mlconf import MLCONSTANTS
 
 
+def _get_entry(path, func_name):
+    spec = importlib.util.spec_from_file_location(path, path)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[path] = module
+    spec.loader.exec_module(module)
+    return getattr(module, func_name)
+
+
 class TestTFUtils(unittest.TestCase):
 
     def setUp(self) -> None:
@@ -46,8 +56,9 @@ class TestTFUtils(unittest.TestCase):
         config = TFClusterConfig.new_builder() \
             .set_worker_count(2) \
             .set_ps_count(1) \
-            .set_node_entry(os.path.join(get_resource_folder(), "add.py"),
-                            "map_func") \
+            .set_node_entry(
+            _get_entry(os.path.join(get_resource_folder(), "add.py"),
+                       "map_func")) \
             .build()
 
         train(self.statement_set, config)
@@ -59,8 +70,9 @@ class TestTFUtils(unittest.TestCase):
         source_table = self.t_env.from_data_stream(
             self.env.from_collection([1, 2, 3, 4], Types.INT()))
         config = TFClusterConfig.new_builder() \
-            .set_node_entry(os.path.join(get_resource_folder(),
-                                         "print_input_iter.py"), "map_func") \
+            .set_node_entry(_get_entry(os.path.join(get_resource_folder(),
+                                                    "print_input_iter.py"),
+                                       "map_func")) \
             .set_worker_count(1) \
             .set_property(MLCONSTANTS.ENCODING_CLASS, coding_class) \
             .set_property("sys:csv_encode_types", "INT_32") \
@@ -73,8 +85,9 @@ class TestTFUtils(unittest.TestCase):
         source_table = self.t_env.from_data_stream(
             self.env.from_collection([1, 2, 3, 4], Types.INT()))
         config = TFClusterConfig.new_builder() \
-            .set_node_entry(os.path.join(get_resource_folder(),
-                                         "print_input_iter.py"), "map_func") \
+            .set_node_entry(_get_entry(os.path.join(get_resource_folder(),
+                                                    "print_input_iter.py"),
+                                       "map_func")) \
             .set_worker_count(1) \
             .set_property(MLCONSTANTS.ENCODING_CLASS, coding_class) \
             .set_property("sys:csv_encode_types", "INT_32") \
@@ -87,9 +100,9 @@ class TestTFUtils(unittest.TestCase):
         config = TFClusterConfig.new_builder() \
             .set_worker_count(2) \
             .set_ps_count(1) \
-            .set_node_entry(os.path.join(get_resource_folder(),
-                                         "input_output.py"),
-                            "map_func") \
+            .set_node_entry(_get_entry(os.path.join(get_resource_folder(),
+                                                    "input_output.py"),
+                                       "map_func")) \
             .set_property(MLCONSTANTS.ENCODING_CLASS, coding_class) \
             .set_property(MLCONSTANTS.DECODING_CLASS, coding_class) \
             .set_property("sys:csv_encode_types",
@@ -107,7 +120,7 @@ class TestTFUtils(unittest.TestCase):
             .build()
         descriptor = TableDescriptor.for_connector("datagen") \
             .schema(schema) \
-            .option("rows-per-second", "1") \
+            .option("number-of-rows", "10") \
             .build()
         input_table = self.t_env.from_descriptor(descriptor)
         output_table = inference(self.statement_set, input_table, config,
@@ -121,17 +134,14 @@ class TestTFUtils(unittest.TestCase):
         config = TFClusterConfig.new_builder() \
             .set_worker_count(2) \
             .set_ps_count(1) \
-            .set_node_entry(os.path.join(get_resource_folder(),
-                                         "add_withtb.py"), "map_func") \
+            .set_node_entry(_get_entry(os.path.join(get_resource_folder(),
+                                                    "add_withtb.py"),
+                                       "map_func")) \
             .set_property(MLCONSTANTS.CHECKPOINT_DIR,
                           os.path.join(tmpdir, str(time.time_ns()))) \
             .build()
 
         train(self.statement_set, config)
-        tensorboard_config = config.to_builder() \
-            .set_node_entry(os.path.join(get_resource_folder(),
-                                         "tensorboard.py"), "main") \
-            .build()
 
-        tensorboard(self.statement_set, tensorboard_config)
+        tensorboard(self.statement_set, config)
         self.statement_set.execute().wait()
