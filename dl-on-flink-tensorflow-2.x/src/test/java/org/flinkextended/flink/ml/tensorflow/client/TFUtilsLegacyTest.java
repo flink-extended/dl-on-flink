@@ -51,7 +51,6 @@ public class TFUtilsLegacyTest {
     private static final String workerZeroFinishScript = pythonPath + "worker_0_finish.py";
     private static final String addTBScript = pythonPath + "add_withtb.py";
     private static final String inputOutputScript = pythonPath + "input_output.py";
-    private static final String tensorboardScript = pythonPath + "tensorboard.py";
     private static final String ckptDir =
             TestUtil.getProjectRootPath() + "/dl-on-flink-tensorflow/target/tmp/add_withtb/";
 
@@ -179,10 +178,7 @@ public class TFUtilsLegacyTest {
                 MLConstants.CHECKPOINT_DIR, ckptDir + String.valueOf(System.currentTimeMillis()));
         TFUtilsLegacy.train(flinkEnv, null, config);
 
-        TFConfig tbConfig = config.deepCopy();
-        String[] scripts = {tensorboardScript};
-        tbConfig.setPythonFiles(scripts);
-        TFUtilsLegacy.startTensorBoard(flinkEnv, tbConfig);
+        TFUtilsLegacy.startTensorBoard(flinkEnv, config);
 
         JobExecutionResult result = flinkEnv.execute();
     }

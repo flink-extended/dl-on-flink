@@ -45,10 +45,6 @@ public class TensorBoardPythonRunner extends ProcessPythonRunner {
     @Override
     public void runScript() throws IOException {
         List<String> args = new ArrayList<>();
-        // check if tensorboard is in the environment
-        if (checkPythonEnvironment("which tensorboard") != 0) {
-            throw new RuntimeException("tensorboard doesn't exist");
-        }
         args.add("tensorboard");
         args.add(
                 "--logdir="
@@ -75,7 +71,11 @@ public class TensorBoardPythonRunner extends ProcessPythonRunner {
         }
         buildProcessBuilder(builder);
         LOG.info("{} Python cmd: {}", mlContext.getIdentity(), Joiner.on(" ").join(args));
-        runProcess(builder);
+        try {
+            runProcess(builder);
+        } catch (Throwable e) {
+            LOG.error("Fail to run tensorboard.", e);
+        }
     }
 
     @VisibleForTesting
