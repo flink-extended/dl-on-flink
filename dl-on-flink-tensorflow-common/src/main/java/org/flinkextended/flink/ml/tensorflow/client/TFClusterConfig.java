@@ -43,7 +43,7 @@ public class TFClusterConfig extends ClusterConfig {
     public static final String PS_NODE_TYPE = "ps";
     public static final String TENSORBOARD_NODE_TYPE = "tensorboard";
 
-    public TFClusterConfig(
+    private TFClusterConfig(
             Map<String, Integer> nodeTypeCntMap,
             Map<String, String> properties,
             Set<String> pythonFilePaths,

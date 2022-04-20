@@ -51,7 +51,7 @@ public class ClusterConfig implements Serializable {
     private final String entryFuncName;
     private final String pythonVirtualEnvZipPath;
 
-    public ClusterConfig(
+    protected ClusterConfig(
             Map<String, Integer> nodeTypeCntMap,
             Map<String, String> properties,
             Set<String> pythonFilePaths,
