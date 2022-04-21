@@ -30,6 +30,7 @@ import org.flinkextended.flink.ml.proto.FinishNodeRequest;
 import org.flinkextended.flink.ml.proto.MLClusterDef;
 import org.flinkextended.flink.ml.proto.MLJobDef;
 import org.flinkextended.flink.ml.proto.RegisterNodeRequest;
+import org.flinkextended.flink.ml.tensorflow.client.TFClusterConfig;
 import org.flinkextended.flink.ml.util.ProtoUtil;
 
 import org.slf4j.Logger;
@@ -64,6 +65,9 @@ public class TFTransitions {
                 e.printStackTrace();
                 throw new InvalidStateTransitionException(getInternalState(), amEvent);
             }
+            if (isTensorboardFinish(request)) {
+                return;
+            }
             boolean workerZeroFinish = isWorkerZeroFinish(request);
             if (workerZeroFinish && mlContext.isBatchMode()) {
                 LOG.info("worker 0 finish and send finish cluster event!");
@@ -82,13 +86,15 @@ public class TFTransitions {
             }
         }
 
+        private boolean isTensorboardFinish(FinishNodeRequest request) {
+            return request.getNodeSpec()
+                    .getRoleName()
+                    .equals(TFClusterConfig.TENSORBOARD_NODE_TYPE);
+        }
+
         private static boolean isWorkerZeroFinish(FinishNodeRequest request) {
-            boolean workerZeroFinish = false;
-            if (request.getNodeSpec().getRoleName().equals(new WorkerRole().name())
-                    && 0 == request.getNodeSpec().getIndex()) {
-                workerZeroFinish = true;
-            }
-            return workerZeroFinish;
+            return request.getNodeSpec().getRoleName().equals(new WorkerRole().name())
+                    && 0 == request.getNodeSpec().getIndex();
         }
     }
 

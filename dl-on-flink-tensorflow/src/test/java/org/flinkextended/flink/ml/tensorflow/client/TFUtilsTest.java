@@ -178,12 +178,7 @@ public class TFUtilsTest {
                         .build();
 
         TFUtils.train(statementSet, config);
-
-        final TFClusterConfig tensorboardConfig =
-                config.toBuilder()
-                        .setNodeEntry(getScriptPathFromResources("tensorboard.py"), "main")
-                        .build();
-        TFUtils.tensorBoard(statementSet, tensorboardConfig);
+        TFUtils.tensorBoard(statementSet, config);
         statementSet.execute().await();
     }
 
