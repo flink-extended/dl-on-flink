@@ -96,8 +96,8 @@ class TableExample:
         prop[MLCONSTANTS.ENCODING_CLASS] = "org.flinkextended.flink.ml.operator.coding.RowCSVCoding"
         prop[MLCONSTANTS.DECODING_CLASS] = "org.flinkextended.flink.ml.operator.coding.RowCSVCoding"
         inputSb = "INT_32" + "," + "INT_64" + "," + "FLOAT_32" + "," + "FLOAT_64" + "," + "STRING"
-        prop["sys:csv_encode_types"] = inputSb
-        prop["sys:csv_decode_types"] = inputSb
+        prop["input_types"] = inputSb
+        prop["output_types"] = inputSb
         prop[MLCONSTANTS.PYTHON_VERSION] = "3.7"
         source_file = os.getcwd() + "/../../src/test/resources/input.csv"
         sink_file = os.getcwd() + "/../../src/test/resources/output.csv"

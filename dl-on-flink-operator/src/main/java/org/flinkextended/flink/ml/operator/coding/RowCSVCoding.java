@@ -33,12 +33,12 @@ import org.apache.flink.types.Row;
  */
 public class RowCSVCoding implements Coding<Row> {
     public static final String DELIM_CONFIG = MLConstants.SYS_PREFIX + "delim";
-    public static final String ENCODE_TYPES = MLConstants.SYS_PREFIX + "csv_encode_types";
-    public static final String DECODE_TYPES = MLConstants.SYS_PREFIX + "csv_decode_types";
+    public static final String ENCODE_TYPES = "input_types";
+    public static final String DECODE_TYPES = "output_types";
     public static final String TYPES_SPLIT_CONFIG = ",";
 
-    private DataTypes[] encodeTypes;
-    private DataTypes[] decodeTypes;
+    private final DataTypes[] encodeTypes;
+    private final DataTypes[] decodeTypes;
 
     private String delim;
 
@@ -65,7 +65,6 @@ public class RowCSVCoding implements Coding<Row> {
      *
      * @param bytes csv format record byte array.
      * @return table row object.
-     * @throws CodingException
      */
     @Override
     public Row decode(byte[] bytes) throws CodingException {
@@ -114,7 +113,6 @@ public class RowCSVCoding implements Coding<Row> {
      *
      * @param object table row object.
      * @return csv format record string.
-     * @throws CodingException
      */
     @Override
     public byte[] encode(Row object) throws CodingException {

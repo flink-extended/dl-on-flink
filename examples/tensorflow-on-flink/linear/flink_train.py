@@ -71,7 +71,7 @@ if __name__ == '__main__':
             "org.flinkextended.flink.ml.operator.coding.RowCSVCoding",
         MLCONSTANTS.DECODING_CLASS:
             "org.flinkextended.flink.ml.operator.coding.RowCSVCoding",
-        'sys:csv_encode_types': 'STRING,STRING',
+        'input_types': 'STRING,STRING',
         'model_save_path': model_save_path,
         MLCONSTANTS.CONFIG_STORAGE_TYPE: MLCONSTANTS.STORAGE_LOCAL_FILE,
     }
