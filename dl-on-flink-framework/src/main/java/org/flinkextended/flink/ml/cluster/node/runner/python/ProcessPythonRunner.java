@@ -90,17 +90,7 @@ public class ProcessPythonRunner extends AbstractScriptRunner {
     public void runScript() throws IOException {
         String startupScript = mlContext.getProperties().get(MLConstants.STARTUP_SCRIPT_FILE);
         List<String> args = new ArrayList<>();
-        String pythonVersion =
-                mlContext.getProperties().getOrDefault(MLConstants.PYTHON_VERSION, "");
-        String pythonExec = "python" + pythonVersion;
-        // check if has python2 or python3 environment
-        if (checkPythonEnvironment("which " + pythonExec) != 0) {
-            throw new RuntimeException("Python executable: " + pythonExec + " not found");
-        }
-        String virtualEnv = mlContext.getProperties().getOrDefault(MLConstants.VIRTUAL_ENV_DIR, "");
-        if (!virtualEnv.isEmpty()) {
-            pythonExec = virtualEnv + "/bin/python";
-        }
+        String pythonExec = getPythonExec();
         args.add(pythonExec);
         if (mlContext.startWithStartup()) {
             args.add(startupScript);
@@ -121,6 +111,18 @@ public class ProcessPythonRunner extends AbstractScriptRunner {
         buildProcessBuilder(builder);
         LOG.info("{} Python cmd: {}", mlContext.getIdentity(), Joiner.on(" ").join(args));
         runProcess(builder);
+    }
+
+    private String getPythonExec() {
+        if (mlContext.getProperties().containsKey(MLConstants.PYTHON_EXEC)) {
+            return mlContext.getProperties().get(MLConstants.PYTHON_EXEC);
+        }
+        String pythonExec = "python";
+        String virtualEnv = mlContext.getProperties().getOrDefault(MLConstants.VIRTUAL_ENV_DIR, "");
+        if (!virtualEnv.isEmpty()) {
+            pythonExec = virtualEnv + "/bin/python";
+        }
+        return pythonExec;
     }
 
     protected void runProcess(ProcessBuilder builder) throws IOException {
@@ -230,6 +232,7 @@ public class ProcessPythonRunner extends AbstractScriptRunner {
             builder.environment()
                     .put(MLConstants.CLASSPATH, Joiner.on(File.pathSeparator).join(stripped));
         }
+        builder.directory(new File(workerDir));
     }
 
     private synchronized void killProcess() {
@@ -278,7 +281,7 @@ public class ProcessPythonRunner extends AbstractScriptRunner {
         if (hadoop == null) {
             return null;
         }
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         Preconditions.checkState(
                 ShellExec.run(hadoop + " classpath --glob", buffer::append),
                 "Failed to get hadoop class path");
@@ -287,7 +290,7 @@ public class ProcessPythonRunner extends AbstractScriptRunner {
 
     protected static String findHadoopBin() {
         String res = null;
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         if (ShellExec.run("type -p hadoop", buffer::append, true)) {
             res = buffer.toString();
         } else {

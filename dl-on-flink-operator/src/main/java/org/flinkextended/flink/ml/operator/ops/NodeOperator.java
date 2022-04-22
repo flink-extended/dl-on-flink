@@ -27,6 +27,7 @@ import org.flinkextended.flink.ml.operator.util.ColumnInfos;
 import org.flinkextended.flink.ml.operator.util.PythonFileUtil;
 import org.flinkextended.flink.ml.util.MLConstants;
 
+import org.apache.flink.configuration.Configuration;
 import org.apache.flink.iteration.IterationListener;
 import org.apache.flink.streaming.api.operators.AbstractStreamOperator;
 import org.apache.flink.streaming.api.operators.OneInputStreamOperator;
@@ -59,20 +60,31 @@ public class NodeOperator<OUT> extends AbstractStreamOperator<OUT>
 
     private final String nodeType;
     private final ClusterConfig clusterConfig;
+    private final Configuration flinkConfig;
     private MLContext mlContext;
     private DataExchange<Row, OUT> dataExchange;
     private FutureTask<Void> serverFuture;
     private FutureTask<Void> dataExchangeConsumerFuture;
 
     public NodeOperator(String nodeType, ClusterConfig clusterConfig) {
+        this(nodeType, clusterConfig, new Configuration());
+    }
+
+    public NodeOperator(String nodeType, ClusterConfig clusterConfig, Configuration flinkConfig) {
         this.nodeType = nodeType;
         this.clusterConfig = clusterConfig;
+        this.flinkConfig = flinkConfig;
     }
 
     @Override
     public void open() throws Exception {
+        final PythonEnvironmentManager pythonEnvironmentManager =
+                new PythonEnvironmentManager(clusterConfig, flinkConfig);
+        pythonEnvironmentManager.open(getRuntimeContext());
+
         Map<String, String> properties = new HashMap<>(clusterConfig.getProperties());
         properties.put(MLConstants.GPU_INFO, ResourcesUtils.parseGpuInfo(getRuntimeContext()));
+        properties.putAll(pythonEnvironmentManager.getPythonEnvProperties());
 
         mlContext =
                 new MLContext(

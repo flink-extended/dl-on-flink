@@ -23,6 +23,7 @@ import org.flinkextended.flink.ml.operator.client.NodeUtils;
 import org.apache.flink.annotation.Internal;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
+import org.apache.flink.configuration.Configuration;
 import org.apache.flink.iteration.DataStreamList;
 import org.apache.flink.iteration.IterationBody;
 import org.apache.flink.iteration.IterationBodyResult;
@@ -46,12 +47,17 @@ public class TFNodeIterationBody implements IterationBody {
     private final StreamExecutionEnvironment env;
     private final TFClusterConfig tfClusterConfig;
     private final Integer maxEpoch;
+    private final Configuration flinkConfig;
 
     public TFNodeIterationBody(
-            StreamExecutionEnvironment env, TFClusterConfig tfClusterConfig, Integer maxEpoch) {
+            StreamExecutionEnvironment env,
+            TFClusterConfig tfClusterConfig,
+            Integer maxEpoch,
+            Configuration flinkConfig) {
         this.env = env;
         this.tfClusterConfig = tfClusterConfig;
         this.maxEpoch = maxEpoch;
+        this.flinkConfig = flinkConfig;
     }
 
     @Override
@@ -63,7 +69,8 @@ public class TFNodeIterationBody implements IterationBody {
                         input,
                         tfClusterConfig,
                         TypeInformation.of(Void.class),
-                        TFClusterConfig.WORKER_NODE_TYPE);
+                        TFClusterConfig.WORKER_NODE_TYPE,
+                        flinkConfig);
         final DataStream<Integer> terminateStream =
                 trainResStream
                         .getSideOutput(new OutputTag<Integer>("termination") {})

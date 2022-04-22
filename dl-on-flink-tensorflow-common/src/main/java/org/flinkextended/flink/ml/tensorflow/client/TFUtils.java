@@ -24,6 +24,7 @@ import org.flinkextended.flink.ml.tensorflow.cluster.node.runner.TensorBoardPyth
 import org.flinkextended.flink.ml.util.MLConstants;
 
 import org.apache.flink.annotation.Public;
+import org.apache.flink.configuration.Configuration;
 import org.apache.flink.iteration.DataStreamList;
 import org.apache.flink.iteration.IterationConfig;
 import org.apache.flink.iteration.Iterations;
@@ -117,6 +118,7 @@ public class TFUtils {
                         statementSet, StatementSetImpl.class, "tableEnvironment");
         final StreamExecutionEnvironment env = tEnv.execEnv();
         final DataStream<Row> inputDataStream = tEnv.toDataStream(input);
+        final Configuration flinkConfig = NodeUtils.mergeConfiguration(env, tEnv.getConfig());
 
         NodeUtils.scheduleAMNode(statementSet, tfClusterConfig);
 
@@ -130,7 +132,7 @@ public class TFUtils {
                         DataStreamList.of(dummyInitVariable),
                         ReplayableDataStreamList.replay(inputDataStream),
                         iterationConfig,
-                        new TFNodeIterationBody(env, tfClusterConfig, epoch));
+                        new TFNodeIterationBody(env, tfClusterConfig, epoch, flinkConfig));
 
         final DataStream<Integer> trainResDataStream = dataStreamList.get(0);
         statementSet.addInsert(
