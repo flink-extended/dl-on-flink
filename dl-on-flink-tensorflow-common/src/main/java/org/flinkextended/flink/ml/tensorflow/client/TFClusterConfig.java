@@ -19,6 +19,7 @@
 package org.flinkextended.flink.ml.tensorflow.client;
 
 import org.flinkextended.flink.ml.cluster.ClusterConfig;
+import org.flinkextended.flink.ml.operator.coding.RowCSVCoding;
 import org.flinkextended.flink.ml.tensorflow.cluster.TFAMStateMachineImpl;
 import org.flinkextended.flink.ml.tensorflow.cluster.node.runner.TFMLRunner;
 import org.flinkextended.flink.ml.tensorflow.data.TFRecordReaderImpl;
@@ -80,6 +81,8 @@ public class TFClusterConfig extends ClusterConfig {
             setProperty(MLConstants.AM_STATE_MACHINE_CLASS, TFAMStateMachineImpl.class.getName());
             setProperty(MLConstants.RECORD_READER_CLASS, TFRecordReaderImpl.class.getName());
             setProperty(MLConstants.RECORD_WRITER_CLASS, TFRecordWriterImpl.class.getName());
+            setProperty(MLConstants.ENCODING_CLASS, RowCSVCoding.class.getName());
+            setProperty(MLConstants.DECODING_CLASS, RowCSVCoding.class.getName());
         }
 
         private Builder(TFClusterConfig tfClusterConfig) {
