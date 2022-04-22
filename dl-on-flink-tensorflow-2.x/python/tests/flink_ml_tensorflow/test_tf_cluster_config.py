@@ -90,7 +90,11 @@ class TestTFClusterConfig(unittest.TestCase):
             "sys:record_reader_class": "org.flinkextended.flink.ml.tensorflow."
                                        "data.TFRecordReaderImpl",
             "sys:record_writer_class": "org.flinkextended.flink.ml.tensorflow."
-                                       "data.TFRecordWriterImpl"
+                                       "data.TFRecordWriterImpl",
+            "sys:decoding_class":
+                "org.flinkextended.flink.ml.operator.coding.RowCSVCoding",
+            "sys:encoding_class":
+                "org.flinkextended.flink.ml.operator.coding.RowCSVCoding"
         }
 
         self.assertDictEqual({"worker": 2, "ps": 1},
