@@ -13,97 +13,92 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-from typing import Dict, Set
+from typing import Dict, Callable
 
+from dl_on_flink_framework.cluster_config import ClusterConfig
+from dl_on_flink_framework.context import Context
 from pyflink.java_gateway import get_gateway
-from pyflink.util.java_utils import to_jarray
 
 
-class TFClusterConfig:
+class TFClusterConfig(ClusterConfig):
     """
     A config for the Tensorflow cluster.
     """
 
-    def __init__(self, j_tf_cluster_config):
-        self._j_tf_cluster_config = j_tf_cluster_config
+    def __init__(self,
+                 node_type_cnt_map: Dict[str, int],
+                 properties: Dict[str, str],
+                 entry: Callable[[Context], None]):
+        super().__init__(node_type_cnt_map, properties, entry)
+
+    def _to_j_tf_cluster_config(self):
+        gateway = get_gateway()
+        j_builder = gateway.jvm.org.flinkextended.flink.ml.tensorflow.client.TFClusterConfig.newBuilder()
+        for node_type, cnt in self.get_node_type_cnt_map().items():
+            j_builder.addNodeType(node_type, cnt)
+
+        for k, v in self.get_properties().items():
+            j_builder.setProperty(k, v)
+
+        j_builder.setNodeEntry(self.get_entry_python_file_path(),
+                               self.get_entry_func_name())
+
+        return j_builder.build()
 
     @staticmethod
     def new_builder() -> "TFClusterConfig.Builder":
-        gateway = get_gateway()
-        j_builder = gateway.jvm.org.flinkextended.flink.ml.tensorflow.client \
-            .TFClusterConfig.newBuilder()
-        return TFClusterConfig.Builder(j_builder)
+        """
+        Create a new Builder for TFClusterConfig.
+        """
+        return TFClusterConfig.Builder()
 
-    def to_builder(self) -> "TFClusterConfig.Builder":
-        j_builder = self._j_tf_cluster_config.toBuilder()
-        return TFClusterConfig.Builder(j_builder)
+    class Builder(ClusterConfig.Builder):
+        """
+        Builder for TFClusterConfig.
+        """
 
-    def get_node_type_cnt_map(self) -> Dict[str, int]:
-        return self._j_tf_cluster_config.getNodeTypeCntMap()
-
-    def get_properties(self) -> Dict[str, str]:
-        return self._j_tf_cluster_config.getProperties()
-
-    def get_property(self, key: str) -> str:
-        return self._j_tf_cluster_config.getProperty(key)
-
-    def get_entry_python_file_path(self) -> str:
-        return self._j_tf_cluster_config.getEntryPythonFilePath()
-
-    def get_entry_func_name(self) -> str:
-        return self._j_tf_cluster_config.getEntryFuncName()
-
-    def get_python_virtual_env_zip_path(self) -> str:
-        return self._j_tf_cluster_config.getPythonVirtualEnvZipPath()
-
-    def get_python_file_paths(self) -> Set[str]:
-        return self._j_tf_cluster_config.getPythonFilePaths()
-
-    def get_node_count(self, node_type: str) -> int:
-        return self._j_tf_cluster_config.getNodeCount(node_type)
-
-    class Builder:
-        def __init__(self, j_builder):
-            self._j_builder = j_builder
-
-        def add_node_type(self, node_type: str,
-                          count: int) -> "TFClusterConfig.Builder":
-            self._j_builder.addNodeType(node_type, count)
-            return self
-
-        def set_property(self, key: str,
-                         value: str) -> "TFClusterConfig.Builder":
-            self._j_builder.setProperty(key, value)
-            return self
-
-        def add_python_file(self,
-                            *python_file_paths: str) -> "TFClusterConfig.Builder":
-            self._j_builder.addPythonFile(to_jarray(get_gateway().jvm.String,
-                                                    python_file_paths))
-            return self
-
-        def set_node_entry(self, python_file_path: str,
-                           func_name: str) -> "TFClusterConfig.Builder":
-            self._j_builder.setNodeEntry(python_file_path, func_name)
-            return self
-
-        def set_python_virtual_env_zip(self,
-                                       python_virtual_env_path: str) -> "TFClusterConfig.Builder":
-            self._j_builder.setPythonVirtualEnvZip(python_virtual_env_path)
-            return self
+        def __init__(self):
+            super().__init__()
 
         def set_worker_count(self, count: int) -> "TFClusterConfig.Builder":
-            self._j_builder.setWorkerCount(count)
+            """
+            Set the number of workers in the Tensorflow cluster.
+
+            The node type of the worker nodes is "worker", i.e., the return
+            value of dl_on_flink_framework.context.Context.get_node_type is
+            "worker".
+
+            :param count: Number of workers.
+            """
+            self.add_node_type("worker", count)
             return self
 
         def set_ps_count(self, count: int) -> "TFClusterConfig.Builder":
-            self._j_builder.setPsCount(count)
+            """
+            Set the number of parameter servers in the Tensorflow cluster.
+
+            The node type of the worker nodes is "ps", i.e., the return value of
+            dl_on_flink_framework.context.Context.get_node_type is "ps".
+
+            :param count: Number of parameter servers.
+            """
+            self.add_node_type("ps", count)
             return self
 
-        def set_is_worker_zero_chief(self,
-                                     is_chief: bool) -> "TFClusterConfig.Builder":
-            self._j_builder.setIsWorkerZeroChief(is_chief)
+        def set_is_worker_zero_chief(self, is_chief: bool) \
+                -> "TFClusterConfig.Builder":
+            """
+            Specify whether the worker with index 0 should be designated as the
+            chief.
+
+            :param is_chief: Whether the worker 0 should be chief.
+            """
+            self.set_property("tf_is_worker_zero_chief", str(is_chief).lower())
             return self
 
         def build(self) -> "TFClusterConfig":
-            return TFClusterConfig(self._j_builder.build())
+            """
+            Return an immutable instance of TFClusterConfig.
+            """
+            return TFClusterConfig(self._node_type_cnt_map, self._properties,
+                                   self._entry)

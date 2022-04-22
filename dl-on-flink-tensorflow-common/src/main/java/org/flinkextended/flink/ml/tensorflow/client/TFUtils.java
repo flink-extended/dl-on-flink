@@ -49,8 +49,8 @@ public class TFUtils {
      * input data in their training script written with Tensorflow. {@link TFClusterConfig} includes
      * all the information to run the training cluster.
      *
-     * <p>This method add couple operators that run nodes with different node types in the deep
-     * learning cluster to the given {@link StatementSet}. Therefore, User should invoke {@link
+     * <p>This method adds a number of nodes with different node types in the deep learning cluster
+     * to the given {@link StatementSet}. Therefore, User should invoke {@link
      * StatementSet#execute()} to run the deep learning cluster at the end.
      *
      * @param statementSet The statement set to add the deep learning tables.
@@ -70,8 +70,8 @@ public class TFUtils {
      * input data in their training script with the FlinkStreamTFDataSet in the python library.
      * {@link TFClusterConfig} includes all the information to run the training cluster.
      *
-     * <p>This method add couple operators that run nodes with different node types in the deep
-     * learning cluster to the given {@link StatementSet}. Therefore, User should invoke {@link
+     * <p>This method adds a number of nodes with different node types in the deep learning cluster
+     * to the given {@link StatementSet}. Therefore, User should invoke {@link
      * StatementSet#execute()} to run the deep learning cluster at the end.
      *
      * @param statementSet The statement set to add the deep learning tables.
@@ -93,13 +93,13 @@ public class TFUtils {
      * Iteratively train a Tensorflow deep learning model with the input data from Flink for the
      * given number of epoch. User can terminate the training earlier by exiting the training node.
      *
-     * <p>The provided input should be bounded for iterative training. Otherwise, it is the same as
-     * stream training. Users should read the input data in their training script with the
-     * FlinkStreamTFDataSet in the python library. {@link TFClusterConfig} includes all the
-     * information to run the training cluster.
+     * <p>The provided input should be bounded for iterative training. Otherwise, the model is
+     * trained indefinitely with the unbounded data at the first epoch. Users should read the input
+     * data in their training script with the FlinkStreamTFDataSet in the python library. {@link
+     * TFClusterConfig} includes all the information to run the training cluster.
      *
-     * <p>This method add couple operators that run nodes with different node types in the deep
-     * learning cluster to the given {@link StatementSet}. Therefore, User should invoke {@link
+     * <p>This method adds a number of nodes with different node types in the deep learning cluster
+     * to the given {@link StatementSet}. Therefore, User should invoke {@link
      * StatementSet#execute()} to run the deep learning cluster at the end.
      *
      * @param statementSet The statement set to add the deep learning tables.
@@ -142,8 +142,8 @@ public class TFUtils {
      * Stream inference with Tensorflow model for the input table. {@link TFClusterConfig} includes
      * all the information to run the training cluster.
      *
-     * <p>This method add couple operators that run nodes with different node types in the deep
-     * learning cluster to the given {@link StatementSet}. Therefore, User should invoke {@link
+     * <p>This method adds a number of nodes with different node types in the deep learning cluster
+     * to the given {@link StatementSet}. Therefore, User should invoke {@link
      * StatementSet#execute()} to run the deep learning cluster at the end.
      *
      * <p>User is responsible to insert the returned table into the {@link StatementSet} so that the
@@ -171,9 +171,12 @@ public class TFUtils {
 
     /**
      * Start a TensorBoard service in the Tensorflow cluster. This method is commonly used with the
-     * {@link TFUtils#train} methods. The started TensorBoard service will look for the model
-     * checkpoint at the path specified in {@link TFClusterConfig}. User should make sure that the
-     * training script write the checkpoint to the same path.
+     * {@link TFUtils#train} methods. User can check the log of the TaskManager that runs the
+     * tensorboard operator to get the ip and port to access the Tensorboard.
+     *
+     * <p>The started TensorBoard service will look for the model checkpoint at the path specified
+     * in {@link TFClusterConfig}. User should make sure that the training script write the
+     * checkpoint to the same path.
      *
      * @param statementSet The statement set to add the deep learning tables.
      * @param tfClusterConfig The configuration of the Tensorflow cluster.

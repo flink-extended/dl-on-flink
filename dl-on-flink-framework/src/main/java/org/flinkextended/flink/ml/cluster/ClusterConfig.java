@@ -51,7 +51,7 @@ public class ClusterConfig implements Serializable {
     private final String entryFuncName;
     private final String pythonVirtualEnvZipPath;
 
-    public ClusterConfig(
+    protected ClusterConfig(
             Map<String, Integer> nodeTypeCntMap,
             Map<String, String> properties,
             Set<String> pythonFilePaths,
@@ -195,6 +195,9 @@ public class ClusterConfig implements Serializable {
         /**
          * Add the entry python file if it is not added before and set it as the entry point of the
          * deep learning node.
+         *
+         * <p>The node entry function takes a python dl_on_flink_framework.context.Context object as
+         * input.
          *
          * @param pythonFilePath The path of the entry python file.
          * @param funcName the entry function name in the entry python file.
