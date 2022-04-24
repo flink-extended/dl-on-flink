@@ -13,15 +13,3 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-import os.path
-import unittest
-
-import sysconfig
-
-
-class TestSysconfig(unittest.TestCase):
-
-    def test_get_include(self):
-        expected = os.path.join(os.path.dirname(os.path.dirname(__file__)),
-                                "dl_on_flink_framework", "include")
-        self.assertEqual(expected, sysconfig.get_include())

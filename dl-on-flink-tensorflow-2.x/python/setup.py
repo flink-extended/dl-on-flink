@@ -137,8 +137,11 @@ setup(
     version=VERSION,
     python_requires=">=3.7,<3.9",
     include_package_data=True,
-    packages=find_packages(),
-    ext_modules=[CMakeExtension('dl_on_flink_tensorflow/dl_on_flink_tensorflow')],
+    packages=find_packages(this_directory,
+                           include=['dl_on_flink_tensorflow',
+                                    'dl_on_flink_tensorflow.*']),
+    ext_modules=[
+        CMakeExtension('dl_on_flink_tensorflow/dl_on_flink_tensorflow')],
     cmdclass={'build_ext': CMakeBuild},
     zip_safe=False,
     install_requires=['tensorflow>=2.3.1, <2.4.0',

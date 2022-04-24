@@ -42,7 +42,7 @@ if os.getenv("NIGHTLY_WHEEL") == "true":
     if 'dev' not in VERSION:
         raise RuntimeError("Nightly wheel is not supported for non dev version")
     VERSION = VERSION[:str.find(VERSION, 'dev') + 3] + \
-        datetime.now().strftime('%Y%m%d')
+              datetime.now().strftime('%Y%m%d')
 
 
 class CMakeExtension(Extension):
@@ -93,9 +93,9 @@ class CMakeBuild(build_ext):
 
         env = os.environ.copy()
         env['CXXFLAGS'] = \
-            '{} -D_GLIBCXX_USE_CXX11_ABI=0 -DVERSION_INFO=\\"{}\\"'\
-            .format(env.get('CXXFLAGS', ''),
-                    self.distribution.get_version())
+            '{} -D_GLIBCXX_USE_CXX11_ABI=0 -DVERSION_INFO=\\"{}\\"' \
+                .format(env.get('CXXFLAGS', ''),
+                        self.distribution.get_version())
         if not os.path.exists(self.build_temp):
             os.makedirs(self.build_temp)
         subprocess.check_call(['cmake', ext.sourcedir] + cmake_args,
@@ -113,7 +113,9 @@ setup(
         "": [
             os.path.join(this_directory, "dl_on_flink_framework/include/*")]
     },
-    packages=find_packages(),
+    packages=find_packages(where=this_directory,
+                           include=['dl_on_flink_framework',
+                                    'dl_on_flink_framework.*']),
     ext_modules=[CMakeExtension('dl_on_flink_framework/dl_on_flink_framework')],
     install_requires=['grpcio>=1.24.3', 'protobuf<3.18'],
     cmdclass=dict(build_ext=CMakeBuild),
