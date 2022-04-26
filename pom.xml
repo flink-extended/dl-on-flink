@@ -304,6 +304,11 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.flink</groupId>
+                <artifactId>flink-python_${scala.major.version}</artifactId>
+                <version>${flink.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.flink</groupId>
                 <artifactId>flink-ml-iteration_${scala.major.version}</artifactId>
                 <version>${flinkml.version}</version>
             </dependency>

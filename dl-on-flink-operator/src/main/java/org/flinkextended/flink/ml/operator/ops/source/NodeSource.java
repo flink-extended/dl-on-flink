@@ -30,6 +30,7 @@ import org.flinkextended.flink.ml.operator.ops.inputformat.NodeInputSplit;
 import org.apache.flink.api.common.io.InputFormat;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.ResultTypeQueryable;
+import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.source.InputFormatSourceFunction;
 
 /**
@@ -70,11 +71,16 @@ public class NodeSource<OUT> extends InputFormatSourceFunction<OUT>
      * @param nodeType The node type of the node.
      * @param config The ClusterConfig of the node.
      * @param outTI The output type of the node.
+     * @param flinkConfig The flink configuration.
      * @return Flink source that runs the node.
      */
     public static <OUT> NodeSource<OUT> createNodeSource(
-            String nodeType, ClusterConfig config, TypeInformation<OUT> outTI) {
-        final NodeInputFormat<OUT> inputFormat = new NodeInputFormat<>(nodeType, config);
+            String nodeType,
+            ClusterConfig config,
+            TypeInformation<OUT> outTI,
+            Configuration flinkConfig) {
+        final NodeInputFormat<OUT> inputFormat =
+                new NodeInputFormat<>(nodeType, config, flinkConfig);
         return new NodeSource<>(inputFormat, outTI);
     }
 

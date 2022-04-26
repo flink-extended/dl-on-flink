@@ -61,8 +61,7 @@ class TestFlinkMlApi(unittest.TestCase):
     def get_tf_config() -> TFConfig:
         work_num = 1
         ps_num = 1
-        prop = {MLCONSTANTS.PYTHON_VERSION: '',
-                MLCONSTANTS.ENCODING_CLASS: 'org.flinkextended.flink.ml.operator.coding.RowCSVCoding',
+        prop = {MLCONSTANTS.ENCODING_CLASS: 'org.flinkextended.flink.ml.operator.coding.RowCSVCoding',
                 MLCONSTANTS.DECODING_CLASS: 'org.flinkextended.flink.ml.operator.coding.RowCSVCoding',
                 'input_types': 'STRING'}
         tf_config = TFConfig(work_num, ps_num, prop, os.path.join(os.path.dirname(__file__), "add_one.py"),

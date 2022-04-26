@@ -24,6 +24,8 @@ import org.flinkextended.flink.ml.data.RecordWriter;
 import org.flinkextended.flink.ml.operator.coding.RowCSVCoding;
 import org.flinkextended.flink.ml.util.MLConstants;
 
+import org.apache.flink.api.common.JobID;
+import org.apache.flink.runtime.taskmanager.TaskManagerRuntimeInfo;
 import org.apache.flink.streaming.api.operators.StreamingRuntimeContext;
 import org.apache.flink.streaming.runtime.streamrecord.StreamRecord;
 import org.apache.flink.types.Row;
@@ -38,6 +40,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /** Unit test for {@link NodeOperator}. */
 public class NodeOperatorTest {
@@ -58,6 +62,11 @@ public class NodeOperatorTest {
                         .build();
 
         StreamingRuntimeContext mockRuntimeContext = Mockito.mock(StreamingRuntimeContext.class);
+        final TaskManagerRuntimeInfo taskManagerRuntimeInfo = mock(TaskManagerRuntimeInfo.class);
+        when(taskManagerRuntimeInfo.getTmpDirectories()).thenReturn(new String[] {"/tmp"});
+        when(mockRuntimeContext.getTaskManagerRuntimeInfo()).thenReturn(taskManagerRuntimeInfo);
+        when(mockRuntimeContext.getJobId()).thenReturn(new JobID());
+
         nodeOperator = new TestNodeOperator("worker", config, mockRuntimeContext);
         writtenSb = new StringBuilder();
     }

@@ -24,8 +24,10 @@ import org.flinkextended.flink.ml.cluster.rpc.NodeServer;
 import org.flinkextended.flink.ml.util.MLConstants;
 import org.flinkextended.flink.ml.util.MLException;
 
-import org.apache.flink.api.common.functions.RuntimeContext;
+import org.apache.flink.api.common.JobID;
 import org.apache.flink.configuration.Configuration;
+import org.apache.flink.runtime.taskmanager.TaskManagerRuntimeInfo;
+import org.apache.flink.streaming.api.operators.StreamingRuntimeContext;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,6 +40,7 @@ import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.isA;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /** Unit test for {@link NodeInputFormat}. */
 public class NodeInputFormatTest {
@@ -52,7 +55,12 @@ public class NodeInputFormatTest {
                         .setNodeEntry("entry.py", "main")
                         .build();
         nodeInputFormat = new NodeInputFormat<>("worker", clusterConfig);
-        RuntimeContext mockRuntimeContext = mock(RuntimeContext.class);
+        StreamingRuntimeContext mockRuntimeContext = mock(StreamingRuntimeContext.class);
+        final TaskManagerRuntimeInfo taskManagerRuntimeInfo = mock(TaskManagerRuntimeInfo.class);
+        when(taskManagerRuntimeInfo.getTmpDirectories()).thenReturn(new String[] {"/tmp"});
+        when(mockRuntimeContext.getTaskManagerRuntimeInfo()).thenReturn(taskManagerRuntimeInfo);
+        when(mockRuntimeContext.getJobId()).thenReturn(new JobID());
+
         nodeInputFormat.setRuntimeContext(mockRuntimeContext);
     }
 

@@ -22,12 +22,14 @@ import org.flinkextended.flink.ml.cluster.ClusterConfig;
 import org.flinkextended.flink.ml.cluster.ExecutionMode;
 import org.flinkextended.flink.ml.cluster.node.MLContext;
 import org.flinkextended.flink.ml.cluster.rpc.NodeServer;
+import org.flinkextended.flink.ml.operator.ops.PythonEnvironmentManager;
 import org.flinkextended.flink.ml.operator.ops.ResourcesUtils;
 import org.flinkextended.flink.ml.operator.util.ColumnInfos;
 import org.flinkextended.flink.ml.util.MLConstants;
 import org.flinkextended.flink.ml.util.MLException;
 
 import org.apache.flink.configuration.Configuration;
+import org.apache.flink.streaming.api.operators.StreamingRuntimeContext;
 import org.apache.flink.util.Preconditions;
 
 import java.io.IOException;
@@ -38,10 +40,17 @@ import java.util.Map;
 public class NodeInputFormat<OUT> extends AbstractNodeInputFormat<OUT> {
 
     private final String nodeType;
+    private final Configuration flinkConfig;
 
     public NodeInputFormat(String nodeType, ClusterConfig clusterConfig) {
+        this(nodeType, clusterConfig, new Configuration());
+    }
+
+    public NodeInputFormat(
+            String nodeType, ClusterConfig clusterConfig, Configuration flinkConfig) {
         super(clusterConfig);
         this.nodeType = nodeType;
+        this.flinkConfig = flinkConfig;
     }
 
     @Override
@@ -66,8 +75,18 @@ public class NodeInputFormat<OUT> extends AbstractNodeInputFormat<OUT> {
 
     @Override
     protected MLContext prepareMLContext(Integer nodeIndex) throws MLException {
+        final PythonEnvironmentManager pythonEnvironmentManager =
+                new PythonEnvironmentManager(clusterConfig, flinkConfig);
+        try {
+            pythonEnvironmentManager.open((StreamingRuntimeContext) getRuntimeContext());
+        } catch (Exception e) {
+            throw new MLException("Fail to open PythonEnvironmentManager", e);
+        }
+
         Map<String, String> properties = new HashMap<>(clusterConfig.getProperties());
         properties.put(MLConstants.GPU_INFO, ResourcesUtils.parseGpuInfo(getRuntimeContext()));
+        properties.putAll(pythonEnvironmentManager.getPythonEnvProperties());
+
         return new MLContext(
                 ExecutionMode.OTHER,
                 nodeType,

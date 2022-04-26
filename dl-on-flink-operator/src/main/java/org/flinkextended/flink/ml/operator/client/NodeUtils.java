@@ -21,6 +21,7 @@ package org.flinkextended.flink.ml.operator.client;
 import org.flinkextended.flink.ml.cluster.ClusterConfig;
 import org.flinkextended.flink.ml.cluster.ClusterConfig.Builder;
 import org.flinkextended.flink.ml.operator.ops.NodeOperator;
+import org.flinkextended.flink.ml.operator.ops.inputformat.NodeInputFormat;
 import org.flinkextended.flink.ml.operator.ops.source.NodeSource;
 import org.flinkextended.flink.ml.operator.util.PythonFileUtil;
 import org.flinkextended.flink.ml.operator.util.ReflectionUtils;
@@ -30,12 +31,15 @@ import org.flinkextended.flink.ml.util.MLConstants;
 import org.apache.flink.annotation.Internal;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
+import org.apache.flink.configuration.Configuration;
+import org.apache.flink.python.util.PythonConfigUtil;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.Schema;
 import org.apache.flink.table.api.StatementSet;
 import org.apache.flink.table.api.Table;
+import org.apache.flink.table.api.TableConfig;
 import org.apache.flink.table.api.TableDescriptor;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.table.api.bridge.java.internal.StreamTableEnvironmentImpl;
@@ -72,8 +76,10 @@ public class NodeUtils {
                 ReflectionUtils.getFieldValue(
                         statementSet, StatementSetImpl.class, "tableEnvironment");
         final StreamExecutionEnvironment env = tEnv.execEnv();
+        final Configuration flinkConfig = mergeConfiguration(env, tEnv.getConfig());
 
-        final DataStream<?> nodeStream = scheduleNodes(env, clusterConfig, DUMMY_TI, nodeType);
+        final DataStream<?> nodeStream =
+                scheduleNodes(env, clusterConfig, DUMMY_TI, nodeType, flinkConfig);
         final Table nodeTable = tEnv.fromDataStream(nodeStream);
         statementSet.addInsert(TableDescriptor.forConnector("blackhole").build(), nodeTable);
     }
@@ -97,13 +103,15 @@ public class NodeUtils {
             String nodeType) {
 
         final StreamExecutionEnvironment env = ((StreamTableEnvironmentImpl) tEnv).execEnv();
+        final Configuration flinkConfig = mergeConfiguration(env, tEnv.getConfig());
 
         final SchemaResolver schemaResolver =
                 ((StreamTableEnvironmentImpl) tEnv).getCatalogManager().getSchemaResolver();
         final RowTypeInfo outTypeInfo =
                 TypeUtil.schemaToRowTypeInfo(outSchema.resolve(schemaResolver));
 
-        final DataStream<?> nodeStream = scheduleNodes(env, clusterConfig, outTypeInfo, nodeType);
+        final DataStream<?> nodeStream =
+                scheduleNodes(env, clusterConfig, outTypeInfo, nodeType, flinkConfig);
         return tEnv.fromDataStream(nodeStream);
     }
 
@@ -125,8 +133,16 @@ public class NodeUtils {
                         statementSet, StatementSetImpl.class, "tableEnvironment");
         final StreamExecutionEnvironment env = tEnv.execEnv();
 
+        final Configuration flinkConfig = mergeConfiguration(env, tEnv.getConfig());
+
         final DataStream<?> nodeStream =
-                scheduleNodes(env, tEnv.toDataStream(input), clusterConfig, DUMMY_TI, nodeType);
+                scheduleNodes(
+                        env,
+                        tEnv.toDataStream(input),
+                        clusterConfig,
+                        DUMMY_TI,
+                        nodeType,
+                        flinkConfig);
         final Table nodeTable = tEnv.fromDataStream(nodeStream);
         statementSet.addInsert(TableDescriptor.forConnector("blackhole").build(), nodeTable);
     }
@@ -152,8 +168,16 @@ public class NodeUtils {
         final RowTypeInfo outTypeInfo =
                 TypeUtil.schemaToRowTypeInfo(outSchema.resolve(schemaResolver));
 
+        final Configuration flinkConfig = mergeConfiguration(env, tEnv.getConfig());
+
         final DataStream<?> nodeStream =
-                scheduleNodes(env, tEnv.toDataStream(input), clusterConfig, outTypeInfo, nodeType);
+                scheduleNodes(
+                        env,
+                        tEnv.toDataStream(input),
+                        clusterConfig,
+                        outTypeInfo,
+                        nodeType,
+                        flinkConfig);
         return tEnv.fromDataStream(nodeStream);
     }
 
@@ -185,6 +209,7 @@ public class NodeUtils {
      * @param clusterConfig The ClusterConfig of the added node.
      * @param outTypeInfo The output type of the node. If null, the output type is Void.
      * @param nodeType The type of node to be added to the cluster.
+     * @param flinkConfig The flink configuration.
      * @return The datastream of the node.
      */
     @Internal
@@ -192,12 +217,15 @@ public class NodeUtils {
             StreamExecutionEnvironment env,
             ClusterConfig clusterConfig,
             TypeInformation<T> outTypeInfo,
-            String nodeType) {
+            String nodeType,
+            Configuration flinkConfig) {
         final Builder<?> builder = clusterConfig.toBuilder();
         registerFileToFlinkCache(env, clusterConfig.getPythonFilePathsList(), builder);
         ClusterConfig finalClusterConfig = builder.build();
 
-        return env.addSource(NodeSource.createNodeSource(nodeType, finalClusterConfig, outTypeInfo))
+        return env.addSource(
+                        NodeSource.createNodeSource(
+                                nodeType, finalClusterConfig, outTypeInfo, flinkConfig))
                 .setParallelism(finalClusterConfig.getNodeCount(nodeType))
                 .name(nodeType);
     }
@@ -212,6 +240,7 @@ public class NodeUtils {
      * @param clusterConfig The ClusterConfig of the added node.
      * @param outTypeInfo The output type of the node.
      * @param nodeType The type of node to be added to the cluster.
+     * @param flinkConfig The flink configuration.
      * @return The datastream of the node.
      */
     @Internal
@@ -220,14 +249,31 @@ public class NodeUtils {
             DataStream<Row> input,
             ClusterConfig clusterConfig,
             TypeInformation<T> outTypeInfo,
-            String nodeType) {
+            String nodeType,
+            Configuration flinkConfig) {
         final Builder<?> builder = clusterConfig.toBuilder();
         registerFileToFlinkCache(env, clusterConfig.getPythonFilePathsList(), builder);
         ClusterConfig finalClusterConfig = builder.build();
 
         return input.transform(
-                        nodeType, outTypeInfo, new NodeOperator<>(nodeType, finalClusterConfig))
+                        nodeType,
+                        outTypeInfo,
+                        new NodeOperator<>(nodeType, finalClusterConfig, flinkConfig))
                 .setParallelism(finalClusterConfig.getNodeCount(nodeType));
+    }
+
+    /**
+     * Merge the {@link TableConfig} with the {@link Configuration} in the {@link
+     * StreamExecutionEnvironment} for {@link NodeOperator} and {@link NodeInputFormat}.
+     *
+     * @param env The Flink stream execution environment.
+     * @param tableConfig The table config.
+     * @return The merged configuration.
+     */
+    @Internal
+    public static Configuration mergeConfiguration(
+            StreamExecutionEnvironment env, TableConfig tableConfig) {
+        return PythonConfigUtil.getMergedConfig(env, tableConfig);
     }
 
     /**
