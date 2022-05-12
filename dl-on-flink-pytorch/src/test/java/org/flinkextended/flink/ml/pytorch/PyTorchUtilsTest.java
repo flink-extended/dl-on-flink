@@ -62,7 +62,7 @@ public class PyTorchUtilsTest {
         final Table sourceTable = tEnv.fromDataStream(env.fromElements(1, 2, 3, 4, 5, 6));
         final PyTorchClusterConfig clusterConfig =
                 PyTorchClusterConfig.newBuilder()
-                        .setNodeEntry(getScriptPathFromResources("input.py"), "main")
+                        .setNodeEntry(getScriptPathFromResources("with_input.py"), "main")
                         .setWorldSize(3)
                         .build();
         PyTorchUtils.train(statementSet, sourceTable, clusterConfig);
