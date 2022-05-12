@@ -55,7 +55,7 @@ setup(
     packages=find_packages(where=this_directory,
                            include=['dl_on_flink_pytorch',
                                     'dl_on_flink_pytorch.*']),
-    install_requires=['torch>=1.10'
+    install_requires=['torch>=1.10',
                       'apache-flink>=1.14.0, <1.15.0',
                       'pandas>=1.0',
                       f'{DL_ON_FLINK_FRAMEWORK_PACKAGE_NAME}=={VERSION}'],
