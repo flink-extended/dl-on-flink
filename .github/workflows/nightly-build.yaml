@@ -91,6 +91,7 @@ jobs:
           - dl-on-flink-framework
           - dl-on-flink-tensorflow
           - dl-on-flink-tensorflow-2.x
+          - dl-on-flink-pytorch
     steps:
       - uses: actions/checkout@v2
         with:
@@ -136,6 +137,7 @@ jobs:
           - dl-on-flink-framework
           - dl-on-flink-tensorflow
           - dl-on-flink-tensorflow-2.x
+          - dl-on-flink-pytorch
         exclude:
           - package: dl-on-flink-tensorflow
             python-version: 3.8
@@ -167,6 +169,7 @@ jobs:
           - dl-on-flink-framework
           - dl-on-flink-tensorflow
           - dl-on-flink-tensorflow-2.x
+          - dl-on-flink-pytorch
         exclude:
           - package: dl-on-flink-tensorflow
             python-version: 3.8
@@ -204,6 +207,7 @@ jobs:
           - dl-on-flink-framework
           - dl-on-flink-tensorflow
           - dl-on-flink-tensorflow-2.x
+          - dl-on-flink-pytorch
         exclude:
           - package: dl-on-flink-tensorflow
             python-version: 3.8

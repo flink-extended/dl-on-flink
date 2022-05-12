@@ -61,6 +61,7 @@ jobs:
           - dl-on-flink-framework
           - dl-on-flink-tensorflow
           - dl-on-flink-tensorflow-2.x
+          - dl-on-flink-pytorch
     steps:
       - uses: actions/checkout@v2
         with:
