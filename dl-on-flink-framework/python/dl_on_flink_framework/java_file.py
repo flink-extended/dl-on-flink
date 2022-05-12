@@ -12,13 +12,10 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import sys
-import os
-sys.path.insert(0, os.path.dirname(__file__))
-
-import java_file_c
-import struct
 import json
+import struct
+
+from dl_on_flink_framework import java_file_c
 
 
 class JavaFile(object):
