@@ -17,7 +17,7 @@
 package org.flinkextended.flink.ml.examples.pytorch;
 
 import org.flinkextended.flink.ml.pytorch.PyTorchConfig;
-import org.flinkextended.flink.ml.pytorch.PyTorchUtil;
+import org.flinkextended.flink.ml.pytorch.PyTorchUtilLegacy;
 import org.flinkextended.flink.ml.util.MLConstants;
 
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -124,7 +124,7 @@ public class PyTorchRunDist {
         Map<String, String> prop = createConfigProps();
         PyTorchConfig pytorchConfig = new PyTorchConfig(2, prop, script, "map_func", envPath);
         StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
-        PyTorchUtil.train(streamEnv, null, pytorchConfig, null);
+        PyTorchUtilLegacy.train(streamEnv, null, pytorchConfig, null);
         System.out.println("before submit job");
         streamEnv.execute("pytorch stream");
     }
@@ -136,7 +136,7 @@ public class PyTorchRunDist {
         TableEnvironment tableEnv =
                 StreamTableEnvironment.create(streamEnv, TableConfig.getDefault());
         StatementSet statementSet = tableEnv.createStatementSet();
-        PyTorchUtil.train(streamEnv, tableEnv, statementSet, null, pytorchConfig, null);
+        PyTorchUtilLegacy.train(streamEnv, tableEnv, statementSet, null, pytorchConfig, null);
         statementSet.execute().getJobClient().get().getJobExecutionResult().get();
     }
 }

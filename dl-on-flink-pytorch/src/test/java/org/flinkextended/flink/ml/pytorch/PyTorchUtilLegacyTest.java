@@ -30,8 +30,8 @@ import org.junit.Test;
 
 import static org.flinkextended.flink.ml.operator.client.TableTestUtil.execTableJobCustom;
 
-/** Unit test for {@link PyTorchUtil}. */
-public class PyTorchUtilTest {
+/** Unit test for {@link PyTorchUtilLegacy}. */
+public class PyTorchUtilLegacyTest {
 
     private static TestingServer testingServer;
     private static String rootPath =
@@ -52,7 +52,7 @@ public class PyTorchUtilTest {
         PyTorchConfig pytorchConfig =
                 new PyTorchConfig(3, null, rootPath + "greeter.py", "map_func", null);
         StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
-        PyTorchUtil.train(streamEnv, null, pytorchConfig, null);
+        PyTorchUtilLegacy.train(streamEnv, null, pytorchConfig, null);
         streamEnv.execute();
     }
 
@@ -63,7 +63,7 @@ public class PyTorchUtilTest {
         StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
         TableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
         StatementSet statementSet = tableEnv.createStatementSet();
-        PyTorchUtil.train(streamEnv, tableEnv, statementSet, null, pytorchConfig, null);
+        PyTorchUtilLegacy.train(streamEnv, tableEnv, statementSet, null, pytorchConfig, null);
         execTableJobCustom(pytorchConfig.getMlConfig(), streamEnv, tableEnv, statementSet);
     }
 }
