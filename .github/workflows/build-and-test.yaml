@@ -94,4 +94,4 @@ jobs:
         run: |
           cd ${{ matrix.modules }}/python
           pip install -e .
-          python -m unittest discover -v tests
+          python -m unittest discover -v .

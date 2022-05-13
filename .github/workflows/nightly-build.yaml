@@ -124,7 +124,7 @@ jobs:
         run: |
           cd ${{ matrix.modules }}/python
           pip install -e .
-          python -m unittest discover -v tests
+          python -m unittest discover -v .
   build-linux-nightly-wheel:
     needs: build-and-test-python
     name: Build python${{ matrix.python-version }} ${{ matrix.package }} wheels on ubuntu-20.04
