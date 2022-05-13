@@ -59,7 +59,15 @@ public:
         if(len == readSize){
             return py::bytes(std::string(readBuffer, len));
         } else{
-            std::cerr << "read EOF" << std::endl;
+            return py::bytes(std::string(""));
+        }
+    }
+
+    py::bytes readBytesTillBarrier(size_t len){
+        int readSize = reader->readBytes(readBuffer, len, true);
+        if(len == readSize){
+            return py::bytes(std::string(readBuffer, len));
+        } else{
             return py::bytes(std::string(""));
         }
     }

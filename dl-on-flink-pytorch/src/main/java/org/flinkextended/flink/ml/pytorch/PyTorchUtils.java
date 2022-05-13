@@ -19,10 +19,23 @@
 package org.flinkextended.flink.ml.pytorch;
 
 import org.flinkextended.flink.ml.operator.client.NodeUtils;
+import org.flinkextended.flink.ml.operator.util.ReflectionUtils;
 
+import org.apache.flink.configuration.Configuration;
+import org.apache.flink.iteration.DataStreamList;
+import org.apache.flink.iteration.IterationConfig;
+import org.apache.flink.iteration.Iterations;
+import org.apache.flink.iteration.ReplayableDataStreamList;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.datastream.DataStreamSource;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.Schema;
 import org.apache.flink.table.api.StatementSet;
 import org.apache.flink.table.api.Table;
+import org.apache.flink.table.api.TableDescriptor;
+import org.apache.flink.table.api.bridge.java.internal.StreamTableEnvironmentImpl;
+import org.apache.flink.table.api.internal.StatementSetImpl;
+import org.apache.flink.types.Row;
 
 /**
  * The {@link PyTorchUtils} class provides methods to run a distributed PyTorch cluster to do model
@@ -90,7 +103,29 @@ public class PyTorchUtils {
             Table input,
             PyTorchClusterConfig pyTorchClusterConfig,
             Integer epoch) {
-        // TODO
+        final StreamTableEnvironmentImpl tEnv =
+                ReflectionUtils.getFieldValue(
+                        statementSet, StatementSetImpl.class, "tableEnvironment");
+        final StreamExecutionEnvironment env = tEnv.execEnv();
+        final DataStream<Row> inputDataStream = tEnv.toDataStream(input);
+        final Configuration flinkConfig = NodeUtils.mergeConfiguration(env, tEnv.getConfig());
+
+        NodeUtils.scheduleAMNode(statementSet, pyTorchClusterConfig);
+
+        final IterationConfig iterationConfig = IterationConfig.newBuilder().build();
+        final DataStreamSource<Integer> dummyInitVariable = env.fromElements(0);
+        final DataStreamList dataStreamList =
+                Iterations.iterateBoundedStreamsUntilTermination(
+                        DataStreamList.of(dummyInitVariable),
+                        ReplayableDataStreamList.replay(inputDataStream),
+                        iterationConfig,
+                        new PyTorchNodeIterationBody(
+                                env, pyTorchClusterConfig, epoch, flinkConfig));
+
+        final DataStream<Integer> trainResDataStream = dataStreamList.get(0);
+        statementSet.addInsert(
+                TableDescriptor.forConnector("blackhole").build(),
+                tEnv.fromDataStream(trainResDataStream));
     }
 
     /**

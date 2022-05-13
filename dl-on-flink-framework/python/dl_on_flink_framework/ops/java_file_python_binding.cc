@@ -41,6 +41,7 @@ PYBIND11_MODULE(java_file_c, m) {
     py::class_<JavaFile>(m, "JavaFile")
        .def(py::init<>([](std::string read_file_name, std::string write_file_name) {return new JavaFile(read_file_name, write_file_name); } ))
        .def("readBytes", &JavaFile::readBytes)
+       .def("readBytesTillBarrier", &JavaFile::readBytesTillBarrier)
        .def("writeBytes", &JavaFile::writeBytes);
 
     py::class_<RWTest>(m, "RWTest")

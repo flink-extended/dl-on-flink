@@ -24,8 +24,11 @@ class JavaFile(object):
         self.write_file = write_file
         self.java_file_c = java_file_c.JavaFile(read_file, write_file)
 
-    def read(self, data_len):
-        data = self.java_file_c.readBytes(data_len)
+    def read(self, data_len, return_on_barrier=False):
+        if return_on_barrier:
+            data = self.java_file_c.readBytesTillBarrier(data_len)
+        else:
+            data = self.java_file_c.readBytes(data_len)
         if 0 == len(data):
             raise EOFError("file reach end!")
         return data

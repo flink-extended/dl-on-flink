@@ -28,6 +28,7 @@ import org.apache.flink.table.api.TableDescriptor;
 import org.apache.flink.table.api.bridge.java.StreamStatementSet;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.net.URL;
@@ -37,12 +38,20 @@ import static org.junit.Assert.assertNotNull;
 
 /** Unit test for {@link PyTorchUtils}. */
 public class PyTorchUtilsTest {
+
+    private StreamExecutionEnvironment env;
+    private StreamTableEnvironment tEnv;
+    private StreamStatementSet statementSet;
+
+    @Before
+    public void setUp() throws Exception {
+        this.env = StreamExecutionEnvironment.getExecutionEnvironment();
+        this.tEnv = StreamTableEnvironment.create(env);
+        this.statementSet = tEnv.createStatementSet();
+    }
+
     @Test
     public void testTrainWithoutInput() throws ExecutionException, InterruptedException {
-        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);
-        final StreamStatementSet statementSet = tEnv.createStatementSet();
-
         final PyTorchClusterConfig clusterConfig =
                 PyTorchClusterConfig.newBuilder()
                         .setNodeEntry(getScriptPathFromResources("all_gather.py"), "main")
@@ -55,10 +64,6 @@ public class PyTorchUtilsTest {
 
     @Test
     public void testTrainWithInput() throws ExecutionException, InterruptedException {
-        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);
-        final StreamStatementSet statementSet = tEnv.createStatementSet();
-
         final Table sourceTable = tEnv.fromDataStream(env.fromElements(1, 2, 3, 4, 5, 6));
         final PyTorchClusterConfig clusterConfig =
                 PyTorchClusterConfig.newBuilder()
@@ -71,10 +76,40 @@ public class PyTorchUtilsTest {
     }
 
     @Test
+    public void testIterationTrain() throws ExecutionException, InterruptedException {
+        final Table sourceTable =
+                tEnv.fromDataStream(env.fromElements(1, 2, 3, 4).map(i -> i).setParallelism(2));
+
+        final PyTorchClusterConfig config =
+                PyTorchClusterConfig.newBuilder()
+                        .setNodeEntry(getScriptPathFromResources("with_input_iter.py"), "main")
+                        .setWorldSize(2)
+                        .setProperty(RowCSVCoding.ENCODE_TYPES, "INT_32")
+                        .build();
+
+        PyTorchUtils.train(statementSet, sourceTable, config, 4);
+        statementSet.execute().await();
+    }
+
+    @Test
+    public void testIterationTrainWithEarlyTermination()
+            throws ExecutionException, InterruptedException {
+        final Table sourceTable =
+                tEnv.fromDataStream(env.fromElements(1, 2, 3, 4).map(i -> i).setParallelism(2));
+
+        final PyTorchClusterConfig config =
+                PyTorchClusterConfig.newBuilder()
+                        .setNodeEntry(getScriptPathFromResources("with_input_iter.py"), "main")
+                        .setWorldSize(2)
+                        .setProperty(RowCSVCoding.ENCODE_TYPES, "INT_32")
+                        .build();
+
+        PyTorchUtils.train(statementSet, sourceTable, config, Integer.MAX_VALUE);
+        statementSet.execute().await();
+    }
+
+    @Test
     public void testInference() throws ExecutionException, InterruptedException {
-        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);
-        final StreamStatementSet statementSet = tEnv.createStatementSet();
 
         final Table sourceTable = tEnv.fromDataStream(env.fromElements(1, 2, 3, 4, 5, 6));
         final PyTorchClusterConfig clusterConfig =

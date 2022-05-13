@@ -19,10 +19,9 @@ from typing import List
 
 import pandas as pd
 import torch
-from torch.utils.data import IterableDataset
-
 from dl_on_flink_framework.context import Context
 from dl_on_flink_framework.java_file import JavaFile
+from torch.utils.data import IterableDataset
 
 
 class FlinkDataset(IterableDataset):
@@ -35,11 +34,13 @@ class FlinkDataset(IterableDataset):
         self.java_file = JavaFile(context.from_java(), context.to_java())
 
     def __iter__(self) -> List[torch.Tensor]:
+        first_read = True
         while True:
             try:
-                res = self.java_file.read(4)
+                res = self.java_file.read(4, not first_read)
+                first_read = False
                 data_len, = struct.unpack("<i", res)
-                record = self.java_file.read(data_len).decode('utf-8')
+                record = self.java_file.read(data_len, True).decode('utf-8')
                 df = pd.read_csv(StringIO(record), header=None)
                 tensors = [torch.tensor([df[key][0]]) for key in df.columns]
                 yield tensors
