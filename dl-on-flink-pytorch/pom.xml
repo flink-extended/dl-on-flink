@@ -181,6 +181,56 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>jar-with-dependencies</shadedClassifierName>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                            </transformers>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>org.scala-lang:*</exclude>
+                                    <!-- log4j -->
+                                    <exclude>org.slf4j:slf4j-log4j12</exclude>
+                                    <exclude>org.apache.logging.log4j:log4j-slf4j-impl</exclude>
+                                    <exclude>org.apache.logging.log4j:log4j-api</exclude>
+                                    <exclude>org.apache.logging.log4j:log4j-core</exclude>
+                                    <exclude>log4j:log4j</exclude>
+                                    <!-- flink shaded jars -->
+                                    <exclude>org.apache.flink:flink-shaded-*</exclude>
+                                    <!-- flink dependencies are provided -->
+                                    <exclude>org.apache.flink:flink-core</exclude>
+                                    <exclude>org.apache.flink:flink-annotations</exclude>
+                                    <exclude>org.apache.flink:flink-metrics-*</exclude>
+                                    <exclude>org.apache.flink:flink-hadoop-fs</exclude>
+                                    <exclude>org.apache.flink:force-shading</exclude>
+                                </excludes>
+                            </artifactSet>
+
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.google.common</pattern>
+                                    <shadedPattern>org.flinkextended.flink.ml.tensorflow.shaded.com.google.common</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.commons</pattern>
+                                    <shadedPattern>org.flinkextended.flink.ml.tensorflow.shaded.org.apache.commons</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>

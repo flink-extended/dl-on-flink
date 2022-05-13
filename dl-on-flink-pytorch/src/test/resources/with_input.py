@@ -35,5 +35,5 @@ def main(context: Context):
         output_tensors = [torch.zeros([1, 1], dtype=torch.long) for _ in
                          range(dist.get_world_size())]
         dist.all_gather(output_tensors, r)
-        print(output_tensors)
+        print(f"Rank {pytorch_context.get_rank()}: {output_tensors}")
 
