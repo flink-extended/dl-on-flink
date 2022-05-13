@@ -39,6 +39,13 @@
             <outputDirectory>lib/</outputDirectory>
             <fileMode>0644</fileMode>
         </file>
+
+        <!-- copy dl-on-flink-pytorch fat jar -->
+        <file>
+            <source>../dl-on-flink-pytorch/target/dl-on-flink-pytorch-${project.version}-jar-with-dependencies.jar</source>
+            <outputDirectory>lib/</outputDirectory>
+            <fileMode>0644</fileMode>
+        </file>
     </files>
 
     <fileSets>

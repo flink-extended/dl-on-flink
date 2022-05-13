@@ -38,6 +38,11 @@
             <artifactId>dl-on-flink-tensorflow-2.x</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.flinkextended</groupId>
+            <artifactId>dl-on-flink-pytorch</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
