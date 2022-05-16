@@ -14,35 +14,36 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 import struct
-from io import StringIO
-from typing import List
 
-import pandas as pd
-import torch
+from pyflink.common import Row
+
 from dl_on_flink_framework.context import Context
 from dl_on_flink_framework.java_file import JavaFile
-from torch.utils.data import IterableDataset
 
 
-class FlinkDataset(IterableDataset):
+def row_to_csv(row: Row) -> str:
+    return ",".join(map(str, row._values))
+
+
+class FlinkRowWriter:
     """
-    The Pytorch Dataset that reads data from Flink. The Dataset returns a list
-    of PyTorch tensors. Each column of the Flink row is a tensor.
+    Write data as rows to Flink for the downstream operator to consume. User
+    has to ensure that the downstream operator expects the schema of the
+    produced row.
     """
 
     def __init__(self, context: Context):
         self.java_file = JavaFile(context.from_java(), context.to_java())
 
-    def __iter__(self) -> List[torch.Tensor]:
-        first_read = True
-        while True:
-            try:
-                res = self.java_file.read(4, not first_read)
-                first_read = False
-                data_len, = struct.unpack("<i", res)
-                record = self.java_file.read(data_len, True).decode('utf-8')
-                df = pd.read_csv(StringIO(record), header=None)
-                tensors = [torch.tensor([df[key][0]]) for key in df.columns]
-                yield tensors
-            except EOFError as _:
-                break
+    def write(self, row: Row):
+        """
+        Write a row to Flink.
+        """
+        csv_str = row_to_csv(row)
+        data_len = len(csv_str)
+        res = self.java_file.write(struct.pack("<i", data_len), 4)
+        if not res:
+            raise IOError("Fail to write to Flink")
+        res = self.java_file.write(csv_str, data_len)
+        if not res:
+            raise IOError("Fail to write to Flink")

@@ -16,8 +16,8 @@
 import json
 
 from dl_on_flink_framework.context import Context
-from dl_on_flink_pytorch.flink_dataset import FlinkDataset
-from dl_on_flink_pytorch.flink_writer import FlinkWriter
+from dl_on_flink_pytorch.flink_stream_dataset import FlinkStreamDataset
+from dl_on_flink_pytorch.flink_row_writer import FlinkRowWriter
 
 
 class PytorchContext(Context):
@@ -57,17 +57,17 @@ class PytorchContext(Context):
         master_properties = self._get_master_properties()
         return master_properties['sys:pytorch_master_port']
 
-    def get_dataset_from_flink(self) -> FlinkDataset:
+    def get_dataset_from_flink(self) -> FlinkStreamDataset:
         """
         Get the data loader to read data from Flink.
         """
-        return FlinkDataset(self)
+        return FlinkStreamDataset(self)
 
-    def get_data_writer_to_flink(self) -> FlinkWriter:
+    def get_data_writer_to_flink(self) -> FlinkRowWriter:
         """
         Get the data writer to write data to Flink.
         """
-        return FlinkWriter(self)
+        return FlinkRowWriter(self)
 
     def _get_master_properties(self):
         cluster_json = json.loads(self.get_property('cluster'))

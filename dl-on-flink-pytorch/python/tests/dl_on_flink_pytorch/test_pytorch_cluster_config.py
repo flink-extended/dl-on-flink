@@ -25,23 +25,23 @@ import unittest
 
 from dl_on_flink_framework.context import Context
 
-from dl_on_flink_pytorch.pytorch_cluster_config import PytorchClusterConfig
+from dl_on_flink_pytorch.pytorch_cluster_config import PyTorchClusterConfig
 from tests.dl_on_flink_pytorch.utils import add_dl_on_flink_jar
 
 add_dl_on_flink_jar()
 
 
-class TestPytorchClusterConfig(unittest.TestCase):
+class TestPyTorchClusterConfig(unittest.TestCase):
 
     def test_set_world_size(self):
-        builder = PytorchClusterConfig.new_builder()
+        builder = PyTorchClusterConfig.new_builder()
         builder.set_node_entry(entry) \
             .set_world_size(2)
         config = builder.build()
         self.assertEqual(2, config.get_node_count("worker"))
 
     def test__to_j_pytorch_cluster_config(self):
-        builder = PytorchClusterConfig.new_builder()
+        builder = PyTorchClusterConfig.new_builder()
         builder.set_node_entry(entry) \
             .set_world_size(2) \
             .set_property("k", "v")

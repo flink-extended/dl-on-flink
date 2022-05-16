@@ -18,10 +18,10 @@ from typing import Optional
 from pyflink.java_gateway import get_gateway
 from pyflink.table import StatementSet, Table, Schema
 
-from dl_on_flink_pytorch.pytorch_cluster_config import PytorchClusterConfig
+from dl_on_flink_pytorch.pytorch_cluster_config import PyTorchClusterConfig
 
 
-def train(statement_set: StatementSet, pytorch_config: PytorchClusterConfig,
+def train(statement_set: StatementSet, pytorch_config: PyTorchClusterConfig,
           input_table: Optional[Table] = None, max_epoch: int = 1):
     """
     Train a PyTorch deep learning model. If the input_table is None, the
@@ -33,7 +33,7 @@ def train(statement_set: StatementSet, pytorch_config: PytorchClusterConfig,
     can terminate the training earlier by exiting the entry. The input_table
     should be bounded, if the max_epoch is greater than 1. Otherwise, the model
     is trained indefinitely with the unbounded data at the first epoch. User can
-    use the FlinkDataset to read data from Flink. The pytorch_config includes
+    use the FlinkStreamDataset to read data from Flink. The pytorch_config includes
     all the information to run the training cluster.
 
     This method adds a number of nodes with different node types
@@ -42,7 +42,7 @@ def train(statement_set: StatementSet, pytorch_config: PytorchClusterConfig,
     at the end.
 
     :param statement_set: The statement set to add the deep learning tables.
-    :param pytorch_config: The configuration of the Tensorflow cluster.
+    :param pytorch_config: The configuration of the PyTorch cluster.
     :param input_table: The input data to the training process.
     :param max_epoch: Maximum number of epoch to train the model.
     """
@@ -79,7 +79,7 @@ def train(statement_set: StatementSet, pytorch_config: PytorchClusterConfig,
 
 
 def inference(statement_set: StatementSet, input_table: Table,
-              pytorch_cluster_config: PytorchClusterConfig,
+              pytorch_cluster_config: PyTorchClusterConfig,
               schema: Schema) -> Table:
     """
     Stream inference with PyTorch model for the input table.
@@ -92,13 +92,13 @@ def inference(statement_set: StatementSet, input_table: Table,
     at the end.
 
     User is responsible to insert the returned table into the statement_set so
-    that the Tensorflow cluster runs in the same Flink job.
+    that the PyTorch cluster runs in the same Flink job.
 
     :param statement_set: The statement set to add the deep learning tables.
     :param input_table: The input data to inference.
-    :param pytorch_cluster_config: The configuration of the Tensorflow cluster.
+    :param pytorch_cluster_config: The configuration of the PyTorch cluster.
     :param schema: The schema of the output Table.
-    :return: The output Table produced by Tensorflow model inference process.
+    :return: The output Table produced by PyTorch model inference process.
     """
     if statement_set is None:
         raise ValueError("statement_set cannot be None.")
@@ -107,7 +107,7 @@ def inference(statement_set: StatementSet, input_table: Table,
         raise ValueError("input_table cannot be None.")
 
     if pytorch_cluster_config is None:
-        raise ValueError("tf_cluster_config cannot be None.")
+        raise ValueError("pytorch_cluster_config cannot be None.")
 
     if schema is None:
         raise ValueError("schema cannot be None")

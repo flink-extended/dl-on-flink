@@ -20,7 +20,7 @@ from dl_on_flink_framework.context import Context
 from pyflink.java_gateway import get_gateway
 
 
-class PytorchClusterConfig(ClusterConfig):
+class PyTorchClusterConfig(ClusterConfig):
     """
     A config for the PyTorch cluster.
     """
@@ -46,11 +46,11 @@ class PytorchClusterConfig(ClusterConfig):
         return j_builder.build()
 
     @staticmethod
-    def new_builder() -> "PytorchClusterConfig.Builder":
+    def new_builder() -> "PyTorchClusterConfig.Builder":
         """
         Create a new Builder for TFClusterConfig.
         """
-        return PytorchClusterConfig.Builder()
+        return PyTorchClusterConfig.Builder()
 
     class Builder(ClusterConfig.Builder):
         """
@@ -69,10 +69,10 @@ class PytorchClusterConfig(ClusterConfig):
             self.add_node_type("worker", world_size)
             return self
 
-        def build(self) -> "PytorchClusterConfig":
+        def build(self) -> "PyTorchClusterConfig":
             """
             Return an immutable instance of TFClusterConfig.
             """
-            return PytorchClusterConfig(self._node_type_cnt_map,
+            return PyTorchClusterConfig(self._node_type_cnt_map,
                                         self._properties,
                                         self._entry)

@@ -22,7 +22,7 @@ from pyflink.common import Types
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment, Schema, TableDescriptor
 
-from dl_on_flink_pytorch.pytorch_cluster_config import PytorchClusterConfig
+from dl_on_flink_pytorch.pytorch_cluster_config import PyTorchClusterConfig
 from dl_on_flink_pytorch.pytorch_utils import inference, train
 from tests.dl_on_flink_pytorch.utils import find_jar_path, get_resource_folder
 
@@ -46,7 +46,7 @@ class TestPytorchUtils(unittest.TestCase):
         self.statement_set = self.t_env.create_statement_set()
 
     def test_train_without_input(self):
-        config = PytorchClusterConfig.new_builder() \
+        config = PyTorchClusterConfig.new_builder() \
             .set_world_size(3) \
             .set_node_entry(
             _get_entry(os.path.join(get_resource_folder(), "all_gather.py"),
@@ -60,7 +60,7 @@ class TestPytorchUtils(unittest.TestCase):
     def testTrainWithInput(self):
         source_table = self.t_env.from_data_stream(
             self.env.from_collection([1, 2, 3, 4], Types.INT()))
-        config = PytorchClusterConfig.new_builder() \
+        config = PyTorchClusterConfig.new_builder() \
             .set_node_entry(_get_entry(os.path.join(get_resource_folder(),
                                                     "with_input.py"),
                                        "main")) \
@@ -74,7 +74,7 @@ class TestPytorchUtils(unittest.TestCase):
         source_table = self.t_env.from_data_stream(
             self.env.from_collection([1, 2, 3, 4], Types.INT()).map(
                 lambda i: i, Types.INT()).set_parallelism(2))
-        config = PytorchClusterConfig.new_builder() \
+        config = PyTorchClusterConfig.new_builder() \
             .set_node_entry(_get_entry(os.path.join(get_resource_folder(),
                                                     "with_input_iter.py"),
                                        "main")) \
@@ -88,7 +88,7 @@ class TestPytorchUtils(unittest.TestCase):
         source_table = self.t_env.from_data_stream(
             self.env.from_collection([1, 2, 3, 4], Types.INT()).map(
                 lambda i: i, Types.INT()).set_parallelism(2))
-        config = PytorchClusterConfig.new_builder() \
+        config = PyTorchClusterConfig.new_builder() \
             .set_node_entry(_get_entry(os.path.join(get_resource_folder(),
                                                     "with_input_iter.py"),
                                        "main")) \
@@ -99,7 +99,7 @@ class TestPytorchUtils(unittest.TestCase):
         self.statement_set.execute().wait()
 
     def test_inference(self):
-        config = PytorchClusterConfig.new_builder() \
+        config = PyTorchClusterConfig.new_builder() \
             .set_world_size(2) \
             .set_node_entry(_get_entry(os.path.join(get_resource_folder(),
                                                     "inference.py"),
