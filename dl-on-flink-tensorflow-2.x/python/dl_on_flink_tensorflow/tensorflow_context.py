@@ -17,7 +17,9 @@ import os
 
 import tensorflow as tf
 from dl_on_flink_framework.context import Context
+
 from dl_on_flink_tensorflow import tensorflow_on_flink_ops as flink_ops
+from dl_on_flink_tensorflow.flink_row_writer import FlinkRowWriter
 
 
 class TFContext(Context):
@@ -48,11 +50,11 @@ class TFContext(Context):
         return TFContext.export_cluster_env(cluster_str, self.roleName,
                                             self.index)
 
-    def get_tfrecord_writer_to_flink(self):
+    def get_row_writer_to_flink(self) -> FlinkRowWriter:
         """
-        Get the FlinkTFRecordWriter to write TFRecord to Flink.
+        Get the FlinkRowWriter to write row to Flink.
         """
-        return flink_ops.FlinkTFRecordWriter(address=self.to_java())
+        return FlinkRowWriter(self)
 
     def get_tfdataset_from_flink(self, compression_type=None, buffer_size=0,
                                  num_parallel_reads=None):
