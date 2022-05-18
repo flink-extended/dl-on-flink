@@ -17,13 +17,13 @@ Deep Learning on Flink is tested and supported on the following 64-bit systems:
 - macOS 10.15
 
 ## Support Framework Version
-- TensorFlow: 1.15.x & 2.3.x
+- TensorFlow: 1.15.x & 2.4.x
 - Flink: 1.14.x
  
 ## Getting Started
 
 You can follow [quick start tensorflow 1.15](doc/quick-start/quick_start_tensorflow_1.15.md)
-or [quick start tensorflow 2.3](doc/quick-start/quick_start_tensorflow_2.3.md) 
+or [quick start tensorflow 2.4](doc/quick-start/quick_start_tensorflow_2.4.md) 
 to submit an example job to a local standalone Flink cluster.
 
 ## Build From Source
@@ -68,7 +68,7 @@ pip install dl-on-flink-framework/python
 # different versions of Tensorflow 
 # For tensorflow 1.15.x
 pip install dl-on-flink-tensorflow/python
-# For tensorflow 2.3.x
+# For tensorflow 2.4.x
 pip install dl-on-flink-tensorflow-2.x/python
 ```
 

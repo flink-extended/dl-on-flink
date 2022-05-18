@@ -65,7 +65,7 @@ MODEL_PATH="${PWD}"/./tf1/linear
 
 pip uninstall -y dl-on-flink-tensorflow
 
-# Tensorflow 2.3 linear example
+# Tensorflow 2.4 linear example
 pip install --pre -f "${DL_ON_FLINK_WHEEL_DIR}" dl-on-flink-tensorflow-2.x
 
 MODEL_PATH="${PWD}"/./tf2/linear

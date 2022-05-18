@@ -37,7 +37,7 @@ public class TFTensorConversionTest {
     @Test
     public void testToTensor() {
 
-        Tensor<?> tensor =
+        Tensor tensor =
                 TFTensorConversion.toTensor(
                         new int[][] {new int[] {1, 2, 3}},
                         TensorInfo.newBuilder().setDtype(DataType.DT_INT32).build());
@@ -72,7 +72,7 @@ public class TFTensorConversionTest {
 
     @Test
     public void testFromTensor() {
-        Tensor<?> tensor = TInt32.tensorOf(Shape.of(3));
+        Tensor tensor = TInt32.tensorOf(Shape.of(3));
         Object[] objects = TFTensorConversion.fromTensor(tensor);
         assertEquals(3, objects.length);
         assertThat(objects[0], instanceOf(Integer.class));

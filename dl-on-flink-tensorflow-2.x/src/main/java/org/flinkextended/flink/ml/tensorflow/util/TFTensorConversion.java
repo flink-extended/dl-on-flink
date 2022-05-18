@@ -22,6 +22,7 @@ import com.google.common.base.Preconditions;
 import org.tensorflow.Tensor;
 import org.tensorflow.ndarray.Shape;
 import org.tensorflow.ndarray.buffer.DataBuffers;
+import org.tensorflow.proto.framework.DataType;
 import org.tensorflow.proto.framework.TensorInfo;
 import org.tensorflow.types.TFloat32;
 import org.tensorflow.types.TFloat64;
@@ -48,7 +49,7 @@ public class TFTensorConversion {
      * @param tensorInfo target tensor type information.
      * @return result tensorflow tensor.
      */
-    public static Tensor<?> toTensor(Object[] objects, TensorInfo tensorInfo) {
+    public static Tensor toTensor(Object[] objects, TensorInfo tensorInfo) {
         switch (tensorInfo.getDtype()) {
             case DT_INT8:
             case DT_INT16:
@@ -104,32 +105,32 @@ public class TFTensorConversion {
      * @param tensor given tensorflow tensor.
      * @return java objects corresponded to given tensor.
      */
-    public static Object[] fromTensor(Tensor<?> tensor) {
+    public static Object[] fromTensor(Tensor tensor) {
         Preconditions.checkArgument(
                 tensor.shape().numDimensions() == 1, "Can only convert tensors with shape long[]");
         final int size = (int) tensor.shape().size(0);
         Object[] res = new Object[size];
-        if (TInt32.DTYPE.equals(tensor.dataType())) {
+        if (DataType.DT_INT32.equals(tensor.dataType())) {
             int[] ints = new int[size];
-            tensor.rawData().asInts().read(ints);
+            tensor.asRawTensor().data().asInts().read(ints);
             for (int i = 0; i < size; i++) {
                 res[i] = ints[i];
             }
-        } else if (TFloat32.DTYPE.equals(tensor.dataType())) {
+        } else if (DataType.DT_FLOAT.equals(tensor.dataType())) {
             float[] floats = new float[size];
-            tensor.rawData().asFloats().read(floats);
+            tensor.asRawTensor().data().asFloats().read(floats);
             for (int i = 0; i < size; i++) {
                 res[i] = floats[i];
             }
-        } else if (TInt64.DTYPE.equals(tensor.dataType())) {
+        } else if (DataType.DT_INT64.equals(tensor.dataType())) {
             long[] longs = new long[size];
-            tensor.rawData().asLongs().read(longs);
+            tensor.asRawTensor().data().asLongs().read(longs);
             for (int i = 0; i < size; i++) {
                 res[i] = longs[i];
             }
-        } else if (TFloat64.DTYPE.equals(tensor.dataType())) {
+        } else if (DataType.DT_DOUBLE.equals(tensor.dataType())) {
             double[] doubles = new double[size];
-            tensor.rawData().asDoubles().read(doubles);
+            tensor.asRawTensor().data().asDoubles().read(doubles);
             for (int i = 0; i < size; i++) {
                 res[i] = doubles[i];
             }

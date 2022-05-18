@@ -30,8 +30,8 @@
     <artifactId>dl-on-flink-tensorflow-2.x</artifactId>
 
     <properties>
-        <tensorflow.version>2.3.1</tensorflow.version>
-        <tensorflow.java.version>0.2.0</tensorflow.java.version>
+        <tensorflow.version>2.4.1</tensorflow.version>
+        <tensorflow.java.version>0.3.3</tensorflow.java.version>
         <javacpp.platform.extension></javacpp.platform.extension>
     </properties>
 
