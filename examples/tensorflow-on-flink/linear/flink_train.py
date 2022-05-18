@@ -17,11 +17,12 @@ import os
 import sys
 from datetime import datetime
 
-from dl_on_flink_tensorflow.tensorflow_TFConfig import TFConfig
-from dl_on_flink_tensorflow.tensorflow_on_flink_mlconf import MLCONSTANTS
-from dl_on_flink_tensorflow.tensorflow_on_flink_table import train
+from dl_on_flink_tensorflow.tf_cluster_config import TFClusterConfig
+from dl_on_flink_tensorflow.tf_utils import train
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment
+
+from linear import stream_train
 
 logger = logging.getLogger(__file__)
 
@@ -64,21 +65,15 @@ if __name__ == '__main__':
     """)
     input_tb = t_env.sql_query("SELECT x, 2*x+1 FROM src")
 
-    prop = {
-        MLCONSTANTS.ENCODING_CLASS:
-            "org.flinkextended.flink.ml.operator.coding.RowCSVCoding",
-        MLCONSTANTS.DECODING_CLASS:
-            "org.flinkextended.flink.ml.operator.coding.RowCSVCoding",
-        'input_types': 'STRING,STRING',
-        'model_save_path': model_save_path,
-        MLCONSTANTS.CONFIG_STORAGE_TYPE: MLCONSTANTS.STORAGE_LOCAL_FILE,
-    }
+    tf_cluster_config = TFClusterConfig.new_builder() \
+        .set_node_entry(stream_train) \
+        .set_worker_count(2) \
+        .set_property('input_types', 'STRING,STRING') \
+        .set_property('model_save_path', model_save_path) \
+        .set_property('storage_type', 'local_file') \
+        .build()
 
-    tf_config = TFConfig(num_worker=2, num_ps=0, properties=prop,
-                         python_file=python_file, func="stream_train",
-                         env_path=None)
-    train(env, t_env, statement_set,
-          input_table=input_tb, tf_config=tf_config, output_schema=None)
+    train(statement_set, tf_cluster_config, input_tb)
 
     # Submit the job. Note that you should call execute method on the
     # statement_set.

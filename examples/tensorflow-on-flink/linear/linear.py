@@ -25,7 +25,7 @@ import tensorflow as tf
 
 logger = logging.getLogger(__file__)
 
-logger.info("TensorFlow version:", tf.__version__)
+logger.info("TensorFlow version: %s", tf.__version__)
 is_tf2 = int(tf.__version__.split('.')[0]) == 2
 
 
@@ -128,6 +128,7 @@ def train(dataset_provider: Callable[[], tf.data.Dataset],
     config = json.loads(os.environ['TF_CONFIG'])
     is_chief = config['task']['type'] == 'worker' and \
         config['task']['index'] == 0
+    logger.info(f"is_chief: {is_chief}")
     callbacks: List[tf.keras.callbacks.Callback] = \
         [ModelSaveCallback(1000, model, model_save_path, is_chief)]
     if is_chief:
@@ -146,7 +147,7 @@ def stream_train(context):
 
     # Set the TF_CONFIG for distributed training
     tf_context = TFContext(context)
-    cluster = tf_context.to_tf_cluster(tf_context.properties["cluster"])
+    cluster = tf_context.get_tf_cluster_config()
     os.environ['TF_CONFIG'] = json.dumps({
         'cluster': cluster,
         'task': {'type': tf_context.get_node_type(),
