@@ -49,7 +49,7 @@ if os.getenv("NIGHTLY_WHEEL") == "true":
 setup(
     name=PACKAGE_NAME,
     version=VERSION,
-    python_requires=">=3.6,<3.8",
+    python_requires=">=3.6",
     packages=find_packages(where=this_directory,
                            include=['dl_on_flink_pytorch',
                                     'dl_on_flink_pytorch.*']),
