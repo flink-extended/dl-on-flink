@@ -29,7 +29,7 @@ a linear model.
 - Java: 8
 - Python: 3.7 
 - Flink: 1.14
-- TensorFlow: 2.3
+- TensorFlow: 2.4
 
 We strongly recommend using [virtualenv](https://virtualenv.pypa.io/en/latest/index.html)
 or other similar tools for an isolated Python environment.

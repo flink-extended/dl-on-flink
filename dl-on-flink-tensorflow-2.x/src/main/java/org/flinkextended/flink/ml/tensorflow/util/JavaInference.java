@@ -161,7 +161,7 @@ public class JavaInference implements Closeable {
         for (int i = 0; i < inRowFieldNames.length; i++) {
             inNameToObjs.put(inRowFieldNames[i], extractCols(batchCache, i, size));
         }
-        List<Tensor<?>> toClose =
+        List<Tensor> toClose =
                 new ArrayList<>(inputTensorNameSet.size() + outputTensorNames.length);
         try {
             final Session.Runner runner = model.session().runner();
@@ -169,7 +169,7 @@ public class JavaInference implements Closeable {
                 if (inputTensorNameSet.contains(inRowFieldNames[i])) {
                     // this field is an input tensor
                     TensorInfo inputInfo = modelSig.getInputsMap().get(inRowFieldNames[i]);
-                    Tensor<?> tensor =
+                    Tensor tensor =
                             TFTensorConversion.toTensor(
                                     inNameToObjs.get(inRowFieldNames[i]), inputInfo);
                     toClose.add(tensor);
@@ -180,9 +180,9 @@ public class JavaInference implements Closeable {
                 TensorInfo outputInfo = modelSig.getOutputsMap().get(outputTensorName);
                 runner.fetch(outputInfo.getName());
             }
-            List<Tensor<?>> outTensors = runner.run();
+            List<Tensor> outTensors = runner.run();
             toClose.addAll(outTensors);
-            Map<String, Tensor<?>> outNameToTensor = new HashMap<>();
+            Map<String, Tensor> outNameToTensor = new HashMap<>();
             for (int i = 0; i < outputTensorNames.length; i++) {
                 outNameToTensor.put(outputTensorNames[i], outTensors.get(i));
             }
@@ -201,7 +201,7 @@ public class JavaInference implements Closeable {
                 }
             }
         } finally {
-            for (Tensor<?> tensor : toClose) {
+            for (Tensor tensor : toClose) {
                 tensor.close();
             }
         }

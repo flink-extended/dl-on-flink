@@ -128,7 +128,7 @@ class CMakeBuild(build_ext):
         return glob(os.path.join(tf_lib, "*tensorflow_framework*"))[0]
 
 
-setup_requires = ['tensorflow>=2.3.1, <2.4.0']
+setup_requires = ['tensorflow>=2.4.0, <2.5.0']
 if not in_dl_on_flink_source:
     setup_requires.append(f'{DL_ON_FLINK_FRAMEWORK_PACKAGE_NAME}=={VERSION}')
 
@@ -144,8 +144,8 @@ setup(
         CMakeExtension('dl_on_flink_tensorflow/dl_on_flink_tensorflow')],
     cmdclass={'build_ext': CMakeBuild},
     zip_safe=False,
-    install_requires=['tensorflow>=2.3.1, <2.4.0',
-                      'tensorboard>=2.3.0, <2.4.0',
+    install_requires=['tensorflow>=2.4.0, <2.5.0',
+                      'tensorboard>=2.4.0, <2.5.0',
                       'apache-flink>=1.14.0, <1.15.0',
                       f'{DL_ON_FLINK_FRAMEWORK_PACKAGE_NAME}=={VERSION}'],
     setup_requires=setup_requires,
