@@ -134,7 +134,7 @@ def train(dataset_provider: Callable[[], tf.data.Dataset],
     if is_chief:
         callbacks = callbacks + [StepLogCallback(100)]
 
-    model.fit(dataset_provider(), verbose=2, callbacks=callbacks)
+    model.fit(dataset_provider(), verbose=2, callbacks=callbacks, epochs=99999)
 
 
 def stream_train(context):

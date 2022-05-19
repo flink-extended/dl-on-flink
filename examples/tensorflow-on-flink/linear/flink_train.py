@@ -13,23 +13,21 @@
 #  limitations under the License.
 import argparse
 import logging
-import os
 import sys
 from datetime import datetime
 
 from dl_on_flink_tensorflow.tf_cluster_config import TFClusterConfig
 from dl_on_flink_tensorflow.tf_utils import train
 from pyflink.datastream import StreamExecutionEnvironment
-from pyflink.table import StreamTableEnvironment
+from pyflink.table import StreamTableEnvironment, TableDescriptor, Schema, \
+    DataTypes, expressions as expr
 
 from linear import stream_train
 
 logger = logging.getLogger(__file__)
 
-if __name__ == '__main__':
-    logging.basicConfig(stream=sys.stdout, level=logging.INFO,
-                        format="%(message)s")
 
+def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--model-path',
@@ -37,33 +35,55 @@ if __name__ == '__main__':
         required=False,
         default=f"/tmp/linear/{datetime.now().strftime('%Y%m%d%H%M')}",
         help='Where the trained model should be saved')
+    parser.add_argument(
+        '--epoch',
+        dest='epoch',
+        required=False,
+        type=int,
+        default=1,
+        help='The number of epochs to train the model'
+    )
+    parser.add_argument(
+        '--sample-count',
+        dest='sample_count',
+        required=False,
+        type=int,
+        default=512000,
+        help='The number of samples for training per epoch'
+    )
     argv = sys.argv[1:]
     known_args, _ = parser.parse_known_args(argv)
+    return known_args
 
+
+def main():
+    logging.basicConfig(stream=sys.stdout, level=logging.INFO,
+                        format="%(message)s")
+
+    known_args = parse_args()
     model_save_path = known_args.model_path
-    logger.info("Model will be saved at: {}".format(model_save_path))
+    epoch = known_args.epoch
+    sample_count = known_args.sample_count
+    logger.info(f"Model will be trained with {sample_count} samples for "
+                f"{epoch} epochs and saved at: {model_save_path}")
 
     # Prepare Flink environment
     env = StreamExecutionEnvironment.get_execution_environment()
-    env.set_parallelism(1)
+    env.set_parallelism(2)
     t_env = StreamTableEnvironment.create(env)
     statement_set = t_env.create_statement_set()
 
-    python_file = os.path.join(os.path.abspath(os.path.dirname(__file__)),
-                               'linear.py')
-
     # Create the table of samples for model training
-    t_env.execute_sql("""
-        CREATE TABLE src (
-            x FLOAT
-        ) WITH (
-            'connector' = 'datagen',
-            'number-of-rows' = '512000',
-            'fields.x.min' = '0',
-            'fields.x.max' = '1'
-        )
-    """)
-    input_tb = t_env.sql_query("SELECT x, 2*x+1 FROM src")
+    schema = Schema.new_builder() \
+        .column('x', DataTypes.DOUBLE()) \
+        .column_by_expression('y', expr.call_sql("2 * x + 1")) \
+        .build()
+    input_tb = t_env.from_descriptor(TableDescriptor.for_connector("datagen")
+                                     .schema(schema)
+                                     .option('number-of-rows',
+                                             str(sample_count))
+                                     .option('fields.x.min', '0')
+                                     .option('fields.x.max', '1').build())
 
     tf_cluster_config = TFClusterConfig.new_builder() \
         .set_node_entry(stream_train) \
@@ -73,10 +93,12 @@ if __name__ == '__main__':
         .set_property('storage_type', 'local_file') \
         .build()
 
-    train(statement_set, tf_cluster_config, input_tb)
+    train(statement_set, tf_cluster_config, input_tb, epoch)
 
     # Submit the job. Note that you should call execute method on the
     # statement_set.
-    job_client = statement_set.execute().get_job_client()
-    if job_client is not None:
-        job_client.get_job_execution_result().result()
+    statement_set.execute().wait()
+
+
+if __name__ == '__main__':
+    main()
