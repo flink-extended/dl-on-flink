@@ -61,6 +61,7 @@ jobs:
           - dl-on-flink-framework
           - dl-on-flink-tensorflow
           - dl-on-flink-tensorflow-2.x
+          - dl-on-flink-pytorch
     steps:
       - uses: actions/checkout@v2
         with:
@@ -93,4 +94,4 @@ jobs:
         run: |
           cd ${{ matrix.modules }}/python
           pip install -e .
-          python -m unittest discover -v tests
+          python -m unittest discover -v .

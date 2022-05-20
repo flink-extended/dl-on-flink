@@ -33,7 +33,8 @@ import org.apache.flink.table.api.TableEnvironment;
 import java.io.IOException;
 
 /** PyTorchUtil. */
-public class PyTorchUtil {
+@Deprecated
+public class PyTorchUtilLegacy {
 
     /**
      * Run ML program for DataStream.

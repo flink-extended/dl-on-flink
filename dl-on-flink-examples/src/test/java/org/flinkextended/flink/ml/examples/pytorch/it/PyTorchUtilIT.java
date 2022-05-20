@@ -18,7 +18,7 @@ package org.flinkextended.flink.ml.examples.pytorch.it;
 
 import org.flinkextended.flink.ml.examples.pytorch.PyTorchRunDist;
 import org.flinkextended.flink.ml.examples.util.CodeUtil;
-import org.flinkextended.flink.ml.pytorch.PyTorchUtil;
+import org.flinkextended.flink.ml.pytorch.PyTorchUtilLegacy;
 import org.flinkextended.flink.ml.util.MiniCluster;
 import org.flinkextended.flink.ml.util.SysUtil;
 
@@ -31,7 +31,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 
-/** Integration test for {@link PyTorchUtil}. */
+/** Integration test for {@link PyTorchUtilLegacy}. */
 public class PyTorchUtilIT {
     private static MiniCluster miniCluster;
     private static final int numTMs = 3;

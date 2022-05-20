@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /** PyTorch machine learning cluster configuration. */
+@Deprecated
 public class PyTorchConfig {
     private MLConfig mlConfig;
 

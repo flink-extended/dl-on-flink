@@ -82,6 +82,7 @@ jobs:
           - dl-on-flink-framework
           - dl-on-flink-tensorflow
           - dl-on-flink-tensorflow-2.x
+          - dl-on-flink-pytorch
     steps:
       - uses: actions/checkout@v2
         with:
@@ -114,7 +115,38 @@ jobs:
         run: |
           cd ${{ matrix.modules }}/python
           pip install -e .
-          python -m unittest discover -v tests
+          python -m unittest discover -v .
+  build-pytorch-wheel:
+    needs: build-and-test-python
+    name: Build ${{ matrix.package }} wheels on ubuntu-20.04
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - dl-on-flink-pytorch
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Set up python 3.7
+        uses: actions/setup-python@v2
+        with:
+          # Semantic version range syntax or exact version of a Python version
+          python-version: '3.7'
+          # Optional - x64 or x86 architecture, defaults to x64
+          architecture: 'x64'
+      - name: Build python${{ matrix.python-version }} ${{ matrix.package }} wheels
+        env:
+          NIGHTLY_WHEEL: true
+        run: |
+          pip install wheel
+          cd ${{ matrix.package }}/python
+          python setup.py bdist_wheel
+      - uses: actions/upload-artifact@v2
+        with:
+          name: dl-on-flink-wheels
+          path: ./dl-on-flink-pytorch/python/dist/*.whl
   build-linux-wheel:
     needs: build-and-test-python
     name: Build python${{ matrix.python-version }} ${{ matrix.package }} wheels on ubuntu-20.04
@@ -180,7 +212,7 @@ jobs:
           path: ./wheelhouse/*.whl
   test-wheel:
     name: Test python${{ matrix.python-version }} ${{ matrix.package }} wheels on ${{ matrix.os }}
-    needs: [ build-linux-wheel, build-macos-wheel ]
+    needs: [ build-linux-wheel, build-macos-wheel, build-pytorch-wheel ]
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -191,6 +223,7 @@ jobs:
           - dl-on-flink-framework
           - dl-on-flink-tensorflow
           - dl-on-flink-tensorflow-2.x
+          - dl-on-flink-pytorch
         exclude:
           - package: dl-on-flink-tensorflow
             python-version: 3.8
