@@ -14,13 +14,13 @@
 from pyflink.common import Row
 from torch.utils.data import DataLoader
 
-from dl_on_flink_pytorch.pytorch_context import PytorchContext
+from dl_on_flink_pytorch.pytorch_context import PyTorchContext
 
 from dl_on_flink_framework.context import Context
 
 
 def main(context: Context):
-    pytorch_context = PytorchContext(context)
+    pytorch_context = PyTorchContext(context)
     data_loader = DataLoader(pytorch_context.get_dataset_from_flink())
     writer = pytorch_context.get_data_writer_to_flink()
     for tensor, in data_loader:

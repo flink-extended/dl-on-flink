@@ -18,9 +18,9 @@ from dl_on_flink_pytorch.flink_stream_dataset import FlinkStreamDataset
 from dl_on_flink_pytorch.flink_row_writer import FlinkRowWriter
 
 
-class PytorchContext(Context):
+class PyTorchContext(Context):
     """
-    PytorchContext extends Context and provides some convenient methods to get the
+    PyTorchContext extends Context and provides some convenient methods to get the
     config of the Pytorch cluster. And it provides the Pytorch Dataset to
     read data from Flink and writer to write data to Flink.
     """

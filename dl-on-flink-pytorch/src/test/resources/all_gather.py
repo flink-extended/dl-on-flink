@@ -13,7 +13,7 @@
 #  limitations under the License.
 import os
 
-from dl_on_flink_pytorch.pytorch_context import PytorchContext
+from dl_on_flink_pytorch.pytorch_context import PyTorchContext
 
 from dl_on_flink_framework.context import Context
 
@@ -22,7 +22,7 @@ import torch.distributed as dist
 
 
 def main(context: Context):
-    pytorch_context = PytorchContext(context)
+    pytorch_context = PyTorchContext(context)
     os.environ['MASTER_ADDR'] = pytorch_context.get_master_ip()
     os.environ['MASTER_PORT'] = str(pytorch_context.get_master_port())
     dist.init_process_group('gloo', world_size=pytorch_context.get_world_size(),
