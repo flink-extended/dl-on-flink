@@ -256,7 +256,7 @@ jobs:
           pip install ${{ matrix.package }} -f file://${PWD}/wheelhouse
           mvn -B test -pl ${{ matrix.package }}
   run-example:
-    needs: [ build-and-upload-bin, build-linux-wheel, build-macos-wheel ]
+    needs: [ build-and-upload-bin, build-linux-wheel, build-macos-wheel, build-pytorch-nightly-wheel ]
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
