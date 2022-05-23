@@ -57,7 +57,7 @@ MODEL_PATH="${PWD}"/./tf1/linear
   -py "${DL_ON_FLINK_DIR}"/examples/tensorflow-on-flink/linear/flink_train.py \
   --jarfile "${DL_ON_FLINK_DIR}"/lib/dl-on-flink-tensorflow-*-jar-with-dependencies.jar \
   --model-path "${MODEL_PATH}"
-[[ -d "${MODEL_PATH}" ]] || echo "Model doesn't exist at ${MODEL_PATH}" || exit 1
+[[ -d "${MODEL_PATH}" ]] || (echo "Model doesn't exist at ${MODEL_PATH}" && exit 1)
 
 ./bin/flink run -py "${DL_ON_FLINK_DIR}"/examples/tensorflow-on-flink/linear/flink_inference.py \
   --model-path "${MODEL_PATH}"
@@ -69,7 +69,7 @@ MODEL_PATH="${PWD}"/./tf1/linear
   --model-path "${MODEL_PATH}" \
   --epoch 100 \
   --sample-count 5120
-[[ -d "${MODEL_PATH}" ]] || echo "Model doesn't exist at ${MODEL_PATH}" || exit 1
+[[ -d "${MODEL_PATH}" ]] || (echo "Model doesn't exist at ${MODEL_PATH}" && exit 1)
 
 ./bin/flink run -py "${DL_ON_FLINK_DIR}"/examples/tensorflow-on-flink/linear/flink_inference.py \
   --model-path "${MODEL_PATH}"
@@ -85,7 +85,7 @@ MODEL_PATH="${PWD}"/./tf2/linear
   -py "${DL_ON_FLINK_DIR}"/examples/tensorflow-on-flink/linear/flink_train.py \
   --jarfile "${DL_ON_FLINK_DIR}"/lib/dl-on-flink-tensorflow-2.x-*-jar-with-dependencies.jar \
   --model-path "${MODEL_PATH}"
-[[ -d "${MODEL_PATH}" ]] || echo "Model doesn't exist at ${MODEL_PATH}" || exit 1
+[[ -d "${MODEL_PATH}" ]] || (echo "Model doesn't exist at ${MODEL_PATH}" && exit 1)
 
 ./bin/flink run -py "${DL_ON_FLINK_DIR}"/examples/tensorflow-on-flink/linear/flink_inference.py \
   --model-path "${MODEL_PATH}"
@@ -97,7 +97,7 @@ MODEL_PATH="${PWD}"/./tf2/linear
   --model-path "${MODEL_PATH}" \
   --epoch 100 \
   --sample-count 5120
-[[ -d "${MODEL_PATH}" ]] || echo "Model doesn't exist at ${MODEL_PATH}" || exit 1
+[[ -d "${MODEL_PATH}" ]] || (echo "Model doesn't exist at ${MODEL_PATH}" && exit 1)
 
 ./bin/flink run -py "${DL_ON_FLINK_DIR}"/examples/tensorflow-on-flink/linear/flink_inference.py \
   --model-path "${MODEL_PATH}"
@@ -113,7 +113,7 @@ MODEL_PATH="${PWD}"/./pytorch/linear
   -py "${DL_ON_FLINK_DIR}"/examples/pytorch-on-flink/linear/flink_train.py \
   --jarfile "${DL_ON_FLINK_DIR}"/lib/dl-on-flink-pytorch-*-jar-with-dependencies.jar \
   --model-path "${MODEL_PATH}"
-[[ -d "${MODEL_PATH}" ]] || echo "Model doesn't exist at ${MODEL_PATH}" || exit 1
+[[ -f "${MODEL_PATH}" ]] || (echo "Model doesn't exist at ${MODEL_PATH}" && exit 1)
 
 ./bin/flink run \
   -py "${DL_ON_FLINK_DIR}"/examples/pytorch-on-flink/linear/flink_inference.py \
@@ -121,13 +121,13 @@ MODEL_PATH="${PWD}"/./pytorch/linear
   --model-path "${MODEL_PATH}"
 
 # Batch train iteratively
-~/Downloads/flink-1.14.2/bin/flink run \
+./bin/flink run \
   -py "${DL_ON_FLINK_DIR}"/examples/pytorch-on-flink/linear/flink_train.py \
   --jarfile "${DL_ON_FLINK_DIR}"/lib/dl-on-flink-pytorch-*-jar-with-dependencies.jar \
   --model-path "${MODEL_PATH}" \
   --epoch 100 \
   --sample-count 1280
-[[ -d "${MODEL_PATH}" ]] || echo "Model doesn't exist at ${MODEL_PATH}" || exit 1
+[[ -f "${MODEL_PATH}" ]] || (echo "Model doesn't exist at ${MODEL_PATH}" && exit 1)
 
 ./bin/flink run \
   -py "${DL_ON_FLINK_DIR}"/examples/pytorch-on-flink/linear/flink_inference.py \
