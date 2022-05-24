@@ -1,7 +1,7 @@
 # Deep Learning on Flink
 
 Deep Learning on Flink aims to integrate Flink and deep learning frameworks
-(e.g. TensorFlow, PyTorch, etc) to enable distributed deep learning training and
+(e.g. TensorFlow, PyTorch, etc.) to enable distributed deep learning training and
 inference on a Flink cluster.
 
 It runs the deep learning tasks inside a Flink operator so that Flink can help
@@ -18,13 +18,17 @@ Deep Learning on Flink is tested and supported on the following 64-bit systems:
 
 ## Support Framework Version
 - TensorFlow: 1.15.x & 2.4.x
+- PyTorch: 1.11.x
 - Flink: 1.14.x
  
 ## Getting Started
 
-You can follow [quick start tensorflow 1.15](doc/quick-start/quick_start_tensorflow_1.15.md)
-or [quick start tensorflow 2.4](doc/quick-start/quick_start_tensorflow_2.4.md) 
-to submit an example job to a local standalone Flink cluster.
+You can follow the following quick starts to submit an example job with 
+different deep learning frameworks to a local standalone Flink cluster.
+
+- [Quick Start Tensorflow 1.15](doc/quick-start/quick_start_tensorflow_1.15.md)
+- [Quick Start Tensorflow 2.4](doc/quick-start/quick_start_tensorflow_2.4.md)
+- [Quick Start PyTorch](doc/quick-start/quick_start_pytorch.md)
 
 ## Build From Source
 
