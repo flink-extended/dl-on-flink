@@ -26,9 +26,9 @@ a linear model.
 - Java: 8
 - Python: 3.7 
 - Flink: 1.14
-- TensorFlow: 2.4
+- PyTorch: 1.10
 
-We strongly recommend using [virtualenv](https://virtualenv.pypa.io/en/latest/index.html)
+We strongly recommend using [virtualenv](https://virtualenv.pypa.io/en/latest/index.html) 
 or other similar tools for an isolated Python environment.
 
 ```bash
@@ -77,9 +77,9 @@ Install the latest stable release of `dl-on-flink-framwork`
 python3 -m pip install --upgrade dl-on-flink-framework
 ```
 
-Install the latest stable release of `dl-on-flink-tensorflow-2.x`
+Install the latest stable release of `dl-on-flink-pytorch`
 ```bash
-python3 -m pip install --upgrade dl-on-flink-tensorflow-2.x
+python3 -m pip install --upgrade dl-on-flink-pytorch
 ```
 
 ## Starting Local Standalone Cluster
@@ -115,17 +115,17 @@ export MODEL_PATH="${PWD}"/./linear
 
 # Stream Training
 ./bin/flink run \
-  -py "${DL_ON_FLINK_DIR}"/examples/tensorflow-on-flink/linear/flink_train.py \
-  --jarfile "${DL_ON_FLINK_DIR}"/lib/dl-on-flink-tensorflow-2.x-0.4.0-jar-with-dependencies.jar \
+  -py "${DL_ON_FLINK_DIR}"/examples/pytorch-on-flink/linear/flink_train.py \
+  --jarfile "${DL_ON_FLINK_DIR}"/lib/dl-on-flink-pytorch-0.5.0-SNAPSHOT-jar-with-dependencies.jar \
   --model-path "${MODEL_PATH}"
-
-# Batch Training with 5120 samples for 100 epochs
-./bin/flink run \
-  -py "${DL_ON_FLINK_DIR}"/examples/tensorflow-on-flink/linear/flink_train.py \
-  --jarfile "${DL_ON_FLINK_DIR}"/lib/dl-on-flink-tensorflow-2.x-0.4.0-jar-with-dependencies.jar \
+  
+# Batch Training with 1280 samples for 100 epochs
+~/Downloads/flink-1.14.2/bin/flink run \
+  -py "${DL_ON_FLINK_DIR}"/examples/pytorch-on-flink/linear/flink_train.py \
+  --jarfile "${DL_ON_FLINK_DIR}"/lib/dl-on-flink-pytorch-0.5.0-SNAPSHOT-jar-with-dependencies.jar \
   --model-path "${MODEL_PATH}" \
   --epoch 100 \
-  --sample-count 5120
+  --sample-count 1280
 ```
 
 After the job is submitted successfully, you should see the job at running state
@@ -141,7 +141,8 @@ inference.
 ```sh
 
 ./bin/flink run \
-  -py "${DL_ON_FLINK_DIR}"/examples/tensorflow-on-flink/linear/flink_inference.py \
+  -py "${DL_ON_FLINK_DIR}"/examples/pytorch-on-flink/linear/flink_inference.py \
+  -pyfs "${DL_ON_FLINK_DIR}"/examples/pytorch-on-flink/linear/linear.py \
   --model-path "${MODEL_PATH}"
 
 ```

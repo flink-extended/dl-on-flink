@@ -129,15 +129,37 @@ public class NodeOperator<OUT> extends AbstractStreamOperator<OUT>
     }
 
     @Override
+    public void finish() throws Exception {
+        LOG.info("Start finishing NodeOperator {}", mlContext.getIdentity());
+        cleanup(false);
+    }
+
+    @Override
     public void close() throws Exception {
+        LOG.info("Start closing NodeOperator {}", mlContext.getIdentity());
+        cleanup(true);
+        if (mlContext != null) {
+            try {
+                mlContext.close();
+            } catch (IOException e) {
+                LOG.error("Fail to close mlContext.", e);
+            }
+            mlContext = null;
+        }
+    }
+
+    private void cleanup(boolean withTimeout) {
         if (mlContext != null && mlContext.getOutputQueue() != null) {
             mlContext.getOutputQueue().markFinished();
         }
 
-        // wait for tf thread finish
         try {
             if (serverFuture != null && !serverFuture.isCancelled()) {
-                serverFuture.get(closeTimeoutMs, TimeUnit.MILLISECONDS);
+                if (withTimeout) {
+                    serverFuture.get(closeTimeoutMs, TimeUnit.MILLISECONDS);
+                } else {
+                    serverFuture.get();
+                }
             }
             if (dataExchangeConsumerFuture != null && !dataExchangeConsumerFuture.isCancelled()) {
                 dataExchangeConsumerFuture.get();
@@ -158,15 +180,6 @@ public class NodeOperator<OUT> extends AbstractStreamOperator<OUT>
             dataExchangeConsumerFuture = null;
 
             LOG.info("Records output: " + dataExchange.getReadRecords());
-
-            if (mlContext != null) {
-                try {
-                    mlContext.close();
-                } catch (IOException e) {
-                    LOG.error("Fail to close mlContext.", e);
-                }
-                mlContext = null;
-            }
         }
     }
 

@@ -269,7 +269,7 @@ jobs:
           pip install --pre ${{ matrix.package }} -f file://${PWD}/wheelhouse
           mvn -B test -pl ${{ matrix.package }}
   run-example:
-    needs: [ build-and-upload-bin, build-linux-nightly-wheel, build-macos-nightly-wheel ]
+    needs: [ build-and-upload-bin, build-linux-nightly-wheel, build-macos-nightly-wheel, build-pytorch-nightly-wheel ]
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -300,6 +300,11 @@ jobs:
       - name: Run example on ${{ matrix.os }}
         run: |
           bash tools/run_example.sh dl-on-flink-*-bin.tgz wheelhouse
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: e2e-example-logs
+          path: ./flink-*/log
   deploy-snapshot:
     if: github.repository == 'flink-extended/dl-on-flink'
     needs: [ run-example, test-wheel ]

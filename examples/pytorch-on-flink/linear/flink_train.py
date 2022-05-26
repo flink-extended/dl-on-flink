@@ -1,28 +1,29 @@
 #  Copyright 2022 Deep Learning on Flink Authors
-# 
+#
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
 #  You may obtain a copy of the License at
-# 
+#
 #      http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 #  Unless required by applicable law or agreed to in writing, software
 #  distributed under the License is distributed on an "AS IS" BASIS,
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+
 import argparse
 import logging
 import sys
 from datetime import datetime
 
-from dl_on_flink_tensorflow.tf_cluster_config import TFClusterConfig
-from dl_on_flink_tensorflow.tf_utils import train
+from dl_on_flink_pytorch.pytorch_cluster_config import PyTorchClusterConfig
+from dl_on_flink_pytorch.pytorch_utils import train
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment, TableDescriptor, Schema, \
     DataTypes, expressions as expr
 
-from linear import stream_train
+from linear import train as train_entry
 
 logger = logging.getLogger(__file__)
 
@@ -48,7 +49,7 @@ def parse_args():
         dest='sample_count',
         required=False,
         type=int,
-        default=512000,
+        default=256000,
         help='The number of samples for training per epoch'
     )
     argv = sys.argv[1:]
@@ -85,9 +86,9 @@ def main():
                                      .option('fields.x.min', '0')
                                      .option('fields.x.max', '1').build())
 
-    tf_cluster_config = TFClusterConfig.new_builder() \
-        .set_node_entry(stream_train) \
-        .set_worker_count(2) \
+    tf_cluster_config = PyTorchClusterConfig.new_builder() \
+        .set_node_entry(train_entry) \
+        .set_world_size(2) \
         .set_property('input_types', 'STRING,STRING') \
         .set_property('model_save_path', model_save_path) \
         .set_property('storage_type', 'local_file') \
