@@ -137,8 +137,6 @@ jobs:
           # Optional - x64 or x86 architecture, defaults to x64
           architecture: 'x64'
       - name: Build python${{ matrix.python-version }} ${{ matrix.package }} wheels
-        env:
-          NIGHTLY_WHEEL: true
         run: |
           pip install wheel
           cd ${{ matrix.package }}/python
@@ -256,7 +254,7 @@ jobs:
           pip install ${{ matrix.package }} -f file://${PWD}/wheelhouse
           mvn -B test -pl ${{ matrix.package }}
   run-example:
-    needs: [ build-and-upload-bin, build-linux-wheel, build-macos-wheel, build-pytorch-nightly-wheel ]
+    needs: [ build-and-upload-bin, build-linux-wheel, build-macos-wheel, build-pytorch-wheel ]
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
