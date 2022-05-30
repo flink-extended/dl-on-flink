@@ -126,7 +126,7 @@ class CMakeBuild(build_ext):
         return glob(os.path.join(tf_lib, "*tensorflow_framework*"))[0]
 
 
-setup_requires = ['tensorflow>=1.15.0, <2.0.0']
+setup_requires = ['tensorflow>=1.15.0, <2.0.0', 'protobuf<3.18']
 if not in_dl_on_flink_source:
     setup_requires.append(f'{DL_ON_FLINK_FRAMEWORK_PACKAGE_NAME}=={VERSION}')
 
