@@ -145,7 +145,8 @@ setup(
     install_requires=['tensorflow>=2.4.0, <2.5.0',
                       'tensorboard>=2.4.0, <2.5.0',
                       'apache-flink>=1.14.0, <1.15.0',
-                      f'{DL_ON_FLINK_FRAMEWORK_PACKAGE_NAME}=={VERSION}'],
+                      f'{DL_ON_FLINK_FRAMEWORK_PACKAGE_NAME}=={VERSION}',
+                      'apache-flink-ml>=2.0.0, <3.0.0'],
     setup_requires=setup_requires,
     url='https://github.com/flink-extended/dl-on-flink',
     license='https://www.apache.org/licenses/LICENSE-2.0'

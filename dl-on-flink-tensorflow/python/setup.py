@@ -146,7 +146,7 @@ setup(
                       'tensorboard>=1.15.0, <2.0.0',
                       f'{DL_ON_FLINK_FRAMEWORK_PACKAGE_NAME}=={VERSION}',
                       'apache-flink>=1.14.0, <1.15.0',
-                      'apache-flink-ml==2.0.0'],
+                      'apache-flink-ml>=2.0.0, <3.0.0'],
     setup_requires=setup_requires,
     url='https://github.com/flink-extended/dl-on-flink',
     license='https://www.apache.org/licenses/LICENSE-2.0'
