@@ -66,6 +66,7 @@ public class PyTorchUtilsTest {
         final PyTorchClusterConfig clusterConfig =
                 PyTorchClusterConfig.newBuilder()
                         .setNodeEntry(getScriptPathFromResources("with_input.py"), "main")
+                        .setProperty(RowCSVCoding.ENCODE_TYPES, "INT_32")
                         .setWorldSize(3)
                         .build();
         PyTorchUtils.train(statementSet, sourceTable, clusterConfig);
@@ -113,6 +114,7 @@ public class PyTorchUtilsTest {
         final PyTorchClusterConfig clusterConfig =
                 PyTorchClusterConfig.newBuilder()
                         .setNodeEntry(getScriptPathFromResources("inference.py"), "main")
+                        .setProperty(RowCSVCoding.ENCODE_TYPES, "INT_32")
                         .setProperty(RowCSVCoding.DECODE_TYPES, "INT_32,INT_32")
                         .setWorldSize(3)
                         .build();
