@@ -115,13 +115,13 @@ export MODEL_PATH="${PWD}"/./linear
 
 # Stream Training
 ./bin/flink run \
-  -py "${DL_ON_FLINK_DIR}"/examples/pytorch-on-flink/linear/flink_train.py \
+  -py "${DL_ON_FLINK_DIR}"/examples/linear/pytorch/flink_train.py \
   --jarfile "${DL_ON_FLINK_DIR}"/lib/dl-on-flink-pytorch-0.5.0-SNAPSHOT-jar-with-dependencies.jar \
   --model-path "${MODEL_PATH}"
   
 # Batch Training with 1280 samples for 100 epochs
 ~/Downloads/flink-1.14.2/bin/flink run \
-  -py "${DL_ON_FLINK_DIR}"/examples/pytorch-on-flink/linear/flink_train.py \
+  -py "${DL_ON_FLINK_DIR}"/examples/linear/pytorch/flink_train.py \
   --jarfile "${DL_ON_FLINK_DIR}"/lib/dl-on-flink-pytorch-0.5.0-SNAPSHOT-jar-with-dependencies.jar \
   --model-path "${MODEL_PATH}" \
   --epoch 100 \
@@ -141,8 +141,8 @@ inference.
 ```sh
 
 ./bin/flink run \
-  -py "${DL_ON_FLINK_DIR}"/examples/pytorch-on-flink/linear/flink_inference.py \
-  -pyfs "${DL_ON_FLINK_DIR}"/examples/pytorch-on-flink/linear/linear.py \
+  -py "${DL_ON_FLINK_DIR}"/examples/linear/pytorch/flink_inference.py \
+  -pyfs "${DL_ON_FLINK_DIR}"/examples/linear/pytorch/linear.py \
   --model-path "${MODEL_PATH}"
 
 ```
