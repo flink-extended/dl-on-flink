@@ -37,7 +37,7 @@ def main(context: Context):
         has_data = False
         for r, in dataloader:
             has_data = True
-            output_tensors = [torch.zeros([1, 1], dtype=torch.long) for _ in
+            output_tensors = [torch.zeros([1, 1], dtype=torch.int32) for _ in
                               range(dist.get_world_size())]
             dist.all_gather(output_tensors, r)
             print(f"Rank {pytorch_context.get_rank()}: {output_tensors}")

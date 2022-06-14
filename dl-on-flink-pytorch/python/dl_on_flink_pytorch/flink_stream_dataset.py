@@ -13,13 +13,23 @@
 #  limitations under the License.
 import struct
 from io import StringIO
-from typing import List
+from typing import List, Mapping
 
 import pandas as pd
 import torch
 from dl_on_flink_framework.context import Context
 from dl_on_flink_framework.java_file import JavaFile
 from torch.utils.data import IterableDataset
+
+from dl_on_flink_pytorch.flink_ml.pytorch_estimator_constants import \
+    INPUT_TYPES
+
+DL_ON_FLINK_TYPE_TO_PYTORCH_TYPE: Mapping[str, torch.dtype] = {
+    "INT_32": torch.int32,
+    "INT_64": torch.int64,
+    "FLOAT_32": torch.float32,
+    "FLOAT_64": torch.float64
+}
 
 
 class FlinkStreamDataset(IterableDataset):
@@ -29,7 +39,11 @@ class FlinkStreamDataset(IterableDataset):
     """
 
     def __init__(self, context: Context):
+        from dl_on_flink_pytorch.pytorch_context import PyTorchContext
+        self.pytorch_context = PyTorchContext(context)
         self.java_file = JavaFile(context.from_java(), context.to_java())
+        self.input_types: List[str] = self.pytorch_context.get_property(
+            INPUT_TYPES).split(",")
 
     def __iter__(self) -> List[torch.Tensor]:
         first_read = True
@@ -39,8 +53,15 @@ class FlinkStreamDataset(IterableDataset):
                 first_read = False
                 data_len, = struct.unpack("<i", res)
                 record = self.java_file.read(data_len, True).decode('utf-8')
-                df = pd.read_csv(StringIO(record), header=None)
-                tensors = [torch.tensor([df[key][0]]) for key in df.columns]
+                tensors = self.parse_record(record)
                 yield tensors
             except EOFError as _:
                 break
+
+    def parse_record(self, record):
+        df = pd.read_csv(StringIO(record), header=None)
+        tensors = [torch.tensor([df[key][0]],
+                                dtype=DL_ON_FLINK_TYPE_TO_PYTORCH_TYPE[
+                                    self.input_types[idx]])
+                   for idx, key in enumerate(df.columns)]
+        return tensors
