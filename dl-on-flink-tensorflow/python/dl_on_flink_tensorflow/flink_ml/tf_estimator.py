@@ -30,7 +30,6 @@ from pyflink.table.types import CharType, VarCharType, IntType, \
     BigIntType, FloatType, DoubleType, DataType
 from pyflink.table.udf import udtf
 
-from dl_on_flink_tensorflow.tf_cluster_config import TFClusterConfig
 from dl_on_flink_tensorflow.flink_ml.tf_estimator_constants import \
     INPUT_TYPES, INPUT_COL_NAMES, FEATURE_COLS, \
     LABEL_COL, MODEL_SAVE_PATH, BATCH_SIZE, MODEL_FACTORY_BASE64, MAX_EPOCHS
@@ -38,6 +37,7 @@ from dl_on_flink_tensorflow.flink_ml.tf_model_factory import \
     SimpleTFModelFactory, TFModelFactory
 from dl_on_flink_tensorflow.flink_ml.tf_multi_worker_entry import \
     tf_multi_worker_entry
+from dl_on_flink_tensorflow.tf_cluster_config import TFClusterConfig
 from dl_on_flink_tensorflow.tf_utils import train
 
 logger = logging.getLogger(__file__)
@@ -62,7 +62,9 @@ class TFEstimator(Estimator):
                  feature_cols: List[str],
                  label_col: str,
                  max_epochs: int = 1,
-                 batch_size: Optional[int] = 32):
+                 batch_size: Optional[int] = 32,
+                 cluster_config_properties: Optional[Mapping[str, str]] = None
+                 ):
         """
         A FlinkML Estimator implementation to distributed train a Tensorflow
         Keras Model with MultiWorkerMirroredStrategy.
@@ -81,6 +83,7 @@ class TFEstimator(Estimator):
         :param label_col: The name of the label_col.
         :param max_epochs: Maximum number of epoch to train the model.
         :param batch_size: The batch size default to 32.
+        :param cluster_config_properties: Extra cluster config properties.
         """
         self.max_epochs = max_epochs
         self.optimizer = optimizer
@@ -91,6 +94,8 @@ class TFEstimator(Estimator):
         self.feature_cols = feature_cols
         self.worker_num = worker_num
         self._statement_set = statement_set
+        self.cluster_config_properties = \
+            cluster_config_properties if cluster_config_properties is not None else {}
 
     def fit(self, *inputs: Table) -> 'TFModel':
         if len(inputs) != 1:
@@ -114,6 +119,9 @@ class TFEstimator(Estimator):
             .set_property(INPUT_TYPES,
                           self._get_input_type(input_table.get_schema())) \
             .set_property(MAX_EPOCHS, str(self.max_epochs))
+
+        for k, v in self.cluster_config_properties.items():
+            tf_cluster_config_builder.set_property(k, v)
 
         tf_model_factory = SimpleTFModelFactory(model=self.model,
                                                 loss=self.loss,

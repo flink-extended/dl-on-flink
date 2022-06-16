@@ -44,8 +44,11 @@ class PrintModel(nn.Module):
         super(PrintModel, self).__init__()
         self.linear = nn.Linear(1, 1, dtype=torch.float64)
 
-    def forward(self, x1, x2, x3, x4):
-        print(x1, x2, x3, x4)
+    def forward(self, x1: torch.Tensor, x2, x3, x4):
+        assert x1.dtype == torch.int32, f"x1 should be type int32 but is {x1.dtype}"
+        assert x2.dtype == torch.int64, f"x2 should be type int64 but is {x2.dtype}"
+        assert x3.dtype == torch.float32, f"x3 should be type float32 but is {x3.dtype}"
+        assert x4.dtype == torch.float64, f"x4 should be type float64 but is {x4.dtype}"
         return self.linear(x4)
 
 
