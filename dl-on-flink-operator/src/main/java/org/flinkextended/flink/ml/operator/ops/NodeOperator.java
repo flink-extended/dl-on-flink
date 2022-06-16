@@ -188,7 +188,10 @@ public class NodeOperator<OUT> extends AbstractStreamOperator<OUT>
             int epochWatermark, Context context, Collector<OUT> collector) throws Exception {
         mlContext.getOutputQueue().markBarrier();
         while (!serverFuture.isDone() && mlContext.getOutputQueue().canRead()) {
-            Thread.yield();
+            // We use sleep to avoid tight loop checking the python process consume
+            // all the data in the queue. The time of sleep is trivial compared to
+            // the time of training an epoch.
+            Thread.sleep(100);
         }
         if (serverFuture.isDone()) {
             LOG.info("{} finished at epoch {}", mlContext.getIdentity(), epochWatermark);
