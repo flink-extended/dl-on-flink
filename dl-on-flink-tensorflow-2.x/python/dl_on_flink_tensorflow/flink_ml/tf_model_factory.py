@@ -12,7 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 import abc
-import pickle
+import cloudpickle as pickle
 from typing import List, Optional, Union
 
 import tensorflow as tf
