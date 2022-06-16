@@ -89,7 +89,7 @@ def main():
     tf_cluster_config = PyTorchClusterConfig.new_builder() \
         .set_node_entry(train_entry) \
         .set_world_size(2) \
-        .set_property('input_types', 'STRING,STRING') \
+        .set_property('input_types', 'FLOAT_64,FLOAT_64') \
         .set_property('model_save_path', model_save_path) \
         .set_property('storage_type', 'local_file') \
         .build()
