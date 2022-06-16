@@ -63,6 +63,7 @@ MODEL_PATH="${PWD}"/./tf1/linear
   --model-path "${MODEL_PATH}"
 
 # Batch train iteratively
+MODEL_PATH="${PWD}"/./tf1-iterative/linear
 ./bin/flink run \
   -py "${DL_ON_FLINK_DIR}"/examples/linear/tensorflow/flink_train.py \
   --jarfile "${DL_ON_FLINK_DIR}"/lib/dl-on-flink-tensorflow-*-jar-with-dependencies.jar \
@@ -74,9 +75,24 @@ MODEL_PATH="${PWD}"/./tf1/linear
 ./bin/flink run -py "${DL_ON_FLINK_DIR}"/examples/linear/tensorflow/flink_inference.py \
   --model-path "${MODEL_PATH}"
 
+# Tensorflow Estimator
+MODEL_PATH="${PWD}"/./tf1-estimator/linear
+./bin/flink run \
+  -py "${DL_ON_FLINK_DIR}"/examples/linear/tensorflow-estimator/flink_train.py \
+  --jarfile "${DL_ON_FLINK_DIR}"/lib/dl-on-flink-tensorflow-*-jar-with-dependencies.jar \
+  --model-path "${MODEL_PATH}" \
+  --sample-count 5120 \
+  --epoch 100
+[[ -d "${MODEL_PATH}" ]] || (echo "Model doesn't exist at ${MODEL_PATH}" && exit 1)
+
+./bin/flink run -py "${DL_ON_FLINK_DIR}"/examples/linear/tensorflow-estimator/flink_inference.py \
+  --model-path "${MODEL_PATH}"
+
 pip uninstall -y dl-on-flink-tensorflow
 
 # Tensorflow 2.4 linear example
+./bin/stop-cluster.sh && sleep 2 && ./bin/start-cluster.sh
+
 pip install --pre -f "${DL_ON_FLINK_WHEEL_DIR}" dl-on-flink-tensorflow-2.x
 
 # Stream train
@@ -91,6 +107,7 @@ MODEL_PATH="${PWD}"/./tf2/linear
   --model-path "${MODEL_PATH}"
 
 # Batch train iteratively
+MODEL_PATH="${PWD}"/./tf2-iterative/linear
 ./bin/flink run \
   -py "${DL_ON_FLINK_DIR}"/examples/linear/tensorflow/flink_train.py \
   --jarfile "${DL_ON_FLINK_DIR}"/lib/dl-on-flink-tensorflow-2.x-*-jar-with-dependencies.jar \
@@ -102,9 +119,23 @@ MODEL_PATH="${PWD}"/./tf2/linear
 ./bin/flink run -py "${DL_ON_FLINK_DIR}"/examples/linear/tensorflow/flink_inference.py \
   --model-path "${MODEL_PATH}"
 
+# Tensorflow Estimator
+MODEL_PATH="${PWD}"/./tf2-estimator/linear
+./bin/flink run \
+  -py "${DL_ON_FLINK_DIR}"/examples/linear/tensorflow-estimator/flink_train.py \
+  --jarfile "${DL_ON_FLINK_DIR}"/lib/dl-on-flink-tensorflow-2.x-*-jar-with-dependencies.jar \
+  --model-path "${MODEL_PATH}" \
+  --sample-count 5120 \
+  --epoch 100
+[[ -d "${MODEL_PATH}" ]] || (echo "Model doesn't exist at ${MODEL_PATH}" && exit 1)
+
+./bin/flink run -py "${DL_ON_FLINK_DIR}"/examples/linear/tensorflow-estimator/flink_inference.py \
+  --model-path "${MODEL_PATH}"
+
 pip uninstall -y dl-on-flink-tensorflow-2.x
 
 # PyTorch linear example
+./bin/stop-cluster.sh && sleep 2 && ./bin/start-cluster.sh
 pip install --pre -f "${DL_ON_FLINK_WHEEL_DIR}" dl-on-flink-pytorch
 
 # Stream train
@@ -121,6 +152,7 @@ MODEL_PATH="${PWD}"/./pytorch/linear
   --model-path "${MODEL_PATH}"
 
 # Batch train iteratively
+MODEL_PATH="${PWD}"/./pytorch-iterative/linear
 ./bin/flink run \
   -py "${DL_ON_FLINK_DIR}"/examples/linear/pytorch/flink_train.py \
   --jarfile "${DL_ON_FLINK_DIR}"/lib/dl-on-flink-pytorch-*-jar-with-dependencies.jar \
@@ -132,6 +164,22 @@ MODEL_PATH="${PWD}"/./pytorch/linear
 ./bin/flink run \
   -py "${DL_ON_FLINK_DIR}"/examples/linear/pytorch/flink_inference.py \
   -pyfs "${DL_ON_FLINK_DIR}"/examples/linear/pytorch/linear.py \
+  --model-path "${MODEL_PATH}"
+
+# PyTorch Estimator
+MODEL_PATH="${PWD}"/./pytorch-estimator/linear
+./bin/flink run \
+  -pyfs "${DL_ON_FLINK_DIR}"/examples/linear/pytorch-estimator/model.py \
+  --jarfile "${DL_ON_FLINK_DIR}"/lib/dl-on-flink-pytorch-*-jar-with-dependencies.jar \
+  -py "${DL_ON_FLINK_DIR}"/examples/linear/pytorch-estimator/flink_train.py \
+  --model-path "${MODEL_PATH}" \
+  --sample-count 1280 \
+  --epoch 100
+[[ -d "${MODEL_PATH}" ]] || (echo "Model doesn't exist at ${MODEL_PATH}" && exit 1)
+
+./bin/flink run \
+  -pyfs "${DL_ON_FLINK_DIR}"/examples/linear/pytorch-estimator/model.py \
+  -py "${DL_ON_FLINK_DIR}"/examples/linear/pytorch-estimator/flink_inference.py \
   --model-path "${MODEL_PATH}"
 
 pip uninstall -y dl-on-flink-pytorch
