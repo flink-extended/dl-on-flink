@@ -20,7 +20,7 @@ from typing import Dict, Any, List, Optional, Mapping, Type
 import torch
 from pyflink.common import Row
 from pyflink.datastream import StreamExecutionEnvironment
-from pyflink.ml.core.api import Estimator, T, Model
+from pyflink.ml.core.api import Estimator, Model
 from pyflink.ml.core.param import Param
 from pyflink.ml.util import read_write_utils
 from pyflink.table import Table, StatementSet, TableSchema, TableFunction, \
@@ -37,6 +37,8 @@ from dl_on_flink_pytorch.flink_ml.pytorch_model_factory import \
     LR_SCHEDULER_CREATOR_T, SimplePyTorchModelFactory, PyTorchModelFactory, \
     OPTIMIZER_CREATOR_T
 from dl_on_flink_pytorch.flink_ml.pytorch_train_entry import pytorch_train_entry
+from dl_on_flink_pytorch.flink_stream_dataset import \
+    DL_ON_FLINK_TYPE_TO_PYTORCH_TYPE
 from dl_on_flink_pytorch.pytorch_cluster_config import PyTorchClusterConfig
 from dl_on_flink_pytorch.pytorch_utils import train
 
@@ -61,8 +63,25 @@ class PyTorchEstimator(Estimator):
                  label_col: str,
                  max_epochs: int = 1,
                  lr_scheduler_creator: Optional[LR_SCHEDULER_CREATOR_T] = None,
-                 batch_size: Optional[int] = 32
+                 batch_size: Optional[int] = 32,
+                 cluster_config_properties: Optional[Mapping[str, str]] = None
                  ):
+        """
+        A FlinkML Estimator implementation to distributed train a PyTorch model.
+
+        :param statement_set: The statement set created by the
+        StreamTableEnvironment.
+        :param model: The PyTorch model instance.
+        :param loss: The Loss instance
+        :param optimizer: A function to create a PyTorch optimizer.
+        :param worker_num: The number of workers to do the distributed training.
+        :param feature_cols: The name of the feature columns.
+        :param label_col: The name of the label_col.
+        :param max_epochs: Maximum number of epoch to train the model.
+        :param lr_scheduler_creator: A function to create the PyTorch LRScheduler
+        :param batch_size: The batch size default to 32.
+        :param cluster_config_properties: Extra cluster config properties.
+        """
         self.batch_size = batch_size
         self.lr_scheduler_creator = lr_scheduler_creator
         self.max_epochs = max_epochs
@@ -73,6 +92,8 @@ class PyTorchEstimator(Estimator):
         self.loss = loss
         self.model = model
         self.statement_set = statement_set
+        self.cluster_config_properties = \
+            cluster_config_properties if cluster_config_properties is not None else {}
 
     def fit(self, *inputs: Table) -> 'PyTorchModel':
         if len(inputs) != 1:
@@ -93,6 +114,9 @@ class PyTorchEstimator(Estimator):
             .set_property(INPUT_TYPES,
                           self._get_input_type(input_table.get_schema())) \
             .set_property(MAX_EPOCHS, str(self.max_epochs))
+
+        for k, v in self.cluster_config_properties.items():
+            pytorch_cluster_config_builder.set_property(k, v)
 
         tf_model_factory = SimplePyTorchModelFactory(model=self.model,
                                                      loss=self.loss,
@@ -161,6 +185,10 @@ class Predict(TableFunction):
         self._feature_cols = pytorch_cluster_config.get_property(FEATURE_COLS) \
             .split(",")
         self._label_col = pytorch_cluster_config.get_property(LABEL_COL)
+        self._input_types: List[str] = pytorch_cluster_config.get_property(
+            INPUT_TYPES).split(",")
+        self._input_cols: List[str] = pytorch_cluster_config.get_property(
+            INPUT_COL_NAMES).split(",")
 
     def open(self, function_context: FunctionContext):
         import torch
@@ -174,8 +202,11 @@ class Predict(TableFunction):
         for feature_col in self._feature_cols:
             if feature_col not in row_dict:
                 raise KeyError(f"{feature_col} not in the given row")
+            col_idx = self._input_cols.index(feature_col)
+            col_type = self._input_types[col_idx]
             features.append(
-                torch.tensor([row_dict[feature_col]], dtype=torch.float64))
+                torch.tensor([row_dict[feature_col]],
+                             dtype=DL_ON_FLINK_TYPE_TO_PYTORCH_TYPE[col_type]))
         res = self._model(*features)
         return Row(*row, res)
 
@@ -228,7 +259,7 @@ class PyTorchModel(Model):
               max_epoch=max_epoch)
 
     @classmethod
-    def load(cls, env: StreamExecutionEnvironment, path: str) -> T:
+    def load(cls, env: StreamExecutionEnvironment, path: str) -> 'PyTorchModel':
         meta = read_write_utils.load_metadata(path)
         model = PyTorchModel(
             pytorch_cluster_config=meta["pytorch_cluster_config"],
