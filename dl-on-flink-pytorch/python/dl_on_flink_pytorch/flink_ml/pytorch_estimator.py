@@ -205,7 +205,7 @@ class Predict(TableFunction):
             col_idx = self._input_cols.index(feature_col)
             col_type = self._input_types[col_idx]
             features.append(
-                torch.tensor([row_dict[feature_col]],
+                torch.tensor([[row_dict[feature_col]]],
                              dtype=DL_ON_FLINK_TYPE_TO_PYTORCH_TYPE[col_type]))
         res = self._model(*features)
         return Row(*row, res)

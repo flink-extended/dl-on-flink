@@ -30,11 +30,12 @@ from tests.dl_on_flink_pytorch.utils import add_dl_on_flink_jar, find_jar_path
 
 class Linear(nn.Module):
 
-    def __init__(self):
+    def __init__(self, col_num):
         super().__init__()
-        self.linear = nn.Linear(1, 1, dtype=torch.float64)
+        self.linear = nn.Linear(col_num, 1, dtype=torch.float64)
 
-    def forward(self, x):
+    def forward(self, *x):
+        x = torch.cat(x, 1)
         return self.linear(x)
 
 
@@ -110,7 +111,7 @@ class TestPyTorchEstimator(unittest.TestCase):
                 .option('fields.x.min', '0')
                 .option('fields.x.max', '1').build())
 
-        model = Linear()
+        model = Linear(1)
         loss_fn = nn.MSELoss()
 
         def lr_scheduler_creator(_optimizer):
@@ -130,6 +131,46 @@ class TestPyTorchEstimator(unittest.TestCase):
         input_tb = input_tb.drop_columns("y").fetch(10)
         table = model.transform(input_tb)[0]
         table.execute().print()
+
+    def test_fit_transform_with_torch_cat(self):
+        self.env.set_parallelism(1)
+        schema = Schema.new_builder() \
+            .column('x1', DataTypes.DOUBLE()) \
+            .column("x2", DataTypes.DOUBLE()) \
+            .column_by_expression('y', expr.call_sql("2 * x1 + 3 * x2 + 1")) \
+            .build()
+        input_tb = self.t_env.from_descriptor(
+            TableDescriptor.for_connector("datagen")
+                .schema(schema)
+                .option('number-of-rows', '32')
+                .option('fields.x1.min', '0')
+                .option('fields.x1.max', '1')
+                .option('fields.x2.min', '0')
+                .option('fields.x2.max', '1').build())
+
+        model = Linear(2)
+        loss_fn = nn.MSELoss()
+
+        def lr_scheduler_creator(_optimizer):
+            return ExponentialLR(_optimizer, 0.9)
+
+        estimator = PyTorchEstimator(self.statement_set, model, loss_fn,
+                                     sgd_optimizer_creator, 1,
+                                     ["x1", "x2"], "y", max_epochs=1,
+                                     lr_scheduler_creator=lr_scheduler_creator,
+                                     batch_size=1)
+        model = estimator.fit(input_tb)
+        model_path = self._get_model_path()
+        model.save(model_path)
+        self.statement_set.execute().wait()
+
+        input_tb = input_tb.drop_columns("y").fetch(10)
+        table = model.transform(input_tb)[0]
+        table.execute().print()
+
+    def _get_model_path(self):
+        return os.path.join(os.path.dirname(__file__), "model",
+                            self.id(), f"{time.time()}")
 
     def _get_model_path(self):
         return os.path.join(os.path.dirname(__file__), "model",

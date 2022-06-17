@@ -115,13 +115,13 @@ export MODEL_PATH="${PWD}"/./linear
 
 # Stream Training
 ./bin/flink run \
-  -py "${DL_ON_FLINK_DIR}"/examples/tensorflow-on-flink/linear/flink_train.py \
+  -py "${DL_ON_FLINK_DIR}"/examples/linear/tensorflow/flink_train.py \
   --jarfile "${DL_ON_FLINK_DIR}"/lib/dl-on-flink-tensorflow-2.x-0.4.0-jar-with-dependencies.jar \
   --model-path "${MODEL_PATH}"
 
 # Batch Training with 5120 samples for 100 epochs
 ./bin/flink run \
-  -py "${DL_ON_FLINK_DIR}"/examples/tensorflow-on-flink/linear/flink_train.py \
+  -py "${DL_ON_FLINK_DIR}"/examples/linear/tensorflow/flink_train.py \
   --jarfile "${DL_ON_FLINK_DIR}"/lib/dl-on-flink-tensorflow-2.x-0.4.0-jar-with-dependencies.jar \
   --model-path "${MODEL_PATH}" \
   --epoch 100 \
@@ -141,7 +141,7 @@ inference.
 ```sh
 
 ./bin/flink run \
-  -py "${DL_ON_FLINK_DIR}"/examples/tensorflow-on-flink/linear/flink_inference.py \
+  -py "${DL_ON_FLINK_DIR}"/examples/linear/tensorflow/flink_inference.py \
   --model-path "${MODEL_PATH}"
 
 ```
