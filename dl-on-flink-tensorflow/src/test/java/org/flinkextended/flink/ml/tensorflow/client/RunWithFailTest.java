@@ -20,10 +20,7 @@ import org.flinkextended.flink.ml.tensorflow.storage.DummyStorage;
 import org.flinkextended.flink.ml.util.MLConstants;
 import org.flinkextended.flink.ml.util.SysUtil;
 
-import org.apache.flink.core.execution.JobClient;
-import org.apache.flink.runtime.client.JobCancellationException;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.bridge.java.StreamStatementSet;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
@@ -38,9 +35,7 @@ import java.net.URL;
 import java.time.Duration;
 import java.util.concurrent.ExecutionException;
 
-import static org.apache.flink.api.common.JobStatus.RUNNING;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 /** Failover unit test. */
 public class RunWithFailTest {
@@ -50,15 +45,12 @@ public class RunWithFailTest {
     private static final String simple_print = getScriptPathFromResources("simple_print.py");
     private static final String failover = getScriptPathFromResources("failover.py");
     private static final String failover2 = getScriptPathFromResources("failover2.py");
-    private static final String alwaysFail = getScriptPathFromResources("always_fail.py");
     private StreamStatementSet statementSet;
-    private StreamExecutionEnvironment env;
-    private StreamTableEnvironment tEnv;
 
     @Before
     public void setUp() {
-        env = StreamExecutionEnvironment.getExecutionEnvironment();
-        tEnv = StreamTableEnvironment.create(env);
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);
         statementSet = tEnv.createStatementSet();
     }
 
@@ -126,55 +118,6 @@ public class RunWithFailTest {
         expectedException.expect(ExecutionException.class);
         expectedException.expectMessage("Failed to wait job finish");
         statementSet.execute().await();
-    }
-
-    @Test
-    public void testCancelWhileFailover() throws InterruptedException, ExecutionException {
-        Table table = tEnv.fromDataStream(env.fromElements(1, 2, 3, 4));
-        TFClusterConfig config = buildTFConfig(alwaysFail);
-        TFUtils.train(statementSet, config);
-        //        statementSet.execute()
-
-        final JobClient jobClient = statementSet.execute().getJobClient().get();
-        while (jobClient.getJobStatus().get() != RUNNING) {
-            Thread.sleep(1000);
-        }
-        Thread.sleep(10_000);
-        jobClient.cancel().get();
-        while (jobClient.getJobStatus().get() == RUNNING) {
-            Thread.sleep(1000);
-        }
-
-        try {
-            jobClient.getJobExecutionResult().get();
-        } catch (ExecutionException e) {
-            assertTrue(e.getCause() instanceof JobCancellationException);
-        }
-    }
-
-    @Test
-    public void testTrainWithInputCancelWhileFailover()
-            throws InterruptedException, ExecutionException {
-        Table table = tEnv.fromDataStream(env.fromElements(1, 2, 3, 4));
-        TFClusterConfig config = buildTFConfig(alwaysFail);
-        TFUtils.train(statementSet, table, config);
-        //        statementSet.execute()
-
-        final JobClient jobClient = statementSet.execute().getJobClient().get();
-        while (jobClient.getJobStatus().get() != RUNNING) {
-            Thread.sleep(1000);
-        }
-        Thread.sleep(10_000);
-        jobClient.cancel().get();
-        while (jobClient.getJobStatus().get() == RUNNING) {
-            Thread.sleep(1000);
-        }
-
-        try {
-            jobClient.getJobExecutionResult().get();
-        } catch (ExecutionException e) {
-            assertTrue(e.getCause() instanceof JobCancellationException);
-        }
     }
 
     private static String getScriptPathFromResources(String fileName) {
