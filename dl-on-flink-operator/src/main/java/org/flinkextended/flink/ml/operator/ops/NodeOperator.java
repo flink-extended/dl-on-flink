@@ -54,7 +54,7 @@ import java.util.concurrent.TimeoutException;
 public class NodeOperator<OUT> extends AbstractStreamOperator<OUT>
         implements OneInputStreamOperator<Row, OUT>, IterationListener<OUT> {
 
-    protected long closeTimeoutMs = 180_000;
+    protected long closeTimeoutMs = 30_000;
 
     private final String nodeType;
     private final ClusterConfig clusterConfig;
@@ -164,8 +164,10 @@ public class NodeOperator<OUT> extends AbstractStreamOperator<OUT>
             if (dataExchangeConsumerFuture != null && !dataExchangeConsumerFuture.isCancelled()) {
                 dataExchangeConsumerFuture.get();
             }
-        } catch (TimeoutException | InterruptedException e) {
-            LOG.error("Fail to join node {}", mlContext.getIdentity(), e);
+        } catch (InterruptedException e) {
+            LOG.warn("Fail to join node {}", mlContext.getIdentity(), e);
+        } catch (TimeoutException e) {
+            LOG.warn("Timeout waiting for node {} to finish", mlContext.getIdentity(), e);
         } catch (ExecutionException e) {
             LOG.error(mlContext.getIdentity() + " node server failed");
             throw new RuntimeException(e);

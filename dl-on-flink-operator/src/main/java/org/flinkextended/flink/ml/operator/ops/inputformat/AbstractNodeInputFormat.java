@@ -50,7 +50,7 @@ public abstract class AbstractNodeInputFormat<OUT> extends RichInputFormat<OUT, 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractNodeInputFormat.class);
 
     protected final ClusterConfig clusterConfig;
-    protected long closeTimeoutMs = 180_000;
+    protected long closeTimeoutMs = 30_000;
 
     private MLContext mlContext;
     private FlinkOpHookManager hookManager;
@@ -108,8 +108,10 @@ public abstract class AbstractNodeInputFormat<OUT> extends RichInputFormat<OUT, 
                 } catch (ExecutionException e) {
                     LOG.error(mlContext.getIdentity() + " node server failed {}", e.getMessage());
                     throw new IOException(e);
-                } catch (InterruptedException | TimeoutException e) {
+                } catch (InterruptedException e) {
                     LOG.error("Fail to join server {}", mlContext.getIdentity(), e);
+                } catch (TimeoutException e) {
+                    LOG.error("Timeout on waiting node server to finish");
                 } finally {
                     if (serverFuture != null) {
                         serverFuture.cancel(true);
