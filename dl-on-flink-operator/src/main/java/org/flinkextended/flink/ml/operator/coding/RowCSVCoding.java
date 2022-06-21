@@ -37,6 +37,7 @@ public class RowCSVCoding implements Coding<Row> {
 
     private final DataTypes[] encodeTypes;
     private final DataTypes[] decodeTypes;
+    private final String decodeTypesStr;
 
     private String delim;
 
@@ -48,7 +49,7 @@ public class RowCSVCoding implements Coding<Row> {
         for (int i = 0; i < encodeTypeStrArray.length; i++) {
             encodeTypes[i] = DataTypes.valueOf(encodeTypeStrArray[i]);
         }
-        String decodeTypesStr =
+        decodeTypesStr =
                 mlContext.getProperties().getOrDefault(DECODE_TYPES, DataTypes.STRING.name());
         String[] decodeTypeStrArray = decodeTypesStr.split(TYPES_SPLIT_CONFIG);
         decodeTypes = new DataTypes[decodeTypeStrArray.length];
@@ -69,7 +70,9 @@ public class RowCSVCoding implements Coding<Row> {
         String str = new String(bytes);
         String[] tmp = str.split(delim);
         if (tmp.length != decodeTypes.length) {
-            throw new CodingException("record num != names num");
+            throw new CodingException(
+                    String.format(
+                            "Miss match of csv: %s and output types: %s", str, decodeTypesStr));
         }
         Row row = new Row(decodeTypes.length);
         for (int i = 0; i < decodeTypes.length; i++) {
