@@ -89,16 +89,27 @@ public abstract class AbstractNodeInputFormat<OUT> extends RichInputFormat<OUT, 
 
     @Override
     public boolean reachedEnd() throws IOException {
-        return serverFuture.isDone() || dataExchange.getRecordReader().isReachEOF();
+        final boolean reachEnd = serverFuture.isDone();
+        return reachEnd;
     }
 
     @Override
     public OUT nextRecord(OUT reuse) throws IOException {
-        return dataExchange.read(true);
+        OUT res = dataExchange.read(true);
+        while (res == null && !this.reachedEnd()) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                // ignore
+            }
+            res = dataExchange.read(true);
+        }
+        return res;
     }
 
     @Override
     public void close() throws IOException {
+        LOG.info("Closing NodeInputFormat");
         synchronized (isClose) {
             if (!isClose.get()) {
                 try {
@@ -111,7 +122,8 @@ public abstract class AbstractNodeInputFormat<OUT> extends RichInputFormat<OUT, 
                 } catch (InterruptedException e) {
                     LOG.error("Fail to join server {}", mlContext.getIdentity(), e);
                 } catch (TimeoutException e) {
-                    LOG.error("Timeout on waiting node server to finish");
+                    LOG.error(
+                            "Timeout on waiting node server {} to finish", mlContext.getIdentity());
                 } finally {
                     if (serverFuture != null) {
                         serverFuture.cancel(true);
