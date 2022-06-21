@@ -89,8 +89,7 @@ public abstract class AbstractNodeInputFormat<OUT> extends RichInputFormat<OUT, 
 
     @Override
     public boolean reachedEnd() throws IOException {
-        final boolean reachEnd = serverFuture.isDone();
-        return reachEnd;
+        return serverFuture.isDone();
     }
 
     @Override
