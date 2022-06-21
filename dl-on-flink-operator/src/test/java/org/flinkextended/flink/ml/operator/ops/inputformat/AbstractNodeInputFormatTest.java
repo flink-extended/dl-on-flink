@@ -99,11 +99,14 @@ public class AbstractNodeInputFormatTest {
     }
 
     @Test
-    public void testNextRecord() throws IOException {
+    public void testNextRecord() throws IOException, ExecutionException, InterruptedException {
         nodeInputFormat.open(new NodeInputSplit(1, 0));
         assertFalse(nodeInputFormat.reachedEnd());
         assertEquals(Integer.valueOf(0), nodeInputFormat.nextRecord(null));
         assertEquals(Integer.valueOf(1), nodeInputFormat.nextRecord(null));
+        assertFalse(nodeInputFormat.reachedEnd());
+        nodeInputFormat.markFinish();
+        nodeInputFormat.waitServerFutureFinish();
         assertTrue(nodeInputFormat.reachedEnd());
     }
 

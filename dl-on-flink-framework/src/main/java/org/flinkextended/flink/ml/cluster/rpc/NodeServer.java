@@ -41,6 +41,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import static org.flinkextended.flink.ml.cluster.rpc.NodeServer.AMCommand.RESTART;
+import static org.flinkextended.flink.ml.cluster.rpc.NodeServer.AMCommand.STOP;
+
 /**
  * machine learning cluster node server. register to application master, make up machine learning
  * cluster.
@@ -265,11 +268,13 @@ public class NodeServer implements Runnable {
                 }
                 switch (getAmCommand()) {
                     case STOP:
+                        LOG.info("{} get command: {}", mlContext.getIdentity(), STOP);
                         stopMLRunner(runnerFuture);
                         setAmCommand(AMCommand.NOPE);
                         exit = true;
                         break;
                     case RESTART:
+                        LOG.info("{} get command: {}", mlContext.getIdentity(), RESTART);
                         stopMLRunner(runnerFuture);
                         runnerFuture = startMLRunner();
                         setAmCommand(AMCommand.NOPE);
@@ -277,7 +282,7 @@ public class NodeServer implements Runnable {
                 }
             }
         } catch (InterruptedException e) {
-            LOG.error(mlContext.getIdentity() + " node server interrupted");
+            LOG.error(mlContext.getIdentity() + " node server interrupted", e);
         } catch (Exception e) {
             LOG.error("Error to run node service {}.", e.getMessage());
             throw new RuntimeException(e);
