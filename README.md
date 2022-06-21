@@ -22,13 +22,11 @@ Deep Learning on Flink is tested and supported on the following 64-bit systems:
 - Flink: 1.14.x
  
 ## Getting Started
+Deep learning on Flink currently works with Tensorflow and PyTorch. You can see
+the following pages for the usage and examples.
 
-You can follow the following quick starts to submit an example job with 
-different deep learning frameworks to a local standalone Flink cluster.
-
-- [Quick Start Tensorflow 1.15](doc/quick-start/quick_start_tensorflow_1.15.md)
-- [Quick Start Tensorflow 2.4](doc/quick-start/quick_start_tensorflow_2.4.md)
-- [Quick Start PyTorch](doc/quick-start/quick_start_pytorch.md)
+- [DL on Flink with Tensorflow](doc/tensorflow-index.md)
+- [DL on Flink with PyTorch](doc/pytorch-index.md)
 
 ## Build From Source
 
