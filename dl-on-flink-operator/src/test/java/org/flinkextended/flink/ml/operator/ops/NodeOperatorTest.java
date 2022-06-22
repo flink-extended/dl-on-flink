@@ -134,7 +134,7 @@ public class NodeOperatorTest {
                             }
                             finished.wait();
                         } catch (InterruptedException e) {
-                            // ignore
+                            return;
                         }
                     }
                 }

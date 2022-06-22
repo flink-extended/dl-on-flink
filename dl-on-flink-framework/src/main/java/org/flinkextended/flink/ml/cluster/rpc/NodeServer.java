@@ -323,9 +323,6 @@ public class NodeServer implements Runnable {
             if (null != runnerFuture) {
                 runnerFuture.cancel(true);
             }
-            if (!runnerService.awaitTermination(5, TimeUnit.SECONDS)) {
-                LOG.warn("MLRunner not terminated in 5 sec");
-            }
 
             LOG.info("end stop node:" + mlContext.getIdentity());
         }
@@ -336,29 +333,42 @@ public class NodeServer implements Runnable {
         LOG.info("{} run cleanup!", mlContext.getIdentity());
         stopMLRunner(runnerFuture);
         runnerService.shutdownNow();
-        try {
-            if (!runnerService.awaitTermination(5, TimeUnit.SECONDS)) {
-                LOG.warn(
-                        "{} timed out waiting for {} to terminate",
-                        mlContext.getIdentity(),
-                        runner);
+
+        while (true) {
+            try {
+                if (!runnerService.awaitTermination(5, TimeUnit.SECONDS)) {
+                    LOG.warn(
+                            "{} timed out waiting for {} to terminate",
+                            mlContext.getIdentity(),
+                            runner);
+                    runnerService.shutdownNow();
+                } else {
+                    break;
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                LOG.warn("runner service thread poll shutdown interrupted", e);
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            LOG.warn("runner service thread poll shutdown interrupted", e);
         }
 
         if (server != null) {
             LOG.info(getDisplayName() + " shut down");
             server.shutdownNow();
-            try {
-                if (!server.awaitTermination(2, TimeUnit.MINUTES)) {
-                    LOG.warn(
-                            "{} timed out waiting for GRPC server to terminate",
-                            mlContext.getIdentity());
+
+            while (true) {
+                try {
+                    if (!server.awaitTermination(2, TimeUnit.MINUTES)) {
+                        LOG.warn(
+                                "{} timed out waiting for GRPC server to terminate",
+                                mlContext.getIdentity());
+                        server.shutdown();
+                    } else {
+                        break;
+                    }
+                } catch (InterruptedException e) {
+                    LOG.info(
+                            "{} interrupted shutting down GRPC server", mlContext.getIdentity(), e);
                 }
-            } catch (InterruptedException e) {
-                LOG.info("{} interrupted shutting down GRPC server", mlContext.getIdentity(), e);
             }
             server = null;
         }

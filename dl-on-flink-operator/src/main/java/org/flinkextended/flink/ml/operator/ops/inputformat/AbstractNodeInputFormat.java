@@ -57,6 +57,7 @@ public abstract class AbstractNodeInputFormat<OUT> extends RichInputFormat<OUT, 
     private DataExchange<OUT, OUT> dataExchange;
     private FutureTask<Void> serverFuture;
     private final AtomicBoolean isClose;
+    private Thread serverThread;
 
     public AbstractNodeInputFormat(ClusterConfig clusterConfig) {
         this.clusterConfig = clusterConfig;
@@ -78,7 +79,7 @@ public abstract class AbstractNodeInputFormat<OUT> extends RichInputFormat<OUT, 
         mlContext = prepareMLContext(split.getSplitNumber());
         preparePythonFiles();
         Runnable nodeServerRunnable = getNodeServerRunnable(mlContext);
-        runRunnable(nodeServerRunnable, "NodeServer_" + mlContext.getIdentity());
+        serverThread = runRunnable(nodeServerRunnable, "NodeServer_" + mlContext.getIdentity());
 
         mlContext.getOutputQueue().markFinished();
 
@@ -125,7 +126,15 @@ public abstract class AbstractNodeInputFormat<OUT> extends RichInputFormat<OUT, 
                             "Timeout on waiting node server {} to finish", mlContext.getIdentity());
                 } finally {
                     if (serverFuture != null) {
-                        serverFuture.cancel(true);
+                        while (true) {
+                            serverFuture.cancel(true);
+                            try {
+                                serverThread.join();
+                                break;
+                            } catch (Exception e) {
+                                LOG.error("Fail to wait for NodeServer to exit", e);
+                            }
+                        }
                     }
                     serverFuture = null;
                     if (mlContext != null) {
@@ -139,18 +148,19 @@ public abstract class AbstractNodeInputFormat<OUT> extends RichInputFormat<OUT, 
         maybeRunHookClose();
     }
 
-    private void runRunnable(Runnable runnable, String threadName) throws IOException {
+    private Thread runRunnable(Runnable runnable, String threadName) throws IOException {
         serverFuture = new FutureTask<>(runnable, null);
         try {
             Thread t = new Thread(serverFuture);
             t.setDaemon(true);
             t.setName(threadName);
             t.start();
+            LOG.info("start: {}", threadName);
+            return t;
         } catch (Exception e) {
             LOG.error("Fail to start node service.", e);
             throw new IOException(e.getMessage());
         }
-        LOG.info("start: {}", threadName);
     }
 
     private void iniAndRunHookOpen() throws IOException {

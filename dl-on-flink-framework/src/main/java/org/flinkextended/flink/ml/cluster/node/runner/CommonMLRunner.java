@@ -302,11 +302,21 @@ public class CommonMLRunner implements MLRunner {
     protected void stopHeartBeat() {
         if (null != heartbeatService && (!heartbeatService.isShutdown())) {
             heartbeatService.shutdownNow();
-            try {
-                heartbeatService.awaitTermination(5, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                LOG.warn("stop heart beat exception:" + e.getMessage());
+
+            while (true) {
+                try {
+                    if (!heartbeatService.awaitTermination(5, TimeUnit.SECONDS)) {
+                        LOG.info(
+                                "CommonMLRunner {} timed out waiting for Heartbeat service to terminate",
+                                mlContext.getIdentity());
+                        heartbeatService.shutdownNow();
+                    } else {
+                        break;
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    LOG.warn("stop heart beat exception:" + e.getMessage());
+                }
             }
         }
     }
