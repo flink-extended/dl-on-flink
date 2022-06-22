@@ -63,6 +63,8 @@ public class NodeOperator<OUT> extends AbstractStreamOperator<OUT>
     private DataExchange<Row, OUT> dataExchange;
     private FutureTask<Void> serverFuture;
     private FutureTask<Void> dataExchangeConsumerFuture;
+    private Thread serverThread;
+    private Thread dataExchangeConsumerThread;
 
     public NodeOperator(String nodeType, ClusterConfig clusterConfig) {
         this(nodeType, clusterConfig, new Configuration());
@@ -98,15 +100,16 @@ public class NodeOperator<OUT> extends AbstractStreamOperator<OUT>
 
         Runnable nodeServerRunnable = createNodeServerRunnable();
         serverFuture = new FutureTask<>(nodeServerRunnable, null);
-        runRunnable(serverFuture, "NodeServer_" + mlContext.getIdentity());
+        serverThread = runRunnable(serverFuture, "NodeServer_" + mlContext.getIdentity());
 
         dataExchange = new DataExchange<>(mlContext);
         DataExchangeConsumer<Row, OUT> dataExchangeConsumer =
                 new DataExchangeConsumer<>(dataExchange, output);
         dataExchangeConsumerFuture = new FutureTask<>(dataExchangeConsumer, null);
-        runRunnable(
-                dataExchangeConsumerFuture,
-                "NodeServerDataExchangeConsumer_" + mlContext.getIdentity());
+        dataExchangeConsumerThread =
+                runRunnable(
+                        dataExchangeConsumerFuture,
+                        "NodeServerDataExchangeConsumer_" + mlContext.getIdentity());
     }
 
     @Override
@@ -173,10 +176,26 @@ public class NodeOperator<OUT> extends AbstractStreamOperator<OUT>
             throw new RuntimeException(e);
         } finally {
             if (serverFuture != null) {
-                serverFuture.cancel(true);
+                while (true) {
+                    serverFuture.cancel(true);
+                    try {
+                        serverThread.join();
+                        break;
+                    } catch (InterruptedException e) {
+                        LOG.error("Fail to wait for NodeServer to exit", e);
+                    }
+                }
             }
             if (dataExchangeConsumerFuture != null) {
-                dataExchangeConsumerFuture.cancel(true);
+                while (true) {
+                    dataExchangeConsumerFuture.cancel(true);
+                    try {
+                        dataExchangeConsumerThread.join();
+                        break;
+                    } catch (InterruptedException e) {
+                        LOG.error("Fail to wait for DataExchangeConsumer to exit", e);
+                    }
+                }
             }
             serverFuture = null;
             dataExchangeConsumerFuture = null;
@@ -205,17 +224,18 @@ public class NodeOperator<OUT> extends AbstractStreamOperator<OUT>
     @Override
     public void onIterationTerminated(Context context, Collector<OUT> collector) throws Exception {}
 
-    private void runRunnable(Runnable runnable, String threadName) throws IOException {
+    private Thread runRunnable(Runnable runnable, String threadName) throws IOException {
         try {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
             t.setName(threadName);
             t.start();
+            LOG.info("start: {}", threadName);
+            return t;
         } catch (Exception e) {
             LOG.error("Fail to start node service.", e);
             throw new IOException(e.getMessage());
         }
-        LOG.info("start: {}", threadName);
     }
 
     public String getNodeType() {

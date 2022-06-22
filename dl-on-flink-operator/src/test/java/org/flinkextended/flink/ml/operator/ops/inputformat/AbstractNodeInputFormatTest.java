@@ -168,7 +168,7 @@ public class AbstractNodeInputFormatTest {
                             }
                             finished.wait();
                         } catch (InterruptedException e) {
-                            // ignore
+                            return;
                         }
                     }
                 }

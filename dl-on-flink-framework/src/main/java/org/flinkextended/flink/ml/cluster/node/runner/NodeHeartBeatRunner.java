@@ -107,6 +107,9 @@ public class NodeHeartBeatRunner implements Runnable {
                         }
                         amClient = AMRegistry.getAMClient(mlContext, 1000);
                         LOG.info("{} reconnect AM connection", mlContext.getIdentity());
+                    } catch (FlinkKillException e1) {
+                        LOG.warn("{} failed to update am address", mlContext.getIdentity(), e1);
+                        return;
                     } catch (IOException e1) {
                         LOG.warn(
                                 "{} failed to update am address error {}",
