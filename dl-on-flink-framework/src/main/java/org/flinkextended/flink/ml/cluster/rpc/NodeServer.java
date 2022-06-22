@@ -221,7 +221,11 @@ public class NodeServer implements Runnable {
                                     if (NodeServer.this.runner != null) {
                                         LOG.warn(
                                                 "*** shutting down gRPC server since JVM is shutting down");
-                                        NodeServer.this.cleanup(null);
+                                        try {
+                                            NodeServer.this.cleanup(null);
+                                        } catch (Exception e) {
+                                            LOG.error("Fail to cleanup the NodeServer", e);
+                                        }
                                     }
                                 }));
 
@@ -255,6 +259,10 @@ public class NodeServer implements Runnable {
                         idleStart = System.currentTimeMillis();
                     }
                     long duration = System.currentTimeMillis() - idleStart;
+                    LOG.debug(
+                            "{} has been idle for {} seconds",
+                            mlContext.getIdentity(),
+                            duration / 1000);
                     if (duration > idleTimeout) {
                         throw new MLException(
                                 String.format(
@@ -287,7 +295,11 @@ public class NodeServer implements Runnable {
             LOG.error("Error to run node service {}.", e.getMessage());
             throw new RuntimeException(e);
         } finally {
-            cleanup(runnerFuture);
+            try {
+                cleanup(runnerFuture);
+            } catch (Exception e) {
+                LOG.error("Fail to cleanup the NodeServer", e);
+            }
         }
     }
 
@@ -303,34 +315,37 @@ public class NodeServer implements Runnable {
         return future;
     }
 
-    private void stopMLRunner(Future<?> runnerFuture) {
+    private void stopMLRunner(Future<?> runnerFuture) throws Exception {
         if (null != runnerService && (!runnerService.isShutdown())) {
             LOG.info("begin stop node:" + mlContext.getIdentity());
-            try {
-                runner.notifyStop();
-                if (null != runnerFuture) {
-                    runnerFuture.cancel(true);
-                }
-                runnerService.awaitTermination(5, TimeUnit.SECONDS);
-            } catch (Exception e) {
-                LOG.warn(
-                        "Interrupted waiting for scriptRunner thread to finish, dumping its stack trace:"
-                                + e.getMessage());
+
+            runner.notifyStop();
+            if (null != runnerFuture) {
+                runnerFuture.cancel(true);
             }
+            if (!runnerService.awaitTermination(5, TimeUnit.SECONDS)) {
+                LOG.warn("MLRunner not terminated in 5 sec");
+            }
+
             LOG.info("end stop node:" + mlContext.getIdentity());
         }
     }
 
     /** Stop serving requests and shutdown resources. */
-    private synchronized void cleanup(Future<?> runnerFuture) {
+    private synchronized void cleanup(Future<?> runnerFuture) throws Exception {
         LOG.info("{} run cleanup!", mlContext.getIdentity());
         stopMLRunner(runnerFuture);
         runnerService.shutdownNow();
         try {
-            runnerService.awaitTermination(5, TimeUnit.SECONDS);
+            if (!runnerService.awaitTermination(5, TimeUnit.SECONDS)) {
+                LOG.warn(
+                        "{} timed out waiting for {} to terminate",
+                        mlContext.getIdentity(),
+                        runner);
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
-            LOG.warn("runner service thread poll shutdown interrupted:" + e.getMessage());
+            LOG.warn("runner service thread poll shutdown interrupted", e);
         }
 
         if (server != null) {
@@ -343,8 +358,7 @@ public class NodeServer implements Runnable {
                             mlContext.getIdentity());
                 }
             } catch (InterruptedException e) {
-                e.printStackTrace();
-                LOG.info("{} interrupted shutting down GRPC server", mlContext.getIdentity());
+                LOG.info("{} interrupted shutting down GRPC server", mlContext.getIdentity(), e);
             }
             server = null;
         }
