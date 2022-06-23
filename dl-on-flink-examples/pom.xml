@@ -27,253 +27,70 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>dl-on-flink-examples</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
+    <modules>
+        <module>dl-on-flink-examples-tensorflow</module>
+        <module>dl-on-flink-examples-pytorch</module>
+        <module>dl-on-flink-examples-tensorflow-2.x</module>
+    </modules>
+
     <dependencies>
         <dependency>
-            <groupId>org.flinkextended</groupId>
-            <artifactId>dl-on-flink-tensorflow-2.x</artifactId>
-            <version>${project.parent.version}</version>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-streaming-java_${scala.major.version}</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.flinkextended</groupId>
-            <artifactId>dl-on-flink-pytorch</artifactId>
-            <version>${project.parent.version}</version>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table-api-java</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table-api-java-bridge_${scala.major.version}
+            </artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-clients_${scala.major.version}</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-table-planner_${scala.major.version}</artifactId>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
-            <groupId>org.flinkextended</groupId>
-            <artifactId>dl-on-flink-framework</artifactId>
-            <version>${project.parent.version}</version>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.flinkextended</groupId>
-            <artifactId>dl-on-flink-operator</artifactId>
-            <version>${project.parent.version}</version>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.curator</groupId>
-            <artifactId>curator-test</artifactId>
-            <scope>test</scope>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-python_${scala.major.version}</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
-            <artifactId>flink-clients_${scala.major.version}</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-hdfs</artifactId>
-            <version>${hadoop.version}</version>
-            <scope>test</scope>
-            <type>test-jar</type>
-            <exclusions>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-common</artifactId>
-            <version>${hadoop.version}</version><!--$NO-MVN-MAN-VER$-->
-            <scope>test</scope>
-            <type>test-jar</type>
-            <exclusions>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>jdk.tools</groupId>
-                    <artifactId>jdk.tools</artifactId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>commons-math3</artifactId>
-                    <groupId>org.apache.commons</groupId>
-                </exclusion>
-            </exclusions>
+            <artifactId>flink-csv</artifactId>
+            <version>${flink.version}</version>
         </dependency>
     </dependencies>
 
     <build>
-        <plugins>
-            <plugin>
-                <groupId>net.alchim31.maven</groupId>
-                <artifactId>scala-maven-plugin</artifactId>
-                <version>3.2.2</version>
-                <executions>
-                    <execution>
-                        <id>eclipse-add-source</id>
-                        <goals>
-                            <goal>add-source</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>scala-compile-first</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <scalaVersion>${scala.major.version}</scalaVersion>
-                    <recompileMode>incremental</recompileMode>
-                    <useZincServer>true</useZincServer>
-                    <args>
-                        <arg>-unchecked</arg>
-                        <arg>-deprecation</arg>
-                        <arg>-feature</arg>
-                    </args>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>test-jar</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>default-jar</id>
-                        <configuration>
-                            <archive>
-                                <manifestEntries>
-                                    <!--                                    a workaround to ensure that the Tensorflow can get the version when-->
-                                    <!--                                    loading the libtensorflow.so.x. -->
-                                    <!--                                    https://github.com/tensorflow/tensorflow/issues/30635#issuecomment-615513958-->
-                                    <Implementation-Version>1.15</Implementation-Version>
-                                </manifestEntries>
-                            </archive>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.1</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-                            </transformers>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/*.SF</exclude>
-                                        <exclude>META-INF/*.DSA</exclude>
-                                        <exclude>META-INF/*.RSA</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                            <relocations>
-                                <relocation>
-                                    <pattern>com.google.protobuf</pattern>
-                                    <shadedPattern>flink.ml.com.google.protobuf</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>io.netty</pattern>
-                                    <shadedPattern>flink.ml.io.netty</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>com.google.common</pattern>
-                                    <shadedPattern>flink.ml.com.google.common</shadedPattern>
-                                </relocation>
-                            </relocations>
-                            <artifactSet>
-                                <excludes>
-                                    <exclude>org.apache.flink:*</exclude>
-                                    <exclude>xerces:xercesImpl</exclude>
-                                    <exclude>io.netty:netty</exclude>
-                                    <!--<exclude>io.netty:*</exclude>-->
-                                    <exclude>org.scala-lang:*</exclude>
-                                    <!--<exclude>org.apache.hadoop:*</exclude>-->
-                                    <exclude>com.typesafe.akka:*</exclude>
-                                    <exclude>org.apache.ant:</exclude>
-                                    <exclude>org.apache.directory.server:*</exclude>
-                                    <exclude>org.apache.directory.api:*</exclude>
-                                    <exclude>org.apache.logging.log4j:*</exclude>
-                                    <exclude>org.slf4j:*</exclude>
-                                    <exclude>com.aliyun:*</exclude>
-                                    <exclude>com.aliyun.openservices:*</exclude>
-                                    <exclude>org.apache.orc:*</exclude>
-                                    <exclude>com.alibaba.niagara:*</exclude>
-                                    <exclude>org.apache.ant:*</exclude>
-                                    <exclude>org.apache.ivy:*</exclude>
-                                    <exclude>org.scala-lang.modules:*</exclude>
-                                    <exclude>org.apache.maven:*</exclude>
-                                    <exclude>com.alibaba.blink:*</exclude>
-                                    <exclude>com.data-artisans:*</exclude>
-                                    <exclude>com.esotericsoftware.kryo:*</exclude>
-                                    <exclude>com.esotericsoftware:*</exclude>
-                                    <exclude>com.fasterxml.jackson.core:*</exclude>
-                                    <exclude>com.github.scopt:*</exclude>
-                                    <exclude>commons-el:commons-el</exclude>
-                                    <exclude>commons-validator:commons-validator</exclude>
-                                    <exclude>com.twitter:*</exclude>
-                                    <exclude>com.typesafe:config</exclude>
-                                    <exclude>org.apache.parquet:*</exclude>
-                                    <exclude>org.apache.sling:org.apache.sling.commons.json</exclude>
-                                    <exclude>org.apache.thrift:libthrift</exclude>
-                                    <exclude>org.apache.avro:*</exclude>
-                                    <exclude>org.apache.camel:camel-core</exclude>
-                                    <exclued>org.antlr:*</exclued>
-                                    <exclued>log4j:apache-log4j-extras</exclued>
-                                    <exclued>io.netty:netty-all</exclued>
-                                    <exclued>javolution:javolution</exclued>
-                                    <exclued>joda-time:joda-time</exclued>
-                                    <exclued>net.jpountz.lz4:lz4</exclued>
-                                    <exclued>net.razorvine:pyrolite</exclued>
-                                    <exclued>net.sf.ezmorph:ezmorph</exclued>
-                                    <exclued>net.sf.jopt-simple:jopt-simple</exclued>
-                                    <exclued>net.sf.json-lib:json-lib</exclued>
-                                    <exclued>net.sf.opencsv:opencsv</exclued>
-                                    <exclued>org.iq80.snappy:snappy</exclued>
-                                    <exclued>org.javassist:javassist</exclued>
-                                    <exclude>org.spark-project.hive:*</exclude>
-                                    <exclude>org.rocksdb:rocksdbjni</exclude>
-                                </excludes>
-                            </artifactSet>
-                            <!--<transformers>-->
-                                <!--<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
-                                    <!--<mainClass>get_gateway().jvm.org.flinkextended.flink..examples.wordcount.WordCount</mainClass>-->
-                                <!--</transformer>-->
-                            <!--</transformers>-->
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>1.7</version>
+                    <executions>
+                        <execution>
+                            <id>rename</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 </project>

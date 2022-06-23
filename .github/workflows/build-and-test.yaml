@@ -19,6 +19,9 @@ jobs:
           - dl-on-flink-pytorch
           - dl-on-flink-lib
           - dl-on-flink-examples
+          - dl-on-flink-examples/dl-on-flink-examples-pytorch
+          - dl-on-flink-examples/dl-on-flink-examples-tensorflow
+          - dl-on-flink-examples/dl-on-flink-examples-tensorflow-2.x
     steps:
       - uses: actions/checkout@v2
         with:

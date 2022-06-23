@@ -18,7 +18,7 @@ import sys
 
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment, \
-    FunctionContext, DataTypes
+    FunctionContext, DataTypes, Schema, TableDescriptor
 from pyflink.table.udf import udf, ScalarFunction
 
 logger = logging.getLogger(__file__)
@@ -76,25 +76,16 @@ if __name__ == '__main__':
     python_file = os.path.join(os.path.abspath(os.path.dirname(__file__)),
                                'linear.py')
 
-    # Register the udf for prediction
-    t_env.create_temporary_function("predict",
-                                    udf(f=Predict(model_path),
-                                        result_type=DataTypes.DOUBLE()))
+    predict = udf(f=Predict(model_path), result_type=DataTypes.DOUBLE())
 
     # Create the table of input for prediction
-    ddl = f"""
-            CREATE TABLE src (
-                x FLOAT
-            ) WITH (
-                'connector' = 'datagen',
-                'fields.x.min' = '0',
-                'fields.x.max' = '1',
-                'number-of-rows' = '{sample_count}',
-                'rows-per-second' = '1'
-            )
-        """
-    t_env.execute_sql(ddl)
+    schema = Schema.new_builder().column("x", DataTypes.FLOAT()).build()
+    table = t_env.from_descriptor(TableDescriptor.for_connector("datagen")
+                                  .schema(schema)
+                                  .option("fields.x.min", "0")
+                                  .option("fields.x.max", "1")
+                                  .option("number-of-rows", str(sample_count))
+                                  .build())
 
-    table = t_env.sql_query("SELECT x, 2 * x + 1, predict(x) FROM src") \
-        .alias("x", "y", "predict")
+    table = table.add_columns(predict(table.x).alias("predict"))
     table.execute().print()
