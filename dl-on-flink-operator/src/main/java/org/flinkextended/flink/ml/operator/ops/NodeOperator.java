@@ -100,7 +100,7 @@ public class NodeOperator<OUT> extends AbstractStreamOperator<OUT>
 
         Runnable nodeServerRunnable = createNodeServerRunnable();
         serverFuture = new FutureTask<>(nodeServerRunnable, null);
-        serverThread = runRunnable(serverFuture, "NodeServer_" + mlContext.getIdentity());
+        serverThread = runRunnable(serverFuture, "NodeServer_" + maybeGetIdentity());
 
         dataExchange = new DataExchange<>(mlContext);
         DataExchangeConsumer<Row, OUT> dataExchangeConsumer =
@@ -109,7 +109,7 @@ public class NodeOperator<OUT> extends AbstractStreamOperator<OUT>
         dataExchangeConsumerThread =
                 runRunnable(
                         dataExchangeConsumerFuture,
-                        "NodeServerDataExchangeConsumer_" + mlContext.getIdentity());
+                        "NodeServerDataExchangeConsumer_" + maybeGetIdentity());
     }
 
     @Override
@@ -133,13 +133,13 @@ public class NodeOperator<OUT> extends AbstractStreamOperator<OUT>
 
     @Override
     public void finish() throws Exception {
-        LOG.info("Start finishing NodeOperator {}", mlContext.getIdentity());
+        LOG.info("Start finishing NodeOperator {}", maybeGetIdentity());
         cleanup(false);
     }
 
     @Override
     public void close() throws Exception {
-        LOG.info("Start closing NodeOperator {}", mlContext.getIdentity());
+        LOG.info("Start closing NodeOperator {}", maybeGetIdentity());
         cleanup(true);
         if (mlContext != null) {
             try {
@@ -168,19 +168,24 @@ public class NodeOperator<OUT> extends AbstractStreamOperator<OUT>
                 dataExchangeConsumerFuture.get();
             }
         } catch (InterruptedException e) {
-            LOG.warn("Fail to join node {}", mlContext.getIdentity(), e);
+            LOG.warn("Fail to join node {}", maybeGetIdentity(), e);
         } catch (TimeoutException e) {
-            LOG.warn("Timeout waiting for node {} to finish", mlContext.getIdentity(), e);
+            LOG.warn("Timeout waiting for node {} to finish", maybeGetIdentity(), e);
         } catch (ExecutionException e) {
-            LOG.error(mlContext.getIdentity() + " node server failed");
+            LOG.error(maybeGetIdentity() + " node server failed");
             throw new RuntimeException(e);
         } finally {
             if (serverFuture != null) {
+                serverFuture.cancel(true);
                 while (true) {
-                    serverFuture.cancel(true);
                     try {
-                        serverThread.join();
-                        break;
+                        serverThread.join(30_000);
+                        if (serverThread.isAlive()) {
+                            LOG.warn("NodeServer fail to exit in 30 second, interrupting...");
+                            serverThread.interrupt();
+                        } else {
+                            break;
+                        }
                     } catch (InterruptedException e) {
                         LOG.error("Fail to wait for NodeServer to exit", e);
                     }
@@ -215,7 +220,7 @@ public class NodeOperator<OUT> extends AbstractStreamOperator<OUT>
             Thread.sleep(100);
         }
         if (serverFuture.isDone()) {
-            LOG.info("{} finished at epoch {}", mlContext.getIdentity(), epochWatermark);
+            LOG.info("{} finished at epoch {}", maybeGetIdentity(), epochWatermark);
             return;
         }
         context.output(new OutputTag<Integer>("termination") {}, 0);
@@ -270,6 +275,13 @@ public class NodeOperator<OUT> extends AbstractStreamOperator<OUT>
     @VisibleForTesting
     FutureTask<Void> getDataExchangeConsumerFuture() {
         return dataExchangeConsumerFuture;
+    }
+
+    private String maybeGetIdentity() {
+        if (mlContext == null) {
+            return "";
+        }
+        return mlContext.getIdentity();
     }
 
     private static class DataExchangeConsumer<IN, OUT> implements Runnable {

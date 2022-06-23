@@ -79,7 +79,7 @@ public abstract class AbstractNodeInputFormat<OUT> extends RichInputFormat<OUT, 
         mlContext = prepareMLContext(split.getSplitNumber());
         preparePythonFiles();
         Runnable nodeServerRunnable = getNodeServerRunnable(mlContext);
-        serverThread = runRunnable(nodeServerRunnable, "NodeServer_" + mlContext.getIdentity());
+        serverThread = runRunnable(nodeServerRunnable, "NodeServer_" + maybeGetIdentity());
 
         mlContext.getOutputQueue().markFinished();
 
@@ -100,7 +100,7 @@ public abstract class AbstractNodeInputFormat<OUT> extends RichInputFormat<OUT, 
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                // ignore
+                break;
             }
             res = dataExchange.read(true);
         }
@@ -109,30 +109,35 @@ public abstract class AbstractNodeInputFormat<OUT> extends RichInputFormat<OUT, 
 
     @Override
     public void close() throws IOException {
-        LOG.info("Closing NodeInputFormat");
         synchronized (isClose) {
             if (!isClose.get()) {
+                LOG.info("Closing NodeInputFormat {}", maybeGetIdentity());
                 try {
                     if (serverFuture != null && !serverFuture.isCancelled()) {
                         serverFuture.get(closeTimeoutMs, TimeUnit.MILLISECONDS);
                     }
                 } catch (ExecutionException e) {
-                    LOG.error(mlContext.getIdentity() + " node server failed {}", e.getMessage());
+                    LOG.error(maybeGetIdentity() + " node server failed {}", e.getMessage());
                     throw new IOException(e);
                 } catch (InterruptedException e) {
-                    LOG.error("Fail to join server {}", mlContext.getIdentity(), e);
+                    LOG.error("Fail to join server {}", maybeGetIdentity(), e);
                 } catch (TimeoutException e) {
-                    LOG.error(
-                            "Timeout on waiting node server {} to finish", mlContext.getIdentity());
+                    LOG.error("Timeout on waiting node server {} to finish", maybeGetIdentity());
                 } finally {
                     if (serverFuture != null) {
+                        serverFuture.cancel(true);
                         while (true) {
-                            serverFuture.cancel(true);
                             try {
-                                serverThread.join();
-                                break;
-                            } catch (Exception e) {
-                                LOG.error("Fail to wait for NodeServer to exit", e);
+                                serverThread.join(30_000);
+                                if (serverThread.isAlive()) {
+                                    LOG.warn(
+                                            "InputFormat fail to exit in 30 second, interrupting...");
+                                    serverThread.interrupt();
+                                } else {
+                                    break;
+                                }
+                            } catch (InterruptedException e) {
+                                LOG.error("Fail to wait for InputFormat to exit", e);
                             }
                         }
                     }
@@ -206,5 +211,12 @@ public abstract class AbstractNodeInputFormat<OUT> extends RichInputFormat<OUT, 
     @VisibleForTesting
     FutureTask<Void> getServerFuture() {
         return serverFuture;
+    }
+
+    private String maybeGetIdentity() {
+        if (mlContext == null) {
+            return "";
+        }
+        return mlContext.getIdentity();
     }
 }
