@@ -182,10 +182,8 @@ def inference(context):
     dataset = tf_context.get_tfdataset_from_flink() \
         .map(lambda value: tf.io.decode_csv(value, record_defaults=[[0.]]))\
         .batch(1)
-    # next = dataset.make_one_shot_iterator().get_next()
 
     writer = tf_context.get_row_writer_to_flink()
-
     for x_tensor, in dataset:
         y = model.predict(x_tensor)[0][0]
         x_val = x_tensor.numpy()[0]
