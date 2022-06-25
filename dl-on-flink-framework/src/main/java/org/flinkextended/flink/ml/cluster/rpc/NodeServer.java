@@ -336,7 +336,7 @@ public class NodeServer implements Runnable {
 
         while (true) {
             try {
-                if (!runnerService.awaitTermination(5, TimeUnit.SECONDS)) {
+                if (!runnerService.awaitTermination(15, TimeUnit.SECONDS)) {
                     LOG.warn(
                             "{} timed out waiting for {} to terminate",
                             mlContext.getIdentity(),
@@ -346,8 +346,8 @@ public class NodeServer implements Runnable {
                     break;
                 }
             } catch (InterruptedException e) {
-                e.printStackTrace();
                 LOG.warn("runner service thread poll shutdown interrupted", e);
+                runnerService.shutdownNow();
             }
         }
 

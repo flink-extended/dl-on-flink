@@ -60,6 +60,7 @@ public class CommonMLRunner implements MLRunner {
     protected MLClusterDef mlClusterDef;
 
     private Future<?> heartBeatRunnerFuture;
+    private NodeHeartBeatRunner heartBeatRunner;
 
     public CommonMLRunner(MLContext mlContext, NodeServer server) {
         this.mlContext = mlContext;
@@ -235,6 +236,7 @@ public class CommonMLRunner implements MLRunner {
             startHeartBeat();
             LOG.info("start heart beat thread.");
             // 5. wait for cluster running
+            Thread.sleep(10_000);
             waitClusterRunning();
             LOG.info("wait for cluster to running status.");
             // 6. get cluster
@@ -294,18 +296,17 @@ public class CommonMLRunner implements MLRunner {
                             heartbeat.setDaemon(true);
                             return heartbeat;
                         });
-        heartBeatRunnerFuture =
-                heartbeatService.submit(
-                        new NodeHeartBeatRunner(mlContext, server, nodeSpec, version));
+        heartBeatRunner = new NodeHeartBeatRunner(mlContext, server, nodeSpec, version);
+        heartBeatRunnerFuture = heartbeatService.submit(heartBeatRunner);
     }
 
     protected void stopHeartBeat() {
         if (null != heartbeatService && (!heartbeatService.isShutdown())) {
+            heartBeatRunner.setStopFlag(true);
             heartbeatService.shutdownNow();
-
             while (true) {
                 try {
-                    if (!heartbeatService.awaitTermination(5, TimeUnit.SECONDS)) {
+                    if (!heartbeatService.awaitTermination(10, TimeUnit.SECONDS)) {
                         LOG.info(
                                 "CommonMLRunner {} timed out waiting for Heartbeat service to terminate",
                                 mlContext.getIdentity());
@@ -314,8 +315,8 @@ public class CommonMLRunner implements MLRunner {
                         break;
                     }
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    LOG.warn("stop heart beat exception:" + e.getMessage());
+                    LOG.warn("stop heart beat exception", e);
+                    heartbeatService.shutdownNow();
                 }
             }
         }
@@ -431,7 +432,6 @@ public class CommonMLRunner implements MLRunner {
     // called by other thread
     @Override
     public void notifyStop() {
-        stopHeartBeat();
         if (scriptRunner != null) {
             scriptRunner.notifyKillSignal();
         }
