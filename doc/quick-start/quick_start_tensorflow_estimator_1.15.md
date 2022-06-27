@@ -55,9 +55,9 @@ You can download the stable released binary release of Deep Learning on Flink,
 then extract the archive:
 
 ```sh
-curl -LO https://github.com/flink-extended/dl-on-flink/releases/download/0.4.0/dl-on-flink-dist-0.4.0-bin.tgz
-tar -xzf dl-on-flink-dist-0.4.0-bin.tgz
-export DL_ON_FLINK_DIR="${PWD}"/./dl-on-flink-dist-0.4.0
+curl -LO https://github.com/flink-extended/dl-on-flink/releases/download/0.5.0/dl-on-flink-dist-0.5.0-bin.tgz
+tar -xzf dl-on-flink-dist-0.5.0-bin.tgz
+export DL_ON_FLINK_DIR="${PWD}"/./dl-on-flink-dist-0.5.0
 ```
 
 Navigate to the extracted directory, you should see the following directory
@@ -115,7 +115,7 @@ export MODEL_PATH="${PWD}"/./linear
   
 ./bin/flink run \
   -py "${DL_ON_FLINK_DIR}"/examples/linear/tensorflow-estimator/flink_train.py \
-  --jarfile "${DL_ON_FLINK_DIR}"/lib/dl-on-flink-tensorflow-0.4.0-jar-with-dependencies.jar \
+  --jarfile "${DL_ON_FLINK_DIR}"/lib/dl-on-flink-tensorflow-0.5.0-jar-with-dependencies.jar \
   --model-path "${MODEL_PATH}" \
   --epoch 100 \
   --sample-count 5120
