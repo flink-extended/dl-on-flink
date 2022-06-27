@@ -120,7 +120,7 @@ export MODEL_PATH="${PWD}"/./linear
   --model-path "${MODEL_PATH}"
   
 # Batch Training with 1280 samples for 100 epochs
-~/Downloads/flink-1.14.2/bin/flink run \
+./bin/flink run \
   -py "${DL_ON_FLINK_DIR}"/examples/linear/pytorch/flink_train.py \
   --jarfile "${DL_ON_FLINK_DIR}"/lib/dl-on-flink-pytorch-0.4.0-jar-with-dependencies.jar \
   --model-path "${MODEL_PATH}" \
