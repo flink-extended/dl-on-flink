@@ -74,12 +74,12 @@ dependency with pip.
 
 Install the latest stable release of `dl-on-flink-framwork`
 ```bash
-python3 -m pip install --upgrade dl-on-flink-framework
+python3 -m pip install --upgrade dl-on-flink-framework~=0.5
 ```
 
 Install the latest stable release of `dl-on-flink-pytorch`
 ```bash
-python3 -m pip install --upgrade dl-on-flink-pytorch
+python3 -m pip install --upgrade dl-on-flink-pytorch~=0.5
 ```
 
 ## Starting Local Standalone Cluster
