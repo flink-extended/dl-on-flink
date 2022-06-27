@@ -126,7 +126,8 @@ class CMakeBuild(build_ext):
         return glob(os.path.join(tf_lib, "*tensorflow_framework*"))[0]
 
 
-setup_requires = ['tensorflow>=1.15.0, <2.0.0', 'protobuf<3.18']
+setup_requires = ['tensorflow>=1.15.0, <2.0.0', 'protobuf<3.18',
+                  'grpcio>=1.24.3,<1.47.0']
 if not in_dl_on_flink_source:
     setup_requires.append(f'{DL_ON_FLINK_FRAMEWORK_PACKAGE_NAME}=={VERSION}')
 
@@ -147,7 +148,9 @@ setup(
                       f'{DL_ON_FLINK_FRAMEWORK_PACKAGE_NAME}=={VERSION}',
                       'apache-flink>=1.14.0, <1.15.0',
                       'apache-flink-ml>=2.0.0, <3.0.0',
-                      'cloudpickle>=1.2.2'],
+                      'cloudpickle>=1.2.2',
+                      'protobuf<3.18',
+                      'grpcio>=1.24.3,<1.47.0'],
     setup_requires=setup_requires,
     url='https://github.com/flink-extended/dl-on-flink',
     license='https://www.apache.org/licenses/LICENSE-2.0'
