@@ -24,6 +24,6 @@ public class SysUtilTest {
 
     @Test
     public void getProjectVersion() {
-        Assert.assertEquals("0.5.0-SNAPSHOT", SysUtil.getProjectVersion());
+        Assert.assertEquals("0.6.0-SNAPSHOT", SysUtil.getProjectVersion());
     }
 }
