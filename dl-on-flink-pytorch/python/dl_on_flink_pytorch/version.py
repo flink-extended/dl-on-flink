@@ -16,4 +16,4 @@
 The dl-on-flink-pytorch version follows the PEP440.
 .. seealso:: https://www.python.org/dev/peps/pep-0440
 """
-__version__ = "0.5.0.dev0"
+__version__ = "0.6.0.dev0"
